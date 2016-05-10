@@ -11,18 +11,19 @@ const express = require('express');
 const fs = require('fs');
 const RoutesConfig = require('./config/routes.conf');
 const DBConfig = require('./config/db.conf');
-const Routes = require('./routes/index');
+const userRoutes = require('./routes/users');
 
 const app = express();
 
 RoutesConfig.init(app);
 DBConfig.init();
-Routes.init(app, express.Router());
+userRoutes.init(app, express.Router());
 
 const opts = {
   key: fs.readFileSync(__dirname + '/cert/server.key'),
   cert: fs.readFileSync(__dirname + '/cert/server.crt')
 }
+
 
 https.createServer(opts, app)
      .listen(PORT, () => {

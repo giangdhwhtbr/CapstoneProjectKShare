@@ -14,6 +14,8 @@ module.exports = class RouteConfig {
         application.use(express.static(_root));
         application.use(express.static(_root + _clientFiles));
         application.use(bodyParser.json());
+        // parse application/x-www-form-urlencoded
+        application.use(bodyParser.urlencoded({ extended: false }))
         application.use(morgan('dev'));
         application.use(contentLength.validateMax({max: 999}));
         application.use(helmet());

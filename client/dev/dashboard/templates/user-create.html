@@ -1,0 +1,77 @@
+<!-- Modal Create User-->
+<div class="modal fade" id="modalCreateUser" tabindex="-1" role="dialog"
+     aria-labelledby="CreateUser">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close"><span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Create new user</h4>
+      </div>
+      <div class="modal-body">
+        <form role="form">
+          <div class="row">
+            <div class="col-md-12">
+              <label for="username">Username</label>
+              <input class="form-control" type="text"
+                     required="required" id="username"
+                     name="username"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="fname">First name</label>
+              <input class="form-control" type="text"
+                     required="required" id="fname"
+                     name="fname"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="lname">Last name</label>
+              <input class="form-control" type="text"
+                     required="required" id="lname"
+                     name="lname"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="email">Email</label>
+              <input class="form-control" type="text"
+                     required="required" id="email"
+                     name="email"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="role">Role</label>
+              <select name="" id="role" required="required"
+                      class="form-control">
+                <option value="admin">Admin</option>
+                <option value="moderator">Moderator</option>
+                <option value="instructor">Instructor</option>
+                <option value="normal" default>Normal User</option>
+              </select>
+            </div>
+          </div>
+          <br>
+          <div class="row">
+            <div class="col-md-12">
+              <button type="button" class="btn btn-primary">Create
+              </button>
+              <button type="reset" class="btn btn-warning">Reset
+              </button>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Close
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+

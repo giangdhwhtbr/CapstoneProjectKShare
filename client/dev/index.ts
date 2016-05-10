@@ -1,8 +1,18 @@
 /// <reference path="../../node_modules/angular2/typings/browser.d.ts" />
 
-import {bootstrap} from 'angular2/platform/browser';
+
+
+/*
+ * Angular
+ */
 import {HTTP_PROVIDERS} from 'angular2/http';
+import {bootstrap} from 'angular2/platform/browser';
+/*
+ * Components
+ */
+import {AppComponent} from '../dev/app.component';
 
-import {TodoCmp} from './todo/components/todo-cmp';
 
-bootstrap(TodoCmp, [HTTP_PROVIDERS]);
+
+bootstrap(AppComponent);
+
