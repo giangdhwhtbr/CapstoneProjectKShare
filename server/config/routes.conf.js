@@ -5,12 +5,15 @@ const bodyParser = require('body-parser');
 const contentLength = require('express-content-length-validator');
 const helmet = require('helmet');
 const express = require('express');
+const passport = require('passport');
+const expressSession = require('express-session');
+var flash    = require('connect-flash');
 
 module.exports = class RouteConfig {
     static init(application) {
         let _root = process.cwd();
         let _clientFiles = (process.env.NODE_ENV === 'production') ? '/client/dist/' : '/client/dev/';
-
+        application.use(flash());
         application.use(express.static(_root));
         application.use(express.static(_root + _clientFiles));
         application.use(bodyParser.json());
@@ -19,5 +22,10 @@ module.exports = class RouteConfig {
         application.use(morgan('dev'));
         application.use(contentLength.validateMax({max: 999}));
         application.use(helmet());
+        application.use(expressSession({ secret: 'kshare' }));
+        require('../api/user/config/passport')(passport);
+        // Add passport's middleware
+        application.use(passport.initialize());
+        application.use(passport.session());
     }
 }

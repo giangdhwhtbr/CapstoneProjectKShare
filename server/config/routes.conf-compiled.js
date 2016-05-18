@@ -9,6 +9,9 @@ var bodyParser = require('body-parser');
 var contentLength = require('express-content-length-validator');
 var helmet = require('helmet');
 var express = require('express');
+var passport = require('passport');
+var expressSession = require('express-session');
+var flash = require('connect-flash');
 
 module.exports = function () {
     function RouteConfig() {
@@ -20,7 +23,7 @@ module.exports = function () {
         value: function init(application) {
             var _root = process.cwd();
             var _clientFiles = process.env.NODE_ENV === 'production' ? '/client/dist/' : '/client/dev/';
-
+            application.use(flash());
             application.use(express.static(_root));
             application.use(express.static(_root + _clientFiles));
             application.use(bodyParser.json());
@@ -29,6 +32,11 @@ module.exports = function () {
             application.use(morgan('dev'));
             application.use(contentLength.validateMax({ max: 999 }));
             application.use(helmet());
+            application.use(expressSession({ secret: 'kshare' }));
+            require('../api/user/config/passport')(passport);
+            // Add passport's middleware
+            application.use(passport.initialize());
+            application.use(passport.session());
         }
     }]);
 

@@ -1,7 +1,9 @@
 "use strict";
 const mongoose = require('mongoose');
+const passport = require('passport');
 const userDAO = require('../dao/user-dao');
-var usera = mongoose.model('user');
+//const User = mongoose.model('User');
+
 //Send Json
 var sendJsonResponse = function(res, status, content) {
   res.status(status);
@@ -33,7 +35,7 @@ module.exports = class userController {
       .createNew(user)
       .then(user => res.status(200).json(user))
       .catch(error => res.status(400).json(error));
-
+    //console.log(JSON.stringify(req.headers));
   }
 
   static updateUser(req, res){

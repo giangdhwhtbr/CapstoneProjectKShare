@@ -27,31 +27,31 @@ var UserService = function () {
     UserService.prototype.getAllUsers = function () {
         return this._http.get(this._usersUrl.replace(':id', '')).map(function (r) {
             return r.json();
-        }).do(function (data) {
-            return console.log("All: " + JSON.stringify(data));
         }).catch(this.handleError);
     };
     UserService.prototype.addUser = function (user) {
         var _user = JSON.stringify({
-            fName: user.firstName,
-            lName: user.lastName,
-            dName: user.displayName,
-            uName: user.username,
-            pwd: user.password,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            displayName: user.displayName,
+            username: user.username,
+            password: user.password,
             email: user.email,
             role: user.role
         });
-        return this._http.post(this._usersUrl.replace(':id', ''), _user).map(function (r) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this._http.post(this._usersUrl.replace(':id', ''), _user, options).map(function (r) {
             return r.json();
         });
     };
     UserService.prototype.handleError = function (error) {
-        console.error(error);
-        return Observable_1.Observable.throw(error.json().error || 'Server error');
+        return Observable_1.Observable.throw(error.json());
     };
     UserService = __decorate([core_1.Injectable(), __metadata('design:paramtypes', [http_1.Http])], UserService);
     return UserService;
 }();
 exports.UserService = UserService;
+//# sourceMappingURL=users-services.js.map
 
 //# sourceMappingURL=users-services-compiled.js.map

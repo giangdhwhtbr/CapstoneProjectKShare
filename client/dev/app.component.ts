@@ -10,8 +10,10 @@ import { ROUTER_PROVIDERS, RouteConfig, ROUTER_DIRECTIVES } from 'angular2/route
  * Components
  */
 
-import { UsersComponent } from '../dev/dashboard/components/users';
+import { UsersComponent } from '../dev/dashboard/components/users/users';
 import { UserService } from '../dev/dashboard/services/users-services';
+import { HomeComponent } from './kshare/components/home/home';
+
 @Component({
   selector: 'kshare-app',
   template: `
@@ -26,6 +28,7 @@ import { UserService } from '../dev/dashboard/services/users-services';
 })
 
 @RouteConfig([
+  { path: '/', name:'Knowledge Sharing Network', component:HomeComponent },
   { path: '/admin/users', name: 'User Management', component: UsersComponent }
 ])
 

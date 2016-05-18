@@ -3,8 +3,10 @@
  */
 import { Injectable } from 'angular2/core';
 import { User } from '../interface/user';
-import { Http, Response } from 'angular2/http';
+import { Response, Http, Headers, RequestOptions } from 'angular2/http';
 import { Observable } from 'rxjs/Observable';
+
+import { contentHeaders } from '../../shared/headers';
 
 @Injectable()
 export  class UserService {
@@ -14,29 +16,29 @@ export  class UserService {
   getAllUsers(): Observable<User[]> {
     return this._http.get(this._usersUrl.replace(':id',''))
       .map((r) => r.json())
-      .do(data => console.log("All: " +  JSON.stringify(data)))
       .catch(this.handleError);
   }
 
   addUser(user: User):Observable<any>{
+
     let _user = JSON.stringify({
-      fName : user.firstName,
-      lName : user.lastName,
-      dName : user.displayName,
-      uName : user.username,
-      pwd   : user.password,
+      firstName : user.firstName,
+      lastName : user.lastName,
+      displayName : user.displayName,
+      username : user.username,
+      password   : user.password,
       email : user.email,
       role  : user.role
     });
-
+    let headers = new Headers({ 'Content-Type': 'application/json' ,'Connection': 'keep-alive'});
+    let options = new RequestOptions({ headers: headers });
     return this._http
-              .post(this._usersUrl.replace(':id',''),_user)
+              .post(this._usersUrl.replace(':id',''),_user, options)
               .map((r) => r.json());
   }
 
   private handleError(error: Response) {
-    console.error(error);
-    return Observable.throw(error.json().error || 'Server error');
+    return Observable.throw(error.json());
   }
 
 }

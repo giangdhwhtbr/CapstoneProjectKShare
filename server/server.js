@@ -10,14 +10,16 @@ const https = require('https');
 const express = require('express');
 const fs = require('fs');
 const RoutesConfig = require('./config/routes.conf');
+const PoliciesConfig = require('./config/policies.conf');
 const DBConfig = require('./config/db.conf');
-const userRoutes = require('./routes/users');
+const appRoutes = require('./routes/index');
 
 const app = express();
 
 RoutesConfig.init(app);
+PoliciesConfig.init();
 DBConfig.init();
-userRoutes.init(app, express.Router());
+appRoutes.init(app, express.Router());
 
 const opts = {
   key: fs.readFileSync(__dirname + '/cert/server.key'),

@@ -1,0 +1,37 @@
+<div class="col-md-12">
+  <div *ngIf="errorMessage">
+    {{errorMessage}}
+  </div>
+  <table class="table table-striped mg-top-15px" align="center" *ngIf="users">
+    <thead>
+      <tr class="tb-header">
+        <th>Username</th>
+        <th>Display Name</th>
+        <th>Role</th>
+        <th>Join date</th>
+        <th>Updated date</th>
+        <th>Action</th>
+        <!--<th></th>-->
+        <!--<th></th>-->
+        <!--<th></th>-->
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="#user of users">
+        <td><a class="non-deco dis-block" href="/admin/users/{{user._id}}">{{user.username}}</a></td>
+        <td>{{user.displayName}}</td>
+        <td>{{user.role}}</td>
+        <td>{{user.createdAt}}</td>
+        <td>{{user.updatedAt}}</td>
+        <td>
+          <a href="#" data-toggle="modal"
+             data-target="#editUserModal"><span class="glyphicon glyphicon-eye-open"></span></a> |
+          <a href="#"><span class="glyphicon glyphicon-arrow-up"></span></a> |
+          <a href="#"><span class="glyphicon glyphicon-ban-circle"></span></a> |
+          <a href="/admin/users/_id"><span class="glyphicon glyphicon-remove-circle"></span></a>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

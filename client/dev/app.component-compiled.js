@@ -23,8 +23,9 @@ var router_1 = require('angular2/router');
 /**
  * Components
  */
-var users_1 = require('../dev/dashboard/components/users');
+var users_1 = require('../dev/dashboard/components/users/users');
 var users_services_1 = require('../dev/dashboard/services/users-services');
+var home_1 = require('./kshare/components/home/home');
 var AppComponent = function () {
     function AppComponent() {
         this.pageTitle = 'Knowledge Sharing Network';
@@ -34,9 +35,10 @@ var AppComponent = function () {
         template: "\n    <router-outlet></router-outlet>\n  ",
         directives: [router_1.ROUTER_DIRECTIVES],
         providers: [users_services_1.UserService, http_1.HTTP_PROVIDERS, router_1.ROUTER_PROVIDERS]
-    }), router_1.RouteConfig([{ path: '/admin/users', name: 'User Management', component: users_1.UsersComponent }]), __metadata('design:paramtypes', [])], AppComponent);
+    }), router_1.RouteConfig([{ path: '/', name: 'Knowledge Sharing Network', component: home_1.HomeComponent }, { path: '/admin/users', name: 'User Management', component: users_1.UsersComponent }]), __metadata('design:paramtypes', [])], AppComponent);
     return AppComponent;
 }();
 exports.AppComponent = AppComponent;
+//# sourceMappingURL=app.component.js.map
 
 //# sourceMappingURL=app.component-compiled.js.map
