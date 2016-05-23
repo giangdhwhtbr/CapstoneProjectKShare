@@ -15,6 +15,7 @@ import  { UserService} from '../../services/users-services';
 @Component({
   selector: 'user-create',
   templateUrl: 'client/dev/dashboard/templates/users/user-create.html',
+  styleUrls: ['client/dev/dashboard/styles/styles.css'],
   directives: [FORM_DIRECTIVES],
 })
 export class CreateUserComponent {

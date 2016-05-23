@@ -5,7 +5,8 @@ import {
 
 @Component({
   selector: 'sidebar',
-  templateUrl: 'client/dev/dashboard/templates/shared/sidebar.html'
+  templateUrl: 'client/dev/dashboard/templates/shared/sidebar.html',
+  styleUrls: ['client/dev/dashboard/styles/styles.css']
 })
 export class SidebarComponent {
 

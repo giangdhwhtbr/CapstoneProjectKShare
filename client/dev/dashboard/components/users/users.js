@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -20,7 +21,7 @@ var UsersComponent = (function () {
     UsersComponent = __decorate([
         core_1.Component({
             selector: 'users-mgn',
-            templateUrl: 'client/dev/dashboard/templates/users.html',
+            templateUrl: 'client/dev/dashboard/templates/users/users.html',
             directives: [
                 user_create_1.CreateUserComponent,
                 user_list_1.UserListComponent,
@@ -28,11 +29,14 @@ var UsersComponent = (function () {
                 nav_bar_1.NavbarComponent,
                 sidebar_1.SidebarComponent,
                 router_1.ROUTER_DIRECTIVES
+            ],
+            styleUrls: [
+                'client/dev/dashboard/styles/bootstrap.min.css',
+                'client/dev/dashboard/styles/styles.css'
             ]
         }), 
         __metadata('design:paramtypes', [])
     ], UsersComponent);
     return UsersComponent;
-})();
+}());
 exports.UsersComponent = UsersComponent;
-//# sourceMappingURL=users.js.map

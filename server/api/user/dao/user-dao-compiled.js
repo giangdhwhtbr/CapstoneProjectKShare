@@ -74,4 +74,4 @@ userSchema.statics.updateUserById = function (userinfo) {
 var User = mongoose.model('User', userSchema);
 module.exports = User;
 
-//# sourceMappingURL=user-dao-compiled.js.map
+//# sourceMappingURL=user-dao-compiled.script.map

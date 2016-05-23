@@ -14,8 +14,10 @@
   "dependencies": {
     "acl": "^0.4.9",
     "angular2": "^2.0.0-beta.15",
+    "angular2-jwt": "^0.1.12",
     "bluebird": "^3.3.4",
     "body-parser": "^1.5.0",
+    "bootstrap": "^3.3.6",
     "connect-flash": "^0.1.1",
     "crypto": "*",
     "es6-promise": "^3.0.2",
@@ -24,6 +26,7 @@
     "express-content-length-validator": "1.0.0",
     "express-session": "^1.13.0",
     "helmet": "^0.7.1",
+    "localStorage": "^1.0.3",
     "lodash": "^4.6.1",
     "mongoose": "^4.4.7",
     "morgan": "^1.5.2",
@@ -32,11 +35,11 @@
     "passport-local": "*",
     "path": "^0.12.7",
     "reflect-metadata": "^0.1.2",
-    "rxjs": "5.0.0-beta.2",
-    "systemjs": "^0.19.26",
+    "rxjs": "^5.0.0-beta.2",
+    "systemjs": "0.19.27",
     "typescript": "^1.8.9",
     "validator": "*",
-    "zone.js": "^0.6.11"
+    "zone.js": "^0.6.12"
   },
   "devDependencies": {
     "karma-ng-html2js-preprocessor": "^0.1.2",

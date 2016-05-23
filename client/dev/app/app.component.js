@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -17,11 +18,13 @@ var router_1 = require('angular2/router');
 /**
  * Components
  */
-var users_1 = require('../dev/dashboard/components/users/users');
-var users_services_1 = require('../dev/dashboard/services/users-services');
-var home_1 = require('./kshare/components/home/home');
+var users_1 = require('../dashboard/components/users/users');
+var auth_services_1 = require('../dashboard/services/auth-services');
+var users_services_1 = require('../dashboard/services/users-services');
+var home_1 = require('../kshare/components/home/home');
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(router) {
+        this.router = router;
         this.pageTitle = 'Knowledge Sharing Network';
     }
     AppComponent = __decorate([
@@ -30,18 +33,18 @@ var AppComponent = (function () {
             template: "\n    <router-outlet></router-outlet>\n  ",
             directives: [router_1.ROUTER_DIRECTIVES],
             providers: [
+                auth_services_1.AuthService,
                 users_services_1.UserService,
                 http_1.HTTP_PROVIDERS,
                 router_1.ROUTER_PROVIDERS
             ]
         }),
         router_1.RouteConfig([
-            { path: '/', name: 'Knowledge Sharing Network', component: home_1.HomeComponent },
-            { path: '/admin/users', name: 'User Management', component: users_1.UsersComponent }
+            { path: '/', name: 'Home', component: home_1.HomeComponent },
+            { path: '/admin/users', name: 'Userslist', component: users_1.UsersComponent }
         ]), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [router_1.Router])
     ], AppComponent);
     return AppComponent;
-})();
+}());
 exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map

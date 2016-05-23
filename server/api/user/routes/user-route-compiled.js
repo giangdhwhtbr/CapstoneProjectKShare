@@ -7,6 +7,7 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 var userController = require('../controller/user-controller');
 var passport = require('passport');
 var userPolicies = require('../config/policies');
+
 module.exports = function () {
   function userRoutes() {
     _classCallCheck(this, userRoutes);
@@ -15,7 +16,7 @@ module.exports = function () {
   _createClass(userRoutes, null, [{
     key: 'init',
     value: function init(router) {
-      router.route('/api/user').get(userPolicies.isAllowed, userController.getAll).post(userPolicies.isAllowed, userController.createNew);
+      router.route('/api/user').post(userPolicies.isAllowed, userController.createNew);
 
       router.route('/api/user/:id').delete(userPolicies.isAllowed, userController.removeById).put(userPolicies.isAllowed, userController.updateUser);
 

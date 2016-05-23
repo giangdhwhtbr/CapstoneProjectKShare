@@ -5,8 +5,7 @@ import { Component } from 'angular2/core';
 
 @Component({
   selector : 'footer',
-  templateUrl: 'client/dev/kshare/templates/shared/footer.html',
-  styleUrls: ['client/dev/kshare/styles/footer.css']
+  templateUrl: 'client/dev/kshare/templates/shared/footer.html'
 })
 
 export class FooterComponent {

@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -15,11 +16,11 @@ var UserInfoComponent = (function () {
     UserInfoComponent = __decorate([
         core_1.Component({
             selector: 'user-info',
-            templateUrl: 'client/dev/dashboard/templates/users/user-info.html'
+            templateUrl: 'client/dev/dashboard/templates/users/user-info.html',
+            styleUrls: ['client/dev/dashboard/styles/styles.css']
         }), 
         __metadata('design:paramtypes', [])
     ], UserInfoComponent);
     return UserInfoComponent;
-})();
+}());
 exports.UserInfoComponent = UserInfoComponent;
-//# sourceMappingURL=user-info.js.map

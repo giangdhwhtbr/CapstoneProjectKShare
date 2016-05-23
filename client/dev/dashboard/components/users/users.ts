@@ -13,7 +13,7 @@ import  { UserService} from '../../services/users-services';
 
 @Component({
   selector: 'users-mgn',
-  templateUrl: 'client/dev/dashboard/templates/users.html',
+  templateUrl: 'client/dev/dashboard/templates/users/users.html',
   directives: [
     CreateUserComponent,
     UserListComponent,
@@ -21,6 +21,10 @@ import  { UserService} from '../../services/users-services';
     NavbarComponent,
     SidebarComponent,
     ROUTER_DIRECTIVES
+  ],
+  styleUrls:[
+    'client/dev/dashboard/styles/bootstrap.min.css',
+    'client/dev/dashboard/styles/styles.css'
   ]
 })
 export class UsersComponent {

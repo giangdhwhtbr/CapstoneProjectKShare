@@ -22,10 +22,18 @@ module.exports = class RouteConfig {
         application.use(morgan('dev'));
         application.use(contentLength.validateMax({max: 999}));
         application.use(helmet());
-        application.use(expressSession({ secret: 'kshare' }));
         require('../api/user/config/passport')(passport);
+        application.use(expressSession({
+          secret: 'kshare',
+          cookie: { maxAge: 60000 },
+          secure: false,
+          httpOnly: false,
+          resave: true,
+          saveUninitialized: true
+        }));
+
         // Add passport's middleware
-        application.use(passport.initialize());
-        application.use(passport.session());
+      application.use(passport.initialize());
+      application.use(passport.session());
     }
 }

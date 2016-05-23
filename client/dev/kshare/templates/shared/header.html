@@ -1,4 +1,3 @@
-<!-- Navigation -->
 <div class="navbar-header-common">
   <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
     <div class="container topnav">
@@ -10,23 +9,29 @@
           <span class="icon-bar"></span>
           <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand topnav" href="#">UKSN Logo</a>
+        <!--<a class="navbar-brand topnav" href="#">UKSN Logo</a>-->
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <a class="navbar-brand topnav" href="#">UKSN Logo</a>
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a href="">About</a>
+            <a href="/">Home</a>
           </li>
           <li>
-            <a href="">Services</a>
+            <a href="#">Request List</a>
           </li>
-          <li>
-            <a href="">Contact</a>
+          <li *ngIf="roleToken == 'admin' || roleToken == 'manager'">
+            <a href="/admin/users">Dashboard</a>
           </li>
-          <li>
-            <a href="#" class="btn btn-success btLogin" id="btnShowLogin">Login</a>
+          <li *ngIf="loginToken == false">
+            <button class="btn btn-success btLogin" id="btnShowLogin" data-toggle="modal"
+                    data-target="#modalLogin">Login</button>
           </li>
+          <li *ngIf="loginToken == true">
+            <button class="btn btn-success btLogin" (click)="logout()">Logout</button>
+          </li>
+
         </ul>
       </div>
       <!-- /.navbar-collapse -->
@@ -34,7 +39,3 @@
     <!-- /.container -->
   </nav>
 </div>
-
-<!--Modals-->
-<login></login>
-<register></register>

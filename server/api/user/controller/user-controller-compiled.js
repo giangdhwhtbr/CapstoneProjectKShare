@@ -90,4 +90,4 @@ module.exports = function () {
   return userController;
 }();
 
-//# sourceMappingURL=user-controller-compiled.js.map
+//# sourceMappingURL=user-controller-compiled.script.map

@@ -24,8 +24,9 @@ var UsersComponent = function () {
     function UsersComponent() {}
     UsersComponent = __decorate([core_1.Component({
         selector: 'users-mgn',
-        templateUrl: 'client/dev/dashboard/templates/users.html',
-        directives: [user_create_1.CreateUserComponent, user_list_1.UserListComponent, user_info_1.UserInfoComponent, nav_bar_1.NavbarComponent, sidebar_1.SidebarComponent, router_1.ROUTER_DIRECTIVES]
+        templateUrl: 'client/dev/dashboard/templates/users/users.html',
+        directives: [user_create_1.CreateUserComponent, user_list_1.UserListComponent, user_info_1.UserInfoComponent, nav_bar_1.NavbarComponent, sidebar_1.SidebarComponent, router_1.ROUTER_DIRECTIVES],
+        styleUrls: ['client/dev/dashboard/styles/bootstrap.min.css', 'client/dev/dashboard/styles/styles.css']
     }), __metadata('design:paramtypes', [])], UsersComponent);
     return UsersComponent;
 }();

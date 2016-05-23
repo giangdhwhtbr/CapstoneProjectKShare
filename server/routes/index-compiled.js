@@ -27,4 +27,4 @@ module.exports = function () {
   return Routes;
 }();
 
-//# sourceMappingURL=index-compiled.js.map
+//# sourceMappingURL=index-compiled.script.map

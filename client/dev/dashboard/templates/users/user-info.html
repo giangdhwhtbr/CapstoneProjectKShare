@@ -1,70 +1,92 @@
-<div class="modal fade" id="editUserModal">
-  <div class="modal-dialog">
+<!-- Modal Create User-->
+<div class="modal fade" id="modalCreateUser" tabindex="-1" role="dialog"
+     aria-labelledby="CreateUser">
+  <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span></button>
-        <h4 class="modal-title">User giangdh10 's information</h4>
+        <button type="button" class="close" data-dismiss="modal"
+                aria-label="Close"><span aria-hidden="true">&times;</span>
+        </button>
+        <h4 class="modal-title" id="myModalLabel">Create new user</h4>
       </div>
       <div class="modal-body">
-        <form role="form">
+        <form [ngFormModel]="userForm" (ngSubmit)="addUser(userForm.value)"  >
+          <div class="row">
+            <div class="col-md-12">
+              <label for="firstName">First name</label>
+              <input class="form-control" type="text"
+                     required="required" id="firstName"
+                     name="firstName" [ngFormControl]="userForm.controls['firstName']"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="lastName">Last name</label>
+              <input class="form-control" type="text"
+                     required="required" id="lastName"
+                     name="lastName" [ngFormControl]="userForm.controls['lastName']"/>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="displayName">Display Name</label>
+              <input class="form-control" type="text"
+                     required="required" id="displayName"
+                     name="displayName" [ngFormControl]="userForm.controls['displayName']"/>
+            </div>
+          </div>
           <div class="row">
             <div class="col-md-12">
               <label for="username">Username</label>
-              <input class="form-control" type="text" required="required"
-                     id="username" name="username" value="giangdh10"/>
+              <input class="form-control" type="text"
+                     required="required" id="username"
+                     name="username" [ngFormControl]="userForm.controls['username']"/>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
-              <label for="fname">First name</label>
-              <input class="form-control" type="text" required="required"
-                     id="fname" name="fname" value="Giang"/>
-            </div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <label for="lname">Last name</label>
-              <input class="form-control" type="text" required="required"
-                     id="lname" name="lname" value="Do"/>
+              <label for="password">Password</label>
+              <input class="form-control" type="password"
+                     required="required" id="password"
+                     name="password" [ngFormControl]="userForm.controls['password']"/>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <label for="email">Email</label>
-              <input class="form-control" type="email" required="required"
-                     id="email" name="email"
-                     value="giangdh10@gmail.com"/>
+              <input class="form-control" type="text"
+                     required="required" id="email"
+                     name="email" [ngFormControl]="userForm.controls['email']"/>
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <label for="role">Role</label>
-              <select name="" id="role" required="required"
-                      class="form-control">
-                <option value="admin" default>Admin</option>
-                <option value="moderator">Moderator</option>
+              <select name="role" id="role" required="required"
+                      class="form-control" [ngFormControl]="userForm.controls['role']">
+                <option value="admin">Admin</option>
+                <option value="manager">Manager</option>
                 <option value="instructor">Instructor</option>
-                <option value="normal">Normal User</option>
+                <option value="normal" default selected>Normal</option>
               </select>
             </div>
           </div>
           <br>
           <div class="row">
             <div class="col-md-12">
-              <button type="button" class="btn btn-primary">Save</button>
-              <button type="reset" class="btn btn-warning">Reset</button>
+              <button type="submit" class="btn btn-primary">Create
+              </button>
+              <button type="reset" class="btn btn-warning">Reset
+              </button>
             </div>
           </div>
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close
+        <button type="button" class="btn btn-default" data-dismiss="modal">
+          Close
         </button>
       </div>
     </div>
-    <!-- /.modal-content -->
   </div>
-  <!-- /.modal-dialog -->
 </div>
-<!-- /.Modal View User -->

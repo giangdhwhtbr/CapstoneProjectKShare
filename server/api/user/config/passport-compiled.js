@@ -44,4 +44,4 @@ module.exports = function (passport) {
   }));
 };
 
-//# sourceMappingURL=passport-compiled.js.map
+//# sourceMappingURL=passport-compiled.script.map

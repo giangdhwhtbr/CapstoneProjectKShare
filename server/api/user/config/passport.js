@@ -7,20 +7,20 @@ var User = require('mongoose').model('User');
 
 module.exports = function(passport){
 
-  // Serialize sessions
-  passport.serializeUser(function (user, done) {
+  passport.serializeUser(function(user, done) {
     done(null, user.id);
   });
 
-  // Deserialize sessions
-  passport.deserializeUser(function (id, done) {
-    User.findOne({
-      _id: id
-    }, '-salt -password', function (err, user) {
-      //console.log(user);
-      done(err, user);
+
+  passport.deserializeUser(
+    function(id, done){
+      User.findById(id, function(err, user){
+        if(err){
+          done(err);
+        }
+        done(null, user);
+      });
     });
-  });
 
   // Local Sign In
   passport.use('local-login', new LocalStrategy({
@@ -29,17 +29,18 @@ module.exports = function(passport){
     passReqToCallback: true
   },
     function(req, username, password, done){
-      User.findOne({ 'username' : username }, function (err, user){
+      User.findOne({ 'username' : username }, {}, function (err, user,info){
          if(err){
            return done(err);
          }
          if(!user){
-           return done(null,false, req.flash('loginMessage','No user found.'));
+           return done(null, false, { invalidUsername: 'Incorrect username.' });
          }
-         if(!user.authenticate(password)){
-           return done(null, false, req.flash('Invalid password, try again!'));
+         if(!user.authenticate(password)) {
+           return done(null, false, {invalidPassword: 'Incorrect password.'});
          }
-         return done(null, user);
+          req.session.user = user;
+         return done(null,user);
       })
     }
   ))

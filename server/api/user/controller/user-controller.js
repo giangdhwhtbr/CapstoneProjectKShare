@@ -17,6 +17,19 @@ module.exports = class userController {
       .catch(error => res.status(400).json(error));
   }
 
+  static getUserById(req, res) {
+    if(req.params && req.params.id) {
+      userDAO
+        .getUserById(req.params.id)
+        .then(user => res.status(200).json(user))
+        .catch(error => res.status(400).json(error));
+    }else{
+      res.status(404).json({
+        "message"    :   "No Userid in request"
+      });
+    }
+  }
+
   static createNew(req, res) {
     var currentDate = new Date();
     var user = {

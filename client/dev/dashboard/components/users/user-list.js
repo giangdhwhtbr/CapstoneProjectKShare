@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -40,11 +41,13 @@ var UserListComponent = (function () {
         core_1.Component({
             selector: 'user-list',
             templateUrl: 'client/dev/dashboard/templates/users/user-list.html',
-            styleUrls: ['client/dev/dashboard/styles/user-list.css']
+            styleUrls: [
+                'client/dev/dashboard/styles/styles.css',
+                'client/dev/dashboard/styles/user-list.css'
+            ]
         }), 
         __metadata('design:paramtypes', [users_services_1.UserService])
     ], UserListComponent);
     return UserListComponent;
-})();
+}());
 exports.UserListComponent = UserListComponent;
-//# sourceMappingURL=user-list.js.map

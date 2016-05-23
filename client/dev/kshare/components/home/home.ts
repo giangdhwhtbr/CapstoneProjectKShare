@@ -6,6 +6,8 @@ import { ROUTER_DIRECTIVES } from 'angular2/router';
 
 import { HeaderComponent } from '../shared/header';
 import { FooterComponent } from '../shared/footer';
+import { LoginComponent } from '../shared/login';
+import { RegisterComponent } from '../shared/register';
 @Component ({
   selector: 'home',
   templateUrl:'client/dev/kshare/templates/home/home.html',
@@ -13,6 +15,8 @@ import { FooterComponent } from '../shared/footer';
   directives: [
     HeaderComponent,
     FooterComponent,
+    LoginComponent,
+    RegisterComponent,
     ROUTER_DIRECTIVES
   ]
 })
