@@ -36,5 +36,6 @@ export class HeaderComponent {
       }
     });
     window.location.reload();
+    
   }
 }

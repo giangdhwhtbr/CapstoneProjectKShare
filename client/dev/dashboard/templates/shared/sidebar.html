@@ -10,8 +10,13 @@
         <span class="glyphicon glyphicon-home"></span>
         Dashboard</a>
     </li>
-    <li class="active">
-      <a href="../users/users.html">
+    <li *ngIf="pageTitle && pageTitle == 'user'" class="active">
+      <a href="/admin/users">
+        <span class="glyphicon glyphicon-user"></span>
+        Users </a>
+    </li>
+    <li *ngIf="!pageTitle">
+      <a href="/admin/users">
         <span class="glyphicon glyphicon-user"></span>
         Users </a>
     </li>

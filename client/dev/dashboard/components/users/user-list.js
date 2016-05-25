@@ -9,11 +9,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('angular2/core');
+var router_1 = require('angular2/router');
+var nav_bar_1 = require('../shared/nav-bar');
+var sidebar_1 = require('../shared/sidebar');
 var users_services_1 = require('../../services/users-services');
+var user_create_1 = require('./user-create');
 var UserListComponent = (function () {
     function UserListComponent(_userService) {
         this._userService = _userService;
-        this.pageTitle = 'Users List';
+        this.pageTitle = 'user';
     }
     UserListComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -42,8 +46,15 @@ var UserListComponent = (function () {
             selector: 'user-list',
             templateUrl: 'client/dev/dashboard/templates/users/user-list.html',
             styleUrls: [
+                'client/dev/dashboard/styles/bootstrap.min.css',
                 'client/dev/dashboard/styles/styles.css',
                 'client/dev/dashboard/styles/user-list.css'
+            ],
+            directives: [
+                user_create_1.CreateUserComponent,
+                nav_bar_1.NavbarComponent,
+                sidebar_1.SidebarComponent,
+                router_1.ROUTER_DIRECTIVES
             ]
         }), 
         __metadata('design:paramtypes', [users_services_1.UserService])

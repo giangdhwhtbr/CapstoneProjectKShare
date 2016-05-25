@@ -8,18 +8,66 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var core_1 = require('angular2/core');
+var common_1 = require('angular2/common');
+var router_1 = require('angular2/router');
+var nav_bar_1 = require('../shared/nav-bar');
+var sidebar_1 = require('../shared/sidebar');
+var router_2 = require('angular2/router');
+var users_services_1 = require('../../services/users-services');
 var UserInfoComponent = (function () {
-    function UserInfoComponent() {
-        this.name = "yo, I'm your component :D";
+    function UserInfoComponent(fb, _userService, router, params) {
+        this._userService = _userService;
+        this.router = router;
+        this.pageTitle = 'users';
+        this.id = params.get('id');
+        this.userUpdateForm = fb.group({
+            _id: [""],
+            firstName: ["", common_1.Validators.required],
+            lastName: ["", common_1.Validators.required],
+            displayName: ["", common_1.Validators.required],
+            username: ["", common_1.Validators.required],
+            email: ["", common_1.Validators.required],
+            role: ["", common_1.Validators.required]
+        });
     }
+    UserInfoComponent.prototype.ngOnInit = function () {
+        var _this = this;
+        this._userService.getUserById(this.id).subscribe(function (user) {
+            console.log(user);
+            _this.user = user;
+        }, function (error) {
+            console.log(error.text());
+        });
+    };
+    UserInfoComponent.prototype.updateUser = function (user) {
+        var _this = this;
+        this._userService
+            .updateUser(user)
+            .subscribe(function (response) {
+            _this.router.parent.navigateByUrl('/admin/users');
+        }, function (error) {
+            console.log(error.text());
+        });
+    };
     UserInfoComponent = __decorate([
         core_1.Component({
             selector: 'user-info',
             templateUrl: 'client/dev/dashboard/templates/users/user-info.html',
-            styleUrls: ['client/dev/dashboard/styles/styles.css']
-        }), 
-        __metadata('design:paramtypes', [])
+            styleUrls: ['client/dev/dashboard/styles/styles.css'],
+            directives: [
+                common_1.FORM_DIRECTIVES,
+                router_1.ROUTER_DIRECTIVES,
+                nav_bar_1.NavbarComponent,
+                sidebar_1.SidebarComponent
+            ],
+        }),
+        __param(0, core_1.Inject(common_1.FormBuilder)),
+        __param(1, core_1.Inject(users_services_1.UserService)), 
+        __metadata('design:paramtypes', [common_1.FormBuilder, users_services_1.UserService, router_2.Router, router_2.RouteParams])
     ], UserInfoComponent);
     return UserInfoComponent;
 }());

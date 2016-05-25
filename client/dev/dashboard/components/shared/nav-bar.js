@@ -17,7 +17,10 @@ var NavbarComponent = (function () {
         core_1.Component({
             selector: 'nav-bar',
             templateUrl: 'client/dev/dashboard/templates/shared/nav-bar.html',
-            styleUrls: ['client/dev/dashboard/styles/styles.css']
+            styleUrls: [
+                'client/dev/dashboard/styles/styles.css',
+                'client/dev/dashboard/styles/bootstrap.min.css'
+            ]
         }), 
         __metadata('design:paramtypes', [])
     ], NavbarComponent);

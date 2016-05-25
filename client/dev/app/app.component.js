@@ -18,7 +18,8 @@ var router_1 = require('angular2/router');
 /**
  * Components
  */
-var users_1 = require('../dashboard/components/users/users');
+var user_list_1 = require('../dashboard/components/users/user-list');
+var user_info_1 = require('../dashboard/components/users/user-info');
 var auth_services_1 = require('../dashboard/services/auth-services');
 var users_services_1 = require('../dashboard/services/users-services');
 var home_1 = require('../kshare/components/home/home');
@@ -41,7 +42,8 @@ var AppComponent = (function () {
         }),
         router_1.RouteConfig([
             { path: '/', name: 'Home', component: home_1.HomeComponent },
-            { path: '/admin/users', name: 'Userslist', component: users_1.UsersComponent }
+            { path: '/admin/users', name: 'Userslist', component: user_list_1.UserListComponent },
+            { path: '/admin/users/:id', name: 'UpdateUser', component: user_info_1.UserInfoComponent }
         ]), 
         __metadata('design:paramtypes', [router_1.Router])
     ], AppComponent);

@@ -15,7 +15,7 @@ module.exports = class userRoutes {
 
     router
       .route('/api/user/:id')
-      .get(userController.getUserById)
+      .get(userPolicies.isAllowed,userController.getUserById)
       .delete(userPolicies.isAllowed,userController.removeById)
       .put(userPolicies.isAllowed,userController.updateUser);
 

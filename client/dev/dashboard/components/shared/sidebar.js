@@ -9,9 +9,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('angular2/core');
+var core_2 = require("angular2/core");
 var SidebarComponent = (function () {
     function SidebarComponent() {
     }
+    __decorate([
+        core_2.Input(), 
+        __metadata('design:type', String)
+    ], SidebarComponent.prototype, "pageTitle", void 0);
     SidebarComponent = __decorate([
         core_1.Component({
             selector: 'sidebar',

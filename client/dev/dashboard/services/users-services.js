@@ -24,6 +24,11 @@ var UserService = (function () {
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
+    UserService.prototype.getUserById = function (id) {
+        return this._http.get(this._usersUrl.replace(':id', id))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
     UserService.prototype.addUser = function (user) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
         var options = new http_1.RequestOptions({ headers: headers });
@@ -38,6 +43,24 @@ var UserService = (function () {
         });
         return this._http
             .post(this._usersUrl.replace(':id', ''), _user, options)
+            .map(function (r) { return r.json(); });
+    };
+    UserService.prototype.updateUser = function (user) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        console.log(user);
+        var _user = JSON.stringify({
+            _id: user._id,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            displayName: user.displayName,
+            username: user.username,
+            password: user.password,
+            email: user.email,
+            role: user.role
+        });
+        return this._http
+            .put(this._usersUrl.replace(':id', user._id), _user, options)
             .map(function (r) { return r.json(); });
     };
     UserService.prototype.handleError = function (error) {

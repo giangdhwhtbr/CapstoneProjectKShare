@@ -9,7 +9,8 @@ import { ROUTER_PROVIDERS, RouteConfig, ROUTER_DIRECTIVES,RouterLink, Router } f
 /**
  * Components
  */
-import { UsersComponent } from '../dashboard/components/users/users';
+import { UserListComponent } from '../dashboard/components/users/user-list';
+import { UserInfoComponent } from '../dashboard/components/users/user-info';
 import { AuthService } from '../dashboard/services/auth-services';
 import { UserService } from '../dashboard/services/users-services';
 import { HomeComponent } from '../kshare/components/home/home';
@@ -30,7 +31,8 @@ import { HomeComponent } from '../kshare/components/home/home';
 
 @RouteConfig([
   { path: '/', name:'Home', component:HomeComponent },
-  { path: '/admin/users', name: 'Userslist', component: UsersComponent }
+  { path: '/admin/users', name: 'Userslist', component: UserListComponent },
+  { path: '/admin/users/:id', name:'UpdateUser', component: UserInfoComponent}
 ])
 
 

@@ -1,20 +1,30 @@
 import {
   Component,OnInit
 } from 'angular2/core';
-//import { ROUTER_DIRECTIVES } from 'angular2/router';
+import { ROUTER_DIRECTIVES } from 'angular2/router';
+import  { NavbarComponent } from '../shared/nav-bar';
+import  { SidebarComponent }  from '../shared/sidebar';
 import  { User } from '../../interface/user';
 import  { UserService} from '../../services/users-services';
+import  { CreateUserComponent } from './user-create';
 @Component({
   selector: 'user-list',
   templateUrl: 'client/dev/dashboard/templates/users/user-list.html',
   styleUrls: [
+    'client/dev/dashboard/styles/bootstrap.min.css',
     'client/dev/dashboard/styles/styles.css',
     'client/dev/dashboard/styles/user-list.css'
+  ],
+  directives: [
+    CreateUserComponent,
+    NavbarComponent,
+    SidebarComponent,
+    ROUTER_DIRECTIVES
   ]
 })
 
 export class UserListComponent {
-  pageTitle: string = 'Users List';
+  pageTitle: string = 'user';
   errorMessage: string;
 
   users: User[];
