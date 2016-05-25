@@ -5,13 +5,18 @@
 
 const usersRoutes = require('../api/user/routes/user-route');
 const StaticDispatcher = require('../commons/static/index');
+const RequestRoutes = require('../api/request/routes/request-routes');
+const OfferRoutes = require('../api/offer/routes/offer-routes');
 
 module.exports = class Routes {
   static init(app, router) {
     usersRoutes.init(router);
+    RequestRoutes.init(router);
+    OfferRoutes.init(router);
     router
       .route('*')
       .get(StaticDispatcher.sendIndex);
     app.use('/', router);
   }
+  
 }
