@@ -43,6 +43,11 @@ module.exports = class userController {
       createdAt:currentDate,
       updatedAt:currentDate
     }
+
+    if(req.body.role == undefined){
+      user.role = "normal"
+    }
+    console.log(user);
     //let _user = req.body;
     userDAO
       .createNew(user)

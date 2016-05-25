@@ -15,6 +15,7 @@ import  { SidebarComponent }  from '../shared/sidebar';
 import { Router, RouterLink, RouteParams } from 'angular2/router';
 import { User } from '../../interface/user';
 import { UserService} from '../../services/users-services';
+import { AuthService} from '../../services/auth-services';
 import { Input } from "angular2/core";
 
 @Component({
@@ -33,7 +34,7 @@ export class UserInfoComponent {
   userUpdateForm: ControlGroup;
   id: string;
   user : User;
-  constructor(@Inject(FormBuilder) fb:FormBuilder, @Inject(UserService) private _userService: UserService, public router: Router ,params: RouteParams) {
+  constructor(@Inject(FormBuilder) fb:FormBuilder, @Inject(UserService) private _userService: UserService, public router: Router ,params: RouteParams,private _auth:AuthService) {
     this.id = params.get('id');
     this.userUpdateForm = fb.group({
       _id: [""],
@@ -48,6 +49,10 @@ export class UserInfoComponent {
 
 
   ngOnInit(): void {
+    //Check login -- @@ fucking "ngu dan" way
+    if(!this._auth.dashboardFilter()){
+      this.router.navigate(['Home']);
+    }
     this._userService.getUserById(this.id).subscribe(
       (user) => {
         console.log(user);

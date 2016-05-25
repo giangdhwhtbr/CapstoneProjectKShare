@@ -44,6 +44,7 @@ export  class UserService {
               .map((r) => r.json());
   }
 
+
   updateUser (user: User): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json' ,'Connection': 'keep-alive'});
     let options = new RequestOptions({ headers: headers });

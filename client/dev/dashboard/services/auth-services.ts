@@ -5,12 +5,14 @@ import { Injectable } from 'angular2/core';
 import { User } from '../interface/user';
 import { Response, Http, Headers, RequestOptions } from 'angular2/http';
 import { Observable } from 'rxjs/Observable';
+import {Router} from 'angular2/router';
 
 import { contentHeaders } from '../../app/headers';
 
 
 @Injectable()
 export class AuthService {
+  private _regUrl = '/api/user/';
   private _loginUrl = '/api/login';
   private _logOutUrl = '/api/logout';
   private _checkLoginUrl = '/api/checkLogin/';
@@ -23,8 +25,7 @@ export class AuthService {
     let options = new RequestOptions({ headers: headers });
     let _user = JSON.stringify({
       username: user.username,
-      password: user.password,
-      role: 'admin'
+      password: user.password
     })
     var usertoken = user.username;
     return this._http.post(this._loginUrl,_user,options)
@@ -37,6 +38,20 @@ export class AuthService {
         return res;
       });
   }
+
+  register(user: User):Observable<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json'});
+    let options = new RequestOptions({ headers: headers });
+    let _user = JSON.stringify({
+      username: user.username,
+      password: user.password,
+      email:    user.email
+    });
+    return this._http.post(this._regUrl,_user,options)
+      .map((res) =>  res.json())
+      .catch(this.handleError);
+  }
+
   logout():Observable<string[]> {
     return this._http.get(this._logOutUrl)
       .map((res) => res.json())
@@ -48,6 +63,17 @@ export class AuthService {
   }
   isLoggedIn(): Observable<string[]> {
    return this._http.get(this._checkLoginUrl).map((res)=>res.json()).catch(this.handleError);
+  }
+
+  dashboardFilter(){
+    let roleToken = localStorage.getItem('userrole');
+
+    if(!roleToken){
+      return false;
+    }else if(roleToken !== 'admin'){
+      return false
+    }
+    return true;
   }
 
   private handleError(error: Response) {

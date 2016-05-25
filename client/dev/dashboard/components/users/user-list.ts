@@ -6,7 +6,9 @@ import  { NavbarComponent } from '../shared/nav-bar';
 import  { SidebarComponent }  from '../shared/sidebar';
 import  { User } from '../../interface/user';
 import  { UserService} from '../../services/users-services';
+import  { AuthService} from '../../services/auth-services';
 import  { CreateUserComponent } from './user-create';
+import  {Router} from "angular2/router";
 @Component({
   selector: 'user-list',
   templateUrl: 'client/dev/dashboard/templates/users/user-list.html',
@@ -26,14 +28,18 @@ import  { CreateUserComponent } from './user-create';
 export class UserListComponent {
   pageTitle: string = 'user';
   errorMessage: string;
-
+  roleToken:string;
   users: User[];
 
-  constructor(private _userService: UserService){
+  constructor(private _userService: UserService, private _auth:AuthService, private router: Router){
 
   }
 
   ngOnInit(): void {
+    //Check login -- @@ fucking "ngu dan" way
+    if(!this._auth.dashboardFilter()){
+      this.router.navigate(['Home']);
+    }
     this._userService.getAllUsers().subscribe(
         (users) => {
           var formatDate = function (date){

@@ -17,6 +17,7 @@ var Observable_1 = require('rxjs/Observable');
 var AuthService = (function () {
     function AuthService(_http) {
         this._http = _http;
+        this._regUrl = '/api/user/';
         this._loginUrl = '/api/login';
         this._logOutUrl = '/api/logout';
         this._checkLoginUrl = '/api/checkLogin/';
@@ -26,8 +27,7 @@ var AuthService = (function () {
         var options = new http_1.RequestOptions({ headers: headers });
         var _user = JSON.stringify({
             username: user.username,
-            password: user.password,
-            role: 'admin'
+            password: user.password
         });
         var usertoken = user.username;
         return this._http.post(this._loginUrl, _user, options)
@@ -40,6 +40,18 @@ var AuthService = (function () {
             return res;
         });
     };
+    AuthService.prototype.register = function (user) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _user = JSON.stringify({
+            username: user.username,
+            password: user.password,
+            email: user.email
+        });
+        return this._http.post(this._regUrl, _user, options)
+            .map(function (res) { return res.json(); })
+            .catch(this.handleError);
+    };
     AuthService.prototype.logout = function () {
         return this._http.get(this._logOutUrl)
             .map(function (res) { return res.json(); })
@@ -51,6 +63,16 @@ var AuthService = (function () {
     };
     AuthService.prototype.isLoggedIn = function () {
         return this._http.get(this._checkLoginUrl).map(function (res) { return res.json(); }).catch(this.handleError);
+    };
+    AuthService.prototype.dashboardFilter = function () {
+        var roleToken = localStorage.getItem('userrole');
+        if (!roleToken) {
+            return false;
+        }
+        else if (roleToken !== 'admin') {
+            return false;
+        }
+        return true;
     };
     AuthService.prototype.handleError = function (error) {
         return Observable_1.Observable.throw(error.json());

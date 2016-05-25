@@ -18,10 +18,12 @@ var nav_bar_1 = require('../shared/nav-bar');
 var sidebar_1 = require('../shared/sidebar');
 var router_2 = require('angular2/router');
 var users_services_1 = require('../../services/users-services');
+var auth_services_1 = require('../../services/auth-services');
 var UserInfoComponent = (function () {
-    function UserInfoComponent(fb, _userService, router, params) {
+    function UserInfoComponent(fb, _userService, router, params, _auth) {
         this._userService = _userService;
         this.router = router;
+        this._auth = _auth;
         this.pageTitle = 'users';
         this.id = params.get('id');
         this.userUpdateForm = fb.group({
@@ -36,6 +38,10 @@ var UserInfoComponent = (function () {
     }
     UserInfoComponent.prototype.ngOnInit = function () {
         var _this = this;
+        //Check login -- @@ fucking "ngu dan" way
+        if (!this._auth.dashboardFilter()) {
+            this.router.navigate(['Home']);
+        }
         this._userService.getUserById(this.id).subscribe(function (user) {
             console.log(user);
             _this.user = user;
@@ -67,7 +73,7 @@ var UserInfoComponent = (function () {
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(users_services_1.UserService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, users_services_1.UserService, router_2.Router, router_2.RouteParams])
+        __metadata('design:paramtypes', [common_1.FormBuilder, users_services_1.UserService, router_2.Router, router_2.RouteParams, auth_services_1.AuthService])
     ], UserInfoComponent);
     return UserInfoComponent;
 }());

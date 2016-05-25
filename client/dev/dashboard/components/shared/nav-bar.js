@@ -9,10 +9,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('angular2/core');
+var auth_services_1 = require('../../services/auth-services');
+var router_1 = require("angular2/router");
 var NavbarComponent = (function () {
-    function NavbarComponent() {
-        this.name = "yo, I'm your component :D";
+    function NavbarComponent(_auth, router) {
+        this._auth = _auth;
+        this.router = router;
     }
+    NavbarComponent.prototype.logout = function () {
+        var _this = this;
+        this._auth.logout().subscribe(function (status) {
+            if (status.login == false) {
+                _this._auth.logoutClient();
+            }
+        });
+        this.router.navigate(['Home']);
+    };
     NavbarComponent = __decorate([
         core_1.Component({
             selector: 'nav-bar',
@@ -22,7 +34,7 @@ var NavbarComponent = (function () {
                 'client/dev/dashboard/styles/bootstrap.min.css'
             ]
         }), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [auth_services_1.AuthService, router_1.Router])
     ], NavbarComponent);
     return NavbarComponent;
 }());

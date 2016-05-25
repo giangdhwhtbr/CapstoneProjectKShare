@@ -31,7 +31,7 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'kshare-app',
-            template: "\n    <router-outlet></router-outlet>\n  ",
+            template: '<router-outlet></router-outlet>',
             directives: [router_1.ROUTER_DIRECTIVES],
             providers: [
                 auth_services_1.AuthService,

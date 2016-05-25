@@ -26,20 +26,17 @@ const userSchema = new mongoose.Schema({
   firstName: {
     type: String,
     trim: true,
-    default: '',
-    required: [true, 'Please fill in your first name']
+    default: ''
   },
   lastName: {
     type: String,
     trim: true,
-    default: '',
-    required: [true, 'Please fill in your last name']
+    default: ''
   },
   displayName: {
     type: String,
     trim: true,
-    default: '',
-    required: [true, 'Please fill in your display name']
+    default: ''
   },
   username: {
     type: String,

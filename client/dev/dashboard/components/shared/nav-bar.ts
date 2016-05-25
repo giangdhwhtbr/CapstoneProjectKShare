@@ -2,7 +2,8 @@ import {
   Component,
   Inject
 } from 'angular2/core';
-
+import  { AuthService} from '../../services/auth-services';
+import {Router} from "angular2/router";
 @Component({
   selector: 'nav-bar',
   templateUrl: 'client/dev/dashboard/templates/shared/nav-bar.html',
@@ -12,5 +13,15 @@ import {
   ]
 })
 export class NavbarComponent {
-  name: string = `yo, I'm your component :D`;
+  constructor(private _auth: AuthService, private router: Router){
+
+  }
+  logout(): void {
+    this._auth.logout().subscribe((status)=>{
+      if(status.login == false){
+        this._auth.logoutClient()
+      }
+    });
+    this.router.navigate(['Home']);
+  }
 }

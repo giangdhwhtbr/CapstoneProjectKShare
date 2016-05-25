@@ -13,14 +13,22 @@ var router_1 = require('angular2/router');
 var nav_bar_1 = require('../shared/nav-bar');
 var sidebar_1 = require('../shared/sidebar');
 var users_services_1 = require('../../services/users-services');
+var auth_services_1 = require('../../services/auth-services');
 var user_create_1 = require('./user-create');
+var router_2 = require("angular2/router");
 var UserListComponent = (function () {
-    function UserListComponent(_userService) {
+    function UserListComponent(_userService, _auth, router) {
         this._userService = _userService;
+        this._auth = _auth;
+        this.router = router;
         this.pageTitle = 'user';
     }
     UserListComponent.prototype.ngOnInit = function () {
         var _this = this;
+        //Check login -- @@ fucking "ngu dan" way
+        if (!this._auth.dashboardFilter()) {
+            this.router.navigate(['Home']);
+        }
         this._userService.getAllUsers().subscribe(function (users) {
             var formatDate = function (date) {
                 if (date) {
@@ -57,7 +65,7 @@ var UserListComponent = (function () {
                 router_1.ROUTER_DIRECTIVES
             ]
         }), 
-        __metadata('design:paramtypes', [users_services_1.UserService])
+        __metadata('design:paramtypes', [users_services_1.UserService, auth_services_1.AuthService, router_2.Router])
     ], UserListComponent);
     return UserListComponent;
 }());

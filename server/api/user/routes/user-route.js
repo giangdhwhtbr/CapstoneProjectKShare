@@ -11,7 +11,7 @@ module.exports = class userRoutes {
     router
       .route('/api/user')
       .get(userPolicies.isAllowed,userController.getAll)
-      .post(userPolicies.isAllowed,userController.createNew);
+      .post(userController.createNew);
 
     router
       .route('/api/user/:id')

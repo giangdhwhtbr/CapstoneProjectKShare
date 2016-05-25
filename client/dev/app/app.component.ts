@@ -14,12 +14,11 @@ import { UserInfoComponent } from '../dashboard/components/users/user-info';
 import { AuthService } from '../dashboard/services/auth-services';
 import { UserService } from '../dashboard/services/users-services';
 import { HomeComponent } from '../kshare/components/home/home';
+import { LoggedInRouterOutlet } from './LoginOutletRouter'
 
 @Component({
   selector: 'kshare-app',
-  template: `
-    <router-outlet></router-outlet>
-  `,
+  template:'<router-outlet></router-outlet>',
   directives: [ROUTER_DIRECTIVES],
   providers: [
     AuthService,
