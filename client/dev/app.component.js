@@ -20,8 +20,13 @@ var router_1 = require('angular2/router');
  */
 var users_1 = require('../dev/dashboard/components/users');
 var users_services_1 = require('../dev/dashboard/services/users-services');
+var requests_1 = require('../dev/dashboard/components/request/requests');
+var requests_service_1 = require('../dev/dashboard/services/requests-service');
+var offers_service_1 = require('../dev/dashboard/services/offers-service');
+var request_update_1 = require('../dev/dashboard/components/request/request-update');
 var AppComponent = (function () {
-    function AppComponent() {
+    function AppComponent(router) {
+        this.router = router;
         this.pageTitle = 'Knowledge Sharing Network';
     }
     AppComponent = __decorate([
@@ -31,14 +36,18 @@ var AppComponent = (function () {
             directives: [router_1.ROUTER_DIRECTIVES],
             providers: [
                 users_services_1.UserService,
+                requests_service_1.RequestService,
+                offers_service_1.OfferService,
                 http_1.HTTP_PROVIDERS,
                 router_1.ROUTER_PROVIDERS
             ]
         }),
         router_1.RouteConfig([
-            { path: '/admin/users', name: 'User Management', component: users_1.UsersComponent }
+            { path: '/admin/users', name: 'User Management', component: users_1.UsersComponent },
+            { path: '/admin/requests', name: 'Request Management', component: requests_1.RequestComponent },
+            { path: '/admin/requests/:id', name: 'Request Update', component: request_update_1.UpdateRequestComponent }
         ]), 
-        __metadata('design:paramtypes', [])
+        __metadata('design:paramtypes', [router_1.Router])
     ], AppComponent);
     return AppComponent;
 }());

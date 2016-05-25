@@ -11,13 +11,13 @@ const express = require('express');
 const fs = require('fs');
 const RoutesConfig = require('./config/routes.conf');
 const DBConfig = require('./config/db.conf');
-const userRoutes = require('./routes/users');
+const Routes = require('./routes/index');
 
 const app = express();
 
 RoutesConfig.init(app);
 DBConfig.init();
-userRoutes.init(app, express.Router());
+Routes.init(app, express.Router());
 
 const opts = {
   key: fs.readFileSync(__dirname + '/cert/server.key'),
