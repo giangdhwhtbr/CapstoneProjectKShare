@@ -1,0 +1,51 @@
+/**
+ * Created by GiangDH on 5/19/16.
+ */
+import {
+  Component,
+  Inject
+} from 'angular2/core';
+import {
+  Validators,
+  FormBuilder,
+  ControlGroup,
+  Control,
+  FORM_DIRECTIVES,
+} from 'angular2/common';
+import { Router, RouterLink } from 'angular2/router';
+import { User } from '../../../dashboard/interface/user';
+import { AuthService } from '../../../dashboard/services/auth-services';
+@Component({
+  selector : 'register',
+  templateUrl: 'client/dev/kshare/templates/shared/register.html',
+  styleUrls: ['client/dev/kshare/styles/login.css'],
+  directives: [FORM_DIRECTIVES]
+})
+
+export class RegisterComponent {
+  user: User[] = [];
+  regForm: ControlGroup;
+  userValid:string;
+  passValid:string;
+  emailValid:string;
+  constructor(@Inject(FormBuilder) fb:FormBuilder, @Inject(AuthService) private _authService: AuthService, public router: Router) {
+    this.regForm = fb.group({
+      username: ["",Validators.required],
+      password: ["",Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')],
+      email: ["",Validators.pattern('^(([a-zA-Z]|[0-9])|([-]|[_]|[.]))+[@](([a-zA-Z0-9])|([-])){2,63}[.](([a-zA-Z0-9]){2,63})+$')]
+    })
+  }
+  register(user: any): void {
+    this._authService
+      .register(user)
+      .subscribe(
+        response => {
+          window.location.reload();
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  }
+
+}
