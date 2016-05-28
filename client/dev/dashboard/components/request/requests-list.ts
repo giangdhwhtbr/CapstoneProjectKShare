@@ -1,18 +1,19 @@
 import  { Component,OnInit } from 'angular2/core';
-//import { ROUTER_DIRECTIVES } from 'angular2/router';
+import { ROUTER_DIRECTIVES } from 'angular2/router';
 import  { Request } from '../../interface/request';
 import  { RequestService } from '../../services/requests-service';
-//import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from 'angular2/common';
+import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from 'angular2/common';
 import  { CreateOfferComponent  } from '../../components/offer/offer-create';
 import  { UpdateRequestComponent } from '../../components/request/request-update';
-//import  { OfferService } from '../../services/offers-service';
+import  { OfferService } from '../../services/offers-service';
 
 
 @Component({
   selector: 'request-list',
   templateUrl: 'client/dev/dashboard/templates/request/request-list.html',
   styleUrls: ['client/dev/dashboard/styles/request-list.css'],
-  directives: [CreateOfferComponent, UpdateRequestComponent]
+  directives: [CreateOfferComponent, UpdateRequestComponent],
+  providers: [OfferService]
 })
 
 export class RequestListComponent {
@@ -43,7 +44,7 @@ export class RequestListComponent {
       this.requests = requests;
     });
   }
-  
+
   deleteRequest(request: Request) {
     console.log(request);
     this._requestService
@@ -51,7 +52,7 @@ export class RequestListComponent {
         .subscribe(() => {
           console.log("123");
         })
-   //refresh page 
+   //refresh page
    this._requestService.getAllRequests().subscribe((requests) => {
       var formatDate = function (date){
         if(date) {
@@ -68,9 +69,9 @@ export class RequestListComponent {
       }
       this.requests = requests;
     });
-    
-    
+
+
   }
-  
-  
+
+
 }

@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -9,10 +10,9 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('angular2/core');
 var requests_service_1 = require('../../services/requests-service');
-//import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from 'angular2/common';
 var offer_create_1 = require('../../components/offer/offer-create');
 var request_update_1 = require('../../components/request/request-update');
-//import  { OfferService } from '../../services/offers-service';
+var offers_service_1 = require('../../services/offers-service');
 var RequestListComponent = (function () {
     function RequestListComponent(_requestService) {
         this._requestService = _requestService;
@@ -45,7 +45,7 @@ var RequestListComponent = (function () {
             .subscribe(function () {
             console.log("123");
         });
-        //refresh page 
+        //refresh page
         this._requestService.getAllRequests().subscribe(function (requests) {
             var formatDate = function (date) {
                 if (date) {
@@ -68,11 +68,11 @@ var RequestListComponent = (function () {
             selector: 'request-list',
             templateUrl: 'client/dev/dashboard/templates/request/request-list.html',
             styleUrls: ['client/dev/dashboard/styles/request-list.css'],
-            directives: [offer_create_1.CreateOfferComponent, request_update_1.UpdateRequestComponent]
+            directives: [offer_create_1.CreateOfferComponent, request_update_1.UpdateRequestComponent],
+            providers: [offers_service_1.OfferService]
         }), 
         __metadata('design:paramtypes', [requests_service_1.RequestService])
     ], RequestListComponent);
     return RequestListComponent;
-})();
+}());
 exports.RequestListComponent = RequestListComponent;
-//# sourceMappingURL=requests-list.js.map

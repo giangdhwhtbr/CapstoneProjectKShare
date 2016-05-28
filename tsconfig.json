@@ -9,12 +9,69 @@
         "noImplicitAny": false
     },
     "exclude": [
-	    "node_modules",
-      "typings"
+        "node_modules",
+        "typings"
     ],
     "filesGlob": [
-      "**/*.ts",
-      "typings/main.d.ts",
-      "node_modules/angular2/typings/browser.d.ts"
-    ]
+        "**/*.ts",
+        "typings/main.d.ts",
+        "node_modules/angular2/typings/browser.d.ts"
+    ],
+    "files": [
+        "client/dev/app/app.component.ts",
+        "client/dev/app/headers.ts",
+        "client/dev/app/LoginOutletRouter.ts",
+        "client/dev/dashboard/components/badword/badword-create.ts",
+        "client/dev/dashboard/components/badword/badword-update.ts",
+        "client/dev/dashboard/components/badword/badword.ts",
+        "client/dev/dashboard/components/badword/badwords-list.ts",
+        "client/dev/dashboard/components/knowledge/knowledge-create.ts",
+        "client/dev/dashboard/components/knowledge/knowledge-update.ts",
+        "client/dev/dashboard/components/knowledge/knowledge.ts",
+        "client/dev/dashboard/components/knowledge/knowledges-list.ts",
+        "client/dev/dashboard/components/offer/offer-create.ts",
+        "client/dev/dashboard/components/request/request-create.ts",
+        "client/dev/dashboard/components/request/request-update.ts",
+        "client/dev/dashboard/components/request/requests-list.ts",
+        "client/dev/dashboard/components/request/requests.ts",
+        "client/dev/dashboard/components/shared/nav-bar.ts",
+        "client/dev/dashboard/components/shared/sidebar.ts",
+        "client/dev/dashboard/components/users/user-create.ts",
+        "client/dev/dashboard/components/users/user-info.ts",
+        "client/dev/dashboard/components/users/user-list.ts",
+        "client/dev/dashboard/interface/badword.ts",
+        "client/dev/dashboard/interface/knowledge.ts",
+        "client/dev/dashboard/interface/offer.ts",
+        "client/dev/dashboard/interface/request.ts",
+        "client/dev/dashboard/interface/user.ts",
+        "client/dev/dashboard/services/auth-services.ts",
+        "client/dev/dashboard/services/badwords-service.ts",
+        "client/dev/dashboard/services/knowledge-service.ts",
+        "client/dev/dashboard/services/offers-service.ts",
+        "client/dev/dashboard/services/requests-service.ts",
+        "client/dev/dashboard/services/users-services.ts",
+        "client/dev/index.ts",
+        "client/dev/kshare/components/home/home.ts",
+        "client/dev/kshare/components/shared/footer.ts",
+        "client/dev/kshare/components/shared/header.ts",
+        "client/dev/kshare/components/shared/login.ts",
+        "client/dev/kshare/components/shared/register.ts",
+        "tests/client/dashboard/components/nav-bar_test.ts",
+        "tests/client/dashboard/components/sidebar_test.ts",
+        "tests/client/dashboard/components/user-create_test.ts",
+        "tests/client/dashboard/components/user-info_test.ts",
+        "tests/client/dashboard/components/user-list_test.ts",
+        "tests/client/dashboard/components/users_test.ts"
+    ],
+    "atom": {
+        "rewriteTsconfig": true
+    },
+    "files.exclude": {
+        "**/.git": true,
+        "**/.DS_Store": true,
+        "**/*.js.map": true,
+        "**/*.js": {
+            "when": "$(basename).ts"
+        }
+    }
 }
