@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -21,7 +22,15 @@ var user_list_1 = require('../dashboard/components/users/user-list');
 var user_info_1 = require('../dashboard/components/users/user-info');
 var auth_services_1 = require('../dashboard/services/auth-services');
 var users_services_1 = require('../dashboard/services/users-services');
+var requests_service_1 = require('../dashboard/services/requests-service');
+var knowledge_service_1 = require('../dashboard/services/knowledge-service');
 var home_1 = require('../kshare/components/home/home');
+var request_update_1 = require('../dashboard/components/request/request-update');
+var requests_1 = require('../dashboard/components/request/requests');
+var offers_service_1 = require('../dashboard/services/offers-service');
+var request_list_cli_1 = require('../kshare/components/request/request-list-cli');
+var request_detail_cli_1 = require('../kshare/components/request/request-detail-cli');
+var request_update_cli_1 = require('../kshare/components/request/request-update-cli');
 var AppComponent = (function () {
     function AppComponent(router) {
         this.router = router;
@@ -36,17 +45,24 @@ var AppComponent = (function () {
                 auth_services_1.AuthService,
                 users_services_1.UserService,
                 http_1.HTTP_PROVIDERS,
-                router_1.ROUTER_PROVIDERS
+                router_1.ROUTER_PROVIDERS,
+                requests_service_1.RequestService,
+                offers_service_1.OfferService,
+                knowledge_service_1.KnowledgeService
             ]
         }),
         router_1.RouteConfig([
             { path: '/', name: 'Home', component: home_1.HomeComponent },
             { path: '/admin/users', name: 'Userslist', component: user_list_1.UserListComponent },
-            { path: '/admin/users/:id', name: 'UpdateUser', component: user_info_1.UserInfoComponent }
+            { path: '/admin/users/:id', name: 'UpdateUser', component: user_info_1.UserInfoComponent },
+            { path: '/admin/requests', name: 'Request Management', component: requests_1.RequestComponent },
+            { path: '/admin/requests/:id', name: 'Request Update', component: request_update_1.UpdateRequestComponent },
+            { path: '/requests', name: 'Request List', component: request_list_cli_1.RequestListClientComponent },
+            { path: '/requests/:id', name: 'Request Detail ', component: request_detail_cli_1.RequestDetailClientComponent },
+            { path: '/requests/update/:id', name: 'Request Update ', component: request_update_cli_1.RequestUpdateClientComponent }
         ]), 
         __metadata('design:paramtypes', [router_1.Router])
     ], AppComponent);
     return AppComponent;
-})();
+}());
 exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map

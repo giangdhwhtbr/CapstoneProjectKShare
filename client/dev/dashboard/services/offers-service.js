@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -30,6 +31,11 @@ var OfferService = (function () {
             .post(this._Url.replace(':id', ''), _offer, options)
             .map(function (r) { return r.json(); });
     };
+    OfferService.prototype.getOfferByRequestId = function (id) {
+        return this._http.post(this._Url.replace(':id', id), '')
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
     OfferService.prototype.handleError = function (error) {
         console.error(error);
         return Observable_1.Observable.throw(error.json().error || 'Server error');
@@ -39,6 +45,5 @@ var OfferService = (function () {
         __metadata('design:paramtypes', [http_1.Http])
     ], OfferService);
     return OfferService;
-})();
+}());
 exports.OfferService = OfferService;
-//# sourceMappingURL=offers-service.js.map

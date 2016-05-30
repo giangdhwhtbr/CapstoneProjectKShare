@@ -34,12 +34,16 @@ export  class RequestService {
   }
 
   deleteRequest(request: Request):Observable<any> {
-    // let _request = JSON.stringify({
-    //   _id : request._id
-    // });
-    
+  
     return this._http
               .delete(this._requestsUrl.replace(':id',request._id))
+              .map((r) => r.json());
+  }
+  
+  deleteRequestById(id: string):Observable<any> {
+    
+    return this._http
+              .delete(this._requestsUrl.replace(':id',id))
               .map((r) => r.json());
   }
   

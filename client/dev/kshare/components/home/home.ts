@@ -3,7 +3,7 @@
  */
 import { Component,OnInit } from 'angular2/core';
 import { ROUTER_DIRECTIVES } from 'angular2/router';
-
+import { SideBarComponent} from '../shared/sidebar'
 import { HeaderComponent } from '../shared/header';
 import { FooterComponent } from '../shared/footer';
 import { LoginComponent } from '../shared/login';
@@ -17,6 +17,7 @@ import { RegisterComponent } from '../shared/register';
     FooterComponent,
     LoginComponent,
     RegisterComponent,
+    SideBarComponent,
     ROUTER_DIRECTIVES
   ]
 })

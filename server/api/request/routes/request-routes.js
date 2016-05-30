@@ -14,5 +14,7 @@ module.exports = class RequestRoutes {
         .delete(RequestController.deleteRequest)
         .put(RequestController.updateRequest)
         .get(RequestController.getRequestById);
+     
     }
+    
 }

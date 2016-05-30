@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -19,8 +20,6 @@ var UpdateRequestComponent = (function () {
         this._requestService = _requestService;
         this.router = router;
         this.id = rParam.get('id');
-        // this.title = rParam.get('title');
-        // this.description = rParam.get('description');
         this.updateRequestForm = fb.group({
             "_id": [""],
             "title": [""],
@@ -39,9 +38,7 @@ var UpdateRequestComponent = (function () {
             console.log(error.text());
         });
     };
-    //RequestService requestServiceObject = new RequestService();
     UpdateRequestComponent.prototype.updateRequest = function (request) {
-        //console.log(request);
         this._requestService.updateRequest(request).subscribe(function (request) {
             console.log('update successed');
         }, function (error) {
@@ -51,9 +48,9 @@ var UpdateRequestComponent = (function () {
     };
     UpdateRequestComponent = __decorate([
         core_1.Component({
-            selector: 'request-update',
-            templateUrl: 'client/dev/dashboard/templates/request/request-update.html',
-            styleUrls: ['client/dev/dashboard/styles/request-update.css'],
+            selector: 'request-update-cli',
+            templateUrl: 'client/dev/kshare/templates/request-cli/request-update-cli.html',
+            styleUrls: [],
             directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
@@ -61,6 +58,5 @@ var UpdateRequestComponent = (function () {
         __metadata('design:paramtypes', [common_1.FormBuilder, requests_service_1.RequestService, router_1.Router, router_1.RouteParams])
     ], UpdateRequestComponent);
     return UpdateRequestComponent;
-})();
+}());
 exports.UpdateRequestComponent = UpdateRequestComponent;
-//# sourceMappingURL=request-update.js.map

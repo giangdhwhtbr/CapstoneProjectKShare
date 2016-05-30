@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -38,11 +39,13 @@ var RequestService = (function () {
             .catch(this.handleError);
     };
     RequestService.prototype.deleteRequest = function (request) {
-        // let _request = JSON.stringify({
-        //   _id : request._id
-        // });
         return this._http
             .delete(this._requestsUrl.replace(':id', request._id))
+            .map(function (r) { return r.json(); });
+    };
+    RequestService.prototype.deleteRequestById = function (id) {
+        return this._http
+            .delete(this._requestsUrl.replace(':id', id))
             .map(function (r) { return r.json(); });
     };
     RequestService.prototype.updateRequest = function (request) {
@@ -69,6 +72,5 @@ var RequestService = (function () {
         __metadata('design:paramtypes', [http_1.Http])
     ], RequestService);
     return RequestService;
-})();
+}());
 exports.RequestService = RequestService;
-//# sourceMappingURL=requests-service.js.map

@@ -24,7 +24,12 @@ export  class OfferService {
               .post(this._Url.replace(':id',''),_offer,options)
               .map((r) => r.json());
   }
-
+  
+  getOfferByRequestId(id: string):Observable<any>{
+    return this._http.post(this._Url.replace(':id',id),'')
+      .map((r) => r.json())
+      .catch(this.handleError);
+  }
   
   private handleError(error: Response) {
     console.error(error);
