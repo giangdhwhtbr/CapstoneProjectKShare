@@ -10,8 +10,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('angular2/core');
 var router_1 = require('angular2/router');
-var nav_bar_1 = require('../../components/nav-bar');
-var sidebar_1 = require('../../components/sidebar');
+var nav_bar_1 = require('../../components/shared/nav-bar');
+var sidebar_1 = require('../../components/shared/sidebar');
 var requests_list_1 = require('../../components/request/requests-list');
 var request_create_1 = require('../../components/request/request-create');
 var request_update_1 = require('../../components/request/request-update');

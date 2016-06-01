@@ -23,6 +23,14 @@ var user_info_1 = require('../dashboard/components/users/user-info');
 var auth_services_1 = require('../dashboard/services/auth-services');
 var users_services_1 = require('../dashboard/services/users-services');
 var home_1 = require('../kshare/components/home/home');
+var badwords_service_1 = require('../dashboard/services/badwords-service');
+var badword_1 = require('../dashboard/components/badword/badword');
+var badword_update_1 = require('../dashboard/components/badword/badword-update');
+var requests_service_1 = require('../dashboard/services/requests-service');
+var requests_1 = require('../dashboard/components/request/requests');
+var request_update_1 = require('../dashboard/components/request/request-update');
+var knowledge_1 = require('../dashboard/components/knowledge/knowledge');
+var knowledge_update_1 = require('../dashboard/components/knowledge/knowledge-update');
 var AppComponent = (function () {
     function AppComponent(router) {
         this.router = router;
@@ -37,13 +45,21 @@ var AppComponent = (function () {
                 auth_services_1.AuthService,
                 users_services_1.UserService,
                 http_1.HTTP_PROVIDERS,
-                router_1.ROUTER_PROVIDERS
+                router_1.ROUTER_PROVIDERS,
+                badwords_service_1.BadwordService,
+                requests_service_1.RequestService,
             ]
         }),
         router_1.RouteConfig([
             { path: '/', name: 'Home', component: home_1.HomeComponent },
             { path: '/admin/users', name: 'Userslist', component: user_list_1.UserListComponent },
-            { path: '/admin/users/:id', name: 'UpdateUser', component: user_info_1.UserInfoComponent }
+            { path: '/admin/users/:id', name: 'UpdateUser', component: user_info_1.UserInfoComponent },
+            { path: '/admin/badwords', name: 'Badword Management', component: badword_1.BadwordComponent },
+            { path: '/admin/badwords/:id', name: 'Badword Update', component: badword_update_1.UpdateBadwordComponent },
+            { path: '/admin/requests', name: 'Request Management', component: requests_1.RequestComponent },
+            { path: '/admin/requests/:id', name: 'Request Update', component: request_update_1.UpdateRequestComponent },
+            { path: '/admin/knowledges', name: 'Knowledge Management', component: knowledge_1.KnowledgeComponent },
+            { path: '/admin/knowledges/:id', name: 'Knowledge Update', component: knowledge_update_1.UpdateKnowledgeComponent },
         ]), 
         __metadata('design:paramtypes', [router_1.Router])
     ], AppComponent);
