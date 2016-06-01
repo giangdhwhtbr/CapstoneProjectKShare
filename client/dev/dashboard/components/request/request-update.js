@@ -45,7 +45,7 @@ var UpdateRequestComponent = (function () {
         });
     };
     UpdateRequestComponent.prototype.updateRequest = function (request) {
-        //console.log(request);
+        console.log(request);
         this._requestService.updateRequest(request).subscribe(function (request) {
             console.log('update successed');
         }, function (error) {

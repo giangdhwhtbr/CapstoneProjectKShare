@@ -6,13 +6,28 @@ import  { RequestService } from '../../services/requests-service';
 import  { CreateOfferComponent  } from '../../components/offer/offer-create';
 import  { UpdateRequestComponent } from '../../components/request/request-update';
 //import  { OfferService } from '../../services/offers-service';
+import { ROUTER_DIRECTIVES } from 'angular2/router';
+
+import  { AuthService} from '../../services/auth-services';
+import  { NavbarComponent } from '../../components/shared/nav-bar';
+import  { SidebarComponent }  from '../../components/shared/sidebar';
+import  { CreateRequestComponent } from '../../components/request/request-create';
+import  { OfferService } from '../../services/offers-service';
 
 
 @Component({
   selector: 'request-list',
   templateUrl: 'client/dev/dashboard/templates/request/request-list.html',
   styleUrls: ['client/dev/dashboard/styles/request-list.css'],
-  directives: [CreateOfferComponent, UpdateRequestComponent]
+  directives: 
+            [   CreateOfferComponent, 
+                UpdateRequestComponent,
+                CreateRequestComponent,
+                NavbarComponent,
+                SidebarComponent,
+                CreateOfferComponent,
+                ROUTER_DIRECTIVES
+             ]
 })
 
 export class RequestListComponent {

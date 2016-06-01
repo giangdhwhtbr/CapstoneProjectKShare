@@ -22,7 +22,7 @@ var user_list_1 = require('../dashboard/components/users/user-list');
 var user_info_1 = require('../dashboard/components/users/user-info');
 var home_1 = require('../kshare/components/home/home');
 var request_update_1 = require('../dashboard/components/request/request-update');
-var requests_1 = require('../dashboard/components/request/requests');
+var requests_list_1 = require('../dashboard/components/request/requests-list');
 var request_list_cli_1 = require('../kshare/components/request/request-list-cli');
 var request_detail_cli_1 = require('../kshare/components/request/request-detail-cli');
 var request_update_cli_1 = require('../kshare/components/request/request-update-cli');
@@ -58,7 +58,7 @@ var AppComponent = (function () {
             { path: '/', name: 'Home', component: home_1.HomeComponent },
             { path: '/admin/users', name: 'Userslist', component: user_list_1.UserListComponent },
             { path: '/admin/users/:id', name: 'UpdateUser', component: user_info_1.UserInfoComponent },
-            { path: '/admin/requests', name: 'Request Management', component: requests_1.RequestComponent },
+            { path: '/admin/requests', name: 'Request Management', component: requests_list_1.RequestListComponent },
             { path: '/admin/requests/:id', name: 'Request Update', component: request_update_1.UpdateRequestComponent },
             { path: '/requests', name: 'Request List', component: request_list_cli_1.RequestListClientComponent },
             { path: '/requests/:id', name: 'Request Detail ', component: request_detail_cli_1.RequestDetailClientComponent },

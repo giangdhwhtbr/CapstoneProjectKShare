@@ -14,7 +14,7 @@ import { UserInfoComponent } from '../dashboard/components/users/user-info';
 import { HomeComponent } from '../kshare/components/home/home';
 import { LoggedInRouterOutlet } from './LoginOutletRouter';
 import { UpdateRequestComponent } from '../dashboard/components/request/request-update';
-import { RequestComponent } from '../dashboard/components/request/requests';
+import { RequestListComponent } from '../dashboard/components/request/requests-list';
 import { RequestListClientComponent } from '../kshare/components/request/request-list-cli';
 import { RequestDetailClientComponent } from '../kshare/components/request/request-detail-cli';
 import { RequestUpdateClientComponent } from '../kshare/components/request/request-update-cli';
@@ -47,7 +47,7 @@ import { OfferService } from '../dashboard/services/offers-service';
   { path: '/', name:'Home', component:HomeComponent },
   { path: '/admin/users', name: 'Userslist', component: UserListComponent },
   { path: '/admin/users/:id', name:'UpdateUser', component: UserInfoComponent},
-  { path: '/admin/requests', name: 'Request Management', component: RequestComponent },
+  { path: '/admin/requests', name: 'Request Management', component: RequestListComponent },
   { path: '/admin/requests/:id', name: 'Request Update', component: UpdateRequestComponent},
   { path: '/requests', name: 'Request List', component: RequestListClientComponent},
   { path: '/requests/:id', name: 'Request Detail ', component: RequestDetailClientComponent},
