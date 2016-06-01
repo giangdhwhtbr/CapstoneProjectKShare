@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export  class RequestService {
   private _requestsUrl = '/api/requests/:id';
+  private _knowledgesUrl = '/api/knowledges/:id';
   constructor(private _http: Http) { }
 
   getAllRequests(): Observable<Request[]> {

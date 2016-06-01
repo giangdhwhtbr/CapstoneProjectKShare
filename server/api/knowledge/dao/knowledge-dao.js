@@ -62,11 +62,26 @@ knowledgeSchema.statics.deleteKnowledge = (id) => {
 knowledgeSchema.statics.updateKnowledge = (knowledge) => {
     return new Promise((resolve, reject) => {
 
-        knowledge.save((err, saved) => {
+        Knowledge.save((err, saved) => {
               err ? reject(err)
                   : resolve(saved);
           });
     });
+}
+
+knowledgeSchema.statics.getKnowledgeById = (id) => {
+
+  return new Promise((resolve, reject) => {
+    if(!_.isString(id)){
+      return reject(new TypeError('ID is not a String.'));
+    }
+    Knowledge
+      .findById(id)
+      .exec((err, knowledge) => {
+        err ? reject(err)
+          : resolve(knowledge);
+      });
+  });
 }
 
 const Knowledge  = mongoose.model('Knowledge', knowledgeSchema);

@@ -19,7 +19,7 @@ export class CreateRequestComponent {
     this.requestForm = fb.group({
       "knowledgeId": [""],
       "title": [""],
-      "description": [""]
+      "description": [""],
     });
   }
   

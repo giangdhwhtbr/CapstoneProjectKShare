@@ -33,7 +33,6 @@ export class KnowledgeService {
   deleteKnowledge(id: string): Observable<any> {
     return this._http
       .delete(this._knowledgesUrl.replace(':id', id));
-
   }
 
   findKnowledgeById(id: string): Observable<any> {
