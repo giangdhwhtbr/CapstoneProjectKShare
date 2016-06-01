@@ -22,6 +22,10 @@ import { RequestComponent } from '../dashboard/components/request/requests';
 import { UpdateRequestComponent } from '../dashboard/components/request/request-update';
 import { KnowledgeComponent } from '../dashboard/components/knowledge/knowledge';
 import { UpdateKnowledgeComponent } from '../dashboard/components/knowledge/knowledge-update';
+import { RequestListClientComponent } from '../kshare/components/request/request-list-cli';
+import { RequestDetailClientComponent } from '../kshare/components/request/request-detail-cli';
+import { RequestUpdateClientComponent } from '../kshare/components/request/request-update-cli';
+import { OfferService } from '../dashboard/services/offers-service';
 
 /**
  * Service

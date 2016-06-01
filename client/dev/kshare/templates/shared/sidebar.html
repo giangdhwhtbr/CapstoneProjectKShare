@@ -6,22 +6,25 @@
         <ul>
           <li *ngFor="let knowledge of knowledges" class='has-sub'><a href='#'><span>{{knowledge.name}}</span></a>
             <ul *ngIf="knowledge.subCategory.length > 0">
-              <li *ngFor="let subCate of knowledge.subCategory"><a href='#'><span>{{subCate.name}}</span></a></li>
+              <ul>
+                <li *ngFor="let subCate of knowledge.subCategory"><a href='#'><span>{{subCate.name}}</span></a></li>
+              </ul>
+              </li>
+              <!--<li class='has-sub'><a href='#'><span>cat 2</span></a>
+                <ul>
+                  <li><a href='#'><span>Sub cat</span></a></li>
+                  <li class='last'><a href='#'><span>Sub cat</span></a></li>
+                </ul>
+              </li>-->
             </ul>
           </li>
-          <!--<li class='has-sub'><a href='#'><span>cat 2</span></a>
+          <li><a href='#'><span><i class="fa fa-archive fa-2x" aria-hidden="true"></i></span></a></li>
+          <li class='last has-sub'><a href='#'><span><i class="fa fa-search fa-2x" aria-hidden="true"></i></span></a>
             <ul>
-              <li><a href='#'><span>Sub cat</span></a></li>
               <li class='last'><a href='#'><span>Sub cat</span></a></li>
             </ul>
-          </li>-->
+          </li>
         </ul>
-      </li>
-      <li><a href='#'><span><i class="fa fa-archive fa-2x" aria-hidden="true"></i></span></a></li>
-      <li class='last has-sub'><a href='#'><span><i class="fa fa-search fa-2x" aria-hidden="true"></i></span></a>
-        <ul>
-          <li class='last'><a href='#'><span>Sub cat</span></a></li>
-        </ul>
-      </li>
     </ul>
   </div>
+</div>

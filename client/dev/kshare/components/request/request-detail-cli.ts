@@ -3,14 +3,13 @@ import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig, RouteParams} 
 
 import { Request } from '../../../dashboard/interface/request';
 import { Offer } from '../../../dashboard/interface/offer';
-
 import { RequestService } from '../../../dashboard/services/requests-service';
 import { OfferService } from '../../../dashboard/services/offers-service';
-
 import { HeaderComponent } from '../shared/header';
 import { FooterComponent } from '../shared/footer';
 import { SideBarComponent } from '../shared/sidebar';
 import { FriendListComponent} from '../shared/friend-list';
+
 import { CreateOfferComponent } from '../../../dashboard/components/offer/offer-create';
 
 @Component({
@@ -42,7 +41,6 @@ export class RequestDetailClientComponent {
   status: string;
   createdAt: string;
   knowledgeId: string;
-  
   offers: Offer[];
 
   ngOnInit(): void {
@@ -58,7 +56,6 @@ export class RequestDetailClientComponent {
             return newDate = day + '/' + month + '/' + year;
           }
         }
-        
         this.knowledgeId = request.knowledgeId;
         this.request = request;
         this.title = request.title;
@@ -107,5 +104,4 @@ export class RequestDetailClientComponent {
       })
     window.location.href = '/requests';
   }
-
 }
