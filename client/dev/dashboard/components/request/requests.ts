@@ -1,6 +1,7 @@
 import { Component,OnInit } from 'angular2/core';
 import { ROUTER_DIRECTIVES } from 'angular2/router';
 
+import  { AuthService} from '../../services/auth-services';
 import  { NavbarComponent } from '../../components/shared/nav-bar';
 import  { SidebarComponent }  from '../../components/shared/sidebar';
 import  { RequestListComponent } from '../../components/request/requests-list';
@@ -20,7 +21,8 @@ import  { CreateOfferComponent } from '../../components/offer/offer-create';
               NavbarComponent,
               SidebarComponent,
               CreateOfferComponent,
-              ROUTER_DIRECTIVES]
+              ROUTER_DIRECTIVES
+              ]
 })
 export class RequestComponent {
 

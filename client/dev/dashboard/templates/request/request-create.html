@@ -21,6 +21,16 @@
                         [ngFormControl]="requestForm.controls['description']"></textarea>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="knowledge">Lĩnh vực</label>
+              <select class="form-control" id="knowledge" [ngFormControl]="requestForm.controls['knowledgeId']" [ngModel]="knowledgeId" >
+                <optgroup *ngFor="let k of knowledges" label="{{k.name}}">
+                  <option *ngFor="let sub of k.subCategory" value={{sub._id}}>{{sub.name}}</option>
+                </optgroup>
+              </select>
+            </div>
+          </div>
           <br>
           <div class="row">
             <div class="col-md-12">

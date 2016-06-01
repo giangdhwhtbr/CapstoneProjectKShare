@@ -33,6 +33,23 @@ offerSchema.statics.getOfferById = (id) => {
   });
 }
 
+offerSchema.statics.getOfferByRequestId = (id) => {
+
+  return new Promise((resolve, reject) => {
+    if(!_.isString(id)){
+      return reject(new TypeError('ID is not a String.'));
+    }
+    Offer
+      .find({
+        'requestId': id
+      })
+      .exec((err, offer) => {
+        err ? reject(err)
+          : resolve(offer);
+      });
+  });
+}
+
 offerSchema.statics.createOffer = (offer) => {
     return new Promise((resolve, reject) => {
       if (!_.isObject(offer))

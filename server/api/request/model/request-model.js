@@ -8,7 +8,9 @@ const _requestSchema = {
     createdAt: { type: Date, default: Date.now },
     description: { type: String, required: true, trim: true },
     status: { type: String, default: 'pending' },
-    modifiedDate: { type: Date }
+    modifiedDate: { type: Date },
+    knowledgeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Knowledge',required: true }
 }
+
 
 module.exports = mongoose.Schema(_requestSchema);

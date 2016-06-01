@@ -1,7 +1,8 @@
-import { Component,Inject } from 'angular2/core';
-
+import { Component,Inject, OnInit } from 'angular2/core';
+import { KnowledgeService } from '../../services/knowledge-service';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from 'angular2/common';
 import { RequestService} from '../../services/requests-service';
+import { Knowledge } from '../../interface/knowledge';
 
 @Component({
   selector: 'request-create',
@@ -11,15 +12,26 @@ import { RequestService} from '../../services/requests-service';
 })
 export class CreateRequestComponent {
   requestForm: ControlGroup;
-
-  constructor(fb: FormBuilder, private _requestService: RequestService) {
+  
+  knowledges: Knowledge[];
+  
+  constructor(fb: FormBuilder, private _requestService: RequestService, private _knowledgeService: KnowledgeService) {
     this.requestForm = fb.group({
+      "knowledgeId": [""],
       "title": [""],
       "description": [""]
     });
   }
-  //RequestService requestServiceObject = new RequestService();
+  
+  ngOnInit(): void {
+    this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
+      this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
+    });
+    
+  }
+  
   addRequest(request) {
+    console.log(request);
     this._requestService.addRequest(request).subscribe((request)=> {
       console.log('success');
     },
@@ -27,6 +39,7 @@ export class CreateRequestComponent {
       console.log(error.text());
     }
     );
+    console.log(request);
     window.location.reload();
   }
   

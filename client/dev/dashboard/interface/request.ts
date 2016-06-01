@@ -7,4 +7,5 @@ export interface Request {
   description: string;
   status: string;
   modifiedDate: string;
+  knowledgeId: string;
 }

@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13,6 +12,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('angular2/core');
 var router_1 = require('angular2/router');
+var sidebar_1 = require('../shared/sidebar');
 var header_1 = require('../shared/header');
 var footer_1 = require('../shared/footer');
 var login_1 = require('../shared/login');
@@ -21,6 +21,9 @@ var HomeComponent = (function () {
     function HomeComponent() {
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
     }
+    HomeComponent.prototype.ngOinit = function () {
+        console.log("what the fuck");
+    };
     HomeComponent = __decorate([
         core_1.Component({
             selector: 'home',
@@ -31,11 +34,13 @@ var HomeComponent = (function () {
                 footer_1.FooterComponent,
                 login_1.LoginComponent,
                 register_1.RegisterComponent,
+                sidebar_1.SideBarComponent,
                 router_1.ROUTER_DIRECTIVES
             ]
         }), 
         __metadata('design:paramtypes', [])
     ], HomeComponent);
     return HomeComponent;
-}());
+})();
 exports.HomeComponent = HomeComponent;
+//# sourceMappingURL=home.js.map

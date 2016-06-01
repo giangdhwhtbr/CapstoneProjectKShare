@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -12,26 +11,30 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 var core_1 = require('angular2/core');
-var common_1 = require('angular2/common');
-var requests_service_1 = require('../../services/requests-service');
+var requests_service_1 = require('../../../dashboard/services/requests-service');
+var knowledge_service_1 = require('../../../dashboard/services/knowledge-service');
 var router_1 = require('angular2/router');
+var common_1 = require('angular2/common');
 var UpdateRequestComponent = (function () {
-    function UpdateRequestComponent(fb, _requestService, router, rParam) {
+    function UpdateRequestComponent(fb, _requestService, router, rParam, _knowledgeService) {
         this._requestService = _requestService;
         this.router = router;
+        this._knowledgeService = _knowledgeService;
         this.id = rParam.get('id');
-        // this.title = rParam.get('title');
-        // this.description = rParam.get('description');
-        this.updateRequestForm = fb.group({
+        this.updateRequestFormCli = fb.group({
             "_id": [""],
             "title": [""],
-            "description": [""]
+            "description": [""],
+            "knowledgeId": [""]
         });
     }
     UpdateRequestComponent.prototype.ngOnInit = function () {
         var _this = this;
+        //get all knowledge 
+        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+        });
         this._requestService.getRequestById(this.id).subscribe(function (request) {
-            console.log(request);
             _this.request = request;
             _this.title = request.title;
             _this.description = request.description;
@@ -40,7 +43,6 @@ var UpdateRequestComponent = (function () {
             console.log(error.text());
         });
     };
-    //RequestService requestServiceObject = new RequestService();
     UpdateRequestComponent.prototype.updateRequest = function (request) {
         //console.log(request);
         this._requestService.updateRequest(request).subscribe(function (request) {
@@ -52,15 +54,17 @@ var UpdateRequestComponent = (function () {
     };
     UpdateRequestComponent = __decorate([
         core_1.Component({
-            selector: 'request-update',
+            selector: 'request-update-cli',
             templateUrl: 'client/dev/dashboard/templates/request/request-update.html',
-            styleUrls: ['client/dev/dashboard/styles/request-update.css'],
+            styleUrls: [],
             directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
-        __param(1, core_1.Inject(requests_service_1.RequestService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, requests_service_1.RequestService, router_1.Router, router_1.RouteParams])
+        __param(1, core_1.Inject(requests_service_1.RequestService)),
+        __param(4, core_1.Inject(knowledge_service_1.KnowledgeService)), 
+        __metadata('design:paramtypes', [common_1.FormBuilder, requests_service_1.RequestService, router_1.Router, router_1.RouteParams, knowledge_service_1.KnowledgeService])
     ], UpdateRequestComponent);
     return UpdateRequestComponent;
-}());
+})();
 exports.UpdateRequestComponent = UpdateRequestComponent;
+//# sourceMappingURL=request-update.js.map

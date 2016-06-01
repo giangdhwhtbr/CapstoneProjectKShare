@@ -28,7 +28,7 @@ static updateRequest(req, res){
             request.userId = req.params.id,
             request.title  = req.body.title,
             request.description = req.body.description,
-            //request.status = req.body.status,
+            request.knowledgeId = req.body.knowledgeId,
             request.modifiedDate = currentDate;
            
             // res.status(200).json(request);

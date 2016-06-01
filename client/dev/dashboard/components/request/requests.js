@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -29,10 +28,12 @@ var RequestComponent = (function () {
                 nav_bar_1.NavbarComponent,
                 sidebar_1.SidebarComponent,
                 offer_create_1.CreateOfferComponent,
-                router_1.ROUTER_DIRECTIVES]
+                router_1.ROUTER_DIRECTIVES
+            ]
         }), 
         __metadata('design:paramtypes', [])
     ], RequestComponent);
     return RequestComponent;
-}());
+})();
 exports.RequestComponent = RequestComponent;
+//# sourceMappingURL=requests.js.map

@@ -9,21 +9,29 @@ import { ROUTER_PROVIDERS, RouteConfig, ROUTER_DIRECTIVES,RouterLink, Router } f
 /**
  * Components
  */
-import { UserListComponent } from '../dashboard/components/users/user-list';
-import { UserInfoComponent } from '../dashboard/components/users/user-info';
-import { AuthService } from '../dashboard/services/auth-services';
-import { UserService } from '../dashboard/services/users-services';
 import { HomeComponent } from '../kshare/components/home/home';
 import { LoggedInRouterOutlet } from './LoginOutletRouter';
-import { BadwordService } from '../dashboard/services/badwords-service';
+import { UserListComponent } from '../dashboard/components/users/user-list';
+import { UserInfoComponent } from '../dashboard/components/users/user-info';
 import { BadwordComponent } from '../dashboard/components/badword/badword';
 import { UpdateBadwordComponent } from '../dashboard/components/badword/badword-update';
-import { RequestService } from '../dashboard/services/requests-service';
+import { RequestListClientComponent } from '../kshare/components/request/request-list-cli';
+import { RequestDetailClientComponent } from '../kshare/components/request/request-detail-cli';
+import { RequestUpdateClientComponent } from '../kshare/components/request/request-update-cli';
 import { RequestComponent } from '../dashboard/components/request/requests';
 import { UpdateRequestComponent } from '../dashboard/components/request/request-update';
-import { KnowledgeService } from '../dashboard/services/knowledge-service';
 import { KnowledgeComponent } from '../dashboard/components/knowledge/knowledge';
 import { UpdateKnowledgeComponent } from '../dashboard/components/knowledge/knowledge-update';
+
+/**
+ * Service
+ */
+import { AuthService } from '../dashboard/services/auth-services';
+import { UserService } from '../dashboard/services/users-services';
+import { BadwordService } from '../dashboard/services/badwords-service';
+import { RequestService } from '../dashboard/services/requests-service';
+import { KnowledgeService } from '../dashboard/services/knowledge-service';
+import { OfferService } from '../dashboard/services/offers-service';
 
 @Component({
   selector: 'kshare-app',
@@ -34,8 +42,9 @@ import { UpdateKnowledgeComponent } from '../dashboard/components/knowledge/know
     UserService,
     HTTP_PROVIDERS,
     ROUTER_PROVIDERS,
-    BadwordService,
     RequestService,
+    OfferService,
+    KnowledgeService
   ]
 })
 
@@ -49,6 +58,9 @@ import { UpdateKnowledgeComponent } from '../dashboard/components/knowledge/know
   { path: '/admin/requests/:id', name: 'Request Update', component: UpdateRequestComponent },
   { path: '/admin/knowledges', name: 'Knowledge Management', component: KnowledgeComponent },
   { path: '/admin/knowledges/:id', name: 'Knowledge Update', component: UpdateKnowledgeComponent },
+  { path: '/requests', name: 'Request List', component: RequestListClientComponent},
+  { path: '/requests/:id', name: 'Request Detail ', component: RequestDetailClientComponent},
+  { path: '/requests/update/:id', name: 'Request Update ', component: RequestUpdateClientComponent}
 ])
 
 
