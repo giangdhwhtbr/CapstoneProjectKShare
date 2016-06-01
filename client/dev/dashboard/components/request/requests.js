@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -22,6 +23,7 @@ var RequestComponent = (function () {
         core_1.Component({
             selector: 'request-mgn',
             templateUrl: 'client/dev/dashboard/templates/request/request.html',
+            styleUrls: ['client/dev/dashboard/styles/styles.css'],
             directives: [request_update_1.UpdateRequestComponent,
                 requests_list_1.RequestListComponent,
                 request_create_1.CreateRequestComponent,
@@ -34,6 +36,5 @@ var RequestComponent = (function () {
         __metadata('design:paramtypes', [])
     ], RequestComponent);
     return RequestComponent;
-})();
+}());
 exports.RequestComponent = RequestComponent;
-//# sourceMappingURL=requests.js.map

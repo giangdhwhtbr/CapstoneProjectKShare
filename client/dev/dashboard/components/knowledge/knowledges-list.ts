@@ -7,7 +7,10 @@ import  { KnowledgeService} from '../../services/knowledge-service';
 @Component({
   selector: 'knowledge-list',
   templateUrl: 'client/dev/dashboard/templates/knowledge/knowledge-list.html',
-  styleUrls: ['client/dev/dashboard/styles/knowledge-list.css']
+  styleUrls: [
+    'client/dev/dashboard/styles/knowledge-list.css',
+    'client/dev/dashboard/styles/styles.css',
+  ]
 })
 
 export class KnowledgeListComponent {

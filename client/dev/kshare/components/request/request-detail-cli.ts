@@ -3,8 +3,11 @@ import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig, RouteParams} 
 
 import { Request } from '../../../dashboard/interface/request';
 import { Offer } from '../../../dashboard/interface/offer';
+import { Knowledge } from '../../../dashboard/interface/knowledge';
 import { RequestService } from '../../../dashboard/services/requests-service';
 import { OfferService } from '../../../dashboard/services/offers-service';
+import { KnowledgeService } from '../../../dashboard/services/knowledge-service';
+
 import { HeaderComponent } from '../shared/header';
 import { FooterComponent } from '../shared/footer';
 import { SideBarComponent } from '../shared/sidebar';
@@ -13,37 +16,42 @@ import { FriendListComponent} from '../shared/friend-list';
 import { CreateOfferComponent } from '../../../dashboard/components/offer/offer-create';
 
 @Component({
-  selector: 'request-detail-cli',
-  templateUrl: 'client/dev/kshare/templates/request-cli/request-detail-cli.html',
-  styleUrls: [],
-  directives: [
-    HeaderComponent,
-    FooterComponent,
-    SideBarComponent,
-    FriendListComponent,
-    ROUTER_DIRECTIVES,
-    CreateOfferComponent]
+    selector: 'request-detail-cli',
+    templateUrl: 'client/dev/kshare/templates/request-cli/request-detail-cli.html',
+    styleUrls: [],
+    directives: [
+        HeaderComponent,
+        FooterComponent,
+        SideBarComponent,
+        FriendListComponent,
+        ROUTER_DIRECTIVES,
+        CreateOfferComponent]
 })
 
 export class RequestDetailClientComponent {
-  pageTitle: string = 'Welcome to Knowledge Sharing Network';
+  pageTitle:string = 'Welcome to Knowledge Sharing Network';
 
-  constructor(private _requestService: RequestService, private _offerService: OfferService, public router: Router, rParam: RouteParams) {
+  constructor(private _requestService:RequestService, private _offerService:OfferService, public router:Router,
+              private _knowledgeService:KnowledgeService, rParam:RouteParams) {
     this.id = rParam.get('id');
   }
 
-  id: string;
+  id:string;
 
-  request: Request;
-  _id: string;
-  title: string;
-  description: string;
-  status: string;
-  createdAt: string;
-  knowledgeId: string;
-  offers: Offer[];
+  knowledge:Knowledge;
+  knowledgeName:string;
 
-  ngOnInit(): void {
+  request:Request;
+  _id:string;
+  title:string;
+  description:string;
+  status:string;
+  createdAt:string;
+  knowledgeId:string;
+
+  offers:Offer[];
+
+  ngOnInit():void {
     //get request when load the page
     this._requestService.getRequestById(this.id).subscribe(
       (request) => {
@@ -56,6 +64,7 @@ export class RequestDetailClientComponent {
             return newDate = day + '/' + month + '/' + year;
           }
         }
+
         this.knowledgeId = request.knowledgeId;
         this.request = request;
         this.title = request.title;
@@ -63,6 +72,19 @@ export class RequestDetailClientComponent {
         this._id = request._id;
         this.status = request.status;
         this.createdAt = formatDate(request.createdAt);
+
+        //get knowledge name by knowledgeId
+        this._knowledgeService.findKnowledgeById(this.knowledgeId).subscribe(
+          (knowledge) => {
+            this.knowledge = knowledge;
+            this.knowledgeName = this.knowledge.name;
+
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+
       },
       (error) => {
         console.log(error.text());
@@ -92,10 +114,10 @@ export class RequestDetailClientComponent {
       }
     );
     //console offers
-    console.log(this.offers);
+    //console.log(this.offers);
   }
 
-  deleteRequest(id: String) {
+  deleteRequest(id:String) {
     console.log(id);
     this._requestService
       .deleteRequestById(this.id)
@@ -105,3 +127,4 @@ export class RequestDetailClientComponent {
     window.location.href = '/requests';
   }
 }
+

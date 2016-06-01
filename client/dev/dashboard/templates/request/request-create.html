@@ -25,6 +25,7 @@
             <div class="col-md-12">
               <label for="knowledge">Lĩnh vực</label>
               <select class="form-control" id="knowledge" [ngFormControl]="requestForm.controls['knowledgeId']" [ngModel]="knowledgeId" >
+                <option>Chọn lĩnh vực</option>
                 <optgroup *ngFor="let k of knowledges" label="{{k.name}}">
                   <option *ngFor="let sub of k.subCategory" value={{sub._id}}>{{sub.name}}</option>
                 </optgroup>

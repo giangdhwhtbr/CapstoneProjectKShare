@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -47,11 +48,13 @@ var KnowledgeListComponent = (function () {
         core_1.Component({
             selector: 'knowledge-list',
             templateUrl: 'client/dev/dashboard/templates/knowledge/knowledge-list.html',
-            styleUrls: ['client/dev/dashboard/styles/knowledge-list.css']
+            styleUrls: [
+                'client/dev/dashboard/styles/knowledge-list.css',
+                'client/dev/dashboard/styles/styles.css',
+            ]
         }), 
         __metadata('design:paramtypes', [knowledge_service_1.KnowledgeService])
     ], KnowledgeListComponent);
     return KnowledgeListComponent;
-})();
+}());
 exports.KnowledgeListComponent = KnowledgeListComponent;
-//# sourceMappingURL=knowledges-list.js.map

@@ -13,7 +13,6 @@ import  {Router} from "angular2/router";
   selector: 'user-list',
   templateUrl: 'client/dev/dashboard/templates/users/user-list.html',
   styleUrls: [
-    'client/dev/dashboard/styles/bootstrap.min.css',
     'client/dev/dashboard/styles/styles.css',
     'client/dev/dashboard/styles/user-list.css'
   ],

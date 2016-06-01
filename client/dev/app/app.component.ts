@@ -15,9 +15,6 @@ import { UserListComponent } from '../dashboard/components/users/user-list';
 import { UserInfoComponent } from '../dashboard/components/users/user-info';
 import { BadwordComponent } from '../dashboard/components/badword/badword';
 import { UpdateBadwordComponent } from '../dashboard/components/badword/badword-update';
-import { RequestListClientComponent } from '../kshare/components/request/request-list-cli';
-import { RequestDetailClientComponent } from '../kshare/components/request/request-detail-cli';
-import { RequestUpdateClientComponent } from '../kshare/components/request/request-update-cli';
 import { RequestComponent } from '../dashboard/components/request/requests';
 import { UpdateRequestComponent } from '../dashboard/components/request/request-update';
 import { KnowledgeComponent } from '../dashboard/components/knowledge/knowledge';
@@ -25,7 +22,6 @@ import { UpdateKnowledgeComponent } from '../dashboard/components/knowledge/know
 import { RequestListClientComponent } from '../kshare/components/request/request-list-cli';
 import { RequestDetailClientComponent } from '../kshare/components/request/request-detail-cli';
 import { RequestUpdateClientComponent } from '../kshare/components/request/request-update-cli';
-import { OfferService } from '../dashboard/services/offers-service';
 
 /**
  * Service

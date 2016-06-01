@@ -15,6 +15,7 @@ import  { CreateOfferComponent } from '../../components/offer/offer-create';
 @Component({
   selector: 'request-mgn',
   templateUrl: 'client/dev/dashboard/templates/request/request.html',
+  styleUrls: [ 'client/dev/dashboard/styles/styles.css'],
   directives: [UpdateRequestComponent,
               RequestListComponent,
               CreateRequestComponent,

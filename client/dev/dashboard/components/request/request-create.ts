@@ -12,9 +12,9 @@ import { Knowledge } from '../../interface/knowledge';
 })
 export class CreateRequestComponent {
   requestForm: ControlGroup;
-  
+
   knowledges: Knowledge[];
-  
+
   constructor(fb: FormBuilder, private _requestService: RequestService, private _knowledgeService: KnowledgeService) {
     this.requestForm = fb.group({
       "knowledgeId": [""],
@@ -22,14 +22,13 @@ export class CreateRequestComponent {
       "description": [""]
     });
   }
-  
+
   ngOnInit(): void {
     this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
       this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
     });
-    
   }
-  
+
   addRequest(request) {
     console.log(request);
     this._requestService.addRequest(request).subscribe((request)=> {
@@ -42,5 +41,5 @@ export class CreateRequestComponent {
     console.log(request);
     window.location.reload();
   }
-  
+
 }

@@ -1,1 +1,1 @@
-//# sourceMappingURL=badword.js.map
+"use strict";

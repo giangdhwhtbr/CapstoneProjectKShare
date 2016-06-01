@@ -39,5 +39,4 @@ export class SideBarComponent {
       this.knowledges = parent;
     });
   }
-
 }

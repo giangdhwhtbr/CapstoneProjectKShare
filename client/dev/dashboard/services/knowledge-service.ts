@@ -11,12 +11,10 @@ export class KnowledgeService {
   getAllKnowledges(): Observable<Knowledge[]> {
     return this._http.get(this._knowledgesUrl.replace(':id', ''))
       .map((r) => r.json())
-      .do(data => console.log("All: " + JSON.stringify(data)))
       .catch(this.handleError);
   }
 
   addKnowledge(knowledge: Knowledge): Observable<any> {
-    let header = new Headers;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     let _knowledge = JSON.stringify({
@@ -24,8 +22,6 @@ export class KnowledgeService {
     description: knowledge.description,
 
     });
-    console.log(_knowledge);
-    console.log(header);
     return this._http
       .post(this._knowledgesUrl.replace(':id', ''), _knowledge, options)
       .map((r) => r.json());
