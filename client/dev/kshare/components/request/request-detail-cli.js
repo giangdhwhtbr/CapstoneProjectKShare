@@ -12,16 +12,18 @@ var core_1 = require('angular2/core');
 var router_1 = require('angular2/router');
 var requests_service_1 = require('../../../dashboard/services/requests-service');
 var offers_service_1 = require('../../../dashboard/services/offers-service');
+var knowledge_service_1 = require('../../../dashboard/services/knowledge-service');
 var header_1 = require('../shared/header');
 var footer_1 = require('../shared/footer');
 var sidebar_1 = require('../shared/sidebar');
 var friend_list_1 = require('../shared/friend-list');
 var offer_create_1 = require('../../../dashboard/components/offer/offer-create');
 var RequestDetailClientComponent = (function () {
-    function RequestDetailClientComponent(_requestService, _offerService, router, rParam) {
+    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, rParam) {
         this._requestService = _requestService;
         this._offerService = _offerService;
         this.router = router;
+        this._knowledgeService = _knowledgeService;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
         this.id = rParam.get('id');
     }
@@ -45,6 +47,13 @@ var RequestDetailClientComponent = (function () {
             _this._id = request._id;
             _this.status = request.status;
             _this.createdAt = formatDate(request.createdAt);
+            //get knowledge name by knowledgeId
+            _this._knowledgeService.findKnowledgeById(_this.knowledgeId).subscribe(function (knowledge) {
+                _this.knowledge = knowledge;
+                _this.knowledgeName = _this.knowledge.name;
+            }, function (error) {
+                console.log(error);
+            });
         }, function (error) {
             console.log(error.text());
         });
@@ -67,7 +76,7 @@ var RequestDetailClientComponent = (function () {
             console.log(error.text());
         });
         //console offers
-        console.log(this.offers);
+        //console.log(this.offers);
     };
     RequestDetailClientComponent.prototype.deleteRequest = function (id) {
         console.log(id);
@@ -91,7 +100,7 @@ var RequestDetailClientComponent = (function () {
                 router_1.ROUTER_DIRECTIVES,
                 offer_create_1.CreateOfferComponent]
         }), 
-        __metadata('design:paramtypes', [requests_service_1.RequestService, offers_service_1.OfferService, router_1.Router, router_1.RouteParams])
+        __metadata('design:paramtypes', [requests_service_1.RequestService, offers_service_1.OfferService, router_1.Router, knowledge_service_1.KnowledgeService, router_1.RouteParams])
     ], RequestDetailClientComponent);
     return RequestDetailClientComponent;
 }());
