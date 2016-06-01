@@ -21,9 +21,9 @@ export class SideBarComponent {
   
   ngOnInit(): void {
     this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
-      
-      this.knowledges = knowledges;
+      this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
     });
   }
  
 }
+  

@@ -38,8 +38,7 @@ export class RequestUpdateClientComponent {
   ngOnInit():void {
     //get all knowledge 
     this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
-
-      this.knowledges = knowledges;
+      this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
     });
     
     this._requestService.getRequestById(this.id).subscribe(

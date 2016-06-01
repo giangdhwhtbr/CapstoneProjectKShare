@@ -28,7 +28,9 @@
             <label for="knowledge">Lĩnh vực</label>
               <select class="form-control" id="knowledge" [ngFormControl]="updateRequestFormCli.controls['knowledgeId']"
                      [ngModel]="knowledgeId" >
-                <option *ngFor="let k of knowledges" value="{{k._id}}">{{k.name}}</option>
+                <optgroup *ngFor="let k of knowledges" label="{{k.name}}">
+                  <option *ngFor="let sub of k.subCategory" value={{sub._id}}>{{sub.name}}</option>
+                </optgroup>
               </select>
           </div>
           <br>

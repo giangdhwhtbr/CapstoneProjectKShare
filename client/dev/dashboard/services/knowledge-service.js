@@ -57,6 +57,27 @@ var KnowledgeService = (function () {
             .put(this._knowledgesUrl.replace(':id', knowledge._id), _knowledge, options)
             .map(function (r) { return r.json(); });
     };
+    //get child of a knowledge parent
+    KnowledgeService.prototype.getChildFromParent = function (knowledges) {
+        var parent = [];
+        var subCate = [];
+        for (var i = 0; i < knowledges.length; i++) {
+            if (!knowledges[i].hasOwnProperty('parent')) {
+                parent.push(knowledges[i]);
+            }
+        }
+        for (var i = 0; i < parent.length; i++) {
+            for (var j = 0; j < knowledges.length; j++) {
+                if ((knowledges[j].hasOwnProperty('parent')) && (knowledges[j].parent === parent[i]._id)) {
+                    subCate.push(knowledges[j]);
+                }
+            }
+            parent[i]["subCategory"] = subCate;
+            subCate = [];
+        }
+        knowledges = parent;
+        return parent;
+    };
     KnowledgeService.prototype.handleError = function (error) {
         console.error(error);
         return Observable_1.Observable.throw(error.json().error || 'Server error');

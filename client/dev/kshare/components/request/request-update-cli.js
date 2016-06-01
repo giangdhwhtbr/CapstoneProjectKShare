@@ -36,7 +36,7 @@ var RequestUpdateClientComponent = (function () {
         var _this = this;
         //get all knowledge 
         this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
-            _this.knowledges = knowledges;
+            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
         });
         this._requestService.getRequestById(this.id).subscribe(function (request) {
             _this.request = request;

@@ -25,7 +25,7 @@ var CreateRequestComponent = (function () {
     CreateRequestComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
-            _this.knowledges = knowledges;
+            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
         });
     };
     CreateRequestComponent.prototype.addRequest = function (request) {
