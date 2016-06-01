@@ -1,4 +1,5 @@
 /// <reference path="../../node_modules/angular2/typings/browser.d.ts" />
+"use strict";
 /*
  * Angular
  */
@@ -25,4 +26,3 @@ browser_1.bootstrap(app_component_1.AppComponent, [
         deps: [http_1.Http]
     })
 ]);
-//# sourceMappingURL=index.js.map
