@@ -10,19 +10,6 @@ module.exports = class KnowledgeController {
         .catch(error => res.status(400).json(error));
   }
 
-  static getKnowledgeById(req,res) {
-    if(req.params && req.params.id) {
-      KnowledgeDAO
-        .getKnowledgeById(req.params.id)
-        .then(knowledge => res.status(200).json(knowledge))
-        .catch(error => res.status(400).json(error));
-    }else{
-      res.status(404).json({
-        "message"    :   "No Knowledge ID in request"
-      });
-    }
-  }
-
   static createKnowledge(req, res) {
       let knowledge= req.body;
       KnowledgeDAO

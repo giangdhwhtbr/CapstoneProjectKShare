@@ -15,7 +15,6 @@ var RequestService = (function () {
     function RequestService(_http) {
         this._http = _http;
         this._requestsUrl = '/api/requests/:id';
-        this._knowledgesUrl = '/api/knowledges/:id';
     }
     RequestService.prototype.getAllRequests = function () {
         return this._http.get(this._requestsUrl.replace(':id', ''))

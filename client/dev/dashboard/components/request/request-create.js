@@ -19,7 +19,7 @@ var CreateRequestComponent = (function () {
         this.requestForm = fb.group({
             "knowledgeId": [""],
             "title": [""],
-            "description": [""],
+            "description": [""]
         });
     }
     CreateRequestComponent.prototype.ngOnInit = function () {
