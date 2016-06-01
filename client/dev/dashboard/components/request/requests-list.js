@@ -72,7 +72,8 @@ var RequestListComponent = (function () {
         core_1.Component({
             selector: 'request-list',
             templateUrl: 'client/dev/dashboard/templates/request/request-list.html',
-            styleUrls: ['client/dev/dashboard/styles/request-list.css'],
+            styleUrls: ['client/dev/dashboard/styles/request-list.css',
+                'client/dev/dashboard/styles/styles.css'],
             directives: [offer_create_1.CreateOfferComponent,
                 request_update_1.UpdateRequestComponent,
                 request_create_1.CreateRequestComponent,

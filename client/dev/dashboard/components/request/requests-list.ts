@@ -18,7 +18,9 @@ import  { OfferService } from '../../services/offers-service';
 @Component({
   selector: 'request-list',
   templateUrl: 'client/dev/dashboard/templates/request/request-list.html',
-  styleUrls: ['client/dev/dashboard/styles/request-list.css'],
+  styleUrls:
+             ['client/dev/dashboard/styles/request-list.css',
+              'client/dev/dashboard/styles/styles.css'],
   directives: 
             [   CreateOfferComponent, 
                 UpdateRequestComponent,

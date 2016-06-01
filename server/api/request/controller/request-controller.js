@@ -56,6 +56,19 @@ static updateRequest(req, res){
       });
     }
   }
+  
+  static getRequestByKnowledgeId(req,res) {
+    if(req.params && req.params.id) {
+      RequestDAO
+        .getRequestByKnowledgeId(req.params.id)
+        .then(requests => res.status(200).json(requests))
+        .catch(error => res.status(400).json(error));
+    }else{
+      res.status(404).json({
+        "message"    :   "No Knowledge Id in request"
+      });
+    }
+  }
 
   static deleteRequest(req, res) {
     let _id = req.params.id;

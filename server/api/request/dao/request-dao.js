@@ -33,6 +33,23 @@ requestSchema.statics.getRequestById = (id) => {
   });
 }
 
+requestSchema.statics.getRequestByKnowledgeId = (id) => {
+
+  return new Promise((resolve, reject) => {
+    if(!_.isString(id)){
+      return reject(new TypeError('ID is not a String.'));
+    }
+    Request
+      .find({
+        'knowledgeId': id
+      })
+      .exec((err, requests) => {
+        err ? reject(err)
+          : resolve(requests);
+      });
+  });
+}
+
 requestSchema.statics.createRequest = (request) => {
     return new Promise((resolve, reject) => {
       if (!_.isObject(request))
