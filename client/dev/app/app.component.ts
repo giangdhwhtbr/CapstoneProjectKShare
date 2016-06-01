@@ -24,6 +24,10 @@ import { UpdateRequestComponent } from '../dashboard/components/request/request-
 import { KnowledgeService } from '../dashboard/services/knowledge-service';
 import { KnowledgeComponent } from '../dashboard/components/knowledge/knowledge';
 import { UpdateKnowledgeComponent } from '../dashboard/components/knowledge/knowledge-update';
+import { RequestListClientComponent } from '../kshare/components/request/request-list-cli';
+import { RequestDetailClientComponent } from '../kshare/components/request/request-detail-cli';
+import { RequestUpdateClientComponent } from '../kshare/components/request/request-update-cli';
+import { OfferService } from '../dashboard/services/offers-service';
 
 @Component({
   selector: 'kshare-app',
@@ -36,6 +40,8 @@ import { UpdateKnowledgeComponent } from '../dashboard/components/knowledge/know
     ROUTER_PROVIDERS,
     BadwordService,
     RequestService,
+    OfferService,
+    KnowledgeService
   ]
 })
 
@@ -49,6 +55,9 @@ import { UpdateKnowledgeComponent } from '../dashboard/components/knowledge/know
   { path: '/admin/requests/:id', name: 'Request Update', component: UpdateRequestComponent },
   { path: '/admin/knowledges', name: 'Knowledge Management', component: KnowledgeComponent },
   { path: '/admin/knowledges/:id', name: 'Knowledge Update', component: UpdateKnowledgeComponent },
+  { path: '/requests', name: 'Request List', component: RequestListClientComponent},
+  { path: '/requests/:id', name: 'Request Detail ', component: RequestDetailClientComponent},
+  { path: '/requests/update/:id', name: 'Request Update ', component: RequestUpdateClientComponent}
 ])
 
 

@@ -29,8 +29,13 @@ var badword_update_1 = require('../dashboard/components/badword/badword-update')
 var requests_service_1 = require('../dashboard/services/requests-service');
 var requests_1 = require('../dashboard/components/request/requests');
 var request_update_1 = require('../dashboard/components/request/request-update');
+var knowledge_service_1 = require('../dashboard/services/knowledge-service');
 var knowledge_1 = require('../dashboard/components/knowledge/knowledge');
 var knowledge_update_1 = require('../dashboard/components/knowledge/knowledge-update');
+var request_list_cli_1 = require('../kshare/components/request/request-list-cli');
+var request_detail_cli_1 = require('../kshare/components/request/request-detail-cli');
+var request_update_cli_1 = require('../kshare/components/request/request-update-cli');
+var offers_service_1 = require('../dashboard/services/offers-service');
 var AppComponent = (function () {
     function AppComponent(router) {
         this.router = router;
@@ -48,6 +53,8 @@ var AppComponent = (function () {
                 router_1.ROUTER_PROVIDERS,
                 badwords_service_1.BadwordService,
                 requests_service_1.RequestService,
+                offers_service_1.OfferService,
+                knowledge_service_1.KnowledgeService
             ]
         }),
         router_1.RouteConfig([
@@ -60,6 +67,9 @@ var AppComponent = (function () {
             { path: '/admin/requests/:id', name: 'Request Update', component: request_update_1.UpdateRequestComponent },
             { path: '/admin/knowledges', name: 'Knowledge Management', component: knowledge_1.KnowledgeComponent },
             { path: '/admin/knowledges/:id', name: 'Knowledge Update', component: knowledge_update_1.UpdateKnowledgeComponent },
+            { path: '/requests', name: 'Request List', component: request_list_cli_1.RequestListClientComponent },
+            { path: '/requests/:id', name: 'Request Detail ', component: request_detail_cli_1.RequestDetailClientComponent },
+            { path: '/requests/update/:id', name: 'Request Update ', component: request_update_cli_1.RequestUpdateClientComponent }
         ]), 
         __metadata('design:paramtypes', [router_1.Router])
     ], AppComponent);
