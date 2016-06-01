@@ -1,13 +1,16 @@
 import { Component, OnInit } from 'angular2/core';
+import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig, RouteParams} from'angular2/router';
+
 import { Request } from '../../../dashboard/interface/request';
 import { Offer } from '../../../dashboard/interface/offer';
+
 import { RequestService } from '../../../dashboard/services/requests-service';
 import { OfferService } from '../../../dashboard/services/offers-service';
+
 import { HeaderComponent } from '../shared/header';
 import { FooterComponent } from '../shared/footer';
 import { SideBarComponent } from '../shared/sidebar';
 import { FriendListComponent} from '../shared/friend-list';
-import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig, RouteParams} from'angular2/router';
 import { CreateOfferComponent } from '../../../dashboard/components/offer/offer-create';
 
 @Component({
@@ -38,7 +41,8 @@ export class RequestDetailClientComponent {
   description: string;
   status: string;
   createdAt: string;
-
+  knowledgeId: string;
+  
   offers: Offer[];
 
   ngOnInit(): void {
@@ -54,7 +58,8 @@ export class RequestDetailClientComponent {
             return newDate = day + '/' + month + '/' + year;
           }
         }
-        console.log(request);
+        
+        this.knowledgeId = request.knowledgeId;
         this.request = request;
         this.title = request.title;
         this.description = request.description;

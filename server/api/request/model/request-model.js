@@ -1,7 +1,6 @@
 "use strict";
 
 const mongoose = require('mongoose');
-//var Knowledge  = mongoose.model('Knowledge', knowledgeSchema);
 
 const _requestSchema = {
     userId: { type: String },
@@ -10,7 +9,7 @@ const _requestSchema = {
     description: { type: String, required: true, trim: true },
     status: { type: String, default: 'pending' },
     modifiedDate: { type: Date },
-    //knowledgeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Knowledge',required: true }
+    knowledgeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Knowledge',required: true }
 }
 
 

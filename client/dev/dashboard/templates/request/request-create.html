@@ -21,6 +21,14 @@
                         [ngFormControl]="requestForm.controls['description']"></textarea>
             </div>
           </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="knowledge">Lĩnh vực</label>
+              <select class="form-control" id="knowledge" [ngFormControl]="requestForm.controls['knowledgeId']" [ngModel]="knowledgeId" >
+                <option *ngFor="let k of knowledges" value="{{k._id}}">{{k.name}}</option>
+              </select>
+            </div>
+          </div>
           <br>
           <div class="row">
             <div class="col-md-12">

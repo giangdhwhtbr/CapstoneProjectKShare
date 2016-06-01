@@ -20,7 +20,8 @@ export  class RequestService {
     let options = new RequestOptions({ headers: headers });
     let _request = JSON.stringify({
       title : request.title,
-      description : request.description
+      description : request.description,
+      knowledgeId: request.knowledgeId
     });
     return this._http
               .post(this._requestsUrl.replace(':id',''),_request,options)
@@ -41,21 +42,20 @@ export  class RequestService {
   }
   
   deleteRequestById(id: string):Observable<any> {
-    
     return this._http
               .delete(this._requestsUrl.replace(':id',id))
               .map((r) => r.json());
   }
   
   updateRequest(request: Request):Observable<any>{
-    //console.log("chay vao service");
     let header = new Headers;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     let _request = JSON.stringify({
       _id : '',
       title : request.title,
-      description : request.description
+      description : request.description,
+      knowledgeId: request.knowledgeId
     });
     console.log(_request);
     return this._http

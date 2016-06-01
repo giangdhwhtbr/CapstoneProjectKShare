@@ -68,6 +68,7 @@ knowledgeSchema.statics.updateKnowledge = (knowledge) => {
           });
     });
 }
+
 const Knowledge  = mongoose.model('Knowledge', knowledgeSchema);
 
 module.exports = Knowledge;

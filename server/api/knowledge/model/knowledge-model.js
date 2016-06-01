@@ -1,7 +1,6 @@
 "use strict";
 
 const mongoose = require('mongoose');
-
 const knowledgeSchema = {
     name: {type: String, required: true, trim: true},
     description: {type: String, required: true, trim: true},

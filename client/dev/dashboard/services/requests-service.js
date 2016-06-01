@@ -27,7 +27,8 @@ var RequestService = (function () {
         var options = new http_1.RequestOptions({ headers: headers });
         var _request = JSON.stringify({
             title: request.title,
-            description: request.description
+            description: request.description,
+            knowledgeId: request.knowledgeId
         });
         return this._http
             .post(this._requestsUrl.replace(':id', ''), _request, options)
@@ -49,14 +50,14 @@ var RequestService = (function () {
             .map(function (r) { return r.json(); });
     };
     RequestService.prototype.updateRequest = function (request) {
-        //console.log("chay vao service");
         var header = new http_1.Headers;
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var _request = JSON.stringify({
             _id: '',
             title: request.title,
-            description: request.description
+            description: request.description,
+            knowledgeId: request.knowledgeId
         });
         console.log(_request);
         return this._http

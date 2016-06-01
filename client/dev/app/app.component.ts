@@ -11,18 +11,22 @@ import { ROUTER_PROVIDERS, RouteConfig, ROUTER_DIRECTIVES,RouterLink, Router } f
  */
 import { UserListComponent } from '../dashboard/components/users/user-list';
 import { UserInfoComponent } from '../dashboard/components/users/user-info';
-import { AuthService } from '../dashboard/services/auth-services';
-import { UserService } from '../dashboard/services/users-services';
-import { RequestService } from '../dashboard/services/requests-service';
-import { KnowledgeService } from '../dashboard/services/knowledge-service';
 import { HomeComponent } from '../kshare/components/home/home';
 import { LoggedInRouterOutlet } from './LoginOutletRouter';
 import { UpdateRequestComponent } from '../dashboard/components/request/request-update';
 import { RequestComponent } from '../dashboard/components/request/requests';
-import { OfferService } from '../dashboard/services/offers-service';
 import { RequestListClientComponent } from '../kshare/components/request/request-list-cli';
 import { RequestDetailClientComponent } from '../kshare/components/request/request-detail-cli';
 import { RequestUpdateClientComponent } from '../kshare/components/request/request-update-cli';
+
+/**
+ * Service
+ */
+import { AuthService } from '../dashboard/services/auth-services';
+import { UserService } from '../dashboard/services/users-services';
+import { RequestService } from '../dashboard/services/requests-service';
+import { KnowledgeService } from '../dashboard/services/knowledge-service';
+import { OfferService } from '../dashboard/services/offers-service';
 
 @Component({
   selector: 'kshare-app',

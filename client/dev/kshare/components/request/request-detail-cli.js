@@ -9,13 +9,13 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('angular2/core');
+var router_1 = require('angular2/router');
 var requests_service_1 = require('../../../dashboard/services/requests-service');
 var offers_service_1 = require('../../../dashboard/services/offers-service');
 var header_1 = require('../shared/header');
 var footer_1 = require('../shared/footer');
 var sidebar_1 = require('../shared/sidebar');
 var friend_list_1 = require('../shared/friend-list');
-var router_1 = require('angular2/router');
 var offer_create_1 = require('../../../dashboard/components/offer/offer-create');
 var RequestDetailClientComponent = (function () {
     function RequestDetailClientComponent(_requestService, _offerService, router, rParam) {
@@ -38,7 +38,7 @@ var RequestDetailClientComponent = (function () {
                     return newDate = day + '/' + month + '/' + year;
                 }
             };
-            console.log(request);
+            _this.knowledgeId = request.knowledgeId;
             _this.request = request;
             _this.title = request.title;
             _this.description = request.description;

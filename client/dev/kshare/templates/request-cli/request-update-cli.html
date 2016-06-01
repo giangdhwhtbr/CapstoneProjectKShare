@@ -8,6 +8,7 @@
   <div class="col-xs-12 col-sm-9 fixEfMenu">
     <div class="panel panel-default card-rq">
       <form role="form" [ngFormModel]="updateRequestFormCli" (ngSubmit)="updateRequest(updateRequestFormCli.value)">
+        
         <div class="panel-body">
           <p class="lead">Chỉnh sửa <b>{{title}}</b></p>
           <div class="form-group" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
@@ -16,12 +17,22 @@
                     [ngModel]="title" [ngFormControl]="updateRequestFormCli.controls['title']"/>
           </div>
           <br>
+        
           <div class="form-group" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu" hidden>
             <label class="control-label" for="id">ID </label>
             <input class="form-control" id="id" type="text" 
                     [ngModel]="id" [ngFormControl]="updateRequestFormCli.controls['_id']"/>
           </div>
+        
+          <div class="form-group" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
+            <label for="knowledge">Lĩnh vực</label>
+              <select class="form-control" id="knowledge" [ngFormControl]="updateRequestFormCli.controls['knowledgeId']"
+                     [ngModel]="knowledgeId" >
+                <option *ngFor="let k of knowledges" value="{{k._id}}">{{k.name}}</option>
+              </select>
+          </div>
           <br>
+        
           <div class="form-group" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
             <label class="control-label" for="description">Nội dung </label>
             <textarea class="form-control" id="description" type="text" 

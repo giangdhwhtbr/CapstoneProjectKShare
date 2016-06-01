@@ -20,17 +20,20 @@ var router_1 = require('angular2/router');
  */
 var user_list_1 = require('../dashboard/components/users/user-list');
 var user_info_1 = require('../dashboard/components/users/user-info');
+var home_1 = require('../kshare/components/home/home');
+var request_update_1 = require('../dashboard/components/request/request-update');
+var requests_1 = require('../dashboard/components/request/requests');
+var request_list_cli_1 = require('../kshare/components/request/request-list-cli');
+var request_detail_cli_1 = require('../kshare/components/request/request-detail-cli');
+var request_update_cli_1 = require('../kshare/components/request/request-update-cli');
+/**
+ * Service
+ */
 var auth_services_1 = require('../dashboard/services/auth-services');
 var users_services_1 = require('../dashboard/services/users-services');
 var requests_service_1 = require('../dashboard/services/requests-service');
 var knowledge_service_1 = require('../dashboard/services/knowledge-service');
-var home_1 = require('../kshare/components/home/home');
-var request_update_1 = require('../dashboard/components/request/request-update');
-var requests_1 = require('../dashboard/components/request/requests');
 var offers_service_1 = require('../dashboard/services/offers-service');
-var request_list_cli_1 = require('../kshare/components/request/request-list-cli');
-var request_detail_cli_1 = require('../kshare/components/request/request-detail-cli');
-var request_update_cli_1 = require('../kshare/components/request/request-update-cli');
 var AppComponent = (function () {
     function AppComponent(router) {
         this.router = router;
