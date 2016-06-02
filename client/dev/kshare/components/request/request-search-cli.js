@@ -69,7 +69,7 @@ var RequestSearchClientComponent = (function () {
         core_1.Component({
             selector: 'request-search-cli',
             templateUrl: 'client/dev/kshare/templates/request-cli/request-search-cli.html',
-            styleUrls: [],
+            styleUrls: ['client/dev/kshare/styles/request-list-cli.css'],
             directives: [header_1.HeaderComponent,
                 footer_1.FooterComponent,
                 sidebar_1.SideBarComponent,

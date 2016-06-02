@@ -60,7 +60,7 @@ var RequestUpdateClientComponent = (function () {
         core_1.Component({
             selector: 'request-update-cli',
             templateUrl: 'client/dev/kshare/templates/request-cli/request-update-cli.html',
-            styleUrls: [],
+            styleUrls: ['client/dev/kshare/styles/request-list-cli.css'],
             directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, sidebar_1.SideBarComponent, footer_1.FooterComponent, header_1.HeaderComponent]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),

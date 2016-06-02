@@ -44,6 +44,7 @@ var HeaderComponent = (function () {
         core_1.Component({
             selector: 'header',
             templateUrl: 'client/dev/kshare/templates/shared/header.html',
+            styleUrls: ['client/dev/kshare/styles/header.css']
         }), 
         __metadata('design:paramtypes', [auth_services_1.AuthService])
     ], HeaderComponent);

@@ -231,3 +231,9 @@ p.copyright {
 @keyframes blink{
   to{opacity: .0;}
 }
+
+@media all and (min-width: 1024px) {
+  .showInfoFace{
+        padding-left: 5%;
+  }
+}

@@ -91,7 +91,7 @@ var RequestDetailClientComponent = (function () {
         core_1.Component({
             selector: 'request-detail-cli',
             templateUrl: 'client/dev/kshare/templates/request-cli/request-detail-cli.html',
-            styleUrls: [],
+            styleUrls: ['client/dev/kshare/styles/request-list-cli.css'],
             directives: [
                 header_1.HeaderComponent,
                 footer_1.FooterComponent,

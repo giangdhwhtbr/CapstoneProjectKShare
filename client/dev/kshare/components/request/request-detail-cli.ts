@@ -19,7 +19,7 @@ import { CreateOfferComponent } from '../../../dashboard/components/offer/offer-
 @Component({
     selector: 'request-detail-cli',
     templateUrl: 'client/dev/kshare/templates/request-cli/request-detail-cli.html',
-    styleUrls: [],
+    styleUrls:  ['client/dev/kshare/styles/request-list-cli.css'],
     directives: [
         HeaderComponent,
         FooterComponent,

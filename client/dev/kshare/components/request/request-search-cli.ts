@@ -12,7 +12,7 @@ import { FriendListComponent} from '../shared/friend-list';
 @Component({
   selector: 'request-search-cli',
   templateUrl: 'client/dev/kshare/templates/request-cli/request-search-cli.html',
-  styleUrls: [],
+  styleUrls: ['client/dev/kshare/styles/request-list-cli.css'],
   directives: [HeaderComponent,
     FooterComponent,
     SideBarComponent,
