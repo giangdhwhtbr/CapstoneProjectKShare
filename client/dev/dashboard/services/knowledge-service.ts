@@ -11,7 +11,6 @@ export class KnowledgeService {
   getAllKnowledges(): Observable<Knowledge[]> {
     return this._http.get(this._knowledgesUrl.replace(':id', ''))
       .map((r) => r.json())
-      .do(data => console.log("All: " + JSON.stringify(data)))
       .catch(this.handleError);
   }
 

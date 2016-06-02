@@ -19,7 +19,6 @@ var KnowledgeService = (function () {
     KnowledgeService.prototype.getAllKnowledges = function () {
         return this._http.get(this._knowledgesUrl.replace(':id', ''))
             .map(function (r) { return r.json(); })
-            .do(function (data) { return console.log("All: " + JSON.stringify(data)); })
             .catch(this.handleError);
     };
     KnowledgeService.prototype.addKnowledge = function (knowledge) {

@@ -22,6 +22,7 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     this._auth.isLoggedIn().subscribe((status)=>{
+      console.log(status);
       if(status.login == false){
         this.loginToken = false;
       }else {

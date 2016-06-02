@@ -48,6 +48,10 @@ export class RequestSearchClientComponent {
               return newDate = day + '/' + month + '/' + year;
             }
           }
+          for (var i = 0; i < requests.length; i++) {
+            requests[i].createdAt = formatDate(requests[i].createdAt);
+            requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
+          }
           this.requests = requests;
         });
     }
