@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export  class RequestService {
   private _requestsUrl = '/api/requests/:id';
+  private _getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
   constructor(private _http: Http) { }
 
   getAllRequests(): Observable<Request[]> {
@@ -34,8 +35,8 @@ export  class RequestService {
       .catch(this.handleError);
   }
 
+  //delete request 
   deleteRequest(request: Request):Observable<any> {
-  
     return this._http
               .delete(this._requestsUrl.replace(':id',request._id))
               .map((r) => r.json());
@@ -61,6 +62,19 @@ export  class RequestService {
     return this._http
               .put(this._requestsUrl.replace(':id',request._id),_request,options)
               .map((r) => r.json());
+  }
+  
+  getRequestByKnowledgeId(id: string):Observable<any>{
+    return this._http
+              .post(this._requestsUrl.replace(':id',id),'')
+              .map((r) => r.json());
+  }
+  
+  // get child knowledge from parent knowledge
+  getKnowledgeByParent(id: string):Observable<any>{
+    return this._http.get(this._getKnowledgeByParentUrl.replace(':id',id))
+      .map((r) => r.json())
+      .catch(this.handleError);
   }
 
   private handleError(error: Response) {

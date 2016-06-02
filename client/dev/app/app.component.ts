@@ -18,6 +18,7 @@ import { RequestListComponent } from '../dashboard/components/request/requests-l
 import { RequestListClientComponent } from '../kshare/components/request/request-list-cli';
 import { RequestDetailClientComponent } from '../kshare/components/request/request-detail-cli';
 import { RequestUpdateClientComponent } from '../kshare/components/request/request-update-cli';
+import { RequestSearchClientComponent } from '../kshare/components/request/request-search-cli';
 
 /**
  * Service
@@ -51,7 +52,8 @@ import { OfferService } from '../dashboard/services/offers-service';
   { path: '/admin/requests/:id', name: 'Request Update', component: UpdateRequestComponent},
   { path: '/requests', name: 'Request List', component: RequestListClientComponent},
   { path: '/requests/:id', name: 'Request Detail ', component: RequestDetailClientComponent},
-  { path: '/requests/update/:id', name: 'Request Update ', component: RequestUpdateClientComponent}
+  { path: '/requests/update/:id', name: 'Request Update ', component: RequestUpdateClientComponent},
+  { path: '/requests/search/:type/:id', name: 'Request Search', component: RequestSearchClientComponent}
 ])
 
 

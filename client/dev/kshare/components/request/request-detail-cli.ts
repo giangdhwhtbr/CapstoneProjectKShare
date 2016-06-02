@@ -79,13 +79,11 @@ export class RequestDetailClientComponent {
                     (knowledge) => {
                         this.knowledge = knowledge;
                         this.knowledgeName = this.knowledge.name;
-
                     },
                     (error) => {
                         console.log(error);
                     }
                 );
-
             },
             (error) => {
                 console.log(error.text());
@@ -104,7 +102,6 @@ export class RequestDetailClientComponent {
                         return newDate = day + '/' + month + '/' + year;
                     }
                 }
-
                 for (var i = 0; i < offers.length; i++) {
                     offers[i].createdAt = formatDate(offers[i].createdAt);
                 }

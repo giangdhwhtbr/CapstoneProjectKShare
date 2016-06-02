@@ -26,6 +26,7 @@ var requests_list_1 = require('../dashboard/components/request/requests-list');
 var request_list_cli_1 = require('../kshare/components/request/request-list-cli');
 var request_detail_cli_1 = require('../kshare/components/request/request-detail-cli');
 var request_update_cli_1 = require('../kshare/components/request/request-update-cli');
+var request_search_cli_1 = require('../kshare/components/request/request-search-cli');
 /**
  * Service
  */
@@ -62,7 +63,8 @@ var AppComponent = (function () {
             { path: '/admin/requests/:id', name: 'Request Update', component: request_update_1.UpdateRequestComponent },
             { path: '/requests', name: 'Request List', component: request_list_cli_1.RequestListClientComponent },
             { path: '/requests/:id', name: 'Request Detail ', component: request_detail_cli_1.RequestDetailClientComponent },
-            { path: '/requests/update/:id', name: 'Request Update ', component: request_update_cli_1.RequestUpdateClientComponent }
+            { path: '/requests/update/:id', name: 'Request Update ', component: request_update_cli_1.RequestUpdateClientComponent },
+            { path: '/requests/search/:type/:id', name: 'Request Search', component: request_search_cli_1.RequestSearchClientComponent }
         ]), 
         __metadata('design:paramtypes', [router_1.Router])
     ], AppComponent);
