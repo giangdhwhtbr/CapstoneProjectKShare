@@ -6,9 +6,7 @@
         <ul>
           <li *ngFor="let knowledge of knowledges" class='has-sub'><a href='#'><span>{{knowledge.name}}</span></a>
             <ul *ngIf="knowledge.subCategory.length > 0">
-              <ul>
-                <li *ngFor="let subCate of knowledge.subCategory"><a href='#'><span>{{subCate.name}}</span></a></li>
-              </ul>
+              <li *ngFor="let subCate of knowledge.subCategory"><a href='#'><span>{{subCate.name}}</span></a></li>
             </ul>
           </li>
         </ul>
