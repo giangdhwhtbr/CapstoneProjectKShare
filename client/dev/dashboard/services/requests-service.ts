@@ -1,6 +1,6 @@
-import { Injectable } from 'angular2/core';
+import { Injectable } from '@angular/core';
 import { Request } from '../interface/request';
-import { Http, Response, Headers,RequestOptions } from 'angular2/http';
+import { Http, Response, Headers,RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
@@ -35,18 +35,18 @@ export  class RequestService {
   }
 
   deleteRequest(request: Request):Observable<any> {
-  
+
     return this._http
               .delete(this._requestsUrl.replace(':id',request._id))
               .map((r) => r.json());
   }
-  
+
   deleteRequestById(id: string):Observable<any> {
     return this._http
               .delete(this._requestsUrl.replace(':id',id))
               .map((r) => r.json());
   }
-  
+
   updateRequest(request: Request):Observable<any>{
     let header = new Headers;
     let headers = new Headers({ 'Content-Type': 'application/json' });

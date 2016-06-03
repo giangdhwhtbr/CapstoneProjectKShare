@@ -1,10 +1,10 @@
 
-import { Component,Inject,Input } from 'angular2/core';
+import { Component,Inject,Input } from '@angular/core';
 
-import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from 'angular2/common';
+import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
 import { BadwordService } from '../../services/badwords-service';
 import { CreateBadwordComponent } from '../../components/badword/badword-create';
-import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig, RouteParams} from'angular2/router';
+import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Routes, RouteSegment} from'@angular/router';
 import { BadwordListComponent } from '../../components/badword/badwords-list';
 import { Badword } from '../../interface/badword';
 
@@ -40,8 +40,8 @@ export class UpdateBadwordComponent {
   }
 
   constructor(@Inject(FormBuilder) fb: FormBuilder, @Inject(BadwordService) private _badwordService: BadwordService,
-            public router: Router, rParam: RouteParams) {
-    this.id = rParam.get('id');
+            public router: Router, rParam: RouteSegment) {
+    this.id = rParam.getParam('id');
 
     this.updateBadwordForm = fb.group({
       "word": [""],

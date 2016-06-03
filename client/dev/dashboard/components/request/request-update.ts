@@ -1,12 +1,12 @@
-import { Component, OnInit, Inject } from 'angular2/core';
+import { Component, OnInit, Inject } from '@angular/core';
 import { Request } from '../../../dashboard/interface/request';
 import { Knowledge } from '../../../dashboard/interface/knowledge';
 
 import { RequestService } from '../../../dashboard/services/requests-service';
 import { KnowledgeService } from '../../../dashboard/services/knowledge-service';
 
-import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig, RouteParams} from'angular2/router';
-import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from 'angular2/common';
+import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Routes, RouteSegment} from'@angular/router';
+import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
 
 
 
@@ -31,7 +31,7 @@ export class UpdateRequestComponent {
   knowledgeId: string;
 
   ngOnInit(): void {
-    //get all knowledge 
+    //get all knowledge
     this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
       this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
     });
@@ -50,9 +50,9 @@ export class UpdateRequestComponent {
   }
 
   constructor( @Inject(FormBuilder) fb: FormBuilder, @Inject(RequestService) private _requestService: RequestService,
-    public router: Router, rParam: RouteParams,
+    public router: Router, rParam: RouteSegment,
     @Inject(KnowledgeService) private _knowledgeService: KnowledgeService) {
-    this.id = rParam.get('id');
+    this.id = rParam.getParam('id');
 
     this.updateRequestFormCli = fb.group({
       "_id": [""],

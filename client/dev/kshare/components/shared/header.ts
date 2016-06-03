@@ -1,7 +1,7 @@
 /**
  * Created by GiangDH on 5/18/16.
  */
-import { Component } from 'angular2/core';
+import { Component } from '@angular/core';
 
 import { AuthService } from '../../../dashboard/services/auth-services';
 

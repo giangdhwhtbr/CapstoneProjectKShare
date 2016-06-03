@@ -18,9 +18,9 @@ var __param = undefined && undefined.__param || function (paramIndex, decorator)
         decorator(target, key, paramIndex);
     };
 };
-var core_1 = require('angular2/core');
-var common_1 = require('angular2/common');
-var router_1 = require('angular2/router');
+var core_1 = require('@angular/core');
+var common_1 = require('@angular/common');
+var router_1 = require('@angular/router');
 var users_services_1 = require('../../services/users-services');
 var CreateUserComponent = function () {
     function CreateUserComponent(fb, _userService, router) {

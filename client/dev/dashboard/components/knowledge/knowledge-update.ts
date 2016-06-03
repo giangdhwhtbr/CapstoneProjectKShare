@@ -1,9 +1,9 @@
 
-import { Component,Inject,Input } from 'angular2/core';
+import { Component,Inject,Input } from '@angular/core';
 
-import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from 'angular2/common';
+import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
 import { KnowledgeService } from '../../services/knowledge-service';
-import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig, RouteParams} from'angular2/router';
+import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Routes, RouteSegment} from'@angular/router';
 import { KnowledgeListComponent } from '../../components/knowledge/knowledges-list';
 import { Knowledge } from '../../interface/knowledge';
 
@@ -40,8 +40,8 @@ export class UpdateKnowledgeComponent {
   }
 
   constructor(@Inject(FormBuilder) fb: FormBuilder, @Inject(KnowledgeService) private _knowledgeService: KnowledgeService,
-            public router: Router, rParam: RouteParams) {
-    this.id = rParam.get('id');
+            public router: Router, rParam: RouteSegment) {
+    this.id = rParam.getParam('id');
 
     this.updateKnowledgeForm = fb.group({
       "name": [""],

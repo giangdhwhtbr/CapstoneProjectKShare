@@ -11,12 +11,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require('angular2/core');
-var common_1 = require('angular2/common');
-var router_1 = require('angular2/router');
+var core_1 = require('@angular/core');
+var common_1 = require('@angular/common');
+var router_1 = require('@angular/router');
 var nav_bar_1 = require('../shared/nav-bar');
 var sidebar_1 = require('../shared/sidebar');
-var router_2 = require('angular2/router');
+var router_2 = require('@angular/router');
 var users_services_1 = require('../../services/users-services');
 var auth_services_1 = require('../../services/auth-services');
 var UserInfoComponent = (function () {
@@ -73,7 +73,7 @@ var UserInfoComponent = (function () {
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(users_services_1.UserService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, users_services_1.UserService, router_2.Router, router_2.RouteParams, auth_services_1.AuthService])
+        __metadata('design:paramtypes', [common_1.FormBuilder, users_services_1.UserService, router_2.Router, Object, auth_services_1.AuthService])
     ], UserInfoComponent);
     return UserInfoComponent;
 }());

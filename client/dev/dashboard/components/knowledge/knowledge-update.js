@@ -11,15 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require('angular2/core');
-var common_1 = require('angular2/common');
+var core_1 = require('@angular/core');
+var common_1 = require('@angular/common');
 var knowledge_service_1 = require('../../services/knowledge-service');
-var router_1 = require('angular2/router');
+var router_1 = require('@angular/router');
 var UpdateKnowledgeComponent = (function () {
     function UpdateKnowledgeComponent(fb, _knowledgeService, router, rParam) {
         this._knowledgeService = _knowledgeService;
         this.router = router;
-        this.id = rParam.get('id');
+        this.id = rParam.getParam('id');
         this.updateKnowledgeForm = fb.group({
             "name": [""],
             "description": [""],
@@ -54,7 +54,7 @@ var UpdateKnowledgeComponent = (function () {
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(knowledge_service_1.KnowledgeService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, knowledge_service_1.KnowledgeService, router_1.Router, router_1.RouteParams])
+        __metadata('design:paramtypes', [common_1.FormBuilder, knowledge_service_1.KnowledgeService, router_1.Router, router_1.RouteSegment])
     ], UpdateKnowledgeComponent);
     return UpdateKnowledgeComponent;
 }());

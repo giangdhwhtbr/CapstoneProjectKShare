@@ -1,8 +1,8 @@
-import  { Component,OnInit } from 'angular2/core';
-import { ROUTER_DIRECTIVES } from 'angular2/router';
+import  { Component,OnInit } from '@angular/core';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 import  { Request } from '../../interface/request';
 import  { RequestService } from '../../services/requests-service';
-import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from 'angular2/common';
+import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
 import  { CreateOfferComponent  } from '../../components/offer/offer-create';
 import  { UpdateRequestComponent } from '../../components/request/request-update';
 import  { OfferService } from '../../services/offers-service';

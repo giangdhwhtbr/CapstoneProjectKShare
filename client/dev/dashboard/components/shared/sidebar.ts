@@ -1,8 +1,8 @@
 import {
   Component,
   Inject
-} from 'angular2/core';
-import {Input} from "angular2/core";
+} from '@angular/core';
+import {Input} from "@angular/core";
 
 @Component({
   selector: 'sidebar',

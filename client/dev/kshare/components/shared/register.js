@@ -14,9 +14,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 /**
  * Created by GiangDH on 5/19/16.
  */
-var core_1 = require('angular2/core');
-var common_1 = require('angular2/common');
-var router_1 = require('angular2/router');
+var core_1 = require('@angular/core');
+var common_1 = require('@angular/common');
+var router_1 = require('@angular/router');
 var auth_services_1 = require('../../../dashboard/services/auth-services');
 var RegisterComponent = (function () {
     function RegisterComponent(fb, _authService, router) {

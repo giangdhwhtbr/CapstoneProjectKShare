@@ -2,9 +2,9 @@
  * Created by GiangDH on 5/8/16.
  */
 
-import { Injectable } from 'angular2/core';
+import { Injectable } from '@angular/core';
 import { User } from '../interface/user';
-import { Response, Http, Headers, RequestOptions } from 'angular2/http';
+import { Response, Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 import { contentHeaders } from '../../app/headers';

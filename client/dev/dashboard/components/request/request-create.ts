@@ -1,6 +1,6 @@
-import { Component,Inject, OnInit } from 'angular2/core';
+import { Component,Inject, OnInit } from '@angular/core';
 import { KnowledgeService } from '../../services/knowledge-service';
-import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from 'angular2/common';
+import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
 import { RequestService} from '../../services/requests-service';
 import { Knowledge } from '../../interface/knowledge';
 

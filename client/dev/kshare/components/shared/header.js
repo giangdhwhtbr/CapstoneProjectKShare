@@ -11,7 +11,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by GiangDH on 5/18/16.
  */
-var core_1 = require('angular2/core');
+var core_1 = require('@angular/core');
 var auth_services_1 = require('../../../dashboard/services/auth-services');
 var HeaderComponent = (function () {
     function HeaderComponent(_auth) {

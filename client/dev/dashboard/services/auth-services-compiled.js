@@ -16,8 +16,8 @@ var __metadata = undefined && undefined.__metadata || function (k, v) {
 /**
  * Created by GiangDH on 5/19/16.
  */
-var core_1 = require('angular2/core');
-var http_1 = require('angular2/http');
+var core_1 = require('@angular/core');
+var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
 var AuthService = function () {
     function AuthService(_http) {

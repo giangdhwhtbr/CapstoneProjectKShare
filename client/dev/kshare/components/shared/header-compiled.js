@@ -16,7 +16,7 @@ var __metadata = undefined && undefined.__metadata || function (k, v) {
 /**
  * Created by GiangDH on 5/18/16.
  */
-var core_1 = require('angular2/core');
+var core_1 = require('@angular/core');
 var HeaderComponent = function () {
     function HeaderComponent() {}
     HeaderComponent = __decorate([core_1.Component({

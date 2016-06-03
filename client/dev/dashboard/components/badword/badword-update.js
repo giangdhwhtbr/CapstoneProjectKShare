@@ -11,15 +11,15 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require('angular2/core');
-var common_1 = require('angular2/common');
+var core_1 = require('@angular/core');
+var common_1 = require('@angular/common');
 var badwords_service_1 = require('../../services/badwords-service');
-var router_1 = require('angular2/router');
+var router_1 = require('@angular/router');
 var UpdateBadwordComponent = (function () {
     function UpdateBadwordComponent(fb, _badwordService, router, rParam) {
         this._badwordService = _badwordService;
         this.router = router;
-        this.id = rParam.get('id');
+        this.id = rParam.getParam('id');
         this.updateBadwordForm = fb.group({
             "word": [""],
             "_id": [""],
@@ -53,7 +53,7 @@ var UpdateBadwordComponent = (function () {
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(badwords_service_1.BadwordService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, badwords_service_1.BadwordService, router_1.Router, router_1.RouteParams])
+        __metadata('design:paramtypes', [common_1.FormBuilder, badwords_service_1.BadwordService, router_1.Router, router_1.RouteSegment])
     ], UpdateBadwordComponent);
     return UpdateBadwordComponent;
 }());

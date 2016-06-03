@@ -1,5 +1,5 @@
-import { Component, OnInit } from 'angular2/core';
-import { ROUTER_DIRECTIVES } from 'angular2/router';
+import { Component, OnInit } from '@angular/core';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Request } from '../../../dashboard/interface/request';
 import { RequestService } from '../../../dashboard/services/requests-service';
 import { HeaderComponent } from '../shared/header';
@@ -12,7 +12,7 @@ import  { CreateRequestComponent } from '../../../dashboard/components/request/r
   selector: 'request-list-cli',
   templateUrl:'client/dev/kshare/templates/request-cli/request-list-cli.html',
   styleUrls: [],
-  directives: [HeaderComponent, 
+  directives: [HeaderComponent,
                FooterComponent,
                SideBarComponent,
                FriendListComponent,
@@ -21,12 +21,12 @@ import  { CreateRequestComponent } from '../../../dashboard/components/request/r
 
 export class RequestListClientComponent {
   pageTitle: string = 'Welcome to Knowledge Sharing Network';
-  
+
   constructor(private _requestService: RequestService){
 
   }
   requests: Request[];
-  
+
   ngOnInit(): void {
     this._requestService.getAllRequests().subscribe((requests) => {
       var formatDate = function (date){
@@ -45,5 +45,5 @@ export class RequestListClientComponent {
       this.requests = requests;
     });
   }
-  
+
 }

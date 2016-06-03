@@ -11,8 +11,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 /**
  * Created by GiangDH on 5/18/16.
  */
-var core_1 = require('angular2/core');
-var router_1 = require('angular2/router');
+var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var sidebar_1 = require('../shared/sidebar');
 var header_1 = require('../shared/header');
 var footer_1 = require('../shared/footer');

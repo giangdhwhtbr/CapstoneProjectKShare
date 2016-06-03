@@ -1,14 +1,14 @@
 import {
   Component,OnInit
-} from 'angular2/core';
-import { ROUTER_DIRECTIVES } from 'angular2/router';
+} from '@angular/core';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 import  { NavbarComponent } from '../shared/nav-bar';
 import  { SidebarComponent }  from '../shared/sidebar';
 import  { User } from '../../interface/user';
 import  { UserService} from '../../services/users-services';
 import  { AuthService} from '../../services/auth-services';
 import  { CreateUserComponent } from './user-create';
-import  {Router} from "angular2/router";
+import  {Router} from "@angular/router";
 @Component({
   selector: 'user-list',
   templateUrl: 'client/dev/dashboard/templates/users/user-list.html',

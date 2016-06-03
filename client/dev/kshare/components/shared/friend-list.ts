@@ -1,7 +1,7 @@
 import {
   Component,
   Inject
-} from 'angular2/core';
+} from '@angular/core';
 @Component({
   selector : 'friend-list',
   templateUrl: 'client/dev/kshare/templates/shared/friend-list.html',
@@ -11,5 +11,5 @@ import {
 
 export class FriendListComponent {
 
- 
+
 }

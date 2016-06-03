@@ -4,15 +4,15 @@
 import {
   Component,
   Inject
-} from 'angular2/core';
+} from '@angular/core';
 import {
   Validators,
   FormBuilder,
   ControlGroup,
   Control,
   FORM_DIRECTIVES,
-} from 'angular2/common';
-import { Router, RouterLink } from 'angular2/router';
+} from '@angular/common';
+import { Router, Routes } from '@angular/router';
 import { User } from '../../../dashboard/interface/user';
 import { AuthService } from '../../../dashboard/services/auth-services';
 @Component({

@@ -21,9 +21,9 @@ var __param = undefined && undefined.__param || function (paramIndex, decorator)
 /**
  * Created by GiangDH on 5/18/16.
  */
-var core_1 = require('angular2/core');
-var common_1 = require('angular2/common');
-var router_1 = require('angular2/router');
+var core_1 = require('@angular/core');
+var common_1 = require('@angular/common');
+var router_1 = require('@angular/router');
 var auth_services_1 = require('../../../dashboard/services/auth-services');
 var LoginComponent = function () {
     function LoginComponent(fb, _authService, router) {

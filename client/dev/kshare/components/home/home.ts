@@ -1,8 +1,8 @@
 /**
  * Created by GiangDH on 5/18/16.
  */
-import { Component,OnInit } from 'angular2/core';
-import { ROUTER_DIRECTIVES } from 'angular2/router';
+import { Component,OnInit } from '@angular/core';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 import { SideBarComponent} from '../shared/sidebar'
 import { HeaderComponent } from '../shared/header';
 import { FooterComponent } from '../shared/footer';

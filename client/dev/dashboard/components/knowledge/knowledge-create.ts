@@ -1,9 +1,9 @@
 import {
   Component,
   Inject,
-} from 'angular2/core';
+} from '@angular/core';
 import  { Knowledge} from '../../interface/knowledge';
-import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from 'angular2/common';
+import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
 import  { KnowledgeService} from '../../services/knowledge-service';
 
 @Component({

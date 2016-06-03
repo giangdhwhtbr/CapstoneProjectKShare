@@ -16,8 +16,8 @@ var __metadata = undefined && undefined.__metadata || function (k, v) {
 /**
  * Created by GiangDH on 5/18/16.
  */
-var core_1 = require('angular2/core');
-var router_1 = require('angular2/router');
+var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var header_1 = require('../shared/header');
 var footer_1 = require('../shared/footer');
 var login_1 = require('../shared/login');

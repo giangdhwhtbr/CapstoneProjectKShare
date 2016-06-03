@@ -1,22 +1,22 @@
 import {
   Component,
   Inject
-} from 'angular2/core';
+} from '@angular/core';
 import {
   Validators,
   FormBuilder,
   ControlGroup,
   Control,
   FORM_DIRECTIVES,
-} from 'angular2/common';
-import { ROUTER_DIRECTIVES } from 'angular2/router';
+} from '@angular/common';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 import  { NavbarComponent } from '../shared/nav-bar';
 import  { SidebarComponent }  from '../shared/sidebar';
-import { Router, RouterLink, RouteParams } from 'angular2/router';
+import { Router, Routes, RouteSegment } from '@angular/router';
 import { User } from '../../interface/user';
 import { UserService} from '../../services/users-services';
 import { AuthService} from '../../services/auth-services';
-import { Input } from "angular2/core";
+import { Input } from "@angular/core";
 
 @Component({
   selector: 'user-info',

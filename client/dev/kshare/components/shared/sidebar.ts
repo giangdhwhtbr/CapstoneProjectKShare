@@ -2,7 +2,7 @@ import {
   Component,
   Inject,
   OnInit
-} from 'angular2/core';
+} from '@angular/core';
 import { Knowledge } from '../../../dashboard/interface/knowledge';
 import { KnowledgeService } from '../../../dashboard/services/knowledge-service';
 @Component({

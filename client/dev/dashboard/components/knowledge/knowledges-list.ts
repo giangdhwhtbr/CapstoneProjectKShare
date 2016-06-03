@@ -1,7 +1,7 @@
 import {
   Component,OnInit
-} from 'angular2/core';
-//import { ROUTER_DIRECTIVES } from 'angular2/router';
+} from '@angular/core';
+//import { ROUTER_DIRECTIVES } from '@angular/router';
 import  { Knowledge } from '../../interface/knowledge';
 import  { KnowledgeService} from '../../services/knowledge-service';
 @Component({

@@ -1,9 +1,9 @@
 import {
   Component,
   Inject
-} from 'angular2/core';
+} from '@angular/core';
 import  { AuthService} from '../../services/auth-services';
-import {Router} from "angular2/router";
+import {Router} from "@angular/router";
 @Component({
   selector: 'nav-bar',
   templateUrl: 'client/dev/dashboard/templates/shared/nav-bar.html',

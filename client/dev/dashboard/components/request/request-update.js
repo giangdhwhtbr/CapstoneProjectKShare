@@ -11,17 +11,17 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
-var core_1 = require('angular2/core');
+var core_1 = require('@angular/core');
 var requests_service_1 = require('../../../dashboard/services/requests-service');
 var knowledge_service_1 = require('../../../dashboard/services/knowledge-service');
-var router_1 = require('angular2/router');
-var common_1 = require('angular2/common');
+var router_1 = require('@angular/router');
+var common_1 = require('@angular/common');
 var UpdateRequestComponent = (function () {
     function UpdateRequestComponent(fb, _requestService, router, rParam, _knowledgeService) {
         this._requestService = _requestService;
         this.router = router;
         this._knowledgeService = _knowledgeService;
-        this.id = rParam.get('id');
+        this.id = rParam.getParam('id');
         this.updateRequestFormCli = fb.group({
             "_id": [""],
             "title": [""],
@@ -31,7 +31,7 @@ var UpdateRequestComponent = (function () {
     }
     UpdateRequestComponent.prototype.ngOnInit = function () {
         var _this = this;
-        //get all knowledge 
+        //get all knowledge
         this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
             _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
         });
@@ -63,7 +63,7 @@ var UpdateRequestComponent = (function () {
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(requests_service_1.RequestService)),
         __param(4, core_1.Inject(knowledge_service_1.KnowledgeService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, requests_service_1.RequestService, router_1.Router, router_1.RouteParams, knowledge_service_1.KnowledgeService])
+        __metadata('design:paramtypes', [common_1.FormBuilder, requests_service_1.RequestService, router_1.Router, router_1.RouteSegment, knowledge_service_1.KnowledgeService])
     ], UpdateRequestComponent);
     return UpdateRequestComponent;
 }());

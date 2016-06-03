@@ -1,6 +1,6 @@
-import { Component,Inject,Input } from 'angular2/core';
+import { Component,Inject,Input } from '@angular/core';
 
-import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from 'angular2/common';
+import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
 import { OfferService } from '../../services/offers-service';
 
 @Component({
@@ -10,7 +10,7 @@ import { OfferService } from '../../services/offers-service';
 })
 export class CreateOfferComponent {
    @Input('rid') rid: string;
-   
+
    offerForm: ControlGroup;
 
    constructor(fb: FormBuilder, private _offerService: OfferService) {
@@ -18,10 +18,10 @@ export class CreateOfferComponent {
       "price": [""],
       "numberOfLecture": [""],
       "requestId": [""],
-      "message": [""] 
+      "message": [""]
     });
   }
-  
+
   //RequestService requestServiceObject = new RequestService();
   addOffer(offer) {
     this._offerService.addOffer(offer).subscribe((offer)=> {
@@ -31,8 +31,8 @@ export class CreateOfferComponent {
       console.log(error.text());
     }
     );
-    
+
     window.location.reload();
   }
-  
+
 }
