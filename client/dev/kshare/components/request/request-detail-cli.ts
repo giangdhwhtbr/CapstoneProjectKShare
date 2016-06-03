@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, RouteConfig, RouteParams} from'@angular/router';
+import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Routes, RouteSegment} from'@angular/router';
 
 import { Request } from '../../../dashboard/interface/request';
 import { Offer } from '../../../dashboard/interface/offer';
@@ -32,8 +32,8 @@ export class RequestDetailClientComponent {
   pageTitle:string = 'Welcome to Knowledge Sharing Network';
 
   constructor(private _requestService:RequestService, private _offerService:OfferService, public router:Router,
-              private _knowledgeService:KnowledgeService, rParam:RouteParams) {
-    this.id = rParam.get('id');
+              private _knowledgeService:KnowledgeService, rParam:RouteSegment) {
+    this.id = rParam.getParam('id');
   }
 
   id:string;

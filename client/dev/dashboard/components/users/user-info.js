@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -25,7 +24,7 @@ var UserInfoComponent = (function () {
         this.router = router;
         this._auth = _auth;
         this.pageTitle = 'users';
-        this.id = params.get('id');
+        this.id = params.getParam('id');
         this.userUpdateForm = fb.group({
             _id: [""],
             firstName: ["", common_1.Validators.required],
@@ -54,7 +53,7 @@ var UserInfoComponent = (function () {
         this._userService
             .updateUser(user)
             .subscribe(function (response) {
-            _this.router.parent.navigateByUrl('/admin/users');
+            _this.router.navigateByUrl('/admin/users');
         }, function (error) {
             console.log(error.text());
         });
@@ -73,8 +72,9 @@ var UserInfoComponent = (function () {
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(users_services_1.UserService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, users_services_1.UserService, router_2.Router, Object, auth_services_1.AuthService])
+        __metadata('design:paramtypes', [common_1.FormBuilder, users_services_1.UserService, router_2.Router, router_2.RouteSegment, auth_services_1.AuthService])
     ], UserInfoComponent);
     return UserInfoComponent;
-}());
+})();
 exports.UserInfoComponent = UserInfoComponent;
+//# sourceMappingURL=user-info.js.map

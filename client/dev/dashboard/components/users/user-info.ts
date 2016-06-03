@@ -34,8 +34,8 @@ export class UserInfoComponent {
   userUpdateForm: ControlGroup;
   id: string;
   user : User;
-  constructor(@Inject(FormBuilder) fb:FormBuilder, @Inject(UserService) private _userService: UserService, public router: Router ,params: RouteParams,private _auth:AuthService) {
-    this.id = params.get('id');
+  constructor(@Inject(FormBuilder) fb:FormBuilder, @Inject(UserService) private _userService: UserService, public router: Router ,params: RouteSegment,private _auth:AuthService) {
+    this.id = params.getParam('id');
     this.userUpdateForm = fb.group({
       _id: [""],
       firstName : ["",Validators.required],
@@ -69,7 +69,7 @@ export class UserInfoComponent {
       .updateUser(user)
       .subscribe(
         response => {
-          this.router.parent.navigateByUrl('/admin/users');
+          this.router.navigateByUrl('/admin/users');
         },
         error => {
           console.log(error.text());
