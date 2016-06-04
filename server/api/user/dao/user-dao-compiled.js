@@ -3,6 +3,7 @@
 var mongoose = require('mongoose');
 var Promise = require('bluebird');
 var userSchema = require('../model/user-model');
+var passport = require('passport');
 var _ = require('lodash');
 
 //Send Json
@@ -64,15 +65,13 @@ userSchema.statics.updateUserById = function (userinfo) {
     if (!_.isObject(userinfo)) {
       return reject(new TypeError('User is not a valid object.'));
     }
-    //let _user = new User(userinfo);
-    //res.status(200).json(userinfo);
     userinfo.save(function (err, saved) {
       err ? reject(err) : resolve(saved);
     });
   });
 };
 
-var User = mongoose.model('user', userSchema);
+var User = mongoose.model('User', userSchema);
 module.exports = User;
 
-//# sourceMappingURL=user-dao-compiled.js.map
+//# sourceMappingURL=user-dao-compiled.script.map

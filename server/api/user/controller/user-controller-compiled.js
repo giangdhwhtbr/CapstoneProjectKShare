@@ -5,8 +5,10 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var mongoose = require('mongoose');
+var passport = require('passport');
 var userDAO = require('../dao/user-dao');
-var usera = mongoose.model('user');
+//const User = mongoose.model('User');
+
 //Send Json
 var sendJsonResponse = function sendJsonResponse(res, status, content) {
   res.status(status);
@@ -47,6 +49,7 @@ module.exports = function () {
       }).catch(function (error) {
         return res.status(400).json(error);
       });
+      //console.log(JSON.stringify(req.headers));
     }
   }, {
     key: 'updateUser',
@@ -87,4 +90,4 @@ module.exports = function () {
   return userController;
 }();
 
-//# sourceMappingURL=user-controller-compiled.js.map
+//# sourceMappingURL=user-controller-compiled.script.map

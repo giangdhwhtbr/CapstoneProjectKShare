@@ -1,0 +1,21 @@
+<div class="col-md-12">
+  <table class="table table-striped mg-top-15px" align="center">
+    <thead>
+      <tr class="tb-header">
+        <th>Knowledge</th>
+        <th>Description</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let knowledge of knowledges">
+        <td>{{knowledge.name}}</td>
+        <td>{{knowledge.description}}</td>
+        <th>
+          <button class="glyphicon glyphicon-trash btn btn-danger" (click)="deleteKnowledge(knowledge._id)"></button>
+          <a href="/admin/knowledges/{{knowledge._id}}"><span class="btn btn-warning glyphicon glyphicon-pencil"></span></a>
+        </th>
+      </tr>
+    </tbody>
+  </table>
+</div>

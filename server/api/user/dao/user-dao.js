@@ -3,6 +3,7 @@
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
 const userSchema = require('../model/user-model');
+const passport = require('passport');
 const _ = require('lodash');
 
 
@@ -76,8 +77,6 @@ userSchema.statics.updateUserById = (userinfo) => {
     if (!_.isObject(userinfo)) {
       return reject(new TypeError('User is not a valid object.'));
     }
-    //let _user = new User(userinfo);
-    //res.status(200).json(userinfo);
     userinfo.save((err, saved) => {
       err ? reject(err)
         : resolve(saved);
@@ -85,6 +84,5 @@ userSchema.statics.updateUserById = (userinfo) => {
   });
 }
 
-
-const User = mongoose.model('user', userSchema);
+const User = mongoose.model('User', userSchema);
 module.exports = User;

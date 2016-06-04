@@ -116,4 +116,4 @@ userSchema.methods.authenticate = function (password) {
 
 module.exports = userSchema;
 
-//# sourceMappingURL=user-model-compiled.js.map
+//# sourceMappingURL=user-model-compiled.script.map

@@ -1,18 +1,16 @@
-/// <reference path="../../node_modules/angular2/typings/browser.d.ts" />
-
-
 
 /*
  * Angular
  */
-import {HTTP_PROVIDERS} from 'angular2/http';
-import {bootstrap} from 'angular2/platform/browser';
+import { provide } from '@angular/core';
+import { FORM_PROVIDERS } from '@angular/common';
+import { ROUTER_PROVIDERS } from '@angular/router';
+import { Http, HTTP_PROVIDERS } from '@angular/http';
+import { bootstrap }    from '@angular/platform-browser-dynamic';
 /*
  * Components
  */
-import {AppComponent} from '../dev/app.component';
-
-
-
-bootstrap(AppComponent);
-
+import {AppComponent} from './app/app.component';
+bootstrap(
+  AppComponent
+);

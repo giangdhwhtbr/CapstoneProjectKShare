@@ -1,7 +1,9 @@
 "use strict";
 const mongoose = require('mongoose');
+const passport = require('passport');
 const userDAO = require('../dao/user-dao');
-var usera = mongoose.model('user');
+//const User = mongoose.model('User');
+
 //Send Json
 var sendJsonResponse = function(res, status, content) {
   res.status(status);
@@ -13,6 +15,19 @@ module.exports = class userController {
       .getAll()
       .then(user => res.status(200).json(user))
       .catch(error => res.status(400).json(error));
+  }
+
+  static getUserById(req, res) {
+    if(req.params && req.params.id) {
+      userDAO
+        .getUserById(req.params.id)
+        .then(user => res.status(200).json(user))
+        .catch(error => res.status(400).json(error));
+    }else{
+      res.status(404).json({
+        "message"    :   "No Userid in request"
+      });
+    }
   }
 
   static createNew(req, res) {
@@ -28,12 +43,17 @@ module.exports = class userController {
       createdAt:currentDate,
       updatedAt:currentDate
     }
+
+    if(req.body.role == undefined){
+      user.role = "normal"
+    }
+    console.log(user);
     //let _user = req.body;
     userDAO
       .createNew(user)
       .then(user => res.status(200).json(user))
       .catch(error => res.status(400).json(error));
-
+    //console.log(JSON.stringify(req.headers));
   }
 
   static updateUser(req, res){

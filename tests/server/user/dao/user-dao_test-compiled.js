@@ -21,4 +21,4 @@ describe('userDAO', function () {
   describe('removeById', function () {});
 });
 
-//# sourceMappingURL=user-dao_test-compiled.js.map
+//# sourceMappingURL=user-dao_test-compiled.script.map
