@@ -9,7 +9,6 @@ import {Router} from '@angular/router';
 
 import { contentHeaders } from '../../app/headers';
 
-
 @Injectable()
 export class AuthService {
   private _regUrl = '/api/user/';

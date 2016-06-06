@@ -1,0 +1,33 @@
+<header></header>
+<br>
+<br>
+<br>
+<br>
+<sidebar></sidebar>
+<div class="container" style="min-height:437px">
+  <!--<div class="col-sm-10">-->
+  <request-create></request-create>
+  <div class="col-xs-12 col-sm-9 fixEfMenu" id="lst-request">
+    <br>
+    <br>
+    <div class="panel panel-default card-rq" *ngFor="let request of requests">
+      <div class="panel-body">
+        <a href="requests/{{request._id}}">
+          <p class="lead">Tìm người giảng bài</p>
+        </a>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
+          Tiêu đề : {{request.title}}
+        </div><br>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
+          Trạng thái : {{request.status}}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
+          Ngày tạo : {{request.createdAt}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--</div>-->
+
+  <friend-list></friend-list>
+</div>

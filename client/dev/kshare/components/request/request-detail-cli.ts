@@ -18,7 +18,7 @@ import { CreateOfferComponent } from '../../../dashboard/components/offer/offer-
 @Component({
     selector: 'request-detail-cli',
     templateUrl: 'client/dev/kshare/templates/request-cli/request-detail-cli.html',
-    styleUrls: [],
+    styleUrls:  ['client/dev/kshare/styles/request-list-cli.css'],
     directives: [
         HeaderComponent,
         FooterComponent,
@@ -29,6 +29,7 @@ import { CreateOfferComponent } from '../../../dashboard/components/offer/offer-
 })
 
 export class RequestDetailClientComponent {
+
   pageTitle:string = 'Welcome to Knowledge Sharing Network';
 
   constructor(private _requestService:RequestService, private _offerService:OfferService, public router:Router,
@@ -126,5 +127,6 @@ export class RequestDetailClientComponent {
       })
     window.location.href = '/requests';
   }
+
 }
 

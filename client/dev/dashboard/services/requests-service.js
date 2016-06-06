@@ -15,6 +15,7 @@ var RequestService = (function () {
     function RequestService(_http) {
         this._http = _http;
         this._requestsUrl = '/api/requests/:id';
+        this._getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
     }
     RequestService.prototype.getAllRequests = function () {
         return this._http.get(this._requestsUrl.replace(':id', ''))
@@ -39,6 +40,7 @@ var RequestService = (function () {
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
+    //delete request 
     RequestService.prototype.deleteRequest = function (request) {
         return this._http
             .delete(this._requestsUrl.replace(':id', request._id))
@@ -63,6 +65,17 @@ var RequestService = (function () {
         return this._http
             .put(this._requestsUrl.replace(':id', request._id), _request, options)
             .map(function (r) { return r.json(); });
+    };
+    RequestService.prototype.getRequestByKnowledgeId = function (id) {
+        return this._http
+            .post(this._requestsUrl.replace(':id', id), '')
+            .map(function (r) { return r.json(); });
+    };
+    // get child knowledge from parent knowledge
+    RequestService.prototype.getKnowledgeByParent = function (id) {
+        return this._http.get(this._getKnowledgeByParentUrl.replace(':id', id))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
     };
     RequestService.prototype.handleError = function (error) {
         console.error(error);

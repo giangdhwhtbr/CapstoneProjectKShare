@@ -11,8 +11,8 @@ import  { CreateRequestComponent } from '../../../dashboard/components/request/r
 @Component ({
   selector: 'request-list-cli',
   templateUrl:'client/dev/kshare/templates/request-cli/request-list-cli.html',
-  styleUrls: [],
-  directives: [HeaderComponent,
+  styleUrls: ['client/dev/kshare/styles/request-list-cli.css'],
+  directives: [HeaderComponent, 
                FooterComponent,
                SideBarComponent,
                FriendListComponent,

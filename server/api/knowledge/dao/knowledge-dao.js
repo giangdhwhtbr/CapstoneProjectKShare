@@ -33,20 +33,24 @@ knowledgeSchema.statics.getKnowledgeById = (id) => {
   });
 }
 
-knowledgeSchema.statics.getKnowledgeById = (id) => {
+
+knowledgeSchema.statics.getKnowledgeByParent = (id) => {
 
   return new Promise((resolve, reject) => {
     if(!_.isString(id)){
       return reject(new TypeError('ID is not a String.'));
     }
     Knowledge
-      .findById(id)
-      .exec((err, knowledge) => {
+      .find({
+        'parent': id
+      })
+      .exec((err, knowledges) => {
         err ? reject(err)
-          : resolve(knowledge);
+          : resolve(knowledges);
       });
   });
 }
+
 knowledgeSchema.statics.createKnowledge = (knowledge) => {
     return new Promise((resolve, reject) => {
       if (!_.isObject(knowledge))

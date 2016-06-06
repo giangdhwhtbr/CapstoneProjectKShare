@@ -13,8 +13,16 @@ module.exports = class RequestRoutes {
         .route('/api/requests/:id')
         .delete(RequestController.deleteRequest)
         .put(RequestController.updateRequest)
-        .get(RequestController.getRequestById);
+        .get(RequestController.getRequestById)
+        .post(RequestController.getRequestByKnowledgeId); 
      
+      router
+        .route('/api/request-status/:id')
+        .get(RequestController.changeStatusRequest);     
+     
+       router
+        .route('/api/requests-search')
+        .post(RequestController.fullTextSearchRequest);
     }
     
 }

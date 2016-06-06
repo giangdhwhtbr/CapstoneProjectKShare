@@ -9,17 +9,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var requests_service_1 = require('../../services/requests-service');
 var offer_create_1 = require('../../components/offer/offer-create');
 var request_update_1 = require('../../components/request/request-update');
-var offers_service_1 = require('../../services/offers-service');
+var auth_services_1 = require('../../services/auth-services');
+var nav_bar_1 = require('../../components/shared/nav-bar');
+var sidebar_1 = require('../../components/shared/sidebar');
+var request_create_1 = require('../../components/request/request-create');
 var RequestListComponent = (function () {
-    function RequestListComponent(_requestService) {
+    function RequestListComponent(_requestService, _auth, router) {
         this._requestService = _requestService;
+        this._auth = _auth;
+        this.router = router;
         this.pageTitle = 'Request List';
     }
     RequestListComponent.prototype.ngOnInit = function () {
         var _this = this;
+        //Check login -- @@ fucking "ngu dan" way của Giang
+        if (!this._auth.dashboardFilter()) {
+            this.router.navigate(['Home']);
+        }
         this._requestService.getAllRequests().subscribe(function (requests) {
             var formatDate = function (date) {
                 if (date) {
@@ -43,7 +53,7 @@ var RequestListComponent = (function () {
         this._requestService
             .deleteRequest(request)
             .subscribe(function () {
-            console.log("123");
+            console.log("delete successful");
         });
         //refresh page
         this._requestService.getAllRequests().subscribe(function (requests) {
@@ -67,11 +77,17 @@ var RequestListComponent = (function () {
         core_1.Component({
             selector: 'request-list',
             templateUrl: 'client/dev/dashboard/templates/request/request-list.html',
-            styleUrls: ['client/dev/dashboard/styles/request-list.css'],
-            directives: [offer_create_1.CreateOfferComponent, request_update_1.UpdateRequestComponent],
-            providers: [offers_service_1.OfferService]
+            styleUrls: ['client/dev/dashboard/styles/request-list.css',
+                'client/dev/dashboard/styles/styles.css'],
+            directives: [offer_create_1.CreateOfferComponent,
+                request_update_1.UpdateRequestComponent,
+                request_create_1.CreateRequestComponent,
+                nav_bar_1.NavbarComponent,
+                sidebar_1.SidebarComponent,
+                offer_create_1.CreateOfferComponent,
+                router_1.ROUTER_DIRECTIVES]
         }), 
-        __metadata('design:paramtypes', [requests_service_1.RequestService])
+        __metadata('design:paramtypes', [requests_service_1.RequestService, auth_services_1.AuthService, Object])
     ], RequestListComponent);
     return RequestListComponent;
 }());

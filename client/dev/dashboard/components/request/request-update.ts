@@ -63,7 +63,7 @@ export class UpdateRequestComponent {
   }
 
   updateRequest(request) {
-    //console.log(request);
+    console.log(request);
     this._requestService.updateRequest(request).subscribe((request) => {
       console.log('update successed');
     },

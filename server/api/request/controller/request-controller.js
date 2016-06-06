@@ -56,6 +56,29 @@ static updateRequest(req, res){
       });
     }
   }
+  
+  //controler relate to full-text search function DAO
+  static fullTextSearchRequest(req,res) {
+
+        RequestDAO
+        .fullTextSearchRequest(req.body.text)
+        .then(request => res.status(200).json(request))
+        .catch(error => res.status(400).json(error));
+      
+  }
+  
+  static getRequestByKnowledgeId(req,res) {
+    if(req.params && req.params.id) {
+      RequestDAO
+        .getRequestByKnowledgeId(req.params.id)
+        .then(requests => res.status(200).json(requests))
+        .catch(error => res.status(400).json(error));
+    }else{
+      res.status(404).json({
+        "message"    :   "No Knowledge Id in request"
+      });
+    }
+  }
 
   static deleteRequest(req, res) {
     let _id = req.params.id;
@@ -65,4 +88,26 @@ static updateRequest(req, res){
       .then(() => res.status(200).end())
       .catch(error => res.status(400).json(error));
   }
+  
+  //change status of a request to deactive
+  static changeStatusRequest(req, res){
+    var currentDate = new Date();
+    if(req.params && req.params.id) {
+        RequestDAO.getRequestById(req.params.id)
+          .then(request => {
+            request.modifiedDate = currentDate;
+            request.status = "deactive"
+            
+            RequestDAO.updateRequestById(request)
+              .then(request => res.status(200).json(request))
+              .catch(error => res.status(400).json(error));
+          })
+          .catch(error => res.status(400).json(error));
+    }else{
+      res.status(404).json({
+        "message"    :   "No Request id in request"
+      });
+    }
+  }
+  
 }

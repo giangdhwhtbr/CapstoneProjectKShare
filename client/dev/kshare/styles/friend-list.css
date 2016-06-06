@@ -32,6 +32,7 @@
    overflow: auto;
    min-height: 489px;
    overflow-y: scroll;
+   margin-top: 55px;
  }
 
  .friend-list {

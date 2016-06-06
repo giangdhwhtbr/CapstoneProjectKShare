@@ -18,11 +18,26 @@ module.exports = class KnowledgeController {
         .catch(error => res.status(400).json(error));
   }
 
+  //get knowledge by knowledge ID
   static getKnowledgeById(req,res) {
     if(req.params && req.params.id) {
       KnowledgeDAO
         .getKnowledgeById(req.params.id)
         .then(knowledge => res.status(200).json(knowledge))
+        .catch(error => res.status(400).json(error));
+    }else{
+      res.status(404).json({
+        "message"    :   "No Knowledge ID in request"
+      });
+    }
+  }
+  
+  //get child knowledge from parent knowledge
+  static getKnowledgeByParent(req,res) {
+    if(req.params && req.params.id) {
+      KnowledgeDAO
+        .getKnowledgeByParent(req.params.id)
+        .then(knowledges => res.status(200).json(knowledges))
         .catch(error => res.status(400).json(error));
     }else{
       res.status(404).json({

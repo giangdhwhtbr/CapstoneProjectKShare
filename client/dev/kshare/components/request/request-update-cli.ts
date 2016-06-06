@@ -17,7 +17,7 @@ import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  }
 @Component({
   selector: 'request-update-cli',
   templateUrl: 'client/dev/kshare/templates/request-cli/request-update-cli.html',
-  styleUrls: [],
+  styleUrls:  ['client/dev/kshare/styles/request-list-cli.css'],
   directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES, SideBarComponent, FooterComponent, HeaderComponent]
 })
 
