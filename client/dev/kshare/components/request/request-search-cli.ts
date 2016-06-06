@@ -1,22 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router, RouteSegment } from '@angular/router';
+import { ROUTER_DIRECTIVES, Router, RouteSegment,Routes } from '@angular/router';
 import { Request } from '../../../dashboard/interface/request';
 import { Knowledge } from '../../../dashboard/interface/knowledge';
 
 import { RequestService } from '../../../dashboard/services/requests-service';
-import { HeaderComponent } from '../shared/header';
-import { FooterComponent } from '../shared/footer';
-import { SideBarComponent } from '../shared/sidebar';
-import { FriendListComponent} from '../shared/friend-list';
 
 @Component({
   selector: 'request-search-cli',
   templateUrl: 'client/dev/kshare/templates/request-cli/request-search-cli.html',
   styleUrls: ['client/dev/kshare/styles/request-list-cli.css'],
-  directives: [HeaderComponent,
-    FooterComponent,
-    SideBarComponent,
-    FriendListComponent]
+  directives: [ROUTER_DIRECTIVES]
 })
 
 export class RequestSearchClientComponent {

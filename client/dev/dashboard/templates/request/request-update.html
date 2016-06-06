@@ -1,4 +1,4 @@
-<div class="container" style="min-height:437px">
+<div class="container" id="requestupdate" style="min-height:437px">
   <div class="col-xs-12 col-sm-9 fixEfMenu">
     <div class="panel panel-default card-rq">
       <form role="form" [ngFormModel]="updateRequestFormCli" (ngSubmit)="updateRequest(updateRequestFormCli.value)">
@@ -36,7 +36,7 @@
         <br>
         <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span>Cập nhập</button>
         <!--<button type="reset" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Hủy bỏ</button>-->
-        <a href="/requests"><span class="btn btn-danger glyphicon glyphicon-remove">Hủy</span></a>
+        <a [routerLink]="['/admin/requests']"><span class="btn btn-danger glyphicon glyphicon-remove">Hủy</span></a>
 
         <br>
       </form>

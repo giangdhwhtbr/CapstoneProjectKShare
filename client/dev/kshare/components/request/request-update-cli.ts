@@ -6,11 +6,6 @@ import { Knowledge } from '../../../dashboard/interface/knowledge';
 import { RequestService } from '../../../dashboard/services/requests-service';
 import { KnowledgeService } from '../../../dashboard/services/knowledge-service';
 
-import { HeaderComponent } from '../shared/header';
-import { FooterComponent } from '../shared/footer';
-import { SideBarComponent } from '../shared/sidebar';
-import { FriendListComponent} from '../shared/friend-list';
-
 import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Routes, RouteSegment} from'@angular/router';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
 
@@ -18,7 +13,7 @@ import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  }
   selector: 'request-update-cli',
   templateUrl: 'client/dev/kshare/templates/request-cli/request-update-cli.html',
   styleUrls:  ['client/dev/kshare/styles/request-list-cli.css'],
-  directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES, SideBarComponent, FooterComponent, HeaderComponent]
+  directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES]
 })
 
 export class RequestUpdateClientComponent {

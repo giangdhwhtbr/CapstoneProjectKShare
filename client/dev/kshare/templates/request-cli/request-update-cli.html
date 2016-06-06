@@ -1,4 +1,3 @@
-
 <br>
 <br>
 <br>
@@ -25,6 +24,7 @@
           <div class="form-group" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
             <label for="knowledge">Lĩnh vực</label>
             <select class="form-control" id="knowledge" [ngFormControl]="updateRequestFormCli.controls['knowledgeId']" [ngModel]="knowledgeId">
+                <option>Chọn lĩnh vực</option>
                 <optgroup *ngFor="let k of knowledges" label="{{k.name}}">
                   <option *ngFor="let sub of k.subCategory" value={{sub._id}}>{{sub.name}}</option>
                 </optgroup>
@@ -43,7 +43,7 @@
             <div>
               <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span>Cập nhập</button>
               <!--<button type="reset" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Hủy bỏ</button>-->
-              <a href="/requests"><span class="btn btn-danger glyphicon glyphicon-remove">Hủy</span></a>
+              <a [routerLink]="['/kshare/requests/']"><span class="btn btn-danger glyphicon glyphicon-remove">Hủy</span></a>
             </div>
           </div>
         <br>

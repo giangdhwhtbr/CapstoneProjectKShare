@@ -14,8 +14,6 @@ var requests_service_1 = require('../../services/requests-service');
 var offer_create_1 = require('../../components/offer/offer-create');
 var request_update_1 = require('../../components/request/request-update');
 var auth_services_1 = require('../../services/auth-services');
-var nav_bar_1 = require('../../components/shared/nav-bar');
-var sidebar_1 = require('../../components/shared/sidebar');
 var request_create_1 = require('../../components/request/request-create');
 var RequestListComponent = (function () {
     function RequestListComponent(_requestService, _auth, router) {
@@ -25,11 +23,11 @@ var RequestListComponent = (function () {
         this.pageTitle = 'Request List';
     }
     RequestListComponent.prototype.ngOnInit = function () {
-        var _this = this;
         //Check login -- @@ fucking "ngu dan" way của Giang
-        if (!this._auth.dashboardFilter()) {
-            this.router.navigate(['Home']);
-        }
+        // if (!this._auth.dashboardFilter()) {
+        //   this.router.navigate(['Home']);
+        // }
+        var _this = this;
         this._requestService.getAllRequests().subscribe(function (requests) {
             var formatDate = function (date) {
                 if (date) {
@@ -82,12 +80,10 @@ var RequestListComponent = (function () {
             directives: [offer_create_1.CreateOfferComponent,
                 request_update_1.UpdateRequestComponent,
                 request_create_1.CreateRequestComponent,
-                nav_bar_1.NavbarComponent,
-                sidebar_1.SidebarComponent,
                 offer_create_1.CreateOfferComponent,
                 router_1.ROUTER_DIRECTIVES]
         }), 
-        __metadata('design:paramtypes', [requests_service_1.RequestService, auth_services_1.AuthService, Object])
+        __metadata('design:paramtypes', [requests_service_1.RequestService, auth_services_1.AuthService, router_1.Router])
     ], RequestListComponent);
     return RequestListComponent;
 }());

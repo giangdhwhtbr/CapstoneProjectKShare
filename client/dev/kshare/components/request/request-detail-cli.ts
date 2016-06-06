@@ -19,13 +19,8 @@ import { CreateOfferComponent } from '../../../dashboard/components/offer/offer-
     selector: 'request-detail-cli',
     templateUrl: 'client/dev/kshare/templates/request-cli/request-detail-cli.html',
     styleUrls:  ['client/dev/kshare/styles/request-list-cli.css'],
-    directives: [
-        HeaderComponent,
-        FooterComponent,
-        SideBarComponent,
-        FriendListComponent,
-        ROUTER_DIRECTIVES,
-        CreateOfferComponent]
+    directives: [ROUTER_DIRECTIVES,
+                 CreateOfferComponent]
 })
 
 

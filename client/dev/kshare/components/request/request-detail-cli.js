@@ -13,10 +13,6 @@ var router_1 = require('@angular/router');
 var requests_service_1 = require('../../../dashboard/services/requests-service');
 var offers_service_1 = require('../../../dashboard/services/offers-service');
 var knowledge_service_1 = require('../../../dashboard/services/knowledge-service');
-var header_1 = require('../shared/header');
-var footer_1 = require('../shared/footer');
-var sidebar_1 = require('../shared/sidebar');
-var friend_list_1 = require('../shared/friend-list');
 var offer_create_1 = require('../../../dashboard/components/offer/offer-create');
 var RequestDetailClientComponent = (function () {
     function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, rParam) {
@@ -92,12 +88,7 @@ var RequestDetailClientComponent = (function () {
             selector: 'request-detail-cli',
             templateUrl: 'client/dev/kshare/templates/request-cli/request-detail-cli.html',
             styleUrls: ['client/dev/kshare/styles/request-list-cli.css'],
-            directives: [
-                header_1.HeaderComponent,
-                footer_1.FooterComponent,
-                sidebar_1.SideBarComponent,
-                friend_list_1.FriendListComponent,
-                router_1.ROUTER_DIRECTIVES,
+            directives: [router_1.ROUTER_DIRECTIVES,
                 offer_create_1.CreateOfferComponent]
         }), 
         __metadata('design:paramtypes', [requests_service_1.RequestService, offers_service_1.OfferService, router_1.Router, knowledge_service_1.KnowledgeService, router_1.RouteSegment])

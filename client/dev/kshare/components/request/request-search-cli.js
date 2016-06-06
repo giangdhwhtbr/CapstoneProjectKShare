@@ -11,10 +11,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var requests_service_1 = require('../../../dashboard/services/requests-service');
-var header_1 = require('../shared/header');
-var footer_1 = require('../shared/footer');
-var sidebar_1 = require('../shared/sidebar');
-var friend_list_1 = require('../shared/friend-list');
 var RequestSearchClientComponent = (function () {
     function RequestSearchClientComponent(_requestService, router, rParam) {
         this._requestService = _requestService;
@@ -70,10 +66,7 @@ var RequestSearchClientComponent = (function () {
             selector: 'request-search-cli',
             templateUrl: 'client/dev/kshare/templates/request-cli/request-search-cli.html',
             styleUrls: ['client/dev/kshare/styles/request-list-cli.css'],
-            directives: [header_1.HeaderComponent,
-                footer_1.FooterComponent,
-                sidebar_1.SideBarComponent,
-                friend_list_1.FriendListComponent]
+            directives: [router_1.ROUTER_DIRECTIVES]
         }), 
         __metadata('design:paramtypes', [requests_service_1.RequestService, router_1.Router, router_1.RouteSegment])
     ], RequestSearchClientComponent);

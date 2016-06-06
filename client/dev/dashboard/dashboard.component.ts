@@ -7,12 +7,13 @@ import 'rxjs/Rx';   // Load all features
 import { ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes, Router } from '@angular/router';
 import { RouteConfig, RouterLink} from '@angular/router-deprecated';
 
-import {NavbarComponent} from './components/shared/nav-bar';
-import {SidebarComponent} from './components/shared/sidebar';
-import {KnowledgeComponent} from './components/knowledge/knowledge';
-import {RequestComponent} from "./components/request/requests";
-import {BadwordComponent} from "./components/badword/badword";
-import {UserListComponent} from "./components/users/user-list";
+import { NavbarComponent } from './components/shared/nav-bar';
+import { SidebarComponent } from './components/shared/sidebar';
+import { KnowledgeComponent } from './components/knowledge/knowledge';
+import { RequestListComponent } from "./components/request/requests-list";
+import { UpdateRequestComponent } from "./components/request/request-update";
+import { BadwordComponent } from "./components/badword/badword";
+import { UserListComponent } from "./components/users/user-list";
 
 @Component({
   selector: 'kshare',
@@ -30,7 +31,8 @@ import {UserListComponent} from "./components/users/user-list";
 @Routes ([
   { path: '/users', component: UserListComponent },
   { path: '/badwords', component: BadwordComponent },
-  { path: '/requests', component: RequestComponent },
+  { path: '/requests/:id', component: UpdateRequestComponent },
+  { path: '/requests', component: RequestListComponent },
   { path: '/knowledges', component: KnowledgeComponent}
 ])
 export class DashboardComponent {
