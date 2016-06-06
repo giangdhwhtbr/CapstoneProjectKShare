@@ -11,18 +11,18 @@
         Dashboard</a>
     </li>
     <li *ngIf="pageTitle && pageTitle == 'user'" class="active">
-      <a href="/admin/users">
+      <a [routerLink]="['/admin/users']">
         <span class="glyphicon glyphicon-user"></span>
         Users </a>
     </li>
     <li *ngIf="!pageTitle">
-      <a href="/admin/users">
+      <a [routerLink]="['/admin/users']">
         <span class="glyphicon glyphicon-user"></span>
         Users </a>
     </li>
-    <li><a href="/admin/knowledges"><span class="glyphicon glyphicon-book"></span> Knowledge </a></li>
+    <li><a [routerLink]="['/admin/knowledges']"><span class="glyphicon glyphicon-book"></span> Knowledge </a></li>
     <li>
-      <a href="/admin/requests">
+      <a [routerLink]="['/admin/requests']">
         <span class="glyphicon glyphicon-flag"></span>
         Requests </a>
     </li>
@@ -32,7 +32,7 @@
         KS Space </a>
     </li>
     <li>
-      <a href="/admin/badwords">
+      <a [routerLink]="['/admin/badwords']">
         <span class="glyphicon glyphicon-remove"></span>
         Bad words</a>
     </li>

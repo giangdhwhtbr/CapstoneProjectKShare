@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -11,6 +12,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by GiangDH on 5/18/16.
  */
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var auth_services_1 = require('../../../dashboard/services/auth-services');
 var HeaderComponent = (function () {
     function HeaderComponent(_auth) {
@@ -42,10 +44,10 @@ var HeaderComponent = (function () {
         core_1.Component({
             selector: 'header',
             templateUrl: 'client/dev/kshare/templates/shared/header.html',
+            directives: [router_1.ROUTER_DIRECTIVES]
         }), 
         __metadata('design:paramtypes', [auth_services_1.AuthService])
     ], HeaderComponent);
     return HeaderComponent;
-})();
+}());
 exports.HeaderComponent = HeaderComponent;
-//# sourceMappingURL=header.js.map

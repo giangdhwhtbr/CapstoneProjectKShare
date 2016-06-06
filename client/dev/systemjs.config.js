@@ -33,6 +33,9 @@ System.config({
     '@angular/router': {
       main: 'index'
     },
+    '@angular/router-deprecated': {
+      main: 'index'
+    },
     "rxjs": {
       defaultExtension: 'js'
     },

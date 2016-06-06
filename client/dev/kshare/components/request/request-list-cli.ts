@@ -2,9 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
 import { Request } from '../../../dashboard/interface/request';
 import { RequestService } from '../../../dashboard/services/requests-service';
-import { HeaderComponent } from '../shared/header';
-import { FooterComponent } from '../shared/footer';
-import { SideBarComponent } from '../shared/sidebar';
 import { FriendListComponent} from '../shared/friend-list';
 import  { CreateRequestComponent } from '../../../dashboard/components/request/request-create';
 
@@ -12,11 +9,11 @@ import  { CreateRequestComponent } from '../../../dashboard/components/request/r
   selector: 'request-list-cli',
   templateUrl:'client/dev/kshare/templates/request-cli/request-list-cli.html',
   styleUrls: [],
-  directives: [HeaderComponent,
-               FooterComponent,
-               SideBarComponent,
-               FriendListComponent,
-               CreateRequestComponent]
+  directives: [
+     ROUTER_DIRECTIVES,
+     FriendListComponent,
+     CreateRequestComponent
+  ]
 })
 
 export class RequestListClientComponent {

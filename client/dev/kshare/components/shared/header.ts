@@ -2,12 +2,15 @@
  * Created by GiangDH on 5/18/16.
  */
 import { Component } from '@angular/core';
+import { ROUTER_DIRECTIVES, Routes} from '@angular/router';
+import { RouteConfig, RouterLink} from '@angular/router-deprecated';
 
 import { AuthService } from '../../../dashboard/services/auth-services';
 
 @Component({
   selector: 'header',
   templateUrl: 'client/dev/kshare/templates/shared/header.html',
+  directives: [ROUTER_DIRECTIVES]
 })
 
 export class HeaderComponent {

@@ -3,21 +3,21 @@
  */
 import { Component,OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-import { SideBarComponent} from '../shared/sidebar'
-import { HeaderComponent } from '../shared/header';
-import { FooterComponent } from '../shared/footer';
-import { LoginComponent } from '../shared/login';
-import { RegisterComponent } from '../shared/register';
+//import { SideBarComponent} from '../shared/sidebar'
+//import { HeaderComponent } from '../shared/header';
+//import { FooterComponent } from '../shared/footer';
+//import { LoginComponent } from '../shared/login';
+//import { RegisterComponent } from '../shared/register';
 @Component ({
   selector: 'home',
   templateUrl:'client/dev/kshare/templates/home/home.html',
   styleUrls: ['client/dev/kshare/styles/home.css'],
   directives: [
-    HeaderComponent,
-    FooterComponent,
-    LoginComponent,
-    RegisterComponent,
-    SideBarComponent,
+    //HeaderComponent,
+    //FooterComponent,
+    //LoginComponent,
+    //RegisterComponent,
+    //SideBarComponent,
     ROUTER_DIRECTIVES
   ]
 })

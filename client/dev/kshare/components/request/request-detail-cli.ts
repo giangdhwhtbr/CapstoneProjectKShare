@@ -28,6 +28,7 @@ import { CreateOfferComponent } from '../../../dashboard/components/offer/offer-
         CreateOfferComponent]
 })
 
+
 export class RequestDetailClientComponent {
   pageTitle:string = 'Welcome to Knowledge Sharing Network';
 
