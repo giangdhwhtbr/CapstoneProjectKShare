@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var core_2 = require("@angular/core");
+var router_1 = require("@angular/router");
 var SidebarComponent = (function () {
     function SidebarComponent() {
     }
@@ -21,7 +22,8 @@ var SidebarComponent = (function () {
         core_1.Component({
             selector: 'sidebar',
             templateUrl: 'client/dev/dashboard/templates/shared/sidebar.html',
-            styleUrls: ['client/dev/dashboard/styles/styles.css']
+            styleUrls: ['client/dev/dashboard/styles/styles.css'],
+            directives: [router_1.ROUTER_DIRECTIVES]
         }), 
         __metadata('design:paramtypes', [])
     ], SidebarComponent);

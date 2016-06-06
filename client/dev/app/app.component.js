@@ -16,30 +16,18 @@ var http_1 = require('@angular/http');
 require('rxjs/Rx'); // Load all features
 var router_1 = require('@angular/router');
 /**
- * Components
- */
-var home_1 = require('../kshare/components/home/home');
-var user_list_1 = require('../dashboard/components/users/user-list');
-var user_info_1 = require('../dashboard/components/users/user-info');
-var badword_1 = require('../dashboard/components/badword/badword');
-var badword_update_1 = require('../dashboard/components/badword/badword-update');
-var requests_list_1 = require('../dashboard/components/request/requests-list');
-var request_update_1 = require('../dashboard/components/request/request-update');
-var knowledge_1 = require('../dashboard/components/knowledge/knowledge');
-var knowledge_update_1 = require('../dashboard/components/knowledge/knowledge-update');
-// import { LoggedInRouterOutlet } from './LoginOutletRouter';
-var request_list_cli_1 = require('../kshare/components/request/request-list-cli');
-var request_detail_cli_1 = require('../kshare/components/request/request-detail-cli');
-var request_update_cli_1 = require('../kshare/components/request/request-update-cli');
-var request_search_cli_1 = require('../kshare/components/request/request-search-cli');
+ * Page Components
+ * */
+var dashboard_component_1 = require("../dashboard/dashboard.component");
+var kshare_component_1 = require("../kshare/kshare.component");
 /**
- * Service
- */
-var auth_services_1 = require('../dashboard/services/auth-services');
-var users_services_1 = require('../dashboard/services/users-services');
-var requests_service_1 = require('../dashboard/services/requests-service');
-var knowledge_service_1 = require('../dashboard/services/knowledge-service');
-var offers_service_1 = require('../dashboard/services/offers-service');
+ * Services
+ **/
+var knowledge_service_1 = require("../dashboard/services/knowledge-service");
+var offers_service_1 = require("../dashboard/services/offers-service");
+var requests_service_1 = require("../dashboard/services/requests-service");
+var users_services_1 = require("../dashboard/services/users-services");
+var auth_services_1 = require("../dashboard/services/auth-services");
 var AppComponent = (function () {
     function AppComponent(router) {
         this.router = router;
@@ -48,8 +36,10 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'kshare-app',
-            template: '<router-outlet></router-outlet>',
-            directives: [router_1.ROUTER_DIRECTIVES],
+            templateUrl: 'client/dev/app/app.html',
+            directives: [
+                router_1.ROUTER_DIRECTIVES
+            ],
             providers: [
                 auth_services_1.AuthService,
                 users_services_1.UserService,
@@ -61,19 +51,9 @@ var AppComponent = (function () {
             ]
         }),
         router_1.Routes([
-            { path: '/', component: home_1.HomeComponent },
-            { path: '/admin/users', component: user_list_1.UserListComponent },
-            { path: '/admin/users/:id', component: user_info_1.UserInfoComponent },
-            { path: '/admin/badwords', component: badword_1.BadwordComponent },
-            { path: '/admin/badwords/:id', component: badword_update_1.UpdateBadwordComponent },
-            { path: '/admin/requests', component: requests_list_1.RequestListComponent },
-            { path: '/admin/requests/:id', component: request_update_1.UpdateRequestComponent },
-            { path: '/admin/knowledges', component: knowledge_1.KnowledgeComponent },
-            { path: '/admin/knowledges/:id', component: knowledge_update_1.UpdateKnowledgeComponent },
-            { path: '/requests', component: request_list_cli_1.RequestListClientComponent },
-            { path: '/requests/:id/', component: request_detail_cli_1.RequestDetailClientComponent },
-            { path: '/requests/update/:id', component: request_update_cli_1.RequestUpdateClientComponent },
-            { path: '/requests/search/:type/:id', component: request_search_cli_1.RequestSearchClientComponent }
+            { path: '/', component: kshare_component_1.KshareComponent },
+            { path: '/kshare', component: kshare_component_1.KshareComponent },
+            { path: '/admin', component: dashboard_component_1.DashboardComponent }
         ]), 
         __metadata('design:paramtypes', [router_1.Router])
     ], AppComponent);

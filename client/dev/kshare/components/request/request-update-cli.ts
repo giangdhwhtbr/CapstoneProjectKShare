@@ -73,7 +73,7 @@ export class RequestUpdateClientComponent {
       console.log(error.text());
     }
     );
-    window.location.href = '/requests/'+this.id;
+    //window.location.href = '/kshare/requests/'+this.id;
   }
 
 }

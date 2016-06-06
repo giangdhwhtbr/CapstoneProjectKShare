@@ -9,10 +9,8 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var requests_service_1 = require('../../../dashboard/services/requests-service');
-var header_1 = require('../shared/header');
-var footer_1 = require('../shared/footer');
-var sidebar_1 = require('../shared/sidebar');
 var friend_list_1 = require('../shared/friend-list');
 var request_create_1 = require('../../../dashboard/components/request/request-create');
 var RequestListClientComponent = (function () {
@@ -43,12 +41,12 @@ var RequestListClientComponent = (function () {
         core_1.Component({
             selector: 'request-list-cli',
             templateUrl: 'client/dev/kshare/templates/request-cli/request-list-cli.html',
-            styleUrls: ['client/dev/kshare/styles/request-list-cli.css'],
-            directives: [header_1.HeaderComponent,
-                footer_1.FooterComponent,
-                sidebar_1.SideBarComponent,
+            styleUrls: [],
+            directives: [
+                router_1.ROUTER_DIRECTIVES,
                 friend_list_1.FriendListComponent,
-                request_create_1.CreateRequestComponent]
+                request_create_1.CreateRequestComponent
+            ]
         }), 
         __metadata('design:paramtypes', [requests_service_1.RequestService])
     ], RequestListClientComponent);

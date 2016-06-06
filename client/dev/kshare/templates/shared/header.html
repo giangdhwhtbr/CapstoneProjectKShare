@@ -16,10 +16,10 @@
         <a class="navbar-brand topnav" href="#">UKSN Logo</a>
         <ul class="nav navbar-nav navbar-right">
           <li>
-            <a href="/">Home</a>
+            <a [routerLink]="['/kshare']">Home</a>
           </li>
           <li>
-            <a href="/requests">Request List</a>
+            <a [routerLink]="['/kshare/requests']">Request List</a>
           </li>
           <li *ngIf="roleToken == 'admin' || roleToken == 'manager'">
             <a href="/admin/users">Dashboard</a>

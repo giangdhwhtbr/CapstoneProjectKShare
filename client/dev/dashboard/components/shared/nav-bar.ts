@@ -3,7 +3,8 @@ import {
   Inject
 } from '@angular/core';
 import  { AuthService} from '../../services/auth-services';
-import {Router} from "@angular/router";
+import  {Router} from "@angular/router";
+import  {RouterLink} from "@angular/router-deprecated";
 @Component({
   selector: 'nav-bar',
   templateUrl: 'client/dev/dashboard/templates/shared/nav-bar.html',

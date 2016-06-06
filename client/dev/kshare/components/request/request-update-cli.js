@@ -53,7 +53,7 @@ var RequestUpdateClientComponent = (function () {
         }, function (error) {
             console.log(error.text());
         });
-        window.location.href = '/requests/' + this.id;
+        //window.location.href = '/kshare/requests/'+this.id;
     };
     RequestUpdateClientComponent = __decorate([
         core_1.Component({

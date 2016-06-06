@@ -1,11 +1,9 @@
-<header></header>
 <br>
 <br>
 <br>
 <br>
-<sidebar></sidebar>
-<div class="container" id="request-detail" style="min-height:250px">
-  <!--<div class="col-sm-10">-->
+<div class="container" style="min-height:250px">
+
   <div class="col-xs-12 col-sm-9 fixEfMenu">
     <div class="panel panel-default card-rq">
       <div class="panel-body">
@@ -32,7 +30,8 @@
     </div>
   </div>
   <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-    <a href="/requests/update/{{_id}}"><span class="btn btn-warning glyphicon glyphicon-pencil"></span></a>
+    <a [routerLink]="['/kshare/requests/update/'+_id]"><span
+      class="btn btn-warning glyphicon glyphicon-pencil"></span></a>
     <button class="glyphicon glyphicon-trash btn btn-danger" (click)="deleteRequest(_id)"></button>
     <button class="glyphicon glyphicon-send btn btn-primary" data-toggle="modal" data-target="#modalOfferRequest"></button>
   </div>
@@ -58,5 +57,3 @@
     </div>
   </div>
 </div>
-
-<footer></footer>

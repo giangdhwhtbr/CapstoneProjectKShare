@@ -12,6 +12,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  * Created by GiangDH on 5/18/16.
  */
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var auth_services_1 = require('../../../dashboard/services/auth-services');
 var HeaderComponent = (function () {
     function HeaderComponent(_auth) {
@@ -44,7 +45,8 @@ var HeaderComponent = (function () {
         core_1.Component({
             selector: 'header',
             templateUrl: 'client/dev/kshare/templates/shared/header.html',
-            styleUrls: ['client/dev/kshare/styles/header.css']
+            styleUrls: ['client/dev/kshare/styles/header.css'],
+            directives: [router_1.ROUTER_DIRECTIVES]
         }), 
         __metadata('design:paramtypes', [auth_services_1.AuthService])
     ], HeaderComponent);
