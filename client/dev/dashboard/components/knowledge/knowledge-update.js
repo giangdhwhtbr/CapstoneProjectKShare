@@ -12,9 +12,9 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 var core_1 = require('@angular/core');
-var common_1 = require('@angular/common');
-var knowledge_service_1 = require('../../services/knowledge-service');
+var knowledge_service_1 = require('../../../dashboard/services/knowledge-service');
 var router_1 = require('@angular/router');
+var common_1 = require('@angular/common');
 var UpdateKnowledgeComponent = (function () {
     function UpdateKnowledgeComponent(fb, _knowledgeService, router, rParam) {
         this._knowledgeService = _knowledgeService;
@@ -30,7 +30,8 @@ var UpdateKnowledgeComponent = (function () {
         var _this = this;
         this._knowledgeService.findKnowledgeById(this.id).subscribe(function (knowledge) {
             _this.knowledge = knowledge;
-            _this.name = knowledge.description;
+            _this.name = knowledge.name;
+            _this.description = knowledge.description;
             _this._id = knowledge._id;
         }, function (error) {
             console.log(error.text());
@@ -42,13 +43,12 @@ var UpdateKnowledgeComponent = (function () {
         }, function (error) {
             console.log(error.text());
         });
-        window.location.href = 'admin/knowledges';
     };
     UpdateKnowledgeComponent = __decorate([
         core_1.Component({
             selector: 'knowledge-update',
             templateUrl: 'client/dev/dashboard/templates/knowledge/knowledge-update.html',
-            styleUrls: ['client/dev/dashboard/styles/knowledge-update.css'],
+            styleUrls: ['client/dev/dashboard/styles/styles.css'],
             directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
             providers: [knowledge_service_1.KnowledgeService]
         }),

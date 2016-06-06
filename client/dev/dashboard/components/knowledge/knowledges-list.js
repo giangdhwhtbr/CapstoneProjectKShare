@@ -9,7 +9,10 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var knowledge_service_1 = require('../../services/knowledge-service');
+var knowledge_update_1 = require('../../components/knowledge/knowledge-update');
+var knowledge_create_1 = require('../../components/knowledge/knowledge-create');
 var KnowledgeListComponent = (function () {
     function KnowledgeListComponent(_knowledgeService) {
         this._knowledgeService = _knowledgeService;
@@ -18,19 +21,7 @@ var KnowledgeListComponent = (function () {
     KnowledgeListComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
-            var formatDate = function (date) {
-                if (date) {
-                    var newDate, day, month, year;
-                    year = date.substr(0, 4);
-                    month = date.substr(5, 2);
-                    day = date.substr(8, 2);
-                    return newDate = day + '/' + month + '/' + year;
-                }
-            };
-            for (var i = 0; i < knowledges.length; i++) {
-                knowledges[i].update = formatDate(knowledges[i].update);
-            }
-            _this.knowledges = knowledges;
+            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
         });
     };
     KnowledgeListComponent.prototype.deleteKnowledge = function (id) {
@@ -39,6 +30,7 @@ var KnowledgeListComponent = (function () {
             .deleteKnowledge(id)
             .subscribe(function () {
             _this.knowledges.forEach(function (t, i) {
+                //delete and update table
                 if (t._id === id)
                     return _this.knowledges.splice(i, 1);
             });
@@ -48,10 +40,12 @@ var KnowledgeListComponent = (function () {
         core_1.Component({
             selector: 'knowledge-list',
             templateUrl: 'client/dev/dashboard/templates/knowledge/knowledge-list.html',
-            styleUrls: [
-                'client/dev/dashboard/styles/knowledge-list.css',
-                'client/dev/dashboard/styles/styles.css',
-            ]
+            styleUrls: ['client/dev/dashboard/styles/knowledge-list.css',
+                'client/dev/dashboard/styles/styles.css'],
+            directives: [
+                knowledge_update_1.UpdateKnowledgeComponent,
+                knowledge_create_1.CreateKnowledgeComponent,
+                router_1.ROUTER_DIRECTIVES]
         }), 
         __metadata('design:paramtypes', [knowledge_service_1.KnowledgeService])
     ], KnowledgeListComponent);

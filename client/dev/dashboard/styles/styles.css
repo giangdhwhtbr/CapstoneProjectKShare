@@ -994,7 +994,7 @@ h1.page-header {
   overflow: scroll;
 }
 
-#requestupdate{
+#requestupdate,#knowledgeUpdate{
     padding-left: 20%;
     padding-top: 10%;
 }

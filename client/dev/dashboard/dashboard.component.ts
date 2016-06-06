@@ -9,9 +9,11 @@ import { RouteConfig, RouterLink} from '@angular/router-deprecated';
 
 import { NavbarComponent } from './components/shared/nav-bar';
 import { SidebarComponent } from './components/shared/sidebar';
-import { KnowledgeComponent } from './components/knowledge/knowledge';
+import { UpdateKnowledgeComponent } from './components/knowledge/knowledge-update';
+import { KnowledgeListComponent } from './components/knowledge/knowledges-list';
 import { RequestListComponent } from "./components/request/requests-list";
 import { UpdateRequestComponent } from "./components/request/request-update";
+import { UpdateBadwordComponent } from "./components/badword/badword-update";
 import { BadwordComponent } from "./components/badword/badword";
 import { UserListComponent } from "./components/users/user-list";
 
@@ -30,12 +32,13 @@ import { UserListComponent } from "./components/users/user-list";
 })
 @Routes ([
   { path: '/users', component: UserListComponent },
+  { path: '/badwords/:id', component: UpdateBadwordComponent },
   { path: '/badwords', component: BadwordComponent },
   { path: '/requests/:id', component: UpdateRequestComponent },
   { path: '/requests', component: RequestListComponent },
-  { path: '/knowledges', component: KnowledgeComponent}
+  { path: '/knowledges/:id', component: UpdateKnowledgeComponent },
+  { path: '/knowledges', component: KnowledgeListComponent}
 ])
 export class DashboardComponent {
 
 }
-
