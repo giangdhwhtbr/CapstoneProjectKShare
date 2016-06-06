@@ -21,7 +21,7 @@ var RequestSearchClientComponent = (function () {
     }
     RequestSearchClientComponent.prototype.ngOnInit = function () {
         var _this = this;
-        console.log(this.type);
+        console.log(this.search);
         //get request from children category
         if (this.type === "subcategory") {
             this._requestService.getRequestByKnowledgeId(this.id).subscribe(function (requests) {
@@ -61,6 +61,10 @@ var RequestSearchClientComponent = (function () {
             });
         }
     };
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', String)
+    ], RequestSearchClientComponent.prototype, "search", void 0);
     RequestSearchClientComponent = __decorate([
         core_1.Component({
             selector: 'request-search-cli',

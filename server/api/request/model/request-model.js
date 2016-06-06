@@ -14,10 +14,9 @@ const _requestSchema = new Schema ({
     knowledgeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Knowledge',required: true }
 });
 
-// _requestSchema.plugin(textSearch);
+ _requestSchema.plugin(textSearch);
 
 _requestSchema.index({
-    title: 'text',
     description: 'text'
 });
 

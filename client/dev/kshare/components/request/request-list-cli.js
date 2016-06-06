@@ -13,6 +13,7 @@ var router_1 = require('@angular/router');
 var requests_service_1 = require('../../../dashboard/services/requests-service');
 var friend_list_1 = require('../shared/friend-list');
 var request_create_1 = require('../../../dashboard/components/request/request-create');
+var request_search_cli_1 = require('../../../kshare/components/request/request-search-cli');
 var RequestListClientComponent = (function () {
     function RequestListClientComponent(_requestService) {
         this._requestService = _requestService;
@@ -20,6 +21,7 @@ var RequestListClientComponent = (function () {
     }
     RequestListClientComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.hide = false;
         this._requestService.getAllRequests().subscribe(function (requests) {
             var formatDate = function (date) {
                 if (date) {
@@ -37,6 +39,13 @@ var RequestListClientComponent = (function () {
             _this.requests = requests;
         });
     };
+    RequestListClientComponent.prototype.search = function (search) {
+        var _this = this;
+        this._requestService.searchRequest(search).subscribe(function (requests) {
+            _this.searchs = requests;
+            _this.hide = true;
+        });
+    };
     RequestListClientComponent = __decorate([
         core_1.Component({
             selector: 'request-list-cli',
@@ -45,7 +54,8 @@ var RequestListClientComponent = (function () {
             directives: [
                 router_1.ROUTER_DIRECTIVES,
                 friend_list_1.FriendListComponent,
-                request_create_1.CreateRequestComponent
+                request_create_1.CreateRequestComponent,
+                request_search_cli_1.RequestSearchClientComponent
             ]
         }), 
         __metadata('design:paramtypes', [requests_service_1.RequestService])

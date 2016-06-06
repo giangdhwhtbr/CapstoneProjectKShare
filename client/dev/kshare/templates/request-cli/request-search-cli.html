@@ -9,7 +9,7 @@
     <div class="panel panel-default card-rq" *ngFor="let request of requests">
       <div class="panel-body">
         <a [routerLink]="['/kshare/requests/'+ request._id]">
-          <p class="lead">Tìm người giảng bài</p>
+          <p class="lead">Tìm người giảng bài</p> {{search}}
         </a>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
           Tiêu đề : {{request.title}}

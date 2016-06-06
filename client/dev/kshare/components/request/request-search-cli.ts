@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router, RouteSegment,Routes } from '@angular/router';
 import { Request } from '../../../dashboard/interface/request';
 import { Knowledge } from '../../../dashboard/interface/knowledge';
@@ -13,6 +13,7 @@ import { RequestService } from '../../../dashboard/services/requests-service';
 })
 
 export class RequestSearchClientComponent {
+  @Input() search: string;
   pageTitle: string = 'Welcome to Knowledge Sharing Network';
 
   id: string;
@@ -26,7 +27,8 @@ export class RequestSearchClientComponent {
   knowledges: Knowledge[];
 
   ngOnInit(): void {
-    console.log(this.type);
+    console.log(this.search);
+    
     //get request from children category
     if (this.type === "subcategory") {
       this._requestService.getRequestByKnowledgeId(this.id).subscribe(

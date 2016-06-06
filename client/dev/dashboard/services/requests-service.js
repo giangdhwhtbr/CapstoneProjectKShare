@@ -16,6 +16,7 @@ var RequestService = (function () {
         this._http = _http;
         this._requestsUrl = '/api/requests/:id';
         this._getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
+        this._searchRequetsUrl = '/api/requests-search/:id';
     }
     RequestService.prototype.getAllRequests = function () {
         return this._http.get(this._requestsUrl.replace(':id', ''))
@@ -76,6 +77,18 @@ var RequestService = (function () {
         return this._http.get(this._getKnowledgeByParentUrl.replace(':id', id))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
+    };
+    //search request
+    RequestService.prototype.searchRequest = function (search) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _search = JSON.stringify({
+            text: search
+        });
+        return this._http
+            .post(this._searchRequetsUrl.replace(':id', ''), _search, options)
+            .map(function (r) { return r.json(); });
     };
     RequestService.prototype.handleError = function (error) {
         console.error(error);
