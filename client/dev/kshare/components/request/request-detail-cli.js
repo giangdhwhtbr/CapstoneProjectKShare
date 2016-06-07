@@ -13,13 +13,15 @@ var router_1 = require('@angular/router');
 var requests_service_1 = require('../../../dashboard/services/requests-service');
 var offers_service_1 = require('../../../dashboard/services/offers-service');
 var knowledge_service_1 = require('../../../dashboard/services/knowledge-service');
+var kspace_service_1 = require('../../../dashboard/services/kspace-service');
 var offer_create_1 = require('../../../dashboard/components/offer/offer-create');
 var RequestDetailClientComponent = (function () {
-    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, rParam) {
+    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, rParam, _kspaceService) {
         this._requestService = _requestService;
         this._offerService = _offerService;
         this.router = router;
         this._knowledgeService = _knowledgeService;
+        this._kspaceService = _kspaceService;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
         this.id = rParam.getParam('id');
     }
@@ -80,7 +82,21 @@ var RequestDetailClientComponent = (function () {
             .subscribe(function () {
             console.log("delete sucess");
         });
-        window.location.href = '/requests';
+        window.location.href = 'kshare/requests';
+    };
+    RequestDetailClientComponent.prototype.addKshare = function (learner, lecturer, requestId, offerId) {
+        var _this = this;
+        // this.kspace.learner = learner;
+        // this.kspace.lecturer = lecturer;
+        // this.kspace.requestId = requestId;
+        // this.kspace.offerId = offerId;
+        // console.log(this.kspace);
+        this._kspaceService
+            .addKSpace(learner, lecturer, requestId, offerId)
+            .subscribe(function (r) {
+            console.log(r);
+            _this.router.navigateByUrl('/kshare/kspace/' + r._id);
+        });
     };
     RequestDetailClientComponent = __decorate([
         core_1.Component({
@@ -90,7 +106,7 @@ var RequestDetailClientComponent = (function () {
             directives: [router_1.ROUTER_DIRECTIVES,
                 offer_create_1.CreateOfferComponent]
         }), 
-        __metadata('design:paramtypes', [requests_service_1.RequestService, offers_service_1.OfferService, router_1.Router, knowledge_service_1.KnowledgeService, router_1.RouteSegment])
+        __metadata('design:paramtypes', [requests_service_1.RequestService, offers_service_1.OfferService, router_1.Router, knowledge_service_1.KnowledgeService, router_1.RouteSegment, kspace_service_1.KSpaceService])
     ], RequestDetailClientComponent);
     return RequestDetailClientComponent;
 }());

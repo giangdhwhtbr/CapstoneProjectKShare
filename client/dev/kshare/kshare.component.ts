@@ -28,6 +28,8 @@ import { RequestListClientComponent } from "./components/request/request-list-cl
 import { RequestDetailClientComponent } from "./components/request/request-detail-cli";
 import { RequestUpdateClientComponent } from "./components/request/request-update-cli";
 import { RequestSearchClientComponent } from "./components/request/request-search-cli";
+import { KSpaceComponent } from "./components/kspace/kspace";
+
 
 @Component({
   selector: 'kshare-app',
@@ -38,12 +40,14 @@ import { RequestSearchClientComponent } from "./components/request/request-searc
     SideBarComponent,
     FooterComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    KSpaceComponent
   ]
 })
 
 @Routes([
   { path: '/', component:HomeComponent},
+  { path: '/kspace/:id', component: KSpaceComponent},
   { path: '/requests/search/:type/:id', component:RequestSearchClientComponent},
   { path: '/requests/update/:id', component:RequestUpdateClientComponent},
   { path: '/requests/:id', component:RequestDetailClientComponent},

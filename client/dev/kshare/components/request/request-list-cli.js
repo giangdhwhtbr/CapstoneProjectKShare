@@ -16,12 +16,23 @@ var request_create_1 = require('../../../dashboard/components/request/request-cr
 var request_search_cli_1 = require('../../../kshare/components/request/request-search-cli');
 var auth_services_1 = require('../../../dashboard/services/auth-services');
 var router_2 = require("@angular/router");
+var ng2_pagination_1 = require('ng2-pagination');
 var RequestListClientComponent = (function () {
     function RequestListClientComponent(_requestService, _auth, router) {
         this._requestService = _requestService;
         this._auth = _auth;
         this.router = router;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
+        this.configRq = {
+            id: 'rq',
+            itemsPerPage: 10,
+            currentPage: 1
+        };
+        this.configRs = {
+            id: 'rs',
+            itemsPerPage: 10,
+            currentPage: 1
+        };
         this.roleToken = localStorage.getItem('userrole');
         this.userToken = localStorage.getItem('username');
     }
@@ -58,13 +69,16 @@ var RequestListClientComponent = (function () {
         core_1.Component({
             selector: 'request-list-cli',
             templateUrl: 'client/dev/kshare/templates/request-cli/request-list-cli.html',
-            styleUrls: [],
+            styleUrls: ['client/dev/kshare/styles/request-list-cli.css'],
             directives: [
+                ng2_pagination_1.PaginationControlsCmp,
                 router_1.ROUTER_DIRECTIVES,
                 friend_list_1.FriendListComponent,
                 request_create_1.CreateRequestComponent,
                 request_search_cli_1.RequestSearchClientComponent
-            ]
+            ],
+            providers: [ng2_pagination_1.PaginationService],
+            pipes: [ng2_pagination_1.PaginatePipe]
         }), 
         __metadata('design:paramtypes', [requests_service_1.RequestService, auth_services_1.AuthService, router_2.Router])
     ], RequestListClientComponent);

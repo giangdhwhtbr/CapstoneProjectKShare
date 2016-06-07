@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Routes, RouteSegment} from'@angular/router';
 
 import { Request } from '../../../dashboard/interface/request';
+import { KSpace } from '../../../dashboard/interface/kspace';
+
 import { Offer } from '../../../dashboard/interface/offer';
 import { Knowledge } from '../../../dashboard/interface/knowledge';
 import { RequestService } from '../../../dashboard/services/requests-service';
 import { OfferService } from '../../../dashboard/services/offers-service';
 import { KnowledgeService } from '../../../dashboard/services/knowledge-service';
+import { KSpaceService } from '../../../dashboard/services/kspace-service';
+
 
 import { HeaderComponent } from '../shared/header';
 import { FooterComponent } from '../shared/footer';
@@ -29,7 +33,7 @@ export class RequestDetailClientComponent {
   pageTitle:string = 'Welcome to Knowledge Sharing Network';
 
   constructor(private _requestService:RequestService, private _offerService:OfferService, public router:Router,
-              private _knowledgeService:KnowledgeService, rParam:RouteSegment) {
+              private _knowledgeService:KnowledgeService, rParam:RouteSegment, private _kspaceService: KSpaceService) {
     this.id = rParam.getParam('id');
   }
 
@@ -37,6 +41,8 @@ export class RequestDetailClientComponent {
 
   knowledge:Knowledge;
   knowledgeName:string;
+
+  private kspace:KSpace;
 
   request:Request;
   _id:string;
@@ -121,7 +127,22 @@ export class RequestDetailClientComponent {
       .subscribe(() => {
         console.log("delete sucess");
       })
-    window.location.href = '/requests';
+    window.location.href = 'kshare/requests';
+  }
+
+  addKshare(learner:string, lecturer:string, requestId:string, offerId:string):void {
+
+    // this.kspace.learner = learner;
+    // this.kspace.lecturer = lecturer;
+    // this.kspace.requestId = requestId;
+    // this.kspace.offerId = offerId;
+    // console.log(this.kspace);
+    this._kspaceService
+      .addKSpace(learner,lecturer,requestId,offerId)
+      .subscribe((r) => {
+        console.log(r);
+        this.router.navigateByUrl('/kshare/kspace/'+r._id);
+      })
   }
 
 }
