@@ -42,6 +42,18 @@ userSchema.statics.getUserById = (id) => {
   });
 }
 
+userSchema.statics.getUserByEmail = (email) => {
+  return new Promise((resolve, reject) => {
+    if(!_.isString(email)){
+      return reject(new TypeError('Not valid email.'));
+    }
+    User.findOne({ 'email' : email })
+        .exec((err, user) => {
+          err ? reject(err) : resolve(user);
+        });
+  });
+}
+
 userSchema.statics.createNew = (user) => {
   return new Promise((resolve, reject) => {
     if (!_.isObject(user)) {

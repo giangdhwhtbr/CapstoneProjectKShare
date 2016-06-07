@@ -23,15 +23,17 @@ var validatePass = function(password){
   return pattern.test(password);
 }
 const userSchema = new mongoose.Schema({
-  firstName: {
-    type: String,
-    trim: true,
-    default: ''
-  },
-  lastName: {
-    type: String,
-    trim: true,
-    default: ''
+  name : {
+    firstName: {
+      type: String,
+      trim: true,
+      default: ''
+    },
+    lastName: {
+      type: String,
+      trim: true,
+      default: ''
+    }
   },
   displayName: {
     type: String,
@@ -69,6 +71,25 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Role can not blank'],
     validate: [validateRole, "Role is not valid, try again!"]
   },
+  knowledgeId: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Knowledge',required: true
+    }
+  ],
+  level:{
+    type: Number,
+    min: 1,
+    max: 10
+  },
+  rateAve:{
+    type: Number,
+    min: 0,
+    max: 5
+  },
+  status:{
+    type: Boolean
+  },
   salt: {
     type: String,
   },
@@ -80,7 +101,8 @@ const userSchema = new mongoose.Schema({
   },
   resetPasswordExpires: {
     type: Date
-  }
+  },
+  lastAccessedAt:{type:Date}
 });
 
 /**

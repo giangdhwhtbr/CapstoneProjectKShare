@@ -35,11 +35,6 @@ export class UserListComponent {
   }
 
   ngOnInit(): void {
-    //Check login -- @@ fucking "ngu dan" way
-    if(!this._auth.dashboardFilter()){
-      this.router.navigate(['/']);
-    }
-    
     this._userService.getAllUsers().subscribe(
         (users) => {
           var formatDate = function (date){

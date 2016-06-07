@@ -1,7 +1,7 @@
 "use strict";
 
 const mongoose = require('mongoose');
-const textSearch = require('mongoose-text-search');
+//const textSearch = require('mongoose-text-search');
 var Schema = mongoose.Schema;
 
 const _requestSchema = new Schema ({
@@ -14,7 +14,7 @@ const _requestSchema = new Schema ({
     knowledgeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Knowledge',required: true }
 });
 
- _requestSchema.plugin(textSearch);
+ //_requestSchema.plugin(textSearch);
 
 _requestSchema.index({
     description: 'text'

@@ -42,6 +42,8 @@ var LoginComponent = (function () {
                 _this.userValid = null;
             }
             else {
+                localStorage.setItem('username', res.username);
+                localStorage.setItem('role', res.role);
                 window.location.reload();
             }
         }, function (error) {
@@ -53,6 +55,7 @@ var LoginComponent = (function () {
             selector: 'login',
             templateUrl: 'client/dev/kshare/templates/shared/login.html',
             styleUrls: ['client/dev/kshare/styles/login.css'],
+            directives: [router_1.ROUTER_DIRECTIVES, common_1.CORE_DIRECTIVES, common_1.FORM_DIRECTIVES]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(auth_services_1.AuthService)), 

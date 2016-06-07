@@ -23,6 +23,6 @@ export class NavbarComponent {
         this._auth.logoutClient()
       }
     });
-    this.router.navigate(['Home']);
+    this.router.navigate(['/']);
   }
 }

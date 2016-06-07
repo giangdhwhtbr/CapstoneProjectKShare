@@ -31,14 +31,7 @@ var AuthService = (function () {
         });
         var usertoken = user.username;
         return this._http.post(this._loginUrl, _user, options)
-            .map(function (res) { return res.json(); })
-            .map(function (res) {
-            if (res._id) {
-                localStorage.setItem('username', res.username);
-                localStorage.setItem('userrole', res.role);
-            }
-            return res;
-        });
+            .map(function (res) { return res.json(); });
     };
     AuthService.prototype.register = function (user) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
