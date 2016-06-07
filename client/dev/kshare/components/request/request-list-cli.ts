@@ -8,6 +8,7 @@ import { RequestSearchClientComponent} from '../../../kshare/components/request/
 import { AuthService } from '../../../dashboard/services/auth-services';
 import { Router } from "@angular/router";
 
+
 @Component ({
   selector: 'request-list-cli',
   templateUrl:'client/dev/kshare/templates/request-cli/request-list-cli.html',
@@ -24,18 +25,19 @@ export class RequestListClientComponent {
   pageTitle: string = 'Welcome to Knowledge Sharing Network';
   text: string;
   hide: boolean;
+  roleToken:string;
+  userToken:string;
   
   constructor(private _requestService: RequestService,  private _auth:AuthService, private router: Router){
-
+    this.roleToken = localStorage.getItem('userrole');
+    this.userToken = localStorage.getItem('username');
   }
   requests: Request[];
   searchs: Request[];
 
   ngOnInit(): void {
-    //Check login -- @@ fucking "ngu dan" way
-    if(!this._auth.dashboardFilter()){
-      this.router.navigate(['/']);
-    }
+    console.log(this.roleToken);
+    console.log(this.userToken);
     
     this.hide = false;
     this._requestService.getAllRequests().subscribe((requests) => {

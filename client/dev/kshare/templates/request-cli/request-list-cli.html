@@ -10,7 +10,7 @@
     <button type="submit" (click)="search(text.value)" class="btn btn-primary btn-small glyphicon glyphicon-search"></button>
     <br>
     <br>
-    <button type="button" class="btn btn-primary btn-small" data-toggle="modal" data-target="#modalCreateRequest">
+    <button *ngIf="userToken != null" type="button" class="btn btn-primary btn-small" data-toggle="modal" data-target="#modalCreateRequest">
                 Create Request
   </button>
   </div>
