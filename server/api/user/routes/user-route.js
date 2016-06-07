@@ -48,8 +48,9 @@ module.exports = class userRoutes {
       .get(function(req,res){
         if(req.session.user){
           res.status(200).json({login:true});
+        }else{
+          res.status(200).json({login:false});
         }
-        res.status(200).json({login:false});
       });
     router
       .route('/api/resetPassword/:email')

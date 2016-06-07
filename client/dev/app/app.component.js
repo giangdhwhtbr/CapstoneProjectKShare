@@ -14,6 +14,7 @@ var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/Rx'); // Load all features
 var router_1 = require('@angular/router');
+var LogginRouterOutlet_1 = require('./LogginRouterOutlet');
 /**
  * Page Components
  * */
@@ -37,7 +38,8 @@ var AppComponent = (function () {
             selector: 'kshare-app',
             templateUrl: 'client/dev/app/app.html',
             directives: [
-                router_1.ROUTER_DIRECTIVES
+                router_1.ROUTER_DIRECTIVES,
+                LogginRouterOutlet_1.LoggedinRouterOutlet
             ],
             providers: [
                 auth_services_1.AuthService,

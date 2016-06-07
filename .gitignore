@@ -1,6 +1,7 @@
 .idea
 coverage
 node_modules
+client/dev/demo/*
 typings
 client/dev/index.js
 client/dev/*.map

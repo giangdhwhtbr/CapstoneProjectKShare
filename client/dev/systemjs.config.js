@@ -6,7 +6,9 @@ System.config({
   paths: {
     '@angular/*': 'node_modules/@angular/*',
     "rxjs/*": "node_modules/rxjs/*",
-    "reflect-metadata": "node_modules/reflect-metadata"
+    "reflect-metadata": "node_modules/reflect-metadata",
+    "angular2-jwt":"node_modules/angular2-jwt",
+    "simple-peer/*":"node_modules/simple-peer"
   },
   map: {
     "rxjs": "node_modules/rxjs"
@@ -35,6 +37,9 @@ System.config({
     },
     '@angular/router-deprecated': {
       main: 'index'
+    },
+    'angular2-jwt':{
+      main: 'angular2-jwt'
     },
     "rxjs": {
       defaultExtension: 'js'

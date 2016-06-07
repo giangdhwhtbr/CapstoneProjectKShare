@@ -22,7 +22,6 @@ var HeaderComponent = (function () {
     HeaderComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._auth.isLoggedIn().subscribe(function (status) {
-            console.log(status);
             if (status.login == false) {
                 _this.loginToken = false;
             }

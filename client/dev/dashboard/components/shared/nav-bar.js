@@ -22,7 +22,7 @@ var NavbarComponent = (function () {
                 _this._auth.logoutClient();
             }
         });
-        this.router.navigate(['Home']);
+        this.router.navigate(['/']);
     };
     NavbarComponent = __decorate([
         core_1.Component({
