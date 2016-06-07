@@ -8,7 +8,7 @@ import {Router, RouterOutlet, ComponentInstruction} from '@angular/router-deprec
   selector: 'router-outlet'
 })
 
-export class LoggedinRouterOutlet extends RouterOutlet {
+export class LogginRouterOutlet extends RouterOutlet {
   publicRoutes: any;
   private parentRouter: Router;
 
@@ -24,7 +24,6 @@ export class LoggedinRouterOutlet extends RouterOutlet {
 
   active(instruction: ComponentInstruction){
     let url = instruction.urlPath;
-    console.log(url);
     if(this._canActive(url) == false){
       this.parentRouter.navigateByUrl('/');
     }
