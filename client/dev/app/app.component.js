@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -15,7 +14,7 @@ var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/Rx'); // Load all features
 var router_1 = require('@angular/router');
-var LogginRouterOutlet_1 = require('./LogginRouterOutlet');
+var LoggedinRouterOutlet_1 = require('./LoggedinRouterOutlet');
 /**
  * Page Components
  * */
@@ -40,7 +39,7 @@ var AppComponent = (function () {
             templateUrl: 'client/dev/app/app.html',
             directives: [
                 router_1.ROUTER_DIRECTIVES,
-                LogginRouterOutlet_1.LoggedinRouterOutlet
+                LoggedinRouterOutlet_1.LoggedinRouterOutlet
             ],
             providers: [
                 auth_services_1.AuthService,
@@ -60,5 +59,6 @@ var AppComponent = (function () {
         __metadata('design:paramtypes', [router_1.Router])
     ], AppComponent);
     return AppComponent;
-}());
+})();
 exports.AppComponent = AppComponent;
+//# sourceMappingURL=app.component.js.map

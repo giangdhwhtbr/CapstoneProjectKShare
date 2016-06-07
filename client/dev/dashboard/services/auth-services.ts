@@ -51,14 +51,14 @@ export class AuthService {
   }
   logoutClient() {
     localStorage.removeItem('username');
-    localStorage.removeItem('userrole');
+    localStorage.removeItem('role');
   }
   isLoggedIn(): Observable<string[]> {
    return this._http.get(this._checkLoginUrl).map((res)=>res.json()).catch(this.handleError);
   }
 
   dashboardFilter(){
-    let roleToken = localStorage.getItem('userrole');
+    let roleToken = localStorage.getItem('role');
 
     if(!roleToken){
       return false;

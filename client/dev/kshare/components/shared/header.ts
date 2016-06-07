@@ -35,6 +35,7 @@ export class HeaderComponent {
   }
   logout(): void {
     this._auth.logout().subscribe((status)=>{
+      console.log(status.login);
       if(status.login == false){
         this._auth.logoutClient()
       }

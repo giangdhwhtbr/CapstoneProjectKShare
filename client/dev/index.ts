@@ -30,3 +30,7 @@ bootstrap(
     })
   ]
 );
+
+//import {DemoComponent} from './demo/demo';
+//
+//bootstrap(DemoComponent);

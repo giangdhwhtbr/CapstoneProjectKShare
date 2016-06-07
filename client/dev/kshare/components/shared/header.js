@@ -34,6 +34,7 @@ var HeaderComponent = (function () {
     HeaderComponent.prototype.logout = function () {
         var _this = this;
         this._auth.logout().subscribe(function (status) {
+            console.log(status.login);
             if (status.login == false) {
                 _this._auth.logoutClient();
             }
