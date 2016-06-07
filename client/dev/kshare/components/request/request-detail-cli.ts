@@ -45,6 +45,7 @@ export class RequestDetailClientComponent {
   status:string;
   createdAt:string;
   knowledgeId:string;
+  user:string;
 
   offers:Offer[];
 
@@ -68,6 +69,7 @@ export class RequestDetailClientComponent {
         this.description = request.description;
         this._id = request._id;
         this.status = request.status;
+        this.user = request.user;
         this.createdAt = formatDate(request.createdAt);
 
         //get knowledge name by knowledgeId
@@ -110,8 +112,6 @@ export class RequestDetailClientComponent {
         console.log(error.text());
       }
     );
-    //console offers
-    //console.log(this.offers);
   }
 
   deleteRequest(id:String) {

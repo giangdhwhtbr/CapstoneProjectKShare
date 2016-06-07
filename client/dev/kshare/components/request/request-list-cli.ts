@@ -5,6 +5,8 @@ import { RequestService } from '../../../dashboard/services/requests-service';
 import { FriendListComponent} from '../shared/friend-list';
 import { CreateRequestComponent } from '../../../dashboard/components/request/request-create';
 import { RequestSearchClientComponent} from '../../../kshare/components/request/request-search-cli';
+import { AuthService } from '../../../dashboard/services/auth-services';
+import { Router } from "@angular/router";
 
 @Component ({
   selector: 'request-list-cli',
@@ -23,13 +25,18 @@ export class RequestListClientComponent {
   text: string;
   hide: boolean;
   
-  constructor(private _requestService: RequestService){
+  constructor(private _requestService: RequestService,  private _auth:AuthService, private router: Router){
 
   }
   requests: Request[];
   searchs: Request[];
 
   ngOnInit(): void {
+    //Check login -- @@ fucking "ngu dan" way
+    if(!this._auth.dashboardFilter()){
+      this.router.navigate(['/']);
+    }
+    
     this.hide = false;
     this._requestService.getAllRequests().subscribe((requests) => {
       var formatDate = function (date){

@@ -42,6 +42,7 @@ var RequestDetailClientComponent = (function () {
             _this.description = request.description;
             _this._id = request._id;
             _this.status = request.status;
+            _this.user = request.user;
             _this.createdAt = formatDate(request.createdAt);
             //get knowledge name by knowledgeId
             _this._knowledgeService.findKnowledgeById(_this.knowledgeId).subscribe(function (knowledge) {
@@ -71,8 +72,6 @@ var RequestDetailClientComponent = (function () {
         }, function (error) {
             console.log(error.text());
         });
-        //console offers
-        //console.log(this.offers);
     };
     RequestDetailClientComponent.prototype.deleteRequest = function (id) {
         console.log(id);

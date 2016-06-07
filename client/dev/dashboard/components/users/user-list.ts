@@ -8,7 +8,7 @@ import  { User } from '../../interface/user';
 import  { UserService} from '../../services/users-services';
 import  { AuthService} from '../../services/auth-services';
 import  { CreateUserComponent } from './user-create';
-import  {Router} from "@angular/router";
+import  { Router } from "@angular/router";
 @Component({
   selector: 'user-list',
   templateUrl: 'client/dev/dashboard/templates/users/user-list.html',
@@ -37,7 +37,7 @@ export class UserListComponent {
   ngOnInit(): void {
     //Check login -- @@ fucking "ngu dan" way
     if(!this._auth.dashboardFilter()){
-      this.router.navigate(['Home']);
+      this.router.navigate(['/']);
     }
     
     this._userService.getAllUsers().subscribe(

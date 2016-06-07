@@ -23,11 +23,11 @@ var RequestListComponent = (function () {
         this.pageTitle = 'Request List';
     }
     RequestListComponent.prototype.ngOnInit = function () {
-        //Check login -- @@ fucking "ngu dan" way của Giang
-        // if (!this._auth.dashboardFilter()) {
-        //   this.router.navigate(['Home']);
-        // }
         var _this = this;
+        // Check login -- @@ fucking "ngu dan" way của Giang
+        if (!this._auth.dashboardFilter()) {
+            this.router.navigate(['Home']);
+        }
         this._requestService.getAllRequests().subscribe(function (requests) {
             var formatDate = function (date) {
                 if (date) {

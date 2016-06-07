@@ -5,7 +5,7 @@ const textSearch = require('mongoose-text-search');
 var Schema = mongoose.Schema;
 
 const _requestSchema = new Schema ({
-    userId: { type: String },
+    user: { type: String, required: true },
     title: { type: String, required: true, trim: true },
     createdAt: { type: Date, default: Date.now },
     description: { type: String, required: true, trim: true },

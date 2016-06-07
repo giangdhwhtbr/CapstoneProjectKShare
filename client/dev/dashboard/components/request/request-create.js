@@ -8,18 +8,27 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var core_1 = require('@angular/core');
 var knowledge_service_1 = require('../../services/knowledge-service');
 var common_1 = require('@angular/common');
 var requests_service_1 = require('../../services/requests-service');
+var auth_services_1 = require('../../../dashboard/services/auth-services');
+var router_1 = require('@angular/router');
 var CreateRequestComponent = (function () {
-    function CreateRequestComponent(fb, _requestService, _knowledgeService) {
+    function CreateRequestComponent(fb, _requestService, _knowledgeService, _authService) {
         this._requestService = _requestService;
         this._knowledgeService = _knowledgeService;
+        this._authService = _authService;
+        this.user = localStorage.getItem('username');
+        this.roleToken = localStorage.getItem('userrole');
         this.requestForm = fb.group({
             "knowledgeId": [""],
             "title": [""],
-            "description": [""]
+            "description": [""],
+            "user": [""]
         });
     }
     CreateRequestComponent.prototype.ngOnInit = function () {
@@ -43,9 +52,11 @@ var CreateRequestComponent = (function () {
             selector: 'request-create',
             templateUrl: 'client/dev/dashboard/templates/request/request-create.html',
             styleUrls: ['client/dev/dashboard/styles/request-create.css'],
-            directives: [common_1.FORM_DIRECTIVES]
-        }), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, requests_service_1.RequestService, knowledge_service_1.KnowledgeService])
+            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
+        }),
+        __param(0, core_1.Inject(common_1.FormBuilder)),
+        __param(1, core_1.Inject(requests_service_1.RequestService)), 
+        __metadata('design:paramtypes', [common_1.FormBuilder, requests_service_1.RequestService, knowledge_service_1.KnowledgeService, auth_services_1.AuthService])
     ], CreateRequestComponent);
     return CreateRequestComponent;
 }());

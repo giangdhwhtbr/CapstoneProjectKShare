@@ -14,13 +14,21 @@ var requests_service_1 = require('../../../dashboard/services/requests-service')
 var friend_list_1 = require('../shared/friend-list');
 var request_create_1 = require('../../../dashboard/components/request/request-create');
 var request_search_cli_1 = require('../../../kshare/components/request/request-search-cli');
+var auth_services_1 = require('../../../dashboard/services/auth-services');
+var router_2 = require("@angular/router");
 var RequestListClientComponent = (function () {
-    function RequestListClientComponent(_requestService) {
+    function RequestListClientComponent(_requestService, _auth, router) {
         this._requestService = _requestService;
+        this._auth = _auth;
+        this.router = router;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
     }
     RequestListClientComponent.prototype.ngOnInit = function () {
         var _this = this;
+        //Check login -- @@ fucking "ngu dan" way
+        if (!this._auth.dashboardFilter()) {
+            this.router.navigate(['/']);
+        }
         this.hide = false;
         this._requestService.getAllRequests().subscribe(function (requests) {
             var formatDate = function (date) {
@@ -58,7 +66,7 @@ var RequestListClientComponent = (function () {
                 request_search_cli_1.RequestSearchClientComponent
             ]
         }), 
-        __metadata('design:paramtypes', [requests_service_1.RequestService])
+        __metadata('design:paramtypes', [requests_service_1.RequestService, auth_services_1.AuthService, router_2.Router])
     ], RequestListClientComponent);
     return RequestListClientComponent;
 }());

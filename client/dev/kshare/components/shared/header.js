@@ -24,6 +24,7 @@ var HeaderComponent = (function () {
         var _this = this;
         this._auth.isLoggedIn().subscribe(function (status) {
             console.log(status);
+            console.log(_this.userToken);
             if (status.login == false) {
                 _this.loginToken = false;
             }

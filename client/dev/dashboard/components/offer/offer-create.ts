@@ -1,7 +1,8 @@
 import { Component,Inject,Input } from '@angular/core';
-
+import { ROUTER_DIRECTIVES } from'@angular/router';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
 import { OfferService } from '../../services/offers-service';
+import { AuthService } from '../../../dashboard/services/auth-services';
 
 @Component({
   selector: 'offer-create',
@@ -9,20 +10,24 @@ import { OfferService } from '../../services/offers-service';
   directives: [FORM_DIRECTIVES]
 })
 export class CreateOfferComponent {
+   user:string;
    @Input('rid') rid: string;
 
    offerForm: ControlGroup;
 
-   constructor(fb: FormBuilder, private _offerService: OfferService) {
+   constructor(@Inject(FormBuilder) fb: FormBuilder, private _offerService: OfferService,
+                                private _authService: AuthService) {
+    this.user = localStorage.getItem('username');
+    
     this.offerForm = fb.group({
       "price": [""],
       "numberOfLecture": [""],
       "requestId": [""],
-      "message": [""]
+      "message": [""],
+      "user": [""]
     });
   }
 
-  //RequestService requestServiceObject = new RequestService();
   addOffer(offer) {
     this._offerService.addOffer(offer).subscribe((offer)=> {
       console.log('success');
@@ -31,8 +36,7 @@ export class CreateOfferComponent {
       console.log(error.text());
     }
     );
-
-    window.location.reload();
+     window.location.reload();
   }
 
 }
