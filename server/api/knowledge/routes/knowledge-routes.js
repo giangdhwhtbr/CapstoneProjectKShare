@@ -13,6 +13,10 @@ module.exports = class KnowledgeRoutes {
         .route('/api/knowledges/:id')
         .get(KnowledgeController.getKnowledgeById)
         .delete(KnowledgeController.deleteKnowledge)
-        .put(KnowledgeController.updateKnowledge)
+        .put(KnowledgeController.updateKnowledge);
+
+     router
+        .route('/api/knowledges/parent/:id')
+        .get(KnowledgeController.getKnowledgeByParent);
     }
 }

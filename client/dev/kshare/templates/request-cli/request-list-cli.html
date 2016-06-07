@@ -2,37 +2,62 @@
 <br>
 <br>
 <br>
-<div class="container" style="min-height:437px">
-    <!--<div class="col-sm-10">-->
-      <request-create></request-create>
-      <div class="col-xs-12 col-sm-9 fixEfMenu">
-        <button type="button" class="btn btn-primary btn-small" data-toggle="modal"
-                      data-target="#modalCreateRequest">
+<!-- Search request -->
+<div class="container" style="min-height:100px">
+  <div class="form-group" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
+    <label class="control-label" for="search">Tìm kiếm </label>
+    <input class="form-control" #text id="search" type="text" placeholder="Tìm kiếm" style="width:75%" />
+    <button type="submit" (click)="search(text.value)" class="btn btn-primary btn-small glyphicon glyphicon-search"></button>
+    <br>
+    <br>
+    <button type="button" class="btn btn-primary btn-small" data-toggle="modal" data-target="#modalCreateRequest">
                 Create Request
-        </button>
-        <br>
-        <br>
-        <div class="panel panel-default card-rq" *ngFor="let request of requests">
-          <div class="panel-body">
-            <a [routerLink]="[request._id]">
-              <p class="lead">Tìm người giảng bài</p>
-            </a>
-            <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-              Tiêu đề : {{request.title}}
-            </div><br>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-              Trạng thái : {{request.status}}
-            </div>
-            <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-              Ngày tạo : {{request.createdAt}}
-            </div>
-          </div>
+  </button>
+  </div>
+</div>
+<br>
+<div class="container" style="min-height:437px">
+  <request-create></request-create>
+  <!--search-->
+  <div id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu">
+    <div class="panel panel-default card-rq" *ngFor="let search of searchs">
+      <div class="panel-body">
+        <a [routerLink]="[search._id]">
+          <p class="lead">Tìm người giảng bài</p>
+        </a>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
+          Tiêu đề : {{search.title}}
+        </div><br>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
+          Trạng thái : {{search.status}}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
+          Ngày tạo : {{search.createdAt}}
         </div>
       </div>
-    <!--</div>-->
-
-    <div class="col-sm-2">
-      <!--<friend-list></friend-list>-->
     </div>
-</div>
+  </div>
+  
+  <br>
+  <!-- list all-->
+  <div id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu" [hidden]="hide">
 
+    <div class="panel panel-default card-rq" *ngFor="let request of requests">
+      <div class="panel-body">
+        <a [routerLink]="[request._id]">
+          <p class="lead">Tìm người giảng bài</p>
+        </a>
+        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
+          Tiêu đề : {{request.title}}
+        </div><br>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
+          Trạng thái : {{request.status}}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
+          Ngày tạo : {{request.createdAt}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <friend-list></friend-list>
+</div>

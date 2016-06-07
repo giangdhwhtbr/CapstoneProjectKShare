@@ -10,6 +10,7 @@ import { AuthService } from '../../../dashboard/services/auth-services';
 @Component({
   selector: 'header',
   templateUrl: 'client/dev/kshare/templates/shared/header.html',
+  styleUrls: ['client/dev/kshare/styles/header.css'],
   directives: [ROUTER_DIRECTIVES]
 })
 
@@ -25,6 +26,7 @@ export class HeaderComponent {
 
   ngOnInit(): void {
     this._auth.isLoggedIn().subscribe((status)=>{
+      console.log(status);
       if(status.login == false){
         this.loginToken = false;
       }else {

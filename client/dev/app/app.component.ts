@@ -40,10 +40,12 @@ import {AuthService} from "../dashboard/services/auth-services";
   ]
 })
 
+
 @Routes([
   { path: '/', component:KshareComponent},
   { path: '/kshare',component:KshareComponent },
   { path: '/admin', component:DashboardComponent}
+
 ])
 
 export class AppComponent {

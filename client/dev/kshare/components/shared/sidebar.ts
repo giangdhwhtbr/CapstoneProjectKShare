@@ -3,13 +3,14 @@ import {
   Inject,
   OnInit
 } from '@angular/core';
+import { ROUTER_DIRECTIVES, Router} from '@angular/router';
 import { Knowledge } from '../../../dashboard/interface/knowledge';
 import { KnowledgeService } from '../../../dashboard/services/knowledge-service';
 @Component({
   selector : 'sidebar',
   templateUrl: 'client/dev/kshare/templates/shared/sidebar.html',
   styleUrls: ['client/dev/kshare/styles/sidebar.css'],
-  directives: []
+  directives: [ROUTER_DIRECTIVES]
 })
 
 export class SideBarComponent {

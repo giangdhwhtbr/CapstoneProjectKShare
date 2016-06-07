@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -23,6 +22,7 @@ var HeaderComponent = (function () {
     HeaderComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._auth.isLoggedIn().subscribe(function (status) {
+            console.log(status);
             if (status.login == false) {
                 _this.loginToken = false;
             }
@@ -44,10 +44,12 @@ var HeaderComponent = (function () {
         core_1.Component({
             selector: 'header',
             templateUrl: 'client/dev/kshare/templates/shared/header.html',
+            styleUrls: ['client/dev/kshare/styles/header.css'],
             directives: [router_1.ROUTER_DIRECTIVES]
         }), 
         __metadata('design:paramtypes', [auth_services_1.AuthService])
     ], HeaderComponent);
     return HeaderComponent;
-}());
+})();
 exports.HeaderComponent = HeaderComponent;
+//# sourceMappingURL=header.js.map

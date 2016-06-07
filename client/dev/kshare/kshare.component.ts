@@ -27,6 +27,7 @@ import { HomeComponent} from "./components/home/home";
 import { RequestListClientComponent } from "./components/request/request-list-cli";
 import { RequestDetailClientComponent } from "./components/request/request-detail-cli";
 import { RequestUpdateClientComponent } from "./components/request/request-update-cli";
+import { RequestSearchClientComponent } from "./components/request/request-search-cli";
 
 @Component({
   selector: 'kshare-app',
@@ -43,6 +44,7 @@ import { RequestUpdateClientComponent } from "./components/request/request-updat
 
 @Routes([
   { path: '/', component:HomeComponent},
+  { path: '/requests/search/:type/:id', component:RequestSearchClientComponent},
   { path: '/requests/update/:id', component:RequestUpdateClientComponent},
   { path: '/requests/:id', component:RequestDetailClientComponent},
   { path: '/requests', component:RequestListClientComponent}

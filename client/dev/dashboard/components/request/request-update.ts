@@ -8,12 +8,10 @@ import { KnowledgeService } from '../../../dashboard/services/knowledge-service'
 import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Routes, RouteSegment} from'@angular/router';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
 
-
-
 @Component({
   selector: 'request-update-cli',
   templateUrl: 'client/dev/dashboard/templates/request/request-update.html',
-  styleUrls: [],
+  styleUrls: ['client/dev/dashboard/styles/styles.css'],
   directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES]
 })
 
@@ -63,7 +61,7 @@ export class UpdateRequestComponent {
   }
 
   updateRequest(request) {
-    //console.log(request);
+    console.log(request);
     this._requestService.updateRequest(request).subscribe((request) => {
       console.log('update successed');
     },

@@ -39,6 +39,7 @@ export class UserListComponent {
     if(!this._auth.dashboardFilter()){
       this.router.navigate(['Home']);
     }
+    
     this._userService.getAllUsers().subscribe(
         (users) => {
           var formatDate = function (date){
