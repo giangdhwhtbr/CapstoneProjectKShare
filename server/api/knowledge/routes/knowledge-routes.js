@@ -14,6 +14,5 @@ module.exports = class KnowledgeRoutes {
         .get(KnowledgeController.getKnowledgeById)
         .delete(KnowledgeController.deleteKnowledge)
         .put(KnowledgeController.updateKnowledge)
-        .get(KnowledgeController.findKnowledgeById);
     }
 }

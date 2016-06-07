@@ -15,9 +15,9 @@ module.exports = class userRoutes {
 
     router
       .route('/api/user/:id')
-      .get(userPolicies.isAllowed,userController.getUserById)
+      .get(userController.getUserById)
       .delete(userPolicies.isAllowed,userController.removeById)
-      .put(userPolicies.isAllowed,userController.updateUser);
+      .put(userController.updateUser);
 
     router
       .route('/api/login')
@@ -51,6 +51,8 @@ module.exports = class userRoutes {
         }
         res.status(200).json({login:false});
       });
-    //router.route('/api/login').post(passport.authenticate('local-login',{successRedirect:'/'}));
+    router
+      .route('/api/resetPassword/:email')
+      .get(userController.resetPassword)
   }
 }

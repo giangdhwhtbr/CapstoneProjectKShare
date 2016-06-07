@@ -39,11 +39,7 @@ module.exports = class KnowledgeController {
       .then(() => res.status(200).end())
       .catch(error => res.status(400).json(error));
   }
-  static findKnowledgeById(req,res){
-    KnowledgeDAO.getKnowledgeById(req.params.id)
-    .then(knowledge => res.status(200).json(knowledge))
-    .catch(error => res.status(400).json(error));
-  }
+
   static updateKnowledge(req, res){
     if(req.params && req.params.id) {
         KnowledgeDAO.getKnowledgeById(req.params.id)
