@@ -5,11 +5,11 @@
 <!-- Search request -->
 <form id="searchdivid2"class="navbar-form navbar-left" role="search">
   <div class="form-group">
-    <input #text type="text" class="form-control" placeholder="Search">
+    <input #text type="text" class="form-control" placeholder="Nhập nội dung tìm kiếm">
   </div>
   <button (click)="search(text.value)" type="submit" class="btn btn-small">Tìm kiếm</button>
   <button *ngIf="userToken != null" type="button" class="btn btn-primary btn-small" data-toggle="modal" data-target="#modalCreateRequest">
-                Create Request
+                Create
   </button>
 </form>
 <br>
@@ -68,5 +68,5 @@
       autoHide="true">
     </pagination-controls>
   </div>
-  <friend-list></friend-list>
+  <!--<friend-list></friend-list>-->
 </div>
