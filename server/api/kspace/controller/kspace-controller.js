@@ -31,11 +31,11 @@ module.exports = class kSpaceController {
   static createNew(req, res) {
     var currentDate = new Date();
     var kspace = {
-      lectureId : req.body.lectureId,
-      learnerId  : req.body.learnerId,
+      lecturer : req.body.lecturer,
+      learner  : req.body.learner,
       requestId: req.body.requestId,
       offerId: req.body.offerId,
-      createdAt: req.body.createdAt,
+      createdAt: currentDate,
     }
 
     console.log(kspace);

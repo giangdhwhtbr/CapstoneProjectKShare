@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -28,6 +29,7 @@ var offers_service_1 = require("../dashboard/services/offers-service");
 var requests_service_1 = require("../dashboard/services/requests-service");
 var users_services_1 = require("../dashboard/services/users-services");
 var auth_services_1 = require("../dashboard/services/auth-services");
+var kspace_service_1 = require("../dashboard/services/kspace-service");
 var AppComponent = (function () {
     function AppComponent(router) {
         this.router = router;
@@ -48,7 +50,8 @@ var AppComponent = (function () {
                 router_1.ROUTER_PROVIDERS,
                 requests_service_1.RequestService,
                 offers_service_1.OfferService,
-                knowledge_service_1.KnowledgeService
+                knowledge_service_1.KnowledgeService,
+                kspace_service_1.KSpaceService
             ]
         }),
         router_1.Routes([
@@ -59,6 +62,5 @@ var AppComponent = (function () {
         __metadata('design:paramtypes', [router_1.Router])
     ], AppComponent);
     return AppComponent;
-})();
+}());
 exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map

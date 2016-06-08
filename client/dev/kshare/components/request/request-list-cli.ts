@@ -7,18 +7,22 @@ import { CreateRequestComponent } from '../../../dashboard/components/request/re
 import { RequestSearchClientComponent} from '../../../kshare/components/request/request-search-cli';
 import { AuthService } from '../../../dashboard/services/auth-services';
 import { Router } from "@angular/router";
+import {PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance} from 'ng2-pagination';
 
 
 @Component ({
   selector: 'request-list-cli',
   templateUrl:'client/dev/kshare/templates/request-cli/request-list-cli.html',
-  styleUrls: [],
+  styleUrls: ['client/dev/kshare/styles/request-list-cli.css'],
   directives: [
+     PaginationControlsCmp,
      ROUTER_DIRECTIVES,
      FriendListComponent,
      CreateRequestComponent,
      RequestSearchClientComponent
-  ]
+  ],
+  providers: [PaginationService],
+  pipes: [PaginatePipe]
 })
 
 export class RequestListClientComponent {
@@ -27,6 +31,16 @@ export class RequestListClientComponent {
   hide: boolean;
   roleToken:string;
   userToken:string;
+  public configRq: IPaginationInstance = {
+        id: 'rq',
+        itemsPerPage: 10,
+        currentPage: 1
+    };
+  public configRs: IPaginationInstance = {
+        id: 'rs',
+        itemsPerPage: 10,
+        currentPage: 1
+    };
 
   constructor(private _requestService: RequestService,  private _auth:AuthService, private router: Router){
     this.roleToken = localStorage.getItem('role');

@@ -5,13 +5,13 @@
 const mongoose = require('mongoose');
 
 const kSpaceSchema = new mongoose.Schema({
-  lectureId: {
-    type: mongoose.Schema.Types.ObjectId,
+  lecturer: {
+    type: String,
     ref: 'User',
     required: true
   },
-  learnerId: {
-    type: mongoose.Schema.Types.ObjectId,
+  learner: {
+    type: String,
     ref: 'User',
     required: true
   },

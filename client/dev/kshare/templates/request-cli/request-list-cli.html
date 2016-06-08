@@ -19,8 +19,8 @@
 <div class="container" style="min-height:437px">
   <request-create></request-create>
   <!--search-->
-  <div id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu">
-    <div class="panel panel-default card-rq" *ngFor="let search of searchs">
+  <div *ngIf="searchs && searchs.length" id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu">
+    <div class="panel panel-default card-rq" *ngFor="let search of searchs| paginate: configRs">
       <div class="panel-body">
         <a [routerLink]="[search._id]">
           <p class="lead">Tìm người giảng bài</p>
@@ -36,13 +36,18 @@
         </div>
       </div>
     </div>
+    <pagination-controls
+      [id]="configRs.id"
+      (pageChange)="configRs.currentPage  = $event"
+      directionLinks="true"
+      autoHide="true">
+    </pagination-controls>
   </div>
   
   <br>
   <!-- list all-->
   <div id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu" [hidden]="hide">
-
-    <div class="panel panel-default card-rq" *ngFor="let request of requests">
+    <div class="panel panel-default card-rq" *ngFor="let request of requests| paginate:configRq">
       <div class="panel-body">
         <a [routerLink]="[request._id]">
           <p class="lead">Tìm người giảng bài</p>
@@ -58,6 +63,12 @@
         </div>
       </div>
     </div>
+    <pagination-controls 
+      [id]="configRq.id"
+      (pageChange)="configRq.currentPage  = $event"
+      directionLinks="true"
+      autoHide="true">
+    </pagination-controls>
   </div>
   <friend-list></friend-list>
 </div>

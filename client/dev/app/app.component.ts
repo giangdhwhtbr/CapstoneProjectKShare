@@ -24,6 +24,7 @@ import {OfferService} from "../dashboard/services/offers-service";
 import {RequestService} from "../dashboard/services/requests-service";
 import {UserService} from "../dashboard/services/users-services";
 import {AuthService} from "../dashboard/services/auth-services";
+import {KSpaceService} from "../dashboard/services/kspace-service";
 @Component({
   selector: 'kshare-app',
   templateUrl:'client/dev/app/app.html',
@@ -38,7 +39,8 @@ import {AuthService} from "../dashboard/services/auth-services";
     ROUTER_PROVIDERS,
     RequestService,
     OfferService,
-    KnowledgeService
+    KnowledgeService,
+    KSpaceService
   ]
 })
 
