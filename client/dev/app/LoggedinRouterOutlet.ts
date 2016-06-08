@@ -8,7 +8,7 @@ import {Router, RouterOutlet, ComponentInstruction} from '@angular/router-deprec
   selector: 'router-outlet'
 })
 
-export class LogginRouterOutlet extends RouterOutlet {
+export class LoggedinRouterOutlet extends RouterOutlet {
   publicRoutes: any;
   private parentRouter: Router;
 

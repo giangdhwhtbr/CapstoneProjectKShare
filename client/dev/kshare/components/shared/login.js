@@ -43,7 +43,12 @@ var LoginComponent = (function () {
             }
             else {
                 localStorage.setItem('username', res.username);
-                localStorage.setItem('role', res.role);
+                if (res.role == 'admin') {
+                    localStorage.setItem('role', res.role);
+                }
+                else {
+                    localStorage.setItem('role', 'normal');
+                }
                 window.location.reload();
             }
         }, function (error) {

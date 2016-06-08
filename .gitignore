@@ -3,6 +3,7 @@ coverage
 node_modules
 client/dev/demo/*
 typings
+demo
 client/dev/index.js
 client/dev/*.map
 client/dev/app/*.js

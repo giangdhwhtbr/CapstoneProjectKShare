@@ -43,16 +43,13 @@ export class RequestListClientComponent {
     };
 
   constructor(private _requestService: RequestService,  private _auth:AuthService, private router: Router){
-    this.roleToken = localStorage.getItem('userrole');
+    this.roleToken = localStorage.getItem('role');
     this.userToken = localStorage.getItem('username');
   }
   requests: Request[];
   searchs: Request[];
 
   ngOnInit(): void {
-    console.log(this.roleToken);
-    console.log(this.userToken);
-    
     this.hide = false;
     this._requestService.getAllRequests().subscribe((requests) => {
       var formatDate = function (date){
@@ -71,7 +68,7 @@ export class RequestListClientComponent {
       this.requests = requests;
     });
   }
-  
+
   search(search: string) {
 
     this._requestService.searchRequest(search).subscribe((requests) => {

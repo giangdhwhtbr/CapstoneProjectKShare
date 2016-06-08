@@ -33,13 +33,11 @@ var RequestListClientComponent = (function () {
             itemsPerPage: 10,
             currentPage: 1
         };
-        this.roleToken = localStorage.getItem('userrole');
+        this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
     }
     RequestListClientComponent.prototype.ngOnInit = function () {
         var _this = this;
-        console.log(this.roleToken);
-        console.log(this.userToken);
         this.hide = false;
         this._requestService.getAllRequests().subscribe(function (requests) {
             var formatDate = function (date) {

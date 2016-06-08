@@ -17,19 +17,14 @@ var auth_services_1 = require('../../../dashboard/services/auth-services');
 var HeaderComponent = (function () {
     function HeaderComponent(_auth) {
         this._auth = _auth;
+        this.loginToken = false;
         this.userToken = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
     }
     HeaderComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this._auth.isLoggedIn().subscribe(function (status) {
-            if (status.login == false) {
-                _this.loginToken = false;
-            }
-            else {
-                _this.loginToken = true;
-            }
-        });
+        if (localStorage.getItem('username')) {
+            this.loginToken = true;
+        }
     };
     HeaderComponent.prototype.logout = function () {
         var _this = this;

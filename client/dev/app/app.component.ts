@@ -6,7 +6,7 @@ import { HTTP_PROVIDERS } from '@angular/http';
 import 'rxjs/Rx';   // Load all features
 import { ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes, Router} from '@angular/router';
 import { RouteConfig, RouterLink} from '@angular/router-deprecated';
-import { LoggedinRouterOutlet } from './LogginRouterOutlet';
+import { LoggedinRouterOutlet } from './LoggedinRouterOutlet';
 
 /**
  * Page Components
