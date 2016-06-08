@@ -23,11 +23,11 @@
     <div class="panel panel-default card-rq" *ngFor="let search of searchs| paginate: configRs">
       <div class="panel-body">
         <a [routerLink]="[search._id]">
-          <p class="lead">Tìm người giảng bài</p>
+          <p class="lead">{{search.title}}</p>
         </a>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-          Tiêu đề : {{search.title}}
-        </div><br>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
+          Người tạo : {{search.user}}
+        </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
           Trạng thái : {{search.status}}
         </div>
@@ -50,11 +50,11 @@
     <div class="panel panel-default card-rq" *ngFor="let request of requests| paginate:configRq">
       <div class="panel-body">
         <a [routerLink]="[request._id]">
-          <p class="lead">Tìm người giảng bài</p>
+          <p class="lead">{{request.title}}</p>
         </a>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-          Tiêu đề : {{request.title}}
-        </div><br>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
+          Người tạo : {{request.user}}
+        </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
           Trạng thái : {{request.status}}
         </div>

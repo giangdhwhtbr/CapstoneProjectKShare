@@ -17,6 +17,7 @@ var RequestService = (function () {
         this._requestsUrl = '/api/requests/:id';
         this._getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
         this._searchRequetsUrl = '/api/requests-search/:id';
+        this._requestStatusUrl = '/api/request-status/:id';
     }
     RequestService.prototype.getAllRequests = function () {
         return this._http.get(this._requestsUrl.replace(':id', ''))
@@ -89,6 +90,11 @@ var RequestService = (function () {
         });
         return this._http
             .post(this._searchRequetsUrl.replace(':id', ''), _search, options)
+            .map(function (r) { return r.json(); });
+    };
+    //change status request
+    RequestService.prototype.changeStatusRequest = function (id) {
+        return this._http.get(this._requestStatusUrl.replace(':id', id))
             .map(function (r) { return r.json(); });
     };
     RequestService.prototype.handleError = function (error) {
