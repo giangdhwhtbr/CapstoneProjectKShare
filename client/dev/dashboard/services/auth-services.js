@@ -54,9 +54,9 @@ var AuthService = (function () {
         localStorage.removeItem('username');
         localStorage.removeItem('role');
     };
-    AuthService.prototype.isLoggedIn = function () {
-        return this._http.get(this._checkLoginUrl).map(function (res) { return res.json(); }).catch(this.handleError);
-    };
+    //isLoggedIn(): Observable<string[]> {
+    // return this._http.get(this._checkLoginUrl).map((res)=>res.json()).catch(this.handleError);
+    //}
     AuthService.prototype.dashboardFilter = function () {
         var roleToken = localStorage.getItem('role');
         if (!roleToken) {

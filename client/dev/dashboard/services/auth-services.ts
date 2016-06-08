@@ -53,9 +53,9 @@ export class AuthService {
     localStorage.removeItem('username');
     localStorage.removeItem('role');
   }
-  isLoggedIn(): Observable<string[]> {
-   return this._http.get(this._checkLoginUrl).map((res)=>res.json()).catch(this.handleError);
-  }
+  //isLoggedIn(): Observable<string[]> {
+  // return this._http.get(this._checkLoginUrl).map((res)=>res.json()).catch(this.handleError);
+  //}
 
   dashboardFilter(){
     let roleToken = localStorage.getItem('role');
