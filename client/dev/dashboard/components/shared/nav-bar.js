@@ -32,7 +32,8 @@ var NavbarComponent = (function () {
             styleUrls: [
                 'client/dev/dashboard/styles/styles.css',
                 'client/dev/dashboard/styles/bootstrap.min.css'
-            ]
+            ],
+            directives: [router_1.ROUTER_DIRECTIVES]
         }), 
         __metadata('design:paramtypes', [auth_services_1.AuthService, router_1.Router])
     ], NavbarComponent);
