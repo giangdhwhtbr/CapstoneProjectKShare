@@ -46,6 +46,9 @@ var RequestDetailClientComponent = (function () {
             _this.status = request.status;
             _this.user = request.user;
             _this.createdAt = formatDate(request.createdAt);
+            if (_this.status === "deactive") {
+                _this.checkDeactive = true;
+            }
             //get knowledge name by knowledgeId
             _this._knowledgeService.findKnowledgeById(_this.knowledgeId).subscribe(function (knowledge) {
                 _this.knowledge = knowledge;

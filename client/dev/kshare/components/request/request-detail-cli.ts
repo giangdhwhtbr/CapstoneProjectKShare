@@ -51,6 +51,9 @@ export class RequestDetailClientComponent {
   knowledgeId:string;
   user:string;
 
+  //varialbe to  check disable button when the status is deactive
+  checkDeactive: boolean;
+
   offers:Offer[];
 
   ngOnInit():void {
@@ -75,6 +78,10 @@ export class RequestDetailClientComponent {
         this.status = request.status;
         this.user = request.user;
         this.createdAt = formatDate(request.createdAt);
+
+        if (this.status === "deactive"){
+          this.checkDeactive = true;
+        } 
 
         //get knowledge name by knowledgeId
         this._knowledgeService.findKnowledgeById(this.knowledgeId).subscribe(

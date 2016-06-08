@@ -3,18 +3,16 @@
 <br>
 <br>
 <!-- Search request -->
-<div class="container" style="min-height:100px">
-  <div class="form-group" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-    <label class="control-label" for="search">Tìm kiếm </label>
-    <input class="form-control" #text id="search" type="text" placeholder="Tìm kiếm" style="width:75%" />
-    <button type="submit" (click)="search(text.value)" class="btn btn-primary btn-small glyphicon glyphicon-search"></button>
-    <br>
-    <br>
-    <button *ngIf="userToken != null" type="button" class="btn btn-primary btn-small" data-toggle="modal" data-target="#modalCreateRequest">
+<form id="searchdivid2"class="navbar-form navbar-left" role="search">
+  <div class="form-group">
+    <input #text type="text" class="form-control" placeholder="Search">
+  </div>
+  <button (click)="search(text.value)" type="submit" class="btn btn-small">Tìm kiếm</button>
+  <button *ngIf="userToken != null" type="button" class="btn btn-primary btn-small" data-toggle="modal" data-target="#modalCreateRequest">
                 Create Request
   </button>
-  </div>
-</div>
+</form>
+<br>
 <br>
 <div class="container" style="min-height:437px">
   <request-create></request-create>
