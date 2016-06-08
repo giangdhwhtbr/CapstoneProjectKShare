@@ -75,22 +75,18 @@ var RequestDetailClientComponent = (function () {
             console.log(error.text());
         });
     };
-    RequestDetailClientComponent.prototype.deleteRequest = function (id) {
+    RequestDetailClientComponent.prototype.deactivateRequest = function (id) {
+        var _this = this;
         console.log(id);
         this._requestService
-            .deleteRequestById(this.id)
-            .subscribe(function () {
-            console.log("delete sucess");
+            .changeStatusRequest(this.id)
+            .subscribe(function (r) {
+            console.log("deactivate sucess");
+            _this.router.navigateByUrl('/kshare/requests/');
         });
-        window.location.href = 'kshare/requests';
     };
     RequestDetailClientComponent.prototype.addKshare = function (learner, lecturer, requestId, offerId) {
         var _this = this;
-        // this.kspace.learner = learner;
-        // this.kspace.lecturer = lecturer;
-        // this.kspace.requestId = requestId;
-        // this.kspace.offerId = offerId;
-        // console.log(this.kspace);
         this._kspaceService
             .addKSpace(learner, lecturer, requestId, offerId)
             .subscribe(function (r) {

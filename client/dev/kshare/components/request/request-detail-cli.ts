@@ -42,8 +42,6 @@ export class RequestDetailClientComponent {
   knowledge:Knowledge;
   knowledgeName:string;
 
-  private kspace:KSpace;
-
   request:Request;
   _id:string;
   title:string;
@@ -120,23 +118,18 @@ export class RequestDetailClientComponent {
     );
   }
 
-  deleteRequest(id:String) {
+  deactivateRequest(id:String) {
     console.log(id);
     this._requestService
-      .deleteRequestById(this.id)
-      .subscribe(() => {
-        console.log("delete sucess");
+      .changeStatusRequest(this.id)
+      .subscribe((r) => {
+        console.log("deactivate sucess");
+        this.router.navigateByUrl('/kshare/requests/');
       })
-    window.location.href = 'kshare/requests';
   }
 
   addKshare(learner:string, lecturer:string, requestId:string, offerId:string):void {
 
-    // this.kspace.learner = learner;
-    // this.kspace.lecturer = lecturer;
-    // this.kspace.requestId = requestId;
-    // this.kspace.offerId = offerId;
-    // console.log(this.kspace);
     this._kspaceService
       .addKSpace(learner,lecturer,requestId,offerId)
       .subscribe((r) => {

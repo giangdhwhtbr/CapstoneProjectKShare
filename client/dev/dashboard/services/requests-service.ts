@@ -8,6 +8,8 @@ export  class RequestService {
   private _requestsUrl = '/api/requests/:id';
   private _getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
   private _searchRequetsUrl = '/api/requests-search/:id';
+  private _requestStatusUrl = '/api/request-status/:id';
+
   constructor(private _http: Http) { }
 
   getAllRequests(): Observable<Request[]> {
@@ -90,6 +92,12 @@ export  class RequestService {
     });
     return this._http
               .post(this._searchRequetsUrl.replace(':id',''),_search,options)
+              .map((r) => r.json());
+  }
+
+  //change status request
+  changeStatusRequest(id: string):Observable<any> {
+    return this._http.get(this._requestStatusUrl.replace(':id',id))
               .map((r) => r.json());
   }
 
