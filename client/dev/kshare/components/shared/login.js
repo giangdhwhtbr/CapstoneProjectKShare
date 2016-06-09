@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -42,6 +41,13 @@ var LoginComponent = (function () {
                 _this.userValid = null;
             }
             else {
+                localStorage.setItem('username', res.username);
+                if (res.role == 'admin') {
+                    localStorage.setItem('role', res.role);
+                }
+                else {
+                    localStorage.setItem('role', 'normal');
+                }
                 window.location.reload();
             }
         }, function (error) {
@@ -53,11 +59,13 @@ var LoginComponent = (function () {
             selector: 'login',
             templateUrl: 'client/dev/kshare/templates/shared/login.html',
             styleUrls: ['client/dev/kshare/styles/login.css'],
+            directives: [router_1.ROUTER_DIRECTIVES, common_1.CORE_DIRECTIVES, common_1.FORM_DIRECTIVES]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(auth_services_1.AuthService)), 
         __metadata('design:paramtypes', [common_1.FormBuilder, auth_services_1.AuthService, router_1.Router])
     ], LoginComponent);
     return LoginComponent;
-}());
+})();
 exports.LoginComponent = LoginComponent;
+//# sourceMappingURL=login.js.map

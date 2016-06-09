@@ -15,24 +15,19 @@ import { AuthService } from '../../../dashboard/services/auth-services';
 })
 
 export class HeaderComponent {
-  loginToken:boolean;
+  loginToken:boolean = false;
   userToken:string;
   roleToken:string;
 
   constructor(private _auth: AuthService){
     this.userToken = localStorage.getItem('username');
-    this.roleToken = localStorage.getItem('userrole');
+    this.roleToken = localStorage.getItem('role');
   }
 
   ngOnInit(): void {
-    this._auth.isLoggedIn().subscribe((status)=>{
-      console.log(status);
-      if(status.login == false){
-        this.loginToken = false;
-      }else {
+      if(this.userToken){
         this.loginToken = true;
       }
-    });
   }
   logout(): void {
     this._auth.logout().subscribe((status)=>{

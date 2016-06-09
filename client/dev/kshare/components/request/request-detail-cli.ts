@@ -2,11 +2,15 @@ import { Component, OnInit } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Routes, RouteSegment} from'@angular/router';
 
 import { Request } from '../../../dashboard/interface/request';
+import { KSpace } from '../../../dashboard/interface/kspace';
+
 import { Offer } from '../../../dashboard/interface/offer';
 import { Knowledge } from '../../../dashboard/interface/knowledge';
 import { RequestService } from '../../../dashboard/services/requests-service';
 import { OfferService } from '../../../dashboard/services/offers-service';
 import { KnowledgeService } from '../../../dashboard/services/knowledge-service';
+import { KSpaceService } from '../../../dashboard/services/kspace-service';
+
 
 import { HeaderComponent } from '../shared/header';
 import { FooterComponent } from '../shared/footer';
@@ -29,7 +33,7 @@ export class RequestDetailClientComponent {
   pageTitle:string = 'Welcome to Knowledge Sharing Network';
 
   constructor(private _requestService:RequestService, private _offerService:OfferService, public router:Router,
-              private _knowledgeService:KnowledgeService, rParam:RouteSegment) {
+              private _knowledgeService:KnowledgeService, rParam:RouteSegment, private _kspaceService: KSpaceService) {
     this.id = rParam.getParam('id');
   }
 
@@ -45,6 +49,10 @@ export class RequestDetailClientComponent {
   status:string;
   createdAt:string;
   knowledgeId:string;
+  user:string;
+
+  //varialbe to  check disable button when the status is deactive
+  checkDeactive: boolean;
 
   offers:Offer[];
 
@@ -68,7 +76,12 @@ export class RequestDetailClientComponent {
         this.description = request.description;
         this._id = request._id;
         this.status = request.status;
+        this.user = request.user;
         this.createdAt = formatDate(request.createdAt);
+
+        if (this.status === "deactive"){
+          this.checkDeactive = true;
+        } 
 
         //get knowledge name by knowledgeId
         this._knowledgeService.findKnowledgeById(this.knowledgeId).subscribe(
@@ -110,18 +123,26 @@ export class RequestDetailClientComponent {
         console.log(error.text());
       }
     );
-    //console offers
-    //console.log(this.offers);
   }
 
-  deleteRequest(id:String) {
+  deactivateRequest(id:String) {
     console.log(id);
     this._requestService
-      .deleteRequestById(this.id)
-      .subscribe(() => {
-        console.log("delete sucess");
+      .changeStatusRequest(this.id)
+      .subscribe((r) => {
+        console.log("deactivate sucess");
+        this.router.navigateByUrl('/kshare/requests/');
       })
-    window.location.href = '/requests';
+  }
+
+  addKshare(learner:string, lecturer:string, requestId:string, offerId:string):void {
+
+    this._kspaceService
+      .addKSpace(learner,lecturer,requestId,offerId)
+      .subscribe((r) => {
+        console.log(r);
+        this.router.navigateByUrl('/kshare/kspace/'+r._id);
+      })
   }
 
 }

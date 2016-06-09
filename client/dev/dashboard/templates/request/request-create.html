@@ -7,6 +7,7 @@
       </div>
       <div class="modal-body">
         <form role="form" [ngFormModel]="requestForm" (ngSubmit)="addRequest(requestForm.value)">
+          
           <div class="row">
             <div class="col-md-12">
               <label for="title">Tiêu đề</label>
@@ -14,6 +15,7 @@
                      [ngFormControl]="requestForm.controls['title']"/>
             </div>
           </div>
+          
           <div class="row">
             <div class="col-md-12">
               <label for="description">Nội dung</label>
@@ -21,10 +23,11 @@
                         [ngFormControl]="requestForm.controls['description']"></textarea>
             </div>
           </div>
+          
           <div class="row">
             <div class="col-md-12">
               <label for="knowledge">Lĩnh vực</label>
-              <select class="form-control" id="knowledge" [ngFormControl]="requestForm.controls['knowledgeId']" [ngModel]="knowledgeId" >
+              <select class="form-control" id="knowledge" [ngFormControl]="requestForm.controls['knowledgeId']" [ngModel]="knowledgeId" required="required">
                 <option>Chọn lĩnh vực</option>
                 <optgroup *ngFor="let k of knowledges" label="{{k.name}}">
                   <option *ngFor="let sub of k.subCategory" value={{sub._id}}>{{sub.name}}</option>
@@ -32,6 +35,16 @@
               </select>
             </div>
           </div>
+          
+          <div class="row">
+            <div class="col-md-12">
+              <label for="user">Người tạo</label>
+              <input class="form-control" type="text" required="required" id="user" name="user"
+                        [ngModel]="user"
+                        [ngFormControl]="requestForm.controls['user']" disabled/>
+            </div>
+          </div>
+          
           <br>
           <div class="row">
             <div class="col-md-12">

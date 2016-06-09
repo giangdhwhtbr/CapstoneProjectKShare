@@ -3,7 +3,7 @@
 const mongoose = require('mongoose');
 
 const _offerSchema = {
-    userId: { type: String },
+    user: { type: String, required: true },
     requestId: { type: mongoose.Schema.Types.ObjectId, ref: 'Request',required: true },
     numOfLecture: { type: Number},
     price: {type: Number, required: true},

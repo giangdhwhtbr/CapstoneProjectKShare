@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -50,5 +49,6 @@ var KnowledgeListComponent = (function () {
         __metadata('design:paramtypes', [knowledge_service_1.KnowledgeService])
     ], KnowledgeListComponent);
     return KnowledgeListComponent;
-}());
+})();
 exports.KnowledgeListComponent = KnowledgeListComponent;
+//# sourceMappingURL=knowledges-list.js.map

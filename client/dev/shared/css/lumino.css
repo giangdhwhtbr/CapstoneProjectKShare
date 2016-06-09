@@ -2,28 +2,6 @@
 Lumino Admin Bootstrap Template
 Version 1.0
 */
-
-/**
- * Daily UI Style
- */
-
-/*#addUser{
-    text-align: center;
-    width: 120px;
-}
-#addUser a{
-	background-color: cornflowerblue;
-	text-decoration: none;
-	color: white;
-    font-size: 15px;
-    font-weight: 700;
-    padding: 10px 0px;
-    display: block;
-    border-radius: 4px;
-}
-#addUser a:hover{
-	background-color:#6C64ED;
-}*/
 #emailContent {
   resize: none;
   height: 200px;

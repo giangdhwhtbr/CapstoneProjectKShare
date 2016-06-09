@@ -33,7 +33,6 @@ knowledgeSchema.statics.getKnowledgeById = (id) => {
   });
 }
 
-
 knowledgeSchema.statics.getKnowledgeByParent = (id) => {
 
   return new Promise((resolve, reject) => {
@@ -50,7 +49,6 @@ knowledgeSchema.statics.getKnowledgeByParent = (id) => {
       });
   });
 }
-
 knowledgeSchema.statics.createKnowledge = (knowledge) => {
     return new Promise((resolve, reject) => {
       if (!_.isObject(knowledge))

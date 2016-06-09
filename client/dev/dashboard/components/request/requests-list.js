@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -23,10 +22,6 @@ var RequestListComponent = (function () {
         this.pageTitle = 'Request List';
     }
     RequestListComponent.prototype.ngOnInit = function () {
-        //Check login -- @@ fucking "ngu dan" way của Giang
-        // if (!this._auth.dashboardFilter()) {
-        //   this.router.navigate(['Home']);
-        // }
         var _this = this;
         this._requestService.getAllRequests().subscribe(function (requests) {
             var formatDate = function (date) {
@@ -86,5 +81,6 @@ var RequestListComponent = (function () {
         __metadata('design:paramtypes', [requests_service_1.RequestService, auth_services_1.AuthService, router_1.Router])
     ], RequestListComponent);
     return RequestListComponent;
-}());
+})();
 exports.RequestListComponent = RequestListComponent;
+//# sourceMappingURL=requests-list.js.map

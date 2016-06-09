@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13,13 +12,15 @@ var router_1 = require('@angular/router');
 var requests_service_1 = require('../../../dashboard/services/requests-service');
 var offers_service_1 = require('../../../dashboard/services/offers-service');
 var knowledge_service_1 = require('../../../dashboard/services/knowledge-service');
+var kspace_service_1 = require('../../../dashboard/services/kspace-service');
 var offer_create_1 = require('../../../dashboard/components/offer/offer-create');
 var RequestDetailClientComponent = (function () {
-    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, rParam) {
+    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, rParam, _kspaceService) {
         this._requestService = _requestService;
         this._offerService = _offerService;
         this.router = router;
         this._knowledgeService = _knowledgeService;
+        this._kspaceService = _kspaceService;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
         this.id = rParam.getParam('id');
     }
@@ -42,7 +43,11 @@ var RequestDetailClientComponent = (function () {
             _this.description = request.description;
             _this._id = request._id;
             _this.status = request.status;
+            _this.user = request.user;
             _this.createdAt = formatDate(request.createdAt);
+            if (_this.status === "deactive") {
+                _this.checkDeactive = true;
+            }
             //get knowledge name by knowledgeId
             _this._knowledgeService.findKnowledgeById(_this.knowledgeId).subscribe(function (knowledge) {
                 _this.knowledge = knowledge;
@@ -71,17 +76,25 @@ var RequestDetailClientComponent = (function () {
         }, function (error) {
             console.log(error.text());
         });
-        //console offers
-        //console.log(this.offers);
     };
-    RequestDetailClientComponent.prototype.deleteRequest = function (id) {
+    RequestDetailClientComponent.prototype.deactivateRequest = function (id) {
+        var _this = this;
         console.log(id);
         this._requestService
-            .deleteRequestById(this.id)
-            .subscribe(function () {
-            console.log("delete sucess");
+            .changeStatusRequest(this.id)
+            .subscribe(function (r) {
+            console.log("deactivate sucess");
+            _this.router.navigateByUrl('/kshare/requests/');
         });
-        window.location.href = '/requests';
+    };
+    RequestDetailClientComponent.prototype.addKshare = function (learner, lecturer, requestId, offerId) {
+        var _this = this;
+        this._kspaceService
+            .addKSpace(learner, lecturer, requestId, offerId)
+            .subscribe(function (r) {
+            console.log(r);
+            _this.router.navigateByUrl('/kshare/kspace/' + r._id);
+        });
     };
     RequestDetailClientComponent = __decorate([
         core_1.Component({
@@ -91,8 +104,9 @@ var RequestDetailClientComponent = (function () {
             directives: [router_1.ROUTER_DIRECTIVES,
                 offer_create_1.CreateOfferComponent]
         }), 
-        __metadata('design:paramtypes', [requests_service_1.RequestService, offers_service_1.OfferService, router_1.Router, knowledge_service_1.KnowledgeService, router_1.RouteSegment])
+        __metadata('design:paramtypes', [requests_service_1.RequestService, offers_service_1.OfferService, router_1.Router, knowledge_service_1.KnowledgeService, router_1.RouteSegment, kspace_service_1.KSpaceService])
     ], RequestDetailClientComponent);
     return RequestDetailClientComponent;
-}());
+})();
 exports.RequestDetailClientComponent = RequestDetailClientComponent;
+//# sourceMappingURL=request-detail-cli.js.map

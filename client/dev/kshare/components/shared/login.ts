@@ -11,14 +11,16 @@ import {
   ControlGroup,
   Control,
   FORM_DIRECTIVES,
+  CORE_DIRECTIVES
 } from '@angular/common';
-import { Router, Routes } from '@angular/router';
+import { Router, Routes, ROUTER_DIRECTIVES } from '@angular/router';
 import { User } from '../../../dashboard/interface/user';
 import { AuthService } from '../../../dashboard/services/auth-services';
 @Component({
   selector : 'login',
   templateUrl: 'client/dev/kshare/templates/shared/login.html',
   styleUrls: ['client/dev/kshare/styles/login.css'],
+  directives:[ROUTER_DIRECTIVES, CORE_DIRECTIVES,FORM_DIRECTIVES]
 })
 
 export class LoginComponent {
@@ -46,6 +48,12 @@ export class LoginComponent {
             this.passValid = '*'+res.invalidPassword;
             this.userValid = null;
           } else {
+            localStorage.setItem('username', res.username);
+            if(res.role == 'admin'){
+              localStorage.setItem('role', res.role);
+            }else{
+              localStorage.setItem('role', 'normal');
+            }
             window.location.reload();
           }
         },

@@ -1,7 +1,7 @@
 'use strict';
 
-if ('production' === process.env.NODE_ENV)
-    require('newrelic');
+//if ('production' === process.env.NODE_ENV)
+//    require('newrelic');
 
 const PORT = process.env.PORT || 3333;
 
@@ -13,6 +13,7 @@ const RoutesConfig = require('./config/routes.conf');
 const PoliciesConfig = require('./config/policies.conf');
 const DBConfig = require('./config/db.conf');
 const Routes = require('./routes/index');
+const io = require('socket.io');
 
 
 const app = express();
@@ -29,8 +30,10 @@ const opts = {
 }
 
 
-https.createServer(opts, app)
+var server = https.createServer(opts, app)
      .listen(PORT, () => {
        console.log(`up and running @: ${os.hostname()} on port: ${PORT}`);
        console.log(`enviroment: ${process.env.NODE_ENV}`);
      });
+
+var socket = io(server);

@@ -4,8 +4,30 @@
   "main": "src/Kshare.js",
   "scripts": {
     "start": "node index",
-    "build-dev": "node index && gulp client.watch",
-    "build-dist": "gulp client.build:dist",
+
+    "rimraf": "rimraf",
+    "webpack": "webpack",
+
+    "clean": "npm cache clean && npm run rimraf -- node_modules doc typings coverage dist",
+    "clean:dist": "npm run rimraf -- dist",
+    "preclean:install": "npm run clean",
+    "clean:install": "npm set progress=false && npm install",
+    "preclean:start": "npm run clean",
+    "clean:start": "npm start",
+
+    "watch": "npm run watch:dev",
+    "watch:dev": "npm run build:dev -- --watch",
+    "watch:dev:hmr": "npm run watch:dev -- --hot",
+    "watch:test": "npm run test -- --auto-watch --no-single-run",
+    "watch:prod": "npm run build:prod -- --watch",
+
+
+    "build": "npm run build:dev",
+    "prebuild:dev": "npm run clean:dist",
+    "build:dev": "webpack --config config/webpack.dev.js --progress --profile --colors --display-error-details --display-cached",
+    "prebuild:prod": "npm run clean:dist",
+    "build:prod": "webpack --config config/webpack.prod.js  --progress --profile --colors --display-error-details --display-cached --bail",
+
     "test-client": "gulp client.unit_test",
     "test-server": "mocha ./tests/server/**/*.js --recursive --check-leaks --reporter min --require babel-core/register",
     "coverage-server": "istanbul cover ./node_modules/mocha/bin/_mocha -- tests/**/*.js --require babel-core/register",
@@ -41,11 +63,15 @@
     "mongoose-text-search": "0.0.2",
     "morgan": "^1.5.2",
     "newrelic": "^1.18.2",
+    "ng2-pagination": "^0.3.1",
+    "nodemailer": "^2.4.2",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
     "reflect-metadata": "^0.1.3",
     "rxjs": "5.0.0-beta.6",
+    "simple-peer": "^6.0.4",
+    "socket.io": "^1.4.6",
     "systemjs": "0.19.27",
     "typescript": "^1.8.9",
     "validator": "*",
@@ -90,7 +116,17 @@
     "protractor": "^3.1.0",
     "require-dir": "^0.3.0",
     "run-sequence": "^1.1.5",
-    "wiredep": "^2.2.2"
+    "wiredep": "^2.2.2",
+    "extract-text-webpack-plugin": "^1.0.1",
+    "webpack": "^1.12.14",
+    "webpack-merge": "^0.9.0",
+    "html-webpack-plugin": "^2.15.0",
+    "source-map-loader": "^0.1.5",
+    "copy-webpack-plugin": "^3.0.1",
+    "awesome-typescript-loader": "^0.19.0",
+    "style-loader": "^0.13.1",
+    "raw-loader": "0.5.1",
+    "rimraf": "^2.5.2"
   },
   "repository": {
     "type": "git",

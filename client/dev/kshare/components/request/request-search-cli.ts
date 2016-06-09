@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router, RouteSegment,Routes } from '@angular/router';
+import { Component, OnInit, Input } from '@angular/core';
+import { ROUTER_DIRECTIVES, Router, RouteSegment, Routes } from '@angular/router';
 import { Request } from '../../../dashboard/interface/request';
 import { Knowledge } from '../../../dashboard/interface/knowledge';
 
@@ -13,6 +13,7 @@ import { RequestService } from '../../../dashboard/services/requests-service';
 })
 
 export class RequestSearchClientComponent {
+  @Input() search: string;
   pageTitle: string = 'Welcome to Knowledge Sharing Network';
 
   id: string;
@@ -26,7 +27,8 @@ export class RequestSearchClientComponent {
   knowledges: Knowledge[];
 
   ngOnInit(): void {
-    console.log(this.type);
+    console.log(this.search);
+
     //get request from children category
     if (this.type === "subcategory") {
       this._requestService.getRequestByKnowledgeId(this.id).subscribe(
@@ -53,6 +55,15 @@ export class RequestSearchClientComponent {
     if (this.type === "category") {
       this._requestService.getKnowledgeByParent(this.id).subscribe(
         (knowledges) => {
+          var formatDate = function (date) {
+            if (date) {
+              var newDate, day, month, year;
+              year = date.substr(0, 4);
+              month = date.substr(5, 2);
+              day = date.substr(8, 2);
+              return newDate = day + '/' + month + '/' + year;
+            }
+          }
           var a = [];
           this.knowledges = knowledges;
           for (var i = 0; i < this.knowledges.length; i++) {
@@ -63,6 +74,10 @@ export class RequestSearchClientComponent {
                   a.push(requests[j]);
                 }
                 
+                for (var i = 0; i < a.length; i++) {
+                  a[i].createdAt = formatDate(requests[i].createdAt);
+                  a[i].modifiedDate = formatDate(requests[i].modifiedDate);
+                }
                 this.requests = a;
               });
           }

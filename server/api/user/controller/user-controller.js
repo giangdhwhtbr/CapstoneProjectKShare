@@ -2,8 +2,9 @@
 const mongoose = require('mongoose');
 const passport = require('passport');
 const userDAO = require('../dao/user-dao');
-//const User = mongoose.model('User');
-
+const crypto  = require('crypto');
+const transporter = require('../config/nodemailer');
+const mailOptions = require('../config/mail-templates');
 //Send Json
 var sendJsonResponse = function(res, status, content) {
   res.status(status);
@@ -33,27 +34,28 @@ module.exports = class userController {
   static createNew(req, res) {
     var currentDate = new Date();
     var user = {
-      firstName : req.body.firstName,
-      lastName  : req.body.lastName,
+      name : {
+        firstName : req.body.firstName,
+        lastName  : req.body.lastName,
+      },
       displayName: req.body.displayName,
       username: req.body.username,
       password: req.body.password,
       email: req.body.email,
       role: req.body.role,
-      createdAt:currentDate,
-      updatedAt:currentDate
+      knowledgeId:req.body.knowledgeId,
+      level: 1,
+      rateAve:0,
+      status: true
     }
-
-    if(req.body.role == undefined){
+    if(!req.body.role){
       user.role = "normal"
     }
     console.log(user);
-    //let _user = req.body;
     userDAO
       .createNew(user)
       .then(user => res.status(200).json(user))
       .catch(error => res.status(400).json(error));
-    //console.log(JSON.stringify(req.headers));
   }
 
   static updateUser(req, res){
@@ -61,14 +63,16 @@ module.exports = class userController {
       var currentDate = new Date();
         userDAO.getUserById(req.params.id)
           .then(user => {
-            user.firstName = req.body.firstName,
-            user.lastName  = req.body.lastName,
-            user.displayName = req.body.displayName,
-            user.username = req.body.username,
-            user.password = req.body.password,
-            user.email = req.body.email,
-            user.role     = req.body.role,
-            user.updatedAt = currentDate;
+            user.name.firstName = req.body.firstName,
+            user.name.lastName  = req.body.lastName,
+            user.displayName    = req.body.displayName,
+            user.username       = req.body.username,
+            user.password       = req.body.password,
+            user.email          = req.body.email,
+            user.role           = req.body.role,
+            user.knowledgeId    = req.body.knowledgeId,
+            user.status         = req.body.status,
+            user.updatedAt      = currentDate;
 
             //res.status(200).json(user);
             userDAO.updateUserById(user)
@@ -80,6 +84,24 @@ module.exports = class userController {
       res.status(404).json({
         "message"    :   "No Userid in request"
       });
+    }
+  }
+
+  static resetPassword(req, res){
+    if(req.params && req.params.email) {
+      var currentDate = new Date();
+      userDAO.getUserByEmail(req.params.email)
+        .then(user => {
+            user.resetPasswordToken = crypto.randomBytes(16).toString('base64');
+            user.resetPasswordExpires = currentDate + 1;
+
+            transporter.sendMail(mailOptions(user.email,user.username,user.resetPasswordToken).resetPass, function(errors, info){
+              if(errors){
+                res.status(400).json(errors);
+              }
+                res.status(200).json(info);
+            });
+        })
     }
   }
 

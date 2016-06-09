@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -21,7 +20,7 @@ var RequestSearchClientComponent = (function () {
     }
     RequestSearchClientComponent.prototype.ngOnInit = function () {
         var _this = this;
-        console.log(this.type);
+        console.log(this.search);
         //get request from children category
         if (this.type === "subcategory") {
             this._requestService.getRequestByKnowledgeId(this.id).subscribe(function (requests) {
@@ -45,6 +44,15 @@ var RequestSearchClientComponent = (function () {
         //get request from parent category
         if (this.type === "category") {
             this._requestService.getKnowledgeByParent(this.id).subscribe(function (knowledges) {
+                var formatDate = function (date) {
+                    if (date) {
+                        var newDate, day, month, year;
+                        year = date.substr(0, 4);
+                        month = date.substr(5, 2);
+                        day = date.substr(8, 2);
+                        return newDate = day + '/' + month + '/' + year;
+                    }
+                };
                 var a = [];
                 _this.knowledges = knowledges;
                 for (var i = 0; i < _this.knowledges.length; i++) {
@@ -52,6 +60,10 @@ var RequestSearchClientComponent = (function () {
                         //for each child knowledge get requests
                         for (var j = 0; j < requests.length; j++) {
                             a.push(requests[j]);
+                        }
+                        for (var i = 0; i < a.length; i++) {
+                            a[i].createdAt = formatDate(requests[i].createdAt);
+                            a[i].modifiedDate = formatDate(requests[i].modifiedDate);
                         }
                         _this.requests = a;
                     });
@@ -61,6 +73,10 @@ var RequestSearchClientComponent = (function () {
             });
         }
     };
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', String)
+    ], RequestSearchClientComponent.prototype, "search", void 0);
     RequestSearchClientComponent = __decorate([
         core_1.Component({
             selector: 'request-search-cli',
@@ -71,5 +87,6 @@ var RequestSearchClientComponent = (function () {
         __metadata('design:paramtypes', [requests_service_1.RequestService, router_1.Router, router_1.RouteSegment])
     ], RequestSearchClientComponent);
     return RequestSearchClientComponent;
-}());
+})();
 exports.RequestSearchClientComponent = RequestSearchClientComponent;
+//# sourceMappingURL=request-search-cli.js.map

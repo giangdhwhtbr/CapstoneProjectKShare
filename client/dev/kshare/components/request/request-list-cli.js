@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13,13 +12,32 @@ var router_1 = require('@angular/router');
 var requests_service_1 = require('../../../dashboard/services/requests-service');
 var friend_list_1 = require('../shared/friend-list');
 var request_create_1 = require('../../../dashboard/components/request/request-create');
+var request_search_cli_1 = require('../../../kshare/components/request/request-search-cli');
+var auth_services_1 = require('../../../dashboard/services/auth-services');
+var router_2 = require("@angular/router");
+var ng2_pagination_1 = require('ng2-pagination');
 var RequestListClientComponent = (function () {
-    function RequestListClientComponent(_requestService) {
+    function RequestListClientComponent(_requestService, _auth, router) {
         this._requestService = _requestService;
+        this._auth = _auth;
+        this.router = router;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
+        this.configRq = {
+            id: 'rq',
+            itemsPerPage: 10,
+            currentPage: 1
+        };
+        this.configRs = {
+            id: 'rs',
+            itemsPerPage: 10,
+            currentPage: 1
+        };
+        this.roleToken = localStorage.getItem('role');
+        this.userToken = localStorage.getItem('username');
     }
     RequestListClientComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.hide = false;
         this._requestService.getAllRequests().subscribe(function (requests) {
             var formatDate = function (date) {
                 if (date) {
@@ -37,19 +55,31 @@ var RequestListClientComponent = (function () {
             _this.requests = requests;
         });
     };
+    RequestListClientComponent.prototype.search = function (search) {
+        var _this = this;
+        this._requestService.searchRequest(search).subscribe(function (requests) {
+            _this.searchs = requests;
+            _this.hide = true;
+        });
+    };
     RequestListClientComponent = __decorate([
         core_1.Component({
             selector: 'request-list-cli',
             templateUrl: 'client/dev/kshare/templates/request-cli/request-list-cli.html',
-            styleUrls: [],
+            styleUrls: ['client/dev/kshare/styles/request-list-cli.css'],
             directives: [
+                ng2_pagination_1.PaginationControlsCmp,
                 router_1.ROUTER_DIRECTIVES,
                 friend_list_1.FriendListComponent,
-                request_create_1.CreateRequestComponent
-            ]
+                request_create_1.CreateRequestComponent,
+                request_search_cli_1.RequestSearchClientComponent
+            ],
+            providers: [ng2_pagination_1.PaginationService],
+            pipes: [ng2_pagination_1.PaginatePipe]
         }), 
-        __metadata('design:paramtypes', [requests_service_1.RequestService])
+        __metadata('design:paramtypes', [requests_service_1.RequestService, auth_services_1.AuthService, router_2.Router])
     ], RequestListClientComponent);
     return RequestListClientComponent;
-}());
+})();
 exports.RequestListClientComponent = RequestListClientComponent;
+//# sourceMappingURL=request-list-cli.js.map

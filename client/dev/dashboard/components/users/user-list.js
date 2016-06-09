@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -25,10 +24,6 @@ var UserListComponent = (function () {
     }
     UserListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        //Check login -- @@ fucking "ngu dan" way
-        if (!this._auth.dashboardFilter()) {
-            this.router.navigate(['Home']);
-        }
         this._userService.getAllUsers().subscribe(function (users) {
             var formatDate = function (date) {
                 if (date) {
@@ -67,5 +62,6 @@ var UserListComponent = (function () {
         __metadata('design:paramtypes', [users_services_1.UserService, auth_services_1.AuthService, router_2.Router])
     ], UserListComponent);
     return UserListComponent;
-}());
+})();
 exports.UserListComponent = UserListComponent;
+//# sourceMappingURL=user-list.js.map

@@ -4,8 +4,9 @@
 import { Component } from '@angular/core';
 import { HTTP_PROVIDERS } from '@angular/http';
 import 'rxjs/Rx';   // Load all features
-import { ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes, Router } from '@angular/router';
+import { ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes, Router} from '@angular/router';
 import { RouteConfig, RouterLink} from '@angular/router-deprecated';
+import { LoggedinRouterOutlet } from './LoggedinRouterOutlet';
 
 /**
  * Page Components
@@ -23,11 +24,13 @@ import {OfferService} from "../dashboard/services/offers-service";
 import {RequestService} from "../dashboard/services/requests-service";
 import {UserService} from "../dashboard/services/users-services";
 import {AuthService} from "../dashboard/services/auth-services";
+import {KSpaceService} from "../dashboard/services/kspace-service";
 @Component({
   selector: 'kshare-app',
   templateUrl:'client/dev/app/app.html',
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    LoggedinRouterOutlet
   ],
   providers: [
     AuthService,
@@ -36,7 +39,8 @@ import {AuthService} from "../dashboard/services/auth-services";
     ROUTER_PROVIDERS,
     RequestService,
     OfferService,
-    KnowledgeService
+    KnowledgeService,
+    KSpaceService
   ]
 })
 

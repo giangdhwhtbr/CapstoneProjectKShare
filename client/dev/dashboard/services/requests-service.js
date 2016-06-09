@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -16,6 +15,8 @@ var RequestService = (function () {
         this._http = _http;
         this._requestsUrl = '/api/requests/:id';
         this._getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
+        this._searchRequetsUrl = '/api/requests-search/:id';
+        this._requestStatusUrl = '/api/request-status/:id';
     }
     RequestService.prototype.getAllRequests = function () {
         return this._http.get(this._requestsUrl.replace(':id', ''))
@@ -29,7 +30,8 @@ var RequestService = (function () {
         var _request = JSON.stringify({
             title: request.title,
             description: request.description,
-            knowledgeId: request.knowledgeId
+            knowledgeId: request.knowledgeId,
+            user: request.user
         });
         return this._http
             .post(this._requestsUrl.replace(':id', ''), _request, options)
@@ -77,6 +79,23 @@ var RequestService = (function () {
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
+    //search request
+    RequestService.prototype.searchRequest = function (search) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _search = JSON.stringify({
+            text: search
+        });
+        return this._http
+            .post(this._searchRequetsUrl.replace(':id', ''), _search, options)
+            .map(function (r) { return r.json(); });
+    };
+    //change status request
+    RequestService.prototype.changeStatusRequest = function (id) {
+        return this._http.get(this._requestStatusUrl.replace(':id', id))
+            .map(function (r) { return r.json(); });
+    };
     RequestService.prototype.handleError = function (error) {
         console.error(error);
         return Observable_1.Observable.throw(error.json().error || 'Server error');
@@ -86,5 +105,6 @@ var RequestService = (function () {
         __metadata('design:paramtypes', [http_1.Http])
     ], RequestService);
     return RequestService;
-}());
+})();
 exports.RequestService = RequestService;
+//# sourceMappingURL=requests-service.js.map

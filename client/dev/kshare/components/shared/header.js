@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -17,20 +16,14 @@ var auth_services_1 = require('../../../dashboard/services/auth-services');
 var HeaderComponent = (function () {
     function HeaderComponent(_auth) {
         this._auth = _auth;
+        this.loginToken = false;
         this.userToken = localStorage.getItem('username');
-        this.roleToken = localStorage.getItem('userrole');
+        this.roleToken = localStorage.getItem('role');
     }
     HeaderComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this._auth.isLoggedIn().subscribe(function (status) {
-            console.log(status);
-            if (status.login == false) {
-                _this.loginToken = false;
-            }
-            else {
-                _this.loginToken = true;
-            }
-        });
+        if (this.userToken) {
+            this.loginToken = true;
+        }
     };
     HeaderComponent.prototype.logout = function () {
         var _this = this;
@@ -51,5 +44,6 @@ var HeaderComponent = (function () {
         __metadata('design:paramtypes', [auth_services_1.AuthService])
     ], HeaderComponent);
     return HeaderComponent;
-}());
+})();
 exports.HeaderComponent = HeaderComponent;
+//# sourceMappingURL=header.js.map
