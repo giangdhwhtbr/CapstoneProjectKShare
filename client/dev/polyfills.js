@@ -1,3 +1,4 @@
+"use strict";
 /**
  * Created by GiangDH on 6/8/16.
  */
@@ -10,4 +11,3 @@ else {
     // Development
     Error['stackTraceLimit'] = Infinity;
 }
-//# sourceMappingURL=polyfills.js.map
