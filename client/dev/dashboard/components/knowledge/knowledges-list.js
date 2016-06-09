@@ -12,6 +12,7 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var knowledge_service_1 = require('../../services/knowledge-service');
 var knowledge_update_1 = require('../../components/knowledge/knowledge-update');
+var sub_create_1 = require('../../components/knowledge/sub-create');
 var knowledge_create_1 = require('../../components/knowledge/knowledge-create');
 var KnowledgeListComponent = (function () {
     function KnowledgeListComponent(_knowledgeService) {
@@ -22,18 +23,14 @@ var KnowledgeListComponent = (function () {
         var _this = this;
         this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
             _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+            console.log(_this.knowledges);
         });
     };
     KnowledgeListComponent.prototype.deleteKnowledge = function (id) {
-        var _this = this;
         this._knowledgeService
             .deleteKnowledge(id)
             .subscribe(function () {
-            _this.knowledges.forEach(function (t, i) {
-                //delete and update table
-                if (t._id === id)
-                    return _this.knowledges.splice(i, 1);
-            });
+            window.location.reload();
         });
     };
     KnowledgeListComponent = __decorate([
@@ -44,6 +41,7 @@ var KnowledgeListComponent = (function () {
                 'client/dev/dashboard/styles/styles.css'],
             directives: [
                 knowledge_update_1.UpdateKnowledgeComponent,
+                sub_create_1.CreateSubCategoryComponent,
                 knowledge_create_1.CreateKnowledgeComponent,
                 router_1.ROUTER_DIRECTIVES]
         }), 

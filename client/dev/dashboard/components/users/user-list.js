@@ -25,6 +25,10 @@ var UserListComponent = (function () {
     }
     UserListComponent.prototype.ngOnInit = function () {
         var _this = this;
+        //Check login -- @@ fucking "ngu dan" way
+        if (!this._auth.dashboardFilter()) {
+            this.router.navigate(['Home']);
+        }
         this._userService.getAllUsers().subscribe(function (users) {
             var formatDate = function (date) {
                 if (date) {

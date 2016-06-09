@@ -21,7 +21,9 @@ export class CreateSubCategoryComponent {
     });
   }
 
-
+  ngOnInit(): void {
+    
+  }
   addKnowledge(knowledge) {
     this._knowledgeService.addKnowledge(knowledge).subscribe((knowledge)=> {
       console.log('success');

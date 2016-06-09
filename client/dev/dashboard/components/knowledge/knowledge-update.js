@@ -43,6 +43,7 @@ var UpdateKnowledgeComponent = (function () {
         }, function (error) {
             console.log(error.text());
         });
+        window.location.href = 'admin/knowledges';
     };
     UpdateKnowledgeComponent = __decorate([
         core_1.Component({

@@ -28,7 +28,14 @@ export class AuthService {
     })
     var usertoken = user.username;
     return this._http.post(this._loginUrl,_user,options)
-      .map(res => res.json());
+      .map(res => res.json())
+      .map((res) => {
+        if(res._id){
+          localStorage.setItem('username', res.username);
+          localStorage.setItem('userrole', res.role);
+        }
+        return res;
+      });
   }
 
   register(user: User):Observable<any> {
@@ -44,21 +51,21 @@ export class AuthService {
       .catch(this.handleError);
   }
 
-  logout():Observable<any> {
+  logout():Observable<string[]> {
     return this._http.get(this._logOutUrl)
       .map((res) => res.json())
       .catch(this.handleError);
   }
   logoutClient() {
     localStorage.removeItem('username');
-    localStorage.removeItem('role');
+    localStorage.removeItem('userrole');
   }
-  //isLoggedIn(): Observable<string[]> {
-  // return this._http.get(this._checkLoginUrl).map((res)=>res.json()).catch(this.handleError);
-  //}
+  isLoggedIn(): Observable<string[]> {
+   return this._http.get(this._checkLoginUrl).map((res)=>res.json()).catch(this.handleError);
+  }
 
   dashboardFilter(){
-    let roleToken = localStorage.getItem('role');
+    let roleToken = localStorage.getItem('userrole');
 
     if(!roleToken){
       return false;

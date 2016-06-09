@@ -60,6 +60,7 @@ export class UpdateKnowledgeComponent {
       console.log(error.text());
     }
     );
+    window.location.href = 'admin/knowledges';
   }
 
 }
