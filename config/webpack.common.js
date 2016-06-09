@@ -54,7 +54,7 @@ module.exports = {
 
     'polyfills': './client/dev/polyfills.ts',
     'vendor': './client/dev/vendor.ts',
-    'app': './client/dev/index.ts'
+    'main': './client/dev/index.ts'
 
   },
 
@@ -210,7 +210,7 @@ module.exports = {
      * See: https://github.com/webpack/docs/wiki/optimization#multi-page-app
      */
     new webpack.optimize.CommonsChunkPlugin({
-      name: ['app', 'vendor', 'polyfills'].reverse()
+      name: ['polyfills', 'vendor'].reverse()
     }),
 
     /*
@@ -235,7 +235,7 @@ module.exports = {
      * See: https://github.com/ampedandwired/html-webpack-plugin
      */
     new HtmlWebpackPlugin({
-      template: 'client/dist/index.html',
+      template: 'client/dev/index.html',
       chunksSortMode: 'dependency'
     })
 
