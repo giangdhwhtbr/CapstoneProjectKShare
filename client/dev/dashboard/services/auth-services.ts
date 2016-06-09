@@ -44,7 +44,7 @@ export class AuthService {
       .catch(this.handleError);
   }
 
-  logout():Observable<string[]> {
+  logout():Observable<any> {
     return this._http.get(this._logOutUrl)
       .map((res) => res.json())
       .catch(this.handleError);

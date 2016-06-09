@@ -1,8 +1,0 @@
-webpackJsonp([2],[
-/* 0 */
-/***/ function(module, exports) {
-
-	eval("/**\n * Created by GiangDH on 6/8/16.\n */\n// Angular 2\nimport '@angular/platform-browser';\nimport '@angular/platform-browser-dynamic';\nimport '@angular/core';\nimport '@angular/common';\nimport '@angular/http';\nimport '@angular/router-deprecated';\n// RxJS\nimport 'rxjs';\n// Other vendors for example jQuery, Lodash or Bootstrap\n// You can import js, ts, css, sass, ...\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiMC5qcyIsInNvdXJjZXMiOlsid2VicGFjazovLy8uL2NsaWVudC9kZXYvdmVuZG9yLnRzP2FhZmMiXSwic291cmNlc0NvbnRlbnQiOlsiLyoqXG4gKiBDcmVhdGVkIGJ5IEdpYW5nREggb24gNi84LzE2LlxuICovXG4vLyBBbmd1bGFyIDJcbmltcG9ydCAnQGFuZ3VsYXIvcGxhdGZvcm0tYnJvd3Nlcic7XG5pbXBvcnQgJ0Bhbmd1bGFyL3BsYXRmb3JtLWJyb3dzZXItZHluYW1pYyc7XG5pbXBvcnQgJ0Bhbmd1bGFyL2NvcmUnO1xuaW1wb3J0ICdAYW5ndWxhci9jb21tb24nO1xuaW1wb3J0ICdAYW5ndWxhci9odHRwJztcbmltcG9ydCAnQGFuZ3VsYXIvcm91dGVyLWRlcHJlY2F0ZWQnO1xuLy8gUnhKU1xuaW1wb3J0ICdyeGpzJztcbi8vIE90aGVyIHZlbmRvcnMgZm9yIGV4YW1wbGUgalF1ZXJ5LCBMb2Rhc2ggb3IgQm9vdHN0cmFwXG4vLyBZb3UgY2FuIGltcG9ydCBqcywgdHMsIGNzcywgc2FzcywgLi4uXG5cblxuXG4vKioqKioqKioqKioqKioqKipcbiAqKiBXRUJQQUNLIEZPT1RFUlxuICoqIC4vY2xpZW50L2Rldi92ZW5kb3IudHNcbiAqKiBtb2R1bGUgaWQgPSAwXG4gKiogbW9kdWxlIGNodW5rcyA9IDJcbiAqKi8iXSwibWFwcGluZ3MiOiJBQUFBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7QUFDQTtBQUNBO0FBQ0E7Iiwic291cmNlUm9vdCI6IiJ9");
-
-/***/ }
-]);

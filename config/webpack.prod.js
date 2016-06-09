@@ -13,14 +13,14 @@ module.exports = webpackMerge(commonConfig, {
   devtool: 'source-map',
 
   output: {
-    path: helpers.root('dist'),
-    publicPath: '/',
+    path: helpers.root('client/dist'),
+    publicPath: 'client/dist',
     filename: '[name].[hash].js',
     chunkFilename: '[id].[hash].chunk.js'
   },
 
   htmlLoader: {
-    minimize: false // workaround for ng2
+    minimize: true // workaround for ng2
   },
 
   plugins: [

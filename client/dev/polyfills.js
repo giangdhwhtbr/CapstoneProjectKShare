@@ -1,4 +1,3 @@
-"use strict";
 /**
  * Created by GiangDH on 6/8/16.
  */
@@ -12,3 +11,4 @@ else {
     Error['stackTraceLimit'] = Infinity;
     require('zone.js/dist/long-stack-trace-zone');
 }
+//# sourceMappingURL=polyfills.js.map
