@@ -12,6 +12,8 @@ client/dev/dashboard/**/*.js
 client/dev/dashboard/**/*.map
 client/dev/kshare/**/*.map
 client/dev/kshare/**/*.js
+client/dist/*.js
+client/dist/*.map
 server/*-compiled.js
 server/*.map
 server/**/*-compiled.js
