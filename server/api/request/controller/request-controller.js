@@ -109,5 +109,25 @@ static updateRequest(req, res){
       });
     }
   }
+
+  //change status of a request to deactive
+  static addSubcriber(req, res){
+    var currentDate = new Date();
+    if(req.params && req.params.id) {
+        RequestDAO.getRequestById(req.params.id)
+          .then(request => {
+            request.subcribers.push(req.body.subcriber);
+            
+            RequestDAO.updateRequestById(request)
+              .then(request => res.status(200).json(request))
+              .catch(error => res.status(400).json(error));
+          })
+          .catch(error => res.status(400).json(error));
+    }else{
+      res.status(404).json({
+        "message"    :   "No Request id in request"
+      });
+    }
+  }
   
 }

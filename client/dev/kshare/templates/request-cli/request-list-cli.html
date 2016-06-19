@@ -3,7 +3,7 @@
 <br>
 <br>
 <!-- Search request -->
-<form id="searchdivid2"class="navbar-form navbar-left" role="search">
+<form id="searchdivid2" class="navbar-form navbar-left" role="search">
   <div class="form-group">
     <input #text type="text" class="form-control" placeholder="Nhập nội dung tìm kiếm">
   </div>
@@ -24,6 +24,9 @@
           <p class="lead">{{search.title}}</p>
         </a>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
+          Nội dung : {{search.description}}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
           Người tạo : {{search.user}}
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
@@ -34,14 +37,10 @@
         </div>
       </div>
     </div>
-    <pagination-controls
-      [id]="configRs.id"
-      (pageChange)="configRs.currentPage  = $event"
-      directionLinks="true"
-      autoHide="true">
+    <pagination-controls [id]="configRs.id" (pageChange)="configRs.currentPage  = $event" directionLinks="true" autoHide="true">
     </pagination-controls>
   </div>
-  
+
   <br>
   <!-- list all-->
   <div id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu" [hidden]="hide">
@@ -50,6 +49,9 @@
         <a [routerLink]="[request._id]">
           <p class="lead">{{request.title}}</p>
         </a>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
+          Nội dung : {{request.description}}
+        </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
           Người tạo : {{request.user}}
         </div>
@@ -61,11 +63,7 @@
         </div>
       </div>
     </div>
-    <pagination-controls 
-      [id]="configRq.id"
-      (pageChange)="configRq.currentPage  = $event"
-      directionLinks="true"
-      autoHide="true">
+    <pagination-controls [id]="configRq.id" (pageChange)="configRq.currentPage  = $event" directionLinks="true" autoHide="true">
     </pagination-controls>
   </div>
   <!--<friend-list></friend-list>-->

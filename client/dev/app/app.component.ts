@@ -25,6 +25,7 @@ import {RequestService} from "../dashboard/services/requests-service";
 import {UserService} from "../dashboard/services/users-services";
 import {AuthService} from "../dashboard/services/auth-services";
 import {KSpaceService} from "../dashboard/services/kspace-service";
+import {ChatService} from "../dashboard/services/chat-service";
 @Component({
   selector: 'kshare-app',
   templateUrl:'client/dev/app/app.html',
@@ -40,7 +41,8 @@ import {KSpaceService} from "../dashboard/services/kspace-service";
     RequestService,
     OfferService,
     KnowledgeService,
-    KSpaceService
+    KSpaceService,
+    ChatService
   ]
 })
 

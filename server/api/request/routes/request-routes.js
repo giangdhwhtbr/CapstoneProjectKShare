@@ -23,6 +23,10 @@ module.exports = class RequestRoutes {
        router
         .route('/api/requests-search')
         .post(RequestController.fullTextSearchRequest);
+
+      router
+        .route('/api/request-subcriber/:id')
+        .post(RequestController.addSubcriber);
     }
     
 }

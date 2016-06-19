@@ -6,6 +6,8 @@ const StaticDispatcher = require('../commons/static/index');
 const RequestRoutes = require('../api/request/routes/request-routes');
 const OfferRoutes = require('../api/offer/routes/offer-routes');
 const KSpaceRoutes = require('../api/kspace/routes/kspace-route');
+const ChatRoomRoutes = require('../api/chatRoom/routes/chatRoom-routes');
+const MessageRoutes = require('../api/message/routes/message-routes');
 
 module.exports = class Routes {
   static init(app, router) {
@@ -15,6 +17,9 @@ module.exports = class Routes {
     BadwordRoutes.init(router);
     KnowledgeRoutes.init(router);
     KSpaceRoutes.init(router);
+    ChatRoomRoutes.init(router);
+    MessageRoutes.init(router);
+    
     router
       .route('*')
       .get(StaticDispatcher.sendIndex);

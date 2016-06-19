@@ -30,6 +30,7 @@ var requests_service_1 = require("../dashboard/services/requests-service");
 var users_services_1 = require("../dashboard/services/users-services");
 var auth_services_1 = require("../dashboard/services/auth-services");
 var kspace_service_1 = require("../dashboard/services/kspace-service");
+var chat_service_1 = require("../dashboard/services/chat-service");
 var AppComponent = (function () {
     function AppComponent(router) {
         this.router = router;
@@ -51,7 +52,8 @@ var AppComponent = (function () {
                 requests_service_1.RequestService,
                 offers_service_1.OfferService,
                 knowledge_service_1.KnowledgeService,
-                kspace_service_1.KSpaceService
+                kspace_service_1.KSpaceService,
+                chat_service_1.ChatService
             ]
         }),
         router_1.Routes([

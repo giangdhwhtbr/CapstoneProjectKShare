@@ -17,7 +17,6 @@ export class KSpaceService {
     requestId: requestId,
     offerId: offerId
     });
-    console.log(_kspace);
     return this._http
       .post(this._knowledgesUrl.replace(':id', ''), _kspace, options)
       .map((r) => r.json());

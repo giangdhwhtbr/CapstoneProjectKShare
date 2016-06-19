@@ -9,6 +9,7 @@ export  class RequestService {
   private _getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
   private _searchRequetsUrl = '/api/requests-search/:id';
   private _requestStatusUrl = '/api/request-status/:id';
+  private _statusSubcriberUrl = '/api/request-subcriber/:id';
 
   constructor(private _http: Http) { }
 
@@ -98,6 +99,18 @@ export  class RequestService {
   //change status request
   changeStatusRequest(id: string):Observable<any> {
     return this._http.get(this._requestStatusUrl.replace(':id',id))
+              .map((r) => r.json());
+  }
+
+  //add a subcriber to request subcribers 
+  updateSubcriber(id: string, subcriber:string):Observable<any> {
+    let header = new Headers;
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    let _subcriber = JSON.stringify({
+      subcriber : subcriber
+    });
+    return this._http.post(this._statusSubcriberUrl.replace(':id',id),_subcriber,options)
               .map((r) => r.json());
   }
 

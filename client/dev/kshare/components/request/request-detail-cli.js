@@ -14,16 +14,22 @@ var requests_service_1 = require('../../../dashboard/services/requests-service')
 var offers_service_1 = require('../../../dashboard/services/offers-service');
 var knowledge_service_1 = require('../../../dashboard/services/knowledge-service');
 var kspace_service_1 = require('../../../dashboard/services/kspace-service');
+var auth_services_1 = require('../../../dashboard/services/auth-services');
+var chat_service_1 = require('../../../dashboard/services/chat-service');
 var offer_create_1 = require('../../../dashboard/components/offer/offer-create');
 var RequestDetailClientComponent = (function () {
-    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, rParam, _kspaceService) {
+    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, rParam, _kspaceService, _auth, _chatService) {
         this._requestService = _requestService;
         this._offerService = _offerService;
         this.router = router;
         this._knowledgeService = _knowledgeService;
         this._kspaceService = _kspaceService;
+        this._auth = _auth;
+        this._chatService = _chatService;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
         this.id = rParam.getParam('id');
+        this.roleToken = localStorage.getItem('role');
+        this.userToken = localStorage.getItem('username');
     }
     RequestDetailClientComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -46,8 +52,19 @@ var RequestDetailClientComponent = (function () {
             _this.status = request.status;
             _this.user = request.user;
             _this.createdAt = formatDate(request.createdAt);
+            _this.subcribers = request.subcribers;
             if (_this.status === "deactive") {
                 _this.checkDeactive = true;
+            }
+            if (_this.user === _this.userToken) {
+                _this.checkCreatedUser = true;
+            }
+            for (var i = 0; i < _this.subcribers.length; i++) {
+                if (_this.userToken === _this.subcribers[i]) {
+                    _this.checkSubcribedUser = true;
+                    console.log(_this.checkSubcribedUser + " " + i);
+                    break;
+                }
             }
             //get knowledge name by knowledgeId
             _this._knowledgeService.findKnowledgeById(_this.knowledgeId).subscribe(function (knowledge) {
@@ -80,7 +97,6 @@ var RequestDetailClientComponent = (function () {
     };
     RequestDetailClientComponent.prototype.deactivateRequest = function (id) {
         var _this = this;
-        console.log(id);
         this._requestService
             .changeStatusRequest(this.id)
             .subscribe(function (r) {
@@ -93,9 +109,31 @@ var RequestDetailClientComponent = (function () {
         this._kspaceService
             .addKSpace(learner, lecturer, requestId, offerId)
             .subscribe(function (r) {
-            console.log(r);
-            _this.router.navigateByUrl('/kshare/kspace/' + r._id);
+            _this._chatService.addChatRoom(r._id)
+                .subscribe(function (c) {
+                _this.rid = c._id;
+                console.log("add chat room successfull");
+                _this.router.navigateByUrl('/kshare/kspace/' + r._id + '/' + _this.rid);
+            });
         });
+    };
+    RequestDetailClientComponent.prototype.addSubcriber = function (id) {
+        var _this = this;
+        if (this.checkSubcribedUser == true) {
+            alert('Bạn đã theo dõi vài viết này');
+        }
+        else {
+            this._requestService
+                .updateSubcriber(id, this.userToken)
+                .subscribe(function (r) {
+                console.log(r);
+                console.log("add subcriber successfull");
+                _this.checkSubcribedUser = true;
+            });
+            this._requestService.getRequestById(this.id).subscribe(function (request) {
+                _this.subcribers = request.subcribers;
+            });
+        }
     };
     RequestDetailClientComponent = __decorate([
         core_1.Component({
@@ -105,7 +143,7 @@ var RequestDetailClientComponent = (function () {
             directives: [router_1.ROUTER_DIRECTIVES,
                 offer_create_1.CreateOfferComponent]
         }), 
-        __metadata('design:paramtypes', [requests_service_1.RequestService, offers_service_1.OfferService, router_1.Router, knowledge_service_1.KnowledgeService, router_1.RouteSegment, kspace_service_1.KSpaceService])
+        __metadata('design:paramtypes', [requests_service_1.RequestService, offers_service_1.OfferService, router_1.Router, knowledge_service_1.KnowledgeService, router_1.RouteSegment, kspace_service_1.KSpaceService, auth_services_1.AuthService, chat_service_1.ChatService])
     ], RequestDetailClientComponent);
     return RequestDetailClientComponent;
 }());

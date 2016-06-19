@@ -29,6 +29,7 @@ import { RequestDetailClientComponent } from "./components/request/request-detai
 import { RequestUpdateClientComponent } from "./components/request/request-update-cli";
 import { RequestSearchClientComponent } from "./components/request/request-search-cli";
 import { KSpaceComponent } from "./components/kspace/kspace";
+import { ChatComponent } from "./components/kspace/chat";
 
 
 @Component({
@@ -47,11 +48,12 @@ import { KSpaceComponent } from "./components/kspace/kspace";
 
 @Routes([
   { path: '/', component:HomeComponent},
-  { path: '/kspace/:id', component: KSpaceComponent},
+  { path: '/kspace/:id/:rid', component: KSpaceComponent},
   { path: '/requests/search/:type/:id', component:RequestSearchClientComponent},
   { path: '/requests/update/:id', component:RequestUpdateClientComponent},
   { path: '/requests/:id', component:RequestDetailClientComponent},
-  { path: '/requests', component:RequestListClientComponent}
+  { path: '/requests', component:RequestListClientComponent},
+  { path: '/chat/:id', component:ChatComponent}
 ])
 export class KshareComponent {
 

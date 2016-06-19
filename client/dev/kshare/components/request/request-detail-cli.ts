@@ -3,14 +3,15 @@ import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Routes, RouteSegment} from
 
 import { Request } from '../../../dashboard/interface/request';
 import { KSpace } from '../../../dashboard/interface/kspace';
-
 import { Offer } from '../../../dashboard/interface/offer';
 import { Knowledge } from '../../../dashboard/interface/knowledge';
+
 import { RequestService } from '../../../dashboard/services/requests-service';
 import { OfferService } from '../../../dashboard/services/offers-service';
 import { KnowledgeService } from '../../../dashboard/services/knowledge-service';
 import { KSpaceService } from '../../../dashboard/services/kspace-service';
-
+import { AuthService } from '../../../dashboard/services/auth-services';
+import { ChatService } from '../../../dashboard/services/chat-service';
 
 import { HeaderComponent } from '../shared/header';
 import { FooterComponent } from '../shared/footer';
@@ -33,11 +34,18 @@ export class RequestDetailClientComponent {
   pageTitle:string = 'Welcome to Knowledge Sharing Network';
 
   constructor(private _requestService:RequestService, private _offerService:OfferService, public router:Router,
-              private _knowledgeService:KnowledgeService, rParam:RouteSegment, private _kspaceService: KSpaceService) {
+              private _knowledgeService:KnowledgeService, rParam:RouteSegment, private _kspaceService: KSpaceService,
+              private _auth:AuthService, private _chatService: ChatService) {
     this.id = rParam.getParam('id');
+    this.roleToken = localStorage.getItem('role');
+    this.userToken = localStorage.getItem('username');
   }
 
   id:string;
+  rid: string;
+
+  roleToken:string;
+  userToken:string;
 
   knowledge:Knowledge;
   knowledgeName:string;
@@ -50,9 +58,16 @@ export class RequestDetailClientComponent {
   createdAt:string;
   knowledgeId:string;
   user:string;
+  subcribers:string[];
 
-  //varialbe to  check disable button when the status is deactive
+  //varialbe check to hide button when the status is deactive
   checkDeactive: boolean;
+
+  //variable check to hide button, user can't offer their of request
+  checkCreatedUser: boolean;
+
+  //variable check to hide button, user can't subcribe twice in a request
+  checkSubcribedUser: boolean;
 
   offers:Offer[];
 
@@ -78,23 +93,33 @@ export class RequestDetailClientComponent {
         this.status = request.status;
         this.user = request.user;
         this.createdAt = formatDate(request.createdAt);
+        this.subcribers = request.subcribers;
 
         if (this.status === "deactive"){
           this.checkDeactive = true;
         } 
+
+        if(this.user === this.userToken){
+          this.checkCreatedUser = true;
+        }
+
+        for(var i = 0; i < this.subcribers.length; i++){
+          if(this.userToken === this.subcribers[i]){
+            this.checkSubcribedUser = true;
+            console.log(this.checkSubcribedUser + " " + i);
+            break;
+          }
+        }
 
         //get knowledge name by knowledgeId
         this._knowledgeService.findKnowledgeById(this.knowledgeId).subscribe(
           (knowledge) => {
             this.knowledge = knowledge;
             this.knowledgeName = this.knowledge.name;
-
           },
           (error) => {
             console.log(error);
-          }
-        );
-
+          });
       },
       (error) => {
         console.log(error.text());
@@ -126,7 +151,6 @@ export class RequestDetailClientComponent {
   }
 
   deactivateRequest(id:String) {
-    console.log(id);
     this._requestService
       .changeStatusRequest(this.id)
       .subscribe((r) => {
@@ -136,13 +160,37 @@ export class RequestDetailClientComponent {
   }
 
   addKshare(learner:string, lecturer:string, requestId:string, offerId:string):void {
-
     this._kspaceService
       .addKSpace(learner,lecturer,requestId,offerId)
       .subscribe((r) => {
-        console.log(r);
-        this.router.navigateByUrl('/kshare/kspace/'+r._id);
+
+        this._chatService.addChatRoom(r._id)
+          .subscribe((c) => {
+            this.rid = c._id;
+            console.log("add chat room successfull");
+            this.router.navigateByUrl('/kshare/kspace/'+r._id+'/'+ this.rid);
+          });
       })
+  }
+
+  addSubcriber(id:string):void {
+    if(this.checkSubcribedUser == true){
+      alert('Bạn đã theo dõi vài viết này');
+    } else{
+      this._requestService
+      .updateSubcriber(id,this.userToken)
+      .subscribe((r) => {
+        console.log(r);
+        console.log("add subcriber successfull");
+        this.checkSubcribedUser = true;
+      })
+      this._requestService.getRequestById(this.id).subscribe(
+          (request) => {
+            this.subcribers = request.subcribers;
+          }
+        );
+    }
+    
   }
 
 }

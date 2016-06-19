@@ -18,6 +18,7 @@ var RequestService = (function () {
         this._getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
         this._searchRequetsUrl = '/api/requests-search/:id';
         this._requestStatusUrl = '/api/request-status/:id';
+        this._statusSubcriberUrl = '/api/request-subcriber/:id';
     }
     RequestService.prototype.getAllRequests = function () {
         return this._http.get(this._requestsUrl.replace(':id', ''))
@@ -95,6 +96,17 @@ var RequestService = (function () {
     //change status request
     RequestService.prototype.changeStatusRequest = function (id) {
         return this._http.get(this._requestStatusUrl.replace(':id', id))
+            .map(function (r) { return r.json(); });
+    };
+    //add a subcriber to request subcribers 
+    RequestService.prototype.updateSubcriber = function (id, subcriber) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _subcriber = JSON.stringify({
+            subcriber: subcriber
+        });
+        return this._http.post(this._statusSubcriberUrl.replace(':id', id), _subcriber, options)
             .map(function (r) { return r.json(); });
     };
     RequestService.prototype.handleError = function (error) {
