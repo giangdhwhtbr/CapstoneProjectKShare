@@ -1,6 +1,7 @@
 /**
  * Created by GiangDH on 5/8/16.
  */
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -20,7 +21,8 @@ var UserService = (function () {
     }
     UserService.prototype.getAllUsers = function () {
         return this._http.get(this._usersUrl.replace(':id', ''))
-            .map(function (r) { return r.json(); })
+            .toPromise()
+            .then(function (res) { return res.json(); })
             .catch(this.handleError);
     };
     UserService.prototype.getUserById = function (id) {
@@ -31,14 +33,27 @@ var UserService = (function () {
     UserService.prototype.addUser = function (user) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
         var options = new http_1.RequestOptions({ headers: headers });
+        var formatDate = function (date) {
+            if (date) {
+                var newDate, day, month, year;
+                year = date.substr(6, 4);
+                day = date.substr(3, 2);
+                month = date.substr(0, 2);
+                return newDate = year + '-' + month + '-' + day;
+            }
+        };
         var _user = JSON.stringify({
             firstName: user.firstName,
             lastName: user.lastName,
             displayName: user.displayName,
+            birthday: formatDate(user.birthday),
             username: user.username,
             password: user.password,
             email: user.email,
-            role: user.role
+            role: user.role,
+            ownKnowledgeId: user.ownKnowledgeId.split(","),
+            interestedKnowledgeId: user.interestedKnowledgeId.split(","),
+            onlineTime: user.onlineTime.split(",")
         });
         return this._http
             .post(this._usersUrl.replace(':id', ''), _user, options)
@@ -70,6 +85,6 @@ var UserService = (function () {
         __metadata('design:paramtypes', [http_1.Http])
     ], UserService);
     return UserService;
-})();
+}());
 exports.UserService = UserService;
 //# sourceMappingURL=users-services.js.map

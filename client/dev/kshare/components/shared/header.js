@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -14,8 +15,9 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var auth_services_1 = require('../../../dashboard/services/auth-services');
 var HeaderComponent = (function () {
-    function HeaderComponent(_auth) {
+    function HeaderComponent(_auth, router) {
         this._auth = _auth;
+        this.router = router;
         this.loginToken = false;
         this.userToken = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('role');
@@ -26,12 +28,8 @@ var HeaderComponent = (function () {
         }
     };
     HeaderComponent.prototype.logout = function () {
-        var _this = this;
-        this._auth.logout().subscribe(function (status) {
-            if (status.login == false) {
-                _this._auth.logoutClient();
-            }
-        });
+        this._auth.logout();
+        this._auth.logoutClient();
         window.location.reload();
     };
     HeaderComponent = __decorate([
@@ -41,9 +39,9 @@ var HeaderComponent = (function () {
             styleUrls: ['client/dev/kshare/styles/header.css'],
             directives: [router_1.ROUTER_DIRECTIVES]
         }), 
-        __metadata('design:paramtypes', [auth_services_1.AuthService])
+        __metadata('design:paramtypes', [auth_services_1.AuthService, router_1.Router])
     ], HeaderComponent);
     return HeaderComponent;
-})();
+}());
 exports.HeaderComponent = HeaderComponent;
 //# sourceMappingURL=header.js.map

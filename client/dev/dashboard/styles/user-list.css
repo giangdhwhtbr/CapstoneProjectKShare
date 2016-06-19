@@ -23,4 +23,9 @@ table {
 td>a{
   padding: 0px 5px;
 }
+#createUser{
+  height: 40px;
+  width: 150px;
+  border-bottom: none;
+}
 

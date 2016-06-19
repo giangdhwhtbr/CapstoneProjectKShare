@@ -18,11 +18,8 @@ export class NavbarComponent {
 
   }
   logout(): void {
-    this._auth.logout().subscribe((status)=>{
-      if(status.login == false){
-        this._auth.logoutClient()
-      }
-    });
-    this.router.navigate(['/']);
+    this._auth.logout();
+    this._auth.logoutClient();
+    this.router.navigateByUrl('/kshare');
   }
 }

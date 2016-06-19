@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -9,40 +10,37 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var nav_bar_1 = require('../shared/nav-bar');
-var sidebar_1 = require('../shared/sidebar');
 var users_services_1 = require('../../services/users-services');
 var auth_services_1 = require('../../services/auth-services');
 var user_create_1 = require('./user-create');
-var router_2 = require("@angular/router");
+var primeng_1 = require('primeng/primeng');
 var UserListComponent = (function () {
     function UserListComponent(_userService, _auth, router) {
         this._userService = _userService;
         this._auth = _auth;
         this.router = router;
         this.pageTitle = 'user';
+        this.numOfUser = 0;
     }
     UserListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._userService.getAllUsers().subscribe(function (users) {
-            var formatDate = function (date) {
-                if (date) {
-                    var newDate, day, month, year;
-                    year = date.substr(0, 4);
-                    month = date.substr(5, 2);
-                    day = date.substr(8, 2);
-                    return newDate = day + '/' + month + '/' + year;
-                }
-            };
+        this._userService.getAllUsers().then(function (users) {
             for (var i = 0; i < users.length; i++) {
-                users[i].createdAt = formatDate(users[i].createdAt);
-                users[i].updatedAt = formatDate(users[i].updatedAt);
+                if (users[i].birthday) {
+                    users[i].birthday = new Date(users[i].birthday);
+                }
+                users[i].createdAt = new Date(users[i].createdAt);
+                if (users[i].updatedAt) {
+                    users[i].updatedAt = new Date(users[i].updatedAt);
+                }
             }
             _this.users = users;
+            _this.numOfUser = i;
         }, function (error) {
             _this.errorMessage = error.message;
             console.log(error);
         });
+        console.log(this.numOfUser);
     };
     UserListComponent = __decorate([
         core_1.Component({
@@ -54,14 +52,20 @@ var UserListComponent = (function () {
             ],
             directives: [
                 user_create_1.CreateUserComponent,
-                nav_bar_1.NavbarComponent,
-                sidebar_1.SidebarComponent,
+                primeng_1.DataTable,
+                primeng_1.Column,
+                primeng_1.Header,
+                primeng_1.Footer,
+                primeng_1.MultiSelect,
                 router_1.ROUTER_DIRECTIVES
+            ],
+            providers: [
+                user_create_1.CreateUserComponent
             ]
         }), 
-        __metadata('design:paramtypes', [users_services_1.UserService, auth_services_1.AuthService, router_2.Router])
+        __metadata('design:paramtypes', [users_services_1.UserService, auth_services_1.AuthService, router_1.Router])
     ], UserListComponent);
     return UserListComponent;
-})();
+}());
 exports.UserListComponent = UserListComponent;
 //# sourceMappingURL=user-list.js.map

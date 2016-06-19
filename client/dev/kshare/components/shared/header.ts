@@ -2,7 +2,7 @@
  * Created by GiangDH on 5/18/16.
  */
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES, Routes} from '@angular/router';
+import { ROUTER_DIRECTIVES, Routes, Router} from '@angular/router';
 import { RouteConfig, RouterLink} from '@angular/router-deprecated';
 
 import { AuthService } from '../../../dashboard/services/auth-services';
@@ -19,7 +19,7 @@ export class HeaderComponent {
   userToken:string;
   roleToken:string;
 
-  constructor(private _auth: AuthService){
+  constructor(private _auth: AuthService, public router: Router){
     this.userToken = localStorage.getItem('username');
     this.roleToken = localStorage.getItem('role');
   }
@@ -30,11 +30,8 @@ export class HeaderComponent {
       }
   }
   logout(): void {
-    this._auth.logout().subscribe((status)=>{
-      if(status.login == false){
-        this._auth.logoutClient()
-      }
-    });
+    this._auth.logout();
+    this._auth.logoutClient();
     window.location.reload();
   }
 }

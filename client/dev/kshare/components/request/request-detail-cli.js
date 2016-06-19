@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -107,6 +108,6 @@ var RequestDetailClientComponent = (function () {
         __metadata('design:paramtypes', [requests_service_1.RequestService, offers_service_1.OfferService, router_1.Router, knowledge_service_1.KnowledgeService, router_1.RouteSegment, kspace_service_1.KSpaceService])
     ], RequestDetailClientComponent);
     return RequestDetailClientComponent;
-})();
+}());
 exports.RequestDetailClientComponent = RequestDetailClientComponent;
 //# sourceMappingURL=request-detail-cli.js.map

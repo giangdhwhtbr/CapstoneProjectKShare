@@ -40,6 +40,9 @@ const userSchema = new mongoose.Schema({
     trim: true,
     default: ''
   },
+  birthday:{
+    type: Date
+  },
   username: {
     type: String,
     trim: true,
@@ -71,10 +74,21 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Role can not blank'],
     validate: [validateRole, "Role is not valid, try again!"]
   },
-  knowledgeId: [
+  ownKnowledgeId: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Knowledge',required: true
+      ref: 'Knowledge'
+    }
+  ],
+  interestedKnowledgeId: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'Knowledge'
+    }
+  ],
+  onlineTime: [
+    {
+      type: String
     }
   ],
   level:{

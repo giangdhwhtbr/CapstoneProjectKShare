@@ -1,4 +1,5 @@
 <!-- Modal Create User-->
+
 <div class="modal fade" id="modalCreateUser" tabindex="-1" role="dialog"
      aria-labelledby="CreateUser">
   <div class="modal-dialog" role="document">
@@ -14,67 +15,144 @@
           <div class="row">
             <div class="col-md-12">
               <label for="firstName">First name</label>
-              <input class="form-control" type="text"
-                     required="required" id="firstName"
-                     name="firstName" [ngFormControl]="userForm.controls['firstName']"/>
+              <input class="form-control"
+                     type="text"
+                     required="required"
+                     id="firstName"
+                     name="firstName"
+                     pInputText
+                     [ngFormControl]="userForm.controls['firstName']"
+              />
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <label for="lastName">Last name</label>
-              <input class="form-control" type="text"
-                     required="required" id="lastName"
-                     name="lastName" [ngFormControl]="userForm.controls['lastName']"/>
+              <input class="form-control"
+                     type="text"
+                     required="required"
+                     id="lastName"
+                     name="lastName"
+                     [ngFormControl]="userForm.controls['lastName']"
+              />
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <label for="displayName">Display Name</label>
-              <input class="form-control" type="text"
-                     required="required" id="displayName"
-                     name="displayName" [ngFormControl]="userForm.controls['displayName']"/>
+              <input class="form-control"
+                     type="text"
+                     required="required"
+                     id="displayName"
+                     name="displayName"
+                     [ngFormControl]="userForm.controls['displayName']"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="displayName">Birthday</label>
+              <input class="form-control"
+                     type="date"
+                     required="required"
+                     id="birthday"
+                     name="birthday"
+                     [ngFormControl]="userForm.controls['birthday']"
+              />
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <label for="username">Username</label>
-              <input class="form-control" type="text"
-                     required="required" id="username"
-                     name="username" [ngFormControl]="userForm.controls['username']"/>
+              <input class="form-control"
+                     type="text"
+                     required="required"
+                     id="username"
+                     name="username"
+                     [ngFormControl]="userForm.controls['username']"
+              />
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <label for="password">Password</label>
-              <input class="form-control" type="password"
-                     required="required" id="password"
-                     name="password" [ngFormControl]="userForm.controls['password']"/>
+              <input class="form-control"
+                     type="password"
+                     required="required"
+                     id="password"
+                     name="password"
+                     [ngFormControl]="userForm.controls['password']"
+              />
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <label for="email">Email</label>
-              <input class="form-control" type="text"
-                     required="required" id="email"
-                     name="email" [ngFormControl]="userForm.controls['email']"/>
+              <input class="form-control"
+                     type="email"
+                     required="required"
+                     id="email"
+                     name="email"
+                     [ngFormControl]="userForm.controls['email']"
+              />
             </div>
           </div>
           <div class="row">
             <div class="col-md-12">
               <label for="role">Role</label>
-              <select name="role" id="role" required="required"
-                      class="form-control" [ngFormControl]="userForm.controls['role']">
+              <select name="role"
+                      id="role"
+                      required="required"
+                      class="form-control"
+                      [ngFormControl]="userForm.controls['role']"
+              >
                 <option value="admin">Admin</option>
                 <option value="manager">Manager</option>
                 <option value="instructor">Instructor</option>
-                <option value="normal" default selected>Normal</option>
+                <option value="normal" selected>Normal</option>
               </select>
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="email">Lĩnh vực am hiểu  </label>
+              <input class="form-control"
+                     type="text"
+                     required="required"
+                     id="ownKnowledgeId"
+                     name="ownKnowledgeId"
+                     [ngFormControl]="userForm.controls['ownKnowledgeId']"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="email">Lĩnh vực quan tâm   </label>
+              <input class="form-control"
+                     type="text"
+                     required="required"
+                     id="interestedKnowledgeId"
+                     name="interestedKnowledgeId"
+                     [ngFormControl]="userForm.controls['interestedKnowledgeId']"
+              />
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-md-12">
+              <label for="email">Thời gian    </label>
+              <input class="form-control"
+                     type="text"
+                     required="required"
+                     id="onlineTime"
+                     name="onlineTime"
+                     [ngFormControl]="userForm.controls['onlineTime']"
+              />
             </div>
           </div>
           <br>
           <div class="row">
             <div class="col-md-12">
-              <button type="submit" class="btn btn-primary">Create
+              <button type="submit" class="btn btn-primary" >Create
               </button>
               <button type="reset" class="btn btn-warning">Reset
               </button>

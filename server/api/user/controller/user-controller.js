@@ -1,5 +1,4 @@
 "use strict";
-const mongoose = require('mongoose');
 const passport = require('passport');
 const userDAO = require('../dao/user-dao');
 const crypto  = require('crypto');
@@ -42,8 +41,11 @@ module.exports = class userController {
       username: req.body.username,
       password: req.body.password,
       email: req.body.email,
+      birthday: req.body.birthday,
       role: req.body.role,
-      knowledgeId:req.body.knowledgeId,
+      ownKnowledgeId:req.body.ownKnowledgeId,
+      interestedKnowledgeId: req.body.interestedKnowledgeId,
+      onlineTime: req.body.onlineTime,
       level: 1,
       rateAve:0,
       status: true

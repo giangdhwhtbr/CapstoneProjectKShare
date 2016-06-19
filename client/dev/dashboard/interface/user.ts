@@ -6,10 +6,14 @@ export interface User {
   firstName: string;
   lastName: string;
   displayName: string;
+  birthday: Date;
   username: string;
   password: string;
   email: string;
   role: string;
+  ownKnowledgeId:[string];
+  interestedKnowledgeId:[string];
+  onlineTime:[string];
   createdAt: string;
   updatedAt: string;
 }

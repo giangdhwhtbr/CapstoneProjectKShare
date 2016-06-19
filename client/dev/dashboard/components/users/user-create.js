@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13,21 +14,28 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var router_1 = require('@angular/router');
+// UI
+var primeng_1 = require('primeng/primeng');
 var users_services_1 = require('../../services/users-services');
 var CreateUserComponent = (function () {
     function CreateUserComponent(fb, _userService, router) {
         this._userService = _userService;
         this.router = router;
+        this.display = false;
         this.pageHeader = "Create User";
         this.users = [];
         this.userForm = fb.group({
-            firstName: ["", common_1.Validators.required],
-            lastName: ["", common_1.Validators.required],
-            displayName: ["", common_1.Validators.required],
+            firstName: [""],
+            lastName: [""],
+            displayName: [""],
+            birthday: [""],
             username: ["", common_1.Validators.required],
             password: ["", common_1.Validators.required],
             email: ["", common_1.Validators.required],
-            role: ["", common_1.Validators.required]
+            role: ["", common_1.Validators.required],
+            ownKnowledgeId: [""],
+            interestedKnowledgeId: [""],
+            onlineTime: [""]
         });
     }
     CreateUserComponent.prototype.addUser = function (user) {
@@ -44,13 +52,17 @@ var CreateUserComponent = (function () {
             selector: 'user-create',
             templateUrl: 'client/dev/dashboard/templates/users/user-create.html',
             styleUrls: ['client/dev/dashboard/styles/styles.css'],
-            directives: [common_1.FORM_DIRECTIVES],
+            directives: [
+                common_1.FORM_DIRECTIVES,
+                primeng_1.Dialog,
+                primeng_1.Calendar
+            ],
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(users_services_1.UserService)), 
         __metadata('design:paramtypes', [common_1.FormBuilder, users_services_1.UserService, router_1.Router])
     ], CreateUserComponent);
     return CreateUserComponent;
-})();
+}());
 exports.CreateUserComponent = CreateUserComponent;
 //# sourceMappingURL=user-create.js.map

@@ -1,14 +1,13 @@
 import {
-  Component,OnInit
+  Component,OnInit, Pipe, PipeTransform
 } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
-import  { NavbarComponent } from '../shared/nav-bar';
-import  { SidebarComponent }  from '../shared/sidebar';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import  { User } from '../../interface/user';
 import  { UserService} from '../../services/users-services';
 import  { AuthService} from '../../services/auth-services';
 import  { CreateUserComponent } from './user-create';
-import  { Router } from "@angular/router";
+
+import {DataTable,Column, Header, MultiSelect, Footer, InputText} from 'primeng/primeng';
 @Component({
   selector: 'user-list',
   templateUrl: 'client/dev/dashboard/templates/users/user-list.html',
@@ -18,9 +17,15 @@ import  { Router } from "@angular/router";
   ],
   directives: [
     CreateUserComponent,
-    NavbarComponent,
-    SidebarComponent,
+    DataTable,
+    Column,
+    Header,
+    Footer,
+    MultiSelect,
     ROUTER_DIRECTIVES
+  ],
+  providers:[
+    CreateUserComponent
   ]
 })
 
@@ -29,34 +34,31 @@ export class UserListComponent {
   errorMessage: string;
   roleToken:string;
   users: User[];
-
+  numOfUser: number = 0;
   constructor(private _userService: UserService, private _auth:AuthService, private router: Router){
 
   }
 
   ngOnInit(): void {
-    this._userService.getAllUsers().subscribe(
-        (users) => {
-          var formatDate = function (date){
-            if(date) {
-              var newDate, day, month, year;
-              year = date.substr(0, 4);
-              month = date.substr(5, 2);
-              day = date.substr(8, 2);
-              return newDate = day + '/' + month + '/' + year;
-            }
+    this._userService.getAllUsers().then(
+      (users) => {
+        for (var i = 0; i < users.length; i++) {
+          if (users[i].birthday) {
+            users[i].birthday = new Date(users[i].birthday);
           }
-            for (var i = 0; i < users.length; i++) {
-              users[i].createdAt = formatDate(users[i].createdAt);
-              users[i].updatedAt = formatDate(users[i].updatedAt);
-            }
-            this.users = users;
-
-        },
+          users[i].createdAt = new Date(users[i].createdAt);
+          if (users[i].updatedAt) {
+            users[i].updatedAt = new Date(users[i].updatedAt);
+          }
+        }
+        this.users = users;
+        this.numOfUser = i;
+      },
       (error) => {
         this.errorMessage = error.message;
         console.log(error);
       }
     );
+    console.log(this.numOfUser);
   }
 }

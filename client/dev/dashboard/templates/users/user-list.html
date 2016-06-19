@@ -1,5 +1,3 @@
-<nav-bar></nav-bar>
-<sidebar pageTitle="user"></sidebar>
 <div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
   <div class="row">
     <ol class="breadcrumb">
@@ -28,10 +26,12 @@
 
           <div class="row">
             <div class="col-md-3">
-              <button type="button" class="btn btn-primary btn-lg" data-toggle="modal"
+              <button type="button" class="ui-widget-header ui-helper-clearfix" id="createUser" data-toggle="modal"
                       data-target="#modalCreateUser">
                 Create User
               </button>
+              <!-- Modal Create User -->
+              <user-create></user-create>
             </div>
             <div class="col-md-9"></div>
             <div class="col-md-3"></div>
@@ -41,30 +41,28 @@
               <div *ngIf="errorMessage">
                 {{errorMessage}}
               </div>
-              <table class="table table-striped mg-top-15px" align="center" *ngIf="users">
-                <thead>
-                  <tr class="tb-header">
-                    <th>Username</th>
-                    <th>Display Name</th>
-                    <th>Role</th>
-                    <th>Join date</th>
-                    <th>Updated date</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let user of users">
-                    <td>{{user.username}}</td>
-                    <td>{{user.displayName}}</td>
-                    <td>{{user.role}}</td>
-                    <td>{{user.createdAt}}</td>
-                    <td>{{user.updatedAt}}</td>
-                    <td>
-                      <a href="/admin/users/{{user._id}}" class="btn btn-info"><span class="glyphicon glyphicon-eye-open"></span></a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
+              <p-dataTable [value]="users" resizableColumns="true" [rows]="10" [paginator]="true" [globalFilter]="gb">
+                <header>
+                  <h4 style="color:white; font-weight: 500;">User List</h4>
+                </header>
+                <footer>There are {{numOfUser}} users</footer>
+                <p-column field="name.firstName" header="First Name" [sortable]="true"></p-column>
+                <p-column field="name.lastName" header="Last Name"[sortable]="true"></p-column>
+                <p-column field="displayName" header="Display Name"[sortable]="true"></p-column>
+                <p-column field="birthday" header="Birthday"[sortable]="true">
+                  <template let-col let-user="rowData">
+                      {{user[col.field] | date:"dd/MM/yyyy"}}
+                  </template>
+                </p-column>
+                <p-column field="username" header="Username"[sortable]="true"></p-column>
+                <p-column field="email" header="Email"[sortable]="true"></p-column>
+                <p-column field="role" header="Role"[sortable]="true"></p-column>
+                <p-column field="createdAt" header="Created At"[sortable]="true">
+                  <template let-col let-user="rowData">
+                    {{user[col.field] | date:"dd/MM/yyyy"}}
+                  </template>
+                </p-column>
+              </p-dataTable>
             </div>
           </div>
           <!-- /.row -->
@@ -75,5 +73,4 @@
   </div>
   <!--/.row-->
 </div>
-<!-- Modal Create User -->
-<user-create></user-create>
+
