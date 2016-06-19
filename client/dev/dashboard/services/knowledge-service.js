@@ -27,6 +27,7 @@ var KnowledgeService = (function () {
         var _knowledge = JSON.stringify({
             name: knowledge.name,
             description: knowledge.description,
+            parent: knowledge.parent,
         });
         return this._http
             .post(this._knowledgesUrl.replace(':id', ''), _knowledge, options)

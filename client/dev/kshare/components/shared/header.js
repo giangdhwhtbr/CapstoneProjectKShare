@@ -19,10 +19,10 @@ var HeaderComponent = (function () {
         this._auth = _auth;
         this.loginToken = false;
         this.userToken = localStorage.getItem('username');
-        this.roleToken = localStorage.getItem('userrole');
+        this.roleToken = localStorage.getItem('role');
     }
     HeaderComponent.prototype.ngOnInit = function () {
-        if (localStorage.getItem('username')) {
+        if (this.userToken) {
             this.loginToken = true;
         }
     };

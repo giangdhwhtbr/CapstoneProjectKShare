@@ -31,7 +31,14 @@ var AuthService = (function () {
         });
         var usertoken = user.username;
         return this._http.post(this._loginUrl, _user, options)
-            .map(function (res) { return res.json(); });
+            .map(function (res) { return res.json(); })
+            .map(function (res) {
+            if (res._id) {
+                localStorage.setItem('username', res.username);
+                localStorage.setItem('userrole', res.role);
+            }
+            return res;
+        });
     };
     AuthService.prototype.register = function (user) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -52,13 +59,13 @@ var AuthService = (function () {
     };
     AuthService.prototype.logoutClient = function () {
         localStorage.removeItem('username');
-        localStorage.removeItem('role');
+        localStorage.removeItem('userrole');
     };
-    //isLoggedIn(): Observable<string[]> {
-    // return this._http.get(this._checkLoginUrl).map((res)=>res.json()).catch(this.handleError);
-    //}
+    AuthService.prototype.isLoggedIn = function () {
+        return this._http.get(this._checkLoginUrl).map(function (res) { return res.json(); }).catch(this.handleError);
+    };
     AuthService.prototype.dashboardFilter = function () {
-        var roleToken = localStorage.getItem('role');
+        var roleToken = localStorage.getItem('userrole');
         if (!roleToken) {
             return false;
         }

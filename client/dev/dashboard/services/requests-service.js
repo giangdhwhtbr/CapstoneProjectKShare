@@ -16,9 +16,12 @@ var RequestService = (function () {
         this._http = _http;
         this._requestsUrl = '/api/requests/:id';
         this._getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
+<<<<<<< HEAD
         this._searchRequetsUrl = '/api/requests-search/:id';
         this._requestStatusUrl = '/api/request-status/:id';
         this._statusSubcriberUrl = '/api/request-subcriber/:id';
+=======
+>>>>>>> f7f21ebd07bc2e89a7962da451cf3a9595cbb271
     }
     RequestService.prototype.getAllRequests = function () {
         return this._http.get(this._requestsUrl.replace(':id', ''))
@@ -32,8 +35,7 @@ var RequestService = (function () {
         var _request = JSON.stringify({
             title: request.title,
             description: request.description,
-            knowledgeId: request.knowledgeId,
-            user: request.user
+            knowledgeId: request.knowledgeId
         });
         return this._http
             .post(this._requestsUrl.replace(':id', ''), _request, options)
@@ -81,6 +83,7 @@ var RequestService = (function () {
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
+<<<<<<< HEAD
     //search request
     RequestService.prototype.searchRequest = function (search) {
         var header = new http_1.Headers;
@@ -109,6 +112,8 @@ var RequestService = (function () {
         return this._http.post(this._statusSubcriberUrl.replace(':id', id), _subcriber, options)
             .map(function (r) { return r.json(); });
     };
+=======
+>>>>>>> f7f21ebd07bc2e89a7962da451cf3a9595cbb271
     RequestService.prototype.handleError = function (error) {
         console.error(error);
         return Observable_1.Observable.throw(error.json().error || 'Server error');

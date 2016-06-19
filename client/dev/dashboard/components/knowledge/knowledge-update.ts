@@ -1,16 +1,17 @@
+import { Component, OnInit, Inject } from '@angular/core';
+import { Knowledge } from '../../../dashboard/interface/knowledge';
 
-import { Component,Inject,Input } from '@angular/core';
 
-import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
-import { KnowledgeService } from '../../services/knowledge-service';
+import { KnowledgeService } from '../../../dashboard/services/knowledge-service';
+
+
 import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Routes, RouteSegment} from'@angular/router';
-import { KnowledgeListComponent } from '../../components/knowledge/knowledges-list';
-import { Knowledge } from '../../interface/knowledge';
+import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
 
 @Component({
   selector: 'knowledge-update',
   templateUrl: 'client/dev/dashboard/templates/knowledge/knowledge-update.html',
-  styleUrls: ['client/dev/dashboard/styles/knowledge-update.css'],
+  styleUrls: ['client/dev/dashboard/styles/styles.css'],
   directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES],
   providers: [KnowledgeService]
 })
@@ -29,7 +30,8 @@ export class UpdateKnowledgeComponent {
     this._knowledgeService.findKnowledgeById(this.id).subscribe(
       (knowledge) => {
         this.knowledge = knowledge;
-        this.name = knowledge.description;
+        this.name = knowledge.name;
+        this.description = knowledge.description;
         this._id = knowledge._id;
 
     },

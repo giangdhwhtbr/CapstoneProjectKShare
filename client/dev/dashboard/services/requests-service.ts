@@ -7,10 +7,13 @@ import { Observable } from 'rxjs/Observable';
 export  class RequestService {
   private _requestsUrl = '/api/requests/:id';
   private _getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
+<<<<<<< HEAD
   private _searchRequetsUrl = '/api/requests-search/:id';
   private _requestStatusUrl = '/api/request-status/:id';
   private _statusSubcriberUrl = '/api/request-subcriber/:id';
 
+=======
+>>>>>>> f7f21ebd07bc2e89a7962da451cf3a9595cbb271
   constructor(private _http: Http) { }
 
   getAllRequests(): Observable<Request[]> {
@@ -26,8 +29,7 @@ export  class RequestService {
     let _request = JSON.stringify({
       title : request.title,
       description : request.description,
-      knowledgeId: request.knowledgeId,
-      user: request.user
+      knowledgeId: request.knowledgeId
     });
     return this._http
               .post(this._requestsUrl.replace(':id',''),_request,options)
@@ -80,26 +82,6 @@ export  class RequestService {
     return this._http.get(this._getKnowledgeByParentUrl.replace(':id',id))
       .map((r) => r.json())
       .catch(this.handleError);
-  }
-  
-  //search request
-  searchRequest(search: string):Observable<any>{
-
-    let header = new Headers;
-    let headers = new Headers({ 'Content-Type': 'application/json' });
-    let options = new RequestOptions({ headers: headers });
-    let _search = JSON.stringify({
-      text : search
-    });
-    return this._http
-              .post(this._searchRequetsUrl.replace(':id',''),_search,options)
-              .map((r) => r.json());
-  }
-
-  //change status request
-  changeStatusRequest(id: string):Observable<any> {
-    return this._http.get(this._requestStatusUrl.replace(':id',id))
-              .map((r) => r.json());
   }
 
   //add a subcriber to request subcribers 

@@ -21,11 +21,11 @@ export class HeaderComponent {
 
   constructor(private _auth: AuthService){
     this.userToken = localStorage.getItem('username');
-    this.roleToken = localStorage.getItem('userrole');
+    this.roleToken = localStorage.getItem('role');
   }
 
   ngOnInit(): void {
-      if(localStorage.getItem('username')){
+      if(this.userToken){
         this.loginToken = true;
       }
   }

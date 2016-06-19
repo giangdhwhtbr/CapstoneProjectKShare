@@ -1,7 +1,7 @@
 
 export interface Request {
   _id: string;
-  user: string;
+  userId: string;
   title: string;
   createdAt: string;
   description: string;

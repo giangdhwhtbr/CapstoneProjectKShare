@@ -22,13 +22,13 @@
             <a [routerLink]="['/kshare/requests']">Request List</a>
           </li>
           <li *ngIf="roleToken == 'admin' || roleToken == 'manager'">
-            <a href="/admin/users">Dashboard</a>
+            <a [routerLink]="['/admin']">Dashboard</a>
           </li>
-          <li *ngIf="loginToken == false">
+          <li *ngIf="!loginToken">
             <button class="btn btn-success btLogin" id="btnShowLogin" data-toggle="modal"
                     data-target="#modalLogin">Login</button>
           </li>
-          <li *ngIf="loginToken == true">
+          <li *ngIf="loginToken">
             <button class="btn btn-success btLogin" (click)="logout()">Logout</button>
           </li>
 

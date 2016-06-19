@@ -24,8 +24,7 @@ var OfferService = (function () {
             price: offer.price,
             requestId: offer.requestId,
             numberOfLecture: offer.numOfLecture,
-            message: offer.message,
-            user: offer.user
+            message: offer.message
         });
         //console.log(_offer);
         return this._http
