@@ -6,8 +6,11 @@
 const PORT = process.env.PORT || 3333;
 
 const os = require('os');
-const https = require('https');
 const express = require('express');
+
+const app = express();
+const https = require('https');
+
 const fs = require('fs');
 const RoutesConfig = require('./config/routes.conf');
 const PoliciesConfig = require('./config/policies.conf');
@@ -15,14 +18,10 @@ const DBConfig = require('./config/db.conf');
 const Routes = require('./routes/index');
 const io = require('socket.io');
 
-
-const app = express();
-
 RoutesConfig.init(app);
 PoliciesConfig.init();
 DBConfig.init();
 Routes.init(app, express.Router());
-
 
 const opts = {
   key: fs.readFileSync(__dirname + '/cert/server.key'),

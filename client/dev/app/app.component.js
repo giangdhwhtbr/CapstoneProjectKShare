@@ -15,21 +15,22 @@ var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/Rx'); // Load all features
 var router_1 = require('@angular/router');
-var LoggedinRouterOutlet_1 = require('./LoggedinRouterOutlet');
+var auth_conf_1 = require('./auth.conf');
 /**
- * Page Components
+ * Page components
  * */
-var dashboard_component_1 = require("../dashboard/dashboard.component");
-var kshare_component_1 = require("../kshare/kshare.component");
+var dashboard_component_1 = require("./dashboard.component");
+var kshare_component_1 = require("./kshare.component");
 /**
- * Services
+ * services
  **/
-var knowledge_service_1 = require("../dashboard/services/knowledge-service");
-var offers_service_1 = require("../dashboard/services/offers-service");
-var requests_service_1 = require("../dashboard/services/requests-service");
-var users_services_1 = require("../dashboard/services/users-services");
-var auth_services_1 = require("../dashboard/services/auth-services");
-var kspace_service_1 = require("../dashboard/services/kspace-service");
+var knowledge_1 = require("./services/knowledge");
+var request_offer_1 = require("./services/request-offer");
+var requests_1 = require("./services/requests");
+var users_1 = require("./services/users");
+var auth_1 = require("./services/auth");
+var kspace_1 = require("./services/kspace");
+var chat_1 = require("./services/chat");
 var AppComponent = (function () {
     function AppComponent(router) {
         this.router = router;
@@ -38,20 +39,21 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'kshare-app',
-            templateUrl: 'client/dev/app/app.html',
+            template: '<router-outlet></router-outlet>',
             directives: [
                 router_1.ROUTER_DIRECTIVES,
-                LoggedinRouterOutlet_1.LoggedinRouterOutlet
+                auth_conf_1.LoggedinRouterOutlet
             ],
             providers: [
-                auth_services_1.AuthService,
-                users_services_1.UserService,
+                auth_1.AuthService,
+                users_1.UserService,
                 http_1.HTTP_PROVIDERS,
                 router_1.ROUTER_PROVIDERS,
-                requests_service_1.RequestService,
-                offers_service_1.OfferService,
-                knowledge_service_1.KnowledgeService,
-                kspace_service_1.KSpaceService
+                requests_1.RequestService,
+                request_offer_1.OfferService,
+                knowledge_1.KnowledgeService,
+                kspace_1.KSpaceService,
+                chat_1.ChatService
             ]
         }),
         router_1.Routes([
@@ -64,4 +66,3 @@ var AppComponent = (function () {
     return AppComponent;
 }());
 exports.AppComponent = AppComponent;
-//# sourceMappingURL=app.component.js.map

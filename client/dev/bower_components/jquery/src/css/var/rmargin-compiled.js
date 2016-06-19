@@ -1,8 +1,0 @@
-"use strict";
-
-define(function () {
-	return (/^margin/
-	);
-});
-
-//# sourceMappingURL=rmargin-compiled.script.map

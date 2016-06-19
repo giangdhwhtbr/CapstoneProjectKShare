@@ -11,14 +11,16 @@ System.config({
     "angular2-jwt":"node_modules/angular2-jwt",
     "simple-peer/*":"node_modules/simple-peer",
     "ng2-pagination":"node_modules/ng2-pagination",
-    "primeng/*":"node_modules/primeng",
-
+    "primeng/*":"node_modules/primeng"
   },
   map: {
-    "rxjs": "node_modules/rxjs",
-    "simplewebrtc":"client/dev/demo"
+    "rxjs": "node_modules/rxjs"
   },
   packages: {
+    "socket.io-client": {
+      defaultExtension: 'js',
+      main:'lib/index'
+    },
     '@angular/common': {
       main: 'index'
     },

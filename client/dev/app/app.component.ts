@@ -6,28 +6,29 @@ import { HTTP_PROVIDERS } from '@angular/http';
 import 'rxjs/Rx';   // Load all features
 import { ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes, Router} from '@angular/router';
 import { RouteConfig, RouterLink} from '@angular/router-deprecated';
-import { LoggedinRouterOutlet } from './LoggedinRouterOutlet';
+import { LoggedinRouterOutlet } from './auth.conf';
 
 /**
- * Page Components
+ * Page components
  * */
 
-import { DashboardComponent } from "../dashboard/dashboard.component";
-import { KshareComponent } from "../kshare/kshare.component";
+import { DashboardComponent } from "./dashboard.component";
+import { KshareComponent } from "./kshare.component";
 
 /**
- * Services
+ * services
  **/
 
-import {KnowledgeService} from "../dashboard/services/knowledge-service";
-import {OfferService} from "../dashboard/services/offers-service";
-import {RequestService} from "../dashboard/services/requests-service";
-import {UserService} from "../dashboard/services/users-services";
-import {AuthService} from "../dashboard/services/auth-services";
-import {KSpaceService} from "../dashboard/services/kspace-service";
+import {KnowledgeService} from "./services/knowledge";
+import {OfferService} from "./services/request-offer";
+import {RequestService} from "./services/requests";
+import {UserService} from "./services/users";
+import {AuthService} from "./services/auth";
+import {KSpaceService} from "./services/kspace";
+import {ChatService} from "./services/chat";
 @Component({
   selector: 'kshare-app',
-  templateUrl:'client/dev/app/app.html',
+  template:'<router-outlet></router-outlet>',
   directives: [
     ROUTER_DIRECTIVES,
     LoggedinRouterOutlet
@@ -40,7 +41,8 @@ import {KSpaceService} from "../dashboard/services/kspace-service";
     RequestService,
     OfferService,
     KnowledgeService,
-    KSpaceService
+    KSpaceService,
+    ChatService
   ]
 })
 
