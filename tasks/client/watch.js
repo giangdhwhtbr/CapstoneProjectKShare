@@ -3,7 +3,7 @@ import browserSync from 'browser-sync';
 import {path, tasks} from './const';
 
 const TS = path.DEV + '**/*.ts';
-const CSS = path.DEV + '**/*.css';
+const CSS = path.ROOT + '**/*.css';
 const HTML = path.DEV + '**/*.html';
 
 gulp.task(tasks.CLIENT_RELOAD, () => {
@@ -11,9 +11,9 @@ gulp.task(tasks.CLIENT_RELOAD, () => {
 });
 
 gulp.task(tasks.CLIENT_WATCH, [tasks.CLIENT_BUILD_TS], () => {
-  
+
   browserSync({proxy: "https://localhost:3333", reloadDelay: 1000});
-  
+
 
   let _watchable = [];
 

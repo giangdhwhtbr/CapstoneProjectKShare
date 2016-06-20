@@ -4,38 +4,35 @@
 import { Component } from '@angular/core';
 import { HTTP_PROVIDERS } from '@angular/http';
 import 'rxjs/Rx';   // Load all features
-import { ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes, Router } from '@angular/router';
+import { ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes, Router} from '@angular/router';
+import { RouteConfig, RouterLink} from '@angular/router-deprecated';
+import { LoggedinRouterOutlet } from './auth.conf';
 
 /**
- * Components
- */
-import { HomeComponent } from '../kshare/components/home/home';
-import { UserListComponent } from '../dashboard/components/users/user-list';
-import { UserInfoComponent } from '../dashboard/components/users/user-info';
-import { BadwordComponent } from '../dashboard/components/badword/badword';
-import { UpdateBadwordComponent } from '../dashboard/components/badword/badword-update';
-import { RequestComponent } from '../dashboard/components/request/requests';
-import { UpdateRequestComponent } from '../dashboard/components/request/request-update';
-import { KnowledgeComponent } from '../dashboard/components/knowledge/knowledge';
-import { UpdateKnowledgeComponent } from '../dashboard/components/knowledge/knowledge-update';
-import { RequestListClientComponent } from '../kshare/components/request/request-list-cli';
-import { RequestDetailClientComponent } from '../kshare/components/request/request-detail-cli';
-import { RequestUpdateClientComponent } from '../kshare/components/request/request-update-cli';
+ * Page components
+ * */
+
+import { DashboardComponent } from "./dashboard.component";
+import { KshareComponent } from "./kshare.component";
 
 /**
- * Service
- */
-import { AuthService } from '../dashboard/services/auth-services';
-import { UserService } from '../dashboard/services/users-services';
-import { BadwordService } from '../dashboard/services/badwords-service';
-import { RequestService } from '../dashboard/services/requests-service';
-import { KnowledgeService } from '../dashboard/services/knowledge-service';
-import { OfferService } from '../dashboard/services/offers-service';
+ * services
+ **/
 
+import {KnowledgeService} from "./services/knowledge";
+import {OfferService} from "./services/request-offer";
+import {RequestService} from "./services/requests";
+import {UserService} from "./services/users";
+import {AuthService} from "./services/auth";
+import {KSpaceService} from "./services/kspace";
+import {ChatService} from "./services/chat";
 @Component({
   selector: 'kshare-app',
   template:'<router-outlet></router-outlet>',
-  directives: [ROUTER_DIRECTIVES],
+  directives: [
+    ROUTER_DIRECTIVES,
+    LoggedinRouterOutlet
+  ],
   providers: [
     AuthService,
     UserService,
@@ -43,25 +40,19 @@ import { OfferService } from '../dashboard/services/offers-service';
     ROUTER_PROVIDERS,
     RequestService,
     OfferService,
-    KnowledgeService
+    KnowledgeService,
+    KSpaceService,
+    ChatService
   ]
 })
 
-@Routes([
-  { path: '/', component:HomeComponent },
-  { path: '/admin/users', component: UserListComponent },
-  { path: '/admin/users/:id', component: UserInfoComponent},
-  { path: '/admin/badwords', component: BadwordComponent },
-  { path: '/admin/badwords/:id', component: UpdateBadwordComponent },
-  { path: '/admin/requests', component: RequestComponent },
-  { path: '/admin/requests/:id', component: UpdateRequestComponent },
-  { path: '/admin/knowledges', component: KnowledgeComponent },
-  { path: '/admin/knowledges/:id', component: UpdateKnowledgeComponent },
-  { path: '/requests', component: RequestListClientComponent},
-  { path: '/requests/:id', component: RequestDetailClientComponent},
-  { path: '/requests/update/:id', component: RequestUpdateClientComponent}
-])
 
+@Routes([
+  { path: '/', component:KshareComponent},
+  { path: '/kshare',component:KshareComponent },
+  { path: '/admin', component:DashboardComponent}
+
+])
 
 export class AppComponent {
   constructor(public router: Router) {

@@ -1,9 +1,9 @@
 .idea
 coverage
 node_modules
-unit_coverage
-bower_components
+client/dev/demo/*
 typings
+demo
 client/dev/index.js
 client/dev/*.map
 client/dev/app/*.js
@@ -12,7 +12,10 @@ client/dev/dashboard/**/*.js
 client/dev/dashboard/**/*.map
 client/dev/kshare/**/*.map
 client/dev/kshare/**/*.js
+client/dist/*.js
+client/dist/*.map
 server/*-compiled.js
 server/*.map
 server/**/*-compiled.js
 server/**/*.map
+tests

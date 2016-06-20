@@ -6,12 +6,21 @@ System.config({
   paths: {
     '@angular/*': 'node_modules/@angular/*',
     "rxjs/*": "node_modules/rxjs/*",
-    "reflect-metadata": "node_modules/reflect-metadata"
+    "es6-shim": "node_modules/es6_shim",
+    "reflect-metadata": "node_modules/reflect-metadata",
+    "angular2-jwt":"node_modules/angular2-jwt",
+    "simple-peer/*":"node_modules/simple-peer",
+    "ng2-pagination":"node_modules/ng2-pagination",
+    "primeng/*":"node_modules/primeng"
   },
   map: {
     "rxjs": "node_modules/rxjs"
   },
   packages: {
+    "socket.io-client": {
+      defaultExtension: 'js',
+      main:'lib/index'
+    },
     '@angular/common': {
       main: 'index'
     },
@@ -33,7 +42,25 @@ System.config({
     '@angular/router': {
       main: 'index'
     },
+    '@angular/router-deprecated': {
+      main: 'index'
+    },
+    'angular2-jwt':{
+      main: 'angular2-jwt'
+    },
+    'ng2-pagination':{
+      main:'index'
+    },
+    'primeng/primeng':{
+      main:'primeng'
+    },
+    "es6-shim":{
+      defaultExtension: 'js'
+    },
     "rxjs": {
+      defaultExtension: 'js'
+    },
+    "simplewebrtc":{
       defaultExtension: 'js'
     },
     'dist': {

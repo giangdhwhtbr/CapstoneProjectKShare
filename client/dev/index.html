@@ -4,23 +4,18 @@
 <base href="/" >
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
-<link rel="shortcut icon" type="image/ico" href="favicon.png" />
-<link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet" type="text/css"/>
-<link href="../client/dev/bower_components/bootstrap/dist/css/bootstrap-theme.min.css" rel="stylesheet"
-      type="text/css"/>
-<link href="../client/dev/bower_components/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-<link href="../client/dev/shared/css/styles.css" rel="stylesheet" type="text/css"/>
-<link href="../client/dev/shared/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-<link href="../client/dev/shared/css/animate.css" rel="stylesheet" type="text/css"/>
-  <!--<link href="../client/dev/shared/css/lumino.css" rel="stylesheet" type="text/css"/>-->
+<!--<link rel="shortcut icon" type="image/ico" href="favicon.png" />-->
+<link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+<link href="../client/dev/asserts/css/styles.min.css" rel="stylesheet" type="text/css"/>
+<link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+<link href="node_modules/primeui/primeui-all.css" rel="stylesheet" type="text/css"/>
+<link href="node_modules/primeui/themes/redmond/theme.css" rel="stylesheet" type="text/css"/>
 
 
-<title>Knowledge sharing network</title>
-</head>
-<body>
-<kshare-app></kshare-app>
+  <script src="node_modules/socket.io-client/socket.io.js"></script>
   <!-- 1. Load libraries -->
   <!-- Polyfill(s) for older browsers -->
+  <script src="node_modules/es6-shim/es6-shim.min.js"></script>
   <script src="node_modules/core-js/client/shim.min.js"></script>
   <script src="node_modules/zone.js/dist/zone.js"></script>
   <script src="node_modules/reflect-metadata/Reflect.js"></script>
@@ -29,10 +24,18 @@
   <script src="systemjs.config.js"></script>
 
   <script>
-  System.import("client/dev/index.js");
+    System.import("client/dev/index.js");
   </script>
-  <script src="../client/dev/bower_components/jquery/dist/jquery.js"></script>
-  <script src="../client/dev/bower_components/bootstrap/dist/js/bootstrap.js"></script>
-  <script src="../client/dev/shared/js/modernizr.custom.js"></script>
+
+  <script src="node_modules/jquery/dist/jquery.min.js"></script>
+  <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+  <script src="node_modules/socket.io-client/socket.io.js"></script>
+  <script src="../client/dev/asserts/js/modernizr.custom.js"></script>
+
+
+<title>Knowledge sharing network</title>
+</head>
+<body>
+  <kshare-app></kshare-app>
 </body>
 </html>
