@@ -25,7 +25,7 @@ module.exports = class RequestRoutes {
         .post(RequestController.fullTextSearchRequest);
 
       router
-        .route('/api/templates-subcriber/:id')
+        .route('/api/requests-subcriber/:id')
         .post(RequestController.addSubcriber);
     }
 

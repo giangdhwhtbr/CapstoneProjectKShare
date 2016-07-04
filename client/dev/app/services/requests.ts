@@ -7,6 +7,8 @@ import { Observable } from 'rxjs/Observable';
 export  class RequestService {
   private _requestsUrl = '/api/requests/:id';
   private _getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
+  private _searchRequetsUrl = '/api/requests-search/:id';
+  private _statusSubcriberUrl = '/api/requests-subcriber/:id';
 
   constructor(private _http: Http) { }
 
@@ -88,6 +90,20 @@ export  class RequestService {
       subcriber : subcriber
     });
     return this._http.post(this._statusSubcriberUrl.replace(':id',id),_subcriber,options)
+              .map((r) => r.json());
+  }
+
+   //search request
+  searchRequest(search: string):Observable<any>{
+
+    let header = new Headers;
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    let _search = JSON.stringify({
+      text : search
+    });
+    return this._http
+              .post(this._searchRequetsUrl.replace(':id',''),_search,options)
               .map((r) => r.json());
   }
 
