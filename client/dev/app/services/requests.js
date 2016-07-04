@@ -18,6 +18,7 @@ var RequestService = (function () {
         this._getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
         this._searchRequetsUrl = '/api/requests-search/:id';
         this._statusSubcriberUrl = '/api/requests-subcriber/:id';
+        this._requestStatusUrl = '/api/requests-status/:id';
     }
     RequestService.prototype.getAllRequests = function () {
         return this._http.get(this._requestsUrl.replace(':id', ''))
@@ -89,6 +90,11 @@ var RequestService = (function () {
             subcriber: subcriber
         });
         return this._http.post(this._statusSubcriberUrl.replace(':id', id), _subcriber, options)
+            .map(function (r) { return r.json(); });
+    };
+    //change status request
+    RequestService.prototype.changeStatusRequest = function (id) {
+        return this._http.get(this._requestStatusUrl.replace(':id', id))
             .map(function (r) { return r.json(); });
     };
     //search request

@@ -17,7 +17,7 @@ module.exports = class RequestRoutes {
         .post(RequestController.getRequestByKnowledgeId);
 
       router
-        .route('/api/templates-status/:id')
+        .route('/api/requests-status/:id')
         .get(RequestController.changeStatusRequest);
 
        router
