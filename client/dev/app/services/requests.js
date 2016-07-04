@@ -29,7 +29,8 @@ var RequestService = (function () {
         var _request = JSON.stringify({
             title: request.title,
             description: request.description,
-            knowledgeId: request.knowledgeId
+            knowledgeId: request.knowledgeId,
+            user: request.user
         });
         return this._http
             .post(this._requestsUrl.replace(':id', ''), _request, options)

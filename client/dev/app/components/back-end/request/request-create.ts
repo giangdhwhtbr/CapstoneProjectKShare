@@ -1,8 +1,9 @@
-import { Component,Inject, OnInit } from '@angular/core';
+import { Component, Inject, OnInit } from '@angular/core';
 import { KnowledgeService } from '../../../services/knowledge';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
 import { RequestService} from '../../../services/requests';
 import { Knowledge } from '../../../interface/knowledge';
+import { AuthService} from '../../../services/auth';
 
 @Component({
   selector: 'request-create',
@@ -11,15 +12,22 @@ import { Knowledge } from '../../../interface/knowledge';
   directives: [FORM_DIRECTIVES]
 })
 export class CreateRequestComponent {
+  user:string;
+  roleToken:string;
   requestForm: ControlGroup;
 
   knowledges: Knowledge[];
 
-  constructor(fb: FormBuilder, private _requestService: RequestService, private _knowledgeService: KnowledgeService) {
+  constructor(@Inject(FormBuilder) fb: FormBuilder, @Inject(RequestService) private _requestService: RequestService, private _knowledgeService: KnowledgeService,
+                    private _authService: AuthService) {
+    this.user = localStorage.getItem('username');
+    this.roleToken = localStorage.getItem('userrole');
+    
     this.requestForm = fb.group({
       "knowledgeId": [""],
       "title": [""],
-      "description": [""]
+      "description": [""],
+      "user": [""]
     });
   }
 

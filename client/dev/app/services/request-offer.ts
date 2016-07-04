@@ -17,7 +17,8 @@ export  class OfferService {
       price: offer.price,
       requestId: offer.requestId,
       numberOfLecture: offer.numOfLecture,
-      message: offer.message
+      message: offer.message,
+      user: offer.user
     });
     //console.log(_offer);
     return this._http
