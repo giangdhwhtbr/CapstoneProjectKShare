@@ -21,46 +21,46 @@ import { FriendListComponent} from '../shared/friend-list';
 import { CreateOfferComponent } from '../offer/offer-create';
 
 @Component({
-    selector: 'request-detail-cli',
-    templateUrl: 'client/dev/app/components/front-end/request/templates/request-detail.html',
-    styleUrls:  ['client/dev/app/components/front-end/request/styles/request.css'],
-    directives: [
-      ROUTER_DIRECTIVES,
-      CreateOfferComponent
-    ]
+  selector: 'request-detail-cli',
+  templateUrl: 'client/dev/app/components/front-end/request/templates/request-detail.html',
+  styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
+  directives: [
+    ROUTER_DIRECTIVES,
+    CreateOfferComponent
+  ]
 })
 
 
 export class RequestDetailClientComponent {
 
-  pageTitle:string = 'Welcome to Knowledge Sharing Network';
+  pageTitle: string = 'Welcome to Knowledge Sharing Network';
 
-  constructor(private _requestService:RequestService, private _offerService:OfferService, public router:Router,
-              private _knowledgeService:KnowledgeService, rParam:RouteSegment, private _kspaceService: KSpaceService,
-              private _auth:AuthService, private _chatService: ChatService) {
+  constructor(private _requestService: RequestService, private _offerService: OfferService, public router: Router,
+    private _knowledgeService: KnowledgeService, rParam: RouteSegment, private _kspaceService: KSpaceService,
+    private _auth: AuthService, private _chatService: ChatService) {
     this.id = rParam.getParam('id');
     this.roleToken = localStorage.getItem('role');
     this.userToken = localStorage.getItem('username');
   }
 
-  id:string;
+  id: string;
   rid: string;
 
-  roleToken:string;
-  userToken:string;
+  roleToken: string;
+  userToken: string;
 
-  knowledge:Knowledge;
-  knowledgeName:string;
+  knowledge: Knowledge;
+  knowledgeName: string;
 
-  request:Request;
-  _id:string;
-  title:string;
-  description:string;
-  status:string;
-  createdAt:string;
-  knowledgeId:string;
-  user:string;
-  subcribers:string[];
+  request: Request;
+  _id: string;
+  title: string;
+  description: string;
+  status: string;
+  createdAt: string;
+  knowledgeId: string;
+  user: string;
+  subcribers: string[];
 
   //varialbe check to hide button when the status is deactive
   checkDeactive: boolean;
@@ -71,9 +71,9 @@ export class RequestDetailClientComponent {
   //variable check to hide button, user can't subcribe twice in a templates
   checkSubcribedUser: boolean;
 
-  offers:Offer[];
+  offers: Offer[];
 
-  ngOnInit():void {
+  ngOnInit(): void {
     //get templates when load the page
     this._requestService.getRequestById(this.id).subscribe(
       (request) => {
@@ -97,16 +97,16 @@ export class RequestDetailClientComponent {
         this.createdAt = formatDate(request.createdAt);
         this.subcribers = request.subcribers;
 
-        if (this.status === "deactive"){
+        if (this.status === "deactive") {
           this.checkDeactive = true;
         }
 
-        if(this.user === this.userToken){
+        if (this.user === this.userToken) {
           this.checkCreatedUser = true;
         }
 
-        for(var i = 0; i < this.subcribers.length; i++){
-          if(this.userToken === this.subcribers[i]){
+        for (var i = 0; i < this.subcribers.length; i++) {
+          if (this.userToken === this.subcribers[i]) {
             this.checkSubcribedUser = true;
             console.log(this.checkSubcribedUser + " " + i);
             break;
@@ -152,45 +152,49 @@ export class RequestDetailClientComponent {
     );
   }
 
-  deactivateRequest(id:String) {
-    this._requestService
-      .changeStatusRequest(this.id)
-      .subscribe((r) => {
-        console.log("deactivate sucess");
-        this.router.navigateByUrl('/kshare/requests/');
-      })
+  deactivateRequest(id: String) {
+    var r = confirm("Bạn có muốn kết thúc yêu cầu này?");
+    if (r == true) {
+      this._requestService
+        .changeStatusRequest(this.id)
+        .subscribe((r) => {
+          console.log("deactivate sucess");
+          this.router.navigateByUrl('/kshare/requests/');
+        })
+    }
+
   }
 
-  addKshare(learner:string, lecturer:string, requestId:string, offerId:string):void {
+  addKshare(learner: string, lecturer: string, requestId: string, offerId: string): void {
     this._kspaceService
-      .addKSpace(learner,lecturer,requestId,offerId)
+      .addKSpace(learner, lecturer, requestId, offerId)
       .subscribe((r) => {
 
         this._chatService.addChatRoom(r._id)
           .subscribe((c) => {
             this.rid = c._id;
             console.log("add chat room successfull");
-            this.router.navigateByUrl('/kshare/front.kspace/'+r._id+'/'+ this.rid);
+            this.router.navigateByUrl('/kshare/front.kspace/' + r._id + '/' + this.rid);
           });
       })
   }
 
-  addSubcriber(id:string):void {
-    if(this.checkSubcribedUser == true){
+  addSubcriber(id: string): void {
+    if (this.checkSubcribedUser == true) {
       alert('Bạn đã theo dõi vài viết này');
-    } else{
+    } else {
       this._requestService
-      .updateSubcriber(id,this.userToken)
-      .subscribe((r) => {
-        console.log(r);
-        console.log("add subcriber successfull");
-        this.checkSubcribedUser = true;
-      })
+        .updateSubcriber(id, this.userToken)
+        .subscribe((r) => {
+          console.log(r);
+          console.log("add subcriber successfull");
+          this.checkSubcribedUser = true;
+        })
       this._requestService.getRequestById(this.id).subscribe(
-          (request) => {
-            this.subcribers = request.subcribers;
-          }
-        );
+        (request) => {
+          this.subcribers = request.subcribers;
+        }
+      );
     }
 
   }

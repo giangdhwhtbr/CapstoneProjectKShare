@@ -14,6 +14,7 @@ import { LoggedinRouterOutlet } from './auth.conf';
 
 import { DashboardComponent } from "./dashboard.component";
 import { KshareComponent } from "./kshare.component";
+import { UserComponent } from "./user.component";
 
 /**
  * services
@@ -26,6 +27,7 @@ import {UserService} from "./services/users";
 import {AuthService} from "./services/auth";
 import {KSpaceService} from "./services/kspace";
 import {ChatService} from "./services/chat";
+
 @Component({
   selector: 'kshare-app',
   template:'<router-outlet></router-outlet>',
@@ -50,7 +52,8 @@ import {ChatService} from "./services/chat";
 @Routes([
   { path: '/', component:KshareComponent},
   { path: '/kshare',component:KshareComponent },
-  { path: '/admin', component:DashboardComponent}
+  { path: '/admin', component:DashboardComponent},
+  { path: '/user', component: UserComponent}
 
 ])
 

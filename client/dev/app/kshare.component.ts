@@ -15,10 +15,9 @@ import { RouteConfig, RouterLink} from '@angular/router-deprecated';
 import { HeaderComponent } from "./components/front-end/shared/header";
 import { SideBarComponent } from "./components/front-end/shared/side-bar";
 import { FooterComponent } from "./components/front-end/shared/footer";
-import { LoginComponent} from "./components/front-end/shared/login"
+import { LoginComponent} from "./components/front-end/shared/login";
 import { RegisterComponent} from "./components/front-end/shared/register";
-
-
+import { UserProfileComponent } from "./components/front-end/user-profile/user-profile";
 
 /**
  * Page components
@@ -30,7 +29,6 @@ import { RequestUpdateClientComponent } from "./components/front-end/request/req
 import { RequestSearchClientComponent } from "./components/front-end/request/request-search";
 import { KSpaceComponent } from "./components/front-end/kspace/kspace";
 import { ChatComponent } from "./components/front-end/kspace/chat";
-
 
 @Component({
   selector: 'kshare-app',
@@ -49,18 +47,21 @@ import { ChatComponent } from "./components/front-end/kspace/chat";
     FooterComponent,
     LoginComponent,
     RegisterComponent,
-    KSpaceComponent
+    KSpaceComponent,
+    UserProfileComponent
   ]
 })
 
 @Routes([
   { path: '/', component:HomeComponent},
+  { path: '/user', component:UserProfileComponent},
   { path: '/front.kspace/:id/:rid', component: KSpaceComponent},
   { path: '/requests/search/:type/:id', component:RequestSearchClientComponent},
   { path: '/requests/update/:id', component:RequestUpdateClientComponent},
   { path: '/requests/:id', component:RequestDetailClientComponent},
   { path: '/requests', component:RequestListClientComponent},
   { path: '/chat/:id', component:ChatComponent}
+  
 ])
 export class KshareComponent {
 

@@ -30,6 +30,15 @@ module.exports = class userController {
     }
   }
 
+  //get User informations by username
+   static getUserByUserName(req, res) {
+      userDAO
+        .getUserByUserName(req.body.username)
+        .then(user => res.status(200).json(user))
+        .catch(error => res.status(400).json(error));
+
+  }
+
   static createNew(req, res) {
     var currentDate = new Date();
     var user = {

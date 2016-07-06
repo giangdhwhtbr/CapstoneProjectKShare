@@ -97,12 +97,15 @@ var RequestDetailClientComponent = (function () {
     };
     RequestDetailClientComponent.prototype.deactivateRequest = function (id) {
         var _this = this;
-        this._requestService
-            .changeStatusRequest(this.id)
-            .subscribe(function (r) {
-            console.log("deactivate sucess");
-            _this.router.navigateByUrl('/kshare/requests/');
-        });
+        var r = confirm("Bạn có muốn kết thúc yêu cầu này?");
+        if (r == true) {
+            this._requestService
+                .changeStatusRequest(this.id)
+                .subscribe(function (r) {
+                console.log("deactivate sucess");
+                _this.router.navigateByUrl('/kshare/requests/');
+            });
+        }
     };
     RequestDetailClientComponent.prototype.addKshare = function (learner, lecturer, requestId, offerId) {
         var _this = this;

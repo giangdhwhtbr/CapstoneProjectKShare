@@ -21,6 +21,7 @@ var auth_conf_1 = require('./auth.conf');
  * */
 var dashboard_component_1 = require("./dashboard.component");
 var kshare_component_1 = require("./kshare.component");
+var user_component_1 = require("./user.component");
 /**
  * services
  **/
@@ -59,7 +60,8 @@ var AppComponent = (function () {
         router_1.Routes([
             { path: '/', component: kshare_component_1.KshareComponent },
             { path: '/kshare', component: kshare_component_1.KshareComponent },
-            { path: '/admin', component: dashboard_component_1.DashboardComponent }
+            { path: '/admin', component: dashboard_component_1.DashboardComponent },
+            { path: '/user', component: user_component_1.UserComponent }
         ]), 
         __metadata('design:paramtypes', [router_1.Router])
     ], AppComponent);

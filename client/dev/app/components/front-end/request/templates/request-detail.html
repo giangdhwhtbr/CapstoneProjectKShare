@@ -12,7 +12,7 @@
           Tiêu đề : {{title}}
         </div><br>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-          Người tạo : {{user}}
+          Người tạo : <a href="/user/{{user}}">{{user}}</a>
         </div><br>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
           Lĩnh vực : {{knowledgeName}}
@@ -57,7 +57,7 @@
     <div class="panel panel-default card-rq" *ngFor="let offer of offers">
       <div class="panel-body">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-          Người tạo : {{offer.user}}
+          Người tạo : <a href="/user/{{offer.user}}">{{offer.user}}</a>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
           Giá : {{offer.price}}
