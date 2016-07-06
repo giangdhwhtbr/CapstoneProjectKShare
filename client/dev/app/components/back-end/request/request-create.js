@@ -7,18 +7,26 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var core_1 = require('@angular/core');
 var knowledge_1 = require('../../../services/knowledge');
 var common_1 = require('@angular/common');
 var requests_1 = require('../../../services/requests');
+var auth_1 = require('../../../services/auth');
 var CreateRequestComponent = (function () {
-    function CreateRequestComponent(fb, _requestService, _knowledgeService) {
+    function CreateRequestComponent(fb, _requestService, _knowledgeService, _authService) {
         this._requestService = _requestService;
         this._knowledgeService = _knowledgeService;
+        this._authService = _authService;
+        this.user = localStorage.getItem('username');
+        this.roleToken = localStorage.getItem('userrole');
         this.requestForm = fb.group({
             "knowledgeId": [""],
             "title": [""],
-            "description": [""]
+            "description": [""],
+            "user": [""]
         });
     }
     CreateRequestComponent.prototype.ngOnInit = function () {
@@ -43,8 +51,10 @@ var CreateRequestComponent = (function () {
             templateUrl: 'client/dev/app/components/back-end/request/templates/request-create.html',
             styleUrls: ['client/dev/app/components/back-end/request/templates/request.css'],
             directives: [common_1.FORM_DIRECTIVES]
-        }), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, requests_1.RequestService, knowledge_1.KnowledgeService])
+        }),
+        __param(0, core_1.Inject(common_1.FormBuilder)),
+        __param(1, core_1.Inject(requests_1.RequestService)), 
+        __metadata('design:paramtypes', [common_1.FormBuilder, requests_1.RequestService, knowledge_1.KnowledgeService, auth_1.AuthService])
     ], CreateRequestComponent);
     return CreateRequestComponent;
 })();

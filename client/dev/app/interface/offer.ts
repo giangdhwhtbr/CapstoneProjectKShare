@@ -6,4 +6,5 @@ export interface Offer {
   createdAt: string;
   message: string;
   modifiedDate: string;
+  user: string;
 }

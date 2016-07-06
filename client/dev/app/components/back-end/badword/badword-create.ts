@@ -27,7 +27,6 @@ export class CreateBadwordComponent {
     });
   }
 
-
   addBadword(word):void {
     this._badwordService
         .addBadword(word)
