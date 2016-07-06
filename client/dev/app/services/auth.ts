@@ -26,14 +26,7 @@ export class AuthService {
     })
     var usertoken = user.username;
     return this._http.post(this._loginUrl,_user,options)
-      .map(res => res.json())
-      .map((res) => {
-        if(res._id){
-          localStorage.setItem('username', res.username);
-          localStorage.setItem('userrole', res.role);
-        }
-        return res;
-      });
+      .map(res => res.json());
   }
 
   register(user: User):Observable<any> {

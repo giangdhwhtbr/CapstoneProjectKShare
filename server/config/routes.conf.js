@@ -19,7 +19,7 @@ module.exports = class RouteConfig {
         // parse application/x-www-form-urlencoded
         application.use(bodyParser.urlencoded({ extended: false }))
         application.use(morgan('dev'));
-        application.use(contentLength.validateMax({max: 999}));
+        application.use(contentLength.validateMax({max: 9999}));
         application.use(helmet());
         require('../api/user/config/passport')(passport);
         application.use(expressSession({

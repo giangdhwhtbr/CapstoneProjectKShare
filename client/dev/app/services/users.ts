@@ -7,8 +7,6 @@ import { User } from '../interface/user';
 import { Response, Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
-import {} from '@angular'
-
 @Injectable()
 export  class UserService {
   private _usersUrl = '/api/user/:id';

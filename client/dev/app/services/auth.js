@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -31,14 +30,7 @@ var AuthService = (function () {
         });
         var usertoken = user.username;
         return this._http.post(this._loginUrl, _user, options)
-            .map(function (res) { return res.json(); })
-            .map(function (res) {
-            if (res._id) {
-                localStorage.setItem('username', res.username);
-                localStorage.setItem('userrole', res.role);
-            }
-            return res;
-        });
+            .map(function (res) { return res.json(); });
     };
     AuthService.prototype.register = function (user) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -82,5 +74,6 @@ var AuthService = (function () {
         __metadata('design:paramtypes', [http_1.Http])
     ], AuthService);
     return AuthService;
-}());
+})();
 exports.AuthService = AuthService;
+//# sourceMappingURL=auth.js.map

@@ -31,6 +31,6 @@ bootstrap(
   ]
 );
 
-//import {DemoComponent} from './demo/demo';
+//import {DemoRTC} from './demo/demo-rtc';
 //
-//bootstrap(DemoComponent);
+//bootstrap(DemoRTC);

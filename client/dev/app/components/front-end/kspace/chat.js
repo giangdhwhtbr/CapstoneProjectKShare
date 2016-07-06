@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -58,6 +57,6 @@ var ChatComponent = (function () {
         __metadata('design:paramtypes', [chat_1.ChatService, router_1.Router, router_1.RouteSegment, auth_1.AuthService])
     ], ChatComponent);
     return ChatComponent;
-}());
+})();
 exports.ChatComponent = ChatComponent;
 //# sourceMappingURL=chat.js.map

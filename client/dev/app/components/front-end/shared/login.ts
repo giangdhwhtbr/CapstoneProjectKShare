@@ -58,9 +58,9 @@ export class LoginComponent {
           } else {
             localStorage.setItem('username', res.username);
             if(res.role == 'admin'){
-              localStorage.setItem('role', res.role);
+              localStorage.setItem('userrole', res.role);
             }else{
-              localStorage.setItem('role', 'normal');
+              localStorage.setItem('userrole', 'normal');
             }
             window.location.reload();
           }

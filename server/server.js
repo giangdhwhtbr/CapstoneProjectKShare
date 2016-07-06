@@ -16,7 +16,7 @@ const RoutesConfig = require('./config/routes.conf');
 const PoliciesConfig = require('./config/policies.conf');
 const DBConfig = require('./config/db.conf');
 const Routes = require('./routes/index');
-const io = require('socket.io');
+const socket = require('socket.io');
 
 RoutesConfig.init(app);
 PoliciesConfig.init();
@@ -29,10 +29,19 @@ const opts = {
 }
 
 
-var server = https.createServer(opts, app)
+const server = https.createServer(opts,app)
      .listen(PORT, () => {
        console.log(`up and running @: ${os.hostname()} on port: ${PORT}`);
        console.log(`enviroment: ${process.env.NODE_ENV}`);
      });
 
-var socket = io(server);
+
+const io = socket(server);
+// Set socket.io listeners.
+io.on('connection', (socket) => {
+  console.log('a user connected');
+
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+});
