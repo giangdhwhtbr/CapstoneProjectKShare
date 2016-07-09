@@ -56,7 +56,7 @@ import { ChatComponent } from "./components/front-end/kspace/chat";
   { path: '/', component:HomeComponent},
   { path: '/user', component:UserProfileComponent},
   { path: '/front.kspace/:id/:rid', component: KSpaceComponent},
-  { path: '/requests/search/:type/:id', component:RequestSearchClientComponent},
+  { path: '/requests/:type/:id', component:RequestSearchClientComponent},
   { path: '/requests/update/:id', component:RequestUpdateClientComponent},
   { path: '/requests/:id', component:RequestDetailClientComponent},
   { path: '/requests', component:RequestListClientComponent},

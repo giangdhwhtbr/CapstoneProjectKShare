@@ -7,12 +7,9 @@ module.exports = class FriendShipRoutes {
       router
         .route('/api/friendship')
         .get(FriendShipController.getAll)
-        .post(FriendShipController.createFriendShip);
+        .post(FriendShipController.createFriendShip)
+        .put(FriendShipController.deleteFriendShip);
 
-      router
-        .route('/api/friendship/:id')
-        .delete(FriendShipController.deleteFriendShip);
-    
     router
         .route('/api/getFriendship')
         .post(FriendShipController.getFriendShipByUser);

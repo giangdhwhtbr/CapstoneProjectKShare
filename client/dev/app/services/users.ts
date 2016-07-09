@@ -18,6 +18,7 @@ export class UserService {
   private _usersUrl = '/api/user/:id';
   private _friendUrl = '/api/friendship/:id';
   private _getFriendUrl = '/api/getFriendship';
+  private _getRequestByUserUrl = '/api/requests-user/:user';
 
   constructor(private _http: Http) { }
 
@@ -81,7 +82,7 @@ export class UserService {
 
 
   updateUser(user: User): Observable<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
+    let headers = new Headers({ 'Content-Type': 'application/json'});
     let options = new RequestOptions({ headers: headers });
 
     let _user = JSON.stringify({
@@ -101,7 +102,7 @@ export class UserService {
 
   //add friend service
   addFriend(requestUser: string, acceptUser: string): Observable<any> {
-    let headers = new Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
+    let headers = new Headers({ 'Content-Type': 'application/json'});
     let options = new RequestOptions({ headers: headers });
 
     let _friendship = JSON.stringify({
@@ -116,7 +117,7 @@ export class UserService {
 
   //select friend of logined user
   getFriendList(currentUser):Observable<any>{
-    let headers = new Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
+    let headers = new Headers({ 'Content-Type': 'application/json'});
     let options = new RequestOptions({ headers: headers });
 
     let _friendship = JSON.stringify({
@@ -125,6 +126,30 @@ export class UserService {
 
     return this._http
       .post(this._getFriendUrl,_friendship,options)
+      .map((r) => r.json());
+  }
+
+  //get request of an user
+  getRequestByUser(user):Observable<any>{
+
+    return this._http
+      .get(this._getRequestByUserUrl.replace(':user',user))
+      .map((r) => r.json())
+      .catch(this.handleError);
+  }
+
+  //delete friend request
+  deleteFriendRequest(user1, user2):Observable<any>{
+    let headers = new Headers({ 'Content-Type': 'application/json'});
+    let options = new RequestOptions({ headers: headers });
+
+    let _friendship = JSON.stringify({
+      requestUser: user1,
+      acceptUser:user2
+    });
+
+    return this._http
+      .put(this._friendUrl.replace(':id',''),_friendship,options)
       .map((r) => r.json());
   }
 

@@ -13,7 +13,6 @@ import { RouteConfig, RouterLink} from '@angular/router-deprecated';
  */
 
 import { HeaderComponent } from "./components/front-end/shared/header";
-import { SideBarComponent } from "./components/front-end/shared/side-bar";
 import { FooterComponent } from "./components/front-end/shared/footer";
 import { LoginComponent} from "./components/front-end/shared/login";
 import { RegisterComponent} from "./components/front-end/shared/register";
@@ -22,12 +21,15 @@ import { RegisterComponent} from "./components/front-end/shared/register";
  * Page components
  */
 import { UserProfileComponent } from "./components/front-end/user-profile/user-profile";
+import { FriendListComponent } from "./components/front-end/user-profile/friend-list";
 
 @Component({
   selector: 'user',
-  template:`
+  template: `
     <header></header>
-    <router-outlet></router-outlet>
+    <div>
+      <router-outlet></router-outlet>
+    </div>
     <login></login>
     <register></register>
     <footer></footer>
@@ -35,17 +37,18 @@ import { UserProfileComponent } from "./components/front-end/user-profile/user-p
   directives: [
     ROUTER_DIRECTIVES,
     HeaderComponent,
-    SideBarComponent,
     FooterComponent,
     LoginComponent,
     RegisterComponent,
-    UserProfileComponent
+    UserProfileComponent,
+    FriendListComponent
   ]
 })
 
 @Routes([
-  { path: '/:name', component:UserProfileComponent}
-  
+  { path: '/:name/friends', component: FriendListComponent },
+  { path: '/:name', component: UserProfileComponent }
+
 ])
 export class UserComponent {
 

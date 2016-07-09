@@ -9,6 +9,7 @@ const KSpaceRoutes = require('../api/kspace/kspace-route');
 const ChatRoomRoutes = require('../api/chatRoom/chatRoom-routes');
 const MessageRoutes = require('../api/message/message-routes');
 const FriendShipRoutes = require('../api/friendship/friendship-routes');
+const NotificationRoutes = require('../api/notification/notification-routes');
 
 module.exports = class Routes {
   static init(app, router) {
@@ -21,6 +22,7 @@ module.exports = class Routes {
     ChatRoomRoutes.init(router);
     MessageRoutes.init(router);
     FriendShipRoutes.init(router);
+    NotificationRoutes.init(router);
 
     router
       .route('*')

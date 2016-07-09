@@ -80,6 +80,20 @@ static updateRequest(req, res){
     }
   }
 
+    static getRequestByUser(req,res) {
+    if(req.params) {
+      console.log('123');
+      RequestDAO
+        .getRequestByUser(req.params.user)
+        .then(requests => res.status(200).json(requests))
+        .catch(error => res.status(400).json(error));
+    }else{
+      res.status(404).json({
+        "message"    :   "No Knowledge Id in templates"
+      });
+    }
+  }
+
   static deleteRequest(req, res) {
     let _id = req.params.id;
 

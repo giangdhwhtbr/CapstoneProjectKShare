@@ -31,13 +31,14 @@ friendshipSchema.statics.createFriendShip = (friendship) => {
     });
 }
 
-friendshipSchema.statics.deleteFriendShip = (id) => {
+friendshipSchema.statics.deleteFriendShip = (requestUser, acceptUser) => {
     return new Promise((resolve, reject) => {
-        if (!_.isString(id))
-            return reject(new TypeError('Id is not a valid string.'));
 
         FriendShip
-          .findByIdAndRemove(id)
+          .remove({
+              "user1": requestUser,
+              "user2": acceptUser
+          })
           .exec((err, deleted) => {
               err ? reject(err)
                   : resolve();

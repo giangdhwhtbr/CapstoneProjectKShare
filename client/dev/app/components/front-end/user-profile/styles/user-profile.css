@@ -111,3 +111,57 @@ body {
   background: #fff;
   min-height: 460px;
 }
+
+/* Styles go here */
+
+@import "https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.5/css/materialize.min.css";
+@import "https://fonts.googleapis.com/icon?family=Material+Icons";
+
+body {
+  margin-top: 30px;
+}
+
+form {
+  margin-top: 20px;
+}
+
+body {
+  background: rgba(0,0,0,0.02);
+}
+
+@media all and (min-width: 1024px) {
+  .navbar-header-common .navbar-default{
+    padding-left: 6%;
+  }
+  .navbar-right{
+    margin-right: 20px;
+  }
+  #lst-request{
+    padding-right: 1%;
+    padding-left: 5%;
+  }
+  #request-detail{
+    padding-left: 7%;
+  }
+  #request-update {
+    padding-left: 12%;
+  }
+  
+}
+
+#button-update{
+    /*margin-top: 30px;*/
+    margin-left: 2%;
+}
+
+pagination-controls li{
+  font-size: 1em;
+}
+
+#searchdivid {
+  padding-left: 5%;
+}
+
+#searchdivid2 {
+  padding-left:12%;
+}

@@ -20,6 +20,7 @@ var UserService = (function () {
         this._usersUrl = '/api/user/:id';
         this._friendUrl = '/api/friendship/:id';
         this._getFriendUrl = '/api/getFriendship';
+        this._getRequestByUserUrl = '/api/requests-user/:user';
     }
     UserService.prototype.getAllUsers = function () {
         return this._http.get(this._usersUrl.replace(':id', ''))
@@ -73,7 +74,7 @@ var UserService = (function () {
             .map(function (r) { return r.json(); });
     };
     UserService.prototype.updateUser = function (user) {
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var _user = JSON.stringify({
             _id: user._id,
@@ -91,7 +92,7 @@ var UserService = (function () {
     };
     //add friend service
     UserService.prototype.addFriend = function (requestUser, acceptUser) {
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var _friendship = JSON.stringify({
             user1: requestUser,
@@ -103,13 +104,32 @@ var UserService = (function () {
     };
     //select friend of logined user
     UserService.prototype.getFriendList = function (currentUser) {
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var _friendship = JSON.stringify({
             user: currentUser
         });
         return this._http
             .post(this._getFriendUrl, _friendship, options)
+            .map(function (r) { return r.json(); });
+    };
+    //get request of an user
+    UserService.prototype.getRequestByUser = function (user) {
+        return this._http
+            .get(this._getRequestByUserUrl.replace(':user', user))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    //delete friend request
+    UserService.prototype.deleteFriendRequest = function (user1, user2) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _friendship = JSON.stringify({
+            requestUser: user1,
+            acceptUser: user2
+        });
+        return this._http
+            .put(this._friendUrl.replace(':id', ''), _friendship, options)
             .map(function (r) { return r.json(); });
     };
     UserService.prototype.handleError = function (error) {

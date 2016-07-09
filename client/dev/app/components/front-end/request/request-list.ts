@@ -7,7 +7,7 @@ import { CreateRequestComponent } from '../../back-end/request/request-create';
 import { RequestSearchClientComponent} from './request-search';
 import { AuthService } from '../../../services/auth';
 import { Router } from "@angular/router";
-import {PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance} from 'ng2-pagination';
+import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance } from 'ng2-pagination';
 
 
 @Component ({

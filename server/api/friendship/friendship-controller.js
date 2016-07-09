@@ -2,7 +2,7 @@
 
 const FriendShipDAO = require('./friendship-dao');
 
-module.exports = class OfferController {
+module.exports = class FriendShipController {
   static getAll(req, res) {
       FriendShipDAO
         .getAll()
@@ -20,10 +20,11 @@ module.exports = class OfferController {
   }
 
   static deleteFriendShip(req, res) {
-    let _id = req.params.id;
+    let _requestUser = req.body.requestUser;
+    let _acceptUser = req.body.acceptUser;
 
     FriendShipDAO
-      .deleteFriendShip(_id)
+      .deleteFriendShip(_requestUser,_acceptUser)
       .then(() => res.status(200).end())
       .catch(error => res.status(400).json(error));
   }
