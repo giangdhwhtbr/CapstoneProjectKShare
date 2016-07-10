@@ -14,4 +14,7 @@ export class KSpaceInfoComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     console.log("Hello");
   }
+  ngOnDestroy(): void {
+
+  }
 }

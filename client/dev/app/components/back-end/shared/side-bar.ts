@@ -3,8 +3,7 @@ import {
   Inject
 } from '@angular/core';
 import {Input} from "@angular/core";
-import {Routes,ROUTER_DIRECTIVES} from "@angular/router";
-import  {RouteConfig,RouterLink} from "@angular/router-deprecated";
+import {ROUTER_DIRECTIVES} from "@angular/router";
 @Component({
   selector: 'sidebar',
   templateUrl: 'client/dev/app/components/back-end/shared/templates/side-bar.html',

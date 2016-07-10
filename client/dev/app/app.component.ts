@@ -10,8 +10,9 @@ import { ROUTER_DIRECTIVES} from '@angular/router';
  * Page components
  * */
 
-import { DashboardComponent } from "./dashboard.component";
-import { KshareComponent } from "./kshare.component";
+//import { DashboardComponent } from "./dashboard.component";
+import { KshareComponent } from "./components/kshare.component";
+//import { UserComponent } from "./user.component";
 
 /**
  * services

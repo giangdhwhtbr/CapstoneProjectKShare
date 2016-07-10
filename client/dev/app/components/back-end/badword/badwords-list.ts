@@ -2,7 +2,7 @@ import {
   Component,
   OnInit
 } from '@angular/core';
-//import { ROUTER_DIRECTIVES } from '@angular/router';
+import { ROUTER_DIRECTIVES } from '@angular/router';
 import  { Badword} from '../../../interface/badword';
 import  { BadwordService} from '../../../services/badword';
 import  { UpdateBadwordComponent} from './badword-update';

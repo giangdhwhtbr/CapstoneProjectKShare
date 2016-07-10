@@ -8,4 +8,5 @@ export interface Request {
   status: string;
   modifiedDate: string;
   knowledgeId: string;
+  link: string;
 }

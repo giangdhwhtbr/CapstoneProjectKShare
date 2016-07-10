@@ -1,6 +1,7 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { KnowledgeService } from '../../../services/knowledge';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
+
+import { KnowledgeService } from '../../../services/knowledge';
 import { RequestService} from '../../../services/requests';
 import { Knowledge } from '../../../interface/knowledge';
 import { AuthService} from '../../../services/auth';
@@ -22,7 +23,7 @@ export class CreateRequestComponent {
                     private _authService: AuthService) {
     this.user = localStorage.getItem('username');
     this.roleToken = localStorage.getItem('userrole');
-    
+
     this.requestForm = fb.group({
       "knowledgeId": [""],
       "title": [""],

@@ -1,37 +1,34 @@
-<br>
-<br>
-<br>
-<br>
-<div class="container" style="min-height:250px">
+
+<div class="container mg-top-50" *ngIf="request && knowledge">
 
   <div class="col-xs-12 col-sm-9 fixEfMenu">
     <div class="panel panel-default card-rq">
       <div class="panel-body">
         <p class="lead">Tìm người giảng bài</p>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-          Tiêu đề : {{title}}
+          Tiêu đề : {{request.title}}
         </div><br>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-          Người tạo : {{user}}
+          Người tạo : <a [routerLink]=[request.userlink]>{{request.user}}</a>
         </div><br>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-          Lĩnh vực : {{knowledgeName}}
+          Lĩnh vực : {{knowledge.name}}
         </div><br>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu" hidden>
-          ID : {{_id}}
+          ID : {{request._id}}
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-          Trạng thái : {{status}}
+          Trạng thái : {{request.status}}
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-          Ngày tạo : {{createdAt}}
+          Ngày tạo : {{request.createdAt}}
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-          Nội dung : {{description}}
+          Nội dung : {{request.description}}
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-lef fixEfMenu">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-lef fixEfMenu" *ngIf="subscribers">
             Danh sách theo dõi :
-            <p *ngFor="let subcriber of subcribers">{{subcriber}}</p>
+            <p *ngFor="let subscriber of subscribers">{{subscriber}}</p>
           </div>
       </div>
     </div>
@@ -42,7 +39,7 @@
   </div>
 
   <div [hidden]="checkDeactive" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-    <a [routerLink]="['/kshare/requests/update/'+_id]" [hidden]="!checkCreatedUser"><span
+    <a [routerLink]="[updateLink]" [hidden]="!checkCreatedUser"><span
        class="btn btn-warning glyphicon glyphicon-pencil" ></span></a>
     <a [hidden]="!checkCreatedUser" ><button class="glyphicon glyphicon-trash btn btn-danger" (click)="deactivateRequest(_id)"></button></a>
     <a [hidden]="checkCreatedUser" ><button class="glyphicon glyphicon-send btn btn-primary" data-toggle="modal" data-target="#modalOfferRequest"></button></a>
@@ -53,11 +50,11 @@
 <br>
 <!-- List offer of a back.request -->
 <div class="container" style="min-height:437px" id="request-ofer">
-  <div class="col-xs-12 col-sm-9 fixEfMenu">
+  <div class="col-xs-12 col-sm-9 fixEfMenu" *ngIf="offers">
     <div class="panel panel-default card-rq" *ngFor="let offer of offers">
       <div class="panel-body">
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-          Người tạo : {{offer.user}}
+          Người tạo : <a href="/user/{{offer.user}}">{{offer.user}}</a>
         </div>
         <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
           Giá : {{offer.price}}

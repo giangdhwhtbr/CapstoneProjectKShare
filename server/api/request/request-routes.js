@@ -17,6 +17,10 @@ module.exports = class RequestRoutes {
         .post(RequestController.getRequestByKnowledgeId);
 
       router
+        .route('/api/requests-user/:user')
+        .get(RequestController.getRequestByUser);
+
+      router
         .route('/api/requests-status/:id')
         .get(RequestController.changeStatusRequest);
 

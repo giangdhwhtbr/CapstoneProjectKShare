@@ -17,10 +17,16 @@ var router_1 = require('@angular/router');
 //services
 var badword_1 = require('../../../services/badword');
 var UpdateBadwordComponent = (function () {
-    function UpdateBadwordComponent(fb, _badwordService, router, rParam) {
+    function UpdateBadwordComponent(fb, _badwordService, router, route) {
+        var _this = this;
         this._badwordService = _badwordService;
         this.router = router;
-        this.id = rParam.getParam('id');
+        this.route = route;
+        this.route
+            .params
+            .subscribe(function (params) {
+            _this.id = params['id'];
+        });
         this.updateBadwordForm = fb.group({
             "word": [""],
             "_id": [""],
@@ -57,9 +63,8 @@ var UpdateBadwordComponent = (function () {
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(badword_1.BadwordService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, badword_1.BadwordService, router_1.Router, (typeof (_a = typeof router_1.RouteSegment !== 'undefined' && router_1.RouteSegment) === 'function' && _a) || Object])
+        __metadata('design:paramtypes', [common_1.FormBuilder, badword_1.BadwordService, router_1.Router, router_1.ActivatedRoute])
     ], UpdateBadwordComponent);
     return UpdateBadwordComponent;
-    var _a;
 }());
 exports.UpdateBadwordComponent = UpdateBadwordComponent;

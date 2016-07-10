@@ -18,7 +18,8 @@ var FooterComponent = (function () {
     FooterComponent = __decorate([
         core_1.Component({
             selector: 'footer',
-            templateUrl: 'client/dev/app/components/front-end/shared/templates/footer.html'
+            templateUrl: 'client/dev/app/components/front-end/shared/templates/footer.html',
+            styleUrls: ['client/dev/app/components/front-end/shared/styles/header.css']
         }), 
         __metadata('design:paramtypes', [])
     ], FooterComponent);

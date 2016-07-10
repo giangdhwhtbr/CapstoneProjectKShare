@@ -15,7 +15,6 @@ import {
 } from '@angular/common';
 import {
   Router,
-  Routes,
   ROUTER_DIRECTIVES
 } from '@angular/router';
 import { User } from '../../../interface/user.ts';

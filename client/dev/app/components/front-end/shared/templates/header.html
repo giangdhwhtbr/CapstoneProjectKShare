@@ -13,17 +13,17 @@
       </div>
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-        <a class="navbar-brand topnav" href="/kshare">Kshare.xyz</a>
+        <a class="navbar-brand topnav" [routerLink]="['/']">Kshare.xyz</a>
         <ul class="nav navbar-nav navbar-right" *ngIf="userToken">
           <li>
-            <a [routerLink]="['/kshare/kspace']" class="pd-bot-0"
+            <a [routerLink]="['/kspace']" class="pd-bot-0"
             ><i class="fa fa-television" aria-hidden="true"></i></a>
           </li>
           <li>
-            <a [routerLink]="['/kshare']" class="pd-bot-0" ><i class="fa fa-bullhorn" aria-hidden="true"></i></a>
+            <a [routerLink]="['/']" class="pd-bot-0" ><i class="fa fa-bullhorn" aria-hidden="true"></i></a>
           </li>
           <li>
-            <a [routerLink]="['/kshare/requests']" class="pd-bot-0" ><i class="fa fa-comments-o"
+            <a [routerLink]="['/requests']" class="pd-bot-0" ><i class="fa fa-comments-o"
                                                                         aria-hidden="true"></i></a>
           </li>
           <li>
@@ -32,10 +32,10 @@
         </ul>
         <ul class="nav navbar-nav navbar-right" *ngIf="!userToken">
           <li>
-            <a [routerLink]="['/ksspace']" class="pd-bot-0" >Giới thiệu </a>
+            <a [routerLink]="['/kspace']" class="pd-bot-0" >Giới thiệu </a>
           </li>
           <li>
-            <a [routerLink]="['/ksspace']" class="pd-bot-0" >Trải nghiệm Kspace </a>
+            <a [routerLink]="['/kspace']" class="pd-bot-0" >Trải nghiệm Kspace </a>
           </li>
           <li>
             <button class="btn btn-success btLogin" id="btnShowLogin" data-toggle="modal"

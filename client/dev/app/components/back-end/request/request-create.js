@@ -12,8 +12,8 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 var core_1 = require('@angular/core');
-var knowledge_1 = require('../../../services/knowledge');
 var common_1 = require('@angular/common');
+var knowledge_1 = require('../../../services/knowledge');
 var requests_1 = require('../../../services/requests');
 var auth_1 = require('../../../services/auth');
 var CreateRequestComponent = (function () {

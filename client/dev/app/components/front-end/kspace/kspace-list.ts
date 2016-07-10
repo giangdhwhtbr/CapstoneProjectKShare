@@ -50,7 +50,7 @@ import { Router, ROUTER_DIRECTIVES } from '@angular/router';
 
 export class KSpaceListComponent{
   kspaces: KSpace[];
-
+  errorMessage: string;
   constructor(
     private _kspaceService: KSpaceService,
     private router: Router

@@ -16,10 +16,16 @@ var knowledge_1 = require('../../../services/knowledge');
 var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
 var UpdateKnowledgeComponent = (function () {
-    function UpdateKnowledgeComponent(fb, _knowledgeService, router, rParam) {
+    function UpdateKnowledgeComponent(fb, _knowledgeService, router, route) {
+        var _this = this;
         this._knowledgeService = _knowledgeService;
         this.router = router;
-        this.id = rParam.getParam('id');
+        this.route = route;
+        this.route
+            .params
+            .subscribe(function (params) {
+            _this.id = params['id'];
+        });
         this.updateKnowledgeForm = fb.group({
             "name": [""],
             "description": [""],
@@ -55,9 +61,8 @@ var UpdateKnowledgeComponent = (function () {
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(knowledge_1.KnowledgeService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, knowledge_1.KnowledgeService, router_1.Router, (typeof (_a = typeof router_1.RouteSegment !== 'undefined' && router_1.RouteSegment) === 'function' && _a) || Object])
+        __metadata('design:paramtypes', [common_1.FormBuilder, knowledge_1.KnowledgeService, router_1.Router, router_1.ActivatedRoute])
     ], UpdateKnowledgeComponent);
     return UpdateKnowledgeComponent;
-    var _a;
 }());
 exports.UpdateKnowledgeComponent = UpdateKnowledgeComponent;

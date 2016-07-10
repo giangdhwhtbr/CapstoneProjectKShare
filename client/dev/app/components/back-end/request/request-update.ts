@@ -5,7 +5,7 @@ import { Knowledge } from '../../../interface/knowledge';
 import { RequestService } from '../../../services/requests';
 import { KnowledgeService } from '../../../services/knowledge';
 
-import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Routes, RouteSegment} from'@angular/router';
+import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
 
 @Component({
@@ -28,6 +28,27 @@ export class UpdateRequestComponent {
   description: string;
   knowledgeId: string;
 
+  constructor(
+    @Inject(FormBuilder) fb: FormBuilder,
+    @Inject(RequestService) private _requestService: RequestService,
+    public router: Router,
+    private route: ActivatedRoute,
+    @Inject(KnowledgeService)
+    private _knowledgeService: KnowledgeService) {
+    this.route
+      .params
+      .subscribe(params => {
+        this.id = params['id'];
+      });
+
+    this.updateRequestFormCli = fb.group({
+      "_id": [""],
+      "title": [""],
+      "description": [""],
+      "knowledgeId": [""]
+    });
+  }
+
   ngOnInit(): void {
     //get all back.knowledge
     this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
@@ -47,19 +68,6 @@ export class UpdateRequestComponent {
     );
   }
 
-  constructor( @Inject(FormBuilder) fb: FormBuilder, @Inject(RequestService) private _requestService: RequestService,
-    public router: Router, rParam: RouteSegment,
-    @Inject(KnowledgeService) private _knowledgeService: KnowledgeService) {
-    this.id = rParam.getParam('id');
-
-    this.updateRequestFormCli = fb.group({
-      "_id": [""],
-      "title": [""],
-      "description": [""],
-      "knowledgeId": [""]
-    });
-  }
-
   updateRequest(request) {
     console.log(request);
     this._requestService.updateRequest(request).subscribe((request) => {
@@ -69,7 +77,7 @@ export class UpdateRequestComponent {
         console.log(error.text());
       }
     );
-    window.location.href = 'admin/requests';
+    this.router.navigateByUrl('admin/requests');
   }
 
 }

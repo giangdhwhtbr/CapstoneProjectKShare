@@ -7,7 +7,7 @@ import { CreateRequestComponent } from '../../back-end/request/request-create';
 import { RequestCategoryComponent} from './request-search';
 import { AuthService } from '../../../services/auth';
 import { Router } from "@angular/router";
-import {PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance} from 'ng2-pagination';
+import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance } from 'ng2-pagination';
 
 
 @Component ({
@@ -65,6 +65,7 @@ export class RequestListClientComponent {
       for (var i = 0; i < requests.length; i++) {
         requests[i].createdAt = formatDate(requests[i].createdAt);
         requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
+        requests[i].link = requests[i]._id + '/info';
       }
       this.requests = requests;
     });

@@ -65,7 +65,7 @@ export class RequestCategoryComponent {
               day = date.substr(8, 2);
               return newDate = day + '/' + month + '/' + year;
             }
-          }
+          };
           var a = [];
           this.knowledges = knowledges;
           for (var i = 0; i < this.knowledges.length; i++) {

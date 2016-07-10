@@ -3,8 +3,9 @@
  */
 import { RouterConfig }          from '@angular/router';
 
-
-import { KshareComponent } from '../kshare.component';
+//Root Component
+import { KshareComponent } from '../components/kshare.component';
+//Function Components
 import { HomeComponent} from "../components/front-end/home/home";
 import { RequestListClientComponent } from "../components/front-end/request/request-list";
 import { RequestDetailClientComponent } from "../components/front-end/request/request-detail";
@@ -13,30 +14,47 @@ import { RequestCategoryComponent } from "../components/front-end/request/reques
 import { KSpaceComponent } from "../components/front-end/kspace/kspace";
 import { KSpaceListComponent } from "../components/front-end/kspace/kspace-list";
 import { KSpaceInfoComponent } from "../components/front-end/kspace/kspace-info";
+import { FriendListComponent } from "../components/front-end/user-profile/friend-list";
+import { UserProfileComponent } from "../components/front-end/user-profile/user-profile";
 
 export const KShareRoutes: RouterConfig = [
   {
     path: '',
-    redirectTo: '/kshare',
-    pathMatch: 'full'
-  },
-  {
-    path: 'kshare',
     component: KshareComponent,
     children: [
+      {
+        path: 'user',
+        children: [
+          {
+            path: ':name',
+            children: [
+              {
+                path: 'friends',
+                component: FriendListComponent
+              },
+              {
+                path: '',
+                component: UserProfileComponent
+              }
+            ]
+          }
+        ]
+      },
       {
         path: 'kspace',
         children: [
           {
             path: 'room',
             children: [{
-              path:':id', component: KSpaceComponent
+              path:':id',
+              component: KSpaceComponent
             }]
           },
           {
             path: 'info',
             children: [{
-              path:':id', component: KSpaceInfoComponent
+              path:':id',
+              component: KSpaceInfoComponent
             }]
           },
           {
@@ -49,16 +67,17 @@ export const KShareRoutes: RouterConfig = [
         path: 'requests',
         children: [
           {
-            path: 'info',
-            children:[{
-              path: ':id', component:RequestDetailClientComponent
-            }]
-          },
-          {
-            path: 'update',
-            children:[{
-              path: ':id', component:RequestUpdateClientComponent
-            }]
+            path: ':id',
+            children:[
+              {
+                path: 'info',
+                component:RequestDetailClientComponent
+              },
+              {
+                path: 'update',
+                component: RequestUpdateClientComponent
+              }
+            ]
           },
           {
             path: ':type/:id',
@@ -74,7 +93,7 @@ export const KShareRoutes: RouterConfig = [
         path: '',
         component: HomeComponent
       }
-    ]
+    ],
   }
 ];
 

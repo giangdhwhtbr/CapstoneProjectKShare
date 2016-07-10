@@ -16,26 +16,26 @@ var knowledge_1 = require('../../../services/knowledge');
 var kspace_1 = require('../../../services/kspace');
 var offer_create_1 = require('../offer/offer-create');
 var RequestDetailClientComponent = (function () {
-    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, _route) {
+    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
+        var _this = this;
         this._requestService = _requestService;
         this._offerService = _offerService;
         this.router = router;
         this._knowledgeService = _knowledgeService;
         this._kspaceService = _kspaceService;
-        this._route = _route;
+        this.route = route;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
-        this.route = _route;
+        this.route
+            .params
+            .subscribe(function (params) {
+            _this.id = params['id'];
+        });
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
     }
     RequestDetailClientComponent.prototype.ngOnInit = function () {
         var _this = this;
         //get templates when load the page
-        this.route
-            .params
-            .subscribe(function (params) {
-            _this.id = params['id'];
-        });
         this._requestService.getRequestById(this.id)
             .subscribe(function (request) {
             var formatDate = function (date) {
@@ -47,33 +47,31 @@ var RequestDetailClientComponent = (function () {
                     return newDate = day + '/' + month + '/' + year;
                 }
             };
-            _this.knowledgeId = request.knowledgeId;
-            _this.request = request;
-            _this.title = request.title;
-            _this.description = request.description;
+            request.createdAt = formatDate(request.createdAt);
+            request.userlink = '/user/' + request.user;
             _this._id = request._id;
-            _this.status = request.status;
-            _this.user = request.user;
-            _this.createdAt = formatDate(request.createdAt);
-            _this.subcribers = request.subcribers;
-            if (_this.status === "deactive") {
+            _this.updateLink = '/requests/' + request._id + '/update';
+            _this.knowledgeId = request.knowledgeId;
+            _this.subscribers = request.subcribers;
+            if (request.status === "deactive") {
                 _this.checkDeactive = true;
             }
-            if (_this.user === _this.userToken) {
+            if (request.user === _this.userToken) {
                 _this.checkCreatedUser = true;
             }
-            for (var i = 0; i < _this.subcribers.length; i++) {
-                if (_this.userToken === _this.subcribers[i]) {
+            for (var i = 0; i < _this.subscribers.length; i++) {
+                if (_this.userToken === _this.subscribers[i]) {
                     _this.checkSubcribedUser = true;
                     console.log(_this.checkSubcribedUser + " " + i);
                     break;
                 }
             }
+            _this.request = request;
             //get back.knowledge name by knowledgeId
             _this._knowledgeService.findKnowledgeById(_this.knowledgeId)
                 .subscribe(function (knowledge) {
                 _this.knowledge = knowledge;
-                _this.knowledgeName = _this.knowledge.name;
+                //this.knowledgeName = this.knowledge.name;
             }, function (error) {
                 console.log(error);
             });
@@ -99,19 +97,26 @@ var RequestDetailClientComponent = (function () {
     };
     RequestDetailClientComponent.prototype.deactivateRequest = function (id) {
         var _this = this;
-        this._requestService
-            .changeStatusRequest(this.id)
-            .subscribe(function (r) {
-            console.log("deactivate sucess");
-            _this.router.navigateByUrl('/kshare/requests/');
-        });
+        var r = confirm("Bạn có muốn kết thúc yêu cầu này?");
+        if (r == true) {
+            this._requestService
+                .changeStatusRequest(this.id)
+                .subscribe(function (r) {
+                console.log("deactivate sucess");
+                _this.router.navigateByUrl('/kshare/requests/');
+            });
+        }
     };
     RequestDetailClientComponent.prototype.addKshare = function (learner, lecturer, requestId, offerId) {
-        var _this = this;
         this._kspaceService
             .addKSpace(learner, lecturer, requestId, offerId)
             .subscribe(function (r) {
-            _this.router.navigateByUrl('/kshare/kspace/' + r._id);
+            //this._chatService.addChatRoom(r._id)
+            //  .subscribe((c) => {
+            //    this.rid = c._id;
+            //    console.log("add chat room successfull");
+            //    this.router.navigateByUrl('/kshare/front.kspace/' + r._id + '/' + this.rid);
+            //  });
         });
     };
     RequestDetailClientComponent.prototype.addSubcriber = function (id) {
@@ -128,7 +133,7 @@ var RequestDetailClientComponent = (function () {
                 _this.checkSubcribedUser = true;
             });
             this._requestService.getRequestById(this.id).subscribe(function (request) {
-                _this.subcribers = request.subcribers;
+                _this.subscribers = request.subcribers;
             });
         }
     };

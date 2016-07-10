@@ -25,7 +25,10 @@ var NavbarComponent = (function () {
         core_1.Component({
             selector: 'nav-bar',
             templateUrl: 'client/dev/app/components/back-end/shared/templates/nav-bar.html',
-            styleUrls: ['client/dev/asserts/css/backend-styles.css']
+            styleUrls: ['client/dev/asserts/css/backend-styles.css'],
+            directives: [
+                router_1.ROUTER_DIRECTIVES
+            ]
         }), 
         __metadata('design:paramtypes', [auth_1.AuthService, router_1.Router])
     ], NavbarComponent);

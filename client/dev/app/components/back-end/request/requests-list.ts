@@ -1,14 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
+import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
+
+
 import { Request } from '../../../interface/request';
 import { RequestService } from '../../../services/requests';
-import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
+import { AuthService} from '../../../services/auth';
+import { OfferService } from '../../../services/request-offer';
+
+import { CreateRequestComponent } from './request-create';
 import { CreateOfferComponent  } from '../../front-end/offer/offer-create';
 import { UpdateRequestComponent } from './request-update';
-
-import { AuthService} from '../../../services/auth';
-import { CreateRequestComponent } from './request-create';
-import { OfferService } from '../../../services/request-offer';
 
 @Component({
   selector: 'request-list',
@@ -17,11 +19,13 @@ import { OfferService } from '../../../services/request-offer';
     'client/dev/asserts/css/backend-styles.css',
     'client/dev/app/components/back-end/request/templates/request.css'
   ],
-  directives: [CreateOfferComponent,
-              UpdateRequestComponent,
-              CreateRequestComponent,
-              CreateOfferComponent,
-              ROUTER_DIRECTIVES]
+  directives: [
+    CreateOfferComponent,
+    UpdateRequestComponent,
+    CreateRequestComponent,
+    CreateOfferComponent,
+    ROUTER_DIRECTIVES
+  ]
 })
 
 export class RequestListComponent {
@@ -44,7 +48,8 @@ export class RequestListComponent {
           day = date.substr(8, 2);
           return newDate = day + '/' + month + '/' + year;
         }
-      }
+      };
+
       for (var i = 0; i < requests.length; i++) {
         requests[i].createdAt = formatDate(requests[i].createdAt);
         requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
@@ -59,7 +64,7 @@ export class RequestListComponent {
       .deleteRequest(request)
       .subscribe(() => {
         console.log("delete successful");
-      })
+      });
 
     //refresh page
     this._requestService.getAllRequests().subscribe((requests) => {
@@ -71,7 +76,8 @@ export class RequestListComponent {
           day = date.substr(8, 2);
           return newDate = day + '/' + month + '/' + year;
         }
-      }
+      };
+
       for (var i = 0; i < requests.length; i++) {
         requests[i].createdAt = formatDate(requests[i].createdAt);
         requests[i].modifiedDate = formatDate(requests[i].modifiedDate);

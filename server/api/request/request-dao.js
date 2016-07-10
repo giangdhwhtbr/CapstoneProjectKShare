@@ -70,6 +70,22 @@ requestSchema.statics.getRequestByKnowledgeId = (id) => {
   });
 }
 
+//get requets by user dao function
+requestSchema.statics.getRequestByUser = (user) => {
+
+  return new Promise((resolve, reject) => {
+    Request
+      .find({
+        'user': user
+      })
+      .exec((err, requests) => {
+        err ? reject(err)
+          : resolve(requests);
+      });
+  });
+  console.log('234');
+}
+
 //create back.request dao function
 requestSchema.statics.createRequest = (request) => {
   return new Promise((resolve, reject) => {

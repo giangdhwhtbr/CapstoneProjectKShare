@@ -5,7 +5,8 @@ import { Component } from '@angular/core';
 
 @Component({
   selector : 'footer',
-  templateUrl: 'client/dev/app/components/front-end/shared/templates/footer.html'
+  templateUrl: 'client/dev/app/components/front-end/shared/templates/footer.html',
+  styleUrls:  ['client/dev/app/components/front-end/shared/styles/header.css']
 })
 
 export class FooterComponent {

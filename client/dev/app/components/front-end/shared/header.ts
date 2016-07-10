@@ -2,9 +2,7 @@
  * Created by GiangDH on 5/18/16.
  */
 import { Component } from '@angular/core';
-import { ROUTER_DIRECTIVES, Routes, Router} from '@angular/router';
-import { RouteConfig, RouterLink} from '@angular/router-deprecated';
-
+import { ROUTER_DIRECTIVES, Router} from '@angular/router';
 import { AuthService } from '../../../services/auth';
 
 @Component({

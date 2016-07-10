@@ -38,33 +38,33 @@
       </pagination-controls>
     </div>
 
-    <br>
-    <!-- list all-->
-    <div id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu" [hidden]="hide">
-      <div class="panel panel-default card-rq" *ngFor="let request of requests| paginate:configRq">
-        <div class="panel-body">
-          <a [routerLink]="['info/',request._id]">
-            <p class="lead">{{request.title}}</p>
-          </a>
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-            Nội dung : {{request.description}}
-          </div>
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-            Người tạo : {{request.user}}
-          </div>
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-            Trạng thái : {{request.status}}
-          </div>
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-            Ngày tạo : {{request.createdAt}}
-          </div>
+  <br>
+  <!-- list all-->
+  <div id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu" [hidden]="hide">
+    <div class="panel panel-default card-rq" *ngFor="let request of requests| paginate:configRq">
+      <div class="panel-body">
+        <a [routerLink]="[request.link]">
+          <p class="lead">{{request.title}}</p>
+        </a>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
+          Nội dung : {{request.description}}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
+          Người tạo : {{request.user}}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
+          Trạng thái : {{request.status}}
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
+          Ngày tạo : {{request.createdAt}}
         </div>
       </div>
-      <pagination-controls [id]="configRq.id" (pageChange)="configRq.currentPage  = $event" directionLinks="true" autoHide="true">
-      </pagination-controls>
     </div>
-    <!--<friend-list></friend-list>-->
+    <pagination-controls [id]="configRq.id" (pageChange)="configRq.currentPage  = $event" directionLinks="true" autoHide="true">
+    </pagination-controls>
   </div>
+  <!--<friend-list></friend-list>-->
+</div>
 
 </div>
 <!-- /.container -->

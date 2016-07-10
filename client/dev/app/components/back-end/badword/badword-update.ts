@@ -16,9 +16,7 @@ import {
 import {
   Router,
   ROUTER_DIRECTIVES,
-  ROUTER_PROVIDERS,
-  Routes,
-  RouteSegment
+  ActivatedRoute
 } from'@angular/router';
 
 //interface
@@ -50,6 +48,23 @@ export class UpdateBadwordComponent {
   _id: string;
   word: string;
 
+  constructor(
+    @Inject(FormBuilder) fb: FormBuilder,
+    @Inject(BadwordService) private _badwordService: BadwordService,
+    public router: Router,
+    private route: ActivatedRoute) {
+
+    this.route
+      .params
+      .subscribe(params => {
+        this.id = params['id'];
+      });
+    this.updateBadwordForm = fb.group({
+      "word": [""],
+      "_id":[""],
+    });
+  }
+
   ngOnInit():void {
     this._badwordService.findBadwordById(this.id).subscribe(
       (badword) => {
@@ -62,16 +77,6 @@ export class UpdateBadwordComponent {
         console.log(error.text());
       }
     );
-  }
-
-  constructor(@Inject(FormBuilder) fb: FormBuilder, @Inject(BadwordService) private _badwordService: BadwordService,
-            public router: Router, rParam: RouteSegment) {
-    this.id = rParam.getParam('id');
-
-    this.updateBadwordForm = fb.group({
-      "word": [""],
-      "_id":[""],
-    });
   }
 
   updateBadword(badword) {
