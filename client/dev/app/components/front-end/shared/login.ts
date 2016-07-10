@@ -57,6 +57,7 @@ export class LoginComponent {
             this.userValid = null;
           } else {
             localStorage.setItem('username', res.username);
+
             if(res.role == 'admin'){
               localStorage.setItem('userrole', res.role);
             }else{

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ROUTER_DIRECTIVES, ROUTER_PROVIDERS, Routes, RouteSegment} from'@angular/router';
+import { ROUTER_DIRECTIVES,Router, ActivatedRoute } from'@angular/router';
 
 import { Request } from '../../../interface/request';
 import { KSpace } from '../../../interface/kspace.ts';
@@ -34,11 +34,10 @@ import { CreateOfferComponent } from '../offer/offer-create';
 export class RequestDetailClientComponent {
 
   pageTitle:string = 'Welcome to Knowledge Sharing Network';
-
+  route: any;
   constructor(private _requestService:RequestService, private _offerService:OfferService, public router:Router,
-              private _knowledgeService:KnowledgeService, rParam:RouteSegment, private _kspaceService: KSpaceService,
-              private _auth:AuthService, private _chatService: ChatService) {
-    this.id = rParam.getParam('id');
+              private _knowledgeService:KnowledgeService , private _kspaceService: KSpaceService, private _route: ActivatedRoute) {
+    this.route = _route;
     this.roleToken = localStorage.getItem('role');
     this.userToken = localStorage.getItem('username');
   }
@@ -75,59 +74,63 @@ export class RequestDetailClientComponent {
 
   ngOnInit():void {
     //get templates when load the page
-    this._requestService.getRequestById(this.id).subscribe(
-      (request) => {
-        var formatDate = function (date) {
-          if (date) {
-            var newDate, day, month, year;
-            year = date.substr(0, 4);
-            month = date.substr(5, 2);
-            day = date.substr(8, 2);
-            return newDate = day + '/' + month + '/' + year;
+   this.route
+      .params
+      .subscribe(params => {
+        this.id = params['id'];
+      });
+
+    this._requestService.getRequestById(this.id)
+      .subscribe(request => {
+          var formatDate = function (date) {
+            if (date) {
+              var newDate, day, month, year;
+              year = date.substr(0, 4);
+              month = date.substr(5, 2);
+              day = date.substr(8, 2);
+              return newDate = day + '/' + month + '/' + year;
+            }
+          };
+
+          this.knowledgeId = request.knowledgeId;
+          this.request = request;
+          this.title = request.title;
+          this.description = request.description;
+          this._id = request._id;
+          this.status = request.status;
+          this.user = request.user;
+          this.createdAt = formatDate(request.createdAt);
+          this.subcribers = request.subcribers;
+
+          if (this.status === "deactive") {
+            this.checkDeactive = true;
           }
-        }
 
-        this.knowledgeId = request.knowledgeId;
-        this.request = request;
-        this.title = request.title;
-        this.description = request.description;
-        this._id = request._id;
-        this.status = request.status;
-        this.user = request.user;
-        this.createdAt = formatDate(request.createdAt);
-        this.subcribers = request.subcribers;
-
-        if (this.status === "deactive"){
-          this.checkDeactive = true;
-        }
-
-        if(this.user === this.userToken){
-          this.checkCreatedUser = true;
-        }
-
-        for(var i = 0; i < this.subcribers.length; i++){
-          if(this.userToken === this.subcribers[i]){
-            this.checkSubcribedUser = true;
-            console.log(this.checkSubcribedUser + " " + i);
-            break;
+          if (this.user === this.userToken) {
+            this.checkCreatedUser = true;
           }
-        }
 
-        //get back.knowledge name by knowledgeId
-        this._knowledgeService.findKnowledgeById(this.knowledgeId).subscribe(
-          (knowledge) => {
-            this.knowledge = knowledge;
-            this.knowledgeName = this.knowledge.name;
-          },
-          (error) => {
-            console.log(error);
-          });
-      },
-      (error) => {
-        console.log(error.text());
-      }
-    );
+          for (var i = 0; i < this.subcribers.length; i++) {
+            if (this.userToken === this.subcribers[i]) {
+              this.checkSubcribedUser = true;
+              console.log(this.checkSubcribedUser + " " + i);
+              break;
+            }
+          }
 
+          //get back.knowledge name by knowledgeId
+
+          this._knowledgeService.findKnowledgeById(this.knowledgeId)
+            .subscribe(
+              knowledge => {
+                this.knowledge = knowledge;
+                this.knowledgeName = this.knowledge.name;
+              },
+              error => {
+                console.log(error);
+              }
+            );
+        }, error => console.log(error));
     //get front.offer of the templates when load the page
     this._offerService.getOfferByRequestId(this.id).subscribe(
       (offers) => {
@@ -147,7 +150,7 @@ export class RequestDetailClientComponent {
         this.offers = offers;
       },
       (error) => {
-        console.log(error.text());
+        console.log(error);
       }
     );
   }
@@ -165,13 +168,7 @@ export class RequestDetailClientComponent {
     this._kspaceService
       .addKSpace(learner,lecturer,requestId,offerId)
       .subscribe((r) => {
-
-        this._chatService.addChatRoom(r._id)
-          .subscribe((c) => {
-            this.rid = c._id;
-            console.log("add chat room successfull");
-            this.router.navigateByUrl('/kshare/front.kspace/'+r._id+'/'+ this.rid);
-          });
+        this.router.navigateByUrl('/kshare/kspace/'+r._id);
       })
   }
 

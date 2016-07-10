@@ -35,12 +35,6 @@ export class RequestListComponent {
   }
 
   ngOnInit(): void {
-
-    //Check login -- @@ fucking "ngu dan" way của Giang
-    // if (!this._auth.dashboardFilter()) {
-    //   this.router.navigate(['Home']);
-    // }
-
     this._requestService.getAllRequests().subscribe((requests) => {
       var formatDate = function (date){
         if(date) {

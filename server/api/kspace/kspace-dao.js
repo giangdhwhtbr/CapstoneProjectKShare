@@ -4,26 +4,26 @@
 
 const mongoose = require('mongoose');
 const Promise = require('bluebird');
-const kSpaceSchema = require('./kspace-model');
+const KSpaceSchema = require('./KSpace-model');
 const _ = require('lodash');
 
-//function get all front.kspace dao
-kSpaceSchema.statics.getAll = () => {
+//function get all front.KSpace dao
+KSpaceSchema.statics.getAll = () => {
   return new Promise((resolve, reject) => {
     let _query = {};
 
     KSpace
       .find(_query)
-      .exec((err, kspaces) => {
+      .exec((err, KSpaces) => {
         err ? reject(err)
-          : resolve(kspaces);
+          : resolve(KSpaces);
       });
   });
 
-}
+};
 
-//function get front.kspace by ID  dao
-kSpaceSchema.statics.getKSpaceById = (id) => {
+//function get front.KSpace by ID  dao
+KSpaceSchema.statics.getKSpaceById = (id) => {
 
   return new Promise((resolve, reject) => {
     if(!_.isString(id)){
@@ -32,31 +32,31 @@ kSpaceSchema.statics.getKSpaceById = (id) => {
 
     KSpace
       .findById(id)
-      .exec((err, kspace) => {
+      .exec((err, KSpace) => {
         err ? reject(err)
-          : resolve(kspace);
+          : resolve(KSpace);
       });
   });
-}
+};
 
-//function create new front.kspace dao
-kSpaceSchema.statics.createNew = (kspace) => {
+//function create new front.KSpace dao
+KSpaceSchema.statics.createNew = (KSpace) => {
   return new Promise((resolve, reject) => {
-    if (!_.isObject(kspace)) {
+    if (!_.isObject(KSpace)) {
       return reject(new TypeError('KSpace is not a valid object.'));
     }
 
-    let _kspace = new KSpace(kspace);
+    let _KSpace = new KSpace(KSpace);
 
-    _kspace.save((err, saved) => {
+    _KSpace.save((err, saved) => {
       err ? reject(err)
         : resolve(saved);
     });
   });
-}
+};
 
-//function delete front.kspace dao
-kSpaceSchema.statics.removeById = (id) => {
+//function delete front.KSpace dao
+KSpaceSchema.statics.removeById = (id) => {
   return new Promise((resolve, reject) => {
     if (!_.isString(id)) {
       return reject(new TypeError('Id is not a valid string.'));
@@ -69,20 +69,20 @@ kSpaceSchema.statics.removeById = (id) => {
           : resolve();
       });
   });
-}
+};
 
-//function update front.kspace dao
-kSpaceSchema.statics.updateKSpaceById = (kspaceinfo) => {
+//function update front.KSpace dao
+KSpaceSchema.statics.updateKSpaceById = (KSpaceinfo) => {
   return new Promise((resolve,reject) => {
-    if (!_.isObject(kspaceinfo)) {
+    if (!_.isObject(KSpaceinfo)) {
       return reject(new TypeError('KSpace is not a valid object.'));
     }
-    kspaceinfo.save((err, saved) => {
+    KSpaceinfo.save((err, saved) => {
       err ? reject(err)
         : resolve(saved);
     });
   });
-}
+};
 
-const KSpace = mongoose.model('KSpace', kSpaceSchema);
+const KSpace = mongoose.model('KSpace', KSpaceSchema);
 module.exports = KSpace;

@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -11,16 +12,22 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
 };
 var core_1 = require('@angular/core');
-var requests_1 = require('../../../services/requests');
-var knowledge_1 = require('../../../services/knowledge');
 var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
+var requests_1 = require('../../../services/requests');
+var knowledge_1 = require('../../../services/knowledge');
 var RequestUpdateClientComponent = (function () {
-    function RequestUpdateClientComponent(fb, _requestService, router, rParam, _knowledgeService) {
+    function RequestUpdateClientComponent(fb, _requestService, router, route, _knowledgeService) {
+        var _this = this;
         this._requestService = _requestService;
         this.router = router;
+        this.route = route;
         this._knowledgeService = _knowledgeService;
-        this.id = rParam.getParam('id');
+        this.route
+            .params
+            .subscribe(function (params) {
+            _this.id = params['id'];
+        });
         this.updateRequestFormCli = fb.group({
             "_id": [""],
             "title": [""],
@@ -37,8 +44,8 @@ var RequestUpdateClientComponent = (function () {
         this._requestService.getRequestById(this.id).subscribe(function (request) {
             _this.request = request;
             _this.title = request.title;
-            _this.description = request.description;
             _this._id = request._id;
+            _this.description = request.description;
         }, function (error) {
             console.log(error.text());
         });
@@ -61,9 +68,8 @@ var RequestUpdateClientComponent = (function () {
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(requests_1.RequestService)),
         __param(4, core_1.Inject(knowledge_1.KnowledgeService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, requests_1.RequestService, router_1.Router, router_1.RouteSegment, knowledge_1.KnowledgeService])
+        __metadata('design:paramtypes', [common_1.FormBuilder, requests_1.RequestService, router_1.Router, router_1.ActivatedRoute, knowledge_1.KnowledgeService])
     ], RequestUpdateClientComponent);
     return RequestUpdateClientComponent;
-})();
+}());
 exports.RequestUpdateClientComponent = RequestUpdateClientComponent;
-//# sourceMappingURL=request-update.js.map

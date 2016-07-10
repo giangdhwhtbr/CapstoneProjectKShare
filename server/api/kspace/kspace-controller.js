@@ -2,23 +2,23 @@
 
 "use strict";
 const mongoose = require('mongoose');
-const kSpaceDAO = require('./kspace-dao');
+const KSpaceDAO = require('./KSpace-dao');
 
-module.exports = class kSpaceController {
-  //get all kspaces controller
+module.exports = class KSpaceController {
+  //get all KSpaces controller
   static getAll(req, res) {
-    kSpaceDAO
+    KSpaceDAO
       .getAll()
-      .then(kspaces => res.status(200).json(kspaces))
+      .then(KSpaces => res.status(200).json(KSpaces))
       .catch(error => res.status(400).json(error));
   }
 
-  //get a front.kspace by Id controller
+  //get a front.KSpace by Id controller
   static getKSpaceById(req, res) {
     if(req.params && req.params.id) {
-      kSpaceDAO
+      KSpaceDAO
         .getKSpaceById(req.params.id)
-        .then(kspace => res.status(200).json(kspace))
+        .then(KSpace => res.status(200).json(KSpace))
         .catch(error => res.status(400).json(error));
     }else{
       res.status(404).json({
@@ -27,10 +27,10 @@ module.exports = class kSpaceController {
     }
   }
 
-  //create a new front.kspace controller
+  //create a new front.KSpace controller
   static createNew(req, res) {
     var currentDate = new Date();
-    var kspace = {
+    var KSpace = {
       lecturer : req.body.lecturer,
       learner  : req.body.learner,
       requestId: req.body.requestId,
@@ -38,32 +38,32 @@ module.exports = class kSpaceController {
       createdAt: currentDate,
     }
 
-    console.log(kspace);
+    console.log(KSpace);
 
-    kSpaceDAO
-      .createNew(kspace)
-      .then(kspace => res.status(200).json(kspace))
+    KSpaceDAO
+      .createNew(KSpace)
+      .then(KSpace => res.status(200).json(KSpace))
       .catch(error => res.status(400).json(error));
   }
 
 
-  //finish a front.kspace by ID controller (update finishedAt of a front.kspace)
+  //finish a front.KSpace by ID controller (update finishedAt of a front.KSpace)
   static finishKSpace(req, res){
     var currentDate = new Date();
 
     if(req.params && req.params.id) {
-        kSpaceDAO.getKSpaceById(req.params.id)
-          .then(kspace => {
-            kspace.finishedAt = currentDate;
+        KSpaceDAO.getKSpaceById(req.params.id)
+          .then(KSpace => {
+            KSpace.finishedAt = currentDate;
 
-            kSpaceDAO.updateKSpaceById(kspace)
-              .then(kspace => res.status(200).json(kspace))
+            KSpaceDAO.updateKSpaceById(KSpace)
+              .then(KSpace => res.status(200).json(KSpace))
               .catch(error => res.status(400).json(error));
           })
           .catch(error => res.status(400).json(error));
     }else{
       res.status(404).json({
-        "message"    :   "No Kspace ID"
+        "message"    :   "No KSpace ID"
       });
     }
   }

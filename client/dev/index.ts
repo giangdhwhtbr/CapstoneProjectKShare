@@ -3,6 +3,7 @@
  * Angular
  */
 import { bootstrap } from '@angular/platform-browser-dynamic';
+import { APP_ROUTER_PROVIDERS } from './app/app.routes';
 import { provide } from '@angular/core';
 import { FORM_PROVIDERS } from '@angular/common';
 import { ROUTER_PROVIDERS } from '@angular/router-deprecated';
@@ -15,21 +16,8 @@ import { AuthConfig, AuthHttp } from 'angular2-jwt';
 import {AppComponent} from './app/app.component';
 bootstrap(
   AppComponent,
-  [
-    FORM_PROVIDERS,
-    ROUTER_PROVIDERS,
-    HTTP_PROVIDERS,
-    provide(AuthHttp, {
-      useFactory: (http) => {
-        return new AuthHttp(new AuthConfig({
-          username: 'username',
-          role: 'role'
-        }), http);
-      },
-      deps: [Http]
-    })
-  ]
-);
+  APP_ROUTER_PROVIDERS
+).catch (err => console.error(err));
 
 //import {DemoRTC} from './demo/demo-rtc';
 //

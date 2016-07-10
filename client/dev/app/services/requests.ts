@@ -102,8 +102,6 @@ export  class RequestService {
 
    //search request
   searchRequest(search: string):Observable<any>{
-
-    let header = new Headers;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     let _search = JSON.stringify({

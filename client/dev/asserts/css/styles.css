@@ -21,6 +21,10 @@ h6 {
 }
 
 
+.mg-top-50{
+  margin-top: 50px;
+}
+
 .errmess {
   padding-left: 20px;
   color: #ff5461;
@@ -185,6 +189,8 @@ p.copyright {
   opacity: 0.9;
 }
 .navbar-header-common .navbar-default .navbar-brand{
+  font-size: 30px;
+  font-family: cursive;
   color: rgb(4, 4, 4);
 }
 .navbar-header-common .navbar-default .navbar-brand:focus,.navbar-default .navbar-brand:hover{

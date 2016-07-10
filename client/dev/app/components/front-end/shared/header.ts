@@ -21,7 +21,7 @@ export class HeaderComponent {
 
   constructor(private _auth: AuthService, public router: Router){
     this.userToken = localStorage.getItem('username');
-    this.roleToken = localStorage.getItem('role');
+    this.roleToken = localStorage.getItem('userrole');
   }
 
   ngOnInit(): void {

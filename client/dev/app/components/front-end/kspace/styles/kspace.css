@@ -1,5 +1,14 @@
-
-
+#localVideo{
+  height: 150px;
+  width: 200px;
+  background-color: #2c2c2c;
+}
+#remotesVideos{
+  background-color: #2c2c2c;
+}
+#remotesVideo video {
+  width:780px;
+}
 .body-rq-page{
   min-height: 500px;
 }

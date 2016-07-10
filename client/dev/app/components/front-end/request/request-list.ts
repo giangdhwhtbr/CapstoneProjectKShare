@@ -4,7 +4,7 @@ import { Request } from '../../../interface/request';
 import { RequestService } from '../../../services/requests';
 import { FriendListComponent} from '../shared/friend-list';
 import { CreateRequestComponent } from '../../back-end/request/request-create';
-import { RequestSearchClientComponent} from './request-search';
+import { RequestCategoryComponent} from './request-search';
 import { AuthService } from '../../../services/auth';
 import { Router } from "@angular/router";
 import {PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance} from 'ng2-pagination';
@@ -19,7 +19,7 @@ import {PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstan
      ROUTER_DIRECTIVES,
      FriendListComponent,
      CreateRequestComponent,
-     RequestSearchClientComponent
+     RequestCategoryComponent
   ],
   providers: [PaginationService],
   pipes: [PaginatePipe]
@@ -31,6 +31,7 @@ export class RequestListClientComponent {
   hide: boolean;
   roleToken:string;
   userToken:string;
+  link: string;
   public configRq: IPaginationInstance = {
         id: 'rq',
         itemsPerPage: 10,
@@ -60,7 +61,7 @@ export class RequestListClientComponent {
           day = date.substr(8, 2);
           return newDate = day + '/' + month + '/' + year;
         }
-      }
+      };
       for (var i = 0; i < requests.length; i++) {
         requests[i].createdAt = formatDate(requests[i].createdAt);
         requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
@@ -70,7 +71,6 @@ export class RequestListClientComponent {
   }
 
   search(search: string) {
-
     this._requestService.searchRequest(search).subscribe((requests) => {
       this.searchs = requests;
       this.hide = true;

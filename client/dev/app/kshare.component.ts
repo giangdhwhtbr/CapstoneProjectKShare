@@ -2,11 +2,7 @@
  * Created by GiangDH on 6/4/16.
  */
 import { Component } from '@angular/core';
-import { HTTP_PROVIDERS } from '@angular/http';
-//import 'rxjs/Rx';   // Load all features
-import { ROUTER_PROVIDERS, ROUTER_DIRECTIVES, Routes, Router } from '@angular/router';
-import { RouteConfig, RouterLink} from '@angular/router-deprecated';
-
+import { ROUTER_DIRECTIVES } from '@angular/router';
 
 /**
  * Shared components
@@ -18,18 +14,21 @@ import { FooterComponent } from "./components/front-end/shared/footer";
 import { LoginComponent} from "./components/front-end/shared/login"
 import { RegisterComponent} from "./components/front-end/shared/register";
 
+import { HomeComponent} from "./components/front-end/home/home";
+import { RequestListClientComponent } from "./components/front-end/request/request-list";
+import { RequestDetailClientComponent } from "./components/front-end/request/request-detail";
+import { RequestUpdateClientComponent } from "./components/front-end/request/request-update";
+import { RequestCategoryComponent } from "./components/front-end/request/request-search";
+import { KSpaceComponent } from "./components/front-end/kspace/kspace";
+import { KSpaceListComponent } from "./components/front-end/kspace/kspace-list";
+import { KSpaceInfoComponent } from "./components/front-end/kspace/kspace-info";
+
 
 
 /**
  * Page components
  */
-import { HomeComponent} from "./components/front-end/home/home";
-import { RequestListClientComponent } from "./components/front-end/request/request-list";
-import { RequestDetailClientComponent } from "./components/front-end/request/request-detail";
-import { RequestUpdateClientComponent } from "./components/front-end/request/request-update";
-import { RequestSearchClientComponent } from "./components/front-end/request/request-search";
-import { KSpaceComponent } from "./components/front-end/kspace/kspace";
-import { ChatComponent } from "./components/front-end/kspace/chat";
+
 
 
 @Component({
@@ -48,20 +47,19 @@ import { ChatComponent } from "./components/front-end/kspace/chat";
     SideBarComponent,
     FooterComponent,
     LoginComponent,
-    RegisterComponent,
-    KSpaceComponent
+    RegisterComponent
+  ],
+  precompile: [
+    HomeComponent,
+    RequestListClientComponent,
+    RequestDetailClientComponent,
+    RequestUpdateClientComponent,
+    RequestCategoryComponent,
+    KSpaceComponent,
+    KSpaceListComponent,
+    KSpaceInfoComponent
   ]
 })
-
-@Routes([
-  { path: '/', component:HomeComponent},
-  { path: '/front.kspace/:id/:rid', component: KSpaceComponent},
-  { path: '/requests/search/:type/:id', component:RequestSearchClientComponent},
-  { path: '/requests/update/:id', component:RequestUpdateClientComponent},
-  { path: '/requests/:id', component:RequestDetailClientComponent},
-  { path: '/requests', component:RequestListClientComponent},
-  { path: '/chat/:id', component:ChatComponent}
-])
 export class KshareComponent {
 
 }

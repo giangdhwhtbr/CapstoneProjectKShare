@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -72,9 +73,9 @@ var UserInfoComponent = (function () {
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(users_1.UserService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, users_1.UserService, router_2.Router, router_2.RouteSegment, auth_1.AuthService])
+        __metadata('design:paramtypes', [common_1.FormBuilder, users_1.UserService, router_2.Router, (typeof (_a = typeof router_2.RouteSegment !== 'undefined' && router_2.RouteSegment) === 'function' && _a) || Object, auth_1.AuthService])
     ], UserInfoComponent);
     return UserInfoComponent;
-})();
+    var _a;
+}());
 exports.UserInfoComponent = UserInfoComponent;
-//# sourceMappingURL=user-info.js.map

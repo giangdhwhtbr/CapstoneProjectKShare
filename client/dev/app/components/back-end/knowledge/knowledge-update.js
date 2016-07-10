@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -54,9 +55,9 @@ var UpdateKnowledgeComponent = (function () {
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(knowledge_1.KnowledgeService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, knowledge_1.KnowledgeService, router_1.Router, router_1.RouteSegment])
+        __metadata('design:paramtypes', [common_1.FormBuilder, knowledge_1.KnowledgeService, router_1.Router, (typeof (_a = typeof router_1.RouteSegment !== 'undefined' && router_1.RouteSegment) === 'function' && _a) || Object])
     ], UpdateKnowledgeComponent);
     return UpdateKnowledgeComponent;
-})();
+    var _a;
+}());
 exports.UpdateKnowledgeComponent = UpdateKnowledgeComponent;
-//# sourceMappingURL=knowledge-update.js.map

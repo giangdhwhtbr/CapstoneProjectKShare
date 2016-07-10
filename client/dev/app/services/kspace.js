@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13,8 +14,13 @@ var Observable_1 = require('rxjs/Observable');
 var KSpaceService = (function () {
     function KSpaceService(_http) {
         this._http = _http;
-        this._knowledgesUrl = '/api/front.kspace/:id';
+        this._kspaceUrl = '/api/kspace/:id';
     }
+    KSpaceService.prototype.getAllKSpace = function () {
+        return this._http.get(this._kspaceUrl.replace(':id', ''))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
     KSpaceService.prototype.addKSpace = function (learner, lecturer, requestId, offerId) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
@@ -25,18 +31,17 @@ var KSpaceService = (function () {
             offerId: offerId
         });
         return this._http
-            .post(this._knowledgesUrl.replace(':id', ''), _kspace, options)
+            .post(this._kspaceUrl.replace(':id', ''), _kspace, options)
             .map(function (r) { return r.json(); });
     };
     KSpaceService.prototype.handleError = function (error) {
         console.error(error);
-        return Observable_1.Observable.throw(error.json().error || 'Server error');
+        return Observable_1.Observable.throw(error || 'server error');
     };
     KSpaceService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
     ], KSpaceService);
     return KSpaceService;
-})();
+}());
 exports.KSpaceService = KSpaceService;
-//# sourceMappingURL=kspace.js.map

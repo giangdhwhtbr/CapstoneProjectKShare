@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -13,27 +14,30 @@ var requests_1 = require('../../../services/requests');
 var request_offer_1 = require('../../../services/request-offer');
 var knowledge_1 = require('../../../services/knowledge');
 var kspace_1 = require('../../../services/kspace');
-var auth_1 = require('../../../services/auth');
-var chat_1 = require('../../../services/chat');
 var offer_create_1 = require('../offer/offer-create');
 var RequestDetailClientComponent = (function () {
-    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, rParam, _kspaceService, _auth, _chatService) {
+    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, _route) {
         this._requestService = _requestService;
         this._offerService = _offerService;
         this.router = router;
         this._knowledgeService = _knowledgeService;
         this._kspaceService = _kspaceService;
-        this._auth = _auth;
-        this._chatService = _chatService;
+        this._route = _route;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
-        this.id = rParam.getParam('id');
+        this.route = _route;
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
     }
     RequestDetailClientComponent.prototype.ngOnInit = function () {
         var _this = this;
         //get templates when load the page
-        this._requestService.getRequestById(this.id).subscribe(function (request) {
+        this.route
+            .params
+            .subscribe(function (params) {
+            _this.id = params['id'];
+        });
+        this._requestService.getRequestById(this.id)
+            .subscribe(function (request) {
             var formatDate = function (date) {
                 if (date) {
                     var newDate, day, month, year;
@@ -66,15 +70,14 @@ var RequestDetailClientComponent = (function () {
                 }
             }
             //get back.knowledge name by knowledgeId
-            _this._knowledgeService.findKnowledgeById(_this.knowledgeId).subscribe(function (knowledge) {
+            _this._knowledgeService.findKnowledgeById(_this.knowledgeId)
+                .subscribe(function (knowledge) {
                 _this.knowledge = knowledge;
                 _this.knowledgeName = _this.knowledge.name;
             }, function (error) {
                 console.log(error);
             });
-        }, function (error) {
-            console.log(error.text());
-        });
+        }, function (error) { return console.log(error); });
         //get front.offer of the templates when load the page
         this._offerService.getOfferByRequestId(this.id).subscribe(function (offers) {
             var formatDate = function (date) {
@@ -91,7 +94,7 @@ var RequestDetailClientComponent = (function () {
             }
             _this.offers = offers;
         }, function (error) {
-            console.log(error.text());
+            console.log(error);
         });
     };
     RequestDetailClientComponent.prototype.deactivateRequest = function (id) {
@@ -108,12 +111,7 @@ var RequestDetailClientComponent = (function () {
         this._kspaceService
             .addKSpace(learner, lecturer, requestId, offerId)
             .subscribe(function (r) {
-            _this._chatService.addChatRoom(r._id)
-                .subscribe(function (c) {
-                _this.rid = c._id;
-                console.log("add chat room successfull");
-                _this.router.navigateByUrl('/kshare/front.kspace/' + r._id + '/' + _this.rid);
-            });
+            _this.router.navigateByUrl('/kshare/kspace/' + r._id);
         });
     };
     RequestDetailClientComponent.prototype.addSubcriber = function (id) {
@@ -144,9 +142,8 @@ var RequestDetailClientComponent = (function () {
                 offer_create_1.CreateOfferComponent
             ]
         }), 
-        __metadata('design:paramtypes', [requests_1.RequestService, request_offer_1.OfferService, router_1.Router, knowledge_1.KnowledgeService, router_1.RouteSegment, kspace_1.KSpaceService, auth_1.AuthService, chat_1.ChatService])
+        __metadata('design:paramtypes', [requests_1.RequestService, request_offer_1.OfferService, router_1.Router, knowledge_1.KnowledgeService, kspace_1.KSpaceService, router_1.ActivatedRoute])
     ], RequestDetailClientComponent);
     return RequestDetailClientComponent;
-})();
+}());
 exports.RequestDetailClientComponent = RequestDetailClientComponent;
-//# sourceMappingURL=request-detail.js.map

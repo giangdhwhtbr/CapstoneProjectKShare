@@ -2,19 +2,19 @@
 
 "use strict";
 
-const kSpaceController = require('./kspace-controller');
+const KSpaceController = require('./KSpace-controller');
 
-module.exports = class kSpaceRoutes {
+module.exports = class KSpaceRoutes {
   static init(router) {
     router
-      .route('/api/front.kspace')
-      .get(kSpaceController.getAll)
-      .post(kSpaceController.createNew);
+      .route('/api/kspace')
+      .get(KSpaceController.getAll)
+      .post(KSpaceController.createNew);
 
     router
-      .route('/api/front.kspace/:id')
-      .get(kSpaceController.getKSpaceById)
-      .put(kSpaceController.finishKSpace);
+      .route('/api/kspace/:id')
+      .get(KSpaceController.getKSpaceById)
+      .put(KSpaceController.finishKSpace);
 
   }
 }

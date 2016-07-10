@@ -6,15 +6,15 @@
 
   <div class="container">
     <div class="col-xs-12 col-sm-9 fixEfMenu">
-      <div class="panel panel-default kspace card-rq">
-        <iframe src="https://appear.in/your-room-name" width="780" height="489" frameborder="0"></iframe>
-
+      <div id="remotesVideos" class="panel panel-default kspace card-rq">
       </div>
     </div>
     <!-- chat box -->
     <div class="col-xs-12 col-sm-3 bg-white fixEfMenu">
-      <chat [chatRoomId]="chatRoomId"></chat>
+      <video id="localVideo"></video>
+      <!--<chat [chatRoomId]="chatRoomId"></chat>-->
+      <!--<button id="fuck">Fuck</button>-->
+      <button id="sharescreen"> {{sharescrbtn}} </button>
     </div>
   </div>
 </div>
-<script src="../../../../../kshare/templates/kspace/bundle.js"></script>

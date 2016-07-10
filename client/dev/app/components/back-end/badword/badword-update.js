@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -56,9 +57,9 @@ var UpdateBadwordComponent = (function () {
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(badword_1.BadwordService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, badword_1.BadwordService, router_1.Router, router_1.RouteSegment])
+        __metadata('design:paramtypes', [common_1.FormBuilder, badword_1.BadwordService, router_1.Router, (typeof (_a = typeof router_1.RouteSegment !== 'undefined' && router_1.RouteSegment) === 'function' && _a) || Object])
     ], UpdateBadwordComponent);
     return UpdateBadwordComponent;
-})();
+    var _a;
+}());
 exports.UpdateBadwordComponent = UpdateBadwordComponent;
-//# sourceMappingURL=badword-update.js.map

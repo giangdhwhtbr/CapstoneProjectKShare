@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { ROUTER_DIRECTIVES, Router, RouteSegment, Routes } from '@angular/router';
+import { ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
 import { Request } from '../../../interface/request';
 import { Knowledge } from '../../../interface/knowledge';
 
@@ -12,23 +12,25 @@ import { RequestService } from '../../../services/requests';
   directives: [ROUTER_DIRECTIVES]
 })
 
-export class RequestSearchClientComponent {
+export class RequestCategoryComponent {
   @Input() search: string;
   pageTitle: string = 'Welcome to Knowledge Sharing Network';
 
   id: string;
   type: string;
 
-  constructor(private _requestService: RequestService, public router: Router, rParam: RouteSegment) {
-    this.id = rParam.getParam('id');
-    this.type = rParam.getParam('type');
+  constructor(private _requestService: RequestService, public router: Router, private route: ActivatedRoute) {
+    this.route
+      .params
+      .subscribe(params => {
+        this.id = params['id'];
+        this.type = params['type'];
+      });
   }
   requests: Request[];
   knowledges: Knowledge[];
 
   ngOnInit(): void {
-    console.log(this.search);
-
     //get templates from children category
     if (this.type === "subcategory") {
       this._requestService.getRequestByKnowledgeId(this.id).subscribe(
@@ -86,6 +88,5 @@ export class RequestSearchClientComponent {
           console.log(Error);
         });
     }
-
   }
 }

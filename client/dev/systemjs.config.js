@@ -14,7 +14,8 @@ System.config({
     "primeng/*":"node_modules/primeng"
   },
   map: {
-    "rxjs": "node_modules/rxjs"
+    "rxjs": "node_modules/rxjs",
+    "jquery": "node_modules/jquery/dist/jquery.min"
   },
   packages: {
     "socket.io-client": {
@@ -61,6 +62,9 @@ System.config({
       defaultExtension: 'js'
     },
     "simplewebrtc":{
+      defaultExtension: 'js'
+    },
+    "jquery":{
       defaultExtension: 'js'
     },
     'dist': {

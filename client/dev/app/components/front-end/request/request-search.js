@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -10,17 +11,22 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var requests_1 = require('../../../services/requests');
-var RequestSearchClientComponent = (function () {
-    function RequestSearchClientComponent(_requestService, router, rParam) {
+var RequestCategoryComponent = (function () {
+    function RequestCategoryComponent(_requestService, router, route) {
+        var _this = this;
         this._requestService = _requestService;
         this.router = router;
+        this.route = route;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
-        this.id = rParam.getParam('id');
-        this.type = rParam.getParam('type');
+        this.route
+            .params
+            .subscribe(function (params) {
+            _this.id = params['id'];
+            _this.type = params['type'];
+        });
     }
-    RequestSearchClientComponent.prototype.ngOnInit = function () {
+    RequestCategoryComponent.prototype.ngOnInit = function () {
         var _this = this;
-        console.log(this.search);
         //get templates from children category
         if (this.type === "subcategory") {
             this._requestService.getRequestByKnowledgeId(this.id).subscribe(function (requests) {
@@ -76,17 +82,16 @@ var RequestSearchClientComponent = (function () {
     __decorate([
         core_1.Input(), 
         __metadata('design:type', String)
-    ], RequestSearchClientComponent.prototype, "search", void 0);
-    RequestSearchClientComponent = __decorate([
+    ], RequestCategoryComponent.prototype, "search", void 0);
+    RequestCategoryComponent = __decorate([
         core_1.Component({
             selector: 'request-search-cli',
             templateUrl: 'client/dev/app/components/front-end/request/templates/request-search.html',
             styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
             directives: [router_1.ROUTER_DIRECTIVES]
         }), 
-        __metadata('design:paramtypes', [requests_1.RequestService, router_1.Router, router_1.RouteSegment])
-    ], RequestSearchClientComponent);
-    return RequestSearchClientComponent;
-})();
-exports.RequestSearchClientComponent = RequestSearchClientComponent;
-//# sourceMappingURL=request-search.js.map
+        __metadata('design:paramtypes', [requests_1.RequestService, router_1.Router, router_1.ActivatedRoute])
+    ], RequestCategoryComponent);
+    return RequestCategoryComponent;
+}());
+exports.RequestCategoryComponent = RequestCategoryComponent;

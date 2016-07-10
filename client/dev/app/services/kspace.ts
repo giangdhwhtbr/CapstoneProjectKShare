@@ -5,8 +5,14 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class KSpaceService {
-  private _knowledgesUrl = '/api/front.kspace/:id';
+  private _kspaceUrl = '/api/kspace/:id';
   constructor(private _http: Http) { }
+
+  getAllKSpace(): Observable<KSpace[]> {
+    return this._http.get(this._kspaceUrl.replace(':id', ''))
+      .map((r) => r.json())
+      .catch(this.handleError);
+  }
 
   addKSpace(learner:string, lecturer:string, requestId:string, offerId:string) {
     let headers = new Headers({ 'Content-Type': 'application/json' });
@@ -18,13 +24,13 @@ export class KSpaceService {
     offerId: offerId
     });
     return this._http
-      .post(this._knowledgesUrl.replace(':id', ''), _kspace, options)
+      .post(this._kspaceUrl.replace(':id', ''), _kspace, options)
       .map((r) => r.json());
   }
 
   private handleError(error: Response) {
     console.error(error);
-    return Observable.throw(error.json().error || 'Server error');
+    return Observable.throw(error || 'server error');
   }
 
 }

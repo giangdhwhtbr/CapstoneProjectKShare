@@ -1,1 +1,1 @@
-//# sourceMappingURL=kspace.js.map
+"use strict";

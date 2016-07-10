@@ -4,7 +4,7 @@
 
 const mongoose = require('mongoose');
 
-const kSpaceSchema = new mongoose.Schema({
+const KSpaceSchema = new mongoose.Schema({
   lecturer: {
     type: String,
     ref: 'User',
@@ -36,4 +36,4 @@ const kSpaceSchema = new mongoose.Schema({
 
 });
 
-module.exports = kSpaceSchema;
+module.exports = KSpaceSchema;
