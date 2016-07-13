@@ -30,20 +30,22 @@ module.exports = class KSpaceController {
   //create a new front.KSpace controller
   static createNew(req, res) {
     var currentDate = new Date();
-    var KSpace = {
+
+    var kspace = {
       lecturer : req.body.lecturer,
       learner  : req.body.learner,
       requestId: req.body.requestId,
+      requestTitle: req.body.requestTitle,
       offerId: req.body.offerId,
-      createdAt: currentDate,
-    }
-
-    console.log(KSpace);
-
+      createdAt: currentDate
+    };
     KSpaceDAO
-      .createNew(KSpace)
+      .createNew(kspace)
       .then(KSpace => res.status(200).json(KSpace))
-      .catch(error => res.status(400).json(error));
+      .catch(error => {
+        console.log(error);
+        res.status(400).json(error)
+      });
   }
 
 

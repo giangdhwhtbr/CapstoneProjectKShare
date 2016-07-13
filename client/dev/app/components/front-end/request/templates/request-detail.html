@@ -67,7 +67,9 @@
           Ngày tạo : {{offer.createdAt}}
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-          <a [hidden]="!checkCreatedUser"><button class="btn btn-sm btn-success" (click)="addKshare(user,offer.user,_id,offer._id)">Chấp thuận</button></a>
+          <a [hidden]="!checkCreatedUser"><button class="btn btn-sm btn-success"
+                                                  (click)="addKshare(request.user,offer.user,request._id,request.title,offer._id)">Chấp
+                                                                                                   thuận</button></a>
         </div>
       </div>
     </div>

@@ -38,10 +38,19 @@ const server = https.createServer(opts,app)
 
 const io = socket(server);
 // Set socket.io listeners.
-io.on('connection', (socket) => {
-  console.log('a user connected');
+io.sockets.on('connection', (socket) => {
+  //console.log('a user connected');
+  //
+  //socket.on('disconnect', () => {
+  //  console.log('user disconnected');
+  //});
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
+  socket.on('drawClick', (data) => {
+    socket.broadcast.emit('draw'),{
+      x : data.x,
+      y : data.y,
+      type: data.type
+    }
+  })
 });
+

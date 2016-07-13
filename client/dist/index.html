@@ -6,13 +6,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 <!--<link rel="shortcut icon" type="image/ico" href="favicon.png" />-->
 <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-<link href="../client/dev/asserts/css/styles.min.css" rel="stylesheet" type="text/css"/>
+<link href="../client/dev/asserts/css/styles.css" rel="stylesheet" type="text/css"/>
 <link href="node_modules/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
 <link href="node_modules/primeui/primeui-all.css" rel="stylesheet" type="text/css"/>
 <link href="node_modules/primeui/themes/redmond/theme.css" rel="stylesheet" type="text/css"/>
-
-
-  <script src="node_modules/socket.io-client/socket.io.js"></script>
   <!-- 1. Load libraries -->
   <!-- Polyfill(s) for older browsers -->
   <script src="node_modules/es6-shim/es6-shim.min.js"></script>
@@ -26,25 +23,16 @@
   <script>
     System.import("client/dev/index.js");
   </script>
-
+  <!-- 3. javascript libraries-->
   <script src="node_modules/jquery/dist/jquery.min.js"></script>
   <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
   <script src="node_modules/socket.io-client/socket.io.js"></script>
-  <script>
-    var socket = io('https://localhost');
-    socket.on('news', function (data) {
-      console.log(data);
-      socket.emit('my other event', { my: 'data' });
-    });
-  </script>
   <script src="../client/dev/asserts/js/modernizr.custom.js"></script>
-
-  <script type="text/javascript" src="../client/dev/demo/simplewebrtc.js"></script>
 
 <title>Knowledge sharing network</title>
 </head>
 <body>
-  <!--<kshare-app></kshare-app>-->
-  <demo-rtc></demo-rtc>
+  <kshare-app></kshare-app>
+  <!--<demo-rtc></demo-rtc>-->
 <script type="text/javascript" src="polyfills.bundle.js"></script><script type="text/javascript" src="vendor.bundle.js"></script><script type="text/javascript" src="main.bundle.js"></script></body>
 </html>

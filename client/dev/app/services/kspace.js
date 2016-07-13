@@ -21,14 +21,20 @@ var KSpaceService = (function () {
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
-    KSpaceService.prototype.addKSpace = function (learner, lecturer, requestId, offerId) {
+    KSpaceService.prototype.getKSpaceById = function (id) {
+        return this._http.get(this._kspaceUrl.replace(':id', id))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    KSpaceService.prototype.addKSpace = function (learner, lecturer, requestId, requestTitle, offerId) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var _kspace = JSON.stringify({
             lecturer: lecturer,
             learner: learner,
             requestId: requestId,
-            offerId: offerId
+            requestTitle: requestTitle,
+            offerId: offerId,
         });
         return this._http
             .post(this._kspaceUrl.replace(':id', ''), _kspace, options)

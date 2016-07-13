@@ -149,16 +149,11 @@ export class RequestDetailClientComponent {
 
   }
 
-  addKshare(learner: string, lecturer: string, requestId: string, offerId: string): void {
+  addKshare(learner: string, lecturer: string, requestId: string, requestTitle:string, offerId: string): void {
     this._kspaceService
-      .addKSpace(learner, lecturer, requestId, offerId)
+      .addKSpace(learner, lecturer, requestId,requestTitle, offerId)
       .subscribe((r) => {
-        //this._chatService.addChatRoom(r._id)
-        //  .subscribe((c) => {
-        //    this.rid = c._id;
-        //    console.log("add chat room successfull");
-        //    this.router.navigateByUrl('/kshare/front.kspace/' + r._id + '/' + this.rid);
-        //  });
+        this.router.navigateByUrl('/kspace/info/' + r._id);
       })
   }
 

@@ -23,12 +23,9 @@ import { Router, ROUTER_DIRECTIVES } from '@angular/router';
           <div *ngIf="kspaces" id="kspace-list-component" class="col-md-12">
             <div class="panel panel-default card-rq" *ngFor="let kspace of kspaces">
               <div class="panel-body">
-                <a href="#" >
-                  <p class="lead">aaaaa</p>
+                <a [routerLink]="['/kspace/info/',kspace._id]" >
+                  <p class="lead">{{kspace.requestTitle}}</p>
                 </a>
-                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-                  Nội dung :
-                </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
                   Người yêu cầu : {{kspace.learner}}
                 </div>
@@ -45,6 +42,9 @@ import { Router, ROUTER_DIRECTIVES } from '@angular/router';
           </div>
     </div><!-- /.container -->
     `,
+  directives: [
+    ROUTER_DIRECTIVES
+  ],
   styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace-list.css']
 })
 
@@ -60,6 +60,7 @@ export class KSpaceListComponent{
     this._kspaceService
       .getAllKSpace()
       .subscribe((kspaces) => {
+        console.log(kspaces);
           for (var i = 0; i < kspaces.length; i++) {
             kspaces[i].createdAt = new Date(kspaces[i].createdAt);
           }

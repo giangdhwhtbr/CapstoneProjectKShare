@@ -20,6 +20,10 @@ const KSpaceSchema = new mongoose.Schema({
     ref: 'Request',
     required: true
   },
+  requestTitle: {
+    type: String,
+    required: true
+  },
   offerId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Offer',

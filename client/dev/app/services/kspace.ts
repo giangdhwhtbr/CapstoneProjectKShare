@@ -14,14 +14,22 @@ export class KSpaceService {
       .catch(this.handleError);
   }
 
-  addKSpace(learner:string, lecturer:string, requestId:string, offerId:string) {
+  getKSpaceById(id: string): Observable<KSpace> {
+    return this._http.get(this._kspaceUrl.replace(':id', id))
+      .map((r) => r.json())
+      .catch(this.handleError);
+  }
+
+  addKSpace(learner:string, lecturer:string, requestId:string,requestTitle:string, offerId:string) {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
+
     let _kspace = JSON.stringify({
-    lecturer: lecturer,
-    learner: learner,
-    requestId: requestId,
-    offerId: offerId
+      lecturer: lecturer,
+      learner: learner,
+      requestId: requestId,
+      requestTitle: requestTitle,
+      offerId: offerId,
     });
     return this._http
       .post(this._kspaceUrl.replace(':id', ''), _kspace, options)

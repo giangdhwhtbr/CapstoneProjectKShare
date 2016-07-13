@@ -1,20 +1,42 @@
-<br>
-<br>
-<br>
-<br>
-<div class="body-rq-page" id="sb-site">
 
-  <div class="container">
-    <div class="col-xs-12 col-sm-9 fixEfMenu">
-      <div id="remotesVideos" class="panel panel-default kspace card-rq">
+    <div class="row">
+      <div class="col-md-2 local-panel">
+        <p class="peerName">{{username}}</p>
+        <video id="localVideo"></video>
+        <div id="rtcTools">
+          <button id="chalkboard-btn" class="kspace-btn">
+            <i class="fa fa-paint-brush fa-2x" aria-hidden="true"></i>
+          </button>
+          <button id="videocall-btn" class="kspace-btn">
+            <i class="fa fa-video-camera fa-2x" aria-hidden="true"></i>
+          </button>
+          <button id="sharescreen-btn" class="kspace-btn">
+            <i class="fa fa-desktop fa-2x" aria-hidden="true"></i>
+          </button>
+        </div>
+        <div id="remoteVideos"></div>
+
+        <!-- /#remotes -->
       </div>
+      <!-- /.md-2 -->
+      <div class="col-md-10 kspace-panel">
+        <div id="kspace-panel" class="panel panel-default kspace"></div>
+        <div id="chat-box-panel" class="panel panel-default chat-box"></div>
+        <div id="draw-tools-panel" class="panel panel-default draw-tools"></div>
+        <form id="chat-form">
+          <textarea id="chat-input" class="panel panel-default" placeholder="chat here"></textarea>
+          <button id="btn-send"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+        </form>
+      </div>
+      <!-- /.md- -->
     </div>
-    <!-- chat box -->
-    <div class="col-xs-12 col-sm-3 bg-white fixEfMenu">
-      <video id="localVideo"></video>
-      <!--<chat [chatRoomId]="chatRoomId"></chat>-->
-      <!--<button id="fuck">Fuck</button>-->
-      <button id="sharescreen"> {{sharescrbtn}} </button>
-    </div>
-  </div>
-</div>
+    <!-- /.row -->
+
+  <!--<div class="col-xs-12 col-sm-3 bg-white">-->
+    <!--<video id="localVideo"></video>-->
+    <!--<button id="sharescreen"> {{sharescrbtn}} </button>-->
+  <!--</div>-->
+  <!--<div class="col-xs-12 col-sm-9 fixEfMenu">-->
+    <!--<div id="remotes" class="panel panel-default kspace card-rq">-->
+    <!--</div>-->
+  <!--</div>-->

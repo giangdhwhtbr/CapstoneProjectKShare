@@ -9,100 +9,87 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var requests_1 = require('../../../services/requests');
 var kspace_1 = require('../../../services/kspace');
+var rtc_services_1 = require('./rtc-services');
 var router_1 = require('@angular/router');
-//import { ChatComponent } from './chat';
 var SimpleWebRTC = require('../../../../asserts/js/simplewebrtc.js');
 var $ = require('jquery');
 var KSpaceComponent = (function () {
-    function KSpaceComponent(_requestService, router, route, _kspaceService) {
-        this._requestService = _requestService;
+    function KSpaceComponent(router, route, _kspaceService, rtcService) {
+        var _this = this;
         this.router = router;
         this.route = route;
         this._kspaceService = _kspaceService;
-        this.sharescrbtn = "share screen";
-        //this.route
-        //  .params
-        //  .subscribe(params => {
-        //    this.id = params['id'];
-        //  });
-        this.roleToken = localStorage.getItem('role');
-        this.userToken = localStorage.getItem('username');
+        this.rtcService = rtcService;
+        this.route
+            .params
+            .subscribe(function (params) {
+            _this.id = params['id'];
+        });
+        this.username = localStorage.getItem('username');
     }
+    /*
+    *
+    *
+    * */
     KSpaceComponent.prototype.ngOnInit = function () {
-        this.user = localStorage.getItem('username');
-        //get chat room by front.kspace id
-        //this._chatService.findChatRoomByKSpaceId(this.id).subscribe(
-        //      (chatRoom) => {
-        //        this.chatRoomId = chatRoom[0]._id;
-        //      },
-        //      (error) => {
-        //        console.log(error);
-        //      }
-        //    );
-        var username = localStorage.getItem('username');
-        var room = this.id;
-        if (username) {
-            var webrtc = new SimpleWebRTC({
-                // the element that will hold local video
-                localVideoEl: 'localVideo',
-                // the element that will hold remote videos
-                remoteVideosEl: 'remotesVideos',
-                autoRequestMedia: true,
-                log: true,
-                autoRemoveVideos: true,
-                nick: username,
-                localVideo: {
-                    autoplay: true,
-                    mirror: false,
-                    muted: true // mute local video stream to prevent echo
-                }
-            });
-            webrtc.on('videoAdded', function (video, peer) {
-                console.log('video added', peer);
-                var remotes = document.getElementById('remotesVideos');
-                if (remotes) {
-                    var container = document.createElement('div');
-                    container.className = 'videoContainer';
-                    container.id = 'container_' + webrtc.getDomId(peer);
-                    container.appendChild(video);
-                    // suppress contextmenu
-                    video.oncontextmenu = function () { return false; };
-                    remotes.appendChild(container);
-                }
-            });
-            webrtc.on('readyToCall', function () {
-                // you can name it anything
-                if (room) {
-                    console.log("Join " + room + " success!");
-                    console.log(webrtc);
-                    webrtc.joinRoom(room);
-                }
-            });
-            // Extra credit! Hook up screenshare button
-            var button = $('#sharescreen'), setButton = function (bool) {
-                button.text(bool ? 'share screen' : 'stop sharing');
-            };
-            //
-            setButton(true);
-            button.click(function () {
-                if (webrtc.localScreen) {
-                    webrtc.stopScreenShare();
-                    setButton(true);
-                }
-                else {
-                    webrtc.shareScreen();
-                    setButton(false);
-                }
-                //    //window.open(window.location.href ,'_blank','width=500, height=400');
-            });
-        }
-        // a peer video has been added
-        //this.makeCall(room, webrtc);
-    };
-    KSpaceComponent.prototype.makeCall = function (room, webrtc) {
-        // we have to wait until it's ready
+        // DOM elements
+        var _this = this;
+        var shareScreenBtn = $('#sharescreen-btn');
+        var chalkBoardBtn = $('#chalkboard-btn');
+        var videoCallBtn = $('#videocall-btn');
+        var localVideo = $('#localVideo');
+        var remoteVideos = $('#remoteVideos');
+        var kspacePanel = $('#kspace-panel');
+        var chatBox = $('#chat-box-panel');
+        var drawTools = $('#draw-tools-panel');
+        this._kspaceService
+            .getKSpaceById(this.id)
+            .subscribe(function (kspace) {
+            var room = kspace._id;
+            var username = _this.username;
+            var rtc = _this.rtcService;
+            if (username) {
+                // Check is lecturer or learner or guest
+                var isKspaceUser = function () {
+                    if (username === kspace.lecturer || username === kspace.learner) {
+                        return true;
+                    }
+                    return false;
+                };
+            }
+            if (username) {
+                // initiate webrtc
+                var webrtc = new SimpleWebRTC({
+                    // the element that will hold local video
+                    localVideoEl: 'localVideo',
+                    // the element that will hold remote videos
+                    remoteVideosEl: '',
+                    autoRequestMedia: true,
+                    log: true,
+                    autoRemoveVideos: true,
+                    nick: username,
+                    localVideo: {
+                        autoplay: true,
+                        mirror: true,
+                        muted: true // mute local video stream to prevent echo
+                    }
+                });
+                rtc.rtcSetting(webrtc, room, kspace.lecturer);
+                var sharescreenToken = false;
+                shareScreenBtn.click(function () {
+                    sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);
+                });
+                chalkBoardBtn.click(function () {
+                    kspacePanel.find('video').remove();
+                });
+            }
+            else {
+                _this.router.navigateByUrl('/');
+            }
+        }, function (error) {
+            _this.router.navigateByUrl('/');
+        });
     };
     KSpaceComponent = __decorate([
         core_1.Component({
@@ -111,9 +98,12 @@ var KSpaceComponent = (function () {
             styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES
+            ],
+            providers: [
+                rtc_services_1.WebRCTService
             ]
         }), 
-        __metadata('design:paramtypes', [requests_1.RequestService, router_1.Router, router_1.ActivatedRoute, kspace_1.KSpaceService])
+        __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, kspace_1.KSpaceService, rtc_services_1.WebRCTService])
     ], KSpaceComponent);
     return KSpaceComponent;
 }());

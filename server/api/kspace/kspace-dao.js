@@ -40,14 +40,12 @@ KSpaceSchema.statics.getKSpaceById = (id) => {
 };
 
 //function create new front.KSpace dao
-KSpaceSchema.statics.createNew = (KSpace) => {
+KSpaceSchema.statics.createNew = (kspace) => {
   return new Promise((resolve, reject) => {
     if (!_.isObject(KSpace)) {
       return reject(new TypeError('KSpace is not a valid object.'));
     }
-
-    let _KSpace = new KSpace(KSpace);
-
+    let _KSpace = new KSpace(kspace);
     _KSpace.save((err, saved) => {
       err ? reject(err)
         : resolve(saved);
@@ -61,7 +59,6 @@ KSpaceSchema.statics.removeById = (id) => {
     if (!_.isString(id)) {
       return reject(new TypeError('Id is not a valid string.'));
     }
-
     KSpace
       .findByIdAndRemove(id)
       .exec((err, deleted) => {

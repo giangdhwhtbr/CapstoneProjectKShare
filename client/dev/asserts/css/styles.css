@@ -3,6 +3,21 @@
  * Code licensed under the Apache License v2.0.
  * For details, see http://www.apache.org/licenses/LICENSE-2.0.
  */
+
+.videoContainer {
+  position: relative;
+  height: 208px;
+}
+.videoContainer video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#localScreen {
+  height: 208px;
+}
+
 body,
 html {
   width: 100%;
