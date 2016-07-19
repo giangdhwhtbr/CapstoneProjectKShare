@@ -52,3 +52,4 @@ var CreateOfferComponent = (function () {
     return CreateOfferComponent;
 }());
 exports.CreateOfferComponent = CreateOfferComponent;
+//# sourceMappingURL=offer-create.js.map

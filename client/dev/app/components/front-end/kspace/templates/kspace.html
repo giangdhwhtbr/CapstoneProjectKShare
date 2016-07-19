@@ -20,23 +20,16 @@
       </div>
       <!-- /.md-2 -->
       <div class="col-md-10 kspace-panel">
-        <div id="kspace-panel" class="panel panel-default kspace"></div>
-        <div id="chat-box-panel" class="panel panel-default chat-box"></div>
-        <div id="draw-tools-panel" class="panel panel-default draw-tools"></div>
-        <form id="chat-form">
+        <div id="kspace-panel" class="kspace">
+          <chalkboard [id]="id" ></chalkboard>
+        </div>
+        <!--<div id="chat-box-panel" class="panel panel-default chat-box"></div>-->
+        <!--<div id="draw-tools-panel" class="panel panel-default draw-tools"></div>-->
+        <!--<form id="chat-form">
           <textarea id="chat-input" class="panel panel-default" placeholder="chat here"></textarea>
           <button id="btn-send"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-        </form>
+        </form>-->
       </div>
       <!-- /.md- -->
     </div>
     <!-- /.row -->
-
-  <!--<div class="col-xs-12 col-sm-3 bg-white">-->
-    <!--<video id="localVideo"></video>-->
-    <!--<button id="sharescreen"> {{sharescrbtn}} </button>-->
-  <!--</div>-->
-  <!--<div class="col-xs-12 col-sm-9 fixEfMenu">-->
-    <!--<div id="remotes" class="panel panel-default kspace card-rq">-->
-    <!--</div>-->
-  <!--</div>-->

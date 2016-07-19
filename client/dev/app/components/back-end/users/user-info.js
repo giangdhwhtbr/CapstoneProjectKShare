@@ -79,3 +79,4 @@ var UserInfoComponent = (function () {
     var _a;
 }());
 exports.UserInfoComponent = UserInfoComponent;
+//# sourceMappingURL=user-info.js.map

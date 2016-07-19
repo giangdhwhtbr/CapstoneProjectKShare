@@ -35,3 +35,4 @@ var NavbarComponent = (function () {
     return NavbarComponent;
 }());
 exports.NavbarComponent = NavbarComponent;
+//# sourceMappingURL=nav-bar.js.map

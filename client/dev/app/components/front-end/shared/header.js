@@ -44,3 +44,4 @@ var HeaderComponent = (function () {
     return HeaderComponent;
 }());
 exports.HeaderComponent = HeaderComponent;
+//# sourceMappingURL=header.js.map

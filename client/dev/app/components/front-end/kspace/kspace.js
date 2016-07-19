@@ -12,6 +12,8 @@ var core_1 = require('@angular/core');
 var kspace_1 = require('../../../services/kspace');
 var rtc_services_1 = require('./rtc-services');
 var router_1 = require('@angular/router');
+//import { ChatComponent } from './chat';
+var chalkboard_1 = require('./chalkboard');
 var SimpleWebRTC = require('../../../../asserts/js/simplewebrtc.js');
 var $ = require('jquery');
 var KSpaceComponent = (function () {
@@ -29,7 +31,7 @@ var KSpaceComponent = (function () {
         this.username = localStorage.getItem('username');
     }
     /*
-    *
+    * Init when the component is initiated
     *
     * */
     KSpaceComponent.prototype.ngOnInit = function () {
@@ -50,32 +52,39 @@ var KSpaceComponent = (function () {
             var username = _this.username;
             var rtc = _this.rtcService;
             if (username) {
-                // Check is lecturer or learner or guest
+                // initiate webrtc
                 var isKspaceUser = function () {
                     if (username === kspace.lecturer || username === kspace.learner) {
                         return true;
                     }
                     return false;
                 };
-            }
-            if (username) {
-                // initiate webrtc
-                var webrtc = new SimpleWebRTC({
-                    // the element that will hold local video
-                    localVideoEl: 'localVideo',
-                    // the element that will hold remote videos
-                    remoteVideosEl: '',
-                    autoRequestMedia: true,
-                    log: true,
-                    autoRemoveVideos: true,
-                    nick: username,
-                    localVideo: {
-                        autoplay: true,
-                        mirror: true,
-                        muted: true // mute local video stream to prevent echo
-                    }
-                });
+                if (username === kspace.lecturer) {
+                    var webrtc = new SimpleWebRTC({
+                        // the element that will hold local video
+                        localVideoEl: 'localVideo',
+                        // the element that will hold remote videos
+                        remoteVideosEl: '',
+                        autoRequestMedia: true,
+                        log: true,
+                        autoRemoveVideos: true,
+                        nick: username,
+                        localVideo: {
+                            autoplay: true,
+                            mirror: true,
+                            muted: true // mute local video stream to prevent echo
+                        }
+                    });
+                }
+                else {
+                    var webrtc = new SimpleWebRTC({
+                        remoteVideosEl: '',
+                        nick: username,
+                        media: { video: true, audio: true }
+                    });
+                }
                 rtc.rtcSetting(webrtc, room, kspace.lecturer);
+                var peers = webrtc.getPeers();
                 var sharescreenToken = false;
                 shareScreenBtn.click(function () {
                     sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);
@@ -97,7 +106,8 @@ var KSpaceComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/kspace/templates/kspace.html',
             styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES
+                router_1.ROUTER_DIRECTIVES,
+                chalkboard_1.ChalkBoardComponent
             ],
             providers: [
                 rtc_services_1.WebRCTService
@@ -108,3 +118,4 @@ var KSpaceComponent = (function () {
     return KSpaceComponent;
 }());
 exports.KSpaceComponent = KSpaceComponent;
+//# sourceMappingURL=kspace.js.map

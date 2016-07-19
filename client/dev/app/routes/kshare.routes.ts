@@ -74,6 +74,7 @@ export const KShareRoutes: RouterConfig = [
           },
           {
             path: ':type/:id',
+            pathMatch: 'full',
             component: RequestCategoryComponent
           },
           {

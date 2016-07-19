@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -42,6 +43,6 @@ var CreateSubCategoryComponent = (function () {
         __metadata('design:paramtypes', [common_1.FormBuilder, knowledge_1.KnowledgeService])
     ], CreateSubCategoryComponent);
     return CreateSubCategoryComponent;
-})();
+}());
 exports.CreateSubCategoryComponent = CreateSubCategoryComponent;
 //# sourceMappingURL=sub-knowledge-create.js.map

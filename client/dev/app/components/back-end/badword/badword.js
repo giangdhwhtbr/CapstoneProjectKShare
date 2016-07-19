@@ -38,3 +38,4 @@ var BadwordComponent = (function () {
     return BadwordComponent;
 }());
 exports.BadwordComponent = BadwordComponent;
+//# sourceMappingURL=badword.js.map

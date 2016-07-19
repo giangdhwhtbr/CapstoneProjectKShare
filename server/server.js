@@ -9,7 +9,7 @@ const os = require('os');
 const express = require('express');
 
 const app = express();
-const https = require('https');
+const http = require('http');
 
 const fs = require('fs');
 const RoutesConfig = require('./config/routes.conf');
@@ -29,7 +29,7 @@ const opts = {
 }
 
 
-const server = https.createServer(opts,app)
+const server = http.createServer(app)
      .listen(PORT, () => {
        console.log(`up and running @: ${os.hostname()} on port: ${PORT}`);
        console.log(`enviroment: ${process.env.NODE_ENV}`);
@@ -38,19 +38,26 @@ const server = https.createServer(opts,app)
 
 const io = socket(server);
 // Set socket.io listeners.
-io.sockets.on('connection', (socket) => {
-  //console.log('a user connected');
-  //
-  //socket.on('disconnect', () => {
-  //  console.log('user disconnected');
-  //});
+// A user connects to the server (opens a socket)
+io.sockets.on('connection', function (socket) {
 
-  socket.on('drawClick', (data) => {
-    socket.broadcast.emit('draw'),{
-      x : data.x,
-      y : data.y,
-      type: data.type
-    }
+  socket.on ('startPoint', function(data){
+    socket.in(data.room).broadcast.emit( 'startPoint', data );
+  });
+
+  socket.on( 'pathpoint', function( data) {
+    socket.in(data.room).broadcast.emit( 'pathpoint', data );
+  });
+
+  socket.on('subscribe', function(room) { 
+        console.log('joining room', room);
+        socket.join(room); 
+    })
+
+  socket.on('unsubscribe', function(room) {  
+      console.log('leaving room', room);
+      socket.leave(room); 
   })
+
 });
 

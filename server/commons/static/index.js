@@ -8,7 +8,7 @@ module.exports = class StaticDispatcher {
 
       res.type('.html');
 
-      fs.createReadStream(_root + '/client/dev/index.html')
+      fs.createReadStream(_root + '/client/dist/index.html')
         .pipe(res);
     }
 }

@@ -58,3 +58,4 @@ var BadwordListComponent = (function () {
     return BadwordListComponent;
 }());
 exports.BadwordListComponent = BadwordListComponent;
+//# sourceMappingURL=badwords-list.js.map

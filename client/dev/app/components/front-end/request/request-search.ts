@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit,OnChanges, AfterViewInit, DoCheck, Input } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
 import { Request } from '../../../interface/request';
 import { Knowledge } from '../../../interface/knowledge';
@@ -18,20 +18,24 @@ export class RequestCategoryComponent {
 
   id: string;
   type: string;
+  changeRoute: boolean = false;
+
 
   constructor(private _requestService: RequestService, public router: Router, private route: ActivatedRoute) {
-    this.route
-      .params
-      .subscribe(params => {
-        this.id = params['id'];
-        this.type = params['type'];
-      });
+   this.route.params.subscribe(params => {
+                          this.id = params['id'];
+                          this.type = params['type'];
+                        });
   }
   requests: Request[];
   knowledges: Knowledge[];
 
   ngOnInit(): void {
-    //get templates from children category
+      this.loadRequest(s);
+  }
+
+  loadRequests():void {
+      //get templates from children category
     if (this.type === "subcategory") {
       this._requestService.getRequestByKnowledgeId(this.id).subscribe(
         (requests) => {
@@ -89,4 +93,5 @@ export class RequestCategoryComponent {
         });
     }
   }
+
 }

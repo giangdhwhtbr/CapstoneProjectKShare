@@ -49,3 +49,4 @@ var SideBarComponent = (function () {
     return SideBarComponent;
 }());
 exports.SideBarComponent = SideBarComponent;
+//# sourceMappingURL=side-bar.js.map

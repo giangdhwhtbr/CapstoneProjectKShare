@@ -1,7 +1,6 @@
 /**
  * @author: @AngularClass
  */
-var webpack = require('webpack');
 const helpers = require('./helpers');
 const webpackMerge = require('webpack-merge'); // used to merge webpack configs
 const commonConfig = require('./webpack.common.js'); // the settings that are common to prod and dev
@@ -93,10 +92,6 @@ module.exports = webpackMerge(commonConfig, {
   },
 
   plugins: [
-    new webpack.optimize.DedupePlugin(),
-    new webpack.optimize.UglifyJsPlugin(),
-    new ExtractTextPlugin('[name].[hash].css'),
-
   /**
    * Plugin: DefinePlugin
    * Description: Define free variables.

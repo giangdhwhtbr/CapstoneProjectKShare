@@ -5,20 +5,25 @@
 const webpack = require('webpack');
 const helpers = require('./helpers');
 
+
 /*
  * Webpack Plugins
  */
 // problem with copy-webpack-plugin
-var CopyWebpackPlugin = (CopyWebpackPlugin = require('copy-webpack-plugin'), CopyWebpackPlugin.default || CopyWebpackPlugin);
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const ForkCheckerPlugin = require('awesome-typescript-loader').ForkCheckerPlugin;
+/*
+ * Webpack Constants
+ */
 
 /*
  * Webpack Constants
  */
 const METADATA = {
   title: 'Kshare',
-  baseUrl: '/'
+  baseUrl: '/',
+  isDevServer: helpers.isWebpackDevServer()
 };
 
 /*
@@ -114,6 +119,8 @@ module.exports = {
           // these packages have problems with their sourcemaps
           helpers.root('node_modules/rxjs'),
           helpers.root('node_modules/@angular'),
+          helpers.root('node_modules/@ngrx'),
+          helpers.root('node_modules/@angular2-material'),
         ]
       }
 
@@ -136,7 +143,7 @@ module.exports = {
        */
       {
         test: /\.ts$/,
-        loader: 'awesome-typescript-loader',
+        loaders: ['awesome-typescript-loader', 'angular2-template-loader'],
         exclude: [/\.(spec|e2e)\.ts$/]
       },
 
@@ -158,7 +165,7 @@ module.exports = {
        */
       {
         test: /\.css$/,
-        loader: 'raw-loader'
+        loaders: ['to-string-loader', 'css-loader']
       },
 
       /* Raw loader support for *.html
@@ -221,10 +228,10 @@ module.exports = {
      *
      * See: https://www.npmjs.com/package/copy-webpack-plugin
      */
-    //new CopyWebpackPlugin([{
-    //  from: 'src/assets',
-    //  to: 'assets'
-    //}]),
+    new CopyWebpackPlugin([{
+     from: 'client/dev/assets',
+     to: 'assets'
+    }]),
 
     /*
      * Plugin: HtmlWebpackPlugin

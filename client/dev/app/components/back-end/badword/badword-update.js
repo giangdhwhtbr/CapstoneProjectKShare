@@ -68,3 +68,4 @@ var UpdateBadwordComponent = (function () {
     return UpdateBadwordComponent;
 }());
 exports.UpdateBadwordComponent = UpdateBadwordComponent;
+//# sourceMappingURL=badword-update.js.map

@@ -1,12 +1,14 @@
 {
   "compilerOptions": {
+    "target": "es5",
     "module": "commonjs",
     "moduleResolution": "node",
-    "target": "es5",
     "sourceMap": true,
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "noImplicitAny": false
+    "removeComments": false,
+    "noImplicitAny": true,
+    "suppressImplicitAnyIndexErrors": true
   },
   "exclude": [
     "node_modules",
@@ -20,6 +22,7 @@
   "files": [
     "client/dev/app/app.component.ts",
     "client/dev/app/app.routes.ts",
+    "client/dev/demo/fabricjs.d.ts",
     "client/dev/app/routes/kshare.routes.ts",
     "client/dev/app/routes/admin.routes.ts",
     "client/dev/app/components/back-end/badword/badword-create.ts",
@@ -67,13 +70,7 @@
     "client/dev/app/components/front-end/shared/side-bar.ts",
     "client/dev/app/components/front-end/kspace/kspace.ts",
     "client/dev/app/components/front-end/kspace/chat.ts",
-    "client/dev/app/components/kshare.component.ts",
-    "tests/client/dashboard/components/nav-bar_test.ts",
-    "tests/client/dashboard/components/sidebar_test.ts",
-    "tests/client/dashboard/components/user-create_test.ts",
-    "tests/client/dashboard/components/user-info_test.ts",
-    "tests/client/dashboard/components/user-list_test.ts",
-    "tests/client/dashboard/components/users_test.ts"
+    "client/dev/app/components/kshare.component.ts"
   ],
   "atom": {
     "rewriteTsconfig": true

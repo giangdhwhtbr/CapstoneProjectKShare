@@ -10,7 +10,7 @@ import { ROUTER_DIRECTIVES} from '@angular/router';
  * Page components
  * */
 
-//import { DashboardComponent } from "./dashboard.component";
+import { AdminComponent } from "./components/admin.component";
 import { KshareComponent } from "./components/kshare.component";
 //import { UserComponent } from "./user.component";
 
@@ -24,6 +24,7 @@ import {RequestService} from "./services/requests";
 import {UserService} from "./services/users";
 import {AuthService} from "./services/auth";
 import {KSpaceService} from "./services/kspace";
+
 
 @Component({
   selector: 'kshare-app',
@@ -42,7 +43,6 @@ import {KSpaceService} from "./services/kspace";
     KSpaceService
   ]
 })
-
 export class AppComponent {
   pageTitle: string = 'Knowledge Sharing Network';
 }

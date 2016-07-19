@@ -148,3 +148,4 @@ var RequestDetailClientComponent = (function () {
     return RequestDetailClientComponent;
 }());
 exports.RequestDetailClientComponent = RequestDetailClientComponent;
+//# sourceMappingURL=request-detail.js.map

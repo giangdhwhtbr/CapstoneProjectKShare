@@ -67,3 +67,4 @@ var BadwordService = (function () {
     return BadwordService;
 }());
 exports.BadwordService = BadwordService;
+//# sourceMappingURL=badword.js.map

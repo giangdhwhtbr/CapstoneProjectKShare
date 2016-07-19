@@ -16,7 +16,8 @@ System.config({
   map: {
     "rxjs": "node_modules/rxjs",
     "jquery": "node_modules/jquery/dist/jquery.min",
-    "socket.io": "node_modules/socket.io-client/socket.io"
+    "socket.io": "node_modules/socket.io-client/socket.io",
+    "paper" : "node_modules/paper/dist/paper-full"
   },
   packages: {
     '@angular/common': {
@@ -51,6 +52,9 @@ System.config({
     },
     'primeng/primeng':{
       main:'primeng'
+    },
+    'angular2-tag-input':{
+      main:'tag-input.component'
     },
     "es6-shim":{
       defaultExtension: 'js'

@@ -52,3 +52,4 @@ var RegisterComponent = (function () {
     return RegisterComponent;
 }());
 exports.RegisterComponent = RegisterComponent;
+//# sourceMappingURL=register.js.map

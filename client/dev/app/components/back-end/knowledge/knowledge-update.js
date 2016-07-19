@@ -66,3 +66,4 @@ var UpdateKnowledgeComponent = (function () {
     return UpdateKnowledgeComponent;
 }());
 exports.UpdateKnowledgeComponent = UpdateKnowledgeComponent;
+//# sourceMappingURL=knowledge-update.js.map

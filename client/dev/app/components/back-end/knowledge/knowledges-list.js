@@ -53,3 +53,4 @@ var KnowledgeListComponent = (function () {
     return KnowledgeListComponent;
 }());
 exports.KnowledgeListComponent = KnowledgeListComponent;
+//# sourceMappingURL=knowledges-list.js.map

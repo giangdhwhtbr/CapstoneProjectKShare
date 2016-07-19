@@ -6,7 +6,7 @@ export class WebRCTService {
   rtcSetting(webrtc: SimpleWebRTC, room:string, lecturer: string) {
     // If there is a peer join room, add Remote Video
     webrtc.on('videoAdded', function (video, peer) {
-      if(lecturer === peer.nick){
+      // if(lecturer === peer.nick){
         console.log('video added', peer);
         var remotes = document.getElementById('remoteVideos');
         if (remotes) {
@@ -26,7 +26,7 @@ export class WebRCTService {
               video.css('height','100%');
           });
         }
-      }
+      // }
     });
     // a peer video was removed
     webrtc.on('videoRemoved', function (video, peer) {

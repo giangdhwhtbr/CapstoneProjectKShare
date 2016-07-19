@@ -48,3 +48,4 @@ var OfferService = (function () {
     return OfferService;
 }());
 exports.OfferService = OfferService;
+//# sourceMappingURL=request-offer.js.map

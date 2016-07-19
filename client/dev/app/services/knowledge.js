@@ -86,3 +86,4 @@ var KnowledgeService = (function () {
     return KnowledgeService;
 }());
 exports.KnowledgeService = KnowledgeService;
+//# sourceMappingURL=knowledge.js.map

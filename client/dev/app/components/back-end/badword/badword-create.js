@@ -40,3 +40,4 @@ var CreateBadwordComponent = (function () {
     return CreateBadwordComponent;
 }());
 exports.CreateBadwordComponent = CreateBadwordComponent;
+//# sourceMappingURL=badword-create.js.map

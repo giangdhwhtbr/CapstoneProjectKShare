@@ -24,3 +24,4 @@ var FriendListComponent = (function () {
     return FriendListComponent;
 }());
 exports.FriendListComponent = FriendListComponent;
+//# sourceMappingURL=friend-list.js.map
