@@ -19,11 +19,16 @@ export class WebRCTService {
           remotes.appendChild(container);
           var kspacePanel = $('#kspace-panel');
           $('#'+container.id).click(function(){
-            kspacePanel.find('video').remove();
-            $('#'+container.id).find('video').clone().appendTo('#kspace-panel');
-              var video = kspacePanel.find('video');
-              video.css('width','100%');
-              video.css('height','100%');
+            console.log('remote video clicked');
+            var chalkboard = document.getElementById('chalkboard');
+            var v = webrtc.getDomId(peer);
+            chalkboard.drawImage(v,5,5,260,125);
+            // ctx.drawImage(v,5,5,260,125)
+            // kspacePanel.find('video').remove();
+            // $('#'+container.id).find('video').clone().appendTo('#kspace-panel');
+            //   var video = kspacePanel.find('video');
+            //   video.css('width','100%');
+            //   video.css('height','100%');
           });
         }
       // }

@@ -2,12 +2,12 @@ import { Component, OnInit, Input } from '@angular/core';
 declare var $: any;
 declare var paper: any;
 declare var io: any;
-import { Dropdown, SelectItem } from 'primeng/primeng';
 
 var brushColor: string = $('#color-picker').val();
 @Component ({
     selector: 'chalkboard',
     template: `
+        <button id="draw-option"><i class="fa fa-bars fa-2x" aria-hidden="true"></i></button>
         <canvas id="chalkboard" resize=true keepalive=true></canvas>
         <div id="draw-tools">
             <select id="color-picker" class="tool-btn">
@@ -23,8 +23,7 @@ var brushColor: string = $('#color-picker').val();
             </p>
         </div>
     `,
-    styleUrls:["client/dev/app/components/front-end/kspace/styles/chalkboard.css"],
-    directives:[Dropdown]
+    styleUrls:["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
 })
 
 export class ChalkBoardComponent {
@@ -58,13 +57,26 @@ export class ChalkBoardComponent {
             var strokeWidth = 1;
             var colorStore :string ;
             var room = this.id;
+            
             var socket = io('http://localhost:3333');
-           
             socket.emit('subscribe', room);
-
             var chalkboard = document.getElementById('chalkboard');
             // Initiate the paper at canvas id="chalkboard"
             paper.setup(chalkboard);
+
+            //initiate setting
+            var drawToolShow: boolean = false;
+            $('#draw-tools').hide();          
+            //show draw-tools
+            $('#draw-option').click(function(){
+                if(!drawToolShow){
+                    $('#draw-tools').show();
+                    drawToolShow = true;
+                } else {
+                    $('#draw-tools').hide();
+                    drawToolShow = false;
+                }
+            });
 
             $('#color-picker').change(function(){
                 if($('#color-picker').val()!=='white'){

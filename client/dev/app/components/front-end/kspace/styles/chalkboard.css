@@ -41,3 +41,13 @@ hr{
     border: 0;
     border-top: 1px solid #eee;
 }
+
+#draw-option {
+    float: right;
+    position: absolute;
+    z-index: 10;
+    margin-left: 97.15%;
+    border: none;
+    color: white;
+    background-color: black;
+}

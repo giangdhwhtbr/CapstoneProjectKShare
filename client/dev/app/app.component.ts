@@ -24,6 +24,7 @@ import {RequestService} from "./services/requests";
 import {UserService} from "./services/users";
 import {AuthService} from "./services/auth";
 import {KSpaceService} from "./services/kspace";
+import {SocketIOService} from "./services/socket.io.services";
 
 
 @Component({
@@ -40,7 +41,8 @@ import {KSpaceService} from "./services/kspace";
     RequestService,
     OfferService,
     KnowledgeService,
-    KSpaceService
+    KSpaceService,
+    SocketIOService
   ]
 })
 export class AppComponent {

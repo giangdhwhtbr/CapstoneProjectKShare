@@ -3820,6 +3820,7 @@ webpackJsonp([2],[
 	var kspace_1 = __webpack_require__(181);
 	var rtc_services_1 = __webpack_require__(622);
 	var router_1 = __webpack_require__(7);
+	var common_1 = __webpack_require__(8);
 	//import { ChatComponent } from './chat';
 	var chalkboard_1 = __webpack_require__(621);
 	var KSpaceComponent = (function () {
@@ -3829,6 +3830,7 @@ webpackJsonp([2],[
 	        this.route = route;
 	        this._kspaceService = _kspaceService;
 	        this.rtcService = rtcService;
+	        this.messages = [];
 	        this.route
 	            .params
 	            .subscribe(function (params) {
@@ -3836,6 +3838,12 @@ webpackJsonp([2],[
 	        });
 	        this.username = localStorage.getItem('username');
 	    }
+	    KSpaceComponent.prototype.chatting = function (mess) {
+	        var username = this.username;
+	        var messages = this.messages;
+	        messages.push(username + ': ' + mess);
+	        this.messages = messages;
+	    };
 	    /*
 	    * Init when the component is initiated
 	    *
@@ -3851,42 +3859,67 @@ webpackJsonp([2],[
 	        var kspacePanel = $('#kspace-panel');
 	        var chatBox = $('#chat-box-panel');
 	        var drawTools = $('#draw-tools-panel');
+	        // initiate setting
+	        var chatToolShow = false;
+	        $('#chat-panel').hide();
+	        //show chat-panel
+	        $('#chat').click(function () {
+	            if (!chatToolShow) {
+	                $('#chat-panel').show();
+	                $('#kspace-panel').css('right', '18%');
+	                $('#draw-option').css('margin-left', '96.8%');
+	                chatToolShow = true;
+	            }
+	            else {
+	                $('#chat-panel').hide();
+	                $('#kspace-panel').css('right', '6%');
+	                $('#draw-option').css('margin-left', '97.15%');
+	                chatToolShow = false;
+	            }
+	        });
 	        this._kspaceService
 	            .getKSpaceById(this.id)
 	            .subscribe(function (kspace) {
 	            var room = kspace._id;
 	            var username = _this.username;
 	            var rtc = _this.rtcService;
-	            if (username) {
+	            var socket = io('http://localhost:3333');
+	            socket.emit('subscribe', room);
+	            // $('#chat-form').submit(function () {
+	            //   var message = $('#chat-input').val()
+	            //   if(message && username){
+	            //     var messages = showMessage(username, message);
+	            //     this.messages = messages;
+	            //   }
+	            // })
+	            var isKspaceUser = function () {
+	                if (username === kspace.lecturer || username === kspace.learner) {
+	                    return true;
+	                }
+	                return false;
+	            };
+	            if (isKspaceUser) {
 	                // initiate webrtc
-	                var isKspaceUser = function () {
-	                    if (username === kspace.lecturer || username === kspace.learner) {
-	                        return true;
-	                    }
-	                    return false;
-	                };
 	                if (username === kspace.lecturer) {
 	                    var webrtc = new SimpleWebRTC({
-	                        // the element that will hold local video
 	                        localVideoEl: 'localVideo',
-	                        // the element that will hold remote videos
 	                        remoteVideosEl: '',
 	                        autoRequestMedia: true,
-	                        log: true,
-	                        autoRemoveVideos: true,
 	                        nick: username,
 	                        localVideo: {
 	                            autoplay: true,
 	                            mirror: true,
 	                            muted: true // mute local video stream to prevent echo
-	                        }
+	                        },
+	                        log: true,
+	                        debug: false
 	                    });
 	                }
-	                else {
+	                else if (username === kspace.learner) {
 	                    var webrtc = new SimpleWebRTC({
 	                        remoteVideosEl: '',
 	                        nick: username,
-	                        media: { video: true, audio: true }
+	                        media: { video: false, audio: true }
 	                    });
 	                }
 	                console.log(webrtc);
@@ -3914,6 +3947,7 @@ webpackJsonp([2],[
 	            styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
+	                common_1.FORM_DIRECTIVES,
 	                chalkboard_1.ChalkBoardComponent
 	            ],
 	            providers: [
@@ -6192,6 +6226,7 @@ webpackJsonp([2],[
 	var users_1 = __webpack_require__(119);
 	var auth_1 = __webpack_require__(56);
 	var kspace_1 = __webpack_require__(181);
+	var socket_io_services_1 = __webpack_require__(1067);
 	var AppComponent = (function () {
 	    function AppComponent() {
 	        this.pageTitle = 'Knowledge Sharing Network';
@@ -6211,7 +6246,8 @@ webpackJsonp([2],[
 	                requests_1.RequestService,
 	                request_offer_1.OfferService,
 	                knowledge_1.KnowledgeService,
-	                kspace_1.KSpaceService
+	                kspace_1.KSpaceService,
+	                socket_io_services_1.SocketIOService
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -6607,7 +6643,6 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var primeng_1 = __webpack_require__(316);
 	var brushColor = $('#color-picker').val();
 	var ChalkBoardComponent = (function () {
 	    function ChalkBoardComponent() {
@@ -6641,6 +6676,20 @@ webpackJsonp([2],[
 	        var chalkboard = document.getElementById('chalkboard');
 	        // Initiate the paper at canvas id="chalkboard"
 	        paper.setup(chalkboard);
+	        //initiate setting
+	        var drawToolShow = false;
+	        $('#draw-tools').hide();
+	        //show draw-tools
+	        $('#draw-option').click(function () {
+	            if (!drawToolShow) {
+	                $('#draw-tools').show();
+	                drawToolShow = true;
+	            }
+	            else {
+	                $('#draw-tools').hide();
+	                drawToolShow = false;
+	            }
+	        });
 	        $('#color-picker').change(function () {
 	            if ($('#color-picker').val() !== 'white') {
 	                $('#color-picker').css('color', 'white');
@@ -6763,9 +6812,8 @@ webpackJsonp([2],[
 	    ChalkBoardComponent = __decorate([
 	        core_1.Component({
 	            selector: 'chalkboard',
-	            template: "\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n        <div id=\"draw-tools\">\n            <select id=\"color-picker\" class=\"tool-btn\">\n                <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n            </select>\n            <hr>\n            <select id=\"brush-size\" class=\"tool-btn\">\n                <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n            </select>\n            <hr>\n            <p id=\"eraser\">\n                <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n            </p>\n        </div>\n    ",
-	            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"],
-	            directives: [primeng_1.Dropdown]
+	            template: "\n        <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n        <div id=\"draw-tools\">\n            <select id=\"color-picker\" class=\"tool-btn\">\n                <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n            </select>\n            <hr>\n            <select id=\"brush-size\" class=\"tool-btn\">\n                <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n            </select>\n            <hr>\n            <p id=\"eraser\">\n                <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n            </p>\n        </div>\n    ",
+	            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
 	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], ChalkBoardComponent);
@@ -6801,11 +6849,16 @@ webpackJsonp([2],[
 	                remotes.appendChild(container);
 	                var kspacePanel = $('#kspace-panel');
 	                $('#' + container.id).click(function () {
-	                    kspacePanel.find('video').remove();
-	                    $('#' + container.id).find('video').clone().appendTo('#kspace-panel');
-	                    var video = kspacePanel.find('video');
-	                    video.css('width', '100%');
-	                    video.css('height', '100%');
+	                    console.log('remote video clicked');
+	                    var chalkboard = document.getElementById('chalkboard');
+	                    var v = webrtc.getDomId(peer);
+	                    chalkboard.drawImage(v, 5, 5, 260, 125);
+	                    // ctx.drawImage(v,5,5,260,125)
+	                    // kspacePanel.find('video').remove();
+	                    // $('#'+container.id).find('video').clone().appendTo('#kspace-panel');
+	                    //   var video = kspacePanel.find('video');
+	                    //   video.css('width','100%');
+	                    //   video.css('height','100%');
 	                });
 	            }
 	            // }
@@ -25703,6 +25756,47 @@ webpackJsonp([2],[
 	    return UITreeRow;
 	}());
 	exports.UITreeRow = UITreeRow;
+	
+
+/***/ },
+/* 1063 */,
+/* 1064 */,
+/* 1065 */,
+/* 1066 */,
+/* 1067 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var socket;
+	var SocketIOService = (function () {
+	    function SocketIOService() {
+	    }
+	    SocketIOService.prototype.ioInit = function () {
+	        socket = io('http://localhost:3333');
+	        return socket;
+	    };
+	    SocketIOService.prototype.ioSubscribeRoom = function (room) {
+	        socket.emit('subscribe', room);
+	    };
+	    SocketIOService.prototype.emitStartPoint = function (x, y, color, width) {
+	        var data = {
+	            x: x,
+	            y: y,
+	            color: color,
+	            width: width
+	        };
+	        socket.emit('startPoint', data);
+	    };
+	    SocketIOService.prototype.emitPathPoint = function (x, y) {
+	        var data = {
+	            x: x,
+	            y: y
+	        };
+	        socket.emit('pathpoint', data);
+	    };
+	    return SocketIOService;
+	}());
+	exports.SocketIOService = SocketIOService;
 	
 
 /***/ }

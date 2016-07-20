@@ -11,7 +11,6 @@ import {
 } from '@angular/common';
 import {
   Router,
-  Routes
 } from '@angular/router';
 
 // UI

@@ -34,15 +34,6 @@
   overflow: auto;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
 }
-
-.chat-box {
-  position: fixed;
-  top: 4%;
-  left: 83%;
-  right: 1%;
-  bottom: 12%;
-  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
-}
 .kspace {
   position: fixed;
   top: 4%;
@@ -52,13 +43,33 @@
   background-color: #000000;
   border-radius: 4px;
 }
+#chat {
+    position: absolute;
+    margin-top: 70%;
+    margin-left: 95%;
+    display: block;
+    background: #ffffff;
+    border-color: white;
+    border-radius: 50%;
+}
+#chat-panel {
+    position: relative;
+    right: 20%;
+    float: right;
+}
+.chat-box {
+  position: fixed;
+  margin-top: 2.5%;
+  width: 300px;
+  height: 935px;
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+}
 #chat-form {
   position: fixed;
   border-radius: 2px;
-  top: 88%;
-  left: 83%;
-  right: 1%;
-  bottom: 5%;
+  bottom: 4%;
+  width:300px;
+  height: 100px;
   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
   display: block;
 }
@@ -66,13 +77,14 @@
   resize: none;
   width: 80%;
   height: 100%;
-  border-radius: 0;
+  border-radius: 2px;
 }
 #btn-send {
   width: 20%;
   position: absolute;
   height: 100%;
   border: 0;
+  border-radius: 2px;
   background-color: white;
 }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, Inject} from '@angular/core';
 import { Request } from '../../../interface/request';
 import { RequestService } from '../../../services/requests';
 import { AuthService } from '../../../services/auth';
@@ -6,11 +6,22 @@ import { KSpaceService } from '../../../services/kspace';
 import { WebRCTService } from './rtc-services';
 
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from'@angular/router';
+
+import {
+  Validators,
+  FormBuilder,
+  ControlGroup,
+  Control,
+  FORM_DIRECTIVES,
+} from '@angular/common';
+
 //import { ChatComponent } from './chat';
 import { ChalkBoardComponent } from './chalkboard';
 
 declare var SimpleWebRTC: any;
 declare var $: any;
+declare var io: any;
+
 
 
 @Component ({
@@ -19,6 +30,7 @@ declare var $: any;
   styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
   directives: [
      ROUTER_DIRECTIVES,
+     FORM_DIRECTIVES,
      ChalkBoardComponent
   ],
   providers: [
@@ -34,6 +46,8 @@ export class KSpaceComponent {
     lecturer: string;
     learner: string;
 
+    messages: string[] = [];
+
     constructor(
       public router:Router,
       private route:ActivatedRoute,
@@ -45,7 +59,15 @@ export class KSpaceComponent {
         .subscribe(params => {
           this.id = params['id'];
         });
-    this.username = localStorage.getItem('username');
+     this.username = localStorage.getItem('username');
+  }
+
+  chatting(mess:string): void {
+    var username = this.username;
+    var messages = this.messages;
+
+    messages.push(username+': '+mess);
+    this.messages = messages;
   }
 
   /*
@@ -67,7 +89,23 @@ export class KSpaceComponent {
     var chatBox = $('#chat-box-panel');
     var drawTools = $('#draw-tools-panel');
 
-
+    // initiate setting
+    var chatToolShow: boolean = false;
+    $('#chat-panel').hide();
+    //show chat-panel
+    $('#chat').click(function(){
+        if(!chatToolShow){
+            $('#chat-panel').show();
+            $('#kspace-panel').css('right','18%');
+            $('#draw-option').css('margin-left','96.8%');
+            chatToolShow = true;
+        } else {
+            $('#chat-panel').hide();
+            $('#kspace-panel').css('right','6%');
+            $('#draw-option').css('margin-left','97.15%');
+            chatToolShow = false;
+        }
+    });
 
     this._kspaceService
       .getKSpaceById(this.id)
@@ -75,37 +113,49 @@ export class KSpaceComponent {
         var room = kspace._id;
         var username = this.username;
         var rtc = this.rtcService;
+        var socket = io('http://localhost:3333');
+        socket.emit('subscribe', room);
 
-        if (username){
+
+      // $('#chat-form').submit(function () {
+      //   var message = $('#chat-input').val()
+      //   if(message && username){
+      //     var messages = showMessage(username, message);
+      //     this.messages = messages;
+      //   }
+      // })
+
+
+     
+
+        var isKspaceUser = function() {
+          if(username === kspace.lecturer || username === kspace.learner){
+            return true;
+          }
+          return false;
+        };
+        
+        if (isKspaceUser){
           // initiate webrtc
-
-          var isKspaceUser = function() {
-            if(username === kspace.lecturer || username === kspace.learner){
-              return true;
-            }
-            return false;
-          };
           if(username === kspace.lecturer){
             var webrtc = new SimpleWebRTC({
-              // the element that will hold local video
               localVideoEl: 'localVideo',
-              // the element that will hold remote videos
               remoteVideosEl: '',
               autoRequestMedia: true,
-              log: true,
-              autoRemoveVideos: true,
               nick: username,
               localVideo: {
                 autoplay: true, // automatically play the video stream on the page
                 mirror: true, // flip the local video to mirror mode (for UX)
                 muted: true // mute local video stream to prevent echo
-              }
+              },
+              log: true,
+              debug: false
             });
-          }else {
+          }else if(username === kspace.learner) {
             var webrtc = new SimpleWebRTC({
               remoteVideosEl: '',
               nick: username,
-              media: { video: true, audio: true}
+              media: { video: false, audio: true}
             })
           }
 

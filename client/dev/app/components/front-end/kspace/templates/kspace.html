@@ -21,14 +21,18 @@
       <!-- /.md-2 -->
       <div class="col-md-10 kspace-panel">
         <div id="kspace-panel" class="kspace">
-          <chalkboard [id]="id" ></chalkboard>
+          <chalkboard [id]="id"></chalkboard>
         </div>
-        <!--<div id="chat-box-panel" class="panel panel-default chat-box"></div>-->
-        <!--<div id="draw-tools-panel" class="panel panel-default draw-tools"></div>-->
-        <!--<form id="chat-form">
-          <textarea id="chat-input" class="panel panel-default" placeholder="chat here"></textarea>
-          <button id="btn-send"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
-        </form>-->
+        <div id="chat-panel">
+          <div id="chat-box-output" class="panel panel-default chat-box">
+            <p *ngFor="let mess of messages" >{{mess}}</p>
+          </div>
+          <form id="chat-form">
+            <textarea id="chat-input" #mess class="panel panel-default" placeholder="chat here"></textarea>
+            <button type="submit" id="btn-send" (click)="chatting(mess.value)"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+          </form>
+        </div>
+        <button id="chat"><i class="fa fa-comments-o fa-2x" aria-hidden="true"></i></button>
       </div>
       <!-- /.md- -->
     </div>

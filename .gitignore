@@ -5,3 +5,4 @@ demo
 "client/**/*.js.map"
 npm-debug.log
 tests
+.vscode
