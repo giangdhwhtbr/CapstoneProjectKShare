@@ -68,6 +68,7 @@ export class KSpaceComponent {
 
     messages.push(username+': '+mess);
     this.messages = messages;
+
   }
 
   /*
