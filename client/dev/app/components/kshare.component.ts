@@ -28,6 +28,7 @@ import { KSpaceComponent } from "./front-end/kspace/kspace";
 import { KSpaceListComponent } from "./front-end/kspace/kspace-list";
 import { KSpaceInfoComponent } from "./front-end/kspace/kspace-info";
 import { FriendListComponent } from "./front-end/user-profile/friend-list";
+import { CreateArticleComponent } from "./front-end/article/create-article";
 
 
 
@@ -64,7 +65,8 @@ import { FriendListComponent } from "./front-end/user-profile/friend-list";
     KSpaceListComponent,
     KSpaceInfoComponent,
     UserProfileComponent,
-    FriendListComponent
+    FriendListComponent,
+    CreateArticleComponent
   ]
 })
 export class KshareComponent {

@@ -1,21 +1,16 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 //cores
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 //components
 var notification_1 = require('../shared/notification');
-//services
-var users_1 = require('../../../services/users');
-var knowledge_1 = require('../../../services/knowledge');
 var RequestRecordComponent = (function () {
     function RequestRecordComponent(router, route, _userService, _knowledgeService) {
         this.router = router;
@@ -48,29 +43,23 @@ var RequestRecordComponent = (function () {
         });
     };
     __decorate([
-        core_1.Input('title'), 
-        __metadata('design:type', String)
-    ], RequestRecordComponent.prototype, "title", void 0);
+        core_1.Input('title')
+    ], RequestRecordComponent.prototype, "title");
     __decorate([
-        core_1.Input('description'), 
-        __metadata('design:type', String)
-    ], RequestRecordComponent.prototype, "description", void 0);
+        core_1.Input('description')
+    ], RequestRecordComponent.prototype, "description");
     __decorate([
-        core_1.Input('createdAt'), 
-        __metadata('design:type', String)
-    ], RequestRecordComponent.prototype, "createdAt", void 0);
+        core_1.Input('createdAt')
+    ], RequestRecordComponent.prototype, "createdAt");
     __decorate([
-        core_1.Input('knowledgeId'), 
-        __metadata('design:type', String)
-    ], RequestRecordComponent.prototype, "knowledgeId", void 0);
+        core_1.Input('knowledgeId')
+    ], RequestRecordComponent.prototype, "knowledgeId");
     __decorate([
-        core_1.Input('status'), 
-        __metadata('design:type', String)
-    ], RequestRecordComponent.prototype, "status", void 0);
+        core_1.Input('status')
+    ], RequestRecordComponent.prototype, "status");
     __decorate([
-        core_1.Input('requestId'), 
-        __metadata('design:type', String)
-    ], RequestRecordComponent.prototype, "requestId", void 0);
+        core_1.Input('requestId')
+    ], RequestRecordComponent.prototype, "requestId");
     RequestRecordComponent = __decorate([
         core_1.Component({
             selector: 'request-record',
@@ -80,10 +69,9 @@ var RequestRecordComponent = (function () {
                 router_1.ROUTER_DIRECTIVES,
                 notification_1.PushNotificationComponent
             ]
-        }), 
-        __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, users_1.UserService, knowledge_1.KnowledgeService])
+        })
     ], RequestRecordComponent);
     return RequestRecordComponent;
-}());
+})();
 exports.RequestRecordComponent = RequestRecordComponent;
 //# sourceMappingURL=request-record.js.map

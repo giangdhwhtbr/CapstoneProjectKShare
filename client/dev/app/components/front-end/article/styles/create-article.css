@@ -1,0 +1,15 @@
+.create-article{
+  margin-top: 100px;
+}
+.isLinkPn{
+  margin-right: 43em;
+}
+#inputTitle{
+  margin-bottom: 1em;
+}
+.hidden{
+  display: none;
+}
+.editor{
+  margin-bottom: 1em;
+}

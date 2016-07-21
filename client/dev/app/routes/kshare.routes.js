@@ -1,4 +1,3 @@
-"use strict";
 //Root Component
 var kshare_component_1 = require('../components/kshare.component');
 //Function Components
@@ -12,6 +11,7 @@ var kspace_list_1 = require("../components/front-end/kspace/kspace-list");
 var kspace_info_1 = require("../components/front-end/kspace/kspace-info");
 var friend_list_1 = require("../components/front-end/user-profile/friend-list");
 var user_profile_1 = require("../components/front-end/user-profile/user-profile");
+var create_article_1 = require("../components/front-end/article/create-article");
 exports.KShareRoutes = [
     {
         path: '',
@@ -32,6 +32,15 @@ exports.KShareRoutes = [
                                 component: user_profile_1.UserProfileComponent
                             }
                         ]
+                    }
+                ]
+            },
+            {
+                path: 'article',
+                children: [
+                    {
+                        path: 'create',
+                        component: create_article_1.CreateArticleComponent
                     }
                 ]
             },
@@ -69,6 +78,7 @@ exports.KShareRoutes = [
                     },
                     {
                         path: ':type/:id',
+                        pathMatch: 'full',
                         component: request_search_1.RequestCategoryComponent
                     },
                     {
@@ -81,7 +91,7 @@ exports.KShareRoutes = [
                 path: '',
                 component: home_1.HomeComponent
             }
-        ],
+        ]
     },
     {
         path: 'room',
