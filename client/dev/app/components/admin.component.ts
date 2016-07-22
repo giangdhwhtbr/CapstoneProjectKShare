@@ -15,15 +15,19 @@ import { KnowledgeListComponent } from './back-end/knowledge/knowledges-list';
 import { RequestListComponent } from "./back-end/request/requests-list";
 import { UpdateRequestComponent } from "./back-end/request/request-update";
 import { UpdateBadwordComponent } from "./back-end/badword/badword-update";
-import { BadwordComponent } from "./back-end/badword/badword";
+import { BadwordListComponent } from "./back-end/badword/badwords-list";
 import { UserListComponent } from "./back-end/users/user-list";
 
 @Component({
   selector: 'kshare',
   template:`
-  <nav-bar></nav-bar>
-  <sidebar></sidebar>
-  <router-outlet></router-outlet>
+  <div id="wrapper">
+    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+      <nav-bar></nav-bar>
+      <sidebar></sidebar>
+    </nav>
+    <router-outlet></router-outlet>
+  </div>
   `,
   directives: [
     ROUTER_DIRECTIVES,
@@ -34,7 +38,7 @@ import { UserListComponent } from "./back-end/users/user-list";
     UserListComponent,
     RequestListComponent,
     KnowledgeListComponent,
-    BadwordComponent,
+    BadwordListComponent,
     UpdateBadwordComponent,
     UpdateKnowledgeComponent,
     UpdateRequestComponent,

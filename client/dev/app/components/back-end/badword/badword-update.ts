@@ -31,7 +31,6 @@ import { BadwordListComponent } from './badwords-list';
 @Component({
   selector: 'badword-update',
   templateUrl: 'client/dev/app/components/back-end/badword/templates/badword-update.html',
-  styleUrls: ['client/dev/app/components/back-end/badword/styles/badword.css'],
   directives: [
     FORM_DIRECTIVES,
     ROUTER_DIRECTIVES
@@ -87,7 +86,7 @@ export class UpdateBadwordComponent {
       console.log(error.text());
     }
     );
-    window.location.href = 'admin/badwords';
+    this.router.navigateByUrl('admin/badwords');
   }
 
 }

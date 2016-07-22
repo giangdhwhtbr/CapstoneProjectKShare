@@ -49,13 +49,12 @@ var UpdateKnowledgeComponent = (function () {
         }, function (error) {
             console.log(error.text());
         });
-        window.location.href = 'admin/knowledges';
+        this.router.navigateByUrl('admin/knowledges');
     };
     UpdateKnowledgeComponent = __decorate([
         core_1.Component({
             selector: 'knowledge-update',
             templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-update.html',
-            styleUrls: ['client/dev/app/components/back-end/knowledge/styles/knowledge.css'],
             directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
             providers: [knowledge_1.KnowledgeService]
         }),

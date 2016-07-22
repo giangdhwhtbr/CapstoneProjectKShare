@@ -1,40 +1,24 @@
-<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-  <form role="search">
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="Search">
-    </div>
-  </form>
-  <ul class="nav menu">
-    <li>
-      <a href="index.html">
-        <span class="glyphicon glyphicon-home"></span>
-        Dashboard</a>
-    </li>
-    <li *ngIf="pageTitle && pageTitle == 'user'" class="active">
-      <a [routerLink]="['/admin/users']">
-        <span class="glyphicon glyphicon-user"></span>
-        Users </a>
-    </li>
-    <li *ngIf="!pageTitle">
-      <a [routerLink]="['/admin/users']">
-        <span class="glyphicon glyphicon-user"></span>
-        Users </a>
-    </li>
-    <li><a [routerLink]="['/admin/knowledges']"><span class="glyphicon glyphicon-book"></span> Knowledge </a></li>
-    <li>
-      <a [routerLink]="['/admin/requests']">
-        <span class="glyphicon glyphicon-flag"></span>
-        Requests </a>
-    </li>
-    <li>
-      <a href="ksspaces.html">
-        <span class="glyphicon glyphicon-transfer"></span>
-        KS Space </a>
-    </li>
-    <li>
-      <a [routerLink]="['/admin/badwords']">
-        <span class="glyphicon glyphicon-remove"></span>
-        Bad words</a>
-    </li>
-  </ul>
+<div class="collapse navbar-collapse navbar-ex1-collapse">
+    <ul class="nav navbar-nav side-nav">
+        <li routerLinkActive="active">
+            <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Bảng</a>
+        </li>
+        <li routerLinkActive="active">
+          <a [routerLink]="['/admin/users']">
+            <span class="glyphicon glyphicon-user"></span>
+            Người dùng </a>
+        </li>
+        <li routerLinkActive="active">
+            <a [routerLink]="['/admin/knowledges']"><i class="glyphicon glyphicon-book"></i> Tri thức</a>
+        </li>
+        <li routerLinkActive="active">
+            <a [routerLink]="['/admin/requests']"><i class="glyphicon glyphicon-flag"></i> Yêu cầu</a>
+        </li>
+        <li>
+            <a href="ksspaces.html"><i class="fa fa-fw fa-desktop"></i> Kspace</a>
+        </li>
+        <li routerLinkActive="active">
+            <a [routerLink]="['/admin/badwords']"><i class="glyphicon glyphicon-remove"></i> Từ xấu</a>
+        </li>
+    </ul>
 </div>

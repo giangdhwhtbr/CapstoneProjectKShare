@@ -10,22 +10,34 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 };
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
+var router_1 = require('@angular/router');
 var badword_1 = require('../../../services/badword');
 var CreateBadwordComponent = (function () {
-    function CreateBadwordComponent(fb, _badwordService) {
+    function CreateBadwordComponent(fb, _badwordService, router) {
         this._badwordService = _badwordService;
-        this.badwords = [];
+        this.router = router;
+        this.navigated = false;
         this.badwordForm = fb.group({
             "word": [""],
         });
     }
+    CreateBadwordComponent.prototype.ngOnInit = function () {
+        this.getAll();
+    };
+    CreateBadwordComponent.prototype.getAll = function () {
+        var _this = this;
+        this._badwordService
+            .getAllBadwords()
+            .subscribe(function (badwords) {
+            _this.badwords = badwords;
+        });
+    };
     CreateBadwordComponent.prototype.addBadword = function (word) {
         var _this = this;
         this._badwordService
             .addBadword(word)
-            .subscribe(function (m) {
-            _this.badwords.push(m);
-            window.location.reload();
+            .subscribe(function (word) {
+            _this.badwords.push(word);
         });
     };
     CreateBadwordComponent = __decorate([
@@ -35,9 +47,8 @@ var CreateBadwordComponent = (function () {
             styleUrls: ['client/dev/app/components/back-end/badword/styles/badword.css'],
             directives: [common_1.FORM_DIRECTIVES]
         }), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, badword_1.BadwordService])
+        __metadata('design:paramtypes', [common_1.FormBuilder, badword_1.BadwordService, router_1.Router])
     ], CreateBadwordComponent);
     return CreateBadwordComponent;
 }());
 exports.CreateBadwordComponent = CreateBadwordComponent;
-//# sourceMappingURL=badword-create.js.map

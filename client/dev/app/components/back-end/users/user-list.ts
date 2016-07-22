@@ -2,13 +2,20 @@ import {
   Component,
   OnInit,
   Pipe,
-  PipeTransform
+  PipeTransform,
+  Inject
 } from '@angular/core';
 import {
   ROUTER_DIRECTIVES,
   Router
 } from '@angular/router';
-
+import {
+  Validators,
+  FormBuilder,
+  ControlGroup,
+  Control,
+  FORM_DIRECTIVES,
+} from '@angular/common';
 import {
   DataTable,
   Column,
@@ -22,37 +29,38 @@ import  { User } from '../../../interface/user';
 
 import  { UserService} from '../../../services/users';
 import  { AuthService} from '../../../services/auth';
-import  { CreateUserComponent } from './user-create';
-
+import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance } from 'ng2-pagination';
+import {StringFilterPipe} from '../shared/filter';
 @Component({
   selector: 'user-list',
   templateUrl: 'client/dev/app/components/back-end/users/templates/user-list.html',
-  styleUrls: [
-    'client/dev/asserts/css/backend-styles.css',
-    'client/dev/app/components/back-end/users/styles/user.css'
-  ],
-  directives: [
-    CreateUserComponent,
-    DataTable,
-    Column,
-    Header,
-    Footer,
-    MultiSelect,
-    ROUTER_DIRECTIVES
-  ],
-  providers:[
-    CreateUserComponent
-  ]
+  directives: [ROUTER_DIRECTIVES,PaginationControlsCmp,ROUTER_DIRECTIVES,FORM_DIRECTIVES],
+  providers: [UserService,PaginationService],
+  pipes: [PaginatePipe,StringFilterPipe]
 })
 
 export class UserListComponent {
-  pageTitle: string = 'user';
+  pageTitle: string = 'users';
   errorMessage: string;
   roleToken:string;
   users: User[];
+  public filter: string = '';
   numOfUser: number = 0;
-  constructor(private _userService: UserService, private _auth:AuthService, private router: Router){
-
+  userForm: ControlGroup;
+  constructor(@Inject(FormBuilder) fb:FormBuilder,private _userService: UserService, private _auth:AuthService, private router: Router){
+    this.userForm = fb.group({
+      firstName : [""],
+      lastName : [""],
+      displayName: [""],
+      birthday: [""],
+      username: ["",Validators.required],
+      password: ["",Validators.required],
+      email: ["",Validators.required],
+      role: ["",Validators.required],
+      ownKnowledgeId: [""],
+      interestedKnowledgeId: [""],
+      onlineTime: [""]
+    })
   }
 
   ngOnInit(): void {

@@ -63,7 +63,6 @@ var UpdateRequestComponent = (function () {
         core_1.Component({
             selector: 'request-update-cli',
             templateUrl: 'client/dev/app/components/back-end/request/templates/request-update.html',
-            styleUrls: ['client/dev/asserts/css/backend-styles.css'],
             directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
@@ -74,4 +73,3 @@ var UpdateRequestComponent = (function () {
     return UpdateRequestComponent;
 }());
 exports.UpdateRequestComponent = UpdateRequestComponent;
-//# sourceMappingURL=request-update.js.map

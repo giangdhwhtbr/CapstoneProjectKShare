@@ -8,25 +8,31 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var core_1 = require('@angular/core');
-var core_2 = require("@angular/core");
-var router_1 = require("@angular/router");
-var SidebarComponent = (function () {
-    function SidebarComponent() {
+var core_1 = require("@angular/core");
+var StringFilterPipe = (function () {
+    function StringFilterPipe() {
     }
-    __decorate([
-        core_2.Input(), 
-        __metadata('design:type', String)
-    ], SidebarComponent.prototype, "pageTitle", void 0);
-    SidebarComponent = __decorate([
-        core_1.Component({
-            selector: 'sidebar',
-            templateUrl: 'client/dev/app/components/back-end/shared/templates/side-bar.html',
-            styleUrls: ['client/dev/asserts/css/admin.css'],
-            directives: [router_1.ROUTER_DIRECTIVES]
+    StringFilterPipe.prototype.transform = function (value, args) {
+        if (!args) {
+            return value;
+        }
+        else if (args) {
+            return value.filter(function (item) {
+                for (var key in item) {
+                    if ((typeof item[key] === 'string' || item[key] instanceof String) &&
+                        (item[key].indexOf(args) > -1) && (key !== "_id")) {
+                        return true;
+                    }
+                }
+            });
+        }
+    };
+    StringFilterPipe = __decorate([
+        core_1.Pipe({
+            name: 'stringFilter'
         }), 
         __metadata('design:paramtypes', [])
-    ], SidebarComponent);
-    return SidebarComponent;
+    ], StringFilterPipe);
+    return StringFilterPipe;
 }());
-exports.SidebarComponent = SidebarComponent;
+exports.StringFilterPipe = StringFilterPipe;

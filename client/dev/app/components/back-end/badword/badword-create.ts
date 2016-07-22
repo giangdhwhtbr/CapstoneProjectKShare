@@ -1,6 +1,6 @@
 import {
   Component,
-  Inject,
+  Inject,Input,EventEmitter,Output
 } from '@angular/core';
 import  {
   FORM_DIRECTIVES,
@@ -8,7 +8,7 @@ import  {
   ControlGroup,
   Control
 } from '@angular/common';
-
+import { Router, ActivatedRoute } from '@angular/router';
 import  { Badword } from '../../../interface/badword';
 import  { BadwordService} from '../../../services/badword';
 
@@ -20,19 +20,32 @@ import  { BadwordService} from '../../../services/badword';
 })
 export class CreateBadwordComponent {
   badwordForm: ControlGroup;
-  badwords: Badword[]= [];
-  constructor(fb: FormBuilder, private _badwordService: BadwordService) {
+  badwords: Badword[];
+  word:Badword;
+  navigated = false;
+  constructor(fb: FormBuilder, private _badwordService: BadwordService,private router: Router) {
     this.badwordForm = fb.group({
       "word": [""],
     });
+
+  }
+
+  ngOnInit(){
+    this.getAll();
+  }
+  getAll():void {
+    this._badwordService
+        .getAllBadwords()
+        .subscribe((badwords) => {
+          this.badwords=badwords;
+        });
   }
 
   addBadword(word):void {
     this._badwordService
         .addBadword(word)
-        .subscribe((m) => {
-          this.badwords.push(m);
-          window.location.reload();
+        .subscribe((word) => {
+            this.badwords.push(word);
         });
   }
 }

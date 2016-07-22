@@ -5,7 +5,7 @@ var knowledges_list_1 = require('../components/back-end/knowledge/knowledges-lis
 var requests_list_1 = require("../components/back-end/request/requests-list");
 var request_update_1 = require("../components/back-end/request/request-update");
 var badword_update_1 = require("../components/back-end/badword/badword-update");
-var badword_1 = require("../components/back-end/badword/badword");
+var badwords_list_1 = require("../components/back-end/badword/badwords-list");
 var user_list_1 = require("../components/back-end/users/user-list");
 exports.AdminRoutes = [
     {
@@ -52,7 +52,7 @@ exports.AdminRoutes = [
                 children: [
                     {
                         path: '',
-                        component: badword_1.BadwordComponent
+                        component: badwords_list_1.BadwordListComponent
                     },
                     {
                         path: ':id',
@@ -62,7 +62,7 @@ exports.AdminRoutes = [
             },
             {
                 path: '',
-                redirectTo: 'users'
+                redirectTo: 'knowledges'
             }
         ]
     }

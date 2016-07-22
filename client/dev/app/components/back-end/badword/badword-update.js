@@ -48,13 +48,12 @@ var UpdateBadwordComponent = (function () {
         }, function (error) {
             console.log(error.text());
         });
-        window.location.href = 'admin/badwords';
+        this.router.navigateByUrl('admin/badwords');
     };
     UpdateBadwordComponent = __decorate([
         core_1.Component({
             selector: 'badword-update',
             templateUrl: 'client/dev/app/components/back-end/badword/templates/badword-update.html',
-            styleUrls: ['client/dev/app/components/back-end/badword/styles/badword.css'],
             directives: [
                 common_1.FORM_DIRECTIVES,
                 router_1.ROUTER_DIRECTIVES

@@ -9,12 +9,29 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var common_1 = require('@angular/common');
 var badword_1 = require('../../../services/badword');
 var badword_update_1 = require('./badword-update');
+var ng2_pagination_1 = require('ng2-pagination');
+var filter_1 = require('../shared/filter');
 var BadwordListComponent = (function () {
-    function BadwordListComponent(badwordService) {
+    function BadwordListComponent(fb, badwordService, router) {
         this.badwordService = badwordService;
+        this.router = router;
         this.pageTitle = 'Badword List';
+        this.filter = '';
+        this.maxSize = 7;
+        this.directionLinks = true;
+        this.autoHide = false;
+        this.config = {
+            id: 'advanced',
+            itemsPerPage: 10,
+            currentPage: 1
+        };
+        this.badwordForm = fb.group({
+            "word": [""],
+        });
     }
     BadwordListComponent.prototype.ngOnInit = function () {
         this.getAll();
@@ -25,7 +42,6 @@ var BadwordListComponent = (function () {
             .getAllBadwords()
             .subscribe(function (badwords) {
             _this.badwords = badwords;
-            console.log("1234");
         });
     };
     BadwordListComponent.prototype.deleteBadword = function (id) {
@@ -46,14 +62,24 @@ var BadwordListComponent = (function () {
             return badwords;
         });
     };
+    BadwordListComponent.prototype.addBadword = function (word) {
+        var _this = this;
+        this.badwordService
+            .addBadword(word)
+            .subscribe(function (word) {
+            _this.badwords.push(word);
+            _this.badwordForm.controls["word"].updateValue("");
+        });
+    };
     BadwordListComponent = __decorate([
         core_1.Component({
             selector: 'badword-list',
             templateUrl: 'client/dev/app/components/back-end/badword/templates/badword-list.html',
-            styleUrls: ['client/dev/app/components/back-end/badword/styles/badword.css'],
-            directives: [badword_update_1.UpdateBadwordComponent]
+            directives: [ng2_pagination_1.PaginationControlsCmp, badword_update_1.UpdateBadwordComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES],
+            providers: [badword_1.BadwordService, ng2_pagination_1.PaginationService],
+            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
         }), 
-        __metadata('design:paramtypes', [badword_1.BadwordService])
+        __metadata('design:paramtypes', [common_1.FormBuilder, badword_1.BadwordService, router_1.Router])
     ], BadwordListComponent);
     return BadwordListComponent;
 }());

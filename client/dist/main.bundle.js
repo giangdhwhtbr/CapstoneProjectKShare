@@ -6,12 +6,12 @@ webpackJsonp([2],[
 	/*
 	 * Angular
 	 */
-	var platform_browser_dynamic_1 = __webpack_require__(395);
-	var app_routes_1 = __webpack_require__(614);
+	var platform_browser_dynamic_1 = __webpack_require__(389);
+	var app_routes_1 = __webpack_require__(599);
 	/*
 	 * components
 	 */
-	var app_component_1 = __webpack_require__(613);
+	var app_component_1 = __webpack_require__(598);
 	platform_browser_dynamic_1.bootstrap(app_component_1.AppComponent, app_routes_1.APP_ROUTER_PROVIDERS).catch(function (err) { return console.error(err); });
 	// import {DemoPaper} from './demo/demo-paper';
 	// bootstrap(DemoPaper);
@@ -28,262 +28,7 @@ webpackJsonp([2],[
 /* 8 */,
 /* 9 */,
 /* 10 */,
-/* 11 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var DomHandler = (function () {
-	    function DomHandler() {
-	    }
-	    DomHandler.prototype.addClass = function (element, className) {
-	        if (element.classList)
-	            element.classList.add(className);
-	        else
-	            element.className += ' ' + className;
-	    };
-	    DomHandler.prototype.addMultipleClasses = function (element, className) {
-	        if (element.classList) {
-	            var styles = className.split(' ');
-	            for (var i = 0; i < styles.length; i++) {
-	                element.classList.add(styles[i]);
-	            }
-	        }
-	        else {
-	            var styles = className.split(' ');
-	            for (var i = 0; i < styles.length; i++) {
-	                element.className += ' ' + styles[i];
-	            }
-	        }
-	    };
-	    DomHandler.prototype.removeClass = function (element, className) {
-	        if (element.classList)
-	            element.classList.remove(className);
-	        else
-	            element.className = element.className.replace(new RegExp('(^|\\b)' + className.split(' ').join('|') + '(\\b|$)', 'gi'), ' ');
-	    };
-	    DomHandler.prototype.hasClass = function (element, className) {
-	        if (element.classList)
-	            return element.classList.contains(className);
-	        else
-	            return new RegExp('(^| )' + className + '( |$)', 'gi').test(element.className);
-	    };
-	    DomHandler.prototype.siblings = function (element) {
-	        return Array.prototype.filter.call(element.parentNode.children, function (child) {
-	            return child !== element;
-	        });
-	    };
-	    DomHandler.prototype.find = function (element, selector) {
-	        return element.querySelectorAll(selector);
-	    };
-	    DomHandler.prototype.findSingle = function (element, selector) {
-	        return element.querySelector(selector);
-	    };
-	    DomHandler.prototype.index = function (element) {
-	        var children = element.parentNode.childNodes;
-	        var num = 0;
-	        for (var i = 0; i < children.length; i++) {
-	            if (children[i] == element)
-	                return num;
-	            if (children[i].nodeType == 1)
-	                num++;
-	        }
-	        return -1;
-	    };
-	    DomHandler.prototype.relativePosition = function (element, target) {
-	        var elementDimensions = element.offsetParent ? { width: element.outerWidth, height: element.outerHeight } : this.getHiddenElementDimensions(element);
-	        var targetHeight = target.offsetHeight;
-	        var targetWidth = target.offsetWidth;
-	        var targetOffset = target.getBoundingClientRect();
-	        var top, left;
-	        if ((targetOffset.top + targetHeight + elementDimensions.height) > window.innerHeight)
-	            top = -1 * (elementDimensions.height);
-	        else
-	            top = targetHeight;
-	        if ((targetOffset.left + elementDimensions.width) > window.innerWidth)
-	            left = targetWidth - elementDimensions.width;
-	        else
-	            left = 0;
-	        element.style.top = top + 'px';
-	        element.style.left = left + 'px';
-	    };
-	    DomHandler.prototype.absolutePosition = function (element, target) {
-	        var elementOuterHeight = element.offsetParent ? element.offsetHeight : this.getHiddenElementOuterHeight(element);
-	        var targetOuterHeight = target.offsetHeight;
-	        var targetOffset = target.getBoundingClientRect();
-	        var windowScrollTop = this.getWindowScrollTop();
-	        var top;
-	        if (targetOffset.top + targetOuterHeight + elementOuterHeight > window.innerHeight)
-	            top = targetOffset.top + windowScrollTop - elementOuterHeight;
-	        else
-	            top = targetOuterHeight + targetOffset.top + windowScrollTop;
-	        element.style.top = top + 'px';
-	        element.style.left = targetOffset.left + 'px';
-	    };
-	    DomHandler.prototype.getHiddenElementOuterHeight = function (element) {
-	        element.style.visibility = 'hidden';
-	        element.style.display = 'block';
-	        var elementHeight = element.offsetHeight;
-	        element.style.display = 'none';
-	        element.style.visibility = 'visible';
-	        return elementHeight;
-	    };
-	    DomHandler.prototype.getHiddenElementOuterWidth = function (element) {
-	        element.style.visibility = 'hidden';
-	        element.style.display = 'block';
-	        var elementWidth = element.offsetWidth;
-	        element.style.display = 'none';
-	        element.style.visibility = 'visible';
-	        return elementWidth;
-	    };
-	    DomHandler.prototype.getHiddenElementDimensions = function (element) {
-	        var dimensions = {};
-	        element.style.visibility = 'hidden';
-	        element.style.display = 'block';
-	        dimensions.width = element.offsetWidth;
-	        dimensions.height = element.offsetHeight;
-	        element.style.display = 'none';
-	        element.style.visibility = 'visible';
-	        return dimensions;
-	    };
-	    DomHandler.prototype.scrollInView = function (container, item) {
-	        var borderTopValue = getComputedStyle(container).getPropertyValue('borderTopWidth');
-	        var borderTop = borderTopValue ? parseFloat(borderTopValue) : 0;
-	        var paddingTopValue = getComputedStyle(container).getPropertyValue('paddingTop');
-	        var paddingTop = paddingTopValue ? parseFloat(paddingTopValue) : 0;
-	        var containerRect = container.getBoundingClientRect();
-	        var itemRect = item.getBoundingClientRect();
-	        var offset = (itemRect.top + document.body.scrollTop) - (containerRect.top + document.body.scrollTop) - borderTop - paddingTop;
-	        var scroll = container.scrollTop;
-	        var elementHeight = container.clientHeight;
-	        var itemHeight = this.getOuterHeight(item);
-	        if (offset < 0) {
-	            container.scrollTop = scroll + offset;
-	        }
-	        else if ((offset + itemHeight) > elementHeight) {
-	            container.scrollTop = scroll + offset - elementHeight + itemHeight;
-	        }
-	    };
-	    DomHandler.prototype.fadeIn = function (element, duration) {
-	        element.style.opacity = 0;
-	        var last = +new Date();
-	        var tick = function () {
-	            element.style.opacity = +element.style.opacity + (new Date().getTime() - last) / duration;
-	            last = +new Date();
-	            if (+element.style.opacity < 1) {
-	                (window.requestAnimationFrame && requestAnimationFrame(tick)) || setTimeout(tick, 16);
-	            }
-	        };
-	        tick();
-	    };
-	    DomHandler.prototype.fadeOut = function (element, ms) {
-	        var opacity = 1, interval = 50, duration = ms, gap = interval / duration;
-	        var fading = setInterval(function () {
-	            opacity = opacity - gap;
-	            element.style.opacity = opacity;
-	            if (opacity <= 0) {
-	                clearInterval(fading);
-	            }
-	        }, interval);
-	    };
-	    DomHandler.prototype.getWindowScrollTop = function () {
-	        var doc = document.documentElement;
-	        return (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
-	    };
-	    DomHandler.prototype.matches = function (element, selector) {
-	        var p = Element.prototype;
-	        var f = p['matches'] || p.webkitMatchesSelector || p['mozMatchesSelector'] || p.msMatchesSelector || function (s) {
-	            return [].indexOf.call(document.querySelectorAll(s), this) !== -1;
-	        };
-	        return f.call(element, selector);
-	    };
-	    DomHandler.prototype.getOuterWidth = function (el, margin) {
-	        var width = el.offsetWidth;
-	        if (margin) {
-	            var style = getComputedStyle(el);
-	            width += parseInt(style.paddingLeft) + parseInt(style.paddingRight);
-	        }
-	        return width;
-	    };
-	    DomHandler.prototype.getHorizontalMargin = function (el) {
-	        var style = getComputedStyle(el);
-	        return parseInt(style.marginLeft) + parseInt(style.marginRight);
-	    };
-	    DomHandler.prototype.innerWidth = function (el) {
-	        var width = el.offsetWidth;
-	        var style = getComputedStyle(el);
-	        width += parseInt(style.paddingLeft) + parseInt(style.paddingRight);
-	        return width;
-	    };
-	    DomHandler.prototype.width = function (el) {
-	        var width = el.offsetWidth;
-	        var style = getComputedStyle(el);
-	        width -= parseInt(style.paddingLeft) + parseInt(style.paddingRight);
-	        return width;
-	    };
-	    DomHandler.prototype.getOuterHeight = function (el, margin) {
-	        var height = el.offsetHeight;
-	        if (margin) {
-	            var style = getComputedStyle(el);
-	            height += parseInt(style.marginTop) + parseInt(style.marginBottom);
-	        }
-	        return height;
-	    };
-	    DomHandler.prototype.getHeight = function (el) {
-	        var height = el.offsetHeight;
-	        var style = getComputedStyle(el);
-	        height -= parseInt(style.paddingTop) + parseInt(style.paddingBottom) + parseInt(style.borderTopWidth) + parseInt(style.borderBottomWidth);
-	        return height;
-	    };
-	    DomHandler.prototype.getViewport = function () {
-	        var win = window, d = document, e = d.documentElement, g = d.getElementsByTagName('body')[0], w = win.innerWidth || e.clientWidth || g.clientWidth, h = win.innerHeight || e.clientHeight || g.clientHeight;
-	        return { width: w, height: h };
-	    };
-	    DomHandler.prototype.equals = function (obj1, obj2) {
-	        for (var p in obj1) {
-	            if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) {
-	                return false;
-	            }
-	            switch (typeof (obj1[p])) {
-	                case 'object':
-	                    if (!this.equals(obj1[p], obj2[p]))
-	                        return false;
-	                    break;
-	                case 'function':
-	                    if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString()))
-	                        return false;
-	                    break;
-	                default:
-	                    if (obj1[p] != obj2[p])
-	                        return false;
-	            }
-	        }
-	        for (var p in obj2) {
-	            if (typeof (obj1[p]) == 'undefined')
-	                return false;
-	        }
-	        return true;
-	    };
-	    DomHandler.zindex = 1000;
-	    DomHandler = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [])
-	    ], DomHandler);
-	    return DomHandler;
-	}());
-	exports.DomHandler = DomHandler;
-	
-
-/***/ },
+/* 11 */,
 /* 12 */,
 /* 13 */,
 /* 14 */,
@@ -307,54 +52,10 @@ webpackJsonp([2],[
 /* 32 */,
 /* 33 */,
 /* 34 */,
-/* 35 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var Header = (function () {
-	    function Header() {
-	    }
-	    Header = __decorate([
-	        core_1.Component({
-	            selector: 'header',
-	            template: '<ng-content></ng-content>'
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Header);
-	    return Header;
-	}());
-	exports.Header = Header;
-	var Footer = (function () {
-	    function Footer() {
-	    }
-	    Footer = __decorate([
-	        core_1.Component({
-	            selector: 'footer',
-	            template: '<ng-content></ng-content>'
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Footer);
-	    return Footer;
-	}());
-	exports.Footer = Footer;
-	
-
-/***/ },
+/* 35 */,
 /* 36 */,
 /* 37 */,
-/* 38 */,
-/* 39 */,
-/* 40 */
+/* 38 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -368,7 +69,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(64);
+	var http_1 = __webpack_require__(62);
 	var Observable_1 = __webpack_require__(2);
 	var KnowledgeService = (function () {
 	    function KnowledgeService(_http) {
@@ -449,6 +150,8 @@ webpackJsonp([2],[
 	
 
 /***/ },
+/* 39 */,
+/* 40 */,
 /* 41 */,
 /* 42 */,
 /* 43 */,
@@ -462,9 +165,7 @@ webpackJsonp([2],[
 /* 51 */,
 /* 52 */,
 /* 53 */,
-/* 54 */,
-/* 55 */,
-/* 56 */
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -481,7 +182,7 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 5/19/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(64);
+	var http_1 = __webpack_require__(62);
 	var Observable_1 = __webpack_require__(2);
 	var AuthService = (function () {
 	    function AuthService(_http) {
@@ -550,6 +251,8 @@ webpackJsonp([2],[
 	
 
 /***/ },
+/* 55 */,
+/* 56 */,
 /* 57 */,
 /* 58 */,
 /* 59 */,
@@ -571,9 +274,7 @@ webpackJsonp([2],[
 /* 75 */,
 /* 76 */,
 /* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */
+/* 78 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -587,7 +288,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(64);
+	var http_1 = __webpack_require__(62);
 	var Observable_1 = __webpack_require__(2);
 	var RequestService = (function () {
 	    function RequestService(_http) {
@@ -701,6 +402,8 @@ webpackJsonp([2],[
 	
 
 /***/ },
+/* 79 */,
+/* 80 */,
 /* 81 */,
 /* 82 */,
 /* 83 */,
@@ -739,7 +442,19 @@ webpackJsonp([2],[
 /* 116 */,
 /* 117 */,
 /* 118 */,
-/* 119 */
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */,
+/* 124 */,
+/* 125 */,
+/* 126 */,
+/* 127 */,
+/* 128 */,
+/* 129 */,
+/* 130 */,
+/* 131 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -756,7 +471,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(64);
+	var http_1 = __webpack_require__(62);
 	var Observable_1 = __webpack_require__(2);
 	var UserService = (function () {
 	    function UserService(_http) {
@@ -890,18 +605,6 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 120 */,
-/* 121 */,
-/* 122 */,
-/* 123 */,
-/* 124 */,
-/* 125 */,
-/* 126 */,
-/* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
-/* 131 */,
 /* 132 */,
 /* 133 */,
 /* 134 */,
@@ -910,169 +613,18 @@ webpackJsonp([2],[
 /* 137 */,
 /* 138 */,
 /* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var Button = (function () {
-	    function Button(el, domHandler) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.iconPos = 'left';
-	    }
-	    Button.prototype.ngAfterViewInit = function () {
-	        this.domHandler.addMultipleClasses(this.el.nativeElement, this.getStyleClass());
-	        if (this.icon) {
-	            var iconElement = document.createElement("span");
-	            var iconPosClass = (this.iconPos == 'right') ? 'ui-button-icon-right' : 'ui-button-icon-left';
-	            iconElement.className = iconPosClass + ' ui-c fa fa-fw ' + this.icon;
-	            this.el.nativeElement.appendChild(iconElement);
-	        }
-	        var labelElement = document.createElement("span");
-	        labelElement.className = 'ui-button-text ui-c';
-	        labelElement.appendChild(document.createTextNode(this.label || 'ui-button'));
-	        this.el.nativeElement.appendChild(labelElement);
-	        this.initialized = true;
-	    };
-	    Button.prototype.onMouseenter = function (e) {
-	        this.hover = true;
-	    };
-	    Button.prototype.onMouseleave = function (e) {
-	        this.hover = false;
-	        this.active = false;
-	    };
-	    Button.prototype.onMouseDown = function (e) {
-	        this.active = true;
-	    };
-	    Button.prototype.onMouseUp = function (e) {
-	        this.active = false;
-	    };
-	    Button.prototype.onFocus = function (e) {
-	        this.focus = true;
-	    };
-	    Button.prototype.onBlur = function (e) {
-	        this.focus = false;
-	    };
-	    Button.prototype.isDisabled = function () {
-	        return this.el.nativeElement.disabled;
-	    };
-	    Button.prototype.getStyleClass = function () {
-	        var styleClass = 'ui-button ui-widget ui-state-default ui-corner-all';
-	        if (this.icon) {
-	            if (this.label != null && this.label != undefined) {
-	                if (this.iconPos == 'left')
-	                    styleClass = styleClass + ' ui-button-text-icon-left';
-	                else
-	                    styleClass = styleClass + ' ui-button-text-icon-right';
-	            }
-	            else {
-	                styleClass = styleClass + ' ui-button-icon-only';
-	            }
-	        }
-	        else {
-	            styleClass = styleClass + ' ui-button-text-only';
-	        }
-	        return styleClass;
-	    };
-	    Object.defineProperty(Button.prototype, "label", {
-	        get: function () {
-	            return this._label;
-	        },
-	        set: function (val) {
-	            this._label = val;
-	            if (this.initialized) {
-	                this.domHandler.findSingle(this.el.nativeElement, '.ui-button-text').textContent = this._label;
-	            }
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    Button.prototype.ngOnDestroy = function () {
-	        while (this.el.nativeElement.hasChildNodes()) {
-	            this.el.nativeElement.removeChild(this.el.nativeElement.lastChild);
-	        }
-	        this.initialized = false;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Button.prototype, "icon", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Button.prototype, "iconPos", void 0);
-	    __decorate([
-	        core_1.HostListener('mouseenter', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Button.prototype, "onMouseenter", null);
-	    __decorate([
-	        core_1.HostListener('mouseleave', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Button.prototype, "onMouseleave", null);
-	    __decorate([
-	        core_1.HostListener('mousedown', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Button.prototype, "onMouseDown", null);
-	    __decorate([
-	        core_1.HostListener('mouseup', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Button.prototype, "onMouseUp", null);
-	    __decorate([
-	        core_1.HostListener('focus', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Button.prototype, "onFocus", null);
-	    __decorate([
-	        core_1.HostListener('blur', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Button.prototype, "onBlur", null);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Button.prototype, "label", null);
-	    Button = __decorate([
-	        core_1.Directive({
-	            selector: '[pButton]',
-	            host: {
-	                '[class.ui-state-hover]': 'hover&&!isDisabled()',
-	                '[class.ui-state-focus]': 'focus',
-	                '[class.ui-state-active]': 'active',
-	                '[class.ui-state-disabled]': 'isDisabled()'
-	            },
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
-	    ], Button);
-	    return Button;
-	}());
-	exports.Button = Button;
-	
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	__export(__webpack_require__(986));
+
 
 /***/ },
+/* 141 */,
+/* 142 */,
 /* 143 */,
 /* 144 */,
 /* 145 */,
@@ -1107,9 +659,7 @@ webpackJsonp([2],[
 /* 174 */,
 /* 175 */,
 /* 176 */,
-/* 177 */,
-/* 178 */,
-/* 179 */
+/* 177 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1122,71 +672,38 @@ webpackJsonp([2],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var __param = (this && this.__param) || function (paramIndex, decorator) {
-	    return function (target, key) { decorator(target, key, paramIndex); }
-	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var router_1 = __webpack_require__(7);
-	//services
-	var badword_1 = __webpack_require__(180);
-	var UpdateBadwordComponent = (function () {
-	    function UpdateBadwordComponent(fb, _badwordService, router, route) {
-	        var _this = this;
-	        this._badwordService = _badwordService;
-	        this.router = router;
-	        this.route = route;
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.id = params['id'];
-	        });
-	        this.updateBadwordForm = fb.group({
-	            "word": [""],
-	            "_id": [""],
-	        });
+	var StringFilterPipe = (function () {
+	    function StringFilterPipe() {
 	    }
-	    UpdateBadwordComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this._badwordService.findBadwordById(this.id).subscribe(function (badword) {
-	            _this.badword = badword;
-	            _this.word = badword.word;
-	            _this._id = badword._id;
-	        }, function (error) {
-	            console.log(error.text());
-	        });
+	    StringFilterPipe.prototype.transform = function (value, args) {
+	        if (!args) {
+	            return value;
+	        }
+	        else if (args) {
+	            return value.filter(function (item) {
+	                for (var key in item) {
+	                    if ((typeof item[key] === 'string' || item[key] instanceof String) &&
+	                        (item[key].indexOf(args) > -1) && (key !== "_id")) {
+	                        return true;
+	                    }
+	                }
+	            });
+	        }
 	    };
-	    UpdateBadwordComponent.prototype.updateBadword = function (badword) {
-	        this._badwordService.updateBadword(badword).subscribe(function (badword) {
-	            console.log('update successed');
-	        }, function (error) {
-	            console.log(error.text());
-	        });
-	        window.location.href = 'admin/badwords';
-	    };
-	    UpdateBadwordComponent = __decorate([
-	        core_1.Component({
-	            selector: 'badword-update',
-	            templateUrl: 'client/dev/app/components/back-end/badword/templates/badword-update.html',
-	            styleUrls: ['client/dev/app/components/back-end/badword/styles/badword.css'],
-	            directives: [
-	                common_1.FORM_DIRECTIVES,
-	                router_1.ROUTER_DIRECTIVES
-	            ],
-	            providers: [badword_1.BadwordService]
-	        }),
-	        __param(0, core_1.Inject(common_1.FormBuilder)),
-	        __param(1, core_1.Inject(badword_1.BadwordService)), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof badword_1.BadwordService !== 'undefined' && badword_1.BadwordService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
-	    ], UpdateBadwordComponent);
-	    return UpdateBadwordComponent;
-	    var _a, _b, _c, _d;
+	    StringFilterPipe = __decorate([
+	        core_1.Pipe({
+	            name: 'stringFilter'
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], StringFilterPipe);
+	    return StringFilterPipe;
 	}());
-	exports.UpdateBadwordComponent = UpdateBadwordComponent;
+	exports.StringFilterPipe = StringFilterPipe;
 	
 
 /***/ },
-/* 180 */
+/* 178 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1200,83 +717,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(64);
-	var Observable_1 = __webpack_require__(2);
-	var BadwordService = (function () {
-	    function BadwordService(_http) {
-	        this._http = _http;
-	        this._badwordsUrl = '/api/badwords/:id';
-	    }
-	    BadwordService.prototype.getAllBadwords = function () {
-	        return this._http.get(this._badwordsUrl.replace(':id', ''))
-	            .map(function (r) { return r.json(); })
-	            .do(function (data) { return console.log("All: " + JSON.stringify(data)); })
-	            .catch(this.handleError);
-	    };
-	    BadwordService.prototype.addBadword = function (badword) {
-	        var header = new http_1.Headers;
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _badword = JSON.stringify({
-	            word: badword.word,
-	        });
-	        console.log(_badword);
-	        console.log(header);
-	        return this._http
-	            .post(this._badwordsUrl.replace(':id', ''), _badword, options)
-	            .map(function (r) { return r.json(); });
-	    };
-	    BadwordService.prototype.deleteBadword = function (id) {
-	        return this._http
-	            .delete(this._badwordsUrl.replace(':id', id));
-	    };
-	    BadwordService.prototype.findBadwordById = function (id) {
-	        return this._http
-	            .get(this._badwordsUrl.replace(':id', id))
-	            .map(function (r) { return r.json(); });
-	    };
-	    BadwordService.prototype.updateBadword = function (badword) {
-	        console.log(badword);
-	        var header = new http_1.Headers;
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _badword = JSON.stringify({
-	            word: badword.word,
-	        });
-	        return this._http
-	            .put(this._badwordsUrl.replace(':id', badword._id), _badword, options)
-	            .map(function (r) { return r.json(); });
-	    };
-	    BadwordService.prototype.handleError = function (error) {
-	        console.error(error);
-	        return Observable_1.Observable.throw(error.json().error || 'Server error');
-	    };
-	    BadwordService = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-	    ], BadwordService);
-	    return BadwordService;
-	    var _a;
-	}());
-	exports.BadwordService = BadwordService;
-	
-
-/***/ },
-/* 181 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(64);
+	var http_1 = __webpack_require__(62);
 	var Observable_1 = __webpack_require__(2);
 	var KSpaceService = (function () {
 	    function KSpaceService(_http) {
@@ -1322,7 +763,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 182 */
+/* 179 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1331,7 +772,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(19);
+	var Subject_1 = __webpack_require__(17);
 	/**
 	 * @class AsyncSubject<T>
 	 */
@@ -1380,15 +821,15 @@ webpackJsonp([2],[
 	//# sourceMappingURL=AsyncSubject.js.map
 
 /***/ },
+/* 180 */,
+/* 181 */,
+/* 182 */,
 /* 183 */,
 /* 184 */,
 /* 185 */,
 /* 186 */,
 /* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */
+/* 188 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1419,7 +860,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=EmptyError.js.map
 
 /***/ },
-/* 192 */
+/* 189 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -1430,6 +871,9 @@ webpackJsonp([2],[
 	//# sourceMappingURL=isDate.js.map
 
 /***/ },
+/* 190 */,
+/* 191 */,
+/* 192 */,
 /* 193 */,
 /* 194 */,
 /* 195 */,
@@ -1443,219 +887,8 @@ webpackJsonp([2],[
 /* 203 */,
 /* 204 */,
 /* 205 */,
-/* 206 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var InputText = (function () {
-	    function InputText(el) {
-	        this.el = el;
-	    }
-	    InputText.prototype.onMouseover = function (e) {
-	        this.hover = true;
-	    };
-	    InputText.prototype.onMouseout = function (e) {
-	        this.hover = false;
-	    };
-	    InputText.prototype.onFocus = function (e) {
-	        this.focus = true;
-	    };
-	    InputText.prototype.onBlur = function (e) {
-	        this.focus = false;
-	    };
-	    InputText.prototype.isDisabled = function () {
-	        return this.el.nativeElement.disabled;
-	    };
-	    __decorate([
-	        core_1.HostListener('mouseover', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], InputText.prototype, "onMouseover", null);
-	    __decorate([
-	        core_1.HostListener('mouseout', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], InputText.prototype, "onMouseout", null);
-	    __decorate([
-	        core_1.HostListener('focus', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], InputText.prototype, "onFocus", null);
-	    __decorate([
-	        core_1.HostListener('blur', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], InputText.prototype, "onBlur", null);
-	    InputText = __decorate([
-	        core_1.Directive({
-	            selector: '[pInputText]',
-	            host: {
-	                '[class.ui-inputtext]': 'true',
-	                '[class.ui-corner-all]': 'true',
-	                '[class.ui-state-default]': 'true',
-	                '[class.ui-widget]': 'true',
-	                '[class.ui-state-hover]': 'hover',
-	                '[class.ui-state-focus]': 'focus',
-	                '[class.ui-state-disabled]': 'isDisabled()'
-	            }
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef])
-	    ], InputText);
-	    return InputText;
-	}());
-	exports.InputText = InputText;
-	
-
-/***/ },
-/* 207 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var Paginator = (function () {
-	    function Paginator() {
-	        this.rows = 0;
-	        this.first = 0;
-	        this.pageLinkSize = 5;
-	        this.onPageChange = new core_1.EventEmitter();
-	        this._totalRecords = 0;
-	    }
-	    Object.defineProperty(Paginator.prototype, "totalRecords", {
-	        get: function () {
-	            return this._totalRecords;
-	        },
-	        set: function (val) {
-	            this._totalRecords = val;
-	            this.updatePageLinks();
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    Paginator.prototype.isFirstPage = function () {
-	        return this.getPage() === 0;
-	    };
-	    Paginator.prototype.isLastPage = function () {
-	        return this.getPage() === this.getPageCount() - 1;
-	    };
-	    Paginator.prototype.getPageCount = function () {
-	        return Math.ceil(this.totalRecords / this.rows) || 1;
-	    };
-	    Paginator.prototype.calculatePageLinkBoundaries = function () {
-	        var numberOfPages = this.getPageCount(), visiblePages = Math.min(this.pageLinkSize, numberOfPages);
-	        //calculate range, keep current in middle if necessary
-	        var start = Math.max(0, Math.ceil(this.getPage() - ((visiblePages) / 2))), end = Math.min(numberOfPages - 1, start + visiblePages - 1);
-	        //check when approaching to last page
-	        var delta = this.pageLinkSize - (end - start + 1);
-	        start = Math.max(0, start - delta);
-	        return [start, end];
-	    };
-	    Paginator.prototype.updatePageLinks = function () {
-	        this.pageLinks = [];
-	        var boundaries = this.calculatePageLinkBoundaries(), start = boundaries[0], end = boundaries[1];
-	        for (var i = start; i <= end; i++) {
-	            this.pageLinks.push(i + 1);
-	        }
-	    };
-	    Paginator.prototype.changePage = function (p) {
-	        var pc = this.getPageCount();
-	        if (p >= 0 && p < pc) {
-	            this.first = this.rows * p;
-	            var state = {
-	                first: this.first,
-	                rows: this.rows,
-	                pageCount: pc
-	            };
-	            this.updatePageLinks();
-	            this.onPageChange.emit(state);
-	        }
-	    };
-	    Paginator.prototype.getPage = function () {
-	        return Math.floor(this.first / this.rows);
-	    };
-	    Paginator.prototype.changePageToFirst = function () {
-	        this.changePage(0);
-	    };
-	    Paginator.prototype.changePageToPrev = function () {
-	        this.changePage(this.getPage() - 1);
-	    };
-	    Paginator.prototype.changePageToNext = function () {
-	        this.changePage(this.getPage() + 1);
-	    };
-	    Paginator.prototype.changePageToLast = function () {
-	        this.changePage(this.getPageCount() - 1);
-	    };
-	    Paginator.prototype.onRppChange = function (event) {
-	        this.rows = this.rowsPerPageOptions[event.target.selectedIndex];
-	        this.changePageToFirst();
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Paginator.prototype, "rows", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Paginator.prototype, "first", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Paginator.prototype, "pageLinkSize", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Paginator.prototype, "onPageChange", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Paginator.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Paginator.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Paginator.prototype, "rowsPerPageOptions", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Paginator.prototype, "totalRecords", null);
-	    Paginator = __decorate([
-	        core_1.Component({
-	            selector: 'p-paginator',
-	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"{'ui-paginator ui-widget-header ui-unselectable-text':true}\">\n            <span #firstlink class=\"ui-paginator-first ui-paginator-element ui-state-default ui-corner-all\" (mouseenter)=\"hoveredItem = $event.target\" (mouseleave)=\"hoveredItem = null\"\n                        (click)=\"changePageToFirst()\" [ngClass]=\"{'ui-state-disabled':isFirstPage(),'ui-state-hover':(firstlink === hoveredItem && !isFirstPage())}\">\n                <span class=\"fa fa-step-backward\"></span>\n            </span>\n            <span #prevlink class=\"ui-paginator-prev ui-paginator-element ui-state-default ui-corner-all\" (mouseenter)=\"hoveredItem = $event.target\" (mouseleave)=\"hoveredItem = null\"\n                    (click)=\"changePageToPrev()\" [ngClass]=\"{'ui-state-disabled':isFirstPage(),'ui-state-hover':(prevlink === hoveredItem && !isFirstPage())}\">\n                <span class=\"fa fa-backward\"></span>\n            </span>\n            <span class=\"ui-paginator-pages\">\n                <span #plink *ngFor=\"let pageLink of pageLinks\" class=\"ui-paginator-page ui-paginator-element ui-state-default ui-corner-all\"\n                    (mouseenter)=\"hoveredItem = $event.target\" (mouseleave)=\"hoveredItem = null\" (click)=\"changePage(pageLink - 1)\"\n                    [ngClass]=\"{'ui-state-hover':(plink === hoveredItem), 'ui-state-active': (pageLink-1 == getPage())}\">{{pageLink}}</span>\n            </span>\n            <span #nextlink class=\"ui-paginator-next ui-paginator-element ui-state-default ui-corner-all\" (mouseenter)=\"hoveredItem = $event.target\" (mouseleave)=\"hoveredItem = null\"\n                    (click)=\"changePageToNext()\" [ngClass]=\"{'ui-state-disabled':isLastPage(),'ui-state-hover':(nextlink === hoveredItem  && !isLastPage())}\">\n                <span class=\"fa fa-forward\"></span>\n            </span>\n            <span #lastlink class=\"ui-paginator-last ui-paginator-element ui-state-default ui-corner-all\" (mouseenter)=\"hoveredItem = $event.target\" (mouseleave)=\"hoveredItem = null\"\n                    (click)=\"changePageToLast()\" [ngClass]=\"{'ui-state-disabled':isLastPage(),'ui-state-hover':(lastlink === hoveredItem  && !isLastPage())}\">\n                <span class=\"fa fa-step-forward\"></span>\n            </span>\n            <select class=\"ui-paginator-rpp-options ui-widget ui-state-default\" *ngIf=\"rowsPerPageOptions\" (change)=\"onRppChange($event)\">\n                <option *ngFor=\"let opt of rowsPerPageOptions\" [value]=\"opt\" [selected]=\"rows == opt\">{{opt}}</option>\n            </select>\n        </div>\n    "
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Paginator);
-	    return Paginator;
-	}());
-	exports.Paginator = Paginator;
-	
-
-/***/ },
+/* 206 */,
+/* 207 */,
 /* 208 */,
 /* 209 */,
 /* 210 */,
@@ -1720,13 +953,7 @@ webpackJsonp([2],[
 /* 269 */,
 /* 270 */,
 /* 271 */,
-/* 272 */,
-/* 273 */,
-/* 274 */,
-/* 275 */,
-/* 276 */,
-/* 277 */,
-/* 278 */
+/* 272 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1743,9 +970,85 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var knowledge_1 = __webpack_require__(40);
-	var router_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(8);
+	var common_1 = __webpack_require__(18);
+	var router_1 = __webpack_require__(9);
+	//services
+	var badword_1 = __webpack_require__(419);
+	var UpdateBadwordComponent = (function () {
+	    function UpdateBadwordComponent(fb, _badwordService, router, route) {
+	        var _this = this;
+	        this._badwordService = _badwordService;
+	        this.router = router;
+	        this.route = route;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	        });
+	        this.updateBadwordForm = fb.group({
+	            "word": [""],
+	            "_id": [""],
+	        });
+	    }
+	    UpdateBadwordComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._badwordService.findBadwordById(this.id).subscribe(function (badword) {
+	            _this.badword = badword;
+	            _this.word = badword.word;
+	            _this._id = badword._id;
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	    };
+	    UpdateBadwordComponent.prototype.updateBadword = function (badword) {
+	        this._badwordService.updateBadword(badword).subscribe(function (badword) {
+	            console.log('update successed');
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	        this.router.navigateByUrl('admin/badwords');
+	    };
+	    UpdateBadwordComponent = __decorate([
+	        core_1.Component({
+	            selector: 'badword-update',
+	            templateUrl: 'client/dev/app/components/back-end/badword/templates/badword-update.html',
+	            directives: [
+	                common_1.FORM_DIRECTIVES,
+	                router_1.ROUTER_DIRECTIVES
+	            ],
+	            providers: [badword_1.BadwordService]
+	        }),
+	        __param(0, core_1.Inject(common_1.FormBuilder)),
+	        __param(1, core_1.Inject(badword_1.BadwordService)), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof badword_1.BadwordService !== 'undefined' && badword_1.BadwordService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
+	    ], UpdateBadwordComponent);
+	    return UpdateBadwordComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.UpdateBadwordComponent = UpdateBadwordComponent;
+	
+
+/***/ },
+/* 273 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var __param = (this && this.__param) || function (paramIndex, decorator) {
+	    return function (target, key) { decorator(target, key, paramIndex); }
+	};
+	var core_1 = __webpack_require__(1);
+	var knowledge_1 = __webpack_require__(38);
+	var router_1 = __webpack_require__(9);
+	var common_1 = __webpack_require__(18);
 	var UpdateKnowledgeComponent = (function () {
 	    function UpdateKnowledgeComponent(fb, _knowledgeService, router, route) {
 	        var _this = this;
@@ -1780,13 +1083,12 @@ webpackJsonp([2],[
 	        }, function (error) {
 	            console.log(error.text());
 	        });
-	        window.location.href = 'admin/knowledges';
+	        this.router.navigateByUrl('admin/knowledges');
 	    };
 	    UpdateKnowledgeComponent = __decorate([
 	        core_1.Component({
 	            selector: 'knowledge-update',
 	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-update.html',
-	            styleUrls: ['client/dev/app/components/back-end/knowledge/styles/knowledge.css'],
 	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
 	            providers: [knowledge_1.KnowledgeService]
 	        }),
@@ -1801,7 +1103,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 279 */
+/* 274 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1818,10 +1120,10 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var requests_1 = __webpack_require__(80);
-	var knowledge_1 = __webpack_require__(40);
-	var router_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(8);
+	var requests_1 = __webpack_require__(78);
+	var knowledge_1 = __webpack_require__(38);
+	var router_1 = __webpack_require__(9);
+	var common_1 = __webpack_require__(18);
 	var UpdateRequestComponent = (function () {
 	    function UpdateRequestComponent(fb, _requestService, router, route, _knowledgeService) {
 	        var _this = this;
@@ -1869,7 +1171,6 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'request-update-cli',
 	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-update.html',
-	            styleUrls: ['client/dev/asserts/css/backend-styles.css'],
 	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
 	        }),
 	        __param(0, core_1.Inject(common_1.FormBuilder)),
@@ -1884,7 +1185,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 280 */
+/* 275 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1898,8 +1199,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var requests_1 = __webpack_require__(80);
+	var router_1 = __webpack_require__(9);
+	var requests_1 = __webpack_require__(78);
 	var RequestCategoryComponent = (function () {
 	    function RequestCategoryComponent(_requestService, router, route) {
 	        var _this = this;
@@ -1990,7 +1291,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 281 */
+/* 276 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2183,7 +1484,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 282 */
+/* 277 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2197,7 +1498,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(64);
+	var http_1 = __webpack_require__(62);
 	var Observable_1 = __webpack_require__(2);
 	var OfferService = (function () {
 	    function OfferService(_http) {
@@ -2240,9 +1541,9 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 283 */,
-/* 284 */,
-/* 285 */
+/* 278 */,
+/* 279 */,
+/* 280 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2251,11 +1552,11 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var ArrayObservable_1 = __webpack_require__(81);
-	var isArray_1 = __webpack_require__(84);
-	var isScheduler_1 = __webpack_require__(97);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var ArrayObservable_1 = __webpack_require__(79);
+	var isArray_1 = __webpack_require__(82);
+	var isScheduler_1 = __webpack_require__(95);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Combines multiple Observables to create an Observable whose values are
 	 * calculated from the latest values of each of its input Observables.
@@ -2432,13 +1733,13 @@ webpackJsonp([2],[
 	//# sourceMappingURL=combineLatest.js.map
 
 /***/ },
-/* 286 */
+/* 281 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var isScheduler_1 = __webpack_require__(97);
-	var ArrayObservable_1 = __webpack_require__(81);
-	var mergeAll_1 = __webpack_require__(187);
+	var isScheduler_1 = __webpack_require__(95);
+	var ArrayObservable_1 = __webpack_require__(79);
+	var mergeAll_1 = __webpack_require__(184);
 	/**
 	 * Creates an output Observable which sequentially emits all values from every
 	 * given input Observable after the current Observable.
@@ -2545,8 +1846,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=concat.js.map
 
 /***/ },
-/* 287 */,
-/* 288 */
+/* 282 */,
+/* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2555,12 +1856,12 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var ArrayObservable_1 = __webpack_require__(81);
-	var isArray_1 = __webpack_require__(84);
+	var ArrayObservable_1 = __webpack_require__(79);
+	var isArray_1 = __webpack_require__(82);
 	var Subscriber_1 = __webpack_require__(6);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
-	var iterator_1 = __webpack_require__(135);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
+	var iterator_1 = __webpack_require__(132);
 	/**
 	 * @param observables
 	 * @return {Observable<R>}
@@ -2805,14 +2106,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=zip.js.map
 
 /***/ },
-/* 289 */,
-/* 290 */,
-/* 291 */,
-/* 292 */
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var isArray_1 = __webpack_require__(84);
+	var isArray_1 = __webpack_require__(82);
 	function isNumeric(val) {
 	    // parseFloat NaNs numeric-cast false positives (null|true|false|"")
 	    // ...but misinterprets leading-number strings, particularly hex literals ("0x...")
@@ -2825,6 +2126,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=isNumeric.js.map
 
 /***/ },
+/* 288 */,
+/* 289 */,
+/* 290 */,
+/* 291 */,
+/* 292 */,
 /* 293 */,
 /* 294 */,
 /* 295 */,
@@ -2841,12 +2147,7 @@ webpackJsonp([2],[
 /* 306 */,
 /* 307 */,
 /* 308 */,
-/* 309 */,
-/* 310 */,
-/* 311 */,
-/* 312 */,
-/* 313 */,
-/* 314 */
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2959,97 +2260,12 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 315 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var Column = (function () {
-	    function Column() {
-	        this.sortFunction = new core_1.EventEmitter();
-	    }
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Column.prototype, "field", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Column.prototype, "header", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Column.prototype, "footer", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Column.prototype, "sortable", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Column.prototype, "editable", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Column.prototype, "filter", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Column.prototype, "filterMatchMode", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Column.prototype, "rowspan", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Column.prototype, "colspan", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Column.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Column.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Column.prototype, "hidden", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Column.prototype, "expander", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Column.prototype, "sortFunction", void 0);
-	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef), 
-	        __metadata('design:type', core_1.TemplateRef)
-	    ], Column.prototype, "template", void 0);
-	    Column = __decorate([
-	        core_1.Component({
-	            selector: 'p-column',
-	            template: ""
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Column);
-	    return Column;
-	}());
-	exports.Column = Column;
-	
-
-/***/ },
+/* 310 */,
+/* 311 */,
+/* 312 */,
+/* 313 */,
+/* 314 */,
+/* 315 */,
 /* 316 */,
 /* 317 */,
 /* 318 */,
@@ -3139,13 +2355,7 @@ webpackJsonp([2],[
 /* 402 */,
 /* 403 */,
 /* 404 */,
-/* 405 */,
-/* 406 */,
-/* 407 */,
-/* 408 */,
-/* 409 */,
-/* 410 */,
-/* 411 */
+/* 405 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3159,39 +2369,86 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var nav_bar_1 = __webpack_require__(415);
-	var side_bar_1 = __webpack_require__(416);
-	var badwords_list_1 = __webpack_require__(617);
-	var badword_create_1 = __webpack_require__(616);
-	var badword_update_1 = __webpack_require__(179);
-	var badword_1 = __webpack_require__(180);
-	var BadwordComponent = (function () {
-	    function BadwordComponent() {
+	var router_1 = __webpack_require__(9);
+	var common_1 = __webpack_require__(18);
+	var badword_1 = __webpack_require__(419);
+	var badword_update_1 = __webpack_require__(272);
+	var ng2_pagination_1 = __webpack_require__(140);
+	var filter_1 = __webpack_require__(177);
+	var BadwordListComponent = (function () {
+	    function BadwordListComponent(fb, badwordService, router) {
+	        this.badwordService = badwordService;
+	        this.router = router;
+	        this.pageTitle = 'Badword List';
+	        this.filter = '';
+	        this.maxSize = 7;
+	        this.directionLinks = true;
+	        this.autoHide = false;
+	        this.config = {
+	            id: 'advanced',
+	            itemsPerPage: 10,
+	            currentPage: 1
+	        };
+	        this.badwordForm = fb.group({
+	            "word": [""],
+	        });
 	    }
-	    BadwordComponent = __decorate([
+	    BadwordListComponent.prototype.ngOnInit = function () {
+	        this.getAll();
+	    };
+	    BadwordListComponent.prototype.getAll = function () {
+	        var _this = this;
+	        this.badwordService
+	            .getAllBadwords()
+	            .subscribe(function (badwords) {
+	            _this.badwords = badwords;
+	        });
+	    };
+	    BadwordListComponent.prototype.deleteBadword = function (id) {
+	        var _this = this;
+	        this.badwordService
+	            .deleteBadword(id)
+	            .subscribe(function () {
+	            _this.badwords.forEach(function (t, i) {
+	                if (t._id === id)
+	                    return _this.badwords.splice(i, 1);
+	            });
+	        });
+	    };
+	    BadwordListComponent.prototype.findBadwordById = function (id) {
+	        this.badwordService
+	            .findBadwordById(id)
+	            .subscribe(function (badwords) {
+	            return badwords;
+	        });
+	    };
+	    BadwordListComponent.prototype.addBadword = function (word) {
+	        var _this = this;
+	        this.badwordService
+	            .addBadword(word)
+	            .subscribe(function (word) {
+	            _this.badwords.push(word);
+	            _this.badwordForm.controls["word"].updateValue("");
+	        });
+	    };
+	    BadwordListComponent = __decorate([
 	        core_1.Component({
-	            selector: 'badword-mgn',
-	            templateUrl: 'client/dev/app/components/back-end/badword/templates/badword.html',
-	            directives: [
-	                badwords_list_1.BadwordListComponent,
-	                badword_update_1.UpdateBadwordComponent,
-	                badword_create_1.CreateBadwordComponent,
-	                nav_bar_1.NavbarComponent,
-	                side_bar_1.SidebarComponent,
-	                router_1.ROUTER_DIRECTIVES
-	            ],
-	            providers: [badword_1.BadwordService],
+	            selector: 'badword-list',
+	            templateUrl: 'client/dev/app/components/back-end/badword/templates/badword-list.html',
+	            directives: [ng2_pagination_1.PaginationControlsCmp, badword_update_1.UpdateBadwordComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES],
+	            providers: [badword_1.BadwordService, ng2_pagination_1.PaginationService],
+	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
 	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], BadwordComponent);
-	    return BadwordComponent;
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof badword_1.BadwordService !== 'undefined' && badword_1.BadwordService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
+	    ], BadwordListComponent);
+	    return BadwordListComponent;
+	    var _a, _b, _c;
 	}());
-	exports.BadwordComponent = BadwordComponent;
+	exports.BadwordListComponent = BadwordListComponent;
 	
 
 /***/ },
-/* 412 */
+/* 406 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3205,55 +2462,94 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var knowledge_1 = __webpack_require__(40);
-	var knowledge_update_1 = __webpack_require__(278);
-	var sub_knowledge_create_1 = __webpack_require__(619);
-	var knowledge_create_1 = __webpack_require__(618);
+	var router_1 = __webpack_require__(9);
+	var common_1 = __webpack_require__(18);
+	var knowledge_1 = __webpack_require__(38);
+	var knowledge_update_1 = __webpack_require__(273);
+	var sub_knowledge_create_1 = __webpack_require__(601);
+	var ng2_pagination_1 = __webpack_require__(140);
+	var filter_1 = __webpack_require__(177);
 	var KnowledgeListComponent = (function () {
-	    function KnowledgeListComponent(_knowledgeService) {
+	    function KnowledgeListComponent(fb, _knowledgeService) {
 	        this._knowledgeService = _knowledgeService;
 	        this.pageTitle = 'Knowledge List';
+	        this.knowledgeForm = fb.group({
+	            "name": [""],
+	            "description": [""],
+	        });
+	        this.subCategoryForm = fb.group({
+	            "name": [""],
+	            "description": [""],
+	            "parent": [""]
+	        });
 	    }
 	    KnowledgeListComponent.prototype.ngOnInit = function () {
 	        var _this = this;
 	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            console.log(knowledges);
+	            /*this.knowledges = this._knowledgeService.getChildFromParent(knowledges);*/
 	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
-	            console.log(_this.knowledges);
 	        });
 	    };
 	    KnowledgeListComponent.prototype.deleteKnowledge = function (id) {
+	        var _this = this;
 	        this._knowledgeService
 	            .deleteKnowledge(id)
 	            .subscribe(function () {
-	            window.location.reload();
+	            _this.knowledges.forEach(function (t, i) {
+	                if (t._id === id)
+	                    return _this.knowledges.splice(i, 1);
+	            });
+	        });
+	    };
+	    KnowledgeListComponent.prototype.addKnowledge = function (knowledge) {
+	        var _this = this;
+	        this._knowledgeService
+	            .addKnowledge(knowledge)
+	            .subscribe(function (m) {
+	            _this.knowledges.push(m);
+	            _this.knowledgeForm.controls["name"].updateValue("");
+	            _this.knowledgeForm.controls["description"].updateValue("");
+	        });
+	    };
+	    KnowledgeListComponent.prototype.addSubKnowledge = function (knowledge) {
+	        var _this = this;
+	        this._knowledgeService
+	            .addKnowledge(knowledge)
+	            .subscribe(function (m) {
+	            _this.subCategoryForm.controls["name"].updateValue("");
+	            _this.subCategoryForm.controls["description"].updateValue("");
+	            for (var i = 0; i < _this.knowledges.length; i++) {
+	                if (_this.knowledges[i]._id === m.parent) {
+	                    console.log(_this.knowledges[i]._id);
+	                    var a = [];
+	                    a.push(m);
+	                    _this.knowledges[i]["subCategory"] = a;
+	                }
+	            }
 	        });
 	    };
 	    KnowledgeListComponent = __decorate([
 	        core_1.Component({
 	            selector: 'knowledge-list',
 	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-list.html',
-	            styleUrls: [
-	                'client/dev/app/components/back-end/knowledge/styles/knowledge.css',
-	                'client/dev/asserts/css/backend-styles.css'
-	            ],
 	            directives: [
 	                knowledge_update_1.UpdateKnowledgeComponent,
 	                sub_knowledge_create_1.CreateSubCategoryComponent,
-	                knowledge_create_1.CreateKnowledgeComponent,
-	                router_1.ROUTER_DIRECTIVES
-	            ]
+	                router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp],
+	            providers: [knowledge_1.KnowledgeService, ng2_pagination_1.PaginationService],
+	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _a) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object])
 	    ], KnowledgeListComponent);
 	    return KnowledgeListComponent;
-	    var _a;
+	    var _a, _b;
 	}());
 	exports.KnowledgeListComponent = KnowledgeListComponent;
 	
 
 /***/ },
-/* 413 */
+/* 407 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3270,15 +2566,22 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var knowledge_1 = __webpack_require__(40);
-	var requests_1 = __webpack_require__(80);
-	var auth_1 = __webpack_require__(56);
-	var CreateRequestComponent = (function () {
-	    function CreateRequestComponent(fb, _requestService, _knowledgeService, _authService) {
+	var router_1 = __webpack_require__(9);
+	var common_1 = __webpack_require__(18);
+	var knowledge_1 = __webpack_require__(38);
+	var requests_1 = __webpack_require__(78);
+	var auth_1 = __webpack_require__(54);
+	var request_update_1 = __webpack_require__(274);
+	var ng2_pagination_1 = __webpack_require__(140);
+	var filter_1 = __webpack_require__(177);
+	var RequestListComponent = (function () {
+	    function RequestListComponent(fb, _requestService, _knowledgeService, _authService) {
+	        var _this = this;
 	        this._requestService = _requestService;
 	        this._knowledgeService = _knowledgeService;
 	        this._authService = _authService;
+	        this.pageTitle = 'Request List';
+	        this.filter = '';
 	        this.user = localStorage.getItem('username');
 	        this.roleToken = localStorage.getItem('userrole');
 	        this.requestForm = fb.group({
@@ -3287,68 +2590,21 @@ webpackJsonp([2],[
 	            "description": [""],
 	            "user": [""]
 	        });
-	    }
-	    CreateRequestComponent.prototype.ngOnInit = function () {
-	        var _this = this;
 	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
 	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
 	        });
-	    };
-	    CreateRequestComponent.prototype.addRequest = function (request) {
-	        console.log(request);
+	    }
+	    RequestListComponent.prototype.addRequest = function (request) {
+	        var _this = this;
 	        this._requestService.addRequest(request).subscribe(function (request) {
-	            console.log('success');
+	            _this.requests.push(request);
+	            _this.requestForm.controls["title"].updateValue("");
+	            _this.requestForm.controls["description"].updateValue("");
+	            _this.requestForm.controls["knowledgeId"].updateValue("");
 	        }, function (error) {
 	            console.log(error.text());
 	        });
-	        console.log(request);
-	        window.location.reload();
 	    };
-	    CreateRequestComponent = __decorate([
-	        core_1.Component({
-	            selector: 'request-create',
-	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-create.html',
-	            styleUrls: ['client/dev/app/components/back-end/request/templates/request.css'],
-	            directives: [common_1.FORM_DIRECTIVES]
-	        }),
-	        __param(0, core_1.Inject(common_1.FormBuilder)),
-	        __param(1, core_1.Inject(requests_1.RequestService)), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
-	    ], CreateRequestComponent);
-	    return CreateRequestComponent;
-	    var _a, _b, _c, _d;
-	}());
-	exports.CreateRequestComponent = CreateRequestComponent;
-	
-
-/***/ },
-/* 414 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var requests_1 = __webpack_require__(80);
-	var auth_1 = __webpack_require__(56);
-	var request_create_1 = __webpack_require__(413);
-	var offer_create_1 = __webpack_require__(422);
-	var request_update_1 = __webpack_require__(279);
-	var RequestListComponent = (function () {
-	    function RequestListComponent(_requestService, _auth, router) {
-	        this._requestService = _requestService;
-	        this._auth = _auth;
-	        this.router = router;
-	        this.pageTitle = 'Request List';
-	    }
 	    RequestListComponent.prototype.ngOnInit = function () {
 	        var _this = this;
 	        this._requestService.getAllRequests().subscribe(function (requests) {
@@ -3368,58 +2624,37 @@ webpackJsonp([2],[
 	            _this.requests = requests;
 	        });
 	    };
-	    RequestListComponent.prototype.deleteRequest = function (request) {
+	    RequestListComponent.prototype.deleteRequest = function (id) {
 	        var _this = this;
-	        console.log(request);
 	        this._requestService
-	            .deleteRequest(request)
+	            .deleteRequest(id)
 	            .subscribe(function () {
-	            console.log("delete successful");
-	        });
-	        //refresh page
-	        this._requestService.getAllRequests().subscribe(function (requests) {
-	            var formatDate = function (date) {
-	                if (date) {
-	                    var newDate, day, month, year;
-	                    year = date.substr(0, 4);
-	                    month = date.substr(5, 2);
-	                    day = date.substr(8, 2);
-	                    return newDate = day + '/' + month + '/' + year;
-	                }
-	            };
-	            for (var i = 0; i < requests.length; i++) {
-	                requests[i].createdAt = formatDate(requests[i].createdAt);
-	                requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
-	            }
-	            _this.requests = requests;
+	            _this.requests.forEach(function (t, i) {
+	                if (t._id === id)
+	                    return _this.requests.splice(i, 1);
+	            });
 	        });
 	    };
 	    RequestListComponent = __decorate([
 	        core_1.Component({
 	            selector: 'request-list',
 	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-	            styleUrls: [
-	                'client/dev/asserts/css/backend-styles.css',
-	                'client/dev/app/components/back-end/request/templates/request.css'
-	            ],
-	            directives: [
-	                offer_create_1.CreateOfferComponent,
-	                request_update_1.UpdateRequestComponent,
-	                request_create_1.CreateRequestComponent,
-	                offer_create_1.CreateOfferComponent,
-	                router_1.ROUTER_DIRECTIVES
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
+	            directives: [request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES],
+	            providers: [requests_1.RequestService, ng2_pagination_1.PaginationService],
+	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
+	        }),
+	        __param(0, core_1.Inject(common_1.FormBuilder)),
+	        __param(1, core_1.Inject(requests_1.RequestService)), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
 	    ], RequestListComponent);
 	    return RequestListComponent;
-	    var _a, _b, _c;
+	    var _a, _b, _c, _d;
 	}());
 	exports.RequestListComponent = RequestListComponent;
 	
 
 /***/ },
-/* 415 */
+/* 408 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3432,101 +2667,37 @@ webpackJsonp([2],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var core_1 = __webpack_require__(1);
-	var auth_1 = __webpack_require__(56);
-	var router_1 = __webpack_require__(7);
-	var NavbarComponent = (function () {
-	    function NavbarComponent(_auth, router) {
-	        this._auth = _auth;
-	        this.router = router;
-	    }
-	    NavbarComponent.prototype.logout = function () {
-	        this._auth.logout();
-	        this._auth.logoutClient();
-	        this.router.navigateByUrl('/kshare');
-	    };
-	    NavbarComponent = __decorate([
-	        core_1.Component({
-	            selector: 'nav-bar',
-	            templateUrl: 'client/dev/app/components/back-end/shared/templates/nav-bar.html',
-	            styleUrls: ['client/dev/asserts/css/backend-styles.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
-	    ], NavbarComponent);
-	    return NavbarComponent;
-	    var _a, _b;
-	}());
-	exports.NavbarComponent = NavbarComponent;
-	
-
-/***/ },
-/* 416 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	var __param = (this && this.__param) || function (paramIndex, decorator) {
+	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var core_2 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var SidebarComponent = (function () {
-	    function SidebarComponent() {
-	    }
-	    __decorate([
-	        core_2.Input(), 
-	        __metadata('design:type', String)
-	    ], SidebarComponent.prototype, "pageTitle", void 0);
-	    SidebarComponent = __decorate([
-	        core_1.Component({
-	            selector: 'sidebar',
-	            templateUrl: 'client/dev/app/components/back-end/shared/templates/side-bar.html',
-	            styleUrls: ['client/dev/asserts/css/backend-styles.css'],
-	            directives: [router_1.ROUTER_DIRECTIVES]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], SidebarComponent);
-	    return SidebarComponent;
-	}());
-	exports.SidebarComponent = SidebarComponent;
-	
-
-/***/ },
-/* 417 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var primeng_1 = __webpack_require__(499);
-	var users_1 = __webpack_require__(119);
-	var auth_1 = __webpack_require__(56);
-	var user_create_1 = __webpack_require__(620);
+	var router_1 = __webpack_require__(9);
+	var common_1 = __webpack_require__(18);
+	var users_1 = __webpack_require__(131);
+	var auth_1 = __webpack_require__(54);
+	var ng2_pagination_1 = __webpack_require__(140);
+	var filter_1 = __webpack_require__(177);
 	var UserListComponent = (function () {
-	    function UserListComponent(_userService, _auth, router) {
+	    function UserListComponent(fb, _userService, _auth, router) {
 	        this._userService = _userService;
 	        this._auth = _auth;
 	        this.router = router;
-	        this.pageTitle = 'user';
+	        this.pageTitle = 'users';
+	        this.filter = '';
 	        this.numOfUser = 0;
+	        this.userForm = fb.group({
+	            firstName: [""],
+	            lastName: [""],
+	            displayName: [""],
+	            birthday: [""],
+	            username: ["", common_1.Validators.required],
+	            password: ["", common_1.Validators.required],
+	            email: ["", common_1.Validators.required],
+	            role: ["", common_1.Validators.required],
+	            ownKnowledgeId: [""],
+	            interestedKnowledgeId: [""],
+	            onlineTime: [""]
+	        });
 	    }
 	    UserListComponent.prototype.ngOnInit = function () {
 	        var _this = this;
@@ -3553,33 +2724,21 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'user-list',
 	            templateUrl: 'client/dev/app/components/back-end/users/templates/user-list.html',
-	            styleUrls: [
-	                'client/dev/asserts/css/backend-styles.css',
-	                'client/dev/app/components/back-end/users/styles/user.css'
-	            ],
-	            directives: [
-	                user_create_1.CreateUserComponent,
-	                primeng_1.DataTable,
-	                primeng_1.Column,
-	                primeng_1.Header,
-	                primeng_1.Footer,
-	                primeng_1.MultiSelect,
-	                router_1.ROUTER_DIRECTIVES
-	            ],
-	            providers: [
-	                user_create_1.CreateUserComponent
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
+	            directives: [router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES],
+	            providers: [users_1.UserService, ng2_pagination_1.PaginationService],
+	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
+	        }),
+	        __param(0, core_1.Inject(common_1.FormBuilder)), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
 	    ], UserListComponent);
 	    return UserListComponent;
-	    var _a, _b, _c;
+	    var _a, _b, _c, _d;
 	}());
 	exports.UserListComponent = UserListComponent;
 	
 
 /***/ },
-/* 418 */
+/* 409 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3596,7 +2755,7 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 5/18/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(9);
 	var HomeComponent = (function () {
 	    function HomeComponent() {
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
@@ -3620,7 +2779,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 419 */
+/* 410 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3637,7 +2796,7 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 7/9/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(9);
 	var KSpaceInfoComponent = (function () {
 	    function KSpaceInfoComponent(router, route) {
 	        var _this = this;
@@ -3671,7 +2830,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 420 */
+/* 411 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3688,8 +2847,8 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 7/9/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(181);
-	var router_1 = __webpack_require__(7);
+	var kspace_1 = __webpack_require__(178);
+	var router_1 = __webpack_require__(9);
 	var KSpaceListComponent = (function () {
 	    function KSpaceListComponent(_kspaceService, router) {
 	        this._kspaceService = _kspaceService;
@@ -3728,7 +2887,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 421 */
+/* 412 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3742,12 +2901,12 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(181);
-	var rtc_services_1 = __webpack_require__(622);
-	var router_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(8);
+	var kspace_1 = __webpack_require__(178);
+	var rtc_services_1 = __webpack_require__(606);
+	var router_1 = __webpack_require__(9);
+	var common_1 = __webpack_require__(18);
 	//import { ChatComponent } from './chat';
-	var chalkboard_1 = __webpack_require__(621);
+	var chalkboard_1 = __webpack_require__(605);
 	var KSpaceComponent = (function () {
 	    function KSpaceComponent(router, route, _kspaceService, rtcService) {
 	        var _this = this;
@@ -3888,68 +3047,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 422 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var __param = (this && this.__param) || function (paramIndex, decorator) {
-	    return function (target, key) { decorator(target, key, paramIndex); }
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var request_offer_1 = __webpack_require__(282);
-	var auth_1 = __webpack_require__(56);
-	var CreateOfferComponent = (function () {
-	    function CreateOfferComponent(fb, _offerService, _authService) {
-	        this._offerService = _offerService;
-	        this._authService = _authService;
-	        this.user = localStorage.getItem('username');
-	        this.offerForm = fb.group({
-	            "price": [""],
-	            "numberOfLecture": [""],
-	            "requestId": [""],
-	            "message": [""],
-	            "user": [""]
-	        });
-	    }
-	    CreateOfferComponent.prototype.addOffer = function (offer) {
-	        this._offerService.addOffer(offer).subscribe(function (offer) {
-	            console.log('success');
-	        }, function (error) {
-	            console.log(error.text());
-	        });
-	        window.location.reload();
-	    };
-	    __decorate([
-	        core_1.Input('rid'), 
-	        __metadata('design:type', String)
-	    ], CreateOfferComponent.prototype, "rid", void 0);
-	    CreateOfferComponent = __decorate([
-	        core_1.Component({
-	            selector: 'offer-create',
-	            templateUrl: 'client/dev/app/components/front-end/offer/templates/offer-create.html',
-	            directives: [common_1.FORM_DIRECTIVES]
-	        }),
-	        __param(0, core_1.Inject(common_1.FormBuilder)), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object])
-	    ], CreateOfferComponent);
-	    return CreateOfferComponent;
-	    var _a, _b, _c;
-	}());
-	exports.CreateOfferComponent = CreateOfferComponent;
-	
-
-/***/ },
-/* 423 */
+/* 413 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3963,12 +3061,12 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var requests_1 = __webpack_require__(80);
-	var request_offer_1 = __webpack_require__(282);
-	var knowledge_1 = __webpack_require__(40);
-	var kspace_1 = __webpack_require__(181);
-	var offer_create_1 = __webpack_require__(422);
+	var router_1 = __webpack_require__(9);
+	var requests_1 = __webpack_require__(78);
+	var request_offer_1 = __webpack_require__(277);
+	var knowledge_1 = __webpack_require__(38);
+	var kspace_1 = __webpack_require__(178);
+	var offer_create_1 = __webpack_require__(607);
 	var RequestDetailClientComponent = (function () {
 	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
 	        var _this = this;
@@ -4106,7 +3204,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 424 */
+/* 414 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4120,14 +3218,14 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var requests_1 = __webpack_require__(80);
-	var friend_list_1 = __webpack_require__(624);
-	var request_create_1 = __webpack_require__(413);
-	var request_search_1 = __webpack_require__(280);
-	var auth_1 = __webpack_require__(56);
-	var router_2 = __webpack_require__(7);
-	var ng2_pagination_1 = __webpack_require__(1006);
+	var router_1 = __webpack_require__(9);
+	var requests_1 = __webpack_require__(78);
+	var friend_list_1 = __webpack_require__(609);
+	var request_create_1 = __webpack_require__(602);
+	var request_search_1 = __webpack_require__(275);
+	var auth_1 = __webpack_require__(54);
+	var router_2 = __webpack_require__(9);
+	var ng2_pagination_1 = __webpack_require__(140);
 	var RequestListClientComponent = (function () {
 	    function RequestListClientComponent(_requestService, _auth, router) {
 	        this._requestService = _requestService;
@@ -4199,7 +3297,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 425 */
+/* 415 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4216,10 +3314,10 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(8);
-	var requests_1 = __webpack_require__(80);
-	var knowledge_1 = __webpack_require__(40);
+	var router_1 = __webpack_require__(9);
+	var common_1 = __webpack_require__(18);
+	var requests_1 = __webpack_require__(78);
+	var knowledge_1 = __webpack_require__(38);
 	var RequestUpdateClientComponent = (function () {
 	    function RequestUpdateClientComponent(fb, _requestService, router, route, _knowledgeService) {
 	        var _this = this;
@@ -4281,7 +3379,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 426 */
+/* 416 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4296,12 +3394,12 @@ webpackJsonp([2],[
 	};
 	//cores
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(9);
 	//components
-	var notification_1 = __webpack_require__(281);
+	var notification_1 = __webpack_require__(276);
 	//services
-	var users_1 = __webpack_require__(119);
-	var knowledge_1 = __webpack_require__(40);
+	var users_1 = __webpack_require__(131);
+	var knowledge_1 = __webpack_require__(38);
 	var FriendListComponent = (function () {
 	    function FriendListComponent(router, route, _userService, _knowledgeService) {
 	        var _this = this;
@@ -4356,7 +3454,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 427 */
+/* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4371,13 +3469,13 @@ webpackJsonp([2],[
 	};
 	//cores
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(9);
 	//components
-	var notification_1 = __webpack_require__(281);
-	var request_record_1 = __webpack_require__(629);
+	var notification_1 = __webpack_require__(276);
+	var request_record_1 = __webpack_require__(614);
 	//services
-	var users_1 = __webpack_require__(119);
-	var knowledge_1 = __webpack_require__(40);
+	var users_1 = __webpack_require__(131);
+	var knowledge_1 = __webpack_require__(38);
 	var UserProfileComponent = (function () {
 	    function UserProfileComponent(router, route, _userService, _knowledgeService) {
 	        var _this = this;
@@ -4525,7 +3623,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 428 */
+/* 418 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4542,28 +3640,28 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 6/4/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(9);
 	/**
 	 * Shared components
 	 */
-	var header_1 = __webpack_require__(625);
-	var side_bar_1 = __webpack_require__(628);
-	var footer_1 = __webpack_require__(623);
-	var login_1 = __webpack_require__(626);
-	var register_1 = __webpack_require__(627);
-	var user_profile_1 = __webpack_require__(427);
+	var header_1 = __webpack_require__(610);
+	var side_bar_1 = __webpack_require__(613);
+	var footer_1 = __webpack_require__(608);
+	var login_1 = __webpack_require__(611);
+	var register_1 = __webpack_require__(612);
+	var user_profile_1 = __webpack_require__(417);
 	/**
 	 * Page components
 	 */
-	var home_1 = __webpack_require__(418);
-	var request_list_1 = __webpack_require__(424);
-	var request_detail_1 = __webpack_require__(423);
-	var request_update_1 = __webpack_require__(425);
-	var request_search_1 = __webpack_require__(280);
-	var kspace_1 = __webpack_require__(421);
-	var kspace_list_1 = __webpack_require__(420);
-	var kspace_info_1 = __webpack_require__(419);
-	var friend_list_1 = __webpack_require__(426);
+	var home_1 = __webpack_require__(409);
+	var request_list_1 = __webpack_require__(414);
+	var request_detail_1 = __webpack_require__(413);
+	var request_update_1 = __webpack_require__(415);
+	var request_search_1 = __webpack_require__(275);
+	var kspace_1 = __webpack_require__(412);
+	var kspace_list_1 = __webpack_require__(411);
+	var kspace_info_1 = __webpack_require__(410);
+	var friend_list_1 = __webpack_require__(416);
 	/**
 	 * Page components
 	 */
@@ -4603,7 +3701,83 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 429 */
+/* 419 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var http_1 = __webpack_require__(62);
+	var Observable_1 = __webpack_require__(2);
+	var BadwordService = (function () {
+	    function BadwordService(_http) {
+	        this._http = _http;
+	        this._badwordsUrl = '/api/badwords/:id';
+	    }
+	    BadwordService.prototype.getAllBadwords = function () {
+	        return this._http.get(this._badwordsUrl.replace(':id', ''))
+	            .map(function (r) { return r.json(); })
+	            .do(function (data) { return console.log("All: " + JSON.stringify(data)); })
+	            .catch(this.handleError);
+	    };
+	    BadwordService.prototype.addBadword = function (badword) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _badword = JSON.stringify({
+	            word: badword.word,
+	        });
+	        console.log(_badword);
+	        console.log(header);
+	        return this._http
+	            .post(this._badwordsUrl.replace(':id', ''), _badword, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    BadwordService.prototype.deleteBadword = function (id) {
+	        return this._http
+	            .delete(this._badwordsUrl.replace(':id', id));
+	    };
+	    BadwordService.prototype.findBadwordById = function (id) {
+	        return this._http
+	            .get(this._badwordsUrl.replace(':id', id))
+	            .map(function (r) { return r.json(); });
+	    };
+	    BadwordService.prototype.updateBadword = function (badword) {
+	        console.log(badword);
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _badword = JSON.stringify({
+	            word: badword.word,
+	        });
+	        return this._http
+	            .put(this._badwordsUrl.replace(':id', badword._id), _badword, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    BadwordService.prototype.handleError = function (error) {
+	        console.error(error);
+	        return Observable_1.Observable.throw(error.json().error || 'Server error');
+	    };
+	    BadwordService = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+	    ], BadwordService);
+	    return BadwordService;
+	    var _a;
+	}());
+	exports.BadwordService = BadwordService;
+	
+
+/***/ },
+/* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4612,9 +3786,9 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(19);
-	var queue_1 = __webpack_require__(453);
-	var observeOn_1 = __webpack_require__(287);
+	var Subject_1 = __webpack_require__(17);
+	var queue_1 = __webpack_require__(444);
+	var observeOn_1 = __webpack_require__(282);
 	/**
 	 * @class ReplaySubject<T>
 	 */
@@ -4687,7 +3861,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=ReplaySubject.js.map
 
 /***/ },
-/* 430 */
+/* 421 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4695,38 +3869,54 @@ webpackJsonp([2],[
 	// Subject imported before Observable to bypass circular dependency issue since
 	// Subject extends Observable and Observable references Subject in it's
 	// definition
-	var Subject_1 = __webpack_require__(19);
+	var Subject_1 = __webpack_require__(17);
 	exports.Subject = Subject_1.Subject;
 	/* tslint:enable:no-unused-variable */
 	var Observable_1 = __webpack_require__(2);
 	exports.Observable = Observable_1.Observable;
 	// statics
 	/* tslint:disable:no-use-before-declare */
+	__webpack_require__(622);
+	__webpack_require__(623);
+	__webpack_require__(624);
+	__webpack_require__(625);
+	__webpack_require__(626);
+	__webpack_require__(627);
+	__webpack_require__(422);
+	__webpack_require__(423);
+	__webpack_require__(628);
+	__webpack_require__(629);
+	__webpack_require__(424);
+	__webpack_require__(630);
+	__webpack_require__(631);
+	__webpack_require__(634);
+	__webpack_require__(632);
+	__webpack_require__(633);
+	__webpack_require__(635);
+	__webpack_require__(636);
 	__webpack_require__(637);
 	__webpack_require__(638);
-	__webpack_require__(639);
-	__webpack_require__(640);
+	//operators
 	__webpack_require__(641);
 	__webpack_require__(642);
-	__webpack_require__(431);
-	__webpack_require__(432);
 	__webpack_require__(643);
 	__webpack_require__(644);
-	__webpack_require__(433);
 	__webpack_require__(645);
 	__webpack_require__(646);
-	__webpack_require__(649);
 	__webpack_require__(647);
 	__webpack_require__(648);
+	__webpack_require__(649);
 	__webpack_require__(650);
 	__webpack_require__(651);
 	__webpack_require__(652);
 	__webpack_require__(653);
-	//operators
+	__webpack_require__(654);
+	__webpack_require__(659);
+	__webpack_require__(655);
+	__webpack_require__(425);
 	__webpack_require__(656);
 	__webpack_require__(657);
 	__webpack_require__(658);
-	__webpack_require__(659);
 	__webpack_require__(660);
 	__webpack_require__(661);
 	__webpack_require__(662);
@@ -4735,45 +3925,45 @@ webpackJsonp([2],[
 	__webpack_require__(665);
 	__webpack_require__(666);
 	__webpack_require__(667);
+	__webpack_require__(639);
+	__webpack_require__(640);
 	__webpack_require__(668);
 	__webpack_require__(669);
-	__webpack_require__(674);
+	__webpack_require__(426);
+	__webpack_require__(182);
 	__webpack_require__(670);
-	__webpack_require__(434);
 	__webpack_require__(671);
 	__webpack_require__(672);
+	__webpack_require__(427);
+	__webpack_require__(278);
 	__webpack_require__(673);
+	__webpack_require__(674);
+	__webpack_require__(428);
 	__webpack_require__(675);
 	__webpack_require__(676);
+	__webpack_require__(429);
 	__webpack_require__(677);
-	__webpack_require__(678);
 	__webpack_require__(679);
+	__webpack_require__(678);
 	__webpack_require__(680);
+	__webpack_require__(430);
 	__webpack_require__(681);
 	__webpack_require__(682);
-	__webpack_require__(654);
-	__webpack_require__(655);
 	__webpack_require__(683);
 	__webpack_require__(684);
-	__webpack_require__(435);
-	__webpack_require__(185);
 	__webpack_require__(685);
 	__webpack_require__(686);
 	__webpack_require__(687);
-	__webpack_require__(436);
-	__webpack_require__(283);
 	__webpack_require__(688);
 	__webpack_require__(689);
-	__webpack_require__(437);
 	__webpack_require__(690);
 	__webpack_require__(691);
-	__webpack_require__(438);
 	__webpack_require__(692);
-	__webpack_require__(694);
 	__webpack_require__(693);
+	__webpack_require__(694);
 	__webpack_require__(695);
-	__webpack_require__(439);
 	__webpack_require__(696);
+	__webpack_require__(431);
 	__webpack_require__(697);
 	__webpack_require__(698);
 	__webpack_require__(699);
@@ -4782,6 +3972,7 @@ webpackJsonp([2],[
 	__webpack_require__(702);
 	__webpack_require__(703);
 	__webpack_require__(704);
+	__webpack_require__(432);
 	__webpack_require__(705);
 	__webpack_require__(706);
 	__webpack_require__(707);
@@ -4789,55 +3980,38 @@ webpackJsonp([2],[
 	__webpack_require__(709);
 	__webpack_require__(710);
 	__webpack_require__(711);
-	__webpack_require__(440);
 	__webpack_require__(712);
-	__webpack_require__(713);
-	__webpack_require__(714);
-	__webpack_require__(715);
-	__webpack_require__(716);
-	__webpack_require__(717);
-	__webpack_require__(718);
-	__webpack_require__(719);
-	__webpack_require__(441);
-	__webpack_require__(720);
-	__webpack_require__(721);
-	__webpack_require__(722);
-	__webpack_require__(723);
-	__webpack_require__(724);
-	__webpack_require__(725);
-	__webpack_require__(726);
-	__webpack_require__(727);
 	/* tslint:disable:no-unused-variable */
-	var Operator_1 = __webpack_require__(635);
+	var Operator_1 = __webpack_require__(620);
 	exports.Operator = Operator_1.Operator;
-	var Subscription_1 = __webpack_require__(41);
+	var Subscription_1 = __webpack_require__(39);
 	exports.Subscription = Subscription_1.Subscription;
 	var Subscriber_1 = __webpack_require__(6);
 	exports.Subscriber = Subscriber_1.Subscriber;
-	var AsyncSubject_1 = __webpack_require__(182);
+	var AsyncSubject_1 = __webpack_require__(179);
 	exports.AsyncSubject = AsyncSubject_1.AsyncSubject;
-	var ReplaySubject_1 = __webpack_require__(429);
+	var ReplaySubject_1 = __webpack_require__(420);
 	exports.ReplaySubject = ReplaySubject_1.ReplaySubject;
-	var BehaviorSubject_1 = __webpack_require__(183);
+	var BehaviorSubject_1 = __webpack_require__(180);
 	exports.BehaviorSubject = BehaviorSubject_1.BehaviorSubject;
-	var ConnectableObservable_1 = __webpack_require__(442);
+	var ConnectableObservable_1 = __webpack_require__(433);
 	exports.ConnectableObservable = ConnectableObservable_1.ConnectableObservable;
-	var Notification_1 = __webpack_require__(184);
+	var Notification_1 = __webpack_require__(181);
 	exports.Notification = Notification_1.Notification;
-	var EmptyError_1 = __webpack_require__(191);
+	var EmptyError_1 = __webpack_require__(188);
 	exports.EmptyError = EmptyError_1.EmptyError;
-	var ArgumentOutOfRangeError_1 = __webpack_require__(290);
+	var ArgumentOutOfRangeError_1 = __webpack_require__(285);
 	exports.ArgumentOutOfRangeError = ArgumentOutOfRangeError_1.ArgumentOutOfRangeError;
-	var ObjectUnsubscribedError_1 = __webpack_require__(291);
+	var ObjectUnsubscribedError_1 = __webpack_require__(286);
 	exports.ObjectUnsubscribedError = ObjectUnsubscribedError_1.ObjectUnsubscribedError;
-	var UnsubscriptionError_1 = __webpack_require__(454);
+	var UnsubscriptionError_1 = __webpack_require__(445);
 	exports.UnsubscriptionError = UnsubscriptionError_1.UnsubscriptionError;
-	var asap_1 = __webpack_require__(452);
-	var async_1 = __webpack_require__(42);
-	var queue_1 = __webpack_require__(453);
-	var rxSubscriber_1 = __webpack_require__(190);
-	var observable_1 = __webpack_require__(189);
-	var iterator_1 = __webpack_require__(135);
+	var asap_1 = __webpack_require__(443);
+	var async_1 = __webpack_require__(40);
+	var queue_1 = __webpack_require__(444);
+	var rxSubscriber_1 = __webpack_require__(187);
+	var observable_1 = __webpack_require__(186);
+	var iterator_1 = __webpack_require__(132);
 	/* tslint:enable:no-unused-variable */
 	/**
 	 * @typedef {Object} Rx.Scheduler
@@ -4878,21 +4052,21 @@ webpackJsonp([2],[
 	//# sourceMappingURL=Rx.js.map
 
 /***/ },
+/* 422 */,
+/* 423 */,
+/* 424 */,
+/* 425 */,
+/* 426 */,
+/* 427 */,
+/* 428 */,
+/* 429 */,
+/* 430 */,
 /* 431 */,
 /* 432 */,
 /* 433 */,
 /* 434 */,
 /* 435 */,
-/* 436 */,
-/* 437 */,
-/* 438 */,
-/* 439 */,
-/* 440 */,
-/* 441 */,
-/* 442 */,
-/* 443 */,
-/* 444 */,
-/* 445 */
+/* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4990,14 +4164,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=filter.js.map
 
 /***/ },
-/* 446 */,
-/* 447 */
+/* 437 */,
+/* 438 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ArrayObservable_1 = __webpack_require__(81);
-	var mergeAll_1 = __webpack_require__(187);
-	var isScheduler_1 = __webpack_require__(97);
+	var ArrayObservable_1 = __webpack_require__(79);
+	var mergeAll_1 = __webpack_require__(184);
+	var isScheduler_1 = __webpack_require__(95);
 	/**
 	 * Creates an output Observable which concurrently emits all values from every
 	 * given input Observable.
@@ -5126,8 +4300,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=merge.js.map
 
 /***/ },
-/* 448 */,
-/* 449 */
+/* 439 */,
+/* 440 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5136,8 +4310,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Projects each source value to the same Observable which is merged multiple
 	 * times in the output Observable.
@@ -5286,12 +4460,12 @@ webpackJsonp([2],[
 	//# sourceMappingURL=mergeMapTo.js.map
 
 /***/ },
-/* 450 */
+/* 441 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ReplaySubject_1 = __webpack_require__(429);
-	var multicast_1 = __webpack_require__(120);
+	var ReplaySubject_1 = __webpack_require__(420);
+	var multicast_1 = __webpack_require__(116);
 	/**
 	 * @param bufferSize
 	 * @param windowTime
@@ -5309,7 +4483,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=publishReplay.js.map
 
 /***/ },
-/* 451 */
+/* 442 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5318,10 +4492,10 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var isArray_1 = __webpack_require__(84);
-	var ArrayObservable_1 = __webpack_require__(81);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var isArray_1 = __webpack_require__(82);
+	var ArrayObservable_1 = __webpack_require__(79);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Returns an Observable that mirrors the first source Observable to emit an item
 	 * from the combination of this Observable and supplied Observables
@@ -5423,28 +4597,28 @@ webpackJsonp([2],[
 	//# sourceMappingURL=race.js.map
 
 /***/ },
-/* 452 */
+/* 443 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var AsapScheduler_1 = __webpack_require__(829);
+	var AsapScheduler_1 = __webpack_require__(814);
 	exports.asap = new AsapScheduler_1.AsapScheduler();
 	//# sourceMappingURL=asap.js.map
 
 /***/ },
-/* 453 */
+/* 444 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var QueueScheduler_1 = __webpack_require__(289);
+	var QueueScheduler_1 = __webpack_require__(284);
 	exports.queue = new QueueScheduler_1.QueueScheduler();
 	//# sourceMappingURL=queue.js.map
 
 /***/ },
-/* 454 */,
-/* 455 */,
-/* 456 */,
-/* 457 */
+/* 445 */,
+/* 446 */,
+/* 447 */,
+/* 448 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -5454,6 +4628,15 @@ webpackJsonp([2],[
 	//# sourceMappingURL=noop.js.map
 
 /***/ },
+/* 449 */,
+/* 450 */,
+/* 451 */,
+/* 452 */,
+/* 453 */,
+/* 454 */,
+/* 455 */,
+/* 456 */,
+/* 457 */,
 /* 458 */,
 /* 459 */,
 /* 460 */,
@@ -5489,599 +4672,13 @@ webpackJsonp([2],[
 /* 490 */,
 /* 491 */,
 /* 492 */,
-/* 493 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var Accordion = (function () {
-	    function Accordion(el) {
-	        this.el = el;
-	        this.onClose = new core_1.EventEmitter();
-	        this.onOpen = new core_1.EventEmitter();
-	        this.tabs = [];
-	    }
-	    Accordion.prototype.addTab = function (tab) {
-	        this.tabs.push(tab);
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Accordion.prototype, "multiple", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Accordion.prototype, "onClose", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Accordion.prototype, "onOpen", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Accordion.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Accordion.prototype, "styleClass", void 0);
-	    Accordion = __decorate([
-	        core_1.Component({
-	            selector: 'p-accordion',
-	            template: "\n        <div [ngClass]=\"'ui-accordion ui-widget ui-helper-reset'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ng-content></ng-content>\n        </div>\n    ",
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef])
-	    ], Accordion);
-	    return Accordion;
-	}());
-	exports.Accordion = Accordion;
-	
-
-/***/ },
-/* 494 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var ColumnTemplateLoader = (function () {
-	    function ColumnTemplateLoader(viewContainer) {
-	        this.viewContainer = viewContainer;
-	    }
-	    ColumnTemplateLoader.prototype.ngOnInit = function () {
-	        var view = this.viewContainer.createEmbeddedView(this.column.template, {
-	            '\$implicit': this.column,
-	            'rowData': this.rowData,
-	            'rowIndex': this.rowIndex
-	        });
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], ColumnTemplateLoader.prototype, "column", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], ColumnTemplateLoader.prototype, "rowData", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], ColumnTemplateLoader.prototype, "rowIndex", void 0);
-	    ColumnTemplateLoader = __decorate([
-	        core_1.Component({
-	            selector: 'p-columnTemplateLoader',
-	            template: ""
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ViewContainerRef])
-	    ], ColumnTemplateLoader);
-	    return ColumnTemplateLoader;
-	}());
-	exports.ColumnTemplateLoader = ColumnTemplateLoader;
-	
-
-/***/ },
-/* 495 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var SplitButtonItem = (function () {
-	    function SplitButtonItem() {
-	        this.onClick = new core_1.EventEmitter();
-	    }
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SplitButtonItem.prototype, "icon", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SplitButtonItem.prototype, "label", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SplitButtonItem.prototype, "url", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], SplitButtonItem.prototype, "routerLink", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], SplitButtonItem.prototype, "onClick", void 0);
-	    SplitButtonItem = __decorate([
-	        core_1.Component({
-	            selector: 'p-splitButtonItem',
-	            template: "\n        \n    "
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], SplitButtonItem);
-	    return SplitButtonItem;
-	}());
-	exports.SplitButtonItem = SplitButtonItem;
-	
-
-/***/ },
-/* 496 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var TabPanel = (function () {
-	    function TabPanel() {
-	    }
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], TabPanel.prototype, "header", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], TabPanel.prototype, "selected", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], TabPanel.prototype, "disabled", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], TabPanel.prototype, "closable", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], TabPanel.prototype, "headerStyle", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], TabPanel.prototype, "headerStyleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], TabPanel.prototype, "leftIcon", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], TabPanel.prototype, "rightIcon", void 0);
-	    TabPanel = __decorate([
-	        core_1.Component({
-	            selector: 'p-tabPanel',
-	            template: "\n        <div class=\"ui-tabview-panel ui-widget-content\" [style.display]=\"selected ? 'block' : 'none'\" *ngIf=\"!closed\">\n            <ng-content></ng-content>\n        </div>\n    ",
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], TabPanel);
-	    return TabPanel;
-	}());
-	exports.TabPanel = TabPanel;
-	
-
-/***/ },
-/* 497 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var uitreenode_1 = __webpack_require__(1062);
-	var Tree = (function () {
-	    function Tree() {
-	        this.selectionChange = new core_1.EventEmitter();
-	        this.onNodeSelect = new core_1.EventEmitter();
-	        this.onNodeUnselect = new core_1.EventEmitter();
-	        this.onNodeExpand = new core_1.EventEmitter();
-	        this.onNodeCollapse = new core_1.EventEmitter();
-	    }
-	    Tree.prototype.onNodeClick = function (event, node) {
-	        if (event.target.className && event.target.className.indexOf('ui-tree-toggler') === 0) {
-	            return;
-	        }
-	        else {
-	            var metaKey = (event.metaKey || event.ctrlKey);
-	            var index = this.findIndexInSelection(node);
-	            var selected = (index >= 0);
-	            if (selected && metaKey) {
-	                if (this.isSingleSelectionMode()) {
-	                    this.selectionChange.emit(null);
-	                }
-	                else {
-	                    this.selection.splice(index, 1);
-	                    this.selectionChange.emit(this.selection);
-	                }
-	                this.onNodeUnselect.emit({ originalEvent: event, node: node });
-	            }
-	            else {
-	                if (this.isSingleSelectionMode()) {
-	                    this.selectionChange.emit(node);
-	                }
-	                else if (this.isMultipleSelectionMode()) {
-	                    this.selection = (!event.metaKey) ? [] : this.selection || [];
-	                    this.selection.push(node);
-	                    this.selectionChange.emit(this.selection);
-	                }
-	                this.onNodeSelect.emit({ originalEvent: event, node: node });
-	            }
-	        }
-	    };
-	    Tree.prototype.findIndexInSelection = function (node) {
-	        var index = -1;
-	        if (this.selectionMode && this.selection) {
-	            if (this.isSingleSelectionMode()) {
-	                index = (this.selection == node) ? 0 : -1;
-	            }
-	            else if (this.isMultipleSelectionMode()) {
-	                for (var i = 0; i < this.selection.length; i++) {
-	                    if (this.selection[i] == node) {
-	                        index = i;
-	                        break;
-	                    }
-	                }
-	            }
-	        }
-	        return index;
-	    };
-	    Tree.prototype.isSelected = function (node) {
-	        return this.findIndexInSelection(node) != -1;
-	    };
-	    Tree.prototype.isSingleSelectionMode = function () {
-	        return this.selectionMode && this.selectionMode == 'single';
-	    };
-	    Tree.prototype.isMultipleSelectionMode = function () {
-	        return this.selectionMode && this.selectionMode == 'multiple';
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Tree.prototype, "value", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Tree.prototype, "selectionMode", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Tree.prototype, "selection", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Tree.prototype, "selectionChange", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Tree.prototype, "onNodeSelect", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Tree.prototype, "onNodeUnselect", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Tree.prototype, "onNodeExpand", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Tree.prototype, "onNodeCollapse", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Tree.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Tree.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef), 
-	        __metadata('design:type', core_1.TemplateRef)
-	    ], Tree.prototype, "template", void 0);
-	    Tree = __decorate([
-	        core_1.Component({
-	            selector: 'p-tree',
-	            template: "\n        <div [ngClass]=\"'ui-tree ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul class=\"ui-tree-container\">\n                <p-treeNode *ngFor=\"let node of value\" [node]=\"node\"></p-treeNode>\n            </ul>\n        </div>\n    ",
-	            directives: [uitreenode_1.UITreeNode]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Tree);
-	    return Tree;
-	}());
-	exports.Tree = Tree;
-	
-
-/***/ },
-/* 498 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var uitreerow_1 = __webpack_require__(1063);
-	var column_1 = __webpack_require__(315);
-	var common_1 = __webpack_require__(35);
-	var common_2 = __webpack_require__(35);
-	var TreeTable = (function () {
-	    function TreeTable() {
-	        this.selectionChange = new core_1.EventEmitter();
-	        this.onNodeSelect = new core_1.EventEmitter();
-	        this.onNodeUnselect = new core_1.EventEmitter();
-	        this.onNodeExpand = new core_1.EventEmitter();
-	        this.onNodeCollapse = new core_1.EventEmitter();
-	    }
-	    TreeTable.prototype.onRowClick = function (event, node) {
-	        if (event.target.className && event.target.className.indexOf('ui-treetable-toggler') === 0) {
-	            return;
-	        }
-	        else {
-	            var metaKey = (event.metaKey || event.ctrlKey);
-	            var index = this.findIndexInSelection(node);
-	            var selected = (index >= 0);
-	            if (selected && metaKey) {
-	                if (this.isSingleSelectionMode()) {
-	                    this.selectionChange.emit(null);
-	                }
-	                else {
-	                    this.selection.splice(index, 1);
-	                    this.selectionChange.emit(this.selection);
-	                }
-	                this.onNodeUnselect.emit({ originalEvent: event, node: node });
-	            }
-	            else {
-	                if (this.isSingleSelectionMode()) {
-	                    this.selectionChange.emit(node);
-	                }
-	                else if (this.isMultipleSelectionMode()) {
-	                    this.selection = (!event.metaKey) ? [] : this.selection || [];
-	                    this.selection.push(node);
-	                    this.selectionChange.emit(this.selection);
-	                }
-	                this.onNodeSelect.emit({ originalEvent: event, node: node });
-	            }
-	        }
-	    };
-	    TreeTable.prototype.findIndexInSelection = function (node) {
-	        var index = -1;
-	        if (this.selectionMode && this.selection) {
-	            if (this.isSingleSelectionMode()) {
-	                index = (this.selection == node) ? 0 : -1;
-	            }
-	            else if (this.isMultipleSelectionMode()) {
-	                for (var i = 0; i < this.selection.length; i++) {
-	                    if (this.selection[i] == node) {
-	                        index = i;
-	                        break;
-	                    }
-	                }
-	            }
-	        }
-	        return index;
-	    };
-	    TreeTable.prototype.isSelected = function (node) {
-	        return this.findIndexInSelection(node) != -1;
-	    };
-	    TreeTable.prototype.isSingleSelectionMode = function () {
-	        return this.selectionMode && this.selectionMode == 'single';
-	    };
-	    TreeTable.prototype.isMultipleSelectionMode = function () {
-	        return this.selectionMode && this.selectionMode == 'multiple';
-	    };
-	    TreeTable.prototype.hasFooter = function () {
-	        if (this.columns) {
-	            var columnsArr = this.columns.toArray();
-	            for (var i = 0; i < columnsArr.length; i++) {
-	                if (columnsArr[i].footer) {
-	                    return true;
-	                }
-	            }
-	        }
-	        return false;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], TreeTable.prototype, "value", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], TreeTable.prototype, "selectionMode", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], TreeTable.prototype, "selection", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], TreeTable.prototype, "selectionChange", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], TreeTable.prototype, "onNodeSelect", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], TreeTable.prototype, "onNodeUnselect", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], TreeTable.prototype, "onNodeExpand", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], TreeTable.prototype, "onNodeCollapse", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], TreeTable.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], TreeTable.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.ContentChild(common_1.Header), 
-	        __metadata('design:type', Object)
-	    ], TreeTable.prototype, "header", void 0);
-	    __decorate([
-	        core_1.ContentChild(common_2.Footer), 
-	        __metadata('design:type', Object)
-	    ], TreeTable.prototype, "footer", void 0);
-	    __decorate([
-	        core_1.ContentChildren(column_1.Column), 
-	        __metadata('design:type', core_1.QueryList)
-	    ], TreeTable.prototype, "columns", void 0);
-	    TreeTable = __decorate([
-	        core_1.Component({
-	            selector: 'p-treeTable',
-	            template: "\n        <div [ngClass]=\"'ui-treetable ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-treetable-header ui-widget-header\" *ngIf=\"header\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <div class=\"ui-treetable-tablewrapper\">\n                <table class=\"ui-widget-content\" style=\"border:0 0 1px 0px\">\n                    <thead>\n                        <tr class=\"ui-state-default\">\n                            <th #headerCell *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" \n                                [ngClass]=\"'ui-state-default ui-unselectable-text'\">\n                                <span class=\"ui-column-title\">{{col.header}}</span>\n                            </th>\n                        </tr>\n                    </thead>\n                    <tfoot *ngIf=\"hasFooter()\">\n                        <tr>\n                            <td *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [ngClass]=\"{'ui-state-default':true}\">{{col.footer}}</td>\n                        </tr>\n                    </tfoot>\n                    <tbody pTreeRow *ngFor=\"let node of value\" [node]=\"node\" [level]=\"0\"></tbody>\n                </table>\n            </div>\n            <div class=\"ui-treetable-footer ui-widget-header\" *ngIf=\"footer\">\n                <ng-content select=\"footer\"></ng-content>\n            </div>\n        </div>\n    ",
-	            directives: [uitreerow_1.UITreeRow]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], TreeTable);
-	    return TreeTable;
-	}());
-	exports.TreeTable = TreeTable;
-	
-
-/***/ },
-/* 499 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	__export(__webpack_require__(35));
-	__export(__webpack_require__(493));
-	__export(__webpack_require__(1007));
-	__export(__webpack_require__(1008));
-	__export(__webpack_require__(1009));
-	__export(__webpack_require__(142));
-	__export(__webpack_require__(1010));
-	__export(__webpack_require__(1011));
-	__export(__webpack_require__(1014));
-	__export(__webpack_require__(1015));
-	__export(__webpack_require__(1012));
-	__export(__webpack_require__(1013));
-	__export(__webpack_require__(315));
-	__export(__webpack_require__(35));
-	__export(__webpack_require__(35));
-	__export(__webpack_require__(1016));
-	__export(__webpack_require__(1017));
-	__export(__webpack_require__(1018));
-	__export(__webpack_require__(1019));
-	__export(__webpack_require__(1021));
-	__export(__webpack_require__(1022));
-	__export(__webpack_require__(1023));
-	__export(__webpack_require__(1024));
-	__export(__webpack_require__(1025));
-	__export(__webpack_require__(1026));
-	__export(__webpack_require__(1027));
-	__export(__webpack_require__(1028));
-	__export(__webpack_require__(1029));
-	__export(__webpack_require__(1030));
-	__export(__webpack_require__(206));
-	__export(__webpack_require__(1031));
-	__export(__webpack_require__(1032));
-	__export(__webpack_require__(1033));
-	__export(__webpack_require__(1034));
-	__export(__webpack_require__(1035));
-	__export(__webpack_require__(1036));
-	__export(__webpack_require__(1037));
-	__export(__webpack_require__(1038));
-	__export(__webpack_require__(1039));
-	__export(__webpack_require__(1040));
-	__export(__webpack_require__(207));
-	__export(__webpack_require__(1041));
-	__export(__webpack_require__(1042));
-	__export(__webpack_require__(1043));
-	__export(__webpack_require__(1044));
-	__export(__webpack_require__(1045));
-	__export(__webpack_require__(1046));
-	__export(__webpack_require__(1047));
-	__export(__webpack_require__(1048));
-	__export(__webpack_require__(1049));
-	__export(__webpack_require__(1050));
-	__export(__webpack_require__(1051));
-	__export(__webpack_require__(1052));
-	__export(__webpack_require__(1053));
-	__export(__webpack_require__(495));
-	__export(__webpack_require__(1055));
-	__export(__webpack_require__(496));
-	__export(__webpack_require__(1054));
-	__export(__webpack_require__(1056));
-	__export(__webpack_require__(1057));
-	__export(__webpack_require__(1058));
-	__export(__webpack_require__(1059));
-	__export(__webpack_require__(1060));
-	__export(__webpack_require__(497));
-	__export(__webpack_require__(498));
-	
-
-/***/ },
+/* 493 */,
+/* 494 */,
+/* 495 */,
+/* 496 */,
+/* 497 */,
+/* 498 */,
+/* 499 */,
 /* 500 */,
 /* 501 */,
 /* 502 */,
@@ -6180,22 +4777,7 @@ webpackJsonp([2],[
 /* 595 */,
 /* 596 */,
 /* 597 */,
-/* 598 */,
-/* 599 */,
-/* 600 */,
-/* 601 */,
-/* 602 */,
-/* 603 */,
-/* 604 */,
-/* 605 */,
-/* 606 */,
-/* 607 */,
-/* 608 */,
-/* 609 */,
-/* 610 */,
-/* 611 */,
-/* 612 */,
-/* 613 */
+/* 598 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6212,21 +4794,21 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 5/8/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(64);
-	__webpack_require__(430); // Load all features
-	var router_1 = __webpack_require__(7);
-	var kshare_component_1 = __webpack_require__(428);
+	var http_1 = __webpack_require__(62);
+	__webpack_require__(421); // Load all features
+	var router_1 = __webpack_require__(9);
+	var kshare_component_1 = __webpack_require__(418);
 	//import { UserComponent } from "./user.component";
 	/**
 	 * services
 	 **/
-	var knowledge_1 = __webpack_require__(40);
-	var request_offer_1 = __webpack_require__(282);
-	var requests_1 = __webpack_require__(80);
-	var users_1 = __webpack_require__(119);
-	var auth_1 = __webpack_require__(56);
-	var kspace_1 = __webpack_require__(181);
-	var socket_io_services_1 = __webpack_require__(632);
+	var knowledge_1 = __webpack_require__(38);
+	var request_offer_1 = __webpack_require__(277);
+	var requests_1 = __webpack_require__(78);
+	var users_1 = __webpack_require__(131);
+	var auth_1 = __webpack_require__(54);
+	var kspace_1 = __webpack_require__(178);
+	var socket_io_services_1 = __webpack_require__(617);
 	var AppComponent = (function () {
 	    function AppComponent() {
 	        this.pageTitle = 'Knowledge Sharing Network';
@@ -6258,16 +4840,16 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 614 */
+/* 599 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	/**
 	 * Created by GiangDH on 7/9/16.
 	 */
-	var router_1 = __webpack_require__(7);
-	var kshare_routes_1 = __webpack_require__(631);
-	var admin_routes_1 = __webpack_require__(630);
+	var router_1 = __webpack_require__(9);
+	var kshare_routes_1 = __webpack_require__(616);
+	var admin_routes_1 = __webpack_require__(615);
 	exports.routes = kshare_routes_1.KShareRoutes.concat(admin_routes_1.AdminRoutes);
 	exports.APP_ROUTER_PROVIDERS = [
 	    router_1.provideRouter(exports.routes)
@@ -6275,7 +4857,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 615 */
+/* 600 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6292,26 +4874,26 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 6/4/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	__webpack_require__(430); // Load all features
-	var router_1 = __webpack_require__(7);
+	__webpack_require__(421); // Load all features
+	var router_1 = __webpack_require__(9);
 	// Layout component
-	var nav_bar_1 = __webpack_require__(415);
-	var side_bar_1 = __webpack_require__(416);
+	var nav_bar_1 = __webpack_require__(603);
+	var side_bar_1 = __webpack_require__(604);
 	// Functions
-	var knowledge_update_1 = __webpack_require__(278);
-	var knowledges_list_1 = __webpack_require__(412);
-	var requests_list_1 = __webpack_require__(414);
-	var request_update_1 = __webpack_require__(279);
-	var badword_update_1 = __webpack_require__(179);
-	var badword_1 = __webpack_require__(411);
-	var user_list_1 = __webpack_require__(417);
+	var knowledge_update_1 = __webpack_require__(273);
+	var knowledges_list_1 = __webpack_require__(406);
+	var requests_list_1 = __webpack_require__(407);
+	var request_update_1 = __webpack_require__(274);
+	var badword_update_1 = __webpack_require__(272);
+	var badwords_list_1 = __webpack_require__(405);
+	var user_list_1 = __webpack_require__(408);
 	var AdminComponent = (function () {
 	    function AdminComponent() {
 	    }
 	    AdminComponent = __decorate([
 	        core_1.Component({
 	            selector: 'kshare',
-	            template: "\n  <nav-bar></nav-bar>\n  <sidebar></sidebar>\n  <router-outlet></router-outlet>\n  ",
+	            template: "\n  <div id=\"wrapper\">\n    <nav class=\"navbar navbar-inverse navbar-fixed-top\" role=\"navigation\">\n      <nav-bar></nav-bar>\n      <sidebar></sidebar>\n    </nav>\n    <router-outlet></router-outlet>\n  </div>\n  ",
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                nav_bar_1.NavbarComponent,
@@ -6321,7 +4903,7 @@ webpackJsonp([2],[
 	                user_list_1.UserListComponent,
 	                requests_list_1.RequestListComponent,
 	                knowledges_list_1.KnowledgeListComponent,
-	                badword_1.BadwordComponent,
+	                badwords_list_1.BadwordListComponent,
 	                badword_update_1.UpdateBadwordComponent,
 	                knowledge_update_1.UpdateKnowledgeComponent,
 	                request_update_1.UpdateRequestComponent,
@@ -6335,7 +4917,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 616 */
+/* 601 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6349,174 +4931,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var badword_1 = __webpack_require__(180);
-	var CreateBadwordComponent = (function () {
-	    function CreateBadwordComponent(fb, _badwordService) {
-	        this._badwordService = _badwordService;
-	        this.badwords = [];
-	        this.badwordForm = fb.group({
-	            "word": [""],
-	        });
-	    }
-	    CreateBadwordComponent.prototype.addBadword = function (word) {
-	        var _this = this;
-	        this._badwordService
-	            .addBadword(word)
-	            .subscribe(function (m) {
-	            _this.badwords.push(m);
-	            window.location.reload();
-	        });
-	    };
-	    CreateBadwordComponent = __decorate([
-	        core_1.Component({
-	            selector: 'badword-create',
-	            templateUrl: 'client/dev/app/components/back-end/badword/templates/badword-create.html',
-	            styleUrls: ['client/dev/app/components/back-end/badword/styles/badword.css'],
-	            directives: [common_1.FORM_DIRECTIVES]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof badword_1.BadwordService !== 'undefined' && badword_1.BadwordService) === 'function' && _b) || Object])
-	    ], CreateBadwordComponent);
-	    return CreateBadwordComponent;
-	    var _a, _b;
-	}());
-	exports.CreateBadwordComponent = CreateBadwordComponent;
-	
-
-/***/ },
-/* 617 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var badword_1 = __webpack_require__(180);
-	var badword_update_1 = __webpack_require__(179);
-	var BadwordListComponent = (function () {
-	    function BadwordListComponent(badwordService) {
-	        this.badwordService = badwordService;
-	        this.pageTitle = 'Badword List';
-	    }
-	    BadwordListComponent.prototype.ngOnInit = function () {
-	        this.getAll();
-	    };
-	    BadwordListComponent.prototype.getAll = function () {
-	        var _this = this;
-	        this.badwordService
-	            .getAllBadwords()
-	            .subscribe(function (badwords) {
-	            _this.badwords = badwords;
-	            console.log("1234");
-	        });
-	    };
-	    BadwordListComponent.prototype.deleteBadword = function (id) {
-	        var _this = this;
-	        this.badwordService
-	            .deleteBadword(id)
-	            .subscribe(function () {
-	            _this.badwords.forEach(function (t, i) {
-	                if (t._id === id)
-	                    return _this.badwords.splice(i, 1);
-	            });
-	        });
-	    };
-	    BadwordListComponent.prototype.findBadwordById = function (id) {
-	        this.badwordService
-	            .findBadwordById(id)
-	            .subscribe(function (badwords) {
-	            return badwords;
-	        });
-	    };
-	    BadwordListComponent = __decorate([
-	        core_1.Component({
-	            selector: 'badword-list',
-	            templateUrl: 'client/dev/app/components/back-end/badword/templates/badword-list.html',
-	            styleUrls: ['client/dev/app/components/back-end/badword/styles/badword.css'],
-	            directives: [badword_update_1.UpdateBadwordComponent]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof badword_1.BadwordService !== 'undefined' && badword_1.BadwordService) === 'function' && _a) || Object])
-	    ], BadwordListComponent);
-	    return BadwordListComponent;
-	    var _a;
-	}());
-	exports.BadwordListComponent = BadwordListComponent;
-	
-
-/***/ },
-/* 618 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var knowledge_1 = __webpack_require__(40);
-	var CreateKnowledgeComponent = (function () {
-	    function CreateKnowledgeComponent(fb, _knowledgeService) {
-	        this._knowledgeService = _knowledgeService;
-	        this.knowledges = [];
-	        this.knowledgeForm = fb.group({
-	            "name": [""],
-	            "description": [""],
-	        });
-	    }
-	    CreateKnowledgeComponent.prototype.addKnowledge = function (word) {
-	        var _this = this;
-	        this._knowledgeService
-	            .addKnowledge(word)
-	            .subscribe(function (m) {
-	            _this.knowledges.push(m);
-	            window.location.reload();
-	        });
-	    };
-	    CreateKnowledgeComponent = __decorate([
-	        core_1.Component({
-	            selector: 'knowledge-create',
-	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-create.html',
-	            styleUrls: ['client/dev/app/components/back-end/knowledge/styles/knowledge.css'],
-	            directives: [common_1.FORM_DIRECTIVES]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object])
-	    ], CreateKnowledgeComponent);
-	    return CreateKnowledgeComponent;
-	    var _a, _b;
-	}());
-	exports.CreateKnowledgeComponent = CreateKnowledgeComponent;
-	
-
-/***/ },
-/* 619 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var knowledge_1 = __webpack_require__(40);
+	var common_1 = __webpack_require__(18);
+	var knowledge_1 = __webpack_require__(38);
 	var CreateSubCategoryComponent = (function () {
 	    function CreateSubCategoryComponent(fb, _knowledgeService) {
 	        this._knowledgeService = _knowledgeService;
@@ -6555,7 +4971,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 620 */
+/* 602 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6572,64 +4988,141 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var router_1 = __webpack_require__(7);
-	// UI
-	var primeng_1 = __webpack_require__(499);
-	var users_1 = __webpack_require__(119);
-	var CreateUserComponent = (function () {
-	    function CreateUserComponent(fb, _userService, router) {
-	        this._userService = _userService;
-	        this.router = router;
-	        this.display = false;
-	        this.pageHeader = "Create User";
-	        this.users = [];
-	        this.userForm = fb.group({
-	            firstName: [""],
-	            lastName: [""],
-	            displayName: [""],
-	            birthday: [""],
-	            username: ["", common_1.Validators.required],
-	            password: ["", common_1.Validators.required],
-	            email: ["", common_1.Validators.required],
-	            role: ["", common_1.Validators.required],
-	            ownKnowledgeId: [""],
-	            interestedKnowledgeId: [""],
-	            onlineTime: [""]
+	var common_1 = __webpack_require__(18);
+	var knowledge_1 = __webpack_require__(38);
+	var requests_1 = __webpack_require__(78);
+	var auth_1 = __webpack_require__(54);
+	var CreateRequestComponent = (function () {
+	    function CreateRequestComponent(fb, _requestService, _knowledgeService, _authService) {
+	        this._requestService = _requestService;
+	        this._knowledgeService = _knowledgeService;
+	        this._authService = _authService;
+	        this.user = localStorage.getItem('username');
+	        this.roleToken = localStorage.getItem('userrole');
+	        this.requestForm = fb.group({
+	            "knowledgeId": [""],
+	            "title": [""],
+	            "description": [""],
+	            "user": [""]
 	        });
 	    }
-	    CreateUserComponent.prototype.addUser = function (user) {
-	        this._userService
-	            .addUser(user)
-	            .subscribe(function (response) {
-	            window.location.reload();
+	    CreateRequestComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+	        });
+	    };
+	    CreateRequestComponent.prototype.addRequest = function (request) {
+	        console.log(request);
+	        this._requestService.addRequest(request).subscribe(function (request) {
+	            console.log('success');
 	        }, function (error) {
 	            console.log(error.text());
 	        });
+	        console.log(request);
+	        window.location.reload();
 	    };
-	    CreateUserComponent = __decorate([
+	    CreateRequestComponent = __decorate([
 	        core_1.Component({
-	            selector: 'user-create',
-	            templateUrl: 'client/dev/app/components/back-end/users/templates/user-create.html',
-	            styleUrls: ['client/dev/asserts/css/backend-styles.css'],
-	            directives: [
-	                common_1.FORM_DIRECTIVES,
-	                primeng_1.Dialog,
-	                primeng_1.Calendar
-	            ],
+	            selector: 'request-create',
+	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-create.html',
+	            styleUrls: ['client/dev/app/components/back-end/request/templates/request.css'],
+	            directives: [common_1.FORM_DIRECTIVES]
 	        }),
 	        __param(0, core_1.Inject(common_1.FormBuilder)),
-	        __param(1, core_1.Inject(users_1.UserService)), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
-	    ], CreateUserComponent);
-	    return CreateUserComponent;
-	    var _a, _b, _c;
+	        __param(1, core_1.Inject(requests_1.RequestService)), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
+	    ], CreateRequestComponent);
+	    return CreateRequestComponent;
+	    var _a, _b, _c, _d;
 	}());
-	exports.CreateUserComponent = CreateUserComponent;
+	exports.CreateRequestComponent = CreateRequestComponent;
 	
 
 /***/ },
-/* 621 */
+/* 603 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var auth_1 = __webpack_require__(54);
+	var router_1 = __webpack_require__(9);
+	var NavbarComponent = (function () {
+	    function NavbarComponent(_auth, router) {
+	        this._auth = _auth;
+	        this.router = router;
+	    }
+	    NavbarComponent.prototype.logout = function () {
+	        this._auth.logout();
+	        this._auth.logoutClient();
+	        this.router.navigateByUrl('/kshare');
+	    };
+	    NavbarComponent = __decorate([
+	        core_1.Component({
+	            selector: 'nav-bar',
+	            templateUrl: 'client/dev/app/components/back-end/shared/templates/nav-bar.html',
+	            styleUrls: ['client/dev/asserts/css/admin.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
+	    ], NavbarComponent);
+	    return NavbarComponent;
+	    var _a, _b;
+	}());
+	exports.NavbarComponent = NavbarComponent;
+	
+
+/***/ },
+/* 604 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var core_2 = __webpack_require__(1);
+	var router_1 = __webpack_require__(9);
+	var SidebarComponent = (function () {
+	    function SidebarComponent() {
+	    }
+	    __decorate([
+	        core_2.Input(), 
+	        __metadata('design:type', String)
+	    ], SidebarComponent.prototype, "pageTitle", void 0);
+	    SidebarComponent = __decorate([
+	        core_1.Component({
+	            selector: 'sidebar',
+	            templateUrl: 'client/dev/app/components/back-end/shared/templates/side-bar.html',
+	            styleUrls: ['client/dev/asserts/css/admin.css'],
+	            directives: [router_1.ROUTER_DIRECTIVES]
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], SidebarComponent);
+	    return SidebarComponent;
+	}());
+	exports.SidebarComponent = SidebarComponent;
+	
+
+/***/ },
+/* 605 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6823,7 +5316,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 622 */
+/* 606 */
 /***/ function(module, exports) {
 
 	/**
@@ -6855,9 +5348,6 @@ webpackJsonp([2],[
 	                    var chalkboard = document.getElementById('chalkboard');
 	                    var ctx = chalkboard.getContext('2d');
 	                    ctx.drawImage(vid, 5, 5, chalkboard.clientWidth, chalkboard.clientHeight);
-	                    var imgUrl = chalkboard.toDataURL();
-	                    console.log(imgUrl);
-	                    chalkboard.setAttribute('background', 'url(' + imgUrl + ')');
 	                });
 	            }
 	            // }
@@ -6896,7 +5386,68 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 623 */
+/* 607 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var __param = (this && this.__param) || function (paramIndex, decorator) {
+	    return function (target, key) { decorator(target, key, paramIndex); }
+	};
+	var core_1 = __webpack_require__(1);
+	var common_1 = __webpack_require__(18);
+	var request_offer_1 = __webpack_require__(277);
+	var auth_1 = __webpack_require__(54);
+	var CreateOfferComponent = (function () {
+	    function CreateOfferComponent(fb, _offerService, _authService) {
+	        this._offerService = _offerService;
+	        this._authService = _authService;
+	        this.user = localStorage.getItem('username');
+	        this.offerForm = fb.group({
+	            "price": [""],
+	            "numberOfLecture": [""],
+	            "requestId": [""],
+	            "message": [""],
+	            "user": [""]
+	        });
+	    }
+	    CreateOfferComponent.prototype.addOffer = function (offer) {
+	        this._offerService.addOffer(offer).subscribe(function (offer) {
+	            console.log('success');
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	        window.location.reload();
+	    };
+	    __decorate([
+	        core_1.Input('rid'), 
+	        __metadata('design:type', String)
+	    ], CreateOfferComponent.prototype, "rid", void 0);
+	    CreateOfferComponent = __decorate([
+	        core_1.Component({
+	            selector: 'offer-create',
+	            templateUrl: 'client/dev/app/components/front-end/offer/templates/offer-create.html',
+	            directives: [common_1.FORM_DIRECTIVES]
+	        }),
+	        __param(0, core_1.Inject(common_1.FormBuilder)), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object])
+	    ], CreateOfferComponent);
+	    return CreateOfferComponent;
+	    var _a, _b, _c;
+	}());
+	exports.CreateOfferComponent = CreateOfferComponent;
+	
+
+/***/ },
+/* 608 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6930,7 +5481,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 624 */
+/* 609 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6962,7 +5513,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 625 */
+/* 610 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6979,8 +5530,8 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 5/18/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var auth_1 = __webpack_require__(56);
+	var router_1 = __webpack_require__(9);
+	var auth_1 = __webpack_require__(54);
 	var HeaderComponent = (function () {
 	    function HeaderComponent(_auth, router) {
 	        this._auth = _auth;
@@ -7015,7 +5566,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 626 */
+/* 611 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7035,9 +5586,9 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 5/18/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var router_1 = __webpack_require__(7);
-	var auth_1 = __webpack_require__(56);
+	var common_1 = __webpack_require__(18);
+	var router_1 = __webpack_require__(9);
+	var auth_1 = __webpack_require__(54);
 	var LoginComponent = (function () {
 	    function LoginComponent(fb, _authService, router) {
 	        this._authService = _authService;
@@ -7097,7 +5648,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 627 */
+/* 612 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7117,9 +5668,9 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 5/19/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var router_1 = __webpack_require__(7);
-	var auth_1 = __webpack_require__(56);
+	var common_1 = __webpack_require__(18);
+	var router_1 = __webpack_require__(9);
+	var auth_1 = __webpack_require__(54);
 	var RegisterComponent = (function () {
 	    function RegisterComponent(fb, _authService, router) {
 	        this._authService = _authService;
@@ -7158,7 +5709,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 628 */
+/* 613 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7172,8 +5723,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var knowledge_1 = __webpack_require__(40);
+	var router_1 = __webpack_require__(9);
+	var knowledge_1 = __webpack_require__(38);
 	var SideBarComponent = (function () {
 	    function SideBarComponent(_knowledgeService) {
 	        this._knowledgeService = _knowledgeService;
@@ -7216,7 +5767,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 629 */
+/* 614 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7231,12 +5782,12 @@ webpackJsonp([2],[
 	};
 	//cores
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(9);
 	//components
-	var notification_1 = __webpack_require__(281);
+	var notification_1 = __webpack_require__(276);
 	//services
-	var users_1 = __webpack_require__(119);
-	var knowledge_1 = __webpack_require__(40);
+	var users_1 = __webpack_require__(131);
+	var knowledge_1 = __webpack_require__(38);
 	var RequestRecordComponent = (function () {
 	    function RequestRecordComponent(router, route, _userService, _knowledgeService) {
 	        this.router = router;
@@ -7311,18 +5862,18 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 630 */
+/* 615 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var admin_component_1 = __webpack_require__(615);
-	var knowledge_update_1 = __webpack_require__(278);
-	var knowledges_list_1 = __webpack_require__(412);
-	var requests_list_1 = __webpack_require__(414);
-	var request_update_1 = __webpack_require__(279);
-	var badword_update_1 = __webpack_require__(179);
-	var badword_1 = __webpack_require__(411);
-	var user_list_1 = __webpack_require__(417);
+	var admin_component_1 = __webpack_require__(600);
+	var knowledge_update_1 = __webpack_require__(273);
+	var knowledges_list_1 = __webpack_require__(406);
+	var requests_list_1 = __webpack_require__(407);
+	var request_update_1 = __webpack_require__(274);
+	var badword_update_1 = __webpack_require__(272);
+	var badwords_list_1 = __webpack_require__(405);
+	var user_list_1 = __webpack_require__(408);
 	exports.AdminRoutes = [
 	    {
 	        path: 'admin',
@@ -7368,7 +5919,7 @@ webpackJsonp([2],[
 	                children: [
 	                    {
 	                        path: '',
-	                        component: badword_1.BadwordComponent
+	                        component: badwords_list_1.BadwordListComponent
 	                    },
 	                    {
 	                        path: ':id',
@@ -7378,7 +5929,7 @@ webpackJsonp([2],[
 	            },
 	            {
 	                path: '',
-	                redirectTo: 'users'
+	                redirectTo: 'knowledges'
 	            }
 	        ]
 	    }
@@ -7386,23 +5937,23 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 631 */
+/* 616 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	//Root Component
-	var kshare_component_1 = __webpack_require__(428);
+	var kshare_component_1 = __webpack_require__(418);
 	//Function Components
-	var home_1 = __webpack_require__(418);
-	var request_list_1 = __webpack_require__(424);
-	var request_detail_1 = __webpack_require__(423);
-	var request_update_1 = __webpack_require__(425);
-	var request_search_1 = __webpack_require__(280);
-	var kspace_1 = __webpack_require__(421);
-	var kspace_list_1 = __webpack_require__(420);
-	var kspace_info_1 = __webpack_require__(419);
-	var friend_list_1 = __webpack_require__(426);
-	var user_profile_1 = __webpack_require__(427);
+	var home_1 = __webpack_require__(409);
+	var request_list_1 = __webpack_require__(414);
+	var request_detail_1 = __webpack_require__(413);
+	var request_update_1 = __webpack_require__(415);
+	var request_search_1 = __webpack_require__(275);
+	var kspace_1 = __webpack_require__(412);
+	var kspace_list_1 = __webpack_require__(411);
+	var kspace_info_1 = __webpack_require__(410);
+	var friend_list_1 = __webpack_require__(416);
+	var user_profile_1 = __webpack_require__(417);
 	exports.KShareRoutes = [
 	    {
 	        path: '',
@@ -7486,7 +6037,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 632 */
+/* 617 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -7523,9 +6074,9 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 633 */,
-/* 634 */,
-/* 635 */
+/* 618 */,
+/* 619 */,
+/* 620 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7542,15 +6093,165 @@ webpackJsonp([2],[
 	//# sourceMappingURL=Operator.js.map
 
 /***/ },
-/* 636 */,
+/* 621 */,
+/* 622 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var bindCallback_1 = __webpack_require__(728);
+	Observable_1.Observable.bindCallback = bindCallback_1.bindCallback;
+	//# sourceMappingURL=bindCallback.js.map
+
+/***/ },
+/* 623 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var bindNodeCallback_1 = __webpack_require__(729);
+	Observable_1.Observable.bindNodeCallback = bindNodeCallback_1.bindNodeCallback;
+	//# sourceMappingURL=bindNodeCallback.js.map
+
+/***/ },
+/* 624 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var combineLatest_1 = __webpack_require__(280);
+	Observable_1.Observable.combineLatest = combineLatest_1.combineLatestStatic;
+	//# sourceMappingURL=combineLatest.js.map
+
+/***/ },
+/* 625 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var concat_1 = __webpack_require__(730);
+	Observable_1.Observable.concat = concat_1.concat;
+	//# sourceMappingURL=concat.js.map
+
+/***/ },
+/* 626 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var defer_1 = __webpack_require__(731);
+	Observable_1.Observable.defer = defer_1.defer;
+	//# sourceMappingURL=defer.js.map
+
+/***/ },
+/* 627 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var empty_1 = __webpack_require__(732);
+	Observable_1.Observable.empty = empty_1.empty;
+	//# sourceMappingURL=empty.js.map
+
+/***/ },
+/* 628 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var fromEvent_1 = __webpack_require__(734);
+	Observable_1.Observable.fromEvent = fromEvent_1.fromEvent;
+	//# sourceMappingURL=fromEvent.js.map
+
+/***/ },
+/* 629 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var fromEventPattern_1 = __webpack_require__(735);
+	Observable_1.Observable.fromEventPattern = fromEventPattern_1.fromEventPattern;
+	//# sourceMappingURL=fromEventPattern.js.map
+
+/***/ },
+/* 630 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var interval_1 = __webpack_require__(736);
+	Observable_1.Observable.interval = interval_1.interval;
+	//# sourceMappingURL=interval.js.map
+
+/***/ },
+/* 631 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var merge_1 = __webpack_require__(737);
+	Observable_1.Observable.merge = merge_1.merge;
+	//# sourceMappingURL=merge.js.map
+
+/***/ },
+/* 632 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var never_1 = __webpack_require__(738);
+	Observable_1.Observable.never = never_1.never;
+	//# sourceMappingURL=never.js.map
+
+/***/ },
+/* 633 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var of_1 = __webpack_require__(183);
+	Observable_1.Observable.of = of_1.of;
+	//# sourceMappingURL=of.js.map
+
+/***/ },
+/* 634 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var race_1 = __webpack_require__(442);
+	Observable_1.Observable.race = race_1.raceStatic;
+	//# sourceMappingURL=race.js.map
+
+/***/ },
+/* 635 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var range_1 = __webpack_require__(739);
+	Observable_1.Observable.range = range_1.range;
+	//# sourceMappingURL=range.js.map
+
+/***/ },
+/* 636 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var throw_1 = __webpack_require__(740);
+	Observable_1.Observable.throw = throw_1._throw;
+	//# sourceMappingURL=throw.js.map
+
+/***/ },
 /* 637 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var bindCallback_1 = __webpack_require__(743);
-	Observable_1.Observable.bindCallback = bindCallback_1.bindCallback;
-	//# sourceMappingURL=bindCallback.js.map
+	var timer_1 = __webpack_require__(741);
+	Observable_1.Observable.timer = timer_1.timer;
+	//# sourceMappingURL=timer.js.map
 
 /***/ },
 /* 638 */
@@ -7558,9 +6259,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var bindNodeCallback_1 = __webpack_require__(744);
-	Observable_1.Observable.bindNodeCallback = bindNodeCallback_1.bindNodeCallback;
-	//# sourceMappingURL=bindNodeCallback.js.map
+	var zip_1 = __webpack_require__(742);
+	Observable_1.Observable.zip = zip_1.zip;
+	//# sourceMappingURL=zip.js.map
 
 /***/ },
 /* 639 */
@@ -7568,9 +6269,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var combineLatest_1 = __webpack_require__(285);
-	Observable_1.Observable.combineLatest = combineLatest_1.combineLatestStatic;
-	//# sourceMappingURL=combineLatest.js.map
+	var audit_1 = __webpack_require__(743);
+	Observable_1.Observable.prototype.audit = audit_1.audit;
+	//# sourceMappingURL=audit.js.map
 
 /***/ },
 /* 640 */
@@ -7578,9 +6279,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var concat_1 = __webpack_require__(745);
-	Observable_1.Observable.concat = concat_1.concat;
-	//# sourceMappingURL=concat.js.map
+	var auditTime_1 = __webpack_require__(744);
+	Observable_1.Observable.prototype.auditTime = auditTime_1.auditTime;
+	//# sourceMappingURL=auditTime.js.map
 
 /***/ },
 /* 641 */
@@ -7588,9 +6289,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var defer_1 = __webpack_require__(746);
-	Observable_1.Observable.defer = defer_1.defer;
-	//# sourceMappingURL=defer.js.map
+	var buffer_1 = __webpack_require__(745);
+	Observable_1.Observable.prototype.buffer = buffer_1.buffer;
+	//# sourceMappingURL=buffer.js.map
 
 /***/ },
 /* 642 */
@@ -7598,9 +6299,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var empty_1 = __webpack_require__(747);
-	Observable_1.Observable.empty = empty_1.empty;
-	//# sourceMappingURL=empty.js.map
+	var bufferCount_1 = __webpack_require__(746);
+	Observable_1.Observable.prototype.bufferCount = bufferCount_1.bufferCount;
+	//# sourceMappingURL=bufferCount.js.map
 
 /***/ },
 /* 643 */
@@ -7608,9 +6309,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var fromEvent_1 = __webpack_require__(749);
-	Observable_1.Observable.fromEvent = fromEvent_1.fromEvent;
-	//# sourceMappingURL=fromEvent.js.map
+	var bufferTime_1 = __webpack_require__(747);
+	Observable_1.Observable.prototype.bufferTime = bufferTime_1.bufferTime;
+	//# sourceMappingURL=bufferTime.js.map
 
 /***/ },
 /* 644 */
@@ -7618,9 +6319,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var fromEventPattern_1 = __webpack_require__(750);
-	Observable_1.Observable.fromEventPattern = fromEventPattern_1.fromEventPattern;
-	//# sourceMappingURL=fromEventPattern.js.map
+	var bufferToggle_1 = __webpack_require__(748);
+	Observable_1.Observable.prototype.bufferToggle = bufferToggle_1.bufferToggle;
+	//# sourceMappingURL=bufferToggle.js.map
 
 /***/ },
 /* 645 */
@@ -7628,9 +6329,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var interval_1 = __webpack_require__(751);
-	Observable_1.Observable.interval = interval_1.interval;
-	//# sourceMappingURL=interval.js.map
+	var bufferWhen_1 = __webpack_require__(749);
+	Observable_1.Observable.prototype.bufferWhen = bufferWhen_1.bufferWhen;
+	//# sourceMappingURL=bufferWhen.js.map
 
 /***/ },
 /* 646 */
@@ -7638,9 +6339,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var merge_1 = __webpack_require__(752);
-	Observable_1.Observable.merge = merge_1.merge;
-	//# sourceMappingURL=merge.js.map
+	var cache_1 = __webpack_require__(750);
+	Observable_1.Observable.prototype.cache = cache_1.cache;
+	//# sourceMappingURL=cache.js.map
 
 /***/ },
 /* 647 */
@@ -7648,9 +6349,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var never_1 = __webpack_require__(753);
-	Observable_1.Observable.never = never_1.never;
-	//# sourceMappingURL=never.js.map
+	var catch_1 = __webpack_require__(751);
+	Observable_1.Observable.prototype.catch = catch_1._catch;
+	//# sourceMappingURL=catch.js.map
 
 /***/ },
 /* 648 */
@@ -7658,9 +6359,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var of_1 = __webpack_require__(186);
-	Observable_1.Observable.of = of_1.of;
-	//# sourceMappingURL=of.js.map
+	var combineAll_1 = __webpack_require__(752);
+	Observable_1.Observable.prototype.combineAll = combineAll_1.combineAll;
+	//# sourceMappingURL=combineAll.js.map
 
 /***/ },
 /* 649 */
@@ -7668,9 +6369,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var race_1 = __webpack_require__(451);
-	Observable_1.Observable.race = race_1.raceStatic;
-	//# sourceMappingURL=race.js.map
+	var combineLatest_1 = __webpack_require__(280);
+	Observable_1.Observable.prototype.combineLatest = combineLatest_1.combineLatest;
+	//# sourceMappingURL=combineLatest.js.map
 
 /***/ },
 /* 650 */
@@ -7678,9 +6379,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var range_1 = __webpack_require__(754);
-	Observable_1.Observable.range = range_1.range;
-	//# sourceMappingURL=range.js.map
+	var concat_1 = __webpack_require__(281);
+	Observable_1.Observable.prototype.concat = concat_1.concat;
+	//# sourceMappingURL=concat.js.map
 
 /***/ },
 /* 651 */
@@ -7688,9 +6389,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var throw_1 = __webpack_require__(755);
-	Observable_1.Observable.throw = throw_1._throw;
-	//# sourceMappingURL=throw.js.map
+	var concatAll_1 = __webpack_require__(753);
+	Observable_1.Observable.prototype.concatAll = concatAll_1.concatAll;
+	//# sourceMappingURL=concatAll.js.map
 
 /***/ },
 /* 652 */
@@ -7698,9 +6399,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var timer_1 = __webpack_require__(756);
-	Observable_1.Observable.timer = timer_1.timer;
-	//# sourceMappingURL=timer.js.map
+	var concatMap_1 = __webpack_require__(754);
+	Observable_1.Observable.prototype.concatMap = concatMap_1.concatMap;
+	//# sourceMappingURL=concatMap.js.map
 
 /***/ },
 /* 653 */
@@ -7708,9 +6409,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var zip_1 = __webpack_require__(757);
-	Observable_1.Observable.zip = zip_1.zip;
-	//# sourceMappingURL=zip.js.map
+	var concatMapTo_1 = __webpack_require__(755);
+	Observable_1.Observable.prototype.concatMapTo = concatMapTo_1.concatMapTo;
+	//# sourceMappingURL=concatMapTo.js.map
 
 /***/ },
 /* 654 */
@@ -7718,9 +6419,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var audit_1 = __webpack_require__(758);
-	Observable_1.Observable.prototype.audit = audit_1.audit;
-	//# sourceMappingURL=audit.js.map
+	var count_1 = __webpack_require__(756);
+	Observable_1.Observable.prototype.count = count_1.count;
+	//# sourceMappingURL=count.js.map
 
 /***/ },
 /* 655 */
@@ -7728,9 +6429,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var auditTime_1 = __webpack_require__(759);
-	Observable_1.Observable.prototype.auditTime = auditTime_1.auditTime;
-	//# sourceMappingURL=auditTime.js.map
+	var debounce_1 = __webpack_require__(757);
+	Observable_1.Observable.prototype.debounce = debounce_1.debounce;
+	//# sourceMappingURL=debounce.js.map
 
 /***/ },
 /* 656 */
@@ -7738,9 +6439,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var buffer_1 = __webpack_require__(760);
-	Observable_1.Observable.prototype.buffer = buffer_1.buffer;
-	//# sourceMappingURL=buffer.js.map
+	var defaultIfEmpty_1 = __webpack_require__(759);
+	Observable_1.Observable.prototype.defaultIfEmpty = defaultIfEmpty_1.defaultIfEmpty;
+	//# sourceMappingURL=defaultIfEmpty.js.map
 
 /***/ },
 /* 657 */
@@ -7748,9 +6449,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var bufferCount_1 = __webpack_require__(761);
-	Observable_1.Observable.prototype.bufferCount = bufferCount_1.bufferCount;
-	//# sourceMappingURL=bufferCount.js.map
+	var delay_1 = __webpack_require__(760);
+	Observable_1.Observable.prototype.delay = delay_1.delay;
+	//# sourceMappingURL=delay.js.map
 
 /***/ },
 /* 658 */
@@ -7758,9 +6459,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var bufferTime_1 = __webpack_require__(762);
-	Observable_1.Observable.prototype.bufferTime = bufferTime_1.bufferTime;
-	//# sourceMappingURL=bufferTime.js.map
+	var delayWhen_1 = __webpack_require__(761);
+	Observable_1.Observable.prototype.delayWhen = delayWhen_1.delayWhen;
+	//# sourceMappingURL=delayWhen.js.map
 
 /***/ },
 /* 659 */
@@ -7768,9 +6469,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var bufferToggle_1 = __webpack_require__(763);
-	Observable_1.Observable.prototype.bufferToggle = bufferToggle_1.bufferToggle;
-	//# sourceMappingURL=bufferToggle.js.map
+	var dematerialize_1 = __webpack_require__(762);
+	Observable_1.Observable.prototype.dematerialize = dematerialize_1.dematerialize;
+	//# sourceMappingURL=dematerialize.js.map
 
 /***/ },
 /* 660 */
@@ -7778,9 +6479,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var bufferWhen_1 = __webpack_require__(764);
-	Observable_1.Observable.prototype.bufferWhen = bufferWhen_1.bufferWhen;
-	//# sourceMappingURL=bufferWhen.js.map
+	var distinctUntilChanged_1 = __webpack_require__(763);
+	Observable_1.Observable.prototype.distinctUntilChanged = distinctUntilChanged_1.distinctUntilChanged;
+	//# sourceMappingURL=distinctUntilChanged.js.map
 
 /***/ },
 /* 661 */
@@ -7788,9 +6489,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var cache_1 = __webpack_require__(765);
-	Observable_1.Observable.prototype.cache = cache_1.cache;
-	//# sourceMappingURL=cache.js.map
+	var do_1 = __webpack_require__(764);
+	Observable_1.Observable.prototype.do = do_1._do;
+	//# sourceMappingURL=do.js.map
 
 /***/ },
 /* 662 */
@@ -7798,9 +6499,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var catch_1 = __webpack_require__(766);
-	Observable_1.Observable.prototype.catch = catch_1._catch;
-	//# sourceMappingURL=catch.js.map
+	var expand_1 = __webpack_require__(766);
+	Observable_1.Observable.prototype.expand = expand_1.expand;
+	//# sourceMappingURL=expand.js.map
 
 /***/ },
 /* 663 */
@@ -7808,9 +6509,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var combineAll_1 = __webpack_require__(767);
-	Observable_1.Observable.prototype.combineAll = combineAll_1.combineAll;
-	//# sourceMappingURL=combineAll.js.map
+	var filter_1 = __webpack_require__(436);
+	Observable_1.Observable.prototype.filter = filter_1.filter;
+	//# sourceMappingURL=filter.js.map
 
 /***/ },
 /* 664 */
@@ -7818,9 +6519,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var combineLatest_1 = __webpack_require__(285);
-	Observable_1.Observable.prototype.combineLatest = combineLatest_1.combineLatest;
-	//# sourceMappingURL=combineLatest.js.map
+	var finally_1 = __webpack_require__(767);
+	Observable_1.Observable.prototype.finally = finally_1._finally;
+	//# sourceMappingURL=finally.js.map
 
 /***/ },
 /* 665 */
@@ -7828,9 +6529,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var concat_1 = __webpack_require__(286);
-	Observable_1.Observable.prototype.concat = concat_1.concat;
-	//# sourceMappingURL=concat.js.map
+	var first_1 = __webpack_require__(768);
+	Observable_1.Observable.prototype.first = first_1.first;
+	//# sourceMappingURL=first.js.map
 
 /***/ },
 /* 666 */
@@ -7838,9 +6539,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var concatAll_1 = __webpack_require__(768);
-	Observable_1.Observable.prototype.concatAll = concatAll_1.concatAll;
-	//# sourceMappingURL=concatAll.js.map
+	var groupBy_1 = __webpack_require__(769);
+	Observable_1.Observable.prototype.groupBy = groupBy_1.groupBy;
+	//# sourceMappingURL=groupBy.js.map
 
 /***/ },
 /* 667 */
@@ -7848,9 +6549,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var concatMap_1 = __webpack_require__(769);
-	Observable_1.Observable.prototype.concatMap = concatMap_1.concatMap;
-	//# sourceMappingURL=concatMap.js.map
+	var ignoreElements_1 = __webpack_require__(770);
+	Observable_1.Observable.prototype.ignoreElements = ignoreElements_1.ignoreElements;
+	//# sourceMappingURL=ignoreElements.js.map
 
 /***/ },
 /* 668 */
@@ -7858,9 +6559,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var concatMapTo_1 = __webpack_require__(770);
-	Observable_1.Observable.prototype.concatMapTo = concatMapTo_1.concatMapTo;
-	//# sourceMappingURL=concatMapTo.js.map
+	var last_1 = __webpack_require__(771);
+	Observable_1.Observable.prototype.last = last_1.last;
+	//# sourceMappingURL=last.js.map
 
 /***/ },
 /* 669 */
@@ -7868,9 +6569,10 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var count_1 = __webpack_require__(771);
-	Observable_1.Observable.prototype.count = count_1.count;
-	//# sourceMappingURL=count.js.map
+	var let_1 = __webpack_require__(772);
+	Observable_1.Observable.prototype.let = let_1.letProto;
+	Observable_1.Observable.prototype.letBind = let_1.letProto;
+	//# sourceMappingURL=let.js.map
 
 /***/ },
 /* 670 */
@@ -7878,9 +6580,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var debounce_1 = __webpack_require__(772);
-	Observable_1.Observable.prototype.debounce = debounce_1.debounce;
-	//# sourceMappingURL=debounce.js.map
+	var mapTo_1 = __webpack_require__(773);
+	Observable_1.Observable.prototype.mapTo = mapTo_1.mapTo;
+	//# sourceMappingURL=mapTo.js.map
 
 /***/ },
 /* 671 */
@@ -7888,9 +6590,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var defaultIfEmpty_1 = __webpack_require__(774);
-	Observable_1.Observable.prototype.defaultIfEmpty = defaultIfEmpty_1.defaultIfEmpty;
-	//# sourceMappingURL=defaultIfEmpty.js.map
+	var materialize_1 = __webpack_require__(774);
+	Observable_1.Observable.prototype.materialize = materialize_1.materialize;
+	//# sourceMappingURL=materialize.js.map
 
 /***/ },
 /* 672 */
@@ -7898,9 +6600,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var delay_1 = __webpack_require__(775);
-	Observable_1.Observable.prototype.delay = delay_1.delay;
-	//# sourceMappingURL=delay.js.map
+	var merge_1 = __webpack_require__(438);
+	Observable_1.Observable.prototype.merge = merge_1.merge;
+	//# sourceMappingURL=merge.js.map
 
 /***/ },
 /* 673 */
@@ -7908,9 +6610,10 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var delayWhen_1 = __webpack_require__(776);
-	Observable_1.Observable.prototype.delayWhen = delayWhen_1.delayWhen;
-	//# sourceMappingURL=delayWhen.js.map
+	var mergeMapTo_1 = __webpack_require__(440);
+	Observable_1.Observable.prototype.flatMapTo = mergeMapTo_1.mergeMapTo;
+	Observable_1.Observable.prototype.mergeMapTo = mergeMapTo_1.mergeMapTo;
+	//# sourceMappingURL=mergeMapTo.js.map
 
 /***/ },
 /* 674 */
@@ -7918,9 +6621,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var dematerialize_1 = __webpack_require__(777);
-	Observable_1.Observable.prototype.dematerialize = dematerialize_1.dematerialize;
-	//# sourceMappingURL=dematerialize.js.map
+	var multicast_1 = __webpack_require__(116);
+	Observable_1.Observable.prototype.multicast = multicast_1.multicast;
+	//# sourceMappingURL=multicast.js.map
 
 /***/ },
 /* 675 */
@@ -7928,9 +6631,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var distinctUntilChanged_1 = __webpack_require__(778);
-	Observable_1.Observable.prototype.distinctUntilChanged = distinctUntilChanged_1.distinctUntilChanged;
-	//# sourceMappingURL=distinctUntilChanged.js.map
+	var partition_1 = __webpack_require__(775);
+	Observable_1.Observable.prototype.partition = partition_1.partition;
+	//# sourceMappingURL=partition.js.map
 
 /***/ },
 /* 676 */
@@ -7938,9 +6641,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var do_1 = __webpack_require__(779);
-	Observable_1.Observable.prototype.do = do_1._do;
-	//# sourceMappingURL=do.js.map
+	var pluck_1 = __webpack_require__(776);
+	Observable_1.Observable.prototype.pluck = pluck_1.pluck;
+	//# sourceMappingURL=pluck.js.map
 
 /***/ },
 /* 677 */
@@ -7948,9 +6651,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var expand_1 = __webpack_require__(781);
-	Observable_1.Observable.prototype.expand = expand_1.expand;
-	//# sourceMappingURL=expand.js.map
+	var publishBehavior_1 = __webpack_require__(778);
+	Observable_1.Observable.prototype.publishBehavior = publishBehavior_1.publishBehavior;
+	//# sourceMappingURL=publishBehavior.js.map
 
 /***/ },
 /* 678 */
@@ -7958,9 +6661,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var filter_1 = __webpack_require__(445);
-	Observable_1.Observable.prototype.filter = filter_1.filter;
-	//# sourceMappingURL=filter.js.map
+	var publishLast_1 = __webpack_require__(779);
+	Observable_1.Observable.prototype.publishLast = publishLast_1.publishLast;
+	//# sourceMappingURL=publishLast.js.map
 
 /***/ },
 /* 679 */
@@ -7968,9 +6671,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var finally_1 = __webpack_require__(782);
-	Observable_1.Observable.prototype.finally = finally_1._finally;
-	//# sourceMappingURL=finally.js.map
+	var publishReplay_1 = __webpack_require__(441);
+	Observable_1.Observable.prototype.publishReplay = publishReplay_1.publishReplay;
+	//# sourceMappingURL=publishReplay.js.map
 
 /***/ },
 /* 680 */
@@ -7978,9 +6681,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var first_1 = __webpack_require__(783);
-	Observable_1.Observable.prototype.first = first_1.first;
-	//# sourceMappingURL=first.js.map
+	var race_1 = __webpack_require__(442);
+	Observable_1.Observable.prototype.race = race_1.race;
+	//# sourceMappingURL=race.js.map
 
 /***/ },
 /* 681 */
@@ -7988,9 +6691,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var groupBy_1 = __webpack_require__(784);
-	Observable_1.Observable.prototype.groupBy = groupBy_1.groupBy;
-	//# sourceMappingURL=groupBy.js.map
+	var repeat_1 = __webpack_require__(781);
+	Observable_1.Observable.prototype.repeat = repeat_1.repeat;
+	//# sourceMappingURL=repeat.js.map
 
 /***/ },
 /* 682 */
@@ -7998,9 +6701,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var ignoreElements_1 = __webpack_require__(785);
-	Observable_1.Observable.prototype.ignoreElements = ignoreElements_1.ignoreElements;
-	//# sourceMappingURL=ignoreElements.js.map
+	var retry_1 = __webpack_require__(782);
+	Observable_1.Observable.prototype.retry = retry_1.retry;
+	//# sourceMappingURL=retry.js.map
 
 /***/ },
 /* 683 */
@@ -8008,9 +6711,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var last_1 = __webpack_require__(786);
-	Observable_1.Observable.prototype.last = last_1.last;
-	//# sourceMappingURL=last.js.map
+	var retryWhen_1 = __webpack_require__(783);
+	Observable_1.Observable.prototype.retryWhen = retryWhen_1.retryWhen;
+	//# sourceMappingURL=retryWhen.js.map
 
 /***/ },
 /* 684 */
@@ -8018,10 +6721,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var let_1 = __webpack_require__(787);
-	Observable_1.Observable.prototype.let = let_1.letProto;
-	Observable_1.Observable.prototype.letBind = let_1.letProto;
-	//# sourceMappingURL=let.js.map
+	var sample_1 = __webpack_require__(784);
+	Observable_1.Observable.prototype.sample = sample_1.sample;
+	//# sourceMappingURL=sample.js.map
 
 /***/ },
 /* 685 */
@@ -8029,9 +6731,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var mapTo_1 = __webpack_require__(788);
-	Observable_1.Observable.prototype.mapTo = mapTo_1.mapTo;
-	//# sourceMappingURL=mapTo.js.map
+	var sampleTime_1 = __webpack_require__(785);
+	Observable_1.Observable.prototype.sampleTime = sampleTime_1.sampleTime;
+	//# sourceMappingURL=sampleTime.js.map
 
 /***/ },
 /* 686 */
@@ -8039,9 +6741,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var materialize_1 = __webpack_require__(789);
-	Observable_1.Observable.prototype.materialize = materialize_1.materialize;
-	//# sourceMappingURL=materialize.js.map
+	var scan_1 = __webpack_require__(786);
+	Observable_1.Observable.prototype.scan = scan_1.scan;
+	//# sourceMappingURL=scan.js.map
 
 /***/ },
 /* 687 */
@@ -8049,9 +6751,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var merge_1 = __webpack_require__(447);
-	Observable_1.Observable.prototype.merge = merge_1.merge;
-	//# sourceMappingURL=merge.js.map
+	var share_1 = __webpack_require__(787);
+	Observable_1.Observable.prototype.share = share_1.share;
+	//# sourceMappingURL=share.js.map
 
 /***/ },
 /* 688 */
@@ -8059,10 +6761,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var mergeMapTo_1 = __webpack_require__(449);
-	Observable_1.Observable.prototype.flatMapTo = mergeMapTo_1.mergeMapTo;
-	Observable_1.Observable.prototype.mergeMapTo = mergeMapTo_1.mergeMapTo;
-	//# sourceMappingURL=mergeMapTo.js.map
+	var single_1 = __webpack_require__(788);
+	Observable_1.Observable.prototype.single = single_1.single;
+	//# sourceMappingURL=single.js.map
 
 /***/ },
 /* 689 */
@@ -8070,9 +6771,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var multicast_1 = __webpack_require__(120);
-	Observable_1.Observable.prototype.multicast = multicast_1.multicast;
-	//# sourceMappingURL=multicast.js.map
+	var skip_1 = __webpack_require__(789);
+	Observable_1.Observable.prototype.skip = skip_1.skip;
+	//# sourceMappingURL=skip.js.map
 
 /***/ },
 /* 690 */
@@ -8080,9 +6781,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var partition_1 = __webpack_require__(790);
-	Observable_1.Observable.prototype.partition = partition_1.partition;
-	//# sourceMappingURL=partition.js.map
+	var skipUntil_1 = __webpack_require__(790);
+	Observable_1.Observable.prototype.skipUntil = skipUntil_1.skipUntil;
+	//# sourceMappingURL=skipUntil.js.map
 
 /***/ },
 /* 691 */
@@ -8090,9 +6791,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var pluck_1 = __webpack_require__(791);
-	Observable_1.Observable.prototype.pluck = pluck_1.pluck;
-	//# sourceMappingURL=pluck.js.map
+	var skipWhile_1 = __webpack_require__(791);
+	Observable_1.Observable.prototype.skipWhile = skipWhile_1.skipWhile;
+	//# sourceMappingURL=skipWhile.js.map
 
 /***/ },
 /* 692 */
@@ -8100,9 +6801,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var publishBehavior_1 = __webpack_require__(793);
-	Observable_1.Observable.prototype.publishBehavior = publishBehavior_1.publishBehavior;
-	//# sourceMappingURL=publishBehavior.js.map
+	var startWith_1 = __webpack_require__(792);
+	Observable_1.Observable.prototype.startWith = startWith_1.startWith;
+	//# sourceMappingURL=startWith.js.map
 
 /***/ },
 /* 693 */
@@ -8110,9 +6811,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var publishLast_1 = __webpack_require__(794);
-	Observable_1.Observable.prototype.publishLast = publishLast_1.publishLast;
-	//# sourceMappingURL=publishLast.js.map
+	var subscribeOn_1 = __webpack_require__(793);
+	Observable_1.Observable.prototype.subscribeOn = subscribeOn_1.subscribeOn;
+	//# sourceMappingURL=subscribeOn.js.map
 
 /***/ },
 /* 694 */
@@ -8120,9 +6821,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var publishReplay_1 = __webpack_require__(450);
-	Observable_1.Observable.prototype.publishReplay = publishReplay_1.publishReplay;
-	//# sourceMappingURL=publishReplay.js.map
+	var switch_1 = __webpack_require__(794);
+	Observable_1.Observable.prototype.switch = switch_1._switch;
+	//# sourceMappingURL=switch.js.map
 
 /***/ },
 /* 695 */
@@ -8130,9 +6831,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var race_1 = __webpack_require__(451);
-	Observable_1.Observable.prototype.race = race_1.race;
-	//# sourceMappingURL=race.js.map
+	var switchMap_1 = __webpack_require__(795);
+	Observable_1.Observable.prototype.switchMap = switchMap_1.switchMap;
+	//# sourceMappingURL=switchMap.js.map
 
 /***/ },
 /* 696 */
@@ -8140,9 +6841,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var repeat_1 = __webpack_require__(796);
-	Observable_1.Observable.prototype.repeat = repeat_1.repeat;
-	//# sourceMappingURL=repeat.js.map
+	var switchMapTo_1 = __webpack_require__(796);
+	Observable_1.Observable.prototype.switchMapTo = switchMapTo_1.switchMapTo;
+	//# sourceMappingURL=switchMapTo.js.map
 
 /***/ },
 /* 697 */
@@ -8150,9 +6851,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var retry_1 = __webpack_require__(797);
-	Observable_1.Observable.prototype.retry = retry_1.retry;
-	//# sourceMappingURL=retry.js.map
+	var takeLast_1 = __webpack_require__(798);
+	Observable_1.Observable.prototype.takeLast = takeLast_1.takeLast;
+	//# sourceMappingURL=takeLast.js.map
 
 /***/ },
 /* 698 */
@@ -8160,9 +6861,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var retryWhen_1 = __webpack_require__(798);
-	Observable_1.Observable.prototype.retryWhen = retryWhen_1.retryWhen;
-	//# sourceMappingURL=retryWhen.js.map
+	var takeUntil_1 = __webpack_require__(799);
+	Observable_1.Observable.prototype.takeUntil = takeUntil_1.takeUntil;
+	//# sourceMappingURL=takeUntil.js.map
 
 /***/ },
 /* 699 */
@@ -8170,9 +6871,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var sample_1 = __webpack_require__(799);
-	Observable_1.Observable.prototype.sample = sample_1.sample;
-	//# sourceMappingURL=sample.js.map
+	var takeWhile_1 = __webpack_require__(800);
+	Observable_1.Observable.prototype.takeWhile = takeWhile_1.takeWhile;
+	//# sourceMappingURL=takeWhile.js.map
 
 /***/ },
 /* 700 */
@@ -8180,9 +6881,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var sampleTime_1 = __webpack_require__(800);
-	Observable_1.Observable.prototype.sampleTime = sampleTime_1.sampleTime;
-	//# sourceMappingURL=sampleTime.js.map
+	var throttle_1 = __webpack_require__(801);
+	Observable_1.Observable.prototype.throttle = throttle_1.throttle;
+	//# sourceMappingURL=throttle.js.map
 
 /***/ },
 /* 701 */
@@ -8190,9 +6891,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var scan_1 = __webpack_require__(801);
-	Observable_1.Observable.prototype.scan = scan_1.scan;
-	//# sourceMappingURL=scan.js.map
+	var throttleTime_1 = __webpack_require__(802);
+	Observable_1.Observable.prototype.throttleTime = throttleTime_1.throttleTime;
+	//# sourceMappingURL=throttleTime.js.map
 
 /***/ },
 /* 702 */
@@ -8200,9 +6901,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var share_1 = __webpack_require__(802);
-	Observable_1.Observable.prototype.share = share_1.share;
-	//# sourceMappingURL=share.js.map
+	var timeout_1 = __webpack_require__(803);
+	Observable_1.Observable.prototype.timeout = timeout_1.timeout;
+	//# sourceMappingURL=timeout.js.map
 
 /***/ },
 /* 703 */
@@ -8210,9 +6911,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var single_1 = __webpack_require__(803);
-	Observable_1.Observable.prototype.single = single_1.single;
-	//# sourceMappingURL=single.js.map
+	var timeoutWith_1 = __webpack_require__(804);
+	Observable_1.Observable.prototype.timeoutWith = timeoutWith_1.timeoutWith;
+	//# sourceMappingURL=timeoutWith.js.map
 
 /***/ },
 /* 704 */
@@ -8220,9 +6921,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var skip_1 = __webpack_require__(804);
-	Observable_1.Observable.prototype.skip = skip_1.skip;
-	//# sourceMappingURL=skip.js.map
+	var toArray_1 = __webpack_require__(805);
+	Observable_1.Observable.prototype.toArray = toArray_1.toArray;
+	//# sourceMappingURL=toArray.js.map
 
 /***/ },
 /* 705 */
@@ -8230,9 +6931,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var skipUntil_1 = __webpack_require__(805);
-	Observable_1.Observable.prototype.skipUntil = skipUntil_1.skipUntil;
-	//# sourceMappingURL=skipUntil.js.map
+	var window_1 = __webpack_require__(806);
+	Observable_1.Observable.prototype.window = window_1.window;
+	//# sourceMappingURL=window.js.map
 
 /***/ },
 /* 706 */
@@ -8240,9 +6941,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var skipWhile_1 = __webpack_require__(806);
-	Observable_1.Observable.prototype.skipWhile = skipWhile_1.skipWhile;
-	//# sourceMappingURL=skipWhile.js.map
+	var windowCount_1 = __webpack_require__(807);
+	Observable_1.Observable.prototype.windowCount = windowCount_1.windowCount;
+	//# sourceMappingURL=windowCount.js.map
 
 /***/ },
 /* 707 */
@@ -8250,9 +6951,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var startWith_1 = __webpack_require__(807);
-	Observable_1.Observable.prototype.startWith = startWith_1.startWith;
-	//# sourceMappingURL=startWith.js.map
+	var windowTime_1 = __webpack_require__(808);
+	Observable_1.Observable.prototype.windowTime = windowTime_1.windowTime;
+	//# sourceMappingURL=windowTime.js.map
 
 /***/ },
 /* 708 */
@@ -8260,9 +6961,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var subscribeOn_1 = __webpack_require__(808);
-	Observable_1.Observable.prototype.subscribeOn = subscribeOn_1.subscribeOn;
-	//# sourceMappingURL=subscribeOn.js.map
+	var windowToggle_1 = __webpack_require__(809);
+	Observable_1.Observable.prototype.windowToggle = windowToggle_1.windowToggle;
+	//# sourceMappingURL=windowToggle.js.map
 
 /***/ },
 /* 709 */
@@ -8270,9 +6971,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var switch_1 = __webpack_require__(809);
-	Observable_1.Observable.prototype.switch = switch_1._switch;
-	//# sourceMappingURL=switch.js.map
+	var windowWhen_1 = __webpack_require__(810);
+	Observable_1.Observable.prototype.windowWhen = windowWhen_1.windowWhen;
+	//# sourceMappingURL=windowWhen.js.map
 
 /***/ },
 /* 710 */
@@ -8280,9 +6981,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var switchMap_1 = __webpack_require__(810);
-	Observable_1.Observable.prototype.switchMap = switchMap_1.switchMap;
-	//# sourceMappingURL=switchMap.js.map
+	var withLatestFrom_1 = __webpack_require__(811);
+	Observable_1.Observable.prototype.withLatestFrom = withLatestFrom_1.withLatestFrom;
+	//# sourceMappingURL=withLatestFrom.js.map
 
 /***/ },
 /* 711 */
@@ -8290,9 +6991,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var switchMapTo_1 = __webpack_require__(811);
-	Observable_1.Observable.prototype.switchMapTo = switchMapTo_1.switchMapTo;
-	//# sourceMappingURL=switchMapTo.js.map
+	var zip_1 = __webpack_require__(283);
+	Observable_1.Observable.prototype.zip = zip_1.zipProto;
+	//# sourceMappingURL=zip.js.map
 
 /***/ },
 /* 712 */
@@ -8300,163 +7001,13 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var takeLast_1 = __webpack_require__(813);
-	Observable_1.Observable.prototype.takeLast = takeLast_1.takeLast;
-	//# sourceMappingURL=takeLast.js.map
-
-/***/ },
-/* 713 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var takeUntil_1 = __webpack_require__(814);
-	Observable_1.Observable.prototype.takeUntil = takeUntil_1.takeUntil;
-	//# sourceMappingURL=takeUntil.js.map
-
-/***/ },
-/* 714 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var takeWhile_1 = __webpack_require__(815);
-	Observable_1.Observable.prototype.takeWhile = takeWhile_1.takeWhile;
-	//# sourceMappingURL=takeWhile.js.map
-
-/***/ },
-/* 715 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var throttle_1 = __webpack_require__(816);
-	Observable_1.Observable.prototype.throttle = throttle_1.throttle;
-	//# sourceMappingURL=throttle.js.map
-
-/***/ },
-/* 716 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var throttleTime_1 = __webpack_require__(817);
-	Observable_1.Observable.prototype.throttleTime = throttleTime_1.throttleTime;
-	//# sourceMappingURL=throttleTime.js.map
-
-/***/ },
-/* 717 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var timeout_1 = __webpack_require__(818);
-	Observable_1.Observable.prototype.timeout = timeout_1.timeout;
-	//# sourceMappingURL=timeout.js.map
-
-/***/ },
-/* 718 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var timeoutWith_1 = __webpack_require__(819);
-	Observable_1.Observable.prototype.timeoutWith = timeoutWith_1.timeoutWith;
-	//# sourceMappingURL=timeoutWith.js.map
-
-/***/ },
-/* 719 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var toArray_1 = __webpack_require__(820);
-	Observable_1.Observable.prototype.toArray = toArray_1.toArray;
-	//# sourceMappingURL=toArray.js.map
-
-/***/ },
-/* 720 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var window_1 = __webpack_require__(821);
-	Observable_1.Observable.prototype.window = window_1.window;
-	//# sourceMappingURL=window.js.map
-
-/***/ },
-/* 721 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var windowCount_1 = __webpack_require__(822);
-	Observable_1.Observable.prototype.windowCount = windowCount_1.windowCount;
-	//# sourceMappingURL=windowCount.js.map
-
-/***/ },
-/* 722 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var windowTime_1 = __webpack_require__(823);
-	Observable_1.Observable.prototype.windowTime = windowTime_1.windowTime;
-	//# sourceMappingURL=windowTime.js.map
-
-/***/ },
-/* 723 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var windowToggle_1 = __webpack_require__(824);
-	Observable_1.Observable.prototype.windowToggle = windowToggle_1.windowToggle;
-	//# sourceMappingURL=windowToggle.js.map
-
-/***/ },
-/* 724 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var windowWhen_1 = __webpack_require__(825);
-	Observable_1.Observable.prototype.windowWhen = windowWhen_1.windowWhen;
-	//# sourceMappingURL=windowWhen.js.map
-
-/***/ },
-/* 725 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var withLatestFrom_1 = __webpack_require__(826);
-	Observable_1.Observable.prototype.withLatestFrom = withLatestFrom_1.withLatestFrom;
-	//# sourceMappingURL=withLatestFrom.js.map
-
-/***/ },
-/* 726 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var zip_1 = __webpack_require__(288);
-	Observable_1.Observable.prototype.zip = zip_1.zipProto;
-	//# sourceMappingURL=zip.js.map
-
-/***/ },
-/* 727 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var zipAll_1 = __webpack_require__(827);
+	var zipAll_1 = __webpack_require__(812);
 	Observable_1.Observable.prototype.zipAll = zipAll_1.zipAll;
 	//# sourceMappingURL=zipAll.js.map
 
 /***/ },
-/* 728 */,
-/* 729 */
+/* 713 */,
+/* 714 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8466,9 +7017,9 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(37);
-	var AsyncSubject_1 = __webpack_require__(182);
+	var tryCatch_1 = __webpack_require__(41);
+	var errorObject_1 = __webpack_require__(34);
+	var AsyncSubject_1 = __webpack_require__(179);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -8603,7 +7154,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=BoundCallbackObservable.js.map
 
 /***/ },
-/* 730 */
+/* 715 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8613,9 +7164,9 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(37);
-	var AsyncSubject_1 = __webpack_require__(182);
+	var tryCatch_1 = __webpack_require__(41);
+	var errorObject_1 = __webpack_require__(34);
+	var AsyncSubject_1 = __webpack_require__(179);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -8754,7 +7305,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=BoundNodeCallbackObservable.js.map
 
 /***/ },
-/* 731 */
+/* 716 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8764,8 +7315,8 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var subscribeToResult_1 = __webpack_require__(14);
-	var OuterSubscriber_1 = __webpack_require__(13);
+	var subscribeToResult_1 = __webpack_require__(13);
+	var OuterSubscriber_1 = __webpack_require__(12);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -8852,7 +7403,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=DeferObservable.js.map
 
 /***/ },
-/* 732 */
+/* 717 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8939,8 +7490,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=ErrorObservable.js.map
 
 /***/ },
-/* 733 */,
-/* 734 */
+/* 718 */,
+/* 719 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8950,9 +7501,9 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(37);
-	var Subscription_1 = __webpack_require__(41);
+	var tryCatch_1 = __webpack_require__(41);
+	var errorObject_1 = __webpack_require__(34);
+	var Subscription_1 = __webpack_require__(39);
 	function isNodeStyleEventEmmitter(sourceObj) {
 	    return !!sourceObj && typeof sourceObj.addListener === 'function' && typeof sourceObj.removeListener === 'function';
 	}
@@ -9039,7 +7590,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=FromEventObservable.js.map
 
 /***/ },
-/* 735 */
+/* 720 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9049,9 +7600,9 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var Subscription_1 = __webpack_require__(41);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(37);
+	var Subscription_1 = __webpack_require__(39);
+	var tryCatch_1 = __webpack_require__(41);
+	var errorObject_1 = __webpack_require__(34);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -9105,8 +7656,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=FromEventPatternObservable.js.map
 
 /***/ },
-/* 736 */,
-/* 737 */
+/* 721 */,
+/* 722 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9115,9 +7666,9 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var isNumeric_1 = __webpack_require__(292);
+	var isNumeric_1 = __webpack_require__(287);
 	var Observable_1 = __webpack_require__(2);
-	var async_1 = __webpack_require__(42);
+	var async_1 = __webpack_require__(40);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -9199,8 +7750,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=IntervalObservable.js.map
 
 /***/ },
-/* 738 */,
-/* 739 */
+/* 723 */,
+/* 724 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9210,7 +7761,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var noop_1 = __webpack_require__(457);
+	var noop_1 = __webpack_require__(448);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -9264,7 +7815,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=NeverObservable.js.map
 
 /***/ },
-/* 740 */
+/* 725 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9365,7 +7916,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=RangeObservable.js.map
 
 /***/ },
-/* 741 */
+/* 726 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9375,8 +7926,8 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var asap_1 = __webpack_require__(452);
-	var isNumeric_1 = __webpack_require__(292);
+	var asap_1 = __webpack_require__(443);
+	var isNumeric_1 = __webpack_require__(287);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -9421,7 +7972,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=SubscribeOnObservable.js.map
 
 /***/ },
-/* 742 */
+/* 727 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9430,11 +7981,11 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var isNumeric_1 = __webpack_require__(292);
+	var isNumeric_1 = __webpack_require__(287);
 	var Observable_1 = __webpack_require__(2);
-	var async_1 = __webpack_require__(42);
-	var isScheduler_1 = __webpack_require__(97);
-	var isDate_1 = __webpack_require__(192);
+	var async_1 = __webpack_require__(40);
+	var isScheduler_1 = __webpack_require__(95);
+	var isDate_1 = __webpack_require__(189);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -9533,134 +8084,134 @@ webpackJsonp([2],[
 	//# sourceMappingURL=TimerObservable.js.map
 
 /***/ },
-/* 743 */
+/* 728 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var BoundCallbackObservable_1 = __webpack_require__(729);
+	var BoundCallbackObservable_1 = __webpack_require__(714);
 	exports.bindCallback = BoundCallbackObservable_1.BoundCallbackObservable.create;
 	//# sourceMappingURL=bindCallback.js.map
 
 /***/ },
-/* 744 */
+/* 729 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var BoundNodeCallbackObservable_1 = __webpack_require__(730);
+	var BoundNodeCallbackObservable_1 = __webpack_require__(715);
 	exports.bindNodeCallback = BoundNodeCallbackObservable_1.BoundNodeCallbackObservable.create;
 	//# sourceMappingURL=bindNodeCallback.js.map
 
 /***/ },
-/* 745 */
+/* 730 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var concat_1 = __webpack_require__(286);
+	var concat_1 = __webpack_require__(281);
 	exports.concat = concat_1.concatStatic;
 	//# sourceMappingURL=concat.js.map
 
 /***/ },
-/* 746 */
+/* 731 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var DeferObservable_1 = __webpack_require__(731);
+	var DeferObservable_1 = __webpack_require__(716);
 	exports.defer = DeferObservable_1.DeferObservable.create;
 	//# sourceMappingURL=defer.js.map
 
 /***/ },
-/* 747 */
+/* 732 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var EmptyObservable_1 = __webpack_require__(82);
+	var EmptyObservable_1 = __webpack_require__(80);
 	exports.empty = EmptyObservable_1.EmptyObservable.create;
 	//# sourceMappingURL=empty.js.map
 
 /***/ },
-/* 748 */,
-/* 749 */
+/* 733 */,
+/* 734 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var FromEventObservable_1 = __webpack_require__(734);
+	var FromEventObservable_1 = __webpack_require__(719);
 	exports.fromEvent = FromEventObservable_1.FromEventObservable.create;
 	//# sourceMappingURL=fromEvent.js.map
 
 /***/ },
-/* 750 */
+/* 735 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var FromEventPatternObservable_1 = __webpack_require__(735);
+	var FromEventPatternObservable_1 = __webpack_require__(720);
 	exports.fromEventPattern = FromEventPatternObservable_1.FromEventPatternObservable.create;
 	//# sourceMappingURL=fromEventPattern.js.map
 
 /***/ },
-/* 751 */
+/* 736 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var IntervalObservable_1 = __webpack_require__(737);
+	var IntervalObservable_1 = __webpack_require__(722);
 	exports.interval = IntervalObservable_1.IntervalObservable.create;
 	//# sourceMappingURL=interval.js.map
 
 /***/ },
-/* 752 */
+/* 737 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var merge_1 = __webpack_require__(447);
+	var merge_1 = __webpack_require__(438);
 	exports.merge = merge_1.mergeStatic;
 	//# sourceMappingURL=merge.js.map
 
 /***/ },
-/* 753 */
+/* 738 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var NeverObservable_1 = __webpack_require__(739);
+	var NeverObservable_1 = __webpack_require__(724);
 	exports.never = NeverObservable_1.NeverObservable.create;
 	//# sourceMappingURL=never.js.map
 
 /***/ },
-/* 754 */
+/* 739 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var RangeObservable_1 = __webpack_require__(740);
+	var RangeObservable_1 = __webpack_require__(725);
 	exports.range = RangeObservable_1.RangeObservable.create;
 	//# sourceMappingURL=range.js.map
 
 /***/ },
-/* 755 */
+/* 740 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ErrorObservable_1 = __webpack_require__(732);
+	var ErrorObservable_1 = __webpack_require__(717);
 	exports._throw = ErrorObservable_1.ErrorObservable.create;
 	//# sourceMappingURL=throw.js.map
 
 /***/ },
-/* 756 */
+/* 741 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TimerObservable_1 = __webpack_require__(742);
+	var TimerObservable_1 = __webpack_require__(727);
 	exports.timer = TimerObservable_1.TimerObservable.create;
 	//# sourceMappingURL=timer.js.map
 
 /***/ },
-/* 757 */
+/* 742 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var zip_1 = __webpack_require__(288);
+	var zip_1 = __webpack_require__(283);
 	exports.zip = zip_1.zipStatic;
 	//# sourceMappingURL=zip.js.map
 
 /***/ },
-/* 758 */
+/* 743 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9669,10 +8220,10 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(37);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var tryCatch_1 = __webpack_require__(41);
+	var errorObject_1 = __webpack_require__(34);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * @param durationSelector
 	 * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
@@ -9741,7 +8292,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=audit.js.map
 
 /***/ },
-/* 759 */
+/* 744 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9750,7 +8301,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var async_1 = __webpack_require__(42);
+	var async_1 = __webpack_require__(40);
 	var Subscriber_1 = __webpack_require__(6);
 	/**
 	 * @param delay
@@ -9815,7 +8366,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=auditTime.js.map
 
 /***/ },
-/* 760 */
+/* 745 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9824,8 +8375,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Buffers the source Observable values until `closingNotifier` emits.
 	 *
@@ -9896,7 +8447,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=buffer.js.map
 
 /***/ },
-/* 761 */
+/* 746 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10014,7 +8565,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=bufferCount.js.map
 
 /***/ },
-/* 762 */
+/* 747 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10024,7 +8575,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var async_1 = __webpack_require__(42);
+	var async_1 = __webpack_require__(40);
 	/**
 	 * Buffers the source Observable values for a specific time period.
 	 *
@@ -10167,7 +8718,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=bufferTime.js.map
 
 /***/ },
-/* 763 */
+/* 748 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10176,9 +8727,9 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscription_1 = __webpack_require__(41);
-	var subscribeToResult_1 = __webpack_require__(14);
-	var OuterSubscriber_1 = __webpack_require__(13);
+	var Subscription_1 = __webpack_require__(39);
+	var subscribeToResult_1 = __webpack_require__(13);
+	var OuterSubscriber_1 = __webpack_require__(12);
 	/**
 	 * Buffers the source Observable values starting from an emission from
 	 * `openings` and ending when the output of `closingSelector` emits.
@@ -10324,7 +8875,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=bufferToggle.js.map
 
 /***/ },
-/* 764 */
+/* 749 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10333,11 +8884,11 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscription_1 = __webpack_require__(41);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(37);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var Subscription_1 = __webpack_require__(39);
+	var tryCatch_1 = __webpack_require__(41);
+	var errorObject_1 = __webpack_require__(34);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Buffers the source Observable values, using a factory function of closing
 	 * Observables to determine when to close, emit, and reset the buffer.
@@ -10451,11 +9002,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=bufferWhen.js.map
 
 /***/ },
-/* 765 */
+/* 750 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var publishReplay_1 = __webpack_require__(450);
+	var publishReplay_1 = __webpack_require__(441);
 	/**
 	 * @param bufferSize
 	 * @param windowTime
@@ -10473,7 +9024,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=cache.js.map
 
 /***/ },
-/* 766 */
+/* 751 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10545,11 +9096,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=catch.js.map
 
 /***/ },
-/* 767 */
+/* 752 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var combineLatest_1 = __webpack_require__(285);
+	var combineLatest_1 = __webpack_require__(280);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable by waiting
 	 * for the outer Observable to complete, then applying {@link combineLatest}.
@@ -10597,11 +9148,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=combineAll.js.map
 
 /***/ },
-/* 768 */
+/* 753 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeAll_1 = __webpack_require__(187);
+	var mergeAll_1 = __webpack_require__(184);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable by
 	 * concatenating the inner Observables in order.
@@ -10651,11 +9202,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=concatAll.js.map
 
 /***/ },
-/* 769 */
+/* 754 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeMap_1 = __webpack_require__(448);
+	var mergeMap_1 = __webpack_require__(439);
 	/**
 	 * Projects each source value to an Observable which is merged in the output
 	 * Observable, in a serialized fashion waiting for each one to complete before
@@ -10719,11 +9270,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=concatMap.js.map
 
 /***/ },
-/* 770 */
+/* 755 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeMapTo_1 = __webpack_require__(449);
+	var mergeMapTo_1 = __webpack_require__(440);
 	/**
 	 * Projects each source value to the same Observable which is merged multiple
 	 * times in a serialized fashion on the output Observable.
@@ -10781,7 +9332,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=concatMapTo.js.map
 
 /***/ },
-/* 771 */
+/* 756 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10894,7 +9445,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=count.js.map
 
 /***/ },
-/* 772 */
+/* 757 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10903,8 +9454,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Returns the source Observable delayed by the computed debounce duration,
 	 * with the duration lengthened if a new source item arrives before the delay
@@ -10996,8 +9547,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=debounce.js.map
 
 /***/ },
-/* 773 */,
-/* 774 */
+/* 758 */,
+/* 759 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11055,7 +9606,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=defaultIfEmpty.js.map
 
 /***/ },
-/* 775 */
+/* 760 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11064,10 +9615,10 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var async_1 = __webpack_require__(42);
-	var isDate_1 = __webpack_require__(192);
+	var async_1 = __webpack_require__(40);
+	var isDate_1 = __webpack_require__(189);
 	var Subscriber_1 = __webpack_require__(6);
-	var Notification_1 = __webpack_require__(184);
+	var Notification_1 = __webpack_require__(181);
 	/**
 	 * Delays the emission of items from the source Observable by a given timeout or
 	 * until a given Date.
@@ -11195,7 +9746,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=delay.js.map
 
 /***/ },
-/* 776 */
+/* 761 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11206,8 +9757,8 @@ webpackJsonp([2],[
 	};
 	var Subscriber_1 = __webpack_require__(6);
 	var Observable_1 = __webpack_require__(2);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Returns an Observable that delays the emission of items from the source Observable
 	 * by a subscription delay and a delay selector function for each element.
@@ -11354,7 +9905,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=delayWhen.js.map
 
 /***/ },
-/* 777 */
+/* 762 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11403,7 +9954,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=dematerialize.js.map
 
 /***/ },
-/* 778 */
+/* 763 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11413,8 +9964,8 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(37);
+	var tryCatch_1 = __webpack_require__(41);
+	var errorObject_1 = __webpack_require__(34);
 	/**
 	 * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
 	 * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
@@ -11485,7 +10036,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=distinctUntilChanged.js.map
 
 /***/ },
-/* 779 */
+/* 764 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11602,8 +10153,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=do.js.map
 
 /***/ },
-/* 780 */,
-/* 781 */
+/* 765 */,
+/* 766 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11612,10 +10163,10 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(37);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var tryCatch_1 = __webpack_require__(41);
+	var errorObject_1 = __webpack_require__(34);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Returns an Observable where for each item in the source Observable, the supplied function is applied to each item,
 	 * resulting in a new value to then be applied again with the function.
@@ -11723,7 +10274,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=expand.js.map
 
 /***/ },
-/* 782 */
+/* 767 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11733,7 +10284,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var Subscription_1 = __webpack_require__(41);
+	var Subscription_1 = __webpack_require__(39);
 	/**
 	 * Returns an Observable that mirrors the source Observable, but will call a specified function when
 	 * the source terminates on complete or error.
@@ -11771,7 +10322,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=finally.js.map
 
 /***/ },
-/* 783 */
+/* 768 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11781,7 +10332,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var EmptyError_1 = __webpack_require__(191);
+	var EmptyError_1 = __webpack_require__(188);
 	/**
 	 * Emits only the first value (or the first value that meets some condition)
 	 * emitted by the source Observable.
@@ -11924,7 +10475,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=first.js.map
 
 /***/ },
-/* 784 */
+/* 769 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11934,11 +10485,11 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var Subscription_1 = __webpack_require__(41);
+	var Subscription_1 = __webpack_require__(39);
 	var Observable_1 = __webpack_require__(2);
-	var Subject_1 = __webpack_require__(19);
-	var Map_1 = __webpack_require__(834);
-	var FastMap_1 = __webpack_require__(832);
+	var Subject_1 = __webpack_require__(17);
+	var Map_1 = __webpack_require__(819);
+	var FastMap_1 = __webpack_require__(817);
 	/**
 	 * Groups the items emitted by an Observable according to a specified criterion,
 	 * and emits these grouped items as `GroupedObservables`, one
@@ -12179,7 +10730,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=groupBy.js.map
 
 /***/ },
-/* 785 */
+/* 770 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12189,7 +10740,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var noop_1 = __webpack_require__(457);
+	var noop_1 = __webpack_require__(448);
 	/**
 	 * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.
 	 *
@@ -12231,7 +10782,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=ignoreElements.js.map
 
 /***/ },
-/* 786 */
+/* 771 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12241,7 +10792,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var EmptyError_1 = __webpack_require__(191);
+	var EmptyError_1 = __webpack_require__(188);
 	/**
 	 * Returns an Observable that emits only the last item emitted by the source Observable.
 	 * It optionally takes a predicate function as a parameter, in which case, rather than emitting
@@ -12354,7 +10905,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=last.js.map
 
 /***/ },
-/* 787 */
+/* 772 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -12371,7 +10922,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=let.js.map
 
 /***/ },
-/* 788 */
+/* 773 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12439,7 +10990,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=mapTo.js.map
 
 /***/ },
-/* 789 */
+/* 774 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12449,7 +11000,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var Notification_1 = __webpack_require__(184);
+	var Notification_1 = __webpack_require__(181);
 	/**
 	 * Returns an Observable that represents all of the emissions and notifications
 	 * from the source Observable into emissions marked with their original types
@@ -12505,12 +11056,12 @@ webpackJsonp([2],[
 	//# sourceMappingURL=materialize.js.map
 
 /***/ },
-/* 790 */
+/* 775 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var not_1 = __webpack_require__(836);
-	var filter_1 = __webpack_require__(445);
+	var not_1 = __webpack_require__(821);
+	var filter_1 = __webpack_require__(436);
 	/**
 	 * @param predicate
 	 * @param thisArg
@@ -12528,11 +11079,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=partition.js.map
 
 /***/ },
-/* 791 */
+/* 776 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var map_1 = __webpack_require__(446);
+	var map_1 = __webpack_require__(437);
 	/**
 	 * Maps each source value (an object) to its specified nested property.
 	 *
@@ -12591,13 +11142,13 @@ webpackJsonp([2],[
 	//# sourceMappingURL=pluck.js.map
 
 /***/ },
-/* 792 */,
-/* 793 */
+/* 777 */,
+/* 778 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var BehaviorSubject_1 = __webpack_require__(183);
-	var multicast_1 = __webpack_require__(120);
+	var BehaviorSubject_1 = __webpack_require__(180);
+	var multicast_1 = __webpack_require__(116);
 	/**
 	 * @param value
 	 * @return {ConnectableObservable<T>}
@@ -12611,12 +11162,12 @@ webpackJsonp([2],[
 	//# sourceMappingURL=publishBehavior.js.map
 
 /***/ },
-/* 794 */
+/* 779 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var AsyncSubject_1 = __webpack_require__(182);
-	var multicast_1 = __webpack_require__(120);
+	var AsyncSubject_1 = __webpack_require__(179);
+	var multicast_1 = __webpack_require__(116);
 	/**
 	 * @return {ConnectableObservable<T>}
 	 * @method publishLast
@@ -12629,8 +11180,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=publishLast.js.map
 
 /***/ },
-/* 795 */,
-/* 796 */
+/* 780 */,
+/* 781 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12640,7 +11191,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var EmptyObservable_1 = __webpack_require__(82);
+	var EmptyObservable_1 = __webpack_require__(80);
 	/**
 	 * Returns an Observable that repeats the stream of items emitted by the source Observable at most count times,
 	 * on a particular Scheduler.
@@ -12710,7 +11261,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=repeat.js.map
 
 /***/ },
-/* 797 */
+/* 782 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12784,7 +11335,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=retry.js.map
 
 /***/ },
-/* 798 */
+/* 783 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12793,11 +11344,11 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(19);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(37);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var Subject_1 = __webpack_require__(17);
+	var tryCatch_1 = __webpack_require__(41);
+	var errorObject_1 = __webpack_require__(34);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Returns an Observable that emits the same values as the source observable with the exception of an `error`.
 	 * An `error` will cause the emission of the Throwable that cause the error to the Observable returned from
@@ -12895,7 +11446,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=retryWhen.js.map
 
 /***/ },
-/* 799 */
+/* 784 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12904,8 +11455,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Returns an Observable that, when the specified sampler Observable emits an item or completes, it then emits the most
 	 * recently emitted item (if any) emitted by the source Observable since the previous emission from the sampler
@@ -12965,7 +11516,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=sample.js.map
 
 /***/ },
-/* 800 */
+/* 785 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12975,7 +11526,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var async_1 = __webpack_require__(42);
+	var async_1 = __webpack_require__(40);
 	/**
 	 * @param delay
 	 * @param scheduler
@@ -13032,7 +11583,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=sampleTime.js.map
 
 /***/ },
-/* 801 */
+/* 786 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13144,12 +11695,12 @@ webpackJsonp([2],[
 	//# sourceMappingURL=scan.js.map
 
 /***/ },
-/* 802 */
+/* 787 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var multicast_1 = __webpack_require__(120);
-	var Subject_1 = __webpack_require__(19);
+	var multicast_1 = __webpack_require__(116);
+	var Subject_1 = __webpack_require__(17);
 	function shareSubjectFactory() {
 	    return new Subject_1.Subject();
 	}
@@ -13173,7 +11724,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=share.js.map
 
 /***/ },
-/* 803 */
+/* 788 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13183,7 +11734,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var EmptyError_1 = __webpack_require__(191);
+	var EmptyError_1 = __webpack_require__(188);
 	/**
 	 * Returns an Observable that emits the single item emitted by the source Observable that matches a specified
 	 * predicate, if that Observable emits one such item. If the source Observable emits more than one such item or no
@@ -13273,7 +11824,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=single.js.map
 
 /***/ },
-/* 804 */
+/* 789 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13329,7 +11880,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=skip.js.map
 
 /***/ },
-/* 805 */
+/* 790 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13338,8 +11889,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.
 	 *
@@ -13405,7 +11956,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=skipUntil.js.map
 
 /***/ },
-/* 806 */
+/* 791 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13476,15 +12027,15 @@ webpackJsonp([2],[
 	//# sourceMappingURL=skipWhile.js.map
 
 /***/ },
-/* 807 */
+/* 792 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ArrayObservable_1 = __webpack_require__(81);
-	var ScalarObservable_1 = __webpack_require__(284);
-	var EmptyObservable_1 = __webpack_require__(82);
-	var concat_1 = __webpack_require__(286);
-	var isScheduler_1 = __webpack_require__(97);
+	var ArrayObservable_1 = __webpack_require__(79);
+	var ScalarObservable_1 = __webpack_require__(279);
+	var EmptyObservable_1 = __webpack_require__(80);
+	var concat_1 = __webpack_require__(281);
+	var isScheduler_1 = __webpack_require__(95);
 	/**
 	 * Returns an Observable that emits the items in a specified Iterable before it begins to emit items emitted by the
 	 * source Observable.
@@ -13524,11 +12075,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=startWith.js.map
 
 /***/ },
-/* 808 */
+/* 793 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var SubscribeOnObservable_1 = __webpack_require__(741);
+	var SubscribeOnObservable_1 = __webpack_require__(726);
 	/**
 	 * Asynchronously subscribes Observers to this Observable on the specified Scheduler.
 	 *
@@ -13548,7 +12099,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=subscribeOn.js.map
 
 /***/ },
-/* 809 */
+/* 794 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13557,8 +12108,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable by
 	 * subscribing to only the most recently emitted of those inner Observables.
@@ -13661,7 +12212,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=switch.js.map
 
 /***/ },
-/* 810 */
+/* 795 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13670,8 +12221,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Projects each source value to an Observable which is merged in the output
 	 * Observable, emitting values only from the most recently projected Observable.
@@ -13805,7 +12356,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=switchMap.js.map
 
 /***/ },
-/* 811 */
+/* 796 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13814,8 +12365,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Projects each source value to the same Observable which is flattened multiple
 	 * times with {@link switch} in the output Observable.
@@ -13936,8 +12487,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=switchMapTo.js.map
 
 /***/ },
-/* 812 */,
-/* 813 */
+/* 797 */,
+/* 798 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13947,8 +12498,8 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var ArgumentOutOfRangeError_1 = __webpack_require__(290);
-	var EmptyObservable_1 = __webpack_require__(82);
+	var ArgumentOutOfRangeError_1 = __webpack_require__(285);
+	var EmptyObservable_1 = __webpack_require__(80);
 	/**
 	 * @throws {ArgumentOutOfRangeError} When using `takeLast(i)`, it delivers an
 	 * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0`.
@@ -14021,7 +12572,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=takeLast.js.map
 
 /***/ },
-/* 814 */
+/* 799 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14030,8 +12581,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * @param notifier
 	 * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
@@ -14074,7 +12625,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=takeUntil.js.map
 
 /***/ },
-/* 815 */
+/* 800 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14141,7 +12692,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=takeWhile.js.map
 
 /***/ },
-/* 816 */
+/* 801 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14150,8 +12701,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * @param durationSelector
 	 * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
@@ -14222,7 +12773,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=throttle.js.map
 
 /***/ },
-/* 817 */
+/* 802 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14232,7 +12783,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var async_1 = __webpack_require__(42);
+	var async_1 = __webpack_require__(40);
 	/**
 	 * @param delay
 	 * @param scheduler
@@ -14290,7 +12841,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=throttleTime.js.map
 
 /***/ },
-/* 818 */
+/* 803 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14299,8 +12850,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var async_1 = __webpack_require__(42);
-	var isDate_1 = __webpack_require__(192);
+	var async_1 = __webpack_require__(40);
+	var isDate_1 = __webpack_require__(189);
 	var Subscriber_1 = __webpack_require__(6);
 	/**
 	 * @param due
@@ -14397,7 +12948,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=timeout.js.map
 
 /***/ },
-/* 819 */
+/* 804 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14406,10 +12957,10 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var async_1 = __webpack_require__(42);
-	var isDate_1 = __webpack_require__(192);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var async_1 = __webpack_require__(40);
+	var isDate_1 = __webpack_require__(189);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * @param due
 	 * @param withObservable
@@ -14512,7 +13063,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=timeoutWith.js.map
 
 /***/ },
-/* 820 */
+/* 805 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14562,7 +13113,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=toArray.js.map
 
 /***/ },
-/* 821 */
+/* 806 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14571,9 +13122,9 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(19);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var Subject_1 = __webpack_require__(17);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Branch out the source Observable values as a nested Observable whenever
 	 * `windowBoundaries` emits.
@@ -14672,7 +13223,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=window.js.map
 
 /***/ },
-/* 822 */
+/* 807 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14682,7 +13233,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var Subject_1 = __webpack_require__(19);
+	var Subject_1 = __webpack_require__(17);
 	/**
 	 * Branch out the source Observable values as a nested Observable with each
 	 * nested Observable emitting at most `windowSize` values.
@@ -14803,7 +13354,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=windowCount.js.map
 
 /***/ },
-/* 823 */
+/* 808 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14813,8 +13364,8 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(6);
-	var Subject_1 = __webpack_require__(19);
-	var async_1 = __webpack_require__(42);
+	var Subject_1 = __webpack_require__(17);
+	var async_1 = __webpack_require__(40);
 	/**
 	 * Branch out the source Observable values as a nested Observable periodically
 	 * in time.
@@ -14978,7 +13529,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=windowTime.js.map
 
 /***/ },
-/* 824 */
+/* 809 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14987,12 +13538,12 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(19);
-	var Subscription_1 = __webpack_require__(41);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(37);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var Subject_1 = __webpack_require__(17);
+	var Subscription_1 = __webpack_require__(39);
+	var tryCatch_1 = __webpack_require__(41);
+	var errorObject_1 = __webpack_require__(34);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Branch out the source Observable values as a nested Observable starting from
 	 * an emission from `openings` and ending when the output of `closingSelector`
@@ -15163,7 +13714,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=windowToggle.js.map
 
 /***/ },
-/* 825 */
+/* 810 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15172,11 +13723,11 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(19);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(37);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var Subject_1 = __webpack_require__(17);
+	var tryCatch_1 = __webpack_require__(41);
+	var errorObject_1 = __webpack_require__(34);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Branch out the source Observable values as a nested Observable using a
 	 * factory function of closing Observables to determine when to start a new
@@ -15296,7 +13847,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=windowWhen.js.map
 
 /***/ },
-/* 826 */
+/* 811 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15305,8 +13856,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(13);
 	/**
 	 * Combines the source Observable with other Observables to create an Observable
 	 * whose values are calculated from the latest values of each, only when the
@@ -15431,11 +13982,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=withLatestFrom.js.map
 
 /***/ },
-/* 827 */
+/* 812 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var zip_1 = __webpack_require__(288);
+	var zip_1 = __webpack_require__(283);
 	/**
 	 * @param project
 	 * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
@@ -15449,7 +14000,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=zipAll.js.map
 
 /***/ },
-/* 828 */
+/* 813 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15458,8 +14009,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Immediate_1 = __webpack_require__(833);
-	var FutureAction_1 = __webpack_require__(188);
+	var Immediate_1 = __webpack_require__(818);
+	var FutureAction_1 = __webpack_require__(185);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @ignore
@@ -15505,7 +14056,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=AsapAction.js.map
 
 /***/ },
-/* 829 */
+/* 814 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15514,8 +14065,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var AsapAction_1 = __webpack_require__(828);
-	var QueueScheduler_1 = __webpack_require__(289);
+	var AsapAction_1 = __webpack_require__(813);
+	var QueueScheduler_1 = __webpack_require__(284);
 	var AsapScheduler = (function (_super) {
 	    __extends(AsapScheduler, _super);
 	    function AsapScheduler() {
@@ -15530,9 +14081,9 @@ webpackJsonp([2],[
 	//# sourceMappingURL=AsapScheduler.js.map
 
 /***/ },
-/* 830 */,
-/* 831 */,
-/* 832 */
+/* 815 */,
+/* 816 */,
+/* 817 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -15568,14 +14119,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=FastMap.js.map
 
 /***/ },
-/* 833 */
+/* 818 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	Some credit for this helper goes to http://github.com/YuzuJS/setImmediate
 	*/
 	"use strict";
-	var root_1 = __webpack_require__(50);
+	var root_1 = __webpack_require__(48);
 	var ImmediateDefinition = (function () {
 	    function ImmediateDefinition(root) {
 	        this.root = root;
@@ -15782,17 +14333,17 @@ webpackJsonp([2],[
 	//# sourceMappingURL=Immediate.js.map
 
 /***/ },
-/* 834 */
+/* 819 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(50);
-	var MapPolyfill_1 = __webpack_require__(835);
+	var root_1 = __webpack_require__(48);
+	var MapPolyfill_1 = __webpack_require__(820);
 	exports.Map = root_1.root.Map || (function () { return MapPolyfill_1.MapPolyfill; })();
 	//# sourceMappingURL=Map.js.map
 
 /***/ },
-/* 835 */
+/* 820 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -15844,7 +14395,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=MapPolyfill.js.map
 
 /***/ },
-/* 836 */
+/* 821 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -15860,6 +14411,21 @@ webpackJsonp([2],[
 	//# sourceMappingURL=not.js.map
 
 /***/ },
+/* 822 */,
+/* 823 */,
+/* 824 */,
+/* 825 */,
+/* 826 */,
+/* 827 */,
+/* 828 */,
+/* 829 */,
+/* 830 */,
+/* 831 */,
+/* 832 */,
+/* 833 */,
+/* 834 */,
+/* 835 */,
+/* 836 */,
 /* 837 */,
 /* 838 */,
 /* 839 */,
@@ -16009,36 +14575,20 @@ webpackJsonp([2],[
 /* 983 */,
 /* 984 */,
 /* 985 */,
-/* 986 */,
-/* 987 */,
-/* 988 */,
-/* 989 */,
-/* 990 */,
-/* 991 */,
-/* 992 */,
-/* 993 */,
-/* 994 */,
-/* 995 */,
-/* 996 */,
-/* 997 */,
-/* 998 */,
-/* 999 */,
-/* 1000 */,
-/* 1001 */,
-/* 1002 */
+/* 986 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var paginate_pipe_1 = __webpack_require__(1003);
+	var paginate_pipe_1 = __webpack_require__(987);
 	exports.PaginatePipe = paginate_pipe_1.PaginatePipe;
-	var pagination_service_1 = __webpack_require__(314);
+	var pagination_service_1 = __webpack_require__(309);
 	exports.PaginationService = pagination_service_1.PaginationService;
-	var pagination_controls_cmp_1 = __webpack_require__(1004);
+	var pagination_controls_cmp_1 = __webpack_require__(988);
 	exports.PaginationControlsCmp = pagination_controls_cmp_1.PaginationControlsCmp;
 
 
 /***/ },
-/* 1003 */
+/* 987 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16052,7 +14602,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var pagination_service_1 = __webpack_require__(314);
+	var pagination_service_1 = __webpack_require__(309);
 	var LARGE_NUMBER = Number.MAX_SAFE_INTEGER;
 	var PaginatePipe = (function () {
 	    function PaginatePipe(service) {
@@ -16150,8 +14700,7 @@ webpackJsonp([2],[
 	        if (!state) {
 	            return false;
 	        }
-	        var isMetaDataIdentical = state.collection === collection &&
-	            state.size === collection.length &&
+	        var isMetaDataIdentical = state.size === collection.length &&
 	            state.start === start &&
 	            state.end === end;
 	        if (!isMetaDataIdentical) {
@@ -16172,7 +14721,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 1004 */
+/* 988 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16186,12 +14735,13 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var pagination_service_1 = __webpack_require__(314);
-	var template_1 = __webpack_require__(1005);
+	var pagination_service_1 = __webpack_require__(309);
+	var template_1 = __webpack_require__(989);
 	var PaginationControlsCmp = (function () {
-	    function PaginationControlsCmp(service) {
+	    function PaginationControlsCmp(service, changeDetectorRef) {
 	        var _this = this;
 	        this.service = service;
+	        this.changeDetectorRef = changeDetectorRef;
 	        this.maxSize = 7;
 	        this.pageChange = new core_1.EventEmitter();
 	        this.pages = [];
@@ -16202,6 +14752,7 @@ webpackJsonp([2],[
 	            .subscribe(function (id) {
 	            if (_this.id === id) {
 	                _this.updatePageLinks();
+	                _this.changeDetectorRef.markForCheck();
 	            }
 	        });
 	    }
@@ -16229,14 +14780,16 @@ webpackJsonp([2],[
 	        if (this.id === undefined) {
 	            this.id = this.service.defaultId;
 	        }
+	        this.updatePageLinks();
 	    };
 	    PaginationControlsCmp.prototype.ngOnChanges = function () {
 	        this.updatePageLinks();
 	    };
 	    PaginationControlsCmp.prototype.ngAfterViewInit = function () {
 	        var _this = this;
-	        if ((this.template) && 0 < this.template.nativeElement.children.length) {
-	            setTimeout(function () { return _this.hasTemplate = true; });
+	        if (this.template && 0 < this.template.nativeElement.children.length) {
+	            this.hasTemplate = true;
+	            setTimeout(function () { return _this.changeDetectorRef.markForCheck(); });
 	        }
 	    };
 	    PaginationControlsCmp.prototype.ngOnDestroy = function () {
@@ -16283,6 +14836,11 @@ webpackJsonp([2],[
 	     */
 	    PaginationControlsCmp.prototype.getLastPage = function () {
 	        var inst = this.service.getInstance(this.id);
+	        if (inst.totalItems < 1) {
+	            // when there are 0 or fewer (an error case) items, there are no "pages" as such,
+	            // but it makes sense to consider a single, empty page as the last page.
+	            return 1;
+	        }
 	        return Math.ceil(inst.totalItems / inst.itemsPerPage);
 	    };
 	    /**
@@ -16400,9 +14958,10 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'pagination-controls',
 	            template: template_1.DEFAULT_TEMPLATE,
-	            styles: [template_1.DEFAULT_STYLES]
+	            styles: [template_1.DEFAULT_STYLES],
+	            changeDetection: core_1.ChangeDetectionStrategy.OnPush
 	        }), 
-	        __metadata('design:paramtypes', [pagination_service_1.PaginationService])
+	        __metadata('design:paramtypes', [pagination_service_1.PaginationService, core_1.ChangeDetectorRef])
 	    ], PaginationControlsCmp);
 	    return PaginationControlsCmp;
 	}());
@@ -16410,7 +14969,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 1005 */
+/* 989 */
 /***/ function(module, exports) {
 
 	/**
@@ -16418,9381 +14977,9 @@ webpackJsonp([2],[
 	 * from Zurb Foundation 6: http://foundation.zurb.com/sites/docs/pagination.html
 	 */
 	"use strict";
-	exports.DEFAULT_TEMPLATE = "\n    <div #template>\n        <ng-content></ng-content>\n    </div>\n    <ul class=\"ng2-pagination\" \n        role=\"navigation\" \n        aria-label=\"Pagination\" \n        *ngIf=\"!hasTemplate && !(autoHide && pages.length === 1)\">\n\n        <li class=\"pagination-previous\" [class.disabled]=\"isFirstPage()\" *ngIf=\"directionLinks\"> \n            <a *ngIf=\"1 < getCurrent()\" (click)=\"previous()\" aria-label=\"Next page\">\n                Previous <span class=\"show-for-sr\">page</span>\n            </a>\n            <span *ngIf=\"isFirstPage()\">Previous <span class=\"show-for-sr\">page</span></span>\n        </li>\n\n        <li [class.current]=\"getCurrent() === page.value\" *ngFor=\"let page of pages\">\n            <a (click)=\"setCurrent(page.value)\" *ngIf=\"getCurrent() !== page.value\">\n                <span class=\"show-for-sr\">Page</span>\n                <span>{{ page.label }}</span>\n            </a>\n            <div *ngIf=\"getCurrent() === page.value\">\n                <span class=\"show-for-sr\">You're on page</span>\n                <span>{{ page.label }}</span> \n            </div>\n        </li>\n\n        <li class=\"pagination-next\" [class.disabled]=\"isLastPage()\" *ngIf=\"directionLinks\">\n            <a *ngIf=\"!isLastPage()\" (click)=\"next()\" aria-label=\"Next page\">\n                Next <span class=\"show-for-sr\">page</span>\n            </a>\n            <span *ngIf=\"isLastPage()\">Next <span class=\"show-for-sr\">page</span></span>\n        </li>\n\n    </ul>\n    ";
-	exports.DEFAULT_STYLES = "\n.ng2-pagination {\n  margin-left: 0;\n  margin-bottom: 1rem; }\n  .ng2-pagination::before, .ng2-pagination::after {\n    content: ' ';\n    display: table; }\n  .ng2-pagination::after {\n    clear: both; }\n  .ng2-pagination li {\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    -ms-user-select: none;\n    font-size: 0.875rem;\n    margin-right: 0.0625rem;\n    border-radius: 0; }\n  .ng2-pagination li {\n    display: inline-block; }\n  .ng2-pagination a,\n  .ng2-pagination button {\n    color: #0a0a0a; \n    display: block;\n    padding: 0.1875rem 0.625rem;\n    border-radius: 0; }\n    .ng2-pagination a:hover,\n    .ng2-pagination button:hover {\n      background: #e6e6e6; }\n  .ng2-pagination .current {\n    padding: 0.1875rem 0.625rem;\n    background: #2199e8;\n    color: #fefefe;\n    cursor: default; }\n  .ng2-pagination .disabled {\n    padding: 0.1875rem 0.625rem;\n    color: #cacaca;\n    cursor: default; } \n    .ng2-pagination .disabled:hover {\n      background: transparent; }\n  .ng2-pagination .ellipsis::after {\n    content: '\u2026';\n    padding: 0.1875rem 0.625rem;\n    color: #0a0a0a; }\n\n.ng2-pagination .pagination-previous a::before,\n.ng2-pagination .pagination-previous.disabled::before { \n  content: '\u00AB';\n  display: inline-block;\n  margin-right: 0.5rem; }\n\n.ng2-pagination .pagination-next a::after,\n.ng2-pagination .pagination-next.disabled::after {\n  content: '\u00BB';\n  display: inline-block;\n  margin-left: 0.5rem; }\n\n.ng2-pagination .show-for-sr {\n  position: absolute !important;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0); }";
+	exports.DEFAULT_TEMPLATE = "\n    <div #template>\n        <ng-content></ng-content>\n    </div>\n    <ul class=\"ng2-pagination\" \n        role=\"navigation\" \n        aria-label=\"Pagination\" \n        *ngIf=\"!hasTemplate && !(autoHide && pages.length <= 1)\">\n\n        <li class=\"pagination-previous\" [class.disabled]=\"isFirstPage()\" *ngIf=\"directionLinks\"> \n            <a *ngIf=\"1 < getCurrent()\" (click)=\"previous()\" aria-label=\"Next page\">\n                Previous <span class=\"show-for-sr\">page</span>\n            </a>\n            <span *ngIf=\"isFirstPage()\">Previous <span class=\"show-for-sr\">page</span></span>\n        </li>\n\n        <li [class.current]=\"getCurrent() === page.value\" *ngFor=\"let page of pages\">\n            <a (click)=\"setCurrent(page.value)\" *ngIf=\"getCurrent() !== page.value\">\n                <span class=\"show-for-sr\">Page</span>\n                <span>{{ page.label }}</span>\n            </a>\n            <div *ngIf=\"getCurrent() === page.value\">\n                <span class=\"show-for-sr\">You're on page</span>\n                <span>{{ page.label }}</span> \n            </div>\n        </li>\n\n        <li class=\"pagination-next\" [class.disabled]=\"isLastPage()\" *ngIf=\"directionLinks\">\n            <a *ngIf=\"!isLastPage()\" (click)=\"next()\" aria-label=\"Next page\">\n                Next <span class=\"show-for-sr\">page</span>\n            </a>\n            <span *ngIf=\"isLastPage()\">Next <span class=\"show-for-sr\">page</span></span>\n        </li>\n\n    </ul>\n    ";
+	exports.DEFAULT_STYLES = "\n.ng2-pagination {\n  margin-left: 0;\n  margin-bottom: 1rem; }\n  .ng2-pagination::before, .ng2-pagination::after {\n    content: ' ';\n    display: table; }\n  .ng2-pagination::after {\n    clear: both; }\n  .ng2-pagination li {\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    -ms-user-select: none;\n    font-size: 20px;\n    margin-right: 0.0625rem;\n    border-radius: 0; }\n  .ng2-pagination li {\n    display: inline-block; }\n  .ng2-pagination a,\n  .ng2-pagination button {\n    color: #0a0a0a; \n    display: block;\n    padding: 0.1875rem 0.625rem;\n    border-radius: 0; }\n    .ng2-pagination a:hover,\n    .ng2-pagination button:hover {\n      background: #e6e6e6; }\n  .ng2-pagination .current {\n    padding: 0.1875rem 0.625rem;\n    background: #2199e8;\n    color: #fefefe;\n    cursor: default; }\n  .ng2-pagination .disabled {\n    padding: 0.1875rem 0.625rem;\n    color: #cacaca;\n    cursor: default; } \n    .ng2-pagination .disabled:hover {\n      background: transparent; }\n  .ng2-pagination .ellipsis::after {\n    content: '\u2026';\n    padding: 0.1875rem 0.625rem;\n    color: #0a0a0a; }\n\n.ng2-pagination .pagination-previous a::before,\n.ng2-pagination .pagination-previous.disabled::before { \n  content: '\u00AB';\n  display: inline-block;\n  margin-right: 0.5rem; }\n\n.ng2-pagination .pagination-next a::after,\n.ng2-pagination .pagination-next.disabled::after {\n  content: '\u00BB';\n  display: inline-block;\n  margin-left: 0.5rem; }\n\n.ng2-pagination .show-for-sr {\n  position: absolute !important;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0); }";
 
-
-/***/ },
-/* 1006 */
-/***/ function(module, exports, __webpack_require__) {
-
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	__export(__webpack_require__(1002));
-
-
-/***/ },
-/* 1007 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var accordion_1 = __webpack_require__(493);
-	var common_1 = __webpack_require__(35);
-	var AccordionTab = (function () {
-	    function AccordionTab(accordion) {
-	        this.accordion = accordion;
-	        this.accordion.addTab(this);
-	    }
-	    AccordionTab.prototype.toggle = function (event) {
-	        if (this.disabled) {
-	            event.preventDefault();
-	            return;
-	        }
-	        var index = this.findTabIndex();
-	        if (this.selected) {
-	            this.selected = !this.selected;
-	            this.accordion.onClose.emit({ originalEvent: event, index: index });
-	        }
-	        else {
-	            if (!this.accordion.multiple) {
-	                for (var i = 0; i < this.accordion.tabs.length; i++) {
-	                    this.accordion.tabs[i].selected = false;
-	                }
-	            }
-	            this.selected = true;
-	            this.accordion.onOpen.emit({ originalEvent: event, index: index });
-	        }
-	        event.preventDefault();
-	    };
-	    AccordionTab.prototype.findTabIndex = function () {
-	        var index = -1;
-	        for (var i = 0; i < this.accordion.tabs.length; i++) {
-	            if (this.accordion.tabs[i] == this) {
-	                index = i;
-	                break;
-	            }
-	        }
-	        return index;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], AccordionTab.prototype, "header", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], AccordionTab.prototype, "selected", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], AccordionTab.prototype, "disabled", void 0);
-	    __decorate([
-	        core_1.ContentChild(common_1.Header), 
-	        __metadata('design:type', Object)
-	    ], AccordionTab.prototype, "headerFacet", void 0);
-	    AccordionTab = __decorate([
-	        core_1.Component({
-	            selector: 'p-accordionTab',
-	            template: "\n        <div class=\"ui-accordion-header ui-helper-reset ui-state-default\" [ngClass]=\"{'ui-state-active': selected,'ui-state-hover':hover&&!disabled,'ui-state-disabled':disabled}\"\n            (click)=\"toggle($event)\" (mouseenter)=\"hover = true\" (mouseleave)=\"hover=false\">\n            <span class=\"fa fa-fw\" [ngClass]=\"{'fa-caret-down': selected, 'fa-caret-right': !selected}\"></span>\n            <a href=\"#\" *ngIf=\"!headerFacet\">{{header}}</a>\n            <a href=\"#\" *ngIf=\"headerFacet\">\n                <ng-content select=\"header\"></ng-content>\n            </a>\n        </div>\n        <div class=\"ui-accordion-content ui-helper-reset ui-widget-content\" [style.display]=\"selected ? 'block' : 'none'\">\n            <ng-content></ng-content>\n        </div>\n    "
-	        }), 
-	        __metadata('design:paramtypes', [accordion_1.Accordion])
-	    ], AccordionTab);
-	    return AccordionTab;
-	}());
-	exports.AccordionTab = AccordionTab;
-	
-
-/***/ },
-/* 1008 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var inputtext_1 = __webpack_require__(206);
-	var button_1 = __webpack_require__(142);
-	var domhandler_1 = __webpack_require__(11);
-	var common_1 = __webpack_require__(8);
-	var AUTOCOMPLETE_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return AutoComplete; }),
-	    multi: true
-	});
-	var AutoComplete = (function () {
-	    function AutoComplete(el, domHandler, differs, renderer) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	        this.minLength = 3;
-	        this.delay = 300;
-	        this.completeMethod = new core_1.EventEmitter();
-	        this.onSelect = new core_1.EventEmitter();
-	        this.onUnselect = new core_1.EventEmitter();
-	        this.onDropdownClick = new core_1.EventEmitter();
-	        this.scrollHeight = '200px';
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	        this.panelVisible = false;
-	        this.differ = differs.find([]).create(null);
-	    }
-	    AutoComplete.prototype.ngDoCheck = function () {
-	        var changes = this.differ.diff(this.suggestions);
-	        if (changes && this.panel) {
-	            if (this.suggestions && this.suggestions.length) {
-	                this.show();
-	                this.suggestionsUpdated = true;
-	            }
-	            else {
-	                this.hide();
-	            }
-	        }
-	    };
-	    AutoComplete.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        this.input = this.domHandler.findSingle(this.el.nativeElement, 'input');
-	        this.panel = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-autocomplete-panel');
-	        if (this.multiple) {
-	            this.multipleContainer = this.domHandler.findSingle(this.el.nativeElement, 'ul.ui-autocomplete-multiple');
-	        }
-	        this.documentClickListener = this.renderer.listenGlobal('body', 'click', function () {
-	            _this.hide();
-	        });
-	    };
-	    AutoComplete.prototype.ngAfterViewChecked = function () {
-	        if (this.suggestionsUpdated) {
-	            this.align();
-	            this.suggestionsUpdated = false;
-	        }
-	    };
-	    AutoComplete.prototype.writeValue = function (value) {
-	        this.value = value;
-	    };
-	    AutoComplete.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    AutoComplete.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    AutoComplete.prototype.onInput = function (event) {
-	        var _this = this;
-	        var value = event.target.value;
-	        if (!this.multiple) {
-	            this.value = value;
-	            this.onModelChange(value);
-	        }
-	        if (value.length === 0) {
-	            this.hide();
-	        }
-	        if (value.length >= this.minLength) {
-	            //Cancel the search request if user types within the timeout
-	            if (this.timeout) {
-	                clearTimeout(this.timeout);
-	            }
-	            this.timeout = setTimeout(function () {
-	                _this.search(event, value);
-	            }, this.delay);
-	        }
-	        else {
-	            this.suggestions = null;
-	        }
-	    };
-	    AutoComplete.prototype.search = function (event, query) {
-	        //allow empty string but not undefined or null
-	        if (query === undefined || query === null) {
-	            return;
-	        }
-	        this.completeMethod.emit({
-	            originalEvent: event,
-	            query: query
-	        });
-	    };
-	    AutoComplete.prototype.onItemMouseover = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.addClass(item, 'ui-state-highlight');
-	        }
-	    };
-	    AutoComplete.prototype.onItemMouseout = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.removeClass(item, 'ui-state-highlight');
-	        }
-	    };
-	    AutoComplete.prototype.onItemClick = function (event) {
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.selectItem(item);
-	        }
-	    };
-	    AutoComplete.prototype.selectItem = function (item) {
-	        var itemIndex = this.domHandler.index(item);
-	        var selectedValue = this.suggestions[itemIndex];
-	        if (this.multiple) {
-	            this.input.value = '';
-	            this.value = this.value || [];
-	            if (!this.isSelected(selectedValue)) {
-	                this.value.push(selectedValue);
-	                this.onModelChange(this.value);
-	            }
-	        }
-	        else {
-	            this.input.value = this.field ? this.resolveFieldData(selectedValue) : selectedValue;
-	            this.value = selectedValue;
-	            this.onModelChange(this.value);
-	        }
-	        this.onSelect.emit(selectedValue);
-	        this.input.focus();
-	    };
-	    AutoComplete.prototype.findListItem = function (element) {
-	        if (element.nodeName == 'LI') {
-	            return element;
-	        }
-	        else {
-	            var parent_1 = element.parentElement;
-	            while (parent_1.nodeName != 'LI') {
-	                parent_1 = parent_1.parentElement;
-	            }
-	            return parent_1;
-	        }
-	    };
-	    AutoComplete.prototype.show = function () {
-	        if (!this.panelVisible) {
-	            this.panelVisible = true;
-	            this.panel.style.zIndex = ++domhandler_1.DomHandler.zindex;
-	            this.domHandler.fadeIn(this.panel, 200);
-	        }
-	    };
-	    AutoComplete.prototype.align = function () {
-	        if (this.multiple)
-	            this.domHandler.relativePosition(this.panel, this.multipleContainer);
-	        else
-	            this.domHandler.relativePosition(this.panel, this.input);
-	    };
-	    AutoComplete.prototype.hide = function () {
-	        this.panelVisible = false;
-	    };
-	    AutoComplete.prototype.handleDropdownClick = function (event) {
-	        this.onDropdownClick.emit({
-	            originalEvent: event,
-	            query: this.input.value
-	        });
-	    };
-	    AutoComplete.prototype.removeItem = function (item) {
-	        var itemIndex = this.domHandler.index(item);
-	        var removedValue = this.value.splice(itemIndex, 1)[0];
-	        this.onUnselect.emit(removedValue);
-	        this.onModelChange(this.value);
-	    };
-	    AutoComplete.prototype.resolveFieldData = function (data) {
-	        if (data && this.field) {
-	            if (this.field.indexOf('.') == -1) {
-	                return data[this.field];
-	            }
-	            else {
-	                var fields = this.field.split('.');
-	                var value = data;
-	                for (var i = 0, len = fields.length; i < len; ++i) {
-	                    value = value[fields[i]];
-	                }
-	                return value;
-	            }
-	        }
-	        else {
-	            return null;
-	        }
-	    };
-	    AutoComplete.prototype.onKeydown = function (event) {
-	        if (this.panelVisible) {
-	            var highlightedItem = this.domHandler.findSingle(this.panel, 'li.ui-state-highlight');
-	            switch (event.which) {
-	                //down
-	                case 40:
-	                    if (highlightedItem) {
-	                        var nextItem = highlightedItem.nextElementSibling;
-	                        if (nextItem) {
-	                            this.domHandler.removeClass(highlightedItem, 'ui-state-highlight');
-	                            this.domHandler.addClass(nextItem, 'ui-state-highlight');
-	                            this.domHandler.scrollInView(this.panel, nextItem);
-	                        }
-	                    }
-	                    else {
-	                        var firstItem = this.domHandler.findSingle(this.panel, 'li:first-child');
-	                        this.domHandler.addClass(firstItem, 'ui-state-highlight');
-	                    }
-	                    event.preventDefault();
-	                    break;
-	                //up
-	                case 38:
-	                    if (highlightedItem) {
-	                        var prevItem = highlightedItem.previousElementSibling;
-	                        if (prevItem) {
-	                            this.domHandler.removeClass(highlightedItem, 'ui-state-highlight');
-	                            this.domHandler.addClass(prevItem, 'ui-state-highlight');
-	                            this.domHandler.scrollInView(this.panel, prevItem);
-	                        }
-	                    }
-	                    event.preventDefault();
-	                    break;
-	                //enter
-	                case 13:
-	                    if (highlightedItem) {
-	                        this.selectItem(highlightedItem);
-	                        this.hide();
-	                    }
-	                    event.preventDefault();
-	                    break;
-	                //escape
-	                case 27:
-	                    this.hide();
-	                    event.preventDefault();
-	                    break;
-	                //tab
-	                case 9:
-	                    if (highlightedItem) {
-	                        this.selectItem(highlightedItem);
-	                    }
-	                    this.hide();
-	                    break;
-	            }
-	        }
-	        if (this.multiple) {
-	            switch (event.which) {
-	                //backspace
-	                case 8:
-	                    if (this.value && this.value.length && !this.input.value) {
-	                        var removedValue = this.value.pop();
-	                        this.onUnselect.emit(removedValue);
-	                        this.onModelChange(this.value);
-	                    }
-	                    break;
-	            }
-	        }
-	    };
-	    AutoComplete.prototype.isSelected = function (val) {
-	        var selected = false;
-	        if (this.value && this.value.length) {
-	            for (var i = 0; i < this.value.length; i++) {
-	                if (this.domHandler.equals(this.value[i], val)) {
-	                    selected = true;
-	                    break;
-	                }
-	            }
-	        }
-	        return selected;
-	    };
-	    AutoComplete.prototype.ngOnDestroy = function () {
-	        if (this.documentClickListener) {
-	            this.documentClickListener();
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], AutoComplete.prototype, "minLength", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], AutoComplete.prototype, "delay", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], AutoComplete.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], AutoComplete.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], AutoComplete.prototype, "inputStyle", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], AutoComplete.prototype, "inputStyleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], AutoComplete.prototype, "placeholder", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], AutoComplete.prototype, "readonly", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], AutoComplete.prototype, "disabled", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], AutoComplete.prototype, "maxlength", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], AutoComplete.prototype, "size", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], AutoComplete.prototype, "suggestions", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], AutoComplete.prototype, "completeMethod", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], AutoComplete.prototype, "onSelect", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], AutoComplete.prototype, "onUnselect", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], AutoComplete.prototype, "onDropdownClick", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], AutoComplete.prototype, "field", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], AutoComplete.prototype, "scrollHeight", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], AutoComplete.prototype, "dropdown", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], AutoComplete.prototype, "multiple", void 0);
-	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef), 
-	        __metadata('design:type', core_1.TemplateRef)
-	    ], AutoComplete.prototype, "itemTemplate", void 0);
-	    AutoComplete = __decorate([
-	        core_1.Component({
-	            selector: 'p-autoComplete',
-	            template: "\n        <span [ngClass]=\"{'ui-autocomplete ui-widget':true,'ui-autocomplete-dd':dropdown}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <input *ngIf=\"!multiple\" #in pInputText type=\"text\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" \n            [value]=\"value ? (field ? resolveFieldData(value)||value : value) : null\" (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (blur)=\"onModelTouched()\"\n            [attr.placeholder]=\"placeholder\" [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.readonly]=\"readonly\" [disabled]=\"disabled\" \n            ><ul *ngIf=\"multiple\" class=\"ui-autocomplete-multiple ui-widget ui-inputtext ui-state-default ui-corner-all\" (click)=\"multiIn.focus()\">\n                <li #token *ngFor=\"let val of value\" class=\"ui-autocomplete-token ui-state-highlight ui-corner-all\">\n                    <span class=\"ui-autocomplete-token-icon fa fa-fw fa-close\" (click)=\"removeItem(token)\"></span>\n                    <span class=\"ui-autocomplete-token-label\">{{field ? val[field] : val}}</span>\n                </li>\n                <li class=\"ui-autocomplete-input-token\">\n                    <input #multiIn type=\"text\" pInputText (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (blur)=\"onModelTouched()\">\n                </li>\n            </ul\n            ><button type=\"button\" pButton icon=\"fa-fw fa-caret-down\" class=\"ui-autocomplete-dropdown\" [disabled]=\"disabled\"\n                (click)=\"handleDropdownClick($event)\" *ngIf=\"dropdown\"></button>\n            <div class=\"ui-autocomplete-panel ui-widget-content ui-corner-all ui-shadow\" [style.display]=\"panelVisible ? 'block' : 'none'\" [style.width]=\"'100%'\" [style.max-height]=\"scrollHeight\">\n                <ul class=\"ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" \n                    (mouseover)=\"onItemMouseover($event)\" (mouseout)=\"onItemMouseout($event)\" (click)=\"onItemClick($event)\" *ngIf=\"!itemTemplate\">\n                    <li class=\"ui-autocomplete-list-item ui-corner-all\" *ngFor=\"let item of suggestions\">{{field ? item[field] : item}}</li>\n                </ul>\n                <ul class=\"ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" \n                    (mouseover)=\"onItemMouseover($event)\" (mouseout)=\"onItemMouseout($event)\" (click)=\"onItemClick($event)\"*ngIf=\"itemTemplate\">\n                    <template ngFor [ngForOf]=\"suggestions\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n        </span>\n    ",
-	            directives: [inputtext_1.InputText, button_1.Button],
-	            providers: [domhandler_1.DomHandler, AUTOCOMPLETE_VALUE_ACCESSOR]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers, core_1.Renderer])
-	    ], AutoComplete);
-	    return AutoComplete;
-	}());
-	exports.AutoComplete = AutoComplete;
-	
-
-/***/ },
-/* 1009 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var Breadcrumb = (function () {
-	    function Breadcrumb(router) {
-	        this.router = router;
-	    }
-	    Breadcrumb.prototype.itemClick = function (event, item) {
-	        if (!item.url || item.routerLink) {
-	            event.preventDefault();
-	        }
-	        if (item.command) {
-	            if (!item.eventEmitter) {
-	                item.eventEmitter = new core_1.EventEmitter();
-	                item.eventEmitter.subscribe(item.command);
-	            }
-	            item.eventEmitter.emit(event);
-	        }
-	        if (item.routerLink) {
-	            this.router.navigate(item.routerLink);
-	        }
-	    };
-	    Breadcrumb.prototype.ngOnDestroy = function () {
-	        if (this.model) {
-	            for (var _i = 0, _a = this.model; _i < _a.length; _i++) {
-	                var item = _a[_i];
-	                if (item.eventEmitter) {
-	                    item.eventEmitter.unsubscribe();
-	                }
-	            }
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Breadcrumb.prototype, "model", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Breadcrumb.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Breadcrumb.prototype, "styleClass", void 0);
-	    Breadcrumb = __decorate([
-	        core_1.Component({
-	            selector: 'p-breadcrumb',
-	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"'ui-breadcrumb ui-widget ui-widget-header ui-helper-clearfix ui-corner-all'\">\n            <ul>\n                <li class=\"fa fa-home\"></li>\n                <template ngFor let-item let-end=\"last\" [ngForOf]=\"model\">\n                    <li role=\"menuitem\">\n                        <a [href]=\"item.url||'#'\" class=\"ui-menuitem-link\" (click)=\"itemClick($event, item)\">\n                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                        </a>\n                    </li>\n                    <li class=\"ui-breadcrumb-chevron fa fa-chevron-right\" *ngIf=\"!end\"></li>\n                </template>\n            </ul>\n        </div>\n    "
-	        }), 
-	        __metadata('design:paramtypes', [router_1.Router])
-	    ], Breadcrumb);
-	    return Breadcrumb;
-	}());
-	exports.Breadcrumb = Breadcrumb;
-	
-
-/***/ },
-/* 1010 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var button_1 = __webpack_require__(142);
-	var common_1 = __webpack_require__(8);
-	var CALENDAR_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return Calendar; }),
-	    multi: true
-	});
-	var Calendar = (function () {
-	    function Calendar(el, zone) {
-	        this.el = el;
-	        this.zone = zone;
-	        this.inline = false;
-	        this.stepHour = 1;
-	        this.stepMinute = 1;
-	        this.stepSecond = 1;
-	        this.hourMin = 0;
-	        this.hourMax = 23;
-	        this.minuteMin = 0;
-	        this.minuteMax = 59;
-	        this.secondMin = 0;
-	        this.secondMax = 59;
-	        this.hourGrid = 0;
-	        this.minuteGrid = 0;
-	        this.secondGrid = 0;
-	        this.icon = 'fa-calendar';
-	        this.onBlur = new core_1.EventEmitter();
-	        this.onSelect = new core_1.EventEmitter();
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	        this.initialized = false;
-	    }
-	    Calendar.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        this.calendarElement = this.inline ? jQuery(this.el.nativeElement.children[0]) : jQuery(this.el.nativeElement.children[0].children[0]);
-	        var options = {
-	            showAnim: this.showAnim,
-	            dateFormat: this.dateFormat,
-	            showButtonPanel: this.showButtonPanel,
-	            changeMonth: this.monthNavigator,
-	            changeYear: this.yearNavigator,
-	            numberOfMonths: this.numberOfMonths,
-	            showWeek: this.showWeek,
-	            showOtherMonths: this.showOtherMonths,
-	            selectOtherMonths: this.selectOtherMonths,
-	            defaultDate: this.defaultDate,
-	            minDate: this.minDate,
-	            maxDate: this.maxDate,
-	            onSelect: function (dateText) {
-	                _this.zone.run(function () {
-	                    _this.value = dateText;
-	                    _this.onModelChange(_this.value);
-	                    _this.onSelect.emit(_this.value);
-	                });
-	            }
-	        };
-	        if (this.locale) {
-	            for (var prop in this.locale) {
-	                options[prop] = this.locale[prop];
-	            }
-	        }
-	        if (this.timeFormat || this.timeOnly) {
-	            options['timeFormat'] = this.timeFormat;
-	            options['timeOnly'] = this.timeOnly;
-	            options['stepHour'] = this.stepHour;
-	            options['stepMinute'] = this.stepMinute;
-	            options['stepSecond'] = this.stepSecond;
-	            options['hourMin'] = this.hourMin;
-	            options['hourMax'] = this.hourMax;
-	            options['minuteMin'] = this.minuteMin;
-	            options['minuteMax'] = this.minuteMax;
-	            options['secondMin'] = this.secondMin;
-	            options['secondMax'] = this.secondMax;
-	            options['hourGrid'] = this.hourGrid;
-	            options['minuteGrid'] = this.minuteGrid;
-	            options['secondGrid'] = this.secondGrid;
-	            options['controlType'] = this.timeControlType;
-	            options['oneLine'] = this.horizontalTimeControls;
-	            options['minTime'] = this.minTime;
-	            options['maxTime'] = this.maxTime;
-	            options['timezoneList'] = this.timezoneList;
-	            this.calendarElement.datetimepicker(options);
-	        }
-	        else
-	            this.calendarElement.datepicker(options);
-	        this.initialized = true;
-	    };
-	    Calendar.prototype.onInput = function (event) {
-	        this.onModelChange(event.target.value);
-	    };
-	    Calendar.prototype.handleBlur = function (event) {
-	        this.value = event.target.value;
-	        this.onModelTouched();
-	        this.focused = false;
-	        this.onBlur.emit(event);
-	    };
-	    Calendar.prototype.writeValue = function (value) {
-	        this.value = value;
-	    };
-	    Calendar.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    Calendar.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    Calendar.prototype.ngOnChanges = function (changes) {
-	        if (this.initialized) {
-	            for (var key in changes) {
-	                this.calendarElement.datepicker('option', key, changes[key].currentValue);
-	            }
-	        }
-	    };
-	    Calendar.prototype.ngOnDestroy = function () {
-	        this.calendarElement.datepicker('destroy');
-	        this.calendarElement = null;
-	        this.initialized = false;
-	    };
-	    Calendar.prototype.onButtonClick = function (event, input) {
-	        input.focus();
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Calendar.prototype, "readonlyInput", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Calendar.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Calendar.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Calendar.prototype, "inputStyle", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Calendar.prototype, "inputStyleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Calendar.prototype, "placeholder", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Calendar.prototype, "inline", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Calendar.prototype, "showAnim", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Calendar.prototype, "dateFormat", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Calendar.prototype, "showButtonPanel", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Calendar.prototype, "monthNavigator", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Calendar.prototype, "yearNavigator", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Calendar.prototype, "numberOfMonths", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Calendar.prototype, "showWeek", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Calendar.prototype, "showOtherMonths", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Calendar.prototype, "selectOtherMonths", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Calendar.prototype, "defaultDate", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Calendar.prototype, "minDate", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Calendar.prototype, "maxDate", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Calendar.prototype, "disabled", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Calendar.prototype, "showIcon", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Calendar.prototype, "timeFormat", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Calendar.prototype, "timeOnly", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Calendar.prototype, "stepHour", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Calendar.prototype, "stepMinute", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Calendar.prototype, "stepSecond", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Calendar.prototype, "hourMin", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Calendar.prototype, "hourMax", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Calendar.prototype, "minuteMin", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Calendar.prototype, "minuteMax", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Calendar.prototype, "secondMin", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Calendar.prototype, "secondMax", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Calendar.prototype, "hourGrid", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Calendar.prototype, "minuteGrid", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Calendar.prototype, "secondGrid", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Calendar.prototype, "timeControlType", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Calendar.prototype, "horizontalTimeControls", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Calendar.prototype, "minTime", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Calendar.prototype, "maxTime", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Calendar.prototype, "timezoneList", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Calendar.prototype, "locale", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Calendar.prototype, "icon", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Calendar.prototype, "onBlur", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Calendar.prototype, "onSelect", void 0);
-	    Calendar = __decorate([
-	        core_1.Component({
-	            selector: 'p-calendar',
-	            template: "\n        <span [ngStyle]=\"style\" [class]=\"styleClass\" [ngClass]=\"'ui-calendar'\" *ngIf=\"!inline\">\n        <input #in type=\"text\" [attr.placeholder]=\"placeholder\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\"\n                [value]=\"value||''\" (input)=\"onInput($event)\" [readonly]=\"readonlyInput\"\n                [disabled]=\"disabled\" (mouseenter)=\"hovered=true\" (mouseleave)=\"hovered=false\" (focus)=\"focused=true\" (blur)=\"handleBlur($event)\"\n                [ngClass]=\"{'ui-inputtext ui-widget ui-state-default': true, 'ui-corner-all': !showIcon, 'ui-corner-left': showIcon,\n                    'ui-state-hover':hovered,'ui-state-focus':focused,'ui-state-disabled':disabled}\"\n        ><button type=\"button\" [icon]=\"icon\" pButton *ngIf=\"showIcon\" (click)=\"onButtonClick($event,in)\" class=\"ui-datepicker-trigger\"></button></span>\n        <div *ngIf=\"inline\"></div>\n    ",
-	            directives: [button_1.Button],
-	            providers: [CALENDAR_VALUE_ACCESSOR]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.NgZone])
-	    ], Calendar);
-	    return Calendar;
-	}());
-	exports.Calendar = Calendar;
-	
-
-/***/ },
-/* 1011 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var Carousel = (function () {
-	    function Carousel(el, domHandler, differs, renderer) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	        this.numVisible = 3;
-	        this.firstVisible = 0;
-	        this.circular = false;
-	        this.breakpoint = 560;
-	        this.responsive = true;
-	        this.autoplayInterval = 0;
-	        this.effectDuration = '1s';
-	        this.easing = 'ease-out';
-	        this.pageLinks = 3;
-	        this.left = 0;
-	        this.differ = differs.find([]).create(null);
-	    }
-	    Carousel.prototype.ngDoCheck = function () {
-	        var changes = this.differ.diff(this.value);
-	        if (changes) {
-	            if (this.value && this.value.length) {
-	                if (this.value.length && this.firstVisible >= this.value.length) {
-	                    this.setPage(this.totalPages - 1);
-	                }
-	            }
-	            else {
-	                this.setPage(0);
-	            }
-	            this.valuesChanged = true;
-	            if (this.autoplayInterval) {
-	                this.stopAutoplay();
-	            }
-	            this.updateMobileDropdown();
-	            this.updateLinks();
-	            this.updateDropdown();
-	        }
-	    };
-	    Carousel.prototype.ngAfterViewChecked = function () {
-	        if (this.valuesChanged) {
-	            this.render();
-	            this.valuesChanged = false;
-	        }
-	    };
-	    Carousel.prototype.ngOnInit = function () {
-	        if (window.innerWidth <= this.breakpoint) {
-	            this.shrinked = true;
-	            this.columns = 1;
-	        }
-	        else {
-	            this.shrinked = false;
-	            this.columns = this.numVisible;
-	        }
-	        this.page = Math.floor(this.firstVisible / this.columns);
-	    };
-	    Carousel.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        this.container = this.el.nativeElement.children[0];
-	        this.viewport = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-carousel-viewport');
-	        this.itemsContainer = this.domHandler.findSingle(this.el.nativeElement, 'ul.ui-carousel-items');
-	        if (this.responsive) {
-	            this.documentResponsiveListener = this.renderer.listenGlobal('window', 'resize', function (event) {
-	                _this.updateState();
-	            });
-	        }
-	        if (this.value && this.value.length) {
-	            this.render();
-	        }
-	    };
-	    Carousel.prototype.updateLinks = function () {
-	        this.anchorPageLinks = [];
-	        for (var i = 0; i < this.totalPages; i++) {
-	            this.anchorPageLinks.push(i);
-	        }
-	    };
-	    Carousel.prototype.updateDropdown = function () {
-	        this.selectDropdownOptions = [];
-	        for (var i = 0; i < this.totalPages; i++) {
-	            this.selectDropdownOptions.push(i);
-	        }
-	    };
-	    Carousel.prototype.updateMobileDropdown = function () {
-	        this.mobileDropdownOptions = [];
-	        for (var i = 0; i < this.value.length; i++) {
-	            this.mobileDropdownOptions.push(i);
-	        }
-	    };
-	    Carousel.prototype.render = function () {
-	        this.items = this.domHandler.find(this.itemsContainer, 'li');
-	        this.calculateItemWidths();
-	        if (!this.responsive) {
-	            this.container.style.width = (this.domHandler.width(this.container)) + 'px';
-	        }
-	        if (this.autoplayInterval) {
-	            this.circular = true;
-	            this.startAutoplay();
-	        }
-	    };
-	    Carousel.prototype.calculateItemWidths = function () {
-	        var firstItem = (this.items && this.items.length) ? this.items[0] : null;
-	        if (firstItem) {
-	            for (var i = 0; i < this.items.length; i++) {
-	                this.items[i].style.width = ((this.domHandler.innerWidth(this.viewport) - (this.domHandler.getHorizontalMargin(firstItem) * this.columns)) / this.columns) + 'px';
-	            }
-	        }
-	    };
-	    Carousel.prototype.onNextNav = function () {
-	        var lastPage = (this.page === (this.totalPages - 1));
-	        if (!lastPage)
-	            this.setPage(this.page + 1);
-	        else if (this.circular)
-	            this.setPage(0);
-	    };
-	    Carousel.prototype.onPrevNav = function () {
-	        if (this.page !== 0)
-	            this.setPage(this.page - 1);
-	        else if (this.circular)
-	            this.setPage(this.totalPages - 1);
-	    };
-	    Carousel.prototype.setPage = function (p, enforce) {
-	        if (p !== this.page || enforce) {
-	            this.page = p;
-	            this.left = (-1 * (this.domHandler.innerWidth(this.viewport) * this.page));
-	            this.firstVisible = this.page * this.columns;
-	        }
-	    };
-	    Carousel.prototype.onDropdownChange = function (val) {
-	        this.setPage(parseInt(val));
-	    };
-	    Object.defineProperty(Carousel.prototype, "displayPageLinks", {
-	        get: function () {
-	            return (this.totalPages <= this.pageLinks && !this.shrinked);
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    Object.defineProperty(Carousel.prototype, "displayPageDropdown", {
-	        get: function () {
-	            return (this.totalPages > this.pageLinks && !this.shrinked);
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    Object.defineProperty(Carousel.prototype, "totalPages", {
-	        get: function () {
-	            return (this.value && this.value.length) ? Math.ceil(this.value.length / this.columns) : 0;
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    Carousel.prototype.routerDisplay = function () {
-	        var win = window;
-	        if (win.innerWidth <= this.breakpoint)
-	            return true;
-	        else
-	            return false;
-	    };
-	    Carousel.prototype.updateState = function () {
-	        var win = window;
-	        if (win.innerWidth <= this.breakpoint) {
-	            this.shrinked = true;
-	            this.columns = 1;
-	        }
-	        else if (this.shrinked) {
-	            this.shrinked = false;
-	            this.columns = this.numVisible;
-	            this.updateLinks();
-	            this.updateDropdown();
-	        }
-	        this.calculateItemWidths();
-	        this.setPage(Math.floor(this.firstVisible / this.columns), true);
-	    };
-	    Carousel.prototype.startAutoplay = function () {
-	        var _this = this;
-	        this.interval = setInterval(function () {
-	            if (_this.page === (_this.totalPages - 1))
-	                _this.setPage(0);
-	            else
-	                _this.setPage(_this.page + 1);
-	        }, this.autoplayInterval);
-	    };
-	    Carousel.prototype.stopAutoplay = function () {
-	        clearInterval(this.interval);
-	    };
-	    Carousel.prototype.ngOnDestroy = function () {
-	        if (this.responsive) {
-	            this.documentResponsiveListener();
-	        }
-	        if (this.autoplayInterval) {
-	            this.stopAutoplay();
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Carousel.prototype, "value", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Carousel.prototype, "numVisible", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Carousel.prototype, "firstVisible", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Carousel.prototype, "headerText", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Carousel.prototype, "circular", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Carousel.prototype, "breakpoint", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Carousel.prototype, "responsive", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Carousel.prototype, "autoplayInterval", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Carousel.prototype, "effectDuration", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Carousel.prototype, "easing", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Carousel.prototype, "pageLinks", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Carousel.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Carousel.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef), 
-	        __metadata('design:type', core_1.TemplateRef)
-	    ], Carousel.prototype, "itemTemplate", void 0);
-	    Carousel = __decorate([
-	        core_1.Component({
-	            selector: 'p-carousel',
-	            template: "\n        <div [ngClass]=\"{'ui-carousel ui-widget ui-widget-content ui-corner-all':true}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-carousel-header ui-widget-header\">\n                <div class=\"ui-carousel-header-title\">{{headerText}}</div>\n                <span class=\"ui-carousel-button ui-carousel-next-button fa fa-arrow-circle-right\" (click)=\"onNextNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === (totalPages-1)) && !circular}\"></span>\n                <span class=\"ui-carousel-button ui-carousel-prev-button fa fa-arrow-circle-left\" (click)=\"onPrevNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === 0 && !circular)}\"></span>\n                <div *ngIf=\"displayPageLinks\" class=\"ui-carousel-page-links\">\n                    <a href=\"#\" class=\"ui-carousel-page-link fa fa-circle-o\" *ngFor=\"let links of anchorPageLinks;let i=index\" [ngClass]=\"{'fa-dot-circle-o':page===i}\"></a>\n                </div>\n                <select *ngIf=\"displayPageDropdown\" class=\"ui-carousel-dropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\">\n                    <option *ngFor=\"let option of selectDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n                <select *ngIf=\"responsive\" class=\"ui-carousel-mobiledropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\"\n                    [style.display]=\"shrinked ? 'block' : 'none'\">\n                    <option *ngFor=\"let option of mobileDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n            </div>\n            <div class=\"ui-carousel-viewport\">\n                <ul class=\"ui-carousel-items\" [style.left.px]=\"left\" [style.transitionProperty]=\"'left'\" \n                            [style.transitionDuration]=\"effectDuration\" [style.transitionTimingFunction]=\"easing\">\n                    <template ngFor [ngForOf]=\"value\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers, core_1.Renderer])
-	    ], Carousel);
-	    return Carousel;
-	}());
-	exports.Carousel = Carousel;
-	
-
-/***/ },
-/* 1012 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var UIChart = (function () {
-	    function UIChart(el, differs) {
-	        this.el = el;
-	        this.onDataSelect = new core_1.EventEmitter();
-	        this.differ = differs.find([]).create(null);
-	    }
-	    UIChart.prototype.ngAfterViewInit = function () {
-	        this.initChart();
-	        this.initialized = true;
-	    };
-	    UIChart.prototype.ngDoCheck = function () {
-	        var changes = this.differ.diff(this.data.datasets);
-	        if (changes && this.initialized) {
-	            if (this.chart) {
-	                this.chart.destroy();
-	            }
-	            this.initChart();
-	        }
-	    };
-	    UIChart.prototype.onCanvasClick = function (event) {
-	        if (this.chart) {
-	            var element = this.chart.getElementAtEvent(event);
-	            var dataset = this.chart.getDatasetAtEvent(event);
-	            if (element && element[0] && dataset) {
-	                this.onDataSelect.emit({ originalEvent: event, element: element[0], dataset: dataset });
-	            }
-	        }
-	    };
-	    UIChart.prototype.initChart = function () {
-	        this.chart = new Chart(this.el.nativeElement.children[0].children[0], {
-	            type: this.type,
-	            data: this.data,
-	            options: this.options
-	        });
-	    };
-	    UIChart.prototype.getCanvas = function () {
-	        return this.el.nativeElement.children[0].children[0];
-	    };
-	    UIChart.prototype.getBase64Image = function () {
-	        return this.chart.toBase64Image();
-	    };
-	    UIChart.prototype.ngOnDestroy = function () {
-	        if (this.chart) {
-	            this.chart.destroy();
-	            this.initialized = false;
-	            this.chart = null;
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], UIChart.prototype, "type", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], UIChart.prototype, "data", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], UIChart.prototype, "options", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], UIChart.prototype, "width", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], UIChart.prototype, "height", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], UIChart.prototype, "onDataSelect", void 0);
-	    UIChart = __decorate([
-	        core_1.Component({
-	            selector: 'p-chart',
-	            template: "\n        <div>\n            <canvas [attr.width]=\"width\" [attr.height]=\"height\" (click)=\"onCanvasClick($event)\"></canvas>\n        </div>\n    "
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers])
-	    ], UIChart);
-	    return UIChart;
-	}());
-	exports.UIChart = UIChart;
-	
-
-/***/ },
-/* 1013 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var CHECKBOX_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return Checkbox; }),
-	    multi: true
-	});
-	var Checkbox = (function () {
-	    function Checkbox() {
-	        this.onChange = new core_1.EventEmitter();
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	        this.focused = false;
-	        this.checked = false;
-	    }
-	    Checkbox.prototype.onClick = function (event, checkbox, focus) {
-	        event.preventDefault();
-	        if (this.disabled) {
-	            return;
-	        }
-	        this.checked = !this.checked;
-	        if (this.name) {
-	            if (this.checked)
-	                this.addValue(this.value);
-	            else
-	                this.removeValue(this.value);
-	            this.onModelChange(this.model);
-	        }
-	        else {
-	            this.onModelChange(this.checked);
-	        }
-	        this.onChange.emit(this.checked);
-	        if (focus) {
-	            checkbox.focus();
-	        }
-	    };
-	    Checkbox.prototype.isChecked = function () {
-	        if (this.name)
-	            return this.findValueIndex(this.value) !== -1;
-	        else
-	            return this.model;
-	    };
-	    Checkbox.prototype.removeValue = function (value) {
-	        var index = this.findValueIndex(value);
-	        if (index >= 0) {
-	            this.model.splice(index, 1);
-	        }
-	    };
-	    Checkbox.prototype.addValue = function (value) {
-	        this.model.push(value);
-	    };
-	    Checkbox.prototype.onFocus = function (event) {
-	        this.focused = true;
-	    };
-	    Checkbox.prototype.onBlur = function (event) {
-	        this.focused = false;
-	        this.onModelTouched();
-	    };
-	    Checkbox.prototype.findValueIndex = function (value) {
-	        var index = -1;
-	        if (this.model) {
-	            for (var i = 0; i < this.model.length; i++) {
-	                if (this.model[i] == value) {
-	                    index = i;
-	                    break;
-	                }
-	            }
-	        }
-	        return index;
-	    };
-	    Checkbox.prototype.writeValue = function (model) {
-	        this.model = model;
-	        this.checked = this.isChecked();
-	    };
-	    Checkbox.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    Checkbox.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Checkbox.prototype, "value", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Checkbox.prototype, "name", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Checkbox.prototype, "disabled", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Checkbox.prototype, "onChange", void 0);
-	    Checkbox = __decorate([
-	        core_1.Component({
-	            selector: 'p-checkbox',
-	            template: "\n        <div class=\"ui-chkbox ui-widget\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #cb type=\"checkbox\" name=\"{{name}}\" value=\"{{value}}\" [checked]=\"checked\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\"\n                [ngClass]=\"{'ui-state-focus':focused}\" (keydown.space)=\"onClick($event,cb,false)\">\n            </div>\n            <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" (click)=\"onClick($event,cb,true)\"\n                        (mouseover)=\"hover=true\" (mouseout)=\"hover=false\" \n                        [ngClass]=\"{'ui-state-hover':hover&&!disabled,'ui-state-active':checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-chkbox-icon ui-c\" [ngClass]=\"{'fa fa-fw fa-check':checked}\"></span>\n            </div>\n        </div>\n    ",
-	            providers: [CHECKBOX_VALUE_ACCESSOR]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Checkbox);
-	    return Checkbox;
-	}());
-	exports.Checkbox = Checkbox;
-	
-
-/***/ },
-/* 1014 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var CodeHighlighter = (function () {
-	    function CodeHighlighter(el) {
-	        this.el = el;
-	    }
-	    CodeHighlighter.prototype.ngOnInit = function () {
-	        Prism.highlightElement(this.el.nativeElement);
-	    };
-	    CodeHighlighter = __decorate([
-	        core_1.Directive({
-	            selector: '[pCode]'
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef])
-	    ], CodeHighlighter);
-	    return CodeHighlighter;
-	}());
-	exports.CodeHighlighter = CodeHighlighter;
-	
-
-/***/ },
-/* 1015 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var router_1 = __webpack_require__(7);
-	var ContextMenuSub = (function () {
-	    function ContextMenuSub(domHandler, router) {
-	        this.domHandler = domHandler;
-	        this.router = router;
-	    }
-	    ContextMenuSub.prototype.onItemMouseEnter = function (event, item) {
-	        this.activeItem = item;
-	        this.activeLink = item.children[0];
-	        var nextElement = item.children[0].nextElementSibling;
-	        if (nextElement) {
-	            var sublist = nextElement.children[0];
-	            sublist.style.zIndex = ++domhandler_1.DomHandler.zindex;
-	            sublist.style.top = '0px';
-	            sublist.style.left = this.domHandler.getOuterWidth(item.children[0]) + 'px';
-	        }
-	    };
-	    ContextMenuSub.prototype.onItemMouseLeave = function (event, link) {
-	        this.activeItem = null;
-	        this.activeLink = null;
-	    };
-	    ContextMenuSub.prototype.itemClick = function (event, item) {
-	        if (!item.url || item.routerLink) {
-	            event.preventDefault();
-	        }
-	        if (item.command) {
-	            if (!item.eventEmitter) {
-	                item.eventEmitter = new core_1.EventEmitter();
-	                item.eventEmitter.subscribe(item.command);
-	            }
-	            item.eventEmitter.emit(event);
-	        }
-	        if (item.routerLink) {
-	            this.router.navigate(item.routerLink);
-	        }
-	    };
-	    ContextMenuSub.prototype.listClick = function (event) {
-	        this.activeItem = null;
-	        this.activeLink = null;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], ContextMenuSub.prototype, "item", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], ContextMenuSub.prototype, "root", void 0);
-	    ContextMenuSub = __decorate([
-	        core_1.Component({
-	            selector: 'p-contextMenuSub',
-	            template: "\n        <ul [ngClass]=\"{'ui-helper-reset':root, 'ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow':!root}\" class=\"ui-menu-list\"\n            (click)=\"listClick($event)\">\n            <template ngFor let-child [ngForOf]=\"(root ? item : item.items)\">\n                <li #item [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':child.items,'ui-menuitem-active':item==activeItem}\"\n                    (mouseenter)=\"onItemMouseEnter($event, item)\" (mouseleave)=\"onItemMouseLeave($event, item)\">\n                    <a #link [href]=\"child.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [ngClass]=\"{'ui-state-hover':link==activeLink}\" (click)=\"itemClick($event, child)\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <p-contextMenuSub class=\"ui-submenu\" [item]=\"child\" *ngIf=\"child.items\"></p-contextMenuSub>\n                </li>\n            </template>\n        </ul>\n    ",
-	            directives: [ContextMenuSub],
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [domhandler_1.DomHandler, router_1.Router])
-	    ], ContextMenuSub);
-	    return ContextMenuSub;
-	}());
-	exports.ContextMenuSub = ContextMenuSub;
-	var ContextMenu = (function () {
-	    function ContextMenu(el, domHandler, renderer) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	    }
-	    ContextMenu.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        this.container = this.el.nativeElement.children[0];
-	        this.documentClickListener = this.renderer.listenGlobal('body', 'click', function () {
-	            _this.hide();
-	        });
-	        this.documentRightClickListener = this.renderer.listenGlobal('body', 'contextmenu', function (event) {
-	            _this.show(event);
-	            event.preventDefault();
-	        });
-	    };
-	    ContextMenu.prototype.toggle = function (event) {
-	        if (this.container.offsetParent)
-	            this.hide();
-	        else
-	            this.show(event);
-	    };
-	    ContextMenu.prototype.show = function (event) {
-	        this.left = event.pageX;
-	        this.top = event.pageY;
-	        this.visible = true;
-	        this.domHandler.fadeIn(this.container, 250);
-	    };
-	    ContextMenu.prototype.hide = function () {
-	        this.visible = false;
-	    };
-	    ContextMenu.prototype.unsubscribe = function (item) {
-	        if (item.eventEmitter) {
-	            item.eventEmitter.unsubscribe();
-	        }
-	        if (item.items) {
-	            for (var _i = 0, _a = item.items; _i < _a.length; _i++) {
-	                var childItem = _a[_i];
-	                this.unsubscribe(childItem);
-	            }
-	        }
-	    };
-	    ContextMenu.prototype.ngOnDestroy = function () {
-	        this.documentClickListener();
-	        this.documentRightClickListener();
-	        if (this.model) {
-	            for (var _i = 0, _a = this.model; _i < _a.length; _i++) {
-	                var item = _a[_i];
-	                this.unsubscribe(item);
-	            }
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], ContextMenu.prototype, "model", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], ContextMenu.prototype, "global", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], ContextMenu.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], ContextMenu.prototype, "styleClass", void 0);
-	    ContextMenu = __decorate([
-	        core_1.Component({
-	            selector: 'p-contextMenu',
-	            template: "\n        <div [ngClass]=\"'ui-contextmenu ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-dynamic ui-shadow'\" \n            [class]=\"styleClass\" [ngStyle]=\"style\" [style.display]=\"visible ? 'block' : 'none'\" [style.left.px]=\"left\" [style.top.px]=\"top\">\n            <p-contextMenuSub [item]=\"model\" root=\"root\"></p-contextMenuSub>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler],
-	            directives: [ContextMenuSub]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
-	    ], ContextMenu);
-	    return ContextMenu;
-	}());
-	exports.ContextMenu = ContextMenu;
-	
-
-/***/ },
-/* 1016 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(35);
-	var common_2 = __webpack_require__(35);
-	var paginator_1 = __webpack_require__(207);
-	var DataGrid = (function () {
-	    function DataGrid(el, differs) {
-	        this.el = el;
-	        this.columns = 3;
-	        this.pageLinks = 5;
-	        this.onLazyLoad = new core_1.EventEmitter();
-	        this.first = 0;
-	        this.page = 0;
-	        this.differ = differs.find([]).create(null);
-	    }
-	    DataGrid.prototype.ngAfterViewInit = function () {
-	        if (this.lazy) {
-	            this.onLazyLoad.emit({
-	                first: this.first,
-	                rows: this.rows
-	            });
-	        }
-	    };
-	    DataGrid.prototype.ngDoCheck = function () {
-	        var changes = this.differ.diff(this.value);
-	        if (changes) {
-	            if (this.paginator) {
-	                this.updatePaginator();
-	            }
-	            this.updateDataToRender(this.value);
-	        }
-	    };
-	    DataGrid.prototype.updatePaginator = function () {
-	        //total records
-	        this.totalRecords = this.lazy ? this.totalRecords : (this.value ? this.value.length : 0);
-	        //first
-	        if (this.totalRecords && this.first >= this.totalRecords) {
-	            var numberOfPages = Math.ceil(this.totalRecords / this.rows);
-	            this.first = Math.max((numberOfPages - 1) * this.rows, 0);
-	        }
-	    };
-	    DataGrid.prototype.paginate = function (event) {
-	        this.first = event.first;
-	        this.rows = event.rows;
-	        if (this.lazy) {
-	            this.onLazyLoad.emit(this.createLazyLoadMetadata());
-	        }
-	        else {
-	            this.updateDataToRender(this.value);
-	        }
-	    };
-	    DataGrid.prototype.updateDataToRender = function (datasource) {
-	        if (this.paginator && datasource) {
-	            this.dataToRender = [];
-	            var startIndex = this.lazy ? 0 : this.first;
-	            for (var i = startIndex; i < (startIndex + this.rows); i++) {
-	                if (i >= datasource.length) {
-	                    break;
-	                }
-	                this.dataToRender.push(datasource[i]);
-	            }
-	        }
-	        else {
-	            this.dataToRender = datasource;
-	        }
-	    };
-	    DataGrid.prototype.isEmpty = function () {
-	        return !this.dataToRender || (this.dataToRender.length == 0);
-	    };
-	    DataGrid.prototype.createLazyLoadMetadata = function () {
-	        return {
-	            first: this.first,
-	            rows: this.rows
-	        };
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], DataGrid.prototype, "value", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataGrid.prototype, "paginator", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DataGrid.prototype, "rows", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DataGrid.prototype, "columns", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DataGrid.prototype, "totalRecords", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DataGrid.prototype, "pageLinks", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], DataGrid.prototype, "rowsPerPageOptions", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataGrid.prototype, "lazy", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataGrid.prototype, "onLazyLoad", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DataGrid.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], DataGrid.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.ContentChild(common_1.Header), 
-	        __metadata('design:type', Object)
-	    ], DataGrid.prototype, "header", void 0);
-	    __decorate([
-	        core_1.ContentChild(common_2.Footer), 
-	        __metadata('design:type', Object)
-	    ], DataGrid.prototype, "footer", void 0);
-	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef), 
-	        __metadata('design:type', core_1.TemplateRef)
-	    ], DataGrid.prototype, "itemTemplate", void 0);
-	    DataGrid = __decorate([
-	        core_1.Component({
-	            selector: 'p-dataGrid',
-	            template: "\n        <div [ngClass]=\"'ui-datagrid ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-datagrid-header ui-widget-header ui-corner-top\" *ngIf=\"header\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <div class=\"ui-datagrid-content ui-widget-content\" [ngClass]=\"'ui-datagrid-col-' + columns\">\n                <template ngFor [ngForOf]=\"dataToRender\" [ngForTemplate]=\"itemTemplate\"></template>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" \n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator\"></p-paginator>\n            <div class=\"ui-datagrid-footer ui-widget-header ui-corner-top\" *ngIf=\"footer\">\n                <ng-content select=\"footer\"></ng-content>\n            </div>\n        </div>\n    ",
-	            directives: [paginator_1.Paginator]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers])
-	    ], DataGrid);
-	    return DataGrid;
-	}());
-	exports.DataGrid = DataGrid;
-	
-
-/***/ },
-/* 1017 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(35);
-	var common_2 = __webpack_require__(35);
-	var paginator_1 = __webpack_require__(207);
-	var DataList = (function () {
-	    function DataList(el, differs) {
-	        this.el = el;
-	        this.pageLinks = 5;
-	        this.onLazyLoad = new core_1.EventEmitter();
-	        this.first = 0;
-	        this.page = 0;
-	        this.differ = differs.find([]).create(null);
-	    }
-	    DataList.prototype.ngAfterViewInit = function () {
-	        if (this.lazy) {
-	            this.onLazyLoad.emit({
-	                first: this.first,
-	                rows: this.rows
-	            });
-	        }
-	    };
-	    DataList.prototype.ngDoCheck = function () {
-	        var changes = this.differ.diff(this.value);
-	        if (changes) {
-	            if (this.paginator) {
-	                this.updatePaginator();
-	            }
-	            this.updateDataToRender(this.value);
-	        }
-	    };
-	    DataList.prototype.updatePaginator = function () {
-	        //total records
-	        this.totalRecords = this.lazy ? this.totalRecords : (this.value ? this.value.length : 0);
-	        //first
-	        if (this.totalRecords && this.first >= this.totalRecords) {
-	            var numberOfPages = Math.ceil(this.totalRecords / this.rows);
-	            this.first = Math.max((numberOfPages - 1) * this.rows, 0);
-	        }
-	    };
-	    DataList.prototype.paginate = function (event) {
-	        this.first = event.first;
-	        this.rows = event.rows;
-	        if (this.lazy) {
-	            this.onLazyLoad.emit(this.createLazyLoadMetadata());
-	        }
-	        else {
-	            this.updateDataToRender(this.value);
-	        }
-	    };
-	    DataList.prototype.updateDataToRender = function (datasource) {
-	        if (this.paginator && datasource) {
-	            this.dataToRender = [];
-	            var startIndex = this.lazy ? 0 : this.first;
-	            for (var i = startIndex; i < (startIndex + this.rows); i++) {
-	                if (i >= datasource.length) {
-	                    break;
-	                }
-	                this.dataToRender.push(datasource[i]);
-	            }
-	        }
-	        else {
-	            this.dataToRender = datasource;
-	        }
-	    };
-	    DataList.prototype.isEmpty = function () {
-	        return !this.dataToRender || (this.dataToRender.length == 0);
-	    };
-	    DataList.prototype.createLazyLoadMetadata = function () {
-	        return {
-	            first: this.first,
-	            rows: this.rows
-	        };
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], DataList.prototype, "value", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataList.prototype, "paginator", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DataList.prototype, "rows", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DataList.prototype, "totalRecords", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DataList.prototype, "pageLinks", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], DataList.prototype, "rowsPerPageOptions", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataList.prototype, "lazy", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataList.prototype, "onLazyLoad", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DataList.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], DataList.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.ContentChild(common_1.Header), 
-	        __metadata('design:type', Object)
-	    ], DataList.prototype, "header", void 0);
-	    __decorate([
-	        core_1.ContentChild(common_2.Footer), 
-	        __metadata('design:type', Object)
-	    ], DataList.prototype, "footer", void 0);
-	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef), 
-	        __metadata('design:type', core_1.TemplateRef)
-	    ], DataList.prototype, "itemTemplate", void 0);
-	    DataList = __decorate([
-	        core_1.Component({
-	            selector: 'p-dataList',
-	            template: "\n        <div [ngClass]=\"'ui-datalist ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-datalist-header ui-widget-header ui-corner-top\" *ngIf=\"header\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <div class=\"ui-datalist-content ui-widget-content\">\n                <ul class=\"ui-datalist-data\">\n                    <template ngFor [ngForOf]=\"dataToRender\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" \n            (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator\"></p-paginator>\n            <div class=\"ui-datalist-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n                <ng-content select=\"footer\"></ng-content>\n            </div>\n        </div>\n    ",
-	            directives: [paginator_1.Paginator]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers])
-	    ], DataList);
-	    return DataList;
-	}());
-	exports.DataList = DataList;
-	
-
-/***/ },
-/* 1018 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(35);
-	var common_2 = __webpack_require__(35);
-	var domhandler_1 = __webpack_require__(11);
-	var DataScroller = (function () {
-	    function DataScroller(el, differs, renderer, domHandler) {
-	        this.el = el;
-	        this.renderer = renderer;
-	        this.domHandler = domHandler;
-	        this.onLazyLoad = new core_1.EventEmitter();
-	        this.buffer = 0.9;
-	        this.dataToRender = [];
-	        this.first = 0;
-	        this.differ = differs.find([]).create(null);
-	    }
-	    DataScroller.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        if (this.lazy) {
-	            this.load();
-	        }
-	        if (this.loader) {
-	            this.scrollFunction = this.renderer.listen(this.loader, 'click', function () {
-	                _this.load();
-	            });
-	        }
-	        else {
-	            this.bindScrollListener();
-	        }
-	    };
-	    DataScroller.prototype.ngDoCheck = function () {
-	        var changes = this.differ.diff(this.value);
-	        if (changes) {
-	            if (this.lazy)
-	                this.dataToRender = this.value;
-	            else
-	                this.load();
-	        }
-	    };
-	    DataScroller.prototype.load = function () {
-	        if (this.lazy) {
-	            this.onLazyLoad.emit({
-	                first: this.first,
-	                rows: this.rows
-	            });
-	        }
-	        else {
-	            for (var i = this.first; i < (this.first + this.rows); i++) {
-	                if (i >= this.value.length) {
-	                    break;
-	                }
-	                this.dataToRender.push(this.value[i]);
-	            }
-	        }
-	        this.first = this.first + this.rows;
-	    };
-	    DataScroller.prototype.isEmpty = function () {
-	        return !this.dataToRender || (this.dataToRender.length == 0);
-	    };
-	    DataScroller.prototype.createLazyLoadMetadata = function () {
-	        return {
-	            first: this.first,
-	            rows: this.rows
-	        };
-	    };
-	    DataScroller.prototype.bindScrollListener = function () {
-	        var _this = this;
-	        if (this.inline) {
-	            this.contentElement = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-datascroller-content');
-	            this.scrollFunction = this.renderer.listen(this.contentElement, 'scroll', function () {
-	                var scrollTop = _this.contentElement.scrollTop;
-	                var scrollHeight = _this.contentElement.scrollHeight;
-	                var viewportHeight = _this.contentElement.clientHeight;
-	                if ((scrollTop >= ((scrollHeight * _this.buffer) - (viewportHeight)))) {
-	                    _this.load();
-	                }
-	            });
-	        }
-	        else {
-	            this.scrollFunction = this.renderer.listenGlobal('window', 'scroll', function () {
-	                var docBody = document.body;
-	                var docElement = document.documentElement;
-	                var scrollTop = (window.pageYOffset || document.documentElement.scrollTop);
-	                var winHeight = docElement.clientHeight;
-	                var docHeight = Math.max(docBody.scrollHeight, docBody.offsetHeight, winHeight, docElement.scrollHeight, docElement.offsetHeight);
-	                if (scrollTop >= ((docHeight * _this.buffer) - winHeight)) {
-	                    _this.load();
-	                }
-	            });
-	        }
-	    };
-	    DataScroller.prototype.ngOnDestroy = function () {
-	        //unbind
-	        if (this.scrollFunction) {
-	            this.scrollFunction();
-	            this.contentElement = null;
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], DataScroller.prototype, "value", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DataScroller.prototype, "rows", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataScroller.prototype, "lazy", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataScroller.prototype, "onLazyLoad", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DataScroller.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], DataScroller.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DataScroller.prototype, "buffer", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataScroller.prototype, "inline", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DataScroller.prototype, "scrollHeight", void 0);
-	    __decorate([
-	        core_1.ContentChild(common_1.Header), 
-	        __metadata('design:type', Object)
-	    ], DataScroller.prototype, "header", void 0);
-	    __decorate([
-	        core_1.ContentChild(common_2.Footer), 
-	        __metadata('design:type', Object)
-	    ], DataScroller.prototype, "footer", void 0);
-	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef), 
-	        __metadata('design:type', core_1.TemplateRef)
-	    ], DataScroller.prototype, "itemTemplate", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DataScroller.prototype, "loader", void 0);
-	    DataScroller = __decorate([
-	        core_1.Component({
-	            selector: 'p-dataScroller',
-	            template: "\n    <div [ngClass]=\"{'ui-datascroller ui-widget': true, 'ui-datascroller-inline': inline}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n        <div class=\"ui-datascroller-header ui-widget-header ui-corner-top\" *ngIf=\"header\">\n            <ng-content select=\"header\"></ng-content>\n        </div>\n        <div class=\"ui-datascroller-content ui-widget-content\" [ngStyle]=\"{'max-height': scrollHeight}\">\n            <ul class=\"ui-datascroller-list\">\n                <template ngFor [ngForOf]=\"dataToRender\" [ngForTemplate]=\"itemTemplate\"></template>\n            </ul>\n        </div>\n        <div class=\"ui-datascroller-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n            <ng-content select=\"footer\"></ng-content>\n        </div>\n    </div>\n    ",
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers, core_1.Renderer, domhandler_1.DomHandler])
-	    ], DataScroller);
-	    return DataScroller;
-	}());
-	exports.DataScroller = DataScroller;
-	
-
-/***/ },
-/* 1019 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var __param = (this && this.__param) || function (paramIndex, decorator) {
-	    return function (target, key) { decorator(target, key, paramIndex); }
-	};
-	var core_1 = __webpack_require__(1);
-	var column_1 = __webpack_require__(315);
-	var columntemplateloader_1 = __webpack_require__(494);
-	var rowexpansionloader_1 = __webpack_require__(1020);
-	var common_1 = __webpack_require__(35);
-	var common_2 = __webpack_require__(35);
-	var paginator_1 = __webpack_require__(207);
-	var inputtext_1 = __webpack_require__(206);
-	var domhandler_1 = __webpack_require__(11);
-	var DataTable = (function () {
-	    function DataTable(el, domHandler, differs, cols, renderer, changeDetector) {
-	        var _this = this;
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	        this.pageLinks = 5;
-	        this.selectionChange = new core_1.EventEmitter();
-	        this.onRowClick = new core_1.EventEmitter();
-	        this.onRowSelect = new core_1.EventEmitter();
-	        this.onRowUnselect = new core_1.EventEmitter();
-	        this.onRowDblclick = new core_1.EventEmitter();
-	        this.onContextMenuSelect = new core_1.EventEmitter();
-	        this.filterDelay = 300;
-	        this.onLazyLoad = new core_1.EventEmitter();
-	        this.columnResizeMode = 'fit';
-	        this.onColResize = new core_1.EventEmitter();
-	        this.onColReorder = new core_1.EventEmitter();
-	        this.sortMode = 'single';
-	        this.sortOrder = 1;
-	        this.csvSeparator = ',';
-	        this.onEditInit = new core_1.EventEmitter();
-	        this.onEditComplete = new core_1.EventEmitter();
-	        this.onEdit = new core_1.EventEmitter();
-	        this.onEditCancel = new core_1.EventEmitter();
-	        this.onPage = new core_1.EventEmitter();
-	        this.onSort = new core_1.EventEmitter();
-	        this.onFilter = new core_1.EventEmitter();
-	        this.onRowExpand = new core_1.EventEmitter();
-	        this.onRowCollapse = new core_1.EventEmitter();
-	        this.first = 0;
-	        this.page = 0;
-	        this.filters = {};
-	        this.columnsUpdated = false;
-	        this.filterConstraints = {
-	            startsWith: function (value, filter) {
-	                if (filter === undefined || filter === null || filter.trim() === '') {
-	                    return true;
-	                }
-	                if (value === undefined || value === null) {
-	                    return false;
-	                }
-	                var filterValue = filter.toLowerCase();
-	                return value.toString().toLowerCase().slice(0, filterValue.length) === filterValue;
-	            },
-	            contains: function (value, filter) {
-	                if (filter === undefined || filter === null || filter.trim() === '') {
-	                    return true;
-	                }
-	                if (value === undefined || value === null) {
-	                    return false;
-	                }
-	                return value.toString().toLowerCase().indexOf(filter.toLowerCase()) !== -1;
-	            },
-	            endsWith: function (value, filter) {
-	                if (filter === undefined || filter === null || filter.trim() === '') {
-	                    return true;
-	                }
-	                if (value === undefined || value === null) {
-	                    return false;
-	                }
-	                var filterValue = filter.toLowerCase();
-	                return value.indexOf(filterValue, value.length - filterValue.length) !== -1;
-	            }
-	        };
-	        this.differ = differs.find([]).create(null);
-	        cols.changes.subscribe(function (_) {
-	            _this.columns = cols.toArray();
-	            _this.columnsUpdated = true;
-	            changeDetector.markForCheck();
-	        });
-	    }
-	    DataTable.prototype.ngOnInit = function () {
-	        if (this.lazy) {
-	            this.onLazyLoad.emit({
-	                first: this.first,
-	                rows: this.rows,
-	                sortField: this.sortField,
-	                sortOrder: this.sortOrder,
-	                filters: null,
-	                multiSortMeta: this.multiSortMeta
-	            });
-	        }
-	    };
-	    DataTable.prototype.ngAfterViewChecked = function () {
-	        if (this.columnsUpdated) {
-	            if (this.resizableColumns) {
-	                this.initResizableColumns();
-	            }
-	            if (this.reorderableColumns) {
-	                this.initColumnReordering();
-	            }
-	            if (this.scrollable) {
-	                this.initScrolling();
-	            }
-	            this.columnsUpdated = false;
-	        }
-	    };
-	    DataTable.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        if (this.globalFilter) {
-	            this.globalFilterFunction = this.renderer.listen(this.globalFilter, 'keyup', function () {
-	                _this.filterTimeout = setTimeout(function () {
-	                    _this.filter();
-	                    _this.filterTimeout = null;
-	                }, _this.filterDelay);
-	            });
-	        }
-	    };
-	    DataTable.prototype.ngDoCheck = function () {
-	        var changes = this.differ.diff(this.value);
-	        if (changes) {
-	            if (this.paginator) {
-	                this.updatePaginator();
-	            }
-	            if (!this.lazy && !this.stopSortPropagation && (this.sortField || this.multiSortMeta)) {
-	                if (this.sortMode == 'single')
-	                    this.sortSingle();
-	                else if (this.sortMode == 'multiple')
-	                    this.sortMultiple();
-	            }
-	            this.updateDataToRender(this.filteredValue || this.value);
-	            this.stopSortPropagation = false;
-	        }
-	    };
-	    DataTable.prototype.resolveFieldData = function (data, field) {
-	        if (data && field) {
-	            if (field.indexOf('.') == -1) {
-	                return data[field];
-	            }
-	            else {
-	                var fields = field.split('.');
-	                var value = data;
-	                for (var i = 0, len = fields.length; i < len; ++i) {
-	                    value = value[fields[i]];
-	                }
-	                return value;
-	            }
-	        }
-	        else {
-	            return null;
-	        }
-	    };
-	    DataTable.prototype.updatePaginator = function () {
-	        //total records
-	        this.totalRecords = this.lazy ? this.totalRecords : (this.value ? this.value.length : 0);
-	        //first
-	        if (this.totalRecords && this.first >= this.totalRecords) {
-	            var numberOfPages = Math.ceil(this.totalRecords / this.rows);
-	            this.first = Math.max((numberOfPages - 1) * this.rows, 0);
-	        }
-	    };
-	    DataTable.prototype.paginate = function (event) {
-	        this.first = event.first;
-	        this.rows = event.rows;
-	        if (this.lazy)
-	            this.onLazyLoad.emit(this.createLazyLoadMetadata());
-	        else
-	            this.updateDataToRender(this.filteredValue || this.value);
-	        this.onPage.emit({
-	            first: this.first,
-	            rows: this.rows
-	        });
-	    };
-	    DataTable.prototype.updateDataToRender = function (datasource) {
-	        if (this.paginator && datasource) {
-	            this.dataToRender = [];
-	            var startIndex = this.lazy ? 0 : this.first;
-	            for (var i = startIndex; i < (startIndex + this.rows); i++) {
-	                if (i >= datasource.length) {
-	                    break;
-	                }
-	                this.dataToRender.push(datasource[i]);
-	            }
-	        }
-	        else {
-	            this.dataToRender = datasource;
-	        }
-	    };
-	    DataTable.prototype.sort = function (event, column) {
-	        if (!column.sortable) {
-	            return;
-	        }
-	        this.sortOrder = (this.sortField === column.field) ? this.sortOrder * -1 : 1;
-	        this.sortField = column.field;
-	        this.sortColumn = column;
-	        var metaKey = event.metaKey || event.ctrlKey;
-	        if (this.lazy) {
-	            this.onLazyLoad.emit(this.createLazyLoadMetadata());
-	        }
-	        else {
-	            if (this.sortMode == 'multiple') {
-	                if (!this.multiSortMeta || !metaKey) {
-	                    this.multiSortMeta = [];
-	                }
-	                this.addSortMeta({ field: this.sortField, order: this.sortOrder });
-	                this.sortMultiple();
-	            }
-	            else {
-	                this.sortSingle();
-	            }
-	        }
-	        this.onSort.emit({
-	            field: this.sortField,
-	            order: this.sortOrder,
-	            multisortmeta: this.multiSortMeta
-	        });
-	    };
-	    DataTable.prototype.sortSingle = function () {
-	        var _this = this;
-	        if (this.value) {
-	            if (this.sortColumn && this.sortColumn.sortable === 'custom') {
-	                this.sortColumn.sortFunction.emit({
-	                    field: this.sortField,
-	                    order: this.sortOrder
-	                });
-	            }
-	            else {
-	                this.value.sort(function (data1, data2) {
-	                    var value1 = _this.resolveFieldData(data1, _this.sortField);
-	                    var value2 = _this.resolveFieldData(data2, _this.sortField);
-	                    var result = null;
-	                    if (value1 instanceof String && value2 instanceof String)
-	                        result = value1.localeCompare(value2);
-	                    else
-	                        result = (value1 < value2) ? -1 : (value1 > value2) ? 1 : 0;
-	                    return (_this.sortOrder * result);
-	                });
-	            }
-	            this.first = 0;
-	            if (this.hasFilter()) {
-	                this.filter();
-	            }
-	        }
-	        //prevent resort at ngDoCheck
-	        this.stopSortPropagation = true;
-	    };
-	    DataTable.prototype.sortMultiple = function () {
-	        var _this = this;
-	        if (this.value) {
-	            this.value.sort(function (data1, data2) {
-	                return _this.multisortField(data1, data2, _this.multiSortMeta, 0);
-	            });
-	            if (this.hasFilter()) {
-	                this.filter();
-	            }
-	        }
-	        //prevent resort at ngDoCheck
-	        this.stopSortPropagation = true;
-	    };
-	    DataTable.prototype.multisortField = function (data1, data2, multiSortMeta, index) {
-	        var value1 = this.resolveFieldData(data1, multiSortMeta[index].field);
-	        var value2 = this.resolveFieldData(data2, multiSortMeta[index].field);
-	        var result = null;
-	        if (typeof value1 == 'string' || value1 instanceof String) {
-	            if (value1.localeCompare && (value1 != value2)) {
-	                return (multiSortMeta[index].order * value1.localeCompare(value2));
-	            }
-	        }
-	        else {
-	            result = (value1 < value2) ? -1 : 1;
-	        }
-	        if (value1 == value2) {
-	            return (multiSortMeta.length - 1) > (index) ? (this.multisortField(data1, data2, multiSortMeta, index + 1)) : 0;
-	        }
-	        return (multiSortMeta[index].order * result);
-	    };
-	    DataTable.prototype.addSortMeta = function (meta) {
-	        var index = -1;
-	        for (var i = 0; i < this.multiSortMeta.length; i++) {
-	            if (this.multiSortMeta[i].field === meta.field) {
-	                index = i;
-	                break;
-	            }
-	        }
-	        if (index >= 0)
-	            this.multiSortMeta[index] = meta;
-	        else
-	            this.multiSortMeta.push(meta);
-	    };
-	    DataTable.prototype.isSorted = function (column) {
-	        if (this.sortMode === 'single') {
-	            return (this.sortField && column.field === this.sortField);
-	        }
-	        else if (this.sortMode === 'multiple') {
-	            var sorted = false;
-	            if (this.multiSortMeta) {
-	                for (var i = 0; i < this.multiSortMeta.length; i++) {
-	                    if (this.multiSortMeta[i].field == column.field) {
-	                        sorted = true;
-	                        break;
-	                    }
-	                }
-	            }
-	            return sorted;
-	        }
-	    };
-	    DataTable.prototype.getSortOrder = function (column) {
-	        var order = 0;
-	        if (this.sortMode === 'single') {
-	            if (this.sortField && column.field === this.sortField) {
-	                order = this.sortOrder;
-	            }
-	        }
-	        else if (this.sortMode === 'multiple') {
-	            if (this.multiSortMeta) {
-	                for (var i = 0; i < this.multiSortMeta.length; i++) {
-	                    if (this.multiSortMeta[i].field == column.field) {
-	                        order = this.multiSortMeta[i].order;
-	                        break;
-	                    }
-	                }
-	            }
-	        }
-	        return order;
-	    };
-	    DataTable.prototype.handleRowClick = function (event, rowData) {
-	        this.onRowClick.next({ originalEvent: event, data: rowData });
-	        if (!this.selectionMode) {
-	            return;
-	        }
-	        var targetNode = event.target.nodeName;
-	        if (targetNode == 'INPUT' || targetNode == 'BUTTON' || targetNode == 'A'
-	            || (this.domHandler.hasClass(event.target, 'ui-c'))) {
-	            return;
-	        }
-	        var selectionIndex = this.findIndexInSelection(rowData);
-	        var selected = selectionIndex != -1;
-	        var metaKey = (event.metaKey || event.ctrlKey);
-	        if (selected && metaKey) {
-	            if (this.isSingleSelectionMode()) {
-	                this.selection = null;
-	                this.selectionChange.emit(null);
-	            }
-	            else {
-	                this.selection.splice(selectionIndex, 1);
-	                this.selectionChange.emit(this.selection);
-	            }
-	            this.onRowUnselect.emit({ originalEvent: event, data: rowData });
-	        }
-	        else {
-	            if (this.isSingleSelectionMode()) {
-	                this.selection = rowData;
-	                this.selectionChange.emit(rowData);
-	            }
-	            else if (this.isMultipleSelectionMode()) {
-	                this.selection = (!metaKey) ? [] : this.selection || [];
-	                this.selection.push(rowData);
-	                this.selectionChange.emit(this.selection);
-	            }
-	            this.onRowSelect.emit({ originalEvent: event, data: rowData });
-	        }
-	    };
-	    DataTable.prototype.onRowRightClick = function (event, rowData) {
-	        if (this.contextMenu) {
-	            var selectionIndex = this.findIndexInSelection(rowData);
-	            var selected = selectionIndex != -1;
-	            if (!selected) {
-	                if (this.isSingleSelectionMode()) {
-	                    this.selection = rowData;
-	                    this.selectionChange.emit(rowData);
-	                }
-	                else if (this.isMultipleSelectionMode()) {
-	                    this.selection = [];
-	                    this.selection.push(rowData);
-	                    this.selectionChange.emit(this.selection);
-	                }
-	            }
-	            this.contextMenu.show(event);
-	            this.onContextMenuSelect.emit({ originalEvent: event, data: rowData });
-	        }
-	    };
-	    DataTable.prototype.rowDblclick = function (event, rowData) {
-	        this.onRowDblclick.emit({ originalEvent: event, data: rowData });
-	    };
-	    DataTable.prototype.isSingleSelectionMode = function () {
-	        return this.selectionMode === 'single';
-	    };
-	    DataTable.prototype.isMultipleSelectionMode = function () {
-	        return this.selectionMode === 'multiple';
-	    };
-	    DataTable.prototype.findIndexInSelection = function (rowData) {
-	        var index = -1;
-	        if (this.selectionMode && this.selection) {
-	            if (this.isSingleSelectionMode()) {
-	                index = (this.selection == rowData) ? 0 : -1;
-	            }
-	            else if (this.isMultipleSelectionMode()) {
-	                for (var i = 0; i < this.selection.length; i++) {
-	                    if (this.selection[i] == rowData) {
-	                        index = i;
-	                        break;
-	                    }
-	                }
-	            }
-	        }
-	        return index;
-	    };
-	    DataTable.prototype.isSelected = function (rowData) {
-	        return this.findIndexInSelection(rowData) != -1;
-	    };
-	    DataTable.prototype.onFilterKeyup = function (value, field, matchMode) {
-	        var _this = this;
-	        if (this.filterTimeout) {
-	            clearTimeout(this.filterTimeout);
-	        }
-	        this.filterTimeout = setTimeout(function () {
-	            _this.filters[field] = { value: value, matchMode: matchMode };
-	            _this.filter();
-	            _this.filterTimeout = null;
-	        }, this.filterDelay);
-	    };
-	    DataTable.prototype.filter = function () {
-	        this.first = 0;
-	        if (this.lazy) {
-	            this.onLazyLoad.emit(this.createLazyLoadMetadata());
-	        }
-	        else {
-	            this.filteredValue = [];
-	            for (var i = 0; i < this.value.length; i++) {
-	                var localMatch = true;
-	                var globalMatch = false;
-	                for (var j = 0; j < this.columns.length; j++) {
-	                    var col = this.columns[j], filterMeta = this.filters[col.field];
-	                    //local
-	                    if (filterMeta) {
-	                        var filterValue = filterMeta.value, filterField = col.field, filterMatchMode = filterMeta.matchMode || 'startsWith', dataFieldValue = this.resolveFieldData(this.value[i], filterField);
-	                        var filterConstraint = this.filterConstraints[filterMatchMode];
-	                        if (!filterConstraint(dataFieldValue, filterValue)) {
-	                            localMatch = false;
-	                        }
-	                        if (!localMatch) {
-	                            break;
-	                        }
-	                    }
-	                    //global
-	                    if (this.globalFilter && !globalMatch) {
-	                        globalMatch = this.filterConstraints['contains'](this.resolveFieldData(this.value[i], col.field), this.globalFilter.value);
-	                    }
-	                }
-	                var matches = localMatch;
-	                if (this.globalFilter) {
-	                    matches = localMatch && globalMatch;
-	                }
-	                if (matches) {
-	                    this.filteredValue.push(this.value[i]);
-	                }
-	            }
-	            if (this.filteredValue.length === this.value.length) {
-	                this.filteredValue = null;
-	            }
-	            if (this.paginator) {
-	                this.totalRecords = this.filteredValue ? this.filteredValue.length : this.value ? this.value.length : 0;
-	            }
-	            this.updateDataToRender(this.filteredValue || this.value);
-	        }
-	        this.onFilter.emit({
-	            filters: this.filters
-	        });
-	    };
-	    DataTable.prototype.hasFilter = function () {
-	        var empty = true;
-	        for (var prop in this.filters) {
-	            if (this.filters.hasOwnProperty(prop)) {
-	                empty = false;
-	                break;
-	            }
-	        }
-	        return !empty;
-	    };
-	    DataTable.prototype.onFilterInputClick = function (event) {
-	        event.stopPropagation();
-	    };
-	    DataTable.prototype.switchCellToEditMode = function (element, column, rowData) {
-	        if (!this.selectionMode && this.editable && column.editable) {
-	            this.onEditInit.emit({ column: column, data: rowData });
-	            var cell = this.findCell(element);
-	            if (!this.domHandler.hasClass(cell, 'ui-cell-editing')) {
-	                this.domHandler.addClass(cell, 'ui-cell-editing');
-	                this.domHandler.addClass(cell, 'ui-state-highlight');
-	                var editor = cell.querySelector('.ui-cell-editor').focus();
-	            }
-	        }
-	    };
-	    DataTable.prototype.switchCellToViewMode = function (element, column, rowData, complete) {
-	        if (this.editable) {
-	            if (this.preventBlurOnEdit) {
-	                this.preventBlurOnEdit = false;
-	            }
-	            else {
-	                if (complete)
-	                    this.onEditComplete.emit({ column: column, data: rowData });
-	                else
-	                    this.onEditCancel.emit({ column: column, data: rowData });
-	                var cell = this.findCell(element);
-	                this.domHandler.removeClass(cell, 'ui-cell-editing');
-	                this.domHandler.removeClass(cell, 'ui-state-highlight');
-	            }
-	        }
-	    };
-	    DataTable.prototype.onCellEditorKeydown = function (event, column, rowData) {
-	        if (this.editable) {
-	            this.onEdit.emit({ originalEvent: event, column: column, data: rowData });
-	            //enter
-	            if (event.keyCode == 13) {
-	                this.switchCellToViewMode(event.target, column, rowData, true);
-	                this.preventBlurOnEdit = true;
-	            }
-	            //escape
-	            if (event.keyCode == 27) {
-	                this.switchCellToViewMode(event.target, column, rowData, false);
-	                this.preventBlurOnEdit = true;
-	            }
-	        }
-	    };
-	    DataTable.prototype.findCell = function (element) {
-	        var cell = element;
-	        while (cell.tagName != 'TD') {
-	            cell = cell.parentElement;
-	        }
-	        return cell;
-	    };
-	    DataTable.prototype.initResizableColumns = function () {
-	        var _this = this;
-	        this.tbody = this.domHandler.findSingle(this.el.nativeElement, 'tbody.ui-datatable-data');
-	        this.resizerHelper = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-column-resizer-helper');
-	        this.fixColumnWidths();
-	        this.documentColumnResizeListener = this.renderer.listenGlobal('body', 'mousemove', function (event) {
-	            if (_this.columnResizing) {
-	                _this.onColumnResize(event);
-	            }
-	        });
-	        this.documentColumnResizeEndListener = this.renderer.listenGlobal('body', 'mouseup', function (event) {
-	            if (_this.columnResizing) {
-	                _this.columnResizing = false;
-	                _this.onColumnResizeEnd(event);
-	            }
-	        });
-	    };
-	    DataTable.prototype.initColumnResize = function (event) {
-	        this.resizeColumn = event.target.parentElement;
-	        this.columnResizing = true;
-	        this.lastPageX = event.pageX;
-	    };
-	    DataTable.prototype.onColumnResize = function (event) {
-	        var container = this.el.nativeElement.children[0];
-	        this.domHandler.addClass(container, 'ui-unselectable-text');
-	        this.resizerHelper.style.height = container.offsetHeight - 4 + 'px';
-	        this.resizerHelper.style.top = container.offsetTop + 'px';
-	        if (event.pageX > container.offsetLeft && event.pageX < (container.offsetLeft + container.offsetWidth)) {
-	            this.resizerHelper.style.left = event.pageX + 'px';
-	        }
-	        this.resizerHelper.style.display = 'block';
-	    };
-	    DataTable.prototype.onColumnResizeEnd = function (event) {
-	        var delta = this.resizerHelper.offsetLeft - this.lastPageX;
-	        var columnWidth = this.resizeColumn.offsetWidth;
-	        var newColumnWidth = columnWidth + delta;
-	        var minWidth = this.resizeColumn.style.minWidth || 15;
-	        if (columnWidth + delta > parseInt(minWidth)) {
-	            if (this.columnResizeMode === 'fit') {
-	                var nextColumn = this.resizeColumn.nextElementSibling;
-	                var nextColumnWidth = nextColumn.offsetWidth - delta;
-	                if (newColumnWidth > 15 && nextColumnWidth > 15) {
-	                    this.resizeColumn.style.width = newColumnWidth + 'px';
-	                    if (nextColumn) {
-	                        nextColumn.style.width = nextColumnWidth + 'px';
-	                    }
-	                }
-	            }
-	            else if (this.columnResizeMode === 'expand') {
-	                this.tbody.parentElement.style.width = this.tbody.parentElement.offsetWidth + delta + 'px';
-	                this.resizeColumn.style.width = newColumnWidth + 'px';
-	            }
-	            this.onColResize.emit({
-	                element: this.resizeColumn,
-	                delta: delta
-	            });
-	        }
-	        this.resizerHelper.style.display = 'none';
-	        this.resizeColumn = null;
-	        this.domHandler.removeClass(this.el.nativeElement.children[0], 'ui-unselectable-text');
-	    };
-	    DataTable.prototype.fixColumnWidths = function () {
-	        var columns = this.domHandler.find(this.el.nativeElement, 'th.ui-resizable-column');
-	        for (var i = 0; i < columns.length; i++) {
-	            columns[i].style.width = columns[i].offsetWidth + 'px';
-	        }
-	    };
-	    DataTable.prototype.onColumnDragStart = function (event) {
-	        this.draggedColumn = this.findParentHeader(event.target);
-	    };
-	    DataTable.prototype.onColumnDragover = function (event) {
-	        event.preventDefault();
-	        var dropHeader = this.findParentHeader(event.target);
-	        if (this.draggedColumn != dropHeader) {
-	            var targetPosition = dropHeader.getBoundingClientRect();
-	            var targetLeft = targetPosition.left + document.body.scrollLeft;
-	            var targetTop = targetPosition.top + document.body.scrollTop;
-	            var columnCenter = targetLeft + dropHeader.offsetWidth / 2;
-	            this.reorderIndicatorUp.style.top = (targetTop - 16) + 'px';
-	            this.reorderIndicatorDown.style.top = targetTop + dropHeader.offsetHeight + 'px';
-	            if (event.pageX > columnCenter) {
-	                this.reorderIndicatorUp.style.left = (targetLeft + dropHeader.offsetWidth - 8) + 'px';
-	                this.reorderIndicatorDown.style.left = (targetLeft + dropHeader.offsetWidth - 8) + 'px';
-	            }
-	            else {
-	                this.reorderIndicatorUp.style.left = (targetLeft - 8) + 'px';
-	                this.reorderIndicatorDown.style.left = (targetLeft - 8) + 'px';
-	            }
-	            this.reorderIndicatorUp.style.display = 'block';
-	            this.reorderIndicatorDown.style.display = 'block';
-	        }
-	        else {
-	            event.dataTransfer.dropEffect = 'none';
-	        }
-	    };
-	    DataTable.prototype.onColumnDragleave = function (event) {
-	        event.preventDefault();
-	        this.reorderIndicatorUp.style.display = 'none';
-	        this.reorderIndicatorDown.style.display = 'none';
-	    };
-	    DataTable.prototype.onColumnDrop = function (event) {
-	        event.preventDefault();
-	        var dragIndex = this.domHandler.index(this.draggedColumn);
-	        var dropIndex = this.domHandler.index(this.findParentHeader(event.target));
-	        if (dragIndex != dropIndex) {
-	            this.columns.splice(dropIndex, 0, this.columns.splice(dragIndex, 1)[0]);
-	            this.onColReorder.emit({
-	                dragIndex: dragIndex,
-	                dropIndex: dropIndex,
-	                columns: this.columns
-	            });
-	        }
-	        this.reorderIndicatorUp.style.display = 'none';
-	        this.reorderIndicatorDown.style.display = 'none';
-	        this.draggedColumn = null;
-	    };
-	    DataTable.prototype.initColumnReordering = function () {
-	        this.reorderIndicatorUp = this.domHandler.findSingle(this.el.nativeElement.children[0], 'span.ui-datatable-reorder-indicator-up');
-	        this.reorderIndicatorDown = this.domHandler.findSingle(this.el.nativeElement.children[0], 'span.ui-datatable-reorder-indicator-down');
-	    };
-	    DataTable.prototype.findParentHeader = function (element) {
-	        if (element.nodeName == 'TH') {
-	            return element;
-	        }
-	        else {
-	            var parent_1 = element.parentElement;
-	            while (parent_1.nodeName != 'TH') {
-	                parent_1 = parent_1.parentElement;
-	            }
-	            return parent_1;
-	        }
-	    };
-	    DataTable.prototype.initScrolling = function () {
-	        var _this = this;
-	        this.scrollHeader = this.domHandler.findSingle(this.el.nativeElement, '.ui-datatable-scrollable-header');
-	        this.scrollHeaderBox = this.domHandler.findSingle(this.el.nativeElement, '.ui-datatable-scrollable-header-box');
-	        this.scrollBody = this.domHandler.findSingle(this.el.nativeElement, '.ui-datatable-scrollable-body');
-	        this.percentageScrollHeight = this.scrollHeight && (this.scrollHeight.indexOf('%') !== -1);
-	        if (this.scrollHeight) {
-	            if (this.percentageScrollHeight)
-	                this.scrollBody.style.maxHeight = this.domHandler.getOuterHeight(this.el.nativeElement.parentElement) * (parseInt(this.scrollHeight) / 100) + 'px';
-	            else
-	                this.scrollBody.style.maxHeight = this.scrollHeight;
-	            this.scrollHeaderBox.style.marginRight = this.calculateScrollbarWidth() + 'px';
-	        }
-	        this.bodyScrollListener = this.renderer.listen(this.scrollBody, 'scroll', function () {
-	            _this.scrollHeaderBox.style.marginLeft = -1 * _this.scrollBody.scrollLeft + 'px';
-	        });
-	        this.headerScrollListener = this.renderer.listen(this.scrollHeader, 'scroll', function () {
-	            _this.scrollHeader.scrollLeft = 0;
-	        });
-	        if (this.percentageScrollHeight) {
-	            this.resizeScrollListener = this.renderer.listenGlobal('window', 'resize', function () {
-	                _this.scrollBody.style.maxHeight = _this.domHandler.getOuterHeight(_this.el.nativeElement.parentElement) * (parseInt(_this.scrollHeight) / 100) + 'px';
-	            });
-	        }
-	    };
-	    DataTable.prototype.calculateScrollbarWidth = function () {
-	        var scrollDiv = document.createElement("div");
-	        scrollDiv.className = "ui-scrollbar-measure";
-	        document.body.appendChild(scrollDiv);
-	        var scrollbarWidth = scrollDiv.offsetWidth - scrollDiv.clientWidth;
-	        document.body.removeChild(scrollDiv);
-	        return scrollbarWidth;
-	    };
-	    DataTable.prototype.hasFooter = function () {
-	        if (this.footerRows) {
-	            return true;
-	        }
-	        else {
-	            if (this.columns) {
-	                for (var i = 0; i < this.columns.length; i++) {
-	                    if (this.columns[i].footer) {
-	                        return true;
-	                    }
-	                }
-	            }
-	        }
-	        return false;
-	    };
-	    DataTable.prototype.isEmpty = function () {
-	        return !this.dataToRender || (this.dataToRender.length == 0);
-	    };
-	    DataTable.prototype.createLazyLoadMetadata = function () {
-	        return {
-	            first: this.first,
-	            rows: this.rows,
-	            sortField: this.sortField,
-	            sortOrder: this.sortOrder,
-	            filters: this.filters,
-	            multiSortMeta: this.multiSortMeta
-	        };
-	    };
-	    DataTable.prototype.toggleRow = function (row) {
-	        if (!this.expandedRows) {
-	            this.expandedRows = [];
-	        }
-	        var expandedRowIndex = this.findExpandedRowIndex(row);
-	        if (expandedRowIndex != -1) {
-	            this.expandedRows.splice(expandedRowIndex, 1);
-	            this.onRowCollapse.emit(row);
-	        }
-	        else {
-	            this.expandedRows.push(row);
-	            this.onRowExpand.emit(row);
-	        }
-	    };
-	    DataTable.prototype.findExpandedRowIndex = function (row) {
-	        var index = -1;
-	        if (this.expandedRows) {
-	            for (var i = 0; i < this.expandedRows.length; i++) {
-	                if (this.expandedRows[i] == row) {
-	                    index = i;
-	                    break;
-	                }
-	            }
-	        }
-	        return index;
-	    };
-	    DataTable.prototype.isRowExpanded = function (row) {
-	        return this.findExpandedRowIndex(row) != -1;
-	    };
-	    DataTable.prototype.reset = function () {
-	        this.sortField = null;
-	        this.sortOrder = 1;
-	        this.filteredValue = null;
-	        this.filters = {};
-	        if (this.paginator) {
-	            this.paginate({
-	                first: 0,
-	                rows: this.rows
-	            });
-	        }
-	        else {
-	            this.updateDataToRender(this.value);
-	        }
-	    };
-	    DataTable.prototype.visibleColumns = function () {
-	        return this.columns.filter(function (c) { return !c.hidden; });
-	    };
-	    DataTable.prototype.exportCSV = function () {
-	        var _this = this;
-	        var data = this.value, csv = "data:text/csv;charset=utf-8,";
-	        //headers
-	        for (var i = 0; i < this.columns.length; i++) {
-	            if (this.columns[i].field) {
-	                csv += this.columns[i].field;
-	                if (i < (this.columns.length - 1)) {
-	                    csv += this.csvSeparator;
-	                }
-	            }
-	        }
-	        //body        
-	        this.value.forEach(function (record, i) {
-	            csv += '\n';
-	            for (var i_1 = 0; i_1 < _this.columns.length; i_1++) {
-	                if (_this.columns[i_1].field) {
-	                    csv += _this.resolveFieldData(record, _this.columns[i_1].field);
-	                    if (i_1 < (_this.columns.length - 1)) {
-	                        csv += _this.csvSeparator;
-	                    }
-	                }
-	            }
-	        });
-	        window.open(encodeURI(csv));
-	    };
-	    DataTable.prototype.ngOnDestroy = function () {
-	        //remove event listener
-	        if (this.globalFilterFunction) {
-	            this.globalFilterFunction();
-	        }
-	        if (this.scrollable) {
-	            this.bodyScrollListener();
-	            this.headerScrollListener();
-	            if (this.percentageScrollHeight) {
-	                this.resizeScrollListener();
-	            }
-	        }
-	        if (this.resizableColumns) {
-	            this.documentColumnResizeListener();
-	            this.documentColumnResizeEndListener();
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], DataTable.prototype, "value", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataTable.prototype, "paginator", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DataTable.prototype, "rows", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DataTable.prototype, "totalRecords", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DataTable.prototype, "pageLinks", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], DataTable.prototype, "rowsPerPageOptions", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataTable.prototype, "responsive", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataTable.prototype, "stacked", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], DataTable.prototype, "selectionMode", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DataTable.prototype, "selection", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "selectionChange", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataTable.prototype, "editable", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onRowClick", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onRowSelect", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onRowUnselect", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onRowDblclick", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onContextMenuSelect", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DataTable.prototype, "filterDelay", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataTable.prototype, "lazy", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onLazyLoad", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataTable.prototype, "resizableColumns", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], DataTable.prototype, "columnResizeMode", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onColResize", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataTable.prototype, "reorderableColumns", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onColReorder", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataTable.prototype, "scrollable", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DataTable.prototype, "scrollHeight", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DataTable.prototype, "scrollWidth", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DataTable.prototype, "headerRows", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DataTable.prototype, "footerRows", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DataTable.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], DataTable.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DataTable.prototype, "globalFilter", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], DataTable.prototype, "sortMode", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], DataTable.prototype, "sortField", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], DataTable.prototype, "sortOrder", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], DataTable.prototype, "multiSortMeta", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], DataTable.prototype, "contextMenu", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], DataTable.prototype, "csvSeparator", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onEditInit", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onEditComplete", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onEdit", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onEditCancel", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onPage", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onSort", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onFilter", void 0);
-	    __decorate([
-	        core_1.ContentChild(common_1.Header), 
-	        __metadata('design:type', Object)
-	    ], DataTable.prototype, "header", void 0);
-	    __decorate([
-	        core_1.ContentChild(common_2.Footer), 
-	        __metadata('design:type', Object)
-	    ], DataTable.prototype, "footer", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], DataTable.prototype, "expandableRows", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onRowExpand", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], DataTable.prototype, "onRowCollapse", void 0);
-	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef), 
-	        __metadata('design:type', core_1.TemplateRef)
-	    ], DataTable.prototype, "rowExpansionTemplate", void 0);
-	    DataTable = __decorate([
-	        core_1.Component({
-	            selector: 'p-dataTable',
-	            template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\" \n            [ngClass]=\"{'ui-datatable ui-widget': true, 'ui-datatable-reflow':responsive, 'ui-datatable-stacked': stacked, 'ui-datatable-resizable': resizableColumns}\">\n            <div class=\"ui-datatable-header ui-widget-header\" *ngIf=\"header\" [ngStyle]=\"{'width': scrollWidth}\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <div class=\"ui-datatable-tablewrapper\" *ngIf=\"!scrollable\">\n                <table>\n                    <thead>\n                        <tr *ngIf=\"!headerRows\" class=\"ui-state-default\">\n                            <th #headerCell *ngFor=\"let col of columns;let lastCol = last\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                (click)=\"sort($event,col)\" (mouseenter)=\"hoveredHeader = $event.target\" (mouseleave)=\"hoveredHeader = null\"\n                                [ngClass]=\"{'ui-state-default ui-unselectable-text':true, 'ui-state-hover': headerCell === hoveredHeader && col.sortable,\n                                'ui-sortable-column': col.sortable,'ui-state-active': isSorted(col), 'ui-resizable-column': resizableColumns}\" \n                                [draggable]=\"reorderableColumns\" (dragstart)=\"onColumnDragStart($event)\" (dragover)=\"onColumnDragover($event)\" (dragleave)=\"onColumnDragleave($event)\" (drop)=\"onColumnDrop($event)\">\n                                <span class=\"ui-column-resizer\" *ngIf=\"resizableColumns && ((columnResizeMode == 'fit' && !lastCol) || columnResizeMode == 'expand')\" (mousedown)=\"initColumnResize($event)\">&nbsp;</span>\n                                <span class=\"ui-column-title\">{{col.header}}</span>\n                                <span class=\"ui-sortable-column-icon fa fa-fw fa-sort\" *ngIf=\"col.sortable\"\n                                     [ngClass]=\"{'fa-sort-desc': (getSortOrder(col) == -1),'fa-sort-asc': (getSortOrder(col) == 1)}\"></span>\n                                <input type=\"text\" pInputText class=\"ui-column-filter\" *ngIf=\"col.filter\" [value]=\"filters[col.field] ? filters[col.field].value : ''\" (click)=\"onFilterInputClick($event)\" (keyup)=\"onFilterKeyup($event.target.value, col.field, col.filterMatchMode)\"/>\n                            </th>\n                        </tr>\n                        <tr *ngFor=\"let headerRow of headerRows\" class=\"ui-state-default\">\n                            <th #headerCell *ngFor=\"let col of headerRow.columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [attr.colspan]=\"col.colspan\" [attr.rowspan]=\"col.rowspan\"\n                                (click)=\"sort($event,col)\" (mouseenter)=\"hoveredHeader = $event.target\" (mouseleave)=\"hoveredHeader = null\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                [ngClass]=\"{'ui-state-default ui-unselectable-text':true, 'ui-state-hover': headerCell === hoveredHeader && col.sortable,\n                                'ui-sortable-column': col.sortable,'ui-state-active': isSorted(col), 'ui-resizable-column': resizableColumns}\">\n                                <span class=\"ui-column-resizer\" *ngIf=\"resizableColumns && ((columnResizeMode == 'fit' && !lastCol) || columnResizeMode == 'expand')\" (mousedown)=\"initColumnResize($event)\">&nbsp;</span>\n                                <span class=\"ui-column-title\">{{col.header}}</span>\n                                <span class=\"ui-sortable-column-icon fa fa-fw fa-sort\" *ngIf=\"col.sortable\"\n                                     [ngClass]=\"{'fa-sort-desc': (getSortOrder(col) == -1),'fa-sort-asc': (getSortOrder(col) == 1)}\"></span>\n                                <input type=\"text\" pInputText class=\"ui-column-filter\" *ngIf=\"col.filter\" [value]=\"filters[col.field] ? filters[col.field].value : ''\" (click)=\"onFilterInputClick($event)\" (keyup)=\"onFilterKeyup($event.target.value, col.field, col.filterMatchMode)\"/>\n                            </th>\n                        </tr>\n                    </thead>\n                    <tfoot *ngIf=\"hasFooter()\">\n                        <tr *ngIf=\"!footerRows\">\n                            <th *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [ngClass]=\"{'ui-state-default':true}\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\">{{col.footer}}</th>\n                        </tr>\n                        <tr *ngFor=\"let footerRow of footerRows\">\n                            <th *ngFor=\"let col of footerRow.columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\"\n                                [attr.colspan]=\"col.colspan\" [attr.rowspan]=\"col.rowspan\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                [ngClass]=\"{'ui-state-default':true}\">{{col.footer}}</th>\n                        </tr>\n                    </tfoot>\n                    <tbody class=\"ui-datatable-data ui-widget-content\">\n                        <template ngFor let-rowData [ngForOf]=\"dataToRender\" let-even=\"even\" let-odd=\"odd\" let-rowIndex=\"index\">\n                            <tr #rowElement class=\"ui-widget-content\" (mouseenter)=\"hoveredRow = $event.target\" (mouseleave)=\"hoveredRow = null\"\n                                    (click)=\"handleRowClick($event, rowData)\" (dblclick)=\"rowDblclick($event,rowData)\" (contextmenu)=\"onRowRightClick($event,rowData)\"\n                                    [ngClass]=\"{'ui-datatable-even':even,'ui-datatable-odd':odd,'ui-state-hover': (selectionMode && rowElement == hoveredRow), 'ui-state-highlight': isSelected(rowData)}\">\n                                <td *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                    [ngClass]=\"{'ui-editable-column':col.editable}\" (click)=\"switchCellToEditMode($event.target,col,rowData)\">\n                                    <span class=\"ui-column-title\" *ngIf=\"responsive\">{{col.header}}</span>\n                                    <span class=\"ui-cell-data\" *ngIf=\"!col.template\">{{resolveFieldData(rowData,col.field)}}</span>\n                                    <span class=\"ui-cell-data\" *ngIf=\"col.template\">\n                                        <p-columnTemplateLoader [column]=\"col\" [rowData]=\"rowData\" [rowIndex]=\"rowIndex + first\"></p-columnTemplateLoader>\n                                    </span>\n                                    <input type=\"text\" class=\"ui-cell-editor ui-state-highlight\" *ngIf=\"col.editable\" [(ngModel)]=\"rowData[col.field]\"\n                                            (blur)=\"switchCellToViewMode($event.target,col,rowData,true)\" (keydown)=\"onCellEditorKeydown($event, col, rowData)\"/>\n                                    <div class=\"ui-row-toggler fa fa-fw ui-c\" [ngClass]=\"{'fa-chevron-circle-down':isRowExpanded(rowData), 'fa-chevron-circle-right': !isRowExpanded(rowData)}\"\n                                        *ngIf=\"col.expander\" (click)=\"toggleRow(rowData)\"></div>\n                                </td>\n                            </tr>\n                            <tr *ngIf=\"expandableRows && isRowExpanded(rowData)\">\n                                <td [attr.colspan]=\"visibleColumns().length\">\n                                    <p-rowExpansionLoader [rowData]=\"rowData\" [template]=\"rowExpansionTemplate\"></p-rowExpansionLoader>\n                                </td>\n                            </tr>\n                        </template>\n                    </tbody>\n                </table>\n                <div class=\"ui-column-resizer-helper ui-state-highlight\" style=\"display:none\"></div>\n                <span class=\"fa fa-arrow-down ui-datatable-reorder-indicator-up\" style=\"position: absolute; display: none;\"></span>\n                <span class=\"fa fa-arrow-up ui-datatable-reorder-indicator-down\" style=\"position: absolute; display: none;\"></span>\n            </div>\n            <div class=\"ui-widget-header ui-datatable-scrollable-header\" *ngIf=\"scrollable\" [ngStyle]=\"{'width': scrollWidth}\">\n                <div class=\"ui-datatable-scrollable-header-box\">\n                    <table>\n                        <thead>\n                            <tr>\n                                <th #headerCell *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                    (click)=\"sort($event,col)\" (mouseenter)=\"hoveredHeader = $event.target\" (mouseleave)=\"hoveredHeader = null\"\n                                    [ngClass]=\"{'ui-state-default ui-unselectable-text':true, 'ui-state-hover': headerCell === hoveredHeader && col.sortable,\n                                    'ui-sortable-column': col.sortable,'ui-state-active': isSorted(col), 'ui-resizable-column': resizableColumns}\">\n                                    <span class=\"ui-column-resizer\" *ngIf=\"resizableColumns && ((columnResizeMode == 'fit' && !lastCol) || columnResizeMode == 'expand')\">&nbsp;</span>\n                                    <span class=\"ui-column-title\">{{col.header}}</span>\n                                    <span class=\"ui-sortable-column-icon fa fa-fw fa-sort\" *ngIf=\"col.sortable\"\n                                         [ngClass]=\"{'fa-sort-desc': (col.field === sortField) && (sortOrder == -1),'fa-sort-asc': (col.field === sortField) && (sortOrder == 1)}\"></span>\n                                    <input type=\"text\" pInputText class=\"ui-column-filter\" *ngIf=\"col.filter\" (click)=\"onFilterInputClick($event)\" (keyup)=\"onFilterKeyup($event.target.value, col.field, col.filterMatchMode)\"/>\n                                </th>\n                            </tr>\n                        </thead>\n                    </table>\n                </div>\n            </div>\n            <div class=\"ui-datatable-scrollable-body\" *ngIf=\"scrollable\" [ngStyle]=\"{'width': scrollWidth}\">\n                <table>\n                    <tbody class=\"ui-datatable-data ui-widget-content\">\n                    <template ngFor let-rowData [ngForOf]=\"dataToRender\" let-even=\"even\" let-odd=\"odd\" let-rowIndex=\"index\">\n                        <tr #rowElement class=\"ui-widget-content\" (mouseenter)=\"hoveredRow = $event.target\" (mouseleave)=\"hoveredRow = null\"\n                                (click)=\"handleRowClick($event, rowData)\" (dblclick)=\"rowDblclick($event,rowData)\" (contextmenu)=\"onRowRightClick($event,rowData)\"\n                                [ngClass]=\"{'ui-datatable-even':even,'ui-datatable-odd':odd,'ui-state-hover': (selectionMode && rowElement == hoveredRow), 'ui-state-highlight': isSelected(rowData)}\">\n                            <td *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                [ngClass]=\"{'ui-editable-column':col.editable}\" (click)=\"switchCellToEditMode($event.target,col,rowData)\">\n                                <span class=\"ui-column-title\" *ngIf=\"responsive\">{{col.header}}</span>\n                                <span class=\"ui-cell-data\" *ngIf=\"!col.template\">{{resolveFieldData(rowData,col.field)}}</span>\n                                <span class=\"ui-cell-data\" *ngIf=\"col.template\">\n                                    <p-columnTemplateLoader [column]=\"col\" [rowData]=\"rowData\" [rowIndex]=\"rowIndex + first\"></p-columnTemplateLoader>\n                                </span>\n                                <input type=\"text\" class=\"ui-cell-editor ui-state-highlight\" *ngIf=\"col.editable\" [(ngModel)]=\"rowData[col.field]\"\n                                        (blur)=\"switchCellToViewMode($event.target,col,rowData,true)\" (keydown)=\"onCellEditorKeydown($event, col, rowData)\"/>\n                                <div class=\"ui-row-toggler fa fa-fw ui-c\" [ngClass]=\"{'fa-chevron-circle-down':isRowExpanded(rowData), 'fa-chevron-circle-right': !isRowExpanded(rowData)}\"\n                                    *ngIf=\"col.expander\" (click)=\"toggleRow(rowData)\"></div>\n                            </td>\n                        </tr>\n                        <tr *ngIf=\"expandableRows && isRowExpanded(rowData)\">\n                            <td [attr.colspan]=\"visibleColumns().length\">\n                                <p-rowExpansionLoader [rowData]=\"rowData\" [template]=\"rowExpansionTemplate\"></p-rowExpansionLoader>\n                            </td>\n                        </tr>\n                    </template>\n                    </tbody>\n                </table>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-bottom\"\n                (onPageChange)=\"paginate($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator\"></p-paginator>\n            <div class=\"ui-datatable-footer ui-widget-header\" *ngIf=\"footer\">\n                <ng-content select=\"footer\"></ng-content>\n            </div>\n        </div>\n    ",
-	            directives: [paginator_1.Paginator, inputtext_1.InputText, columntemplateloader_1.ColumnTemplateLoader, rowexpansionloader_1.RowExpansionLoader],
-	            providers: [domhandler_1.DomHandler]
-	        }),
-	        __param(3, core_1.Query(column_1.Column)), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers, core_1.QueryList, core_1.Renderer, core_1.ChangeDetectorRef])
-	    ], DataTable);
-	    return DataTable;
-	}());
-	exports.DataTable = DataTable;
-	
-
-/***/ },
-/* 1020 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var RowExpansionLoader = (function () {
-	    function RowExpansionLoader(viewContainer) {
-	        this.viewContainer = viewContainer;
-	    }
-	    RowExpansionLoader.prototype.ngOnInit = function () {
-	        var view = this.viewContainer.createEmbeddedView(this.template, {
-	            '\$implicit': this.rowData
-	        });
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', core_1.TemplateRef)
-	    ], RowExpansionLoader.prototype, "template", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], RowExpansionLoader.prototype, "rowData", void 0);
-	    RowExpansionLoader = __decorate([
-	        core_1.Component({
-	            selector: 'p-rowExpansionLoader',
-	            template: ""
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ViewContainerRef])
-	    ], RowExpansionLoader);
-	    return RowExpansionLoader;
-	}());
-	exports.RowExpansionLoader = RowExpansionLoader;
-	
-
-/***/ },
-/* 1021 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var Dialog = (function () {
-	    function Dialog(el, domHandler, renderer) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	        this.draggable = true;
-	        this.resizable = true;
-	        this.minWidth = 150;
-	        this.minHeight = 150;
-	        this.closeOnEscape = true;
-	        this.closable = true;
-	        this.onBeforeShow = new core_1.EventEmitter();
-	        this.onAfterShow = new core_1.EventEmitter();
-	        this.onBeforeHide = new core_1.EventEmitter();
-	        this.onAfterHide = new core_1.EventEmitter();
-	        this.visibleChange = new core_1.EventEmitter();
-	    }
-	    Object.defineProperty(Dialog.prototype, "visible", {
-	        get: function () {
-	            return this._visible;
-	        },
-	        set: function (val) {
-	            this._visible = val;
-	            if (this._visible) {
-	                this.onBeforeShow.emit({});
-	                if (!this.positionInitialized) {
-	                    this.center();
-	                    this.positionInitialized = true;
-	                }
-	                this.el.nativeElement.children[0].style.zIndex = ++domhandler_1.DomHandler.zindex;
-	                if (this.showEffect == 'fade')
-	                    this.domHandler.fadeIn(this.el.nativeElement.children[0], 250);
-	                this.shown = true;
-	            }
-	            if (this.modal) {
-	                if (this._visible)
-	                    this.enableModality();
-	                else
-	                    this.disableModality();
-	            }
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    Dialog.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        this.contentContainer = this.domHandler.findSingle(this.el.nativeElement, '.ui-dialog-content');
-	        if (this.draggable) {
-	            this.documentDragListener = this.renderer.listenGlobal('body', 'mousemove', function (event) {
-	                _this.onDrag(event);
-	            });
-	        }
-	        if (this.resizable) {
-	            this.documentResizeListener = this.renderer.listenGlobal('body', 'mousemove', function (event) {
-	                _this.onResize(event);
-	            });
-	            this.documentResizeEndListener = this.renderer.listenGlobal('body', 'mouseup', function (event) {
-	                if (_this.resizing) {
-	                    _this.resizing = false;
-	                }
-	            });
-	        }
-	        if (this.responsive) {
-	            this.documentResponsiveListener = this.renderer.listenGlobal('window', 'resize', function (event) {
-	                _this.center();
-	            });
-	        }
-	        if (this.closeOnEscape && this.closable) {
-	            this.documentEscapeListener = this.renderer.listenGlobal('body', 'keydown', function (event) {
-	                if (event.which == 27) {
-	                    if (_this.el.nativeElement.children[0].style.zIndex == domhandler_1.DomHandler.zindex) {
-	                        _this.hide(event);
-	                    }
-	                }
-	            });
-	        }
-	    };
-	    Dialog.prototype.ngAfterViewChecked = function () {
-	        if (this.shown) {
-	            this.onAfterShow.emit({});
-	            this.shown = false;
-	        }
-	    };
-	    Dialog.prototype.center = function () {
-	        var container = this.el.nativeElement.children[0];
-	        var elementWidth = this.domHandler.getOuterWidth(container);
-	        var elementHeight = this.domHandler.getOuterHeight(container);
-	        if (elementWidth == 0 && elementHeight == 0) {
-	            container.style.visibility = 'hidden';
-	            container.style.display = 'block';
-	            elementWidth = this.domHandler.getOuterWidth(container);
-	            elementHeight = this.domHandler.getOuterHeight(container);
-	            container.style.display = 'none';
-	            container.style.visibility = 'visible';
-	        }
-	        var viewport = this.domHandler.getViewport();
-	        var x = (viewport.width - elementWidth) / 2;
-	        var y = (viewport.height - elementHeight) / 2;
-	        container.style.left = x + 'px';
-	        container.style.top = y + 'px';
-	    };
-	    Dialog.prototype.enableModality = function () {
-	        if (!this.mask) {
-	            this.mask = document.createElement('div');
-	            this.mask.style.zIndex = this.el.nativeElement.children[0].style.zIndex - 1;
-	            this.domHandler.addMultipleClasses(this.mask, 'ui-widget-overlay ui-dialog-mask');
-	            document.body.appendChild(this.mask);
-	        }
-	    };
-	    Dialog.prototype.disableModality = function () {
-	        if (this.mask) {
-	            document.body.removeChild(this.mask);
-	            this.mask = null;
-	        }
-	    };
-	    Dialog.prototype.hide = function (event) {
-	        this.onBeforeHide.emit(event);
-	        this.visibleChange.emit(false);
-	        this.onAfterHide.emit(event);
-	        event.preventDefault();
-	    };
-	    Dialog.prototype.moveOnTop = function () {
-	        this.el.nativeElement.children[0].style.zIndex = ++domhandler_1.DomHandler.zindex;
-	    };
-	    Dialog.prototype.initDrag = function (event) {
-	        if (this.draggable) {
-	            this.dragging = true;
-	            this.lastPageX = event.pageX;
-	            this.lastPageY = event.pageY;
-	        }
-	    };
-	    Dialog.prototype.onDrag = function (event) {
-	        if (this.dragging) {
-	            var container = this.el.nativeElement.children[0];
-	            var deltaX = event.pageX - this.lastPageX;
-	            var deltaY = event.pageY - this.lastPageY;
-	            var leftPos = parseInt(container.style.left);
-	            var topPos = parseInt(container.style.top);
-	            container.style.left = leftPos + deltaX + 'px';
-	            container.style.top = topPos + deltaY + 'px';
-	            this.lastPageX = event.pageX;
-	            this.lastPageY = event.pageY;
-	        }
-	    };
-	    Dialog.prototype.endDrag = function (event) {
-	        if (this.draggable) {
-	            this.dragging = false;
-	        }
-	    };
-	    Dialog.prototype.initResize = function (event) {
-	        if (this.resizable) {
-	            this.resizing = true;
-	            this.lastPageX = event.pageX;
-	            this.lastPageY = event.pageY;
-	        }
-	    };
-	    Dialog.prototype.onResize = function (event) {
-	        if (this.resizing) {
-	            var container = this.el.nativeElement.children[0];
-	            var deltaX = event.pageX - this.lastPageX;
-	            var deltaY = event.pageY - this.lastPageY;
-	            var containerWidth = this.domHandler.getOuterWidth(container);
-	            var contentHeight = this.domHandler.getHeight(this.contentContainer);
-	            var newWidth = containerWidth + deltaX;
-	            var newHeight = contentHeight + deltaY;
-	            if (newWidth > this.minWidth)
-	                container.style.width = newWidth + 'px';
-	            if (newHeight > this.minHeight)
-	                this.contentContainer.style.height = newHeight + 'px';
-	            this.lastPageX = event.pageX;
-	            this.lastPageY = event.pageY;
-	        }
-	    };
-	    Dialog.prototype.ngOnDestroy = function () {
-	        this.disableModality();
-	        if (this.documentDragListener) {
-	            this.documentDragListener();
-	        }
-	        if (this.resizable) {
-	            this.documentResizeListener();
-	            this.documentResizeEndListener();
-	        }
-	        if (this.responsive) {
-	            this.documentResponsiveListener();
-	        }
-	        if (this.closeOnEscape && this.closable) {
-	            this.documentEscapeListener();
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Dialog.prototype, "header", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Dialog.prototype, "draggable", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Dialog.prototype, "resizable", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Dialog.prototype, "minWidth", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Dialog.prototype, "minHeight", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Dialog.prototype, "width", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Dialog.prototype, "height", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Dialog.prototype, "contentHeight", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Dialog.prototype, "modal", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Dialog.prototype, "showEffect", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Dialog.prototype, "closeOnEscape", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Dialog.prototype, "rtl", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Dialog.prototype, "closable", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Dialog.prototype, "responsive", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Dialog.prototype, "onBeforeShow", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Dialog.prototype, "onAfterShow", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Dialog.prototype, "onBeforeHide", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Dialog.prototype, "onAfterHide", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Dialog.prototype, "visibleChange", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Dialog.prototype, "visible", null);
-	    Dialog = __decorate([
-	        core_1.Component({
-	            selector: 'p-dialog',
-	            template: "\n        <div [ngClass]=\"{'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl,'ui-dialog-draggable':draggable}\" \n            [style.display]=\"visible ? 'block' : 'none'\" [style.width.px]=\"width\" [style.height.px]=\"height\" (mousedown)=\"moveOnTop()\">\n            <div class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\"\n                (mousedown)=\"initDrag($event)\" (mouseup)=\"endDrag($event)\">\n                <span class=\"ui-dialog-title\">{{header}}</span>\n                <a [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true,'ui-state-hover':hoverCloseIcon}\" href=\"#\" role=\"button\" *ngIf=\"closable\" \n                    (click)=\"hide($event)\" (mouseenter)=\"hoverCloseIcon=true\" (mouseleave)=\"hoverCloseIcon=false\">\n                    <span class=\"fa fa-fw fa-close\"></span>\n                </a>\n            </div>\n            <div class=\"ui-dialog-content ui-widget-content\" [style.height.px]=\"contentHeight\">\n                <ng-content></ng-content>\n            </div>\n            <ng-content select=\"footer\"></ng-content>\n            <div *ngIf=\"resizable\" class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"\n                (mousedown)=\"initResize($event)\"></div>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
-	    ], Dialog);
-	    return Dialog;
-	}());
-	exports.Dialog = Dialog;
-	
-
-/***/ },
-/* 1022 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var Draggable = (function () {
-	    function Draggable(el, domHandler) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.onDragStart = new core_1.EventEmitter();
-	        this.onDragEnd = new core_1.EventEmitter();
-	        this.onDrag = new core_1.EventEmitter();
-	    }
-	    Draggable.prototype.dragStart = function (event) {
-	        if (this.allowDrag()) {
-	            if (this.dragEffect) {
-	                event.dataTransfer.effectAllowed = this.dragEffect;
-	            }
-	            event.dataTransfer.setData(this.scope, this.scope);
-	            this.onDragStart.emit(event);
-	        }
-	        else {
-	            event.preventDefault();
-	        }
-	    };
-	    Draggable.prototype.drag = function (event) {
-	        this.onDrag.emit(event);
-	    };
-	    Draggable.prototype.dragEnd = function (event) {
-	        this.onDragEnd.emit(event);
-	    };
-	    Draggable.prototype.mouseover = function (event) {
-	        this.handle = event.target;
-	    };
-	    Draggable.prototype.mouseleave = function (event) {
-	        this.handle = null;
-	    };
-	    Draggable.prototype.allowDrag = function () {
-	        if (this.dragHandle && this.handle)
-	            return this.domHandler.matches(this.handle, this.dragHandle);
-	        else
-	            return true;
-	    };
-	    __decorate([
-	        core_1.Input('pDraggable'), 
-	        __metadata('design:type', String)
-	    ], Draggable.prototype, "scope", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Draggable.prototype, "dragEffect", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Draggable.prototype, "dragHandle", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Draggable.prototype, "onDragStart", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Draggable.prototype, "onDragEnd", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Draggable.prototype, "onDrag", void 0);
-	    __decorate([
-	        core_1.HostListener('dragstart', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Draggable.prototype, "dragStart", null);
-	    __decorate([
-	        core_1.HostListener('drag', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Draggable.prototype, "drag", null);
-	    __decorate([
-	        core_1.HostListener('dragend', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Draggable.prototype, "dragEnd", null);
-	    __decorate([
-	        core_1.HostListener('mouseover', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Draggable.prototype, "mouseover", null);
-	    __decorate([
-	        core_1.HostListener('mouseleave', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Draggable.prototype, "mouseleave", null);
-	    Draggable = __decorate([
-	        core_1.Directive({
-	            selector: '[pDraggable]',
-	            host: {
-	                '[draggable]': 'true'
-	            },
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
-	    ], Draggable);
-	    return Draggable;
-	}());
-	exports.Draggable = Draggable;
-	
-
-/***/ },
-/* 1023 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var Droppable = (function () {
-	    function Droppable(el, domHandler) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.onDragEnter = new core_1.EventEmitter();
-	        this.onDragLeave = new core_1.EventEmitter();
-	        this.onDrop = new core_1.EventEmitter();
-	        this.onDragOver = new core_1.EventEmitter();
-	    }
-	    Droppable.prototype.drop = function (event) {
-	        event.preventDefault();
-	        this.onDrop.emit(event);
-	    };
-	    Droppable.prototype.dragEnter = function (event) {
-	        event.preventDefault();
-	        if (this.dropEffect) {
-	            event.dataTransfer.dropEffect = this.dropEffect;
-	        }
-	        this.onDragEnter.emit(event);
-	    };
-	    Droppable.prototype.dragLeave = function (event) {
-	        event.preventDefault();
-	        this.onDragLeave.emit(event);
-	    };
-	    Droppable.prototype.dragOver = function (event) {
-	        if (this.allowDrop(event)) {
-	            event.preventDefault();
-	            this.onDragOver.emit(event);
-	        }
-	    };
-	    Droppable.prototype.allowDrop = function (event) {
-	        var allow = false;
-	        var types = event.dataTransfer.types;
-	        if (types && types.length) {
-	            for (var i = 0; i < types.length; i++) {
-	                if (types[i] == this.scope) {
-	                    allow = true;
-	                    break;
-	                }
-	            }
-	        }
-	        return allow;
-	    };
-	    __decorate([
-	        core_1.Input('pDroppable'), 
-	        __metadata('design:type', String)
-	    ], Droppable.prototype, "scope", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Droppable.prototype, "dropEffect", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Droppable.prototype, "onDragEnter", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Droppable.prototype, "onDragLeave", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Droppable.prototype, "onDrop", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Droppable.prototype, "onDragOver", void 0);
-	    __decorate([
-	        core_1.HostListener('drop', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Droppable.prototype, "drop", null);
-	    __decorate([
-	        core_1.HostListener('dragenter', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Droppable.prototype, "dragEnter", null);
-	    __decorate([
-	        core_1.HostListener('dragleave', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Droppable.prototype, "dragLeave", null);
-	    __decorate([
-	        core_1.HostListener('dragover', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Droppable.prototype, "dragOver", null);
-	    Droppable = __decorate([
-	        core_1.Directive({
-	            selector: '[pDroppable]',
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
-	    ], Droppable);
-	    return Droppable;
-	}());
-	exports.Droppable = Droppable;
-	
-
-/***/ },
-/* 1024 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var common_1 = __webpack_require__(8);
-	var DROPDOWN_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return Dropdown; }),
-	    multi: true
-	});
-	var Dropdown = (function () {
-	    function Dropdown(el, domHandler, renderer, differs) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	        this.onChange = new core_1.EventEmitter();
-	        this.scrollHeight = '200px';
-	        this.autoWidth = true;
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	        this.panelVisible = false;
-	        this.differ = differs.find([]).create(null);
-	    }
-	    Dropdown.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this.optionsToDisplay = this.options;
-	        this.documentClickListener = this.renderer.listenGlobal('body', 'click', function () {
-	            if (!_this.selfClick && !_this.itemClick) {
-	                _this.panelVisible = false;
-	            }
-	            _this.selfClick = false;
-	            _this.itemClick = false;
-	        });
-	        this.updateLabel();
-	    };
-	    Dropdown.prototype.ngDoCheck = function () {
-	        var changes = this.differ.diff(this.options);
-	        if (changes && this.initialized) {
-	            this.optionsToDisplay = this.options;
-	            this.optionsChanged = true;
-	        }
-	    };
-	    Dropdown.prototype.ngAfterViewInit = function () {
-	        this.container = this.el.nativeElement.children[0];
-	        this.panel = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-dropdown-panel');
-	        this.itemsWrapper = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-dropdown-items-wrapper');
-	        this.highlightValue(true);
-	        this.updateDimensions();
-	        this.initialized = true;
-	    };
-	    Dropdown.prototype.ngAfterViewChecked = function () {
-	        if (this.optionsChanged) {
-	            this.highlightValue();
-	            this.domHandler.relativePosition(this.panel, this.container);
-	            this.optionsChanged = false;
-	        }
-	    };
-	    Dropdown.prototype.writeValue = function (value) {
-	        this.value = value;
-	        this.updateLabel();
-	        if (this.initialized && !this.optionsChanged) {
-	            this.highlightValue();
-	        }
-	    };
-	    Dropdown.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    Dropdown.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    Dropdown.prototype.updateLabel = function () {
-	        if (this.optionsToDisplay && this.optionsToDisplay.length) {
-	            var selectedIndex = this.findItemIndex(this.value, this.optionsToDisplay);
-	            if (selectedIndex == -1)
-	                this.label = this.optionsToDisplay[0].label;
-	            else
-	                this.label = this.optionsToDisplay[selectedIndex].label;
-	        }
-	        else {
-	            this.label = '&nbsp;';
-	        }
-	    };
-	    Dropdown.prototype.highlightValue = function (fallbackToFirst) {
-	        var items = this.domHandler.find(this.el.nativeElement, '.ui-dropdown-items > li');
-	        var currentSelectedItem = this.domHandler.findSingle(this.panel, 'li.ui-state-highlight');
-	        if (currentSelectedItem) {
-	            this.domHandler.removeClass(currentSelectedItem, 'ui-state-highlight');
-	        }
-	        if (this.optionsToDisplay && this.optionsToDisplay.length) {
-	            var selectedIndex = this.findItemIndex(this.value, this.optionsToDisplay);
-	            if (selectedIndex == -1 && fallbackToFirst) {
-	                selectedIndex = 0;
-	            }
-	            if (selectedIndex != -1) {
-	                this.domHandler.addClass(items[selectedIndex], 'ui-state-highlight');
-	            }
-	        }
-	    };
-	    Dropdown.prototype.updateDimensions = function () {
-	        if (this.autoWidth) {
-	            var select = this.domHandler.findSingle(this.el.nativeElement, 'select');
-	            if (!this.style || (!this.style['width'] && !this.style['min-width'])) {
-	                this.el.nativeElement.children[0].style.width = select.offsetWidth + 30 + 'px';
-	            }
-	        }
-	    };
-	    Dropdown.prototype.onMouseenter = function (event) {
-	        this.hover = true;
-	    };
-	    Dropdown.prototype.onMouseleave = function (event) {
-	        this.hover = false;
-	    };
-	    Dropdown.prototype.onMouseclick = function (event, input) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        this.selfClick = true;
-	        if (!this.itemClick) {
-	            input.focus();
-	            if (this.panelVisible)
-	                this.hide();
-	            else
-	                this.show(this.panel, this.container);
-	        }
-	    };
-	    Dropdown.prototype.show = function (panel, container) {
-	        if (this.optionsToDisplay && this.optionsToDisplay.length) {
-	            this.panelVisible = true;
-	            panel.style.zIndex = ++domhandler_1.DomHandler.zindex;
-	            this.domHandler.relativePosition(panel, container);
-	            this.domHandler.fadeIn(panel, 250);
-	        }
-	    };
-	    Dropdown.prototype.hide = function () {
-	        this.panelVisible = false;
-	    };
-	    Dropdown.prototype.onFocus = function (event) {
-	        this.focus = true;
-	    };
-	    Dropdown.prototype.onBlur = function (event) {
-	        this.focus = false;
-	        this.onModelTouched();
-	    };
-	    Dropdown.prototype.onKeydown = function (event) {
-	        var highlightedItem = this.domHandler.findSingle(this.panel, 'li.ui-state-highlight');
-	        switch (event.which) {
-	            //down
-	            case 40:
-	                if (!this.panelVisible && event.altKey) {
-	                    this.show(this.panel, this.container);
-	                }
-	                else {
-	                    if (highlightedItem) {
-	                        var nextItem = highlightedItem.nextElementSibling;
-	                        if (nextItem) {
-	                            this.selectItem(event, nextItem);
-	                            this.domHandler.scrollInView(this.itemsWrapper, nextItem);
-	                        }
-	                    }
-	                    else {
-	                        var firstItem = this.domHandler.findSingle(this.panel, 'li:first-child');
-	                        this.selectItem(event, firstItem);
-	                    }
-	                }
-	                event.preventDefault();
-	                break;
-	            //up
-	            case 38:
-	                if (highlightedItem) {
-	                    var prevItem = highlightedItem.previousElementSibling;
-	                    if (prevItem) {
-	                        this.selectItem(event, prevItem);
-	                        this.domHandler.scrollInView(this.itemsWrapper, prevItem);
-	                    }
-	                }
-	                event.preventDefault();
-	                break;
-	            //enter
-	            case 13:
-	                this.panelVisible = false;
-	                event.preventDefault();
-	                break;
-	            //escape and tab
-	            case 27:
-	            case 9:
-	                this.panelVisible = false;
-	                break;
-	        }
-	    };
-	    Dropdown.prototype.findListItem = function (element) {
-	        if (element.nodeName == 'LI') {
-	            return element;
-	        }
-	        else {
-	            var parent_1 = element.parentElement;
-	            while (parent_1.nodeName != 'LI') {
-	                parent_1 = parent_1.parentElement;
-	            }
-	            return parent_1;
-	        }
-	    };
-	    Dropdown.prototype.onListMouseover = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.addClass(item, 'ui-state-hover');
-	        }
-	    };
-	    Dropdown.prototype.onListMouseout = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.removeClass(item, 'ui-state-hover');
-	        }
-	    };
-	    Dropdown.prototype.onListClick = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        this.itemClick = true;
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.selectItem(event, item);
-	        }
-	        this.hide();
-	    };
-	    Dropdown.prototype.selectItem = function (event, item) {
-	        var currentSelectedItem = this.domHandler.findSingle(item.parentNode, 'li.ui-state-highlight');
-	        if (currentSelectedItem != item) {
-	            if (currentSelectedItem) {
-	                this.domHandler.removeClass(currentSelectedItem, 'ui-state-highlight');
-	            }
-	            this.domHandler.addClass(item, 'ui-state-highlight');
-	            var selectedOption = this.options[this.findItemIndex(item.dataset.value, this.options)];
-	            this.label = selectedOption.label;
-	            this.value = selectedOption.value;
-	            this.onModelChange(this.value);
-	            this.onChange.emit({
-	                originalEvent: event,
-	                value: this.value
-	            });
-	        }
-	    };
-	    Dropdown.prototype.findItemIndex = function (val, opts) {
-	        var index = -1;
-	        if (opts) {
-	            if (val !== null && val !== undefined) {
-	                for (var i = 0; i < opts.length; i++) {
-	                    if (opts[i].value == val) {
-	                        index = i;
-	                        break;
-	                    }
-	                }
-	            }
-	        }
-	        return index;
-	    };
-	    Dropdown.prototype.onFilter = function (event) {
-	        if (this.options && this.options.length) {
-	            var val = event.target.value.toLowerCase();
-	            this.optionsToDisplay = [];
-	            for (var i = 0; i < this.options.length; i++) {
-	                var option = this.options[i];
-	                if (option.label.toLowerCase().startsWith(val)) {
-	                    this.optionsToDisplay.push(option);
-	                }
-	            }
-	            this.optionsChanged = true;
-	        }
-	    };
-	    Dropdown.prototype.ngOnDestroy = function () {
-	        this.documentClickListener();
-	        this.initialized = false;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Dropdown.prototype, "options", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Dropdown.prototype, "onChange", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Dropdown.prototype, "scrollHeight", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Dropdown.prototype, "filter", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Dropdown.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Dropdown.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Dropdown.prototype, "disabled", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Dropdown.prototype, "autoWidth", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Dropdown.prototype, "required", void 0);
-	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef), 
-	        __metadata('design:type', core_1.TemplateRef)
-	    ], Dropdown.prototype, "itemTemplate", void 0);
-	    Dropdown = __decorate([
-	        core_1.Component({
-	            selector: 'p-dropdown',
-	            template: "\n        <div [ngClass]=\"{'ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix':true,'ui-state-hover':hover&&!disabled,'ui-state-focus':focus,'ui-state-disabled':disabled}\" \n            (mouseenter)=\"onMouseenter($event)\" (mouseleave)=\"onMouseleave($event)\" (click)=\"onMouseclick($event,in)\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <select [required]=\"required\" tabindex=\"-1\">\n                    <option *ngFor=\"let option of options\" [value]=\"option.value\" [selected]=\"value == option.value\">{{option.label}}</option>\n                </select>\n            </div>\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in type=\"text\" readonly (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" (keydown)=\"onKeydown($event)\">\n            </div>\n            <label class=\"ui-dropdown-label ui-inputtext ui-corner-all\" [innerHTML]=\"label\"></label>\n            <div class=\"ui-dropdown-trigger ui-state-default ui-corner-right\" [ngClass]=\"{'ui-state-hover':hover&&!disabled,'ui-state-focus':focus}\">\n                <span class=\"fa fa-fw fa-caret-down\"></span>\n            </div>\n            <div class=\"ui-dropdown-panel ui-widget-content ui-corner-all ui-helper-hidden ui-shadow\" \n                [style.display]=\"panelVisible ? 'block' : 'none'\">\n                <div *ngIf=\"filter\" class=\"ui-dropdown-filter-container\" (input)=\"onFilter($event)\" (click)=\"$event.stopPropagation()\">\n                    <input type=\"text\" autocomplete=\"off\" class=\"ui-dropdown-filter ui-inputtext ui-widget ui-state-default ui-corner-all\">\n                    <span class=\"fa fa-search\"></span>\n                </div>\n                <div class=\"ui-dropdown-items-wrapper\" [style.max-height]=\"scrollHeight||'auto'\">\n                    <ul *ngIf=\"!itemTemplate\" class=\"ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\"\n                        (mouseover)=\"onListMouseover($event)\" (mouseout)=\"onListMouseout($event)\">\n                        <li *ngFor=\"let option of optionsToDisplay;let i=index\" [attr.data-label]=\"option.label\" [attr.data-value]=\"option.value\" (click)=\"onListClick($event)\"\n                            class=\"ui-dropdown-item ui-corner-all\">{{option.label}}</li>\n                    </ul>\n                    <ul *ngIf=\"itemTemplate\" class=\"ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\"\n                        (mouseover)=\"onListMouseover($event)\" (mouseout)=\"onListMouseout($event)\" (click)=\"onListClick($event)\">\n                        <template ngFor [ngForOf]=\"optionsToDisplay\" [ngForTemplate]=\"itemTemplate\"></template>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler, DROPDOWN_VALUE_ACCESSOR]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer, core_1.IterableDiffers])
-	    ], Dropdown);
-	    return Dropdown;
-	}());
-	exports.Dropdown = Dropdown;
-	
-
-/***/ },
-/* 1025 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(35);
-	var domhandler_1 = __webpack_require__(11);
-	var common_2 = __webpack_require__(8);
-	var EDITOR_VALUE_ACCESSOR = new core_1.Provider(common_2.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return Editor; }),
-	    multi: true
-	});
-	var Editor = (function () {
-	    function Editor(el, domHandler) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.onTextChange = new core_1.EventEmitter();
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	    }
-	    Editor.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        var editorElement = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-editor-content');
-	        var toolbarElement = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-editor-toolbar');
-	        this.quill = new Quill(editorElement, {
-	            modules: {
-	                toolbar: toolbarElement
-	            },
-	            placeholder: this.placeholder,
-	            readOnly: this.readOnly,
-	            theme: 'snow'
-	        });
-	        if (this.value) {
-	            this.quill.pasteHTML(this.value);
-	        }
-	        this.quill.on('text-change', function (delta, source) {
-	            _this.selfChange = true;
-	            var html = editorElement.children[0].innerHTML;
-	            var text = _this.quill.getText();
-	            if (html == '<p><br></p>') {
-	                html = null;
-	            }
-	            _this.onTextChange.emit({
-	                htmlValue: html,
-	                textValue: text,
-	                delta: delta,
-	                source: source
-	            });
-	            _this.onModelChange(html);
-	        });
-	    };
-	    Editor.prototype.writeValue = function (value) {
-	        this.value = value;
-	        if (this.quill) {
-	            if (this.selfChange) {
-	                this.selfChange = false;
-	            }
-	            else {
-	                if (value)
-	                    this.quill.pasteHTML(value);
-	                else
-	                    this.quill.setText('');
-	            }
-	        }
-	    };
-	    Editor.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    Editor.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Editor.prototype, "onTextChange", void 0);
-	    __decorate([
-	        core_1.ContentChild(common_1.Header), 
-	        __metadata('design:type', Object)
-	    ], Editor.prototype, "toolbar", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Editor.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Editor.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Editor.prototype, "placeholder", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Editor.prototype, "readOnly", void 0);
-	    Editor = __decorate([
-	        core_1.Component({
-	            selector: 'p-editor',
-	            template: "\n        <div [ngClass]=\"'ui-widget ui-editor-container ui-corner-all'\" [class]=\"styleClass\">\n            <div class=\"ui-editor-toolbar ui-widget-header ui-corner-top\" *ngIf=\"toolbar\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <div class=\"ui-editor-toolbar ui-widget-header ui-corner-top\" *ngIf=\"!toolbar\">\n                <span class=\"ql-formats\">\n                    <select class=\"ql-header\">\n                      <option value=\"1\">Heading</option>\n                      <option value=\"2\">Subheading</option>\n                      <option selected>Normal</option>\n                    </select>\n                    <select class=\"ql-font\">\n                      <option selected>Sans Serif</option>\n                      <option value=\"serif\">Serif</option>\n                      <option value=\"monospace\">Monospace</option>\n                    </select>\n                </span>\n                <span class=\"ql-formats\">\n                    <button class=\"ql-bold\"></button>\n                    <button class=\"ql-italic\"></button>\n                    <button class=\"ql-underline\"></button>\n                </span>\n                <span class=\"ql-formats\">\n                    <select class=\"ql-color\"></select>\n                    <select class=\"ql-background\"></select>\n                </span>\n                <span class=\"ql-formats\">\n                    <button class=\"ql-list\" value=\"ordered\"></button>\n                    <button class=\"ql-list\" value=\"bullet\"></button>\n                    <select class=\"ql-align\">\n                        <option selected></option>\n                        <option value=\"center\"></option>\n                        <option value=\"right\"></option>\n                        <option value=\"justify\"></option>\n                    </select>\n                </span>\n                <span class=\"ql-formats\">\n                    <button class=\"ql-link\"></button>\n                    <button class=\"ql-image\"></button>\n                    <button class=\"ql-code-block\"></button>\n                </span>\n                <span class=\"ql-formats\">\n                    <button class=\"ql-clean\"></button>\n                </span>\n            </div>\n            <div class=\"ui-editor-content\" [ngStyle]=\"style\"></div>\n        </div>\n    ",
-	            directives: [common_1.Header],
-	            providers: [domhandler_1.DomHandler, EDITOR_VALUE_ACCESSOR]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
-	    ], Editor);
-	    return Editor;
-	}());
-	exports.Editor = Editor;
-	
-
-/***/ },
-/* 1026 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var Fieldset = (function () {
-	    function Fieldset() {
-	        this.collapsed = false;
-	        this.onBeforeToggle = new core_1.EventEmitter();
-	        this.onAfterToggle = new core_1.EventEmitter();
-	    }
-	    Fieldset.prototype.onLegendMouseenter = function (event) {
-	        if (this.toggleable) {
-	            this.hover = true;
-	        }
-	    };
-	    Fieldset.prototype.onLegendMouseleave = function (event) {
-	        if (this.toggleable) {
-	            this.hover = false;
-	        }
-	    };
-	    Fieldset.prototype.toggle = function (event) {
-	        if (this.toggleable) {
-	            this.onBeforeToggle.emit({ originalEvent: event, collapsed: this.collapsed });
-	            if (this.collapsed)
-	                this.expand(event);
-	            else
-	                this.collapse(event);
-	            this.onAfterToggle.emit({ originalEvent: event, collapsed: this.collapsed });
-	        }
-	    };
-	    Fieldset.prototype.expand = function (event) {
-	        this.collapsed = false;
-	    };
-	    Fieldset.prototype.collapse = function (event) {
-	        this.collapsed = true;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Fieldset.prototype, "legend", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Fieldset.prototype, "toggleable", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Fieldset.prototype, "collapsed", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Fieldset.prototype, "onBeforeToggle", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Fieldset.prototype, "onAfterToggle", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Fieldset.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Fieldset.prototype, "styleClass", void 0);
-	    Fieldset = __decorate([
-	        core_1.Component({
-	            selector: 'p-fieldset',
-	            template: "\n        <fieldset [ngClass]=\"{'ui-fieldset ui-widget ui-widget-content ui-corner-all': true, 'ui-fieldset-toggleable': toggleable}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <legend class=\"ui-fieldset-legend ui-corner-all ui-state-default ui-unselectable-text\" \n                (mouseenter)=\"onLegendMouseenter($event)\" (mouseleave)=\"onLegendMouseleave($event)\" (click)=\"toggle($event)\" [ngClass]=\"{'ui-state-hover':hover}\">\n                <span *ngIf=\"toggleable\" class=\"ui-fieldset-toggler fa fa-w\" [ngClass]=\"{'fa-minus': !collapsed,'fa-plus':collapsed}\"></span>\n                {{legend}}\n            </legend>\n            <div class=\"ui-fieldset-content\" [style.display]=\"collapsed ? 'none' : 'block'\">\n                <ng-content></ng-content>\n            </div>\n        </fieldset>\n    ",
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Fieldset);
-	    return Fieldset;
-	}());
-	exports.Fieldset = Fieldset;
-	
-
-/***/ },
-/* 1027 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var Galleria = (function () {
-	    function Galleria(el, domHandler, differs) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.panelWidth = 600;
-	        this.panelHeight = 400;
-	        this.frameWidth = 60;
-	        this.frameHeight = 40;
-	        this.activeIndex = 0;
-	        this.showFilmstrip = true;
-	        this.autoPlay = true;
-	        this.transitionInterval = 4000;
-	        this.showCaption = true;
-	        this.onImageClicked = new core_1.EventEmitter();
-	        this.stripLeft = 0;
-	        this.differ = differs.find([]).create(null);
-	    }
-	    Galleria.prototype.ngAfterViewChecked = function () {
-	        if (this.imagesChanged) {
-	            this.stopSlideshow();
-	            this.render();
-	            this.imagesChanged = false;
-	        }
-	    };
-	    Galleria.prototype.ngDoCheck = function () {
-	        var changes = this.differ.diff(this.images);
-	        if (changes && this.initialized) {
-	            this.activeIndex = 0;
-	            this.imagesChanged = true;
-	        }
-	    };
-	    Galleria.prototype.ngAfterViewInit = function () {
-	        this.container = this.el.nativeElement.children[0];
-	        this.panelWrapper = this.domHandler.findSingle(this.el.nativeElement, 'ul.ui-galleria-panel-wrapper');
-	        this.initialized = true;
-	        if (this.showFilmstrip) {
-	            this.stripWrapper = this.domHandler.findSingle(this.container, 'div.ui-galleria-filmstrip-wrapper');
-	            this.strip = this.domHandler.findSingle(this.stripWrapper, 'ul.ui-galleria-filmstrip');
-	        }
-	        if (this.images && this.images.length) {
-	            this.render();
-	        }
-	    };
-	    Galleria.prototype.render = function () {
-	        this.panels = this.domHandler.find(this.panelWrapper, 'li.ui-galleria-panel');
-	        if (this.showFilmstrip) {
-	            this.frames = this.domHandler.find(this.strip, 'li.ui-galleria-frame');
-	            this.stripWrapper.style.width = this.domHandler.width(this.panelWrapper) - 50 + 'px';
-	            this.stripWrapper.style.height = this.frameHeight + 'px';
-	        }
-	        if (this.showCaption) {
-	            this.caption = this.domHandler.findSingle(this.container, 'div.ui-galleria-caption');
-	            this.caption.style.bottom = this.showFilmstrip ? this.domHandler.getOuterHeight(this.stripWrapper, true) + 'px' : 0 + 'px';
-	            this.caption.style.width = this.domHandler.width(this.panelWrapper) + 'px';
-	        }
-	        if (this.autoPlay) {
-	            this.startSlideshow();
-	        }
-	        this.container.style.visibility = 'visible';
-	    };
-	    Galleria.prototype.startSlideshow = function () {
-	        var _this = this;
-	        this.interval = setInterval(function () {
-	            _this.next();
-	        }, this.transitionInterval);
-	        this.slideshowActive = true;
-	    };
-	    Galleria.prototype.stopSlideshow = function () {
-	        if (this.interval) {
-	            clearInterval(this.interval);
-	        }
-	        this.slideshowActive = false;
-	    };
-	    Galleria.prototype.clickNavRight = function () {
-	        if (this.slideshowActive) {
-	            this.stopSlideshow();
-	        }
-	        this.next();
-	    };
-	    Galleria.prototype.clickNavLeft = function () {
-	        if (this.slideshowActive) {
-	            this.stopSlideshow();
-	        }
-	        this.prev();
-	    };
-	    Galleria.prototype.frameClick = function (frame) {
-	        if (this.slideshowActive) {
-	            this.stopSlideshow();
-	        }
-	        this.select(this.domHandler.index(frame), false);
-	    };
-	    Galleria.prototype.prev = function () {
-	        if (this.activeIndex !== 0) {
-	            this.select(this.activeIndex - 1, true);
-	        }
-	    };
-	    Galleria.prototype.next = function () {
-	        if (this.activeIndex !== (this.panels.length - 1)) {
-	            this.select(this.activeIndex + 1, true);
-	        }
-	        else {
-	            this.select(0, false);
-	            this.stripLeft = 0;
-	        }
-	    };
-	    Galleria.prototype.select = function (index, reposition) {
-	        if (index !== this.activeIndex) {
-	            var oldPanel = this.panels[this.activeIndex], newPanel = this.panels[index];
-	            this.domHandler.fadeIn(newPanel, 500);
-	            if (this.showFilmstrip) {
-	                var oldFrame = this.frames[this.activeIndex], newFrame = this.frames[index];
-	                if (reposition === undefined || reposition === true) {
-	                    var frameLeft = newFrame.offsetLeft, stepFactor = this.frameWidth + parseInt(getComputedStyle(newFrame)['margin-right'], 10), stripLeft = this.strip.offsetLeft, frameViewportLeft = frameLeft + stripLeft, frameViewportRight = frameViewportLeft + this.frameWidth;
-	                    if (frameViewportRight > this.domHandler.width(this.stripWrapper))
-	                        this.stripLeft -= stepFactor;
-	                    else if (frameViewportLeft < 0)
-	                        this.stripLeft += stepFactor;
-	                }
-	            }
-	            this.activeIndex = index;
-	        }
-	    };
-	    Galleria.prototype.clickImage = function (event, image, i) {
-	        this.onImageClicked.emit({ originalEvent: event, image: image, index: i });
-	    };
-	    Galleria.prototype.ngOnDestroy = function () {
-	        this.stopSlideshow();
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Galleria.prototype, "images", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Galleria.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Galleria.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Galleria.prototype, "panelWidth", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Galleria.prototype, "panelHeight", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Galleria.prototype, "frameWidth", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Galleria.prototype, "frameHeight", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Galleria.prototype, "activeIndex", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Galleria.prototype, "showFilmstrip", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Galleria.prototype, "autoPlay", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Galleria.prototype, "transitionInterval", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Galleria.prototype, "showCaption", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', Object)
-	    ], Galleria.prototype, "onImageClicked", void 0);
-	    Galleria = __decorate([
-	        core_1.Component({
-	            selector: 'p-galleria',
-	            template: "\n        <div [ngClass]=\"{'ui-galleria ui-widget ui-widget-content ui-corner-all':true}\" [ngStyle]=\"style\" [class]=\"styleClass\" [style.width.px]=\"panelWidth\">\n            <ul class=\"ui-galleria-panel-wrapper\" [style.width.px]=\"panelWidth\" [style.height.px]=\"panelHeight\">\n                <li *ngFor=\"let image of images;let i=index\" class=\"ui-galleria-panel\" [ngClass]=\"{'ui-helper-hidden':i!=activeIndex}\"\n                    [style.width.px]=\"panelWidth\" [style.height.px]=\"panelHeight\" (click)=\"clickImage($event,image,i)\">\n                    <img class=\"ui-panel-images\" [src]=\"image.source\" [alt]=\"image.alt\" [title]=\"image.title\"/>\n                </li>\n            </ul>\n            <div [ngClass]=\"{'ui-galleria-filmstrip-wrapper':true}\" *ngIf=\"showFilmstrip\">\n                <ul class=\"ui-galleria-filmstrip\" style=\"transition:left 1s\" [style.left.px]=\"stripLeft\">\n                    <li #frame *ngFor=\"let image of images;let i=index\" [ngClass]=\"{'ui-galleria-frame-active':i==activeIndex}\" class=\"ui-galleria-frame\" (click)=\"frameClick(frame)\"\n                        [style.width.px]=\"frameWidth\" [style.height.px]=\"frameHeight\" [style.transition]=\"'opacity 0.75s ease'\">\n                        <div class=\"ui-galleria-frame-content\">\n                            <img [src]=\"image.source\" [alt]=\"image.alt\" [title]=\"image.title\" class=\"ui-galleria-frame-image\"\n                                [style.width.px]=\"frameWidth\" [style.height.px]=\"frameHeight\">\n                        </div>\n                    </li>\n                </ul>\n            </div>\n            <div class=\"ui-galleria-nav-prev fa fa-fw fa-chevron-circle-left\" (click)=\"clickNavLeft()\" [style.bottom.px]=\"frameHeight/2\" *ngIf=\"activeIndex !== 0\"></div>\n            <div class=\"ui-galleria-nav-next fa fa-fw fa-chevron-circle-right\" (click)=\"clickNavRight()\" [style.bottom.px]=\"frameHeight/2\"></div>\n            <div class=\"ui-galleria-caption\" *ngIf=\"showCaption&&images\" style=\"display:block\">\n                <h4>{{images[activeIndex]?.title}}</h4><p>{{images[activeIndex]?.alt}}</p>\n            </div>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers])
-	    ], Galleria);
-	    return Galleria;
-	}());
-	exports.Galleria = Galleria;
-	
-
-/***/ },
-/* 1028 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var GMap = (function () {
-	    function GMap(el, differs, cd, zone) {
-	        this.el = el;
-	        this.cd = cd;
-	        this.zone = zone;
-	        this.onMapClick = new core_1.EventEmitter();
-	        this.onOverlayClick = new core_1.EventEmitter();
-	        this.onOverlayDragStart = new core_1.EventEmitter();
-	        this.onOverlayDrag = new core_1.EventEmitter();
-	        this.onOverlayDragEnd = new core_1.EventEmitter();
-	        this.differ = differs.find([]).create(null);
-	    }
-	    GMap.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        this.map = new google.maps.Map(this.el.nativeElement.children[0], this.options);
-	        if (this.overlays) {
-	            for (var _i = 0, _a = this.overlays; _i < _a.length; _i++) {
-	                var overlay = _a[_i];
-	                overlay.setMap(this.map);
-	                this.bindOverlayEvents(overlay);
-	            }
-	        }
-	        this.map.addListener('click', function (event) {
-	            _this.zone.run(function () {
-	                _this.onMapClick.emit(event);
-	            });
-	        });
-	    };
-	    GMap.prototype.bindOverlayEvents = function (overlay) {
-	        var _this = this;
-	        overlay.addListener('click', function (event) {
-	            _this.zone.run(function () {
-	                _this.onOverlayClick.emit({
-	                    originalEvent: event,
-	                    'overlay': overlay,
-	                    map: _this.map
-	                });
-	            });
-	        });
-	        if (overlay.getDraggable()) {
-	            this.bindDragEvents(overlay);
-	        }
-	    };
-	    GMap.prototype.ngDoCheck = function () {
-	        var _this = this;
-	        var changes = this.differ.diff(this.overlays);
-	        if (changes && this.map) {
-	            changes.forEachRemovedItem(function (record) { record.item.setMap(null); });
-	            changes.forEachAddedItem(function (record) {
-	                record.item.setMap(_this.map);
-	                record.item.addListener('click', function (event) {
-	                    _this.zone.run(function () {
-	                        _this.onOverlayClick.emit({
-	                            originalEvent: event,
-	                            overlay: record.item,
-	                            map: _this.map
-	                        });
-	                    });
-	                });
-	                if (record.item.getDraggable()) {
-	                    _this.bindDragEvents(record.item);
-	                }
-	            });
-	        }
-	    };
-	    GMap.prototype.bindDragEvents = function (overlay) {
-	        var _this = this;
-	        overlay.addListener('dragstart', function (event) {
-	            _this.zone.run(function () {
-	                _this.onOverlayDragStart.emit({
-	                    originalEvent: event,
-	                    overlay: overlay,
-	                    map: _this.map
-	                });
-	            });
-	        });
-	        overlay.addListener('drag', function (event) {
-	            _this.zone.run(function () {
-	                _this.onOverlayDrag.emit({
-	                    originalEvent: event,
-	                    overlay: overlay,
-	                    map: _this.map
-	                });
-	            });
-	        });
-	        overlay.addListener('dragend', function (event) {
-	            _this.zone.run(function () {
-	                _this.onOverlayDragEnd.emit({
-	                    originalEvent: event,
-	                    overlay: overlay,
-	                    map: _this.map
-	                });
-	            });
-	        });
-	    };
-	    GMap.prototype.getMap = function () {
-	        return this.map;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], GMap.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], GMap.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], GMap.prototype, "options", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], GMap.prototype, "overlays", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], GMap.prototype, "onMapClick", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], GMap.prototype, "onOverlayClick", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], GMap.prototype, "onOverlayDragStart", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], GMap.prototype, "onOverlayDrag", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], GMap.prototype, "onOverlayDragEnd", void 0);
-	    GMap = __decorate([
-	        core_1.Component({
-	            selector: 'p-gmap',
-	            template: "<div [ngStyle]=\"style\" [class]=\"styleClass\"></div>"
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers, core_1.ChangeDetectorRef, core_1.NgZone])
-	    ], GMap);
-	    return GMap;
-	}());
-	exports.GMap = GMap;
-	
-
-/***/ },
-/* 1029 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var Growl = (function () {
-	    function Growl(el, domHandler, differs) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.sticky = false;
-	        this.life = 3000;
-	        this.differ = differs.find([]).create(null);
-	        this.zIndex = domhandler_1.DomHandler.zindex;
-	    }
-	    Growl.prototype.ngAfterViewInit = function () {
-	        this.container = this.el.nativeElement.children[0];
-	    };
-	    Growl.prototype.ngDoCheck = function () {
-	        var _this = this;
-	        var changes = this.differ.diff(this.value);
-	        if (changes) {
-	            if (this.stopDoCheckPropagation) {
-	                this.stopDoCheckPropagation = false;
-	            }
-	            else if (this.value && this.value.length) {
-	                this.zIndex = ++domhandler_1.DomHandler.zindex;
-	                this.domHandler.fadeIn(this.container, 250);
-	                if (!this.sticky) {
-	                    if (this.timeout) {
-	                        clearTimeout(this.timeout);
-	                    }
-	                    this.timeout = setTimeout(function () {
-	                        _this.removeAll();
-	                    }, this.life);
-	                }
-	            }
-	        }
-	    };
-	    Growl.prototype.remove = function (msg, msgel) {
-	        var _this = this;
-	        this.stopDoCheckPropagation = true;
-	        this.domHandler.fadeOut(msgel, 250);
-	        setTimeout(function () {
-	            _this.value.splice(_this.findMessageIndex(msg), 1);
-	        }, 250);
-	    };
-	    Growl.prototype.removeAll = function () {
-	        var _this = this;
-	        if (this.value && this.value.length) {
-	            this.stopDoCheckPropagation = true;
-	            this.domHandler.fadeOut(this.container, 250);
-	            setTimeout(function () {
-	                _this.value.splice(0, _this.value.length);
-	            }, 250);
-	        }
-	    };
-	    Growl.prototype.findMessageIndex = function (msg) {
-	        var index = -1;
-	        if (this.value && this.value.length) {
-	            for (var i = 0; i < this.value.length; i++) {
-	                if (this.value[i] == msg) {
-	                    index = i;
-	                    break;
-	                }
-	            }
-	        }
-	        return index;
-	    };
-	    Growl.prototype.ngOnDestroy = function () {
-	        if (!this.sticky) {
-	            clearTimeout(this.timeout);
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Growl.prototype, "sticky", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Growl.prototype, "life", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Growl.prototype, "value", void 0);
-	    Growl = __decorate([
-	        core_1.Component({
-	            selector: 'p-growl',
-	            template: "\n        <div class=\"ui-growl ui-widget\" [style.zIndex]=\"zIndex\">\n            <div #msgel *ngFor=\"let msg of value\" class=\"ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow\" aria-live=\"polite\"\n                [ngClass]=\"{'ui-growl-message-info ':msg.severity == 'info','ui-growl-message-warn':msg.severity == 'warn','ui-growl-message-error':msg.severity == 'error'}\">\n                <div class=\"ui-growl-item\">\n                     <div class=\"ui-growl-icon-close fa fa-close\" (click)=\"remove(msg,msgel)\"></div>\n                     <span class=\"ui-growl-image fa fa-2x ui-growl-image-info\"\n                        [ngClass]=\"{'fa-info-circle':msg.severity == 'info','fa-warning':msg.severity == 'warn','fa-close':msg.severity == 'error'}\"></span>\n                     <div class=\"ui-growl-message\">\n                        <span class=\"ui-growl-title\">{{msg.summary}}</span>\n                        <p>{{msg.detail}}</p>\n                     </div>\n                     <div style=\"clear: both;\"></div>\n                </div>\n            </div>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers])
-	    ], Growl);
-	    return Growl;
-	}());
-	exports.Growl = Growl;
-	
-
-/***/ },
-/* 1030 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var domhandler_1 = __webpack_require__(11);
-	var INPUTSWITCH_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return InputSwitch; }),
-	    multi: true
-	});
-	var InputSwitch = (function () {
-	    function InputSwitch(el, domHandler) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.onLabel = 'On';
-	        this.offLabel = 'Off';
-	        this.onChange = new core_1.EventEmitter();
-	        this.checked = false;
-	        this.focused = false;
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	        this.initialized = false;
-	    }
-	    InputSwitch.prototype.ngAfterViewInit = function () {
-	        this.container = this.el.nativeElement.children[0];
-	        this.handle = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-inputswitch-handle');
-	        this.onContainer = this.domHandler.findSingle(this.container, 'div.ui-inputswitch-on');
-	        this.offContainer = this.domHandler.findSingle(this.container, 'div.ui-inputswitch-off');
-	        this.onLabelChild = this.domHandler.findSingle(this.onContainer, 'span.ui-inputswitch-onlabel');
-	        this.offLabelChild = this.domHandler.findSingle(this.offContainer, 'span.ui-inputswitch-offlabel');
-	        var onContainerWidth = this.domHandler.width(this.onContainer), offContainerWidth = this.domHandler.width(this.offContainer), spanPadding = this.domHandler.innerWidth(this.offLabelChild) - this.domHandler.width(this.offLabelChild), handleMargins = this.domHandler.getOuterWidth(this.handle) - this.domHandler.innerWidth(this.handle);
-	        var containerWidth = (onContainerWidth > offContainerWidth) ? onContainerWidth : offContainerWidth, handleWidth = containerWidth;
-	        this.handle.style.width = handleWidth + 'px';
-	        handleWidth = this.domHandler.width(this.handle);
-	        containerWidth = containerWidth + handleWidth + 6;
-	        var labelWidth = containerWidth - handleWidth - spanPadding - handleMargins;
-	        this.container.style.width = containerWidth + 'px';
-	        this.onLabelChild.style.width = labelWidth + 'px';
-	        this.offLabelChild.style.width = labelWidth + 'px';
-	        //position
-	        this.offContainer.style.width = (this.domHandler.width(this.container) - 5) + 'px';
-	        this.offset = this.domHandler.width(this.container) - this.domHandler.getOuterWidth(this.handle);
-	        //default value
-	        if (this.checked) {
-	            this.handle.style.left = this.offset + 'px';
-	            this.onContainer.style.width = this.offset + 'px';
-	            this.offLabelChild.style.marginRight = -this.offset + 'px';
-	        }
-	        else {
-	            this.onContainer.style.width = 0 + 'px';
-	            this.onLabelChild.style.marginLeft = -this.offset + 'px';
-	        }
-	        this.initialized = true;
-	    };
-	    InputSwitch.prototype.toggle = function (event, checkbox) {
-	        if (!this.disabled) {
-	            if (this.checked) {
-	                this.checked = false;
-	                this.uncheckUI();
-	            }
-	            else {
-	                this.checked = true;
-	                this.checkUI();
-	            }
-	            this.onModelChange(this.checked);
-	            this.onChange.emit({
-	                originalEvent: event,
-	                checked: this.checked
-	            });
-	            checkbox.focus();
-	        }
-	    };
-	    InputSwitch.prototype.checkUI = function () {
-	        this.onContainer.style.width = this.offset + 'px';
-	        this.onLabelChild.style.marginLeft = 0 + 'px';
-	        this.offLabelChild.style.marginRight = -this.offset + 'px';
-	        this.handle.style.left = this.offset + 'px';
-	    };
-	    InputSwitch.prototype.uncheckUI = function () {
-	        this.onContainer.style.width = 0 + 'px';
-	        this.onLabelChild.style.marginLeft = -this.offset + 'px';
-	        this.offLabelChild.style.marginRight = 0 + 'px';
-	        this.handle.style.left = 0 + 'px';
-	    };
-	    InputSwitch.prototype.onFocus = function (event) {
-	        this.focused = true;
-	    };
-	    InputSwitch.prototype.onBlur = function (event) {
-	        this.focused = false;
-	        this.onModelTouched();
-	    };
-	    InputSwitch.prototype.writeValue = function (checked) {
-	        this.checked = checked;
-	        if (this.initialized) {
-	            if (this.checked === true)
-	                this.checkUI();
-	            else
-	                this.uncheckUI();
-	        }
-	    };
-	    InputSwitch.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    InputSwitch.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], InputSwitch.prototype, "onLabel", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], InputSwitch.prototype, "offLabel", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], InputSwitch.prototype, "disabled", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], InputSwitch.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], InputSwitch.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], InputSwitch.prototype, "onChange", void 0);
-	    InputSwitch = __decorate([
-	        core_1.Component({
-	            selector: 'p-inputSwitch',
-	            template: "\n        <div [ngClass]=\"{'ui-inputswitch ui-widget ui-widget-content ui-corner-all': true,\n            'ui-state-disabled': disabled}\" (click)=\"toggle($event, in)\"\n            [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-inputswitch-off\">\n                <span class=\"ui-inputswitch-offlabel\">{{offLabel}}</span>\n            </div>\n            <div class=\"ui-inputswitch-on\">\n                <span class=\"ui-inputswitch-onlabel\">{{onLabel}}</span>\n            </div>\n            <div [ngClass]=\"{'ui-inputswitch-handle ui-state-default':true, 'ui-state-focus':focused}\"></div>\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in type=\"checkbox\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" readonly=\"readonly\"/>\n            </div>\n        </div>\n    ",
-	            providers: [INPUTSWITCH_VALUE_ACCESSOR, domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
-	    ], InputSwitch);
-	    return InputSwitch;
-	}());
-	exports.InputSwitch = InputSwitch;
-	
-
-/***/ },
-/* 1031 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var InputTextarea = (function () {
-	    function InputTextarea(el) {
-	        this.el = el;
-	    }
-	    InputTextarea.prototype.ngOnInit = function () {
-	        this.rowsDefault = this.rows;
-	        this.colsDefault = this.cols;
-	    };
-	    InputTextarea.prototype.onMouseover = function (e) {
-	        this.hover = true;
-	    };
-	    InputTextarea.prototype.onMouseout = function (e) {
-	        this.hover = false;
-	    };
-	    InputTextarea.prototype.onFocus = function (e) {
-	        this.focus = true;
-	        if (this.autoResize) {
-	            this.resize();
-	        }
-	    };
-	    InputTextarea.prototype.onBlur = function (e) {
-	        this.focus = false;
-	        if (this.autoResize) {
-	            this.resize();
-	        }
-	    };
-	    InputTextarea.prototype.isDisabled = function () {
-	        return this.el.nativeElement.disabled;
-	    };
-	    InputTextarea.prototype.onKeyup = function (e) {
-	        if (this.autoResize) {
-	            this.resize();
-	        }
-	    };
-	    InputTextarea.prototype.resize = function () {
-	        var linesCount = 0, lines = this.el.nativeElement.value.split('\n');
-	        for (var i = lines.length - 1; i >= 0; --i) {
-	            linesCount += Math.floor((lines[i].length / this.colsDefault) + 1);
-	        }
-	        this.rows = (linesCount >= this.rowsDefault) ? (linesCount + 1) : this.rowsDefault;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], InputTextarea.prototype, "autoResize", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], InputTextarea.prototype, "rows", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], InputTextarea.prototype, "cols", void 0);
-	    __decorate([
-	        core_1.HostListener('mouseover', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], InputTextarea.prototype, "onMouseover", null);
-	    __decorate([
-	        core_1.HostListener('mouseout', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], InputTextarea.prototype, "onMouseout", null);
-	    __decorate([
-	        core_1.HostListener('focus', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], InputTextarea.prototype, "onFocus", null);
-	    __decorate([
-	        core_1.HostListener('blur', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], InputTextarea.prototype, "onBlur", null);
-	    __decorate([
-	        core_1.HostListener('keyup', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], InputTextarea.prototype, "onKeyup", null);
-	    InputTextarea = __decorate([
-	        core_1.Directive({
-	            selector: '[pInputTextarea]',
-	            host: {
-	                '[class.ui-inputtext]': 'true',
-	                '[class.ui-corner-all]': 'true',
-	                '[class.ui-state-default]': 'true',
-	                '[class.ui-widget]': 'true',
-	                '[class.ui-state-hover]': 'hover',
-	                '[class.ui-state-focus]': 'focus',
-	                '[class.ui-state-disabled]': 'isDisabled()',
-	                '[attr.rows]': 'rows',
-	                '[attr.cols]': 'cols'
-	            }
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef])
-	    ], InputTextarea);
-	    return InputTextarea;
-	}());
-	exports.InputTextarea = InputTextarea;
-	
-
-/***/ },
-/* 1032 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var Lightbox = (function () {
-	    function Lightbox(el, domHandler, renderer) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	        this.type = 'image';
-	        this.effectDuration = '500ms';
-	    }
-	    Lightbox.prototype.onImageClick = function (event, image, i, content) {
-	        this.index = i;
-	        this.loading = true;
-	        content.style.width = 32 + 'px';
-	        content.style.height = 32 + 'px';
-	        this.show();
-	        this.displayImage(image);
-	        this.preventDocumentClickListener = true;
-	        event.preventDefault();
-	    };
-	    Lightbox.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        this.panel = this.domHandler.findSingle(this.el.nativeElement, '.ui-lightbox ');
-	        this.documentClickListener = this.renderer.listenGlobal('body', 'click', function (event) {
-	            if (!_this.preventDocumentClickListener && _this.visible) {
-	                _this.hide(event);
-	            }
-	            _this.preventDocumentClickListener = false;
-	        });
-	    };
-	    Lightbox.prototype.onLinkClick = function (event, content) {
-	        this.show();
-	        this.preventDocumentClickListener = true;
-	        event.preventDefault();
-	    };
-	    Lightbox.prototype.displayImage = function (image) {
-	        var _this = this;
-	        setTimeout(function () {
-	            _this.currentImage = image;
-	        }, 1000);
-	    };
-	    Lightbox.prototype.show = function () {
-	        this.mask = document.createElement('div');
-	        this.mask.style.zIndex = ++domhandler_1.DomHandler.zindex;
-	        this.domHandler.addMultipleClasses(this.mask, 'ui-widget-overlay ui-dialog-mask');
-	        document.body.appendChild(this.mask);
-	        this.zindex = ++domhandler_1.DomHandler.zindex;
-	        this.center();
-	        this.visible = true;
-	    };
-	    Lightbox.prototype.hide = function (event) {
-	        this.captionText = null;
-	        this.index = null;
-	        this.currentImage = null;
-	        this.visible = false;
-	        this.panel.style.left = 'auto';
-	        this.panel.style.top = 'auto';
-	        if (this.mask) {
-	            document.body.removeChild(this.mask);
-	            this.mask = null;
-	        }
-	        event.preventDefault();
-	    };
-	    Lightbox.prototype.center = function () {
-	        var elementWidth = this.domHandler.getOuterWidth(this.panel);
-	        var elementHeight = this.domHandler.getOuterHeight(this.panel);
-	        if (elementWidth == 0 && elementHeight == 0) {
-	            this.panel.style.visibility = 'hidden';
-	            this.panel.style.display = 'block';
-	            elementWidth = this.domHandler.getOuterWidth(this.panel);
-	            elementHeight = this.domHandler.getOuterHeight(this.panel);
-	            this.panel.style.display = 'none';
-	            this.panel.style.visibility = 'visible';
-	        }
-	        var viewport = this.domHandler.getViewport();
-	        var x = (viewport.width - elementWidth) / 2;
-	        var y = (viewport.height - elementHeight) / 2;
-	        this.panel.style.left = x + 'px';
-	        this.panel.style.top = y + 'px';
-	    };
-	    Lightbox.prototype.onImageLoad = function (event, content) {
-	        var _this = this;
-	        var image = event.target;
-	        image.style.visibility = 'hidden';
-	        image.style.display = 'block';
-	        var imageWidth = this.domHandler.getOuterWidth(image);
-	        var imageHeight = this.domHandler.getOuterHeight(image);
-	        image.style.display = 'none';
-	        image.style.visibility = 'visible';
-	        content.style.width = imageWidth + 'px';
-	        content.style.height = imageHeight + 'px';
-	        this.panel.style.left = parseInt(this.panel.style.left) + (this.domHandler.getOuterWidth(this.panel) - imageWidth) / 2 + 'px';
-	        this.panel.style.top = parseInt(this.panel.style.top) + (this.domHandler.getOuterHeight(this.panel) - imageHeight) / 2 + 'px';
-	        setTimeout(function () {
-	            _this.domHandler.fadeIn(image, 500);
-	            image.style.display = 'block';
-	            //this.captionText = this.currentImage.title;
-	            _this.loading = false;
-	        }, parseInt(this.effectDuration));
-	    };
-	    Lightbox.prototype.prev = function (placeholder) {
-	        this.captionText = null;
-	        this.loading = true;
-	        placeholder.style.display = 'none';
-	        if (this.index > 0) {
-	            this.displayImage(this.images[--this.index]);
-	        }
-	    };
-	    Lightbox.prototype.next = function (placeholder) {
-	        this.captionText = null;
-	        this.loading = true;
-	        placeholder.style.display = 'none';
-	        if (this.index <= (this.images.length - 1)) {
-	            this.displayImage(this.images[++this.index]);
-	        }
-	    };
-	    Object.defineProperty(Lightbox.prototype, "leftVisible", {
-	        get: function () {
-	            return this.images && this.images.length && this.index != 0 && !this.loading;
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    Object.defineProperty(Lightbox.prototype, "rightVisible", {
-	        get: function () {
-	            return this.images && this.images.length && this.index < (this.images.length - 1) && !this.loading;
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    Lightbox.prototype.ngOnDestroy = function () {
-	        this.documentClickListener();
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Lightbox.prototype, "images", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Lightbox.prototype, "type", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Lightbox.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Lightbox.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Lightbox.prototype, "easing", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Lightbox.prototype, "effectDuration", void 0);
-	    Lightbox = __decorate([
-	        core_1.Component({
-	            selector: 'p-lightbox',
-	            template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\" *ngIf=\"(type == 'image')\">\n            <a *ngFor=\"let image of images; let i = index;\" [href]=\"image.source\" (click)=\"onImageClick($event,image,i,content)\">\n                <img [src]=\"image.thumbnail\" [title]=\"image.title\" [alt]=\"image.alt\">\n            </a>\n        </div>\n        <span [ngStyle]=\"style\" [class]=\"styleClass\" *ngIf=\"(type == 'content')\" (click)=\"onLinkClick($event,content)\">\n            <ng-content select=\"a\"></ng-content>\n        </span>\n        <div class=\"ui-lightbox ui-widget ui-helper-hidden ui-corner-all ui-shadow\" [style.display]=\"visible ? 'block' : 'none'\" [style.zIndex]=\"zindex\"\n            [style.transitionProperty]=\"'all'\" [style.transitionDuration]=\"effectDuration\" [style.transitionTimingFunction]=\"easing\" (click)=\"preventDocumentClickListener=true\">\n           <div class=\"ui-lightbox-content-wrapper\">\n              <a class=\"ui-state-default ui-lightbox-nav-left ui-corner-right\" [style.zIndex]=\"zindex + 1\" (click)=\"prev(img)\"\n                [ngClass]=\"{'ui-helper-hidden':!leftVisible}\"><span class=\"fa fa-fw fa-caret-left\"></span></a>\n              <div #content class=\"ui-lightbox-content ui-corner-all\" #content [ngClass]=\"{'ui-lightbox-loading': loading}\" \n                [style.transitionProperty]=\"'width,height'\" [style.transitionDuration]=\"effectDuration\" [style.transitionTimingFunction]=\"easing\">\n                <img #img [src]=\"currentImage ? currentImage.source||'' : ''\" (load)=\"onImageLoad($event,content)\" style=\"display:none\">\n                <ng-content></ng-content>\n              </div>\n              <a class=\"ui-state-default ui-lightbox-nav-right ui-corner-left ui-helper-hidden\" [style.zIndex]=\"zindex + 1\" (click)=\"next(img)\"\n                [ngClass]=\"{'ui-helper-hidden':!rightVisible}\"><span class=\"fa fa-fw fa-caret-right\"></span></a>\n           </div>\n           <div class=\"ui-lightbox-caption ui-widget-header\" [style.display]=\"captionText ? 'block' : 'none'\">\n              <span class=\"ui-lightbox-caption-text\">{{captionText}}</span><a class=\"ui-lightbox-close ui-corner-all\" href=\"#\" (click)=\"hide($event)\"><span class=\"fa fa-fw fa-close\"></span></a>\n              <div style=\"clear:both\"></div>\n           </div>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
-	    ], Lightbox);
-	    return Lightbox;
-	}());
-	exports.Lightbox = Lightbox;
-	
-
-/***/ },
-/* 1033 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var common_1 = __webpack_require__(8);
-	var LISTBOX_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return Listbox; }),
-	    multi: true
-	});
-	var Listbox = (function () {
-	    function Listbox(el, domHandler, differs) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.onChange = new core_1.EventEmitter();
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	        this.differ = differs.find([]).create(null);
-	    }
-	    Listbox.prototype.writeValue = function (value) {
-	        this.value = value;
-	        if (!this.multiple) {
-	            this.valueChanged = true;
-	        }
-	    };
-	    Listbox.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    Listbox.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    Listbox.prototype.ngDoCheck = function () {
-	        if (this.multiple) {
-	            var changes = this.differ.diff(this.value);
-	            if (changes) {
-	                this.valueChanged = true;
-	            }
-	        }
-	    };
-	    Listbox.prototype.ngAfterViewChecked = function () {
-	        if (this.valueChanged) {
-	            this.preselect();
-	            this.valueChanged = false;
-	        }
-	    };
-	    Listbox.prototype.preselect = function () {
-	        var items = this.domHandler.find(this.el.nativeElement, 'li.ui-listbox-item');
-	        if (items && items.length) {
-	            this.unselectAll(items);
-	            if (this.value) {
-	                if (this.multiple) {
-	                    for (var i = 0; i < this.value.length; i++) {
-	                        for (var j = 0; i < this.options.length; j++) {
-	                            if (this.options[j].value == this.value[i]) {
-	                                this.domHandler.addClass(items[j], 'ui-state-highlight');
-	                                break;
-	                            }
-	                        }
-	                    }
-	                }
-	                else {
-	                    for (var i = 0; i < this.options.length; i++) {
-	                        if (this.options[i].value == this.value) {
-	                            this.domHandler.addClass(items[i], 'ui-state-highlight');
-	                            break;
-	                        }
-	                    }
-	                }
-	            }
-	        }
-	    };
-	    Listbox.prototype.unselectAll = function (items) {
-	        var listItems = items || this.domHandler.find(this.el.nativeElement, 'li.ui-listbox-item');
-	        for (var i = 0; i < listItems.length; i++) {
-	            this.domHandler.removeClass(listItems[i], 'ui-state-highlight');
-	        }
-	    };
-	    Listbox.prototype.onMouseover = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.addClass(item, 'ui-state-hover');
-	        }
-	    };
-	    Listbox.prototype.onMouseout = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.removeClass(item, 'ui-state-hover');
-	        }
-	    };
-	    Listbox.prototype.onClick = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.onItemClick(event, item);
-	        }
-	    };
-	    Listbox.prototype.onItemClick = function (event, item) {
-	        var metaKey = (event.metaKey || event.ctrlKey);
-	        if (this.domHandler.hasClass(item, 'ui-state-highlight')) {
-	            if (metaKey)
-	                this.domHandler.removeClass(item, 'ui-state-highlight');
-	            else
-	                this.unselectSiblings(item);
-	        }
-	        else {
-	            if (!metaKey || !this.multiple) {
-	                this.unselectSiblings(item);
-	            }
-	            this.domHandler.removeClass(item, 'ui-state-hover');
-	            this.domHandler.addClass(item, 'ui-state-highlight');
-	        }
-	        //update value
-	        if (this.multiple) {
-	            var selectedItems = this.domHandler.find(item.parentNode, 'li.ui-state-highlight');
-	            var valueArr = [];
-	            if (selectedItems && selectedItems.length) {
-	                for (var i = 0; i < selectedItems.length; i++) {
-	                    var itemIndex = this.domHandler.index(selectedItems[i]);
-	                    valueArr.push(this.options[itemIndex].value);
-	                }
-	            }
-	            this.value = valueArr;
-	        }
-	        else {
-	            var selectedItem = this.domHandler.findSingle(item.parentNode, 'li.ui-state-highlight');
-	            if (selectedItem) {
-	                var selectedIndex = this.domHandler.index(selectedItem);
-	                this.value = this.options[selectedIndex].value;
-	            }
-	            else {
-	                this.value = null;
-	            }
-	        }
-	        this.onModelChange(this.value);
-	        this.onChange.emit(event);
-	    };
-	    Listbox.prototype.unselectSiblings = function (item) {
-	        var siblings = this.domHandler.siblings(item);
-	        for (var i = 0; i < siblings.length; i++) {
-	            var sibling = siblings[i];
-	            if (this.domHandler.hasClass(sibling, 'ui-state-highlight')) {
-	                this.domHandler.removeClass(sibling, 'ui-state-highlight');
-	            }
-	        }
-	    };
-	    Listbox.prototype.findListItem = function (element) {
-	        if (element.nodeName == 'LI') {
-	            return element;
-	        }
-	        else {
-	            var parent_1 = element.parentElement;
-	            while (parent_1.nodeName != 'LI') {
-	                parent_1 = parent_1.parentElement;
-	            }
-	            return parent_1;
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Listbox.prototype, "options", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Listbox.prototype, "multiple", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Listbox.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Listbox.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Listbox.prototype, "disabled", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Listbox.prototype, "onChange", void 0);
-	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef), 
-	        __metadata('design:type', core_1.TemplateRef)
-	    ], Listbox.prototype, "itemTemplate", void 0);
-	    Listbox = __decorate([
-	        core_1.Component({
-	            selector: 'p-listbox',
-	            template: "\n        <div [ngClass]=\"{'ui-listbox ui-inputtext ui-widget ui-widget-content ui-corner-all':true,'ui-state-disabled':disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul class=\"ui-listbox-list\" *ngIf=\"!itemTemplate\" (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                <li *ngFor=\"let option of options\" class=\"ui-listbox-item ui-corner-all\">\n                    {{option.label}}\n                </li>\n            </ul>\n            <ul class=\"ui-listbox-list\" *ngIf=\"itemTemplate\" (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                <template ngFor [ngForOf]=\"options\" [ngForTemplate]=\"itemTemplate\"></template>\n            </ul>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler, LISTBOX_VALUE_ACCESSOR]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers])
-	    ], Listbox);
-	    return Listbox;
-	}());
-	exports.Listbox = Listbox;
-	
-
-/***/ },
-/* 1034 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var router_1 = __webpack_require__(7);
-	var MegaMenu = (function () {
-	    function MegaMenu(el, domHandler, renderer, router) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	        this.router = router;
-	        this.orientation = 'horizontal';
-	    }
-	    MegaMenu.prototype.onItemMouseEnter = function (event, item) {
-	        this.activeItem = item;
-	        this.activeLink = item.children[0];
-	        var submenu = item.children[0].nextElementSibling;
-	        if (submenu) {
-	            submenu.style.zIndex = ++domhandler_1.DomHandler.zindex;
-	            if (this.orientation === 'horizontal') {
-	                submenu.style.top = this.domHandler.getOuterHeight(item.children[0]) + 'px';
-	                submenu.style.left = '0px';
-	            }
-	            else if (this.orientation === 'vertical') {
-	                submenu.style.top = '0px';
-	                submenu.style.left = this.domHandler.getOuterWidth(item.children[0]) + 'px';
-	            }
-	        }
-	    };
-	    MegaMenu.prototype.onItemMouseLeave = function (event, link) {
-	        this.activeItem = null;
-	        this.activeLink = null;
-	    };
-	    MegaMenu.prototype.itemClick = function (event, item) {
-	        if (!item.url || item.routerLink) {
-	            event.preventDefault();
-	        }
-	        if (item.command) {
-	            if (!item.eventEmitter) {
-	                item.eventEmitter = new core_1.EventEmitter();
-	                item.eventEmitter.subscribe(item.command);
-	            }
-	            item.eventEmitter.emit(event);
-	        }
-	        if (item.routerLink) {
-	            this.router.navigate(item.routerLink);
-	        }
-	        this.activeItem = null;
-	        this.activeLink = null;
-	    };
-	    MegaMenu.prototype.unsubscribe = function (item) {
-	        if (item.eventEmitter) {
-	            item.eventEmitter.unsubscribe();
-	        }
-	        if (item.items) {
-	            for (var _i = 0, _a = item.items; _i < _a.length; _i++) {
-	                var childItem = _a[_i];
-	                this.unsubscribe(childItem);
-	            }
-	        }
-	    };
-	    MegaMenu.prototype.ngOnDestroy = function () {
-	        if (this.model) {
-	            for (var _i = 0, _a = this.model; _i < _a.length; _i++) {
-	                var item = _a[_i];
-	                this.unsubscribe(item);
-	            }
-	        }
-	    };
-	    MegaMenu.prototype.getColumnClass = function (menuitem) {
-	        var length = menuitem.items ? menuitem.items.length : 0;
-	        var columnClass;
-	        switch (length) {
-	            case 2:
-	                columnClass = 'ui-grid-col-6';
-	                break;
-	            case 3:
-	                columnClass = 'ui-grid-col-4';
-	                break;
-	            case 4:
-	                columnClass = 'ui-grid-col-3';
-	                break;
-	            case 6:
-	                columnClass = 'ui-grid-col-2';
-	                break;
-	            default:
-	                columnClass = 'ui-grid-col-12';
-	                break;
-	        }
-	        return columnClass;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], MegaMenu.prototype, "model", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], MegaMenu.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], MegaMenu.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], MegaMenu.prototype, "orientation", void 0);
-	    MegaMenu = __decorate([
-	        core_1.Component({
-	            selector: 'p-megaMenu',
-	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\"\n            [ngClass]=\"{'ui-menu ui-menubar ui-megamenu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix':true,'ui-megamenu-vertical': orientation == 'vertical'}\">\n            <ul class=\"ui-menu-list ui-helper-reset\">\n                <template ngFor let-category [ngForOf]=\"model\">\n                    <li #item [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':category.items,'ui-menuitem-active':item==activeItem}\"\n                        (mouseenter)=\"onItemMouseEnter($event, item)\" (mouseleave)=\"onItemMouseLeave($event, item)\">\n                        <a #link class=\"ui-menuitem-link ui-corner-all ui-submenu-link\" [ngClass]=\"{'ui-state-hover':link==activeLink}\">\n                            <span class=\"ui-submenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-down':orientation=='horizontal','fa-caret-right':orientation=='vertical'}\"></span>\n                            <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"category.icon\"></span>\n                            {{category.label}}\n                        </a>\n                        <div class=\"ui-megamenu-panel ui-widget-content ui-menu-list ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow\">\n                            <div class=\"ui-grid\">\n                                <div class=\"ui-grid-row\">\n                                    <template ngFor let-column [ngForOf]=\"category.items\">\n                                        <div [class]=\"getColumnClass(category)\">\n                                            <template ngFor let-submenu [ngForOf]=\"column\">\n                                                <ul class=\"ui-menu-list ui-helper-reset\">\n                                                    <li class=\"ui-widget-header ui-corner-all\"><h3>{{submenu.label}}</h3></li>\n                                                    <li *ngFor=\"let item of submenu.items\" class=\"ui-menuitem ui-widget ui-corner-all\">\n                                                        <a #link [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [ngClass]=\"{'ui-state-hover':link==hoveredItem}\"\n                                                            (mouseenter)=\"hoveredItem=$event.target\" (mouseleave)=\"hoveredItem=null\" (click)=\"itemClick($event, item)\">\n                                                            <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"item.icon\" [ngClass]=\"item.icon\"></span>\n                                                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                                                        </a>\n                                                    </li>\n                                                </ul>\n                                            </template>\n                                        </div>\n                                    </template>\n                                </div>\n                            </div>\n                        </div>\n                    </li>\n                </template>\n            </ul>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer, router_1.Router])
-	    ], MegaMenu);
-	    return MegaMenu;
-	}());
-	exports.MegaMenu = MegaMenu;
-	
-
-/***/ },
-/* 1035 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var router_1 = __webpack_require__(7);
-	var Menu = (function () {
-	    function Menu(el, domHandler, renderer, router) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	        this.router = router;
-	    }
-	    Menu.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        this.container = this.el.nativeElement.children[0];
-	        if (this.popup) {
-	            this.documentClickListener = this.renderer.listenGlobal('body', 'click', function () {
-	                if (!_this.preventDocumentDefault) {
-	                    _this.hide();
-	                }
-	                _this.preventDocumentDefault = false;
-	            });
-	        }
-	    };
-	    Menu.prototype.toggle = function (event) {
-	        if (this.container.offsetParent)
-	            this.hide();
-	        else
-	            this.show(event);
-	        this.preventDocumentDefault = true;
-	    };
-	    Menu.prototype.show = function (event) {
-	        this.container.style.display = 'block';
-	        this.domHandler.absolutePosition(this.container, event.target);
-	        this.domHandler.fadeIn(this.container, 250);
-	    };
-	    Menu.prototype.hide = function () {
-	        this.container.style.display = 'none';
-	    };
-	    Menu.prototype.itemClick = function (event, item) {
-	        if (!item.url || item.routerLink) {
-	            event.preventDefault();
-	        }
-	        if (item.command) {
-	            if (!item.eventEmitter) {
-	                item.eventEmitter = new core_1.EventEmitter();
-	                item.eventEmitter.subscribe(item.command);
-	            }
-	            item.eventEmitter.emit(event);
-	        }
-	        if (this.popup) {
-	            this.hide();
-	        }
-	        if (item.routerLink) {
-	            this.router.navigate(item.routerLink);
-	        }
-	    };
-	    Menu.prototype.ngOnDestroy = function () {
-	        if (this.popup) {
-	            this.documentClickListener();
-	        }
-	        if (this.model) {
-	            for (var _i = 0, _a = this.model; _i < _a.length; _i++) {
-	                var item = _a[_i];
-	                this.unsubscribe(item);
-	            }
-	        }
-	    };
-	    Menu.prototype.hasSubMenu = function () {
-	        if (this.model) {
-	            for (var _i = 0, _a = this.model; _i < _a.length; _i++) {
-	                var item = _a[_i];
-	                if (item.items) {
-	                    return true;
-	                }
-	            }
-	        }
-	        return false;
-	    };
-	    Menu.prototype.unsubscribe = function (item) {
-	        if (item.eventEmitter) {
-	            item.eventEmitter.unsubscribe();
-	        }
-	        if (item.items) {
-	            for (var _i = 0, _a = item.items; _i < _a.length; _i++) {
-	                var childItem = _a[_i];
-	                this.unsubscribe(childItem);
-	            }
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Menu.prototype, "model", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Menu.prototype, "popup", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Menu.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Menu.prototype, "styleClass", void 0);
-	    Menu = __decorate([
-	        core_1.Component({
-	            selector: 'p-menu',
-	            template: "\n        <div [ngClass]=\"{'ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix':true,'ui-menu-dynamic ui-shadow':popup}\" \n            [class]=\"styleClass\" [ngStyle]=\"style\" (click)=\"preventDocumentDefault=true\">\n            <ul class=\"ui-menu-list ui-helper-reset\">\n                <template ngFor let-submenu [ngForOf]=\"model\" *ngIf=\"hasSubMenu()\">\n                    <li class=\"ui-widget-header ui-corner-all\"><h3>{{submenu.label}}</h3></li>\n                    <li *ngFor=\"let item of submenu.items\" class=\"ui-menuitem ui-widget ui-corner-all\">\n                        <a #link [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [ngClass]=\"{'ui-state-hover':link==hoveredItem}\"\n                            (mouseenter)=\"hoveredItem=$event.target\" (mouseleave)=\"hoveredItem=null\" (click)=\"itemClick($event, item)\">\n                            <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"item.icon\" [ngClass]=\"item.icon\"></span>\n                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                        </a>\n                    </li>\n                </template>\n                <template ngFor let-item [ngForOf]=\"model\" *ngIf=\"!hasSubMenu()\">\n                    <li class=\"ui-menuitem ui-widget ui-corner-all\">\n                        <a #link [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [ngClass]=\"{'ui-state-hover':link==hoveredItem}\"\n                            (mouseenter)=\"hoveredItem=$event.target\" (mouseleave)=\"hoveredItem=null\" (click)=\"itemClick($event, item)\">\n                            <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"item.icon\" [ngClass]=\"item.icon\"></span>\n                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                        </a>\n                    </li>\n                </template>\n            </ul>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer, router_1.Router])
-	    ], Menu);
-	    return Menu;
-	}());
-	exports.Menu = Menu;
-	
-
-/***/ },
-/* 1036 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var router_1 = __webpack_require__(7);
-	var MenubarSub = (function () {
-	    function MenubarSub(domHandler, router) {
-	        this.domHandler = domHandler;
-	        this.router = router;
-	    }
-	    MenubarSub.prototype.onItemMouseEnter = function (event, item) {
-	        this.activeItem = item;
-	        this.activeLink = item.children[0];
-	        var nextElement = item.children[0].nextElementSibling;
-	        if (nextElement) {
-	            var sublist = nextElement.children[0];
-	            sublist.style.zIndex = ++domhandler_1.DomHandler.zindex;
-	            if (this.root) {
-	                sublist.style.top = this.domHandler.getOuterHeight(item.children[0]) + 'px';
-	                sublist.style.left = '0px';
-	            }
-	            else {
-	                sublist.style.top = '0px';
-	                sublist.style.left = this.domHandler.getOuterWidth(item.children[0]) + 'px';
-	            }
-	        }
-	    };
-	    MenubarSub.prototype.onItemMouseLeave = function (event, link) {
-	        this.activeItem = null;
-	        this.activeLink = null;
-	    };
-	    MenubarSub.prototype.itemClick = function (event, item) {
-	        if (!item.url || item.routerLink) {
-	            event.preventDefault();
-	        }
-	        if (item.command) {
-	            if (!item.eventEmitter) {
-	                item.eventEmitter = new core_1.EventEmitter();
-	                item.eventEmitter.subscribe(item.command);
-	            }
-	            item.eventEmitter.emit(event);
-	        }
-	        if (item.routerLink) {
-	            this.router.navigate(item.routerLink);
-	        }
-	        this.activeItem = null;
-	        this.activeLink = null;
-	    };
-	    MenubarSub.prototype.listClick = function (event) {
-	        this.activeItem = null;
-	        this.activeLink = null;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], MenubarSub.prototype, "item", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], MenubarSub.prototype, "root", void 0);
-	    MenubarSub = __decorate([
-	        core_1.Component({
-	            selector: 'p-menubarSub',
-	            template: "\n        <ul [ngClass]=\"{'ui-helper-reset':root, 'ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow':!root}\" class=\"ui-menu-list\"\n            (click)=\"listClick($event)\">\n            <template ngFor let-child [ngForOf]=\"(root ? item : item.items)\">\n                <li #item [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':child.items,'ui-menuitem-active':item==activeItem}\"\n                    (mouseenter)=\"onItemMouseEnter($event, item)\" (mouseleave)=\"onItemMouseLeave($event, item)\">\n                    <a #link [href]=\"child.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [ngClass]=\"{'ui-state-hover':link==activeLink}\" (click)=\"itemClick($event, child)\">\n                        <span class=\"ui-submenu-icon fa fa-fw\" *ngIf=\"child.items\" [ngClass]=\"{'fa-caret-down':root,'fa-caret-right':!root}\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <p-menubarSub class=\"ui-submenu\" [item]=\"child\" *ngIf=\"child.items\"></p-menubarSub>\n                </li>\n            </template>\n        </ul>\n    ",
-	            directives: [MenubarSub],
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [domhandler_1.DomHandler, router_1.Router])
-	    ], MenubarSub);
-	    return MenubarSub;
-	}());
-	exports.MenubarSub = MenubarSub;
-	var Menubar = (function () {
-	    function Menubar(el, domHandler, renderer) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	    }
-	    Menubar.prototype.unsubscribe = function (item) {
-	        if (item.eventEmitter) {
-	            item.eventEmitter.unsubscribe();
-	        }
-	        if (item.items) {
-	            for (var _i = 0, _a = item.items; _i < _a.length; _i++) {
-	                var childItem = _a[_i];
-	                this.unsubscribe(childItem);
-	            }
-	        }
-	    };
-	    Menubar.prototype.ngOnDestroy = function () {
-	        if (this.model) {
-	            for (var _i = 0, _a = this.model; _i < _a.length; _i++) {
-	                var item = _a[_i];
-	                this.unsubscribe(item);
-	            }
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Menubar.prototype, "model", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Menubar.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Menubar.prototype, "styleClass", void 0);
-	    Menubar = __decorate([
-	        core_1.Component({
-	            selector: 'p-menubar',
-	            template: "\n        <div [ngClass]=\"{'ui-menubar ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix':true}\" \n            [class]=\"styleClass\" [ngStyle]=\"style\">\n            <p-menubarSub [item]=\"model\" root=\"root\"></p-menubarSub>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler],
-	            directives: [MenubarSub]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
-	    ], Menubar);
-	    return Menubar;
-	}());
-	exports.Menubar = Menubar;
-	
-
-/***/ },
-/* 1037 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var Messages = (function () {
-	    function Messages() {
-	        this.closable = true;
-	    }
-	    Messages.prototype.hasMessages = function () {
-	        return this.value && this.value.length > 0;
-	    };
-	    Messages.prototype.getSeverityClass = function () {
-	        return this.value[0].severity;
-	    };
-	    Messages.prototype.clear = function (event) {
-	        this.value.splice(0, this.value.length);
-	        event.preventDefault();
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Messages.prototype, "value", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Messages.prototype, "closable", void 0);
-	    Messages = __decorate([
-	        core_1.Component({
-	            selector: 'p-messages',
-	            template: "\n        <div *ngIf=\"hasMessages()\" class=\"ui-messages ui-widget ui-corner-all\" style=\"display:block\"\n                    [ngClass]=\"{'ui-messages-info':(value[0].severity === 'info'),'ui-messages-warn':(value[0].severity === 'warn'),'ui-messages-error':(value[0].severity === 'error')}\">\n            <a href=\"#\" class=\"ui-messages-close\" (click)=\"clear($event)\" *ngIf=\"closable\">\n                <i class=\"fa fa-close\"></i>\n            </a>\n            <span class=\"ui-messages-icon fa fa-2x fa-info-circle\"></span>\n            <ul>\n                <li *ngFor=\"let msg of value\">\n                    <span class=\"ui-messages-summary\">{{msg.summary}}</span>\n                    <span class=\"ui-messages-detail\">{{msg.detail}}</span>\n                </li>\n            </ul>\n        </div>\n    "
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Messages);
-	    return Messages;
-	}());
-	exports.Messages = Messages;
-	
-
-/***/ },
-/* 1038 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var common_1 = __webpack_require__(8);
-	var MULTISELECT_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return MultiSelect; }),
-	    multi: true
-	});
-	var MultiSelect = (function () {
-	    function MultiSelect(el, domHandler, renderer, differs) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	        this.onChange = new core_1.EventEmitter();
-	        this.scrollHeight = '200px';
-	        this.defaultLabel = 'Choose';
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	        this.differ = differs.find([]).create(null);
-	    }
-	    MultiSelect.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this.updateLabel();
-	        this.documentClickListener = this.renderer.listenGlobal('body', 'click', function () {
-	            if (!_this.selfClick && _this.overlayVisible) {
-	                _this.hide();
-	            }
-	            _this.selfClick = false;
-	            _this.panelClick = false;
-	        });
-	    };
-	    MultiSelect.prototype.ngAfterViewInit = function () {
-	        this.container = this.el.nativeElement.children[0];
-	        this.panel = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-multiselect-panel');
-	        if (this.overlayVisible) {
-	            this.show();
-	        }
-	    };
-	    MultiSelect.prototype.ngAfterViewChecked = function () {
-	        if (this.filtered) {
-	            this.domHandler.relativePosition(this.panel, this.container);
-	            this.filtered = false;
-	        }
-	    };
-	    MultiSelect.prototype.ngDoCheck = function () {
-	        var changes = this.differ.diff(this.value);
-	        if (changes) {
-	            this.updateLabel();
-	        }
-	    };
-	    MultiSelect.prototype.writeValue = function (value) {
-	        this.value = value;
-	    };
-	    MultiSelect.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    MultiSelect.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    MultiSelect.prototype.onItemClick = function (event, value) {
-	        var selectionIndex = this.findSelectionIndex(value);
-	        if (selectionIndex != -1) {
-	            this.value.splice(selectionIndex, 1);
-	        }
-	        else {
-	            this.value = this.value || [];
-	            this.value.push(value);
-	        }
-	        this.onModelChange(this.value);
-	        this.onChange.emit({ originalEvent: event, value: this.value });
-	    };
-	    MultiSelect.prototype.isSelected = function (value) {
-	        return this.findSelectionIndex(value) != -1;
-	    };
-	    MultiSelect.prototype.findSelectionIndex = function (val) {
-	        var index = -1;
-	        if (this.value) {
-	            for (var i = 0; i < this.value.length; i++) {
-	                if (this.value[i] == val) {
-	                    index = i;
-	                    break;
-	                }
-	            }
-	        }
-	        return index;
-	    };
-	    MultiSelect.prototype.toggleAll = function (event, checkbox) {
-	        if (checkbox.checked) {
-	            this.value = [];
-	        }
-	        else {
-	            var opts = this.getVisibleOptions();
-	            if (opts) {
-	                this.value = [];
-	                for (var i = 0; i < opts.length; i++) {
-	                    this.value.push(opts[i].value);
-	                }
-	            }
-	        }
-	        checkbox.checked = !checkbox.checked;
-	        this.onModelChange(this.value);
-	        this.onChange.emit({ originalEvent: event, value: this.value });
-	    };
-	    MultiSelect.prototype.isAllChecked = function () {
-	        if (this.filterValue && this.filterValue.trim().length)
-	            return this.value && this.visibleOptions && (this.value.length == this.visibleOptions.length);
-	        else
-	            return this.value && this.options && (this.value.length == this.options.length);
-	    };
-	    MultiSelect.prototype.show = function () {
-	        this.overlayVisible = true;
-	        this.panel.style.zIndex = ++domhandler_1.DomHandler.zindex;
-	        this.domHandler.relativePosition(this.panel, this.container);
-	        this.domHandler.fadeIn(this.panel, 250);
-	    };
-	    MultiSelect.prototype.hide = function () {
-	        this.overlayVisible = false;
-	    };
-	    MultiSelect.prototype.close = function (event) {
-	        this.hide();
-	        event.preventDefault();
-	    };
-	    MultiSelect.prototype.onMouseenter = function (event) {
-	        if (!this.disabled) {
-	            this.hover = true;
-	        }
-	    };
-	    MultiSelect.prototype.onMouseleave = function (event) {
-	        this.hover = false;
-	    };
-	    MultiSelect.prototype.onMouseclick = function (event, input) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        if (!this.panelClick) {
-	            if (this.overlayVisible) {
-	                this.hide();
-	            }
-	            else {
-	                input.focus();
-	                this.show();
-	            }
-	        }
-	        this.selfClick = true;
-	    };
-	    MultiSelect.prototype.onFocus = function (event) {
-	        this.focus = true;
-	    };
-	    MultiSelect.prototype.onBlur = function (event) {
-	        this.focus = false;
-	        this.onModelTouched();
-	    };
-	    MultiSelect.prototype.updateLabel = function () {
-	        if (this.value && this.value.length) {
-	            var label = '';
-	            for (var i = 0; i < this.value.length; i++) {
-	                if (i != 0) {
-	                    label = label + ',';
-	                }
-	                label = label + this.findLabelByValue(this.value[i]);
-	            }
-	            this.valuesAsString = label;
-	        }
-	        else {
-	            this.valuesAsString = this.defaultLabel;
-	        }
-	    };
-	    MultiSelect.prototype.findLabelByValue = function (val) {
-	        var label = null;
-	        for (var i = 0; i < this.options.length; i++) {
-	            var option = this.options[i];
-	            if (option.value == val) {
-	                label = option.label;
-	                break;
-	            }
-	        }
-	        return label;
-	    };
-	    MultiSelect.prototype.onFilter = function (event) {
-	        this.filterValue = event.target.value.trim().toLowerCase();
-	        this.visibleOptions = [];
-	        for (var i = 0; i < this.options.length; i++) {
-	            var option = this.options[i];
-	            if (option.label.toLowerCase().startsWith(this.filterValue.toLowerCase())) {
-	                this.visibleOptions.push(option);
-	            }
-	        }
-	        this.filtered = true;
-	    };
-	    MultiSelect.prototype.isItemVisible = function (option) {
-	        if (this.filterValue && this.filterValue.trim().length) {
-	            for (var i = 0; i < this.visibleOptions.length; i++) {
-	                if (this.visibleOptions[i].value == option.value) {
-	                    return true;
-	                }
-	            }
-	        }
-	        else {
-	            return true;
-	        }
-	    };
-	    MultiSelect.prototype.getVisibleOptions = function () {
-	        if (this.filterValue && this.filterValue.trim().length) {
-	            var items = [];
-	            for (var i = 0; i < this.options.length; i++) {
-	                var option = this.options[i];
-	                if (option.label.toLowerCase().startsWith(this.filterValue.toLowerCase())) {
-	                    items.push(option);
-	                }
-	            }
-	            return items;
-	        }
-	        else {
-	            return this.options;
-	        }
-	    };
-	    MultiSelect.prototype.ngOnDestroy = function () {
-	        this.documentClickListener();
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], MultiSelect.prototype, "options", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], MultiSelect.prototype, "onChange", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], MultiSelect.prototype, "scrollHeight", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], MultiSelect.prototype, "defaultLabel", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], MultiSelect.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], MultiSelect.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], MultiSelect.prototype, "disabled", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], MultiSelect.prototype, "overlayVisible", void 0);
-	    MultiSelect = __decorate([
-	        core_1.Component({
-	            selector: 'p-multiSelect',
-	            template: "\n        <div [ngClass]=\"{'ui-multiselect ui-widget ui-state-default ui-corner-all':true,'ui-state-focus': focus,'ui-state-disabled': disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\"\n            (mouseenter)=\"onMouseenter($event)\" (mouseleave)=\"onMouseleave($event)\" (click)=\"onMouseclick($event,in)\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in type=\"text\" readonly=\"readonly\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\">\n            </div>\n            <div class=\"ui-multiselect-label-container\" [title]=\"valuesAsString\">\n                <label [ngClass]=\"{'ui-multiselect-label ui-corner-all':true,'ui-state-hover':hover,'ui-state-focus':focus}\">{{valuesAsString}}</label>\n            </div>\n            <div [ngClass]=\"{'ui-multiselect-trigger ui-state-default ui-corner-right':true,'ui-state-hover':hover,'ui-state-focus':focus}\">\n                <span class=\"fa fa-fw fa-caret-down\"></span>\n            </div>\n            <div class=\"ui-multiselect-panel ui-widget ui-widget-content ui-corner-all ui-shadow\" [style.display]=\"overlayVisible ? 'block' : 'none'\" (click)=\"panelClick=true\">\n                <div class=\"ui-widget-header ui-corner-all ui-multiselect-header ui-helper-clearfix\">\n                    <div class=\"ui-chkbox ui-widget\">\n                        <div class=\"ui-helper-hidden-accessible\">\n                            <input #cb type=\"checkbox\" readonly=\"readonly\" [checked]=\"isAllChecked()\">\n                        </div>\n                        <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" [ngClass]=\"{'ui-state-hover':hoverToggleAll}\"\n                            (mouseenter)=\"hoverToggleAll=true\" (mouseleave)=\"hoverToggleAll=false\" (click)=\"toggleAll($event,cb)\">\n                            <span class=\"ui-chkbox-icon ui-c\" [ngClass]=\"{'fa fa-fw fa-check':isAllChecked()}\"></span>\n                        </div>\n                    </div>\n                    <div class=\"ui-multiselect-filter-container\">\n                        <input type=\"text\" role=\"textbox\" (input)=\"onFilter($event)\"\n                                    class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\">\n                        <span class=\"fa fa-fw fa-search\"></span>\n                    </div>\n                    <a class=\"ui-multiselect-close ui-corner-all\" href=\"#\" (click)=\"close($event)\">\n                        <span class=\"fa fa-close\"></span>\n                    </a>\n                </div>\n                <div class=\"ui-multiselect-items-wrapper\">\n                    <ul class=\"ui-multiselect-items ui-multiselect-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" [style.max-height]=\"scrollHeight||'auto'\">\n                        <li #item *ngFor=\"let option of options\" class=\"ui-multiselect-item ui-corner-all\" (click)=\"onItemClick($event,option.value)\" \n                            [style.display]=\"isItemVisible(option) ? 'block' : 'none'\"\n                            [ngClass]=\"{'ui-state-highlight':isSelected(option.value),'ui-state-hover':hoveredItem==item}\" (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\">\n                            <div class=\"ui-chkbox ui-widget\">\n                                <div class=\"ui-helper-hidden-accessible\">\n                                    <input type=\"checkbox\" readonly=\"readonly\" [checked]=\"isSelected(option.value)\">\n                                </div>\n                                <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" [ngClass]=\"{'ui-state-active':isSelected(option.value)}\">\n                                    <span class=\"ui-chkbox-icon ui-c\" [ngClass]=\"{'fa fa-fw fa-check':isSelected(option.value)}\"></span>\n                                </div>\n                            </div>\n                            <label>{{option.label}}</label>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler, MULTISELECT_VALUE_ACCESSOR]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer, core_1.IterableDiffers])
-	    ], MultiSelect);
-	    return MultiSelect;
-	}());
-	exports.MultiSelect = MultiSelect;
-	
-
-/***/ },
-/* 1039 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var button_1 = __webpack_require__(142);
-	var domhandler_1 = __webpack_require__(11);
-	var OrderList = (function () {
-	    function OrderList(el, domHandler) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.onReorder = new core_1.EventEmitter();
-	    }
-	    OrderList.prototype.onMouseover = function (event) {
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.addClass(item, 'ui-state-hover');
-	        }
-	    };
-	    OrderList.prototype.onMouseout = function (event) {
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.removeClass(item, 'ui-state-hover');
-	        }
-	    };
-	    OrderList.prototype.onClick = function (event) {
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.onItemClick(event, item);
-	        }
-	    };
-	    OrderList.prototype.findListItem = function (element) {
-	        if (element.nodeName == 'LI') {
-	            return element;
-	        }
-	        else {
-	            var parent_1 = element.parentElement;
-	            while (parent_1.nodeName != 'LI') {
-	                parent_1 = parent_1.parentElement;
-	            }
-	            return parent_1;
-	        }
-	    };
-	    OrderList.prototype.onItemClick = function (event, item) {
-	        var metaKey = (event.metaKey || event.ctrlKey);
-	        if (this.domHandler.hasClass(item, 'ui-state-highlight')) {
-	            if (metaKey) {
-	                this.domHandler.removeClass(item, 'ui-state-highlight');
-	            }
-	        }
-	        else {
-	            if (!metaKey) {
-	                var siblings = this.domHandler.siblings(item);
-	                for (var i = 0; i < siblings.length; i++) {
-	                    var sibling = siblings[i];
-	                    if (this.domHandler.hasClass(sibling, 'ui-state-highlight')) {
-	                        this.domHandler.removeClass(sibling, 'ui-state-highlight');
-	                    }
-	                }
-	            }
-	            this.domHandler.removeClass(item, 'ui-state-hover');
-	            this.domHandler.addClass(item, 'ui-state-highlight');
-	        }
-	    };
-	    OrderList.prototype.moveUp = function (event, listElement) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        if (selectedElements.length) {
-	            for (var i = 0; i < selectedElements.length; i++) {
-	                var selectedElement = selectedElements[i];
-	                var selectedElementIndex = this.domHandler.index(selectedElement);
-	                if (selectedElementIndex != 0) {
-	                    var movedItem = this.value[selectedElementIndex];
-	                    var temp = this.value[selectedElementIndex - 1];
-	                    this.value[selectedElementIndex - 1] = movedItem;
-	                    this.value[selectedElementIndex] = temp;
-	                    this.domHandler.scrollInView(listElement, listElement.children[selectedElementIndex - 1]);
-	                }
-	                else {
-	                    break;
-	                }
-	            }
-	            this.onReorder.emit(event);
-	        }
-	    };
-	    OrderList.prototype.moveTop = function (event, listElement) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        if (selectedElements.length) {
-	            for (var i = 0; i < selectedElements.length; i++) {
-	                var selectedElement = selectedElements[i];
-	                var selectedElementIndex = this.domHandler.index(selectedElement);
-	                if (selectedElementIndex != 0) {
-	                    var movedItem = this.value.splice(selectedElementIndex, 1)[0];
-	                    this.value.unshift(movedItem);
-	                    listElement.scrollTop = 0;
-	                }
-	                else {
-	                    break;
-	                }
-	            }
-	            this.onReorder.emit(event);
-	        }
-	    };
-	    OrderList.prototype.moveDown = function (event, listElement) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        if (selectedElements.length) {
-	            for (var i = selectedElements.length - 1; i >= 0; i--) {
-	                var selectedElement = selectedElements[i];
-	                var selectedElementIndex = this.domHandler.index(selectedElement);
-	                if (selectedElementIndex != (this.value.length - 1)) {
-	                    var movedItem = this.value[selectedElementIndex];
-	                    var temp = this.value[selectedElementIndex + 1];
-	                    this.value[selectedElementIndex + 1] = movedItem;
-	                    this.value[selectedElementIndex] = temp;
-	                    this.domHandler.scrollInView(listElement, listElement.children[selectedElementIndex + 1]);
-	                }
-	                else {
-	                    break;
-	                }
-	            }
-	            this.onReorder.emit(event);
-	        }
-	    };
-	    OrderList.prototype.moveBottom = function (event, listElement) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        if (selectedElements.length) {
-	            for (var i = selectedElements.length - 1; i >= 0; i--) {
-	                var selectedElement = selectedElements[i];
-	                var selectedElementIndex = this.domHandler.index(selectedElement);
-	                if (selectedElementIndex != (this.value.length - 1)) {
-	                    var movedItem = this.value.splice(selectedElementIndex, 1)[0];
-	                    this.value.push(movedItem);
-	                    listElement.scrollTop = listElement.scrollHeight;
-	                }
-	                else {
-	                    break;
-	                }
-	            }
-	            this.onReorder.emit(event);
-	        }
-	    };
-	    OrderList.prototype.getSelectedListElements = function (listElement) {
-	        return this.domHandler.find(listElement, 'li.ui-state-highlight');
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], OrderList.prototype, "value", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], OrderList.prototype, "header", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], OrderList.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], OrderList.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], OrderList.prototype, "listStyle", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], OrderList.prototype, "responsive", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], OrderList.prototype, "onReorder", void 0);
-	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef), 
-	        __metadata('design:type', core_1.TemplateRef)
-	    ], OrderList.prototype, "itemTemplate", void 0);
-	    OrderList = __decorate([
-	        core_1.Component({
-	            selector: 'p-orderList',
-	            template: "\n        <div [ngClass]=\"{'ui-orderlist ui-grid ui-widget':true,'ui-grid-responsive':responsive}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-grid-row\">\n                <div class=\"ui-orderlist-controls ui-grid-col-2\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom($event,listelement)\"></button>\n                </div>\n                <div class=\"ui-grid-col-10\">\n                    <div class=\"ui-orderlist-caption ui-widget-header ui-corner-top\" *ngIf=\"header\">{{header}}</div>\n                    <ul #listelement class=\"ui-widget-content ui-orderlist-list ui-corner-bottom\" [ngStyle]=\"listStyle\" \n                        (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                        <template ngFor [ngForOf]=\"value\" [ngForTemplate]=\"itemTemplate\"></template>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
-	            directives: [button_1.Button],
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
-	    ], OrderList);
-	    return OrderList;
-	}());
-	exports.OrderList = OrderList;
-	
-
-/***/ },
-/* 1040 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var OverlayPanel = (function () {
-	    function OverlayPanel(el, domHandler, renderer) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	        this.dismissable = true;
-	        this.onBeforeShow = new core_1.EventEmitter();
-	        this.onAfterShow = new core_1.EventEmitter();
-	        this.onBeforeHide = new core_1.EventEmitter();
-	        this.onAfterHide = new core_1.EventEmitter();
-	        this.visible = false;
-	    }
-	    OverlayPanel.prototype.ngOnInit = function () {
-	        var _this = this;
-	        if (this.dismissable) {
-	            this.documentClickListener = this.renderer.listenGlobal('body', 'click', function () {
-	                if (!_this.selfClick && !_this.targetEvent) {
-	                    _this.hide();
-	                }
-	                _this.selfClick = false;
-	                _this.targetEvent = false;
-	            });
-	        }
-	    };
-	    OverlayPanel.prototype.toggle = function (event, target) {
-	        var currentTarget = (target || event.currentTarget || event.target);
-	        if (!this.target || this.target == currentTarget) {
-	            if (this.visible)
-	                this.hide();
-	            else
-	                this.show(event, target);
-	        }
-	        else {
-	            this.show(event, target);
-	        }
-	        if (this.dismissable) {
-	            this.targetEvent = true;
-	        }
-	        this.target = currentTarget;
-	    };
-	    OverlayPanel.prototype.show = function (event, target) {
-	        if (this.dismissable) {
-	            this.targetEvent = true;
-	        }
-	        this.onBeforeShow.emit(null);
-	        var elementTarget = target || event.currentTarget || event.target;
-	        var container = this.el.nativeElement.children[0];
-	        container.style.zIndex = ++domhandler_1.DomHandler.zindex;
-	        if (this.visible) {
-	            this.domHandler.absolutePosition(container, elementTarget);
-	        }
-	        else {
-	            this.visible = true;
-	            this.domHandler.absolutePosition(container, elementTarget);
-	            this.domHandler.fadeIn(container, 250);
-	        }
-	        this.onAfterShow.emit(null);
-	    };
-	    OverlayPanel.prototype.hide = function () {
-	        if (this.visible) {
-	            this.onBeforeHide.emit(null);
-	            this.visible = false;
-	            this.onAfterHide.emit(null);
-	        }
-	    };
-	    OverlayPanel.prototype.onPanelClick = function () {
-	        if (this.dismissable) {
-	            this.selfClick = true;
-	        }
-	    };
-	    OverlayPanel.prototype.onCloseClick = function (event) {
-	        this.hide();
-	        if (this.dismissable) {
-	            this.selfClick = true;
-	        }
-	        event.preventDefault();
-	    };
-	    OverlayPanel.prototype.ngOnDestroy = function () {
-	        if (this.documentClickListener) {
-	            this.documentClickListener();
-	        }
-	        this.target = null;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], OverlayPanel.prototype, "dismissable", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], OverlayPanel.prototype, "showCloseIcon", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], OverlayPanel.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], OverlayPanel.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], OverlayPanel.prototype, "onBeforeShow", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], OverlayPanel.prototype, "onAfterShow", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], OverlayPanel.prototype, "onBeforeHide", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], OverlayPanel.prototype, "onAfterHide", void 0);
-	    OverlayPanel = __decorate([
-	        core_1.Component({
-	            selector: 'p-overlayPanel',
-	            template: "\n        <div [ngClass]=\"'ui-overlaypanel ui-widget ui-widget-content ui-corner-all ui-shadow'\" [ngStyle]=\"style\" [class]=\"styleClass\"\n            [style.display]=\"visible ? 'block' : 'none'\" (click)=\"onPanelClick()\">\n            <div class=\"ui-overlaypanel-content\">\n                <ng-content></ng-content>\n            </div>\n            <a href=\"#\" *ngIf=\"showCloseIcon\" class=\"ui-overlaypanel-close ui-state-default\" [ngClass]=\"{'ui-state-hover':hoverCloseIcon}\"\n                (mouseenter)=\"hoverCloseIcon=true\" (mouseleave)=\"hoverCloseIcon=false\" (click)=\"onCloseClick($event)\"><span class=\"fa fa-fw fa-close\"></span></a>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
-	    ], OverlayPanel);
-	    return OverlayPanel;
-	}());
-	exports.OverlayPanel = OverlayPanel;
-	
-
-/***/ },
-/* 1041 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var Panel = (function () {
-	    function Panel() {
-	        this.collapsed = false;
-	        this.onBeforeToggle = new core_1.EventEmitter();
-	        this.onAfterToggle = new core_1.EventEmitter();
-	    }
-	    Panel.prototype.toggle = function (event) {
-	        this.onBeforeToggle.emit({ originalEvent: event, collapsed: this.collapsed });
-	        if (this.toggleable) {
-	            if (this.collapsed)
-	                this.expand(event);
-	            else
-	                this.collapse(event);
-	        }
-	        this.onAfterToggle.emit({ originalEvent: event, collapsed: this.collapsed });
-	        event.preventDefault();
-	    };
-	    Panel.prototype.expand = function (event) {
-	        this.collapsed = false;
-	    };
-	    Panel.prototype.collapse = function (event) {
-	        this.collapsed = true;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Panel.prototype, "toggleable", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Panel.prototype, "header", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Panel.prototype, "collapsed", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Panel.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Panel.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Panel.prototype, "onBeforeToggle", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Panel.prototype, "onAfterToggle", void 0);
-	    Panel = __decorate([
-	        core_1.Component({
-	            selector: 'p-panel',
-	            template: "\n        <div [ngClass]=\"'ui-panel ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all\">\n                <span class=\"ui-panel-title\" *ngIf=\"header\">{{header}}</span>\n                <ng-content select=\"header\"></ng-content>\n                <a *ngIf=\"toggleable\" class=\"ui-panel-titlebar-icon ui-panel-titlebar-toggler ui-corner-all ui-state-default\" href=\"#\"\n                    [ngClass]=\"{'ui-state-hover':hoverToggler}\" (mouseenter)=\"hoverToggler=true\" (mouseleave)=\"hoverToggler=false\" (click)=\"toggle($event)\">\n                    <span class=\"fa fa-fw\" [ngClass]=\"{'fa-minus': !collapsed,'fa-plus':collapsed}\"></span>\n                </a>\n            </div>\n            <div class=\"ui-panel-content ui-widget-content\" [style.display]=\"collapsed ? 'none' : 'block'\">\n                <ng-content></ng-content>\n            </div>\n        </div>\n    "
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Panel);
-	    return Panel;
-	}());
-	exports.Panel = Panel;
-	
-
-/***/ },
-/* 1042 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var PanelMenuSub = (function () {
-	    function PanelMenuSub(router) {
-	        this.router = router;
-	        this.activeItems = [];
-	    }
-	    PanelMenuSub.prototype.onClick = function (event, item) {
-	        if (item.items) {
-	            var index = this.activeItems.indexOf(item);
-	            if (index == -1)
-	                this.activeItems.push(item);
-	            else
-	                this.activeItems.splice(index, 1);
-	            event.preventDefault();
-	        }
-	        else {
-	            if (!item.url || item.routerLink) {
-	                event.preventDefault();
-	            }
-	            if (item.command) {
-	                if (!item.eventEmitter) {
-	                    item.eventEmitter = new core_1.EventEmitter();
-	                    item.eventEmitter.subscribe(item.command);
-	                }
-	                item.eventEmitter.emit(event);
-	            }
-	            if (item.routerLink) {
-	                this.router.navigate(item.routerLink);
-	            }
-	        }
-	    };
-	    PanelMenuSub.prototype.isActive = function (item) {
-	        return this.activeItems.indexOf(item) != -1;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], PanelMenuSub.prototype, "item", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], PanelMenuSub.prototype, "expanded", void 0);
-	    PanelMenuSub = __decorate([
-	        core_1.Component({
-	            selector: 'p-panelMenuSub',
-	            template: "\n        <ul class=\"ui-menu-list ui-helper-reset\" [style.display]=\"expanded ? 'block' : 'none'\">\n            <li *ngFor=\"let child of item.items\" class=\"ui-menuitem ui-corner-all\" [ngClass]=\"{'ui-menu-parent':child.items}\">\n                <a #link [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" \n                    [ngClass]=\"{'ui-menuitem-link-hasicon':child.icon&&child.items,'ui-state-hover':(hoveredLink==link)}\" (click)=\"onClick($event,child)\"\n                    (mouseenter)=\"hoveredLink=link\" (mouseleave)=\"hoveredLink=null\">\n                    <span class=\"ui-panelmenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-right':!isActive(child),'fa-caret-down':isActive(child)}\" *ngIf=\"child.items\"></span>\n                    <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"child.icon\" *ngIf=\"child.icon\"></span>\n                    <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                </a>\n                <p-panelMenuSub [item]=\"child\" [expanded]=\"isActive(child)\" *ngIf=\"child.items\"></p-panelMenuSub>\n            </li>\n        </ul>\n    ",
-	            directives: [PanelMenuSub]
-	        }), 
-	        __metadata('design:paramtypes', [router_1.Router])
-	    ], PanelMenuSub);
-	    return PanelMenuSub;
-	}());
-	exports.PanelMenuSub = PanelMenuSub;
-	var PanelMenu = (function () {
-	    function PanelMenu(el) {
-	        this.el = el;
-	        this.activeItems = [];
-	    }
-	    PanelMenu.prototype.headerClick = function (event, item) {
-	        var index = this.activeItems.indexOf(item);
-	        if (index == -1)
-	            this.activeItems.push(item);
-	        else
-	            this.activeItems.splice(index, 1);
-	        event.preventDefault();
-	    };
-	    PanelMenu.prototype.unsubscribe = function (item) {
-	        if (item.eventEmitter) {
-	            item.eventEmitter.unsubscribe();
-	        }
-	        if (item.items) {
-	            for (var _i = 0, _a = item.items; _i < _a.length; _i++) {
-	                var childItem = _a[_i];
-	                this.unsubscribe(childItem);
-	            }
-	        }
-	    };
-	    PanelMenu.prototype.isActive = function (item) {
-	        return this.activeItems.indexOf(item) != -1;
-	    };
-	    PanelMenu.prototype.ngOnDestroy = function () {
-	        if (this.model) {
-	            for (var _i = 0, _a = this.model; _i < _a.length; _i++) {
-	                var item = _a[_i];
-	                this.unsubscribe(item);
-	            }
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], PanelMenu.prototype, "model", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], PanelMenu.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], PanelMenu.prototype, "styleClass", void 0);
-	    PanelMenu = __decorate([
-	        core_1.Component({
-	            selector: 'p-panelMenu',
-	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"'ui-panelmenu ui-widget'\">\n            <div *ngFor=\"let item of model\" class=\"ui-menuitem-panel\">\n                <div tabindex=\"0\" [ngClass]=\"{'ui-widget ui-panelmenu-header ui-state-default':true,'ui-corner-all':!isActive(item),\n                    'ui-state-active ui-corner-top':isActive(item),'ui-state-hover':(item == hoveredItem)}\">\n                    <span class=\"ui-panelmenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-right':!isActive(item),'fa-caret-down':isActive(item)}\"></span>\n                    <a [href]=\"item.url||'#'\" [ngClass]=\"{'ui-panelmenu-headerlink-hasicon':item.icon}\" (click)=\"headerClick($event,item)\"\n                        (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\">\n                        <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"item.icon\" *ngIf=\"item.icon\"></span>\n                        <span>{{item.label}}</span>\n                    </a>\n                </div>\n                <div class=\"ui-panelmenu-content ui-widget-content\" [style.display]=\"isActive(item) ? 'block' : 'none'\">\n                    <p-panelMenuSub [item]=\"item\" [expanded]=\"true\"></p-panelMenuSub>\n                </div>\n            </div>\n        </div>\n    ",
-	            directives: [PanelMenuSub]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef])
-	    ], PanelMenu);
-	    return PanelMenu;
-	}());
-	exports.PanelMenu = PanelMenu;
-	
-
-/***/ },
-/* 1043 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var Password = (function () {
-	    function Password(el, domHandler) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.promptLabel = 'Please enter a password';
-	        this.weakLabel = 'Weak';
-	        this.mediumLabel = 'Medium';
-	        this.strongLabel = 'Strong';
-	    }
-	    Password.prototype.ngAfterViewInit = function () {
-	        this.panel = document.createElement('div');
-	        this.panel.className = 'ui-password-panel ui-widget ui-state-highlight ui-corner-all ui-helper-hidden ui-password-panel-overlay';
-	        this.meter = document.createElement('div');
-	        this.meter.className = 'ui-password-meter';
-	        this.info = document.createElement('div');
-	        this.info.className = 'ui-password-info';
-	        this.info.textContent = this.promptLabel;
-	        this.panel.appendChild(this.meter);
-	        this.panel.appendChild(this.info);
-	        document.body.appendChild(this.panel);
-	    };
-	    Password.prototype.onMouseover = function (e) {
-	        this.hover = true;
-	    };
-	    Password.prototype.onMouseout = function (e) {
-	        this.hover = false;
-	    };
-	    Password.prototype.onFocus = function (e) {
-	        this.focus = true;
-	        this.domHandler.removeClass(this.panel, 'ui-helper-hidden');
-	        this.domHandler.absolutePosition(this.panel, this.el.nativeElement);
-	        this.domHandler.fadeIn(this.panel, 250);
-	    };
-	    Password.prototype.onBlur = function (e) {
-	        this.focus = false;
-	        this.domHandler.addClass(this.panel, 'ui-helper-hidden');
-	    };
-	    Password.prototype.onKeyup = function (e) {
-	        var value = e.target.value, label = null, meterPos = null;
-	        if (value.length === 0) {
-	            label = this.promptLabel;
-	            meterPos = '0px 0px';
-	        }
-	        else {
-	            var score = this.testStrength(value);
-	            if (score < 30) {
-	                label = this.weakLabel;
-	                meterPos = '0px -10px';
-	            }
-	            else if (score >= 30 && score < 80) {
-	                label = this.mediumLabel;
-	                meterPos = '0px -20px';
-	            }
-	            else if (score >= 80) {
-	                label = this.strongLabel;
-	                meterPos = '0px -30px';
-	            }
-	        }
-	        this.meter.style.backgroundPosition = meterPos;
-	        this.info.textContent = label;
-	    };
-	    Password.prototype.testStrength = function (str) {
-	        var grade = 0;
-	        var val;
-	        val = str.match('[0-9]');
-	        grade += this.normalize(val ? val.length : 1 / 4, 1) * 25;
-	        val = str.match('[a-zA-Z]');
-	        grade += this.normalize(val ? val.length : 1 / 2, 3) * 10;
-	        val = str.match('[!@#$%^&*?_~.,;=]');
-	        grade += this.normalize(val ? val.length : 1 / 6, 1) * 35;
-	        val = str.match('[A-Z]');
-	        grade += this.normalize(val ? val.length : 1 / 6, 1) * 30;
-	        grade *= str.length / 8;
-	        return grade > 100 ? 100 : grade;
-	    };
-	    Password.prototype.normalize = function (x, y) {
-	        var diff = x - y;
-	        if (diff <= 0)
-	            return x / y;
-	        else
-	            return 1 + 0.5 * (x / (x + y / 4));
-	    };
-	    Password.prototype.isDisabled = function () {
-	        return this.el.nativeElement.disabled;
-	    };
-	    Password.prototype.ngOnDestroy = function () {
-	        this.panel.removeChild(this.meter);
-	        this.panel.removeChild(this.info);
-	        document.body.removeChild(this.panel);
-	        this.panel = null;
-	        this.meter = null;
-	        this.info = null;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Password.prototype, "promptLabel", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Password.prototype, "weakLabel", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Password.prototype, "mediumLabel", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Password.prototype, "strongLabel", void 0);
-	    __decorate([
-	        core_1.HostListener('mouseover', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Password.prototype, "onMouseover", null);
-	    __decorate([
-	        core_1.HostListener('mouseout', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Password.prototype, "onMouseout", null);
-	    __decorate([
-	        core_1.HostListener('focus', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Password.prototype, "onFocus", null);
-	    __decorate([
-	        core_1.HostListener('blur', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Password.prototype, "onBlur", null);
-	    __decorate([
-	        core_1.HostListener('keyup', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Password.prototype, "onKeyup", null);
-	    Password = __decorate([
-	        core_1.Directive({
-	            selector: '[pPassword]',
-	            host: {
-	                '[class.ui-inputtext]': 'true',
-	                '[class.ui-corner-all]': 'true',
-	                '[class.ui-state-default]': 'true',
-	                '[class.ui-widget]': 'true',
-	                '[class.ui-state-hover]': 'hover',
-	                '[class.ui-state-focus]': 'focus',
-	                '[class.ui-state-disabled]': 'isDisabled()'
-	            },
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
-	    ], Password);
-	    return Password;
-	}());
-	exports.Password = Password;
-	
-
-/***/ },
-/* 1044 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var button_1 = __webpack_require__(142);
-	var domhandler_1 = __webpack_require__(11);
-	var PickList = (function () {
-	    function PickList(el, domHandler) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	    }
-	    PickList.prototype.onMouseover = function (event) {
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.addClass(item, 'ui-state-hover');
-	        }
-	    };
-	    PickList.prototype.onMouseout = function (event) {
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.removeClass(item, 'ui-state-hover');
-	        }
-	    };
-	    PickList.prototype.onClick = function (event) {
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.onItemClick(event, item);
-	        }
-	    };
-	    PickList.prototype.findListItem = function (element) {
-	        if (element.nodeName == 'LI') {
-	            return element;
-	        }
-	        else {
-	            var parent_1 = element.parentElement;
-	            while (parent_1.nodeName != 'LI') {
-	                parent_1 = parent_1.parentElement;
-	            }
-	            return parent_1;
-	        }
-	    };
-	    PickList.prototype.onItemClick = function (event, item) {
-	        var metaKey = (event.metaKey || event.ctrlKey);
-	        if (this.domHandler.hasClass(item, 'ui-state-highlight')) {
-	            if (metaKey) {
-	                this.domHandler.removeClass(item, 'ui-state-highlight');
-	            }
-	        }
-	        else {
-	            if (!metaKey) {
-	                var siblings = this.domHandler.siblings(item);
-	                for (var i = 0; i < siblings.length; i++) {
-	                    var sibling = siblings[i];
-	                    if (this.domHandler.hasClass(sibling, 'ui-state-highlight')) {
-	                        this.domHandler.removeClass(sibling, 'ui-state-highlight');
-	                    }
-	                }
-	            }
-	            this.domHandler.removeClass(item, 'ui-state-hover');
-	            this.domHandler.addClass(item, 'ui-state-highlight');
-	        }
-	    };
-	    PickList.prototype.moveUp = function (listElement, list) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        for (var i = 0; i < selectedElements.length; i++) {
-	            var selectedElement = selectedElements[i];
-	            var selectedElementIndex = this.domHandler.index(selectedElement);
-	            if (selectedElementIndex != 0) {
-	                var movedItem = list[selectedElementIndex];
-	                var temp = list[selectedElementIndex - 1];
-	                list[selectedElementIndex - 1] = movedItem;
-	                list[selectedElementIndex] = temp;
-	                this.domHandler.scrollInView(listElement, this.getListElements(listElement)[selectedElementIndex - 1]);
-	            }
-	            else {
-	                break;
-	            }
-	        }
-	    };
-	    PickList.prototype.moveTop = function (listElement, list) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        for (var i = 0; i < selectedElements.length; i++) {
-	            var selectedElement = selectedElements[i];
-	            var selectedElementIndex = this.domHandler.index(selectedElement);
-	            if (selectedElementIndex != 0) {
-	                var movedItem = list.splice(selectedElementIndex, 1)[0];
-	                list.unshift(movedItem);
-	                listElement.scrollTop = 0;
-	            }
-	            else {
-	                break;
-	            }
-	        }
-	    };
-	    PickList.prototype.moveDown = function (listElement, list) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        for (var i = selectedElements.length - 1; i >= 0; i--) {
-	            var selectedElement = selectedElements[i];
-	            var selectedElementIndex = this.domHandler.index(selectedElement);
-	            if (selectedElementIndex != (list.length - 1)) {
-	                var movedItem = list[selectedElementIndex];
-	                var temp = list[selectedElementIndex + 1];
-	                list[selectedElementIndex + 1] = movedItem;
-	                list[selectedElementIndex] = temp;
-	                this.domHandler.scrollInView(listElement, this.getListElements(listElement)[selectedElementIndex + 1]);
-	            }
-	            else {
-	                break;
-	            }
-	        }
-	    };
-	    PickList.prototype.moveBottom = function (listElement, list) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        for (var i = selectedElements.length - 1; i >= 0; i--) {
-	            var selectedElement = selectedElements[i];
-	            var selectedElementIndex = this.domHandler.index(selectedElement);
-	            if (selectedElementIndex != (list.length - 1)) {
-	                var movedItem = list.splice(selectedElementIndex, 1)[0];
-	                list.push(movedItem);
-	                listElement.scrollTop = listElement.scrollHeight;
-	            }
-	            else {
-	                break;
-	            }
-	        }
-	    };
-	    PickList.prototype.moveRight = function (sourceListElement) {
-	        var selectedElements = this.getSelectedListElements(sourceListElement);
-	        var i = selectedElements.length;
-	        while (i--) {
-	            this.target.push(this.source.splice(this.domHandler.index(selectedElements[i]), 1)[0]);
-	        }
-	    };
-	    PickList.prototype.moveAllRight = function () {
-	        for (var i = 0; i < this.source.length; i++) {
-	            this.target.push(this.source[i]);
-	        }
-	        this.source.splice(0, this.source.length);
-	    };
-	    PickList.prototype.moveLeft = function (targetListElement) {
-	        var selectedElements = this.getSelectedListElements(targetListElement);
-	        var i = selectedElements.length;
-	        while (i--) {
-	            this.source.push(this.target.splice(this.domHandler.index(selectedElements[i]), 1)[0]);
-	        }
-	    };
-	    PickList.prototype.moveAllLeft = function () {
-	        for (var i = 0; i < this.target.length; i++) {
-	            this.source.push(this.target[i]);
-	        }
-	        this.target.splice(0, this.target.length);
-	    };
-	    PickList.prototype.getListElements = function (listElement) {
-	        return listElement.children;
-	    };
-	    PickList.prototype.getSelectedListElements = function (listElement) {
-	        return this.domHandler.find(listElement, 'li.ui-state-highlight');
-	    };
-	    PickList.prototype.ngOnDestroy = function () {
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], PickList.prototype, "source", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], PickList.prototype, "target", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], PickList.prototype, "sourceHeader", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], PickList.prototype, "targetHeader", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], PickList.prototype, "responsive", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], PickList.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], PickList.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], PickList.prototype, "sourceStyle", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], PickList.prototype, "targetStyle", void 0);
-	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef), 
-	        __metadata('design:type', core_1.TemplateRef)
-	    ], PickList.prototype, "itemTemplate", void 0);
-	    PickList = __decorate([
-	        core_1.Component({
-	            selector: 'p-pickList',
-	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"{'ui-picklist ui-widget ui-helper-clearfix': true, 'ui-picklist-responsive': responsive}\">\n            <div class=\"ui-picklist-source-controls ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp(sourcelist,source)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop(sourcelist,source)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown(sourcelist,source)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom(sourcelist,source)\"></button>\n                </div>\n            </div>\n            <div class=\"ui-picklist-listwrapper ui-picklist-source-wrapper\">\n                <div class=\"ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr\" *ngIf=\"sourceHeader\">{{sourceHeader}}</div>\n                <ul #sourcelist class=\"ui-widget-content ui-picklist-list ui-picklist-source ui-corner-bottom\" [ngStyle]=\"sourceStyle\"\n                    (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                    <template ngFor [ngForOf]=\"source\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n            <div class=\"ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-right\" (click)=\"moveRight(sourcelist)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-right\" (click)=\"moveAllRight(sourcelist)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-left\" (click)=\"moveLeft(targetlist)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-left\" (click)=\"moveAllLeft(targetlist)\"></button>\n                </div>\n            </div>\n            <div class=\"ui-picklist-listwrapper ui-picklist-target-wrapper\">\n                <div class=\"ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr\" *ngIf=\"targetHeader\">{{targetHeader}}</div>\n                <ul #targetlist class=\"ui-widget-content ui-picklist-list ui-picklist-source ui-corner-bottom\" [ngStyle]=\"targetStyle\"\n                    (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                    <template ngFor [ngForOf]=\"target\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n            <div class=\"ui-picklist-target-controls ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp(targetlist,target)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop(targetlist,target)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown(targetlist,target)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom(targetlist,target)\"></button>\n                </div>\n            </div>\n        </div>\n    ",
-	            directives: [button_1.Button],
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
-	    ], PickList);
-	    return PickList;
-	}());
-	exports.PickList = PickList;
-	
-
-/***/ },
-/* 1045 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var ProgressBar = (function () {
-	    function ProgressBar() {
-	    }
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], ProgressBar.prototype, "value", void 0);
-	    ProgressBar = __decorate([
-	        core_1.Component({
-	            selector: 'p-progressBar',
-	            template: "\n        <div class=\"ui-progressbar ui-widget ui-widget-content ui-corner-all\" role=\"progressbar\" aria-valuemin=\"0\" [attr.aria-valuenow]=\"value\" aria-valuemax=\"100\">\n            <div class=\"ui-progressbar-value ui-progressbar-value-animate ui-widget-header ui-corner-all\" [style.width]=\"value + '%'\" style=\"display:block\"></div>\n            <div class=\"ui-progressbar-label\" [style.display]=\"value ? 'block' : 'none'\">{{value}}%</div>\n        </div>\n    "
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], ProgressBar);
-	    return ProgressBar;
-	}());
-	exports.ProgressBar = ProgressBar;
-	
-
-/***/ },
-/* 1046 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var RADIO_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return RadioButton; }),
-	    multi: true
-	});
-	var RadioButton = (function () {
-	    function RadioButton() {
-	        this.click = new core_1.EventEmitter();
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	    }
-	    RadioButton.prototype.onclick = function () {
-	        if (!this.disabled) {
-	            this.click.emit(null);
-	            this.checked = true;
-	            this.onModelChange(this.value);
-	        }
-	    };
-	    RadioButton.prototype.onMouseEnter = function () {
-	        this.hover = true;
-	    };
-	    RadioButton.prototype.onMouseLeave = function () {
-	        this.hover = false;
-	    };
-	    RadioButton.prototype.writeValue = function (model) {
-	        this.model = model;
-	        this.checked = (this.model == this.value);
-	    };
-	    RadioButton.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    RadioButton.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], RadioButton.prototype, "value", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], RadioButton.prototype, "name", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], RadioButton.prototype, "disabled", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], RadioButton.prototype, "click", void 0);
-	    RadioButton = __decorate([
-	        core_1.Component({
-	            selector: 'p-radioButton',
-	            template: "\n        <div class=\"ui-radiobutton ui-widget\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input type=\"radio\" [attr.name]=\"name\" [attr.value]=\"value\" [checked]=\"checked\" (blur)=\"onModelTouched()\">\n            </div>\n            <div class=\"ui-radiobutton-box ui-widget ui-radiobutton-relative ui-state-default\" (click)=\"onclick()\"\n                        (mouseenter)=\"onMouseEnter()\" (mouseleave)=\"onMouseLeave()\" [ngClass]=\"{'ui-state-hover':hover&&!disabled,'ui-state-active':checked,'ui-state-disabled':disabled}\">\n                <span class=\"ui-radiobutton-icon\" [ngClass]=\"{'fa fa-fw fa-circle':checked}\"></span>\n            </div>\n        </div>\n    ",
-	            providers: [RADIO_VALUE_ACCESSOR]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], RadioButton);
-	    return RadioButton;
-	}());
-	exports.RadioButton = RadioButton;
-	
-
-/***/ },
-/* 1047 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var RATING_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return Rating; }),
-	    multi: true
-	});
-	var Rating = (function () {
-	    function Rating() {
-	        this.stars = 5;
-	        this.cancel = true;
-	        this.onRate = new core_1.EventEmitter();
-	        this.onCancel = new core_1.EventEmitter();
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	    }
-	    Rating.prototype.ngOnInit = function () {
-	        this.starsArray = [];
-	        for (var i = 0; i < this.stars; i++) {
-	            this.starsArray[i] = i;
-	        }
-	    };
-	    Rating.prototype.rate = function (event, i) {
-	        if (!this.readonly && !this.disabled) {
-	            this.value = (i + 1);
-	            this.onModelChange(this.value);
-	            this.onModelTouched();
-	            this.onRate.emit({
-	                originalEvent: event,
-	                value: (i + 1)
-	            });
-	        }
-	    };
-	    Rating.prototype.clear = function (event) {
-	        if (!this.readonly && !this.disabled) {
-	            this.value = null;
-	            this.onModelChange(this.value);
-	            this.onModelTouched();
-	            this.onCancel.emit(event);
-	        }
-	    };
-	    Rating.prototype.writeValue = function (value) {
-	        this.value = value;
-	    };
-	    Rating.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    Rating.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Rating.prototype, "disabled", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Rating.prototype, "readonly", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Rating.prototype, "stars", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Rating.prototype, "cancel", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Rating.prototype, "onRate", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Rating.prototype, "onCancel", void 0);
-	    Rating = __decorate([
-	        core_1.Component({
-	            selector: 'p-rating',
-	            template: "\n        <div class=\"ui-rating\" [ngClass]=\"{'ui-state-disabled': disabled}\">\n            <div class=\"ui-rating-cancel\" *ngIf=\"cancel\" (click)=\"clear($event)\" [ngClass]=\"{'ui-rating-cancel-hover':hoverCancel}\"\n             (mouseenter)=\"hoverCancel=true\" (mouseleave)=\"hoverCancel=false\"><a></a></div>\n            <div class=\"ui-rating-star\" *ngFor=\"let star of starsArray;let i=index\" (click)=\"rate($event,i)\"\n             [ngClass]=\"{'ui-rating-star-on':(i < value)}\"><a></a></div>\n        </div>\n    ",
-	            providers: [RATING_VALUE_ACCESSOR]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Rating);
-	    return Rating;
-	}());
-	exports.Rating = Rating;
-	
-
-/***/ },
-/* 1048 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var Schedule = (function () {
-	    function Schedule(el, differs) {
-	        this.el = el;
-	        this.aspectRatio = 1.35;
-	        this.defaultView = 'month';
-	        this.allDaySlot = true;
-	        this.slotDuration = '00:30:00';
-	        this.scrollTime = '06:00:00';
-	        this.minTime = '00:00:00';
-	        this.maxTime = '24:00:00';
-	        this.slotEventOverlap = true;
-	        this.dragRevertDuration = 500;
-	        this.dragOpacity = .75;
-	        this.dragScroll = true;
-	        this.onDayClick = new core_1.EventEmitter();
-	        this.onEventClick = new core_1.EventEmitter();
-	        this.onEventMouseover = new core_1.EventEmitter();
-	        this.onEventMouseout = new core_1.EventEmitter();
-	        this.onEventDragStart = new core_1.EventEmitter();
-	        this.onEventDragStop = new core_1.EventEmitter();
-	        this.onEventDrop = new core_1.EventEmitter();
-	        this.onEventResizeStart = new core_1.EventEmitter();
-	        this.onEventResizeStop = new core_1.EventEmitter();
-	        this.onEventResize = new core_1.EventEmitter();
-	        this.viewRender = new core_1.EventEmitter();
-	        this.differ = differs.find([]).create(null);
-	        this.initialized = false;
-	    }
-	    Schedule.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        this.schedule = jQuery(this.el.nativeElement.children[0]);
-	        var options = {
-	            theme: true,
-	            header: this.header,
-	            isRTL: this.rtl,
-	            weekends: this.weekends,
-	            hiddenDays: this.hiddenDays,
-	            fixedWeekCount: this.fixedWeekCount,
-	            weekNumbers: this.weekNumbers,
-	            businessHours: this.businessHours,
-	            height: this.height,
-	            contentHeight: this.contentHeight,
-	            aspectRatio: this.aspectRatio,
-	            eventLimit: this.eventLimit,
-	            defaultDate: this.defaultDate,
-	            editable: this.editable,
-	            eventStartEditable: this.eventStartEditable,
-	            eventDurationEditable: this.eventDurationEditable,
-	            defaultView: this.defaultView,
-	            allDayslot: this.allDaySlot,
-	            slotDuration: this.slotDuration,
-	            slotLabelInterval: this.slotLabelInterval,
-	            snapDuration: this.snapDuration,
-	            scrollTime: this.scrollTime,
-	            minTime: this.minTime,
-	            maxTime: this.maxTime,
-	            slotEventOverlap: this.slotEventOverlap,
-	            nowIndicator: this.nowIndicator,
-	            dragRevertDuration: this.dragRevertDuration,
-	            dragOpacity: this.dragOpacity,
-	            dragScroll: this.dragScroll,
-	            eventOverlap: this.eventOverlap,
-	            eventConstraint: this.eventConstraint,
-	            events: function (start, end, timezone, callback) {
-	                callback(_this.events);
-	            },
-	            dayClick: function (date, jsEvent, view) {
-	                _this.onDayClick.emit({
-	                    'date': date,
-	                    'jsEvent': jsEvent,
-	                    'view': view
-	                });
-	            },
-	            eventClick: function (calEvent, jsEvent, view) {
-	                _this.onEventClick.emit({
-	                    'calEvent': calEvent,
-	                    'jsEvent': jsEvent,
-	                    'view': view
-	                });
-	            },
-	            eventMouseover: function (calEvent, jsEvent, view) {
-	                _this.onEventMouseover.emit({
-	                    'calEvent': calEvent,
-	                    'jsEvent': jsEvent,
-	                    'view': view
-	                });
-	            },
-	            eventMouseout: function (calEvent, jsEvent, view) {
-	                _this.onEventMouseout.emit({
-	                    'calEvent': calEvent,
-	                    'jsEvent': jsEvent,
-	                    'view': view
-	                });
-	            },
-	            eventDragStart: function (event, jsEvent, ui, view) {
-	                _this.onEventDragStart.emit({
-	                    'event': event,
-	                    'jsEvent': jsEvent,
-	                    'view': view
-	                });
-	            },
-	            eventDragStop: function (event, jsEvent, ui, view) {
-	                _this.onEventDragStop.emit({
-	                    'event': event,
-	                    'jsEvent': jsEvent,
-	                    'view': view
-	                });
-	            },
-	            eventDrop: function (event, delta, revertFunc, jsEvent, ui, view) {
-	                _this.onEventDrop.emit({
-	                    'event': event,
-	                    'delta': delta,
-	                    'revertFunc': revertFunc,
-	                    'jsEvent': jsEvent,
-	                    'view': view
-	                });
-	            },
-	            eventResizeStart: function (event, jsEvent, ui, view) {
-	                _this.onEventResizeStart.emit({
-	                    'event': event,
-	                    'jsEvent': jsEvent,
-	                    'view': view
-	                });
-	            },
-	            eventResizeStop: function (event, jsEvent, ui, view) {
-	                _this.onEventResizeStop.emit({
-	                    'event': event,
-	                    'jsEvent': jsEvent,
-	                    'view': view
-	                });
-	            },
-	            eventResize: function (event, delta, revertFunc, jsEvent, ui, view) {
-	                _this.onEventResize.emit({
-	                    'event': event,
-	                    'delta': delta,
-	                    'revertFunc': revertFunc,
-	                    'jsEvent': jsEvent,
-	                    'view': view
-	                });
-	            },
-	            viewRender: function (view, element) {
-	                _this.viewRender.emit({
-	                    'view': view,
-	                    'element': element
-	                });
-	            }
-	        };
-	        if (this.locale) {
-	            for (var prop in this.locale) {
-	                options[prop] = this.locale[prop];
-	            }
-	        }
-	        this.schedule.fullCalendar(options);
-	        this.initialized = true;
-	    };
-	    Schedule.prototype.ngDoCheck = function () {
-	        var changes = this.differ.diff(this.events);
-	        if (this.schedule && changes) {
-	            this.schedule.fullCalendar('refetchEvents');
-	        }
-	    };
-	    Schedule.prototype.ngOnDestroy = function () {
-	        jQuery(this.el.nativeElement.children[0]).fullCalendar('destroy');
-	        this.initialized = false;
-	        this.schedule = null;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Schedule.prototype, "events", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "header", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Schedule.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Schedule.prototype, "rtl", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Schedule.prototype, "weekends", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], Schedule.prototype, "hiddenDays", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Schedule.prototype, "fixedWeekCount", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Schedule.prototype, "weekNumbers", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "businessHours", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "height", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "contentHeight", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Schedule.prototype, "aspectRatio", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "eventLimit", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "defaultDate", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Schedule.prototype, "editable", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Schedule.prototype, "eventStartEditable", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Schedule.prototype, "eventDurationEditable", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Schedule.prototype, "defaultView", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Schedule.prototype, "allDaySlot", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "slotDuration", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "slotLabelInterval", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "snapDuration", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "scrollTime", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "minTime", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "maxTime", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Schedule.prototype, "slotEventOverlap", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Schedule.prototype, "nowIndicator", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Schedule.prototype, "dragRevertDuration", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Schedule.prototype, "dragOpacity", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Schedule.prototype, "dragScroll", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "eventOverlap", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "eventConstraint", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Schedule.prototype, "locale", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Schedule.prototype, "onDayClick", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Schedule.prototype, "onEventClick", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Schedule.prototype, "onEventMouseover", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Schedule.prototype, "onEventMouseout", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Schedule.prototype, "onEventDragStart", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Schedule.prototype, "onEventDragStop", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Schedule.prototype, "onEventDrop", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Schedule.prototype, "onEventResizeStart", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Schedule.prototype, "onEventResizeStop", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Schedule.prototype, "onEventResize", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Schedule.prototype, "viewRender", void 0);
-	    Schedule = __decorate([
-	        core_1.Component({
-	            selector: 'p-schedule',
-	            template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\"></div>\n    "
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers])
-	    ], Schedule);
-	    return Schedule;
-	}());
-	exports.Schedule = Schedule;
-	
-
-/***/ },
-/* 1049 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var SELECTBUTTON_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return SelectButton; }),
-	    multi: true
-	});
-	var SelectButton = (function () {
-	    function SelectButton() {
-	        this.onChange = new core_1.EventEmitter();
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	    }
-	    SelectButton.prototype.writeValue = function (value) {
-	        this.value = value;
-	    };
-	    SelectButton.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    SelectButton.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    SelectButton.prototype.onItemClick = function (event, option) {
-	        if (this.multiple) {
-	            var itemIndex = this.findItemIndex(option);
-	            if (itemIndex != -1)
-	                this.value.splice(itemIndex, 1);
-	            else
-	                this.value.push(option.value);
-	        }
-	        else {
-	            this.value = option.value;
-	        }
-	        this.onModelChange(this.value);
-	        this.onChange.emit({
-	            originalEvent: event,
-	            value: this.value
-	        });
-	    };
-	    SelectButton.prototype.isSelected = function (option) {
-	        if (this.multiple)
-	            return this.findItemIndex(option) != -1;
-	        else
-	            return option.value == this.value;
-	    };
-	    SelectButton.prototype.findItemIndex = function (option) {
-	        var index = -1;
-	        if (this.value) {
-	            for (var i = 0; i < this.value.length; i++) {
-	                if (this.value[i] == option.value) {
-	                    index = i;
-	                    break;
-	                }
-	            }
-	        }
-	        return index;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], SelectButton.prototype, "options", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], SelectButton.prototype, "tabindex", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], SelectButton.prototype, "multiple", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], SelectButton.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SelectButton.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], SelectButton.prototype, "onChange", void 0);
-	    SelectButton = __decorate([
-	        core_1.Component({
-	            selector: 'p-selectButton',
-	            template: "\n        <div [ngClass]=\"'ui-selectbutton ui-buttonset ui-widget ui-corner-all ui-buttonset-' + options.length\" (mouseleave)=\"hoveredItem=null\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div *ngFor=\"let option of options;\" class=\"ui-button ui-widget ui-state-default ui-button-text-only\"\n                [ngClass]=\"{'ui-state-hover': hoveredItem == option,'ui-state-active':isSelected(option)}\"\n                (mouseenter)=\"hoveredItem=option\" (click)=\"onItemClick($event,option)\">\n                <span class=\"ui-button-text ui-c\">{{option.label}}</span>\n            </div>\n        </div>\n    ",
-	            providers: [SELECTBUTTON_VALUE_ACCESSOR]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], SelectButton);
-	    return SelectButton;
-	}());
-	exports.SelectButton = SelectButton;
-	
-
-/***/ },
-/* 1050 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var __param = (this && this.__param) || function (paramIndex, decorator) {
-	    return function (target, key) { decorator(target, key, paramIndex); }
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var router_1 = __webpack_require__(7);
-	var SlideMenuSub = (function () {
-	    function SlideMenuSub(slideMenu, router) {
-	        this.slideMenu = slideMenu;
-	        this.router = router;
-	        this.backLabel = 'Back';
-	        this.effectDuration = '1s';
-	        this.easing = 'ease-out';
-	    }
-	    SlideMenuSub.prototype.itemClick = function (event, item, listitem) {
-	        if (!item.url || item.routerLink) {
-	            event.preventDefault();
-	        }
-	        this.activeItem = listitem;
-	        if (item.command) {
-	            if (!item.eventEmitter && item.command) {
-	                item.eventEmitter = new core_1.EventEmitter();
-	                item.eventEmitter.subscribe(item.command);
-	            }
-	            item.eventEmitter.emit(event);
-	        }
-	        if (item.items) {
-	            this.slideMenu.left -= this.slideMenu.menuWidth;
-	        }
-	        if (item.routerLink) {
-	            this.router.navigate(item.routerLink);
-	        }
-	    };
-	    SlideMenuSub.prototype.ngOnDestroy = function () {
-	        this.hoveredLink = null;
-	        this.activeItem = null;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], SlideMenuSub.prototype, "item", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], SlideMenuSub.prototype, "root", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SlideMenuSub.prototype, "backLabel", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SlideMenuSub.prototype, "menuWidth", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], SlideMenuSub.prototype, "effectDuration", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SlideMenuSub.prototype, "easing", void 0);
-	    SlideMenuSub = __decorate([
-	        core_1.Component({
-	            selector: 'p-slideMenuSub',
-	            template: "\n        <ul [ngClass]=\"{'ui-helper-reset ui-menu-rootlist':root, 'ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-child':!root}\" class=\"ui-menu-list\"\n            [style.width.px]=\"menuWidth\" [style.left.px]=\"root ? slideMenu.left : slideMenu.menuWidth\" \n            [style.transitionProperty]=\"root ? 'left' : 'none'\" [style.transitionDuration]=\"effectDuration\" [style.transitionTimingFunction]=\"easing\">\n            <template ngFor let-child [ngForOf]=\"(root ? item : item.items)\">\n                <li #listitem [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':child.items,'ui-menuitem-active':listitem==activeItem}\">\n                    <a #link [href]=\"child.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [ngClass]=\"{'ui-state-hover':link==hoveredLink,'ui-menuitem-link-parent':child.items}\" \n                        (click)=\"itemClick($event, child, listitem)\" (mouseenter)=\"hoveredLink=link\" (mouseleave)=\"hoveredLink=null\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <p-slideMenuSub class=\"ui-submenu\" [item]=\"child\" [menuWidth]=\"menuWidth\" *ngIf=\"child.items\"></p-slideMenuSub>\n                </li>\n            </template>\n        </ul>\n    ",
-	            directives: [SlideMenuSub]
-	        }),
-	        __param(0, core_1.Inject(core_1.forwardRef(function () { return SlideMenu; }))), 
-	        __metadata('design:paramtypes', [SlideMenu, router_1.Router])
-	    ], SlideMenuSub);
-	    return SlideMenuSub;
-	}());
-	exports.SlideMenuSub = SlideMenuSub;
-	var SlideMenu = (function () {
-	    function SlideMenu(el, domHandler, renderer) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	        this.menuWidth = 180;
-	        this.viewportHeight = 175;
-	        this.effectDuration = '500ms';
-	        this.easing = 'ease-out';
-	        this.backLabel = 'Back';
-	        this.left = 0;
-	    }
-	    SlideMenu.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        this.container = this.el.nativeElement.children[0];
-	        if (this.popup) {
-	            this.documentClickListener = this.renderer.listenGlobal('body', 'click', function () {
-	                if (!_this.preventDocumentDefault) {
-	                    _this.hide();
-	                }
-	                _this.preventDocumentDefault = false;
-	            });
-	        }
-	    };
-	    SlideMenu.prototype.toggle = function (event) {
-	        if (this.container.offsetParent)
-	            this.hide();
-	        else
-	            this.show(event);
-	        this.preventDocumentDefault = true;
-	    };
-	    SlideMenu.prototype.show = function (event) {
-	        this.container.style.display = 'block';
-	        this.domHandler.absolutePosition(this.container, event.target);
-	        this.domHandler.fadeIn(this.container, 250);
-	    };
-	    SlideMenu.prototype.hide = function () {
-	        this.container.style.display = 'none';
-	    };
-	    SlideMenu.prototype.unsubscribe = function (item) {
-	        if (item.eventEmitter) {
-	            item.eventEmitter.unsubscribe();
-	        }
-	        if (item.items) {
-	            for (var _i = 0, _a = item.items; _i < _a.length; _i++) {
-	                var childItem = _a[_i];
-	                this.unsubscribe(childItem);
-	            }
-	        }
-	    };
-	    SlideMenu.prototype.onClick = function (event) {
-	        this.preventDocumentDefault = true;
-	    };
-	    SlideMenu.prototype.goBack = function () {
-	        this.left += this.menuWidth;
-	    };
-	    SlideMenu.prototype.ngOnDestroy = function () {
-	        if (this.popup) {
-	            this.documentClickListener();
-	        }
-	        if (this.model) {
-	            for (var _i = 0, _a = this.model; _i < _a.length; _i++) {
-	                var item = _a[_i];
-	                this.unsubscribe(item);
-	            }
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], SlideMenu.prototype, "model", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], SlideMenu.prototype, "popup", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], SlideMenu.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SlideMenu.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], SlideMenu.prototype, "menuWidth", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], SlideMenu.prototype, "viewportHeight", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], SlideMenu.prototype, "effectDuration", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SlideMenu.prototype, "easing", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SlideMenu.prototype, "backLabel", void 0);
-	    SlideMenu = __decorate([
-	        core_1.Component({
-	            selector: 'p-slideMenu',
-	            template: "\n        <div [ngClass]=\"{'ui-menu ui-slidemenu ui-widget ui-widget-content ui-corner-all':true,'ui-menu-dynamic ui-shadow':popup}\" \n            [class]=\"styleClass\" [ngStyle]=\"style\" (click)=\"onClick($event)\">\n            <div class=\"ui-slidemenu-wrapper\" [style.height.px]=\"viewportHeight\">\n                <div class=\"ui-slidemenu-content\" [style.height.px]=\"viewportHeight - 30\">\n                    <p-slideMenuSub [item]=\"model\" root=\"root\" [menuWidth]=\"menuWidth\" [effectDuration]=\"effectDuration\" [easing]=\"easing\"></p-slideMenuSub>\n                </div>\n                <div class=\"ui-slidemenu-backward ui-widget-header ui-corner-all\" [style.display]=\"left ? 'block' : 'none'\" (click)=\"goBack()\">\n                    <span class=\"fa fa-fw fa-caret-left\"></span>{{backLabel}}\n                </div>\n            </div>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler],
-	            directives: [SlideMenuSub]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
-	    ], SlideMenu);
-	    return SlideMenu;
-	}());
-	exports.SlideMenu = SlideMenu;
-	
-
-/***/ },
-/* 1051 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var SLIDER_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return Slider; }),
-	    multi: true
-	});
-	var Slider = (function () {
-	    function Slider(el) {
-	        this.el = el;
-	        this.onChange = new core_1.EventEmitter();
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	        this.initialized = false;
-	    }
-	    Slider.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        jQuery(this.el.nativeElement.children[0]).slider({
-	            animate: this.animate,
-	            disabled: this.disabled,
-	            max: this.max,
-	            min: this.min,
-	            orientation: this.orientation,
-	            range: this.range,
-	            step: this.step,
-	            value: this.value,
-	            values: this.value,
-	            slide: function (event, ui) {
-	                if (_this.range) {
-	                    _this.onModelChange(ui.values);
-	                    _this.onChange.emit({ originalEvent: event, values: ui.values });
-	                }
-	                else {
-	                    _this.onModelChange(ui.value);
-	                    _this.onChange.emit({ originalEvent: event, value: ui.value });
-	                }
-	            }
-	        });
-	        this.initialized = true;
-	    };
-	    Slider.prototype.writeValue = function (value) {
-	        this.value = value;
-	        if (this.initialized) {
-	            var optionName = this.range ? 'values' : 'value';
-	            jQuery(this.el.nativeElement.children[0]).slider('option', optionName, this.value);
-	        }
-	    };
-	    Slider.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    Slider.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    Slider.prototype.ngOnChanges = function (changes) {
-	        if (this.initialized) {
-	            for (var key in changes) {
-	                jQuery(this.el.nativeElement.children[0]).slider('option', key, changes[key].currentValue);
-	            }
-	        }
-	    };
-	    Slider.prototype.ngOnDestroy = function () {
-	        jQuery(this.el.nativeElement.children[0]).slider('destroy');
-	        this.initialized = false;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Slider.prototype, "animate", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Slider.prototype, "disabled", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Slider.prototype, "min", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Slider.prototype, "max", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Slider.prototype, "orientation", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Slider.prototype, "step", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Slider.prototype, "range", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Slider.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Slider.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Slider.prototype, "onChange", void 0);
-	    Slider = __decorate([
-	        core_1.Component({
-	            selector: 'p-slider',
-	            template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\"></div>\n    ",
-	            providers: [SLIDER_VALUE_ACCESSOR]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef])
-	    ], Slider);
-	    return Slider;
-	}());
-	exports.Slider = Slider;
-	
-
-/***/ },
-/* 1052 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var inputtext_1 = __webpack_require__(206);
-	var domhandler_1 = __webpack_require__(11);
-	var common_1 = __webpack_require__(8);
-	var SPINNER_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return Spinner; }),
-	    multi: true
-	});
-	var Spinner = (function () {
-	    function Spinner(el, domHandler) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.onChange = new core_1.EventEmitter();
-	        this.step = 1;
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	    }
-	    Spinner.prototype.ngAfterViewInit = function () {
-	        if (Math.floor(this.step) === 0) {
-	            this.precision = this.step.toString().split(/[,]|[.]/)[1].length;
-	        }
-	        this.inputtext = this.domHandler.findSingle(this.el.nativeElement, 'input');
-	        if ((this.value !== null && this.value !== undefined)) {
-	            this.inputtext.value = this.value;
-	        }
-	    };
-	    Spinner.prototype.repeat = function (interval, dir, input) {
-	        var _this = this;
-	        var i = interval || 500;
-	        this.clearTimer();
-	        this.timer = setTimeout(function () {
-	            _this.repeat(40, dir, input);
-	        }, i);
-	        this.spin(dir, input);
-	    };
-	    Spinner.prototype.spin = function (dir, inputElement) {
-	        var step = this.step * dir;
-	        var currentValue = this.value || 0;
-	        var newValue = null;
-	        if (this.precision)
-	            this.value = parseFloat(this.toFixed(currentValue + step, this.precision));
-	        else
-	            this.value = currentValue + step;
-	        if (this.max !== undefined && this.value.toString().length > this.maxlength) {
-	            this.value = currentValue;
-	        }
-	        if (this.min !== undefined && this.value < this.min) {
-	            this.value = this.min;
-	        }
-	        if (this.max !== undefined && this.value > this.max) {
-	            this.value = this.max;
-	        }
-	        inputElement.value = this.value;
-	        this.onModelChange(this.value);
-	    };
-	    Spinner.prototype.toFixed = function (value, precision) {
-	        var power = Math.pow(10, precision || 0);
-	        return String(Math.round(value * power) / power);
-	    };
-	    Spinner.prototype.onUpButtonMousedown = function (event, input) {
-	        if (!this.disabled) {
-	            input.focus();
-	            this.activeUp = true;
-	            this.repeat(null, 1, input);
-	            event.preventDefault();
-	        }
-	    };
-	    Spinner.prototype.onUpButtonMouseup = function (event) {
-	        if (!this.disabled) {
-	            this.activeUp = false;
-	            this.clearTimer();
-	        }
-	    };
-	    Spinner.prototype.onUpButtonMouseenter = function (event) {
-	        if (!this.disabled) {
-	            this.hoverUp = true;
-	        }
-	    };
-	    Spinner.prototype.onUpButtonMouseleave = function (event) {
-	        if (!this.disabled) {
-	            this.hoverUp = false;
-	            this.activeUp = false;
-	            this.clearTimer();
-	        }
-	    };
-	    Spinner.prototype.onDownButtonMousedown = function (event, input) {
-	        if (!this.disabled) {
-	            input.focus();
-	            this.activeDown = true;
-	            this.repeat(null, -1, input);
-	            event.preventDefault();
-	        }
-	    };
-	    Spinner.prototype.onDownButtonMouseup = function (event) {
-	        if (!this.disabled) {
-	            this.activeDown = false;
-	            this.clearTimer();
-	        }
-	    };
-	    Spinner.prototype.onDownButtonMouseenter = function (event) {
-	        if (!this.disabled) {
-	            this.hoverDown = true;
-	        }
-	    };
-	    Spinner.prototype.onDownButtonMouseleave = function (event) {
-	        if (!this.disabled) {
-	            this.hoverDown = false;
-	            this.activeDown = false;
-	            this.clearTimer();
-	        }
-	    };
-	    Spinner.prototype.onInputKeydown = function (event, inputElement) {
-	        if (event.which == 38) {
-	            this.spin(1, inputElement);
-	            event.preventDefault();
-	        }
-	        else if (event.which == 40) {
-	            this.spin(-1, inputElement);
-	            event.preventDefault();
-	        }
-	    };
-	    Spinner.prototype.onInput = function (event) {
-	        this.value = this.parseValue(event.target.value);
-	        this.onModelChange(this.value);
-	    };
-	    Spinner.prototype.onBlur = function (inputElement) {
-	        if (this.value !== undefined && this.value !== null) {
-	            inputElement.value = this.value;
-	        }
-	        this.onModelTouched();
-	    };
-	    Spinner.prototype.parseValue = function (val) {
-	        var value;
-	        if (val.trim() === '') {
-	            value = this.min !== undefined ? this.min : null;
-	        }
-	        else {
-	            if (this.precision)
-	                value = parseFloat(val);
-	            else
-	                value = parseInt(val);
-	            if (!isNaN(value)) {
-	                if (this.max !== undefined && value > this.max) {
-	                    value = this.max;
-	                }
-	                if (this.min !== undefined && value < this.min) {
-	                    value = this.min;
-	                }
-	            }
-	            else {
-	                value = null;
-	            }
-	        }
-	        return value;
-	    };
-	    Spinner.prototype.handleChange = function (event) {
-	        this.onChange.emit(event);
-	    };
-	    Spinner.prototype.clearTimer = function () {
-	        if (this.timer) {
-	            clearInterval(this.timer);
-	        }
-	    };
-	    Spinner.prototype.writeValue = function (value) {
-	        this.value = value;
-	        if (this.inputtext && (this.value !== null && this.value !== undefined)) {
-	            this.inputtext.value = this.value;
-	        }
-	    };
-	    Spinner.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    Spinner.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Spinner.prototype, "onChange", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Spinner.prototype, "step", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Spinner.prototype, "min", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Spinner.prototype, "max", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Spinner.prototype, "maxlength", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], Spinner.prototype, "size", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], Spinner.prototype, "disabled", void 0);
-	    Spinner = __decorate([
-	        core_1.Component({
-	            selector: 'p-spinner',
-	            template: "\n        <span class=\"ui-spinner ui-widget ui-corner-all\">\n            <input #in pInputText type=\"text\" class=\"ui-spinner-input\"\n            [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.readonly]=\"readonly\" [attr.disabled]=\"disabled\"\n            (keydown)=\"onInputKeydown($event,in)\" (input)=\"onInput($event)\" (blur)=\"onBlur(in)\" (change)=\"handleChange($event)\">\n            <a class=\"ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default ui-button-text-only\"\n                [ngClass]=\"{'ui-state-hover':hoverUp,'ui-state-active':activeUp,'ui-state-disabled':disabled}\"\n                (mouseenter)=\"onUpButtonMouseenter($event)\" (mouseleave)=\"onUpButtonMouseleave($event)\" (mousedown)=\"onUpButtonMousedown($event,in)\" (mouseup)=\"onUpButtonMouseup($event)\">\n                <span class=\"ui-button-text\">\n                    <span class=\"fa fa-fw fa-caret-up\"></span>\n                </span>\n            </a>\n            <a class=\"ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default ui-button-text-only\"\n                [ngClass]=\"{'ui-state-hover':hoverDown,'ui-state-active':activeDown,'ui-state-disabled':disabled}\"\n                (mouseenter)=\"onDownButtonMouseenter($event)\" (mouseleave)=\"onDownButtonMouseleave($event)\" (mousedown)=\"onDownButtonMousedown($event,in)\" (mouseup)=\"onDownButtonMouseup($event)\">\n                <span class=\"ui-button-text\">\n                    <span class=\"fa fa-fw fa-caret-down\"></span>\n                </span>\n            </a>\n        </span>\n    ",
-	            directives: [inputtext_1.InputText],
-	            providers: [domhandler_1.DomHandler, SPINNER_VALUE_ACCESSOR]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
-	    ], Spinner);
-	    return Spinner;
-	}());
-	exports.Spinner = Spinner;
-	
-
-/***/ },
-/* 1053 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var splitbuttonitem_1 = __webpack_require__(495);
-	var domhandler_1 = __webpack_require__(11);
-	var router_1 = __webpack_require__(7);
-	var SplitButton = (function () {
-	    function SplitButton(el, domHandler, renderer, router) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	        this.router = router;
-	        this.iconPos = 'left';
-	        this.onClick = new core_1.EventEmitter();
-	        this.menuVisible = false;
-	    }
-	    SplitButton.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this.documentClickListener = this.renderer.listenGlobal('body', 'click', function () {
-	            _this.menuVisible = false;
-	        });
-	    };
-	    SplitButton.prototype.onDefaultButtonClick = function (event) {
-	        this.onClick.emit(event);
-	    };
-	    SplitButton.prototype.onDropdownClick = function (event, menu, container) {
-	        this.menuVisible = !this.menuVisible;
-	        this.domHandler.relativePosition(menu, container);
-	        this.domHandler.fadeIn(menu, 25);
-	        event.stopPropagation();
-	    };
-	    SplitButton.prototype.onItemClick = function (event, item) {
-	        if (!item.url && !item.routerLink) {
-	            event.preventDefault();
-	        }
-	        this.hoveredItem = null;
-	        item.onClick.emit(event);
-	        if (item.routerLink) {
-	            this.router.navigate(item.routerLink);
-	        }
-	    };
-	    SplitButton.prototype.ngOnDestroy = function () {
-	        this.documentClickListener();
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SplitButton.prototype, "icon", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SplitButton.prototype, "iconPos", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SplitButton.prototype, "label", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], SplitButton.prototype, "onClick", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], SplitButton.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SplitButton.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], SplitButton.prototype, "menuStyle", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], SplitButton.prototype, "menuStyleClass", void 0);
-	    __decorate([
-	        core_1.ContentChildren(splitbuttonitem_1.SplitButtonItem), 
-	        __metadata('design:type', core_1.QueryList)
-	    ], SplitButton.prototype, "items", void 0);
-	    SplitButton = __decorate([
-	        core_1.Component({
-	            selector: 'p-splitButton',
-	            template: "\n        <div #container [ngClass]=\"'ui-splitbutton ui-buttonset ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <button #defaultbtn type=\"button\" class=\"ui-button ui-widget ui-state-default ui-corner-left\"\n                [ngClass]=\"{'ui-button-text-only':(!icon&&label),'ui-button-icon-only':(icon&&!label),\n                'ui-button-text-icon-left':(icon&&label&&iconPos=='left'),'ui-button-text-icon-right':(icon&&label&&iconPos=='right'),\n                'ui-state-hover':hoverDefaultBtn,'ui-state-focus':focusDefaultBtn,'ui-state-active':activeDefaultBtn}\"\n                (mouseenter)=\"hoverDefaultBtn=true\" (mouseleave)=\"hoverDefaultBtn=false\"  (focus)=\"focusDefaultBtn=true\" (blur)=\"focusDefaultBtn=false\"\n                (mousedown)=\"activeDefaultBtn=true\" (mouseup)=\"activeDefaultBtn=false\" (click)=\"onDefaultButtonClick($event)\">\n                <span [ngClass]=\"'ui-button-icon-left ui-c fa fa-fw'\" [class]=\"icon\"></span>\n                <span class=\"ui-button-text ui-c\">{{label}}</span>\n            </button>\n            <button class=\"ui-splitbutton-menubutton ui-button ui-widget ui-state-default ui-button-icon-only ui-corner-right\" type=\"button\"\n                [ngClass]=\"{'ui-state-hover':hoverDropdown,'ui-state-focus':focusDropdown,'ui-state-active':activeDropdown}\"\n                (mouseenter)=\"hoverDropdown=true\" (mouseleave)=\"hoverDropdown=false\" (focus)=\"focusDropdown=true\" (blur)=\"focusDropdown=false\"\n                (mousedown)=\"activeDropdown=true\" (mouseup)=\"activeDropdown=false\" (click)=\"onDropdownClick($event,menu,container)\">\n                <span class=\"ui-button-icon-left ui-c fa fa-fw fa-caret-down\"></span>\n                <span class=\"ui-button-text ui-c\">ui-button</span>\n            </button>\n            <div #menu [ngClass]=\"'ui-menu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow'\" [style.display]=\"menuVisible ? 'block' : 'none'\"\n                    [ngStyle]=\"menuStyle\" [class]=\"menuStyleClass\">\n                <ul class=\"ui-menu-list ui-helper-reset\">\n                    <li class=\"ui-menuitem ui-widget ui-corner-all\" role=\"menuitem\" *ngFor=\"let item of items\"\n                        (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\">\n                        <a [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" (click)=\"onItemClick($event,item)\" [ngClass]=\"{'ui-state-hover':(hoveredItem==item)}\">\n                            <span [ngClass]=\"'ui-menuitem-icon fa fa-fw'\" [class]=\"item.icon\" *ngIf=\"item.icon\"></span>\n                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler],
-	            directives: [router_1.ROUTER_DIRECTIVES]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer, router_1.Router])
-	    ], SplitButton);
-	    return SplitButton;
-	}());
-	exports.SplitButton = SplitButton;
-	
-
-/***/ },
-/* 1054 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var router_1 = __webpack_require__(7);
-	var TabMenu = (function () {
-	    function TabMenu(router) {
-	        this.router = router;
-	    }
-	    TabMenu.prototype.ngOnInit = function () {
-	        if (!this.activeItem && this.model && this.model.length) {
-	            this.activeItem = this.model[0];
-	        }
-	    };
-	    TabMenu.prototype.itemClick = function (event, item) {
-	        if (!item.url || item.routerLink) {
-	            event.preventDefault();
-	        }
-	        if (item.command) {
-	            if (!item.eventEmitter) {
-	                item.eventEmitter = new core_1.EventEmitter();
-	                item.eventEmitter.subscribe(item.command);
-	            }
-	            item.eventEmitter.emit(event);
-	        }
-	        if (item.routerLink) {
-	            this.router.navigate(item.routerLink);
-	        }
-	        this.activeItem = item;
-	    };
-	    TabMenu.prototype.ngOnDestroy = function () {
-	        if (this.model) {
-	            for (var _i = 0, _a = this.model; _i < _a.length; _i++) {
-	                var item = _a[_i];
-	                this.unsubscribe(item);
-	            }
-	        }
-	    };
-	    TabMenu.prototype.unsubscribe = function (item) {
-	        if (item.eventEmitter) {
-	            item.eventEmitter.unsubscribe();
-	        }
-	        if (item.items) {
-	            for (var _i = 0, _a = item.items; _i < _a.length; _i++) {
-	                var childItem = _a[_i];
-	                this.unsubscribe(childItem);
-	            }
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], TabMenu.prototype, "model", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], TabMenu.prototype, "activeItem", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], TabMenu.prototype, "popup", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], TabMenu.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], TabMenu.prototype, "styleClass", void 0);
-	    TabMenu = __decorate([
-	        core_1.Component({
-	            selector: 'p-tabMenu',
-	            template: "\n        <div [ngClass]=\"'ui-tabmenu ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul class=\"ui-tabmenu-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\" role=\"tablist\">\n                <li *ngFor=\"let item of model\" \n                    [ngClass]=\"{'ui-tabmenuitem ui-state-default ui-corner-top':true,\n                        'ui-tabmenuitem-hasicon':item.icon,'ui-state-hover':hoveredItem==item,'ui-state-active':activeItem==item}\"\n                    (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\">\n                    <a [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" (click)=\"itemClick($event,item)\">\n                        <span class=\"ui-menuitem-icon fa\" [ngClass]=\"item.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                    </a>\n                </li>\n            </ul>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [router_1.Router])
-	    ], TabMenu);
-	    return TabMenu;
-	}());
-	exports.TabMenu = TabMenu;
-	
-
-/***/ },
-/* 1055 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var __param = (this && this.__param) || function (paramIndex, decorator) {
-	    return function (target, key) { decorator(target, key, paramIndex); }
-	};
-	var core_1 = __webpack_require__(1);
-	var tabpanel_1 = __webpack_require__(496);
-	var TabView = (function () {
-	    function TabView(el, tabPanels) {
-	        var _this = this;
-	        this.el = el;
-	        this.orientation = 'top';
-	        this.onChange = new core_1.EventEmitter();
-	        this.onClose = new core_1.EventEmitter();
-	        tabPanels.changes.subscribe(function (_) {
-	            _this.tabs = tabPanels.toArray();
-	            var selectedTab = _this.findSelectedTab();
-	            if (!selectedTab && _this.tabs.length) {
-	                _this.tabs[0].selected = true;
-	            }
-	        });
-	    }
-	    TabView.prototype.open = function (event, tab) {
-	        if (tab.disabled) {
-	            event.preventDefault();
-	            return;
-	        }
-	        if (!tab.selected) {
-	            var selectedTab = this.findSelectedTab();
-	            if (selectedTab) {
-	                selectedTab.selected = false;
-	            }
-	            tab.selected = true;
-	            this.onChange.emit({ originalEvent: event, index: this.findTabIndex(tab) });
-	        }
-	        event.preventDefault();
-	    };
-	    TabView.prototype.close = function (event, tab) {
-	        if (tab.selected) {
-	            tab.selected = false;
-	            for (var i = 0; i < this.tabs.length; i++) {
-	                var tabPanel = this.tabs[i];
-	                if (!tabPanel.closed && !tab.disabled) {
-	                    tabPanel.selected = true;
-	                    break;
-	                }
-	            }
-	        }
-	        tab.closed = true;
-	        this.onClose.emit({ originalEvent: event, index: this.findTabIndex(tab) });
-	        event.stopPropagation();
-	    };
-	    TabView.prototype.findSelectedTab = function () {
-	        for (var i = 0; i < this.tabs.length; i++) {
-	            if (this.tabs[i].selected) {
-	                return this.tabs[i];
-	            }
-	        }
-	        return null;
-	    };
-	    TabView.prototype.findTabIndex = function (tab) {
-	        var index = -1;
-	        for (var i = 0; i < this.tabs.length; i++) {
-	            if (this.tabs[i] == tab) {
-	                index = i;
-	                break;
-	            }
-	        }
-	        return index;
-	    };
-	    TabView.prototype.getDefaultHeaderClass = function (tab) {
-	        var styleClass = 'ui-state-default ui-corner-' + this.orientation;
-	        if (tab.headerStyleClass) {
-	            styleClass = styleClass + " " + tab.headerStyleClass;
-	        }
-	        return styleClass;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], TabView.prototype, "orientation", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], TabView.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], TabView.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], TabView.prototype, "onChange", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], TabView.prototype, "onClose", void 0);
-	    TabView = __decorate([
-	        core_1.Component({
-	            selector: 'p-tabView',
-	            template: "\n        <div [ngClass]=\"'ui-tabview ui-widget ui-widget-content ui-corner-all ui-tabview-' + orientation\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul class=\"ui-tabview-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n                <template ngFor let-tab [ngForOf]=\"tabs\">\n                    <li [class]=\"getDefaultHeaderClass(tab)\" [ngStyle]=\"tab.headerStyle\"\n                        [ngClass]=\"{'ui-tabview-selected ui-state-active': tab.selected, 'ui-state-hover': tab.hoverHeader&&!tab.disabled, 'ui-state-disabled': tab.disabled}\"\n                        (mouseenter)=\"tab.hoverHeader=true\" (mouseleave)=\"tab.hoverHeader=false\" (click)=\"open($event,tab)\" *ngIf=\"!tab.closed\">\n                        <a href=\"#\">\n                            <span class=\"ui-tabview-left-icon fa\" [ngClass]=\"tab.leftIcon\" *ngIf=\"tab.leftIcon\"></span>\n                            {{tab.header}}\n                            <span class=\"ui-tabview-right-icon fa\" [ngClass]=\"tab.rightIcon\" *ngIf=\"tab.rightIcon\"></span>\n                        </a>\n                        <span *ngIf=\"tab.closable\" class=\"ui-tabview-close fa fa-close\" (click)=\"close($event,tab)\"></span>\n                    </li>\n                </template>\n            </ul>\n            <div class=\"ui-tabview-panels\">\n                <ng-content></ng-content>\n            </div>\n        </div>\n    ",
-	        }),
-	        __param(1, core_1.Query(tabpanel_1.TabPanel)), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.QueryList])
-	    ], TabView);
-	    return TabView;
-	}());
-	exports.TabView = TabView;
-	
-
-/***/ },
-/* 1056 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var Terminal = (function () {
-	    function Terminal(el, domHandler) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.responseChange = new core_1.EventEmitter();
-	        this.handler = new core_1.EventEmitter();
-	        this.commands = [];
-	    }
-	    Terminal.prototype.ngAfterViewInit = function () {
-	        this.container = this.domHandler.find(this.el.nativeElement, '.ui-terminal')[0];
-	    };
-	    Terminal.prototype.ngAfterViewChecked = function () {
-	        if (this.commandProcessed) {
-	            this.container.scrollTop = this.container.scrollHeight;
-	            this.commandProcessed = false;
-	        }
-	    };
-	    Object.defineProperty(Terminal.prototype, "response", {
-	        set: function (value) {
-	            if (value) {
-	                this.commands.push({ text: this.command, response: value });
-	                this.command = null;
-	                this.commandProcessed = true;
-	                this.responseChange.emit(null);
-	            }
-	        },
-	        enumerable: true,
-	        configurable: true
-	    });
-	    Terminal.prototype.handleCommand = function (event, container) {
-	        if (event.keyCode == 13) {
-	            this.handler.emit({ originalEvent: event, command: this.command });
-	        }
-	    };
-	    Terminal.prototype.focus = function (element) {
-	        element.focus();
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Terminal.prototype, "welcomeMessage", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Terminal.prototype, "prompt", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Terminal.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Terminal.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Terminal.prototype, "responseChange", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Terminal.prototype, "handler", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String), 
-	        __metadata('design:paramtypes', [String])
-	    ], Terminal.prototype, "response", null);
-	    Terminal = __decorate([
-	        core_1.Component({
-	            selector: 'p-terminal',
-	            template: "\n        <div [ngClass]=\"'ui-terminal ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\" (click)=\"focus(in)\">\n            <div *ngIf=\"welcomeMessage\">{{welcomeMessage}}</div>\n            <div class=\"ui-terminal-content\">\n                <div *ngFor=\"let command of commands\">\n                    <span>{{prompt}}</span>\n                    <span class=\"ui-terminal-command\">{{command.text}}</span>\n                    <div>{{command.response}}</div>\n                </div>\n            </div>\n            <div>\n                <span class=\"ui-terminal-content-prompt\">{{prompt}}</span>\n                <input #in type=\"text\" [(ngModel)]=\"command\" class=\"ui-terminal-input\" autocomplete=\"off\" (keydown)=\"handleCommand($event,container)\" autofocus>\n            </div>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
-	    ], Terminal);
-	    return Terminal;
-	}());
-	exports.Terminal = Terminal;
-	
-
-/***/ },
-/* 1057 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var common_1 = __webpack_require__(8);
-	var router_1 = __webpack_require__(7);
-	var TieredMenuSub = (function () {
-	    function TieredMenuSub(domHandler, router, location) {
-	        this.domHandler = domHandler;
-	        this.router = router;
-	        this.location = location;
-	    }
-	    TieredMenuSub.prototype.onItemMouseEnter = function (event, item) {
-	        this.activeItem = item;
-	        this.activeLink = item.children[0];
-	        var nextElement = item.children[0].nextElementSibling;
-	        if (nextElement) {
-	            var sublist = nextElement.children[0];
-	            sublist.style.zIndex = ++domhandler_1.DomHandler.zindex;
-	            sublist.style.top = '0px';
-	            sublist.style.left = this.domHandler.getOuterWidth(item.children[0]) + 'px';
-	        }
-	    };
-	    TieredMenuSub.prototype.onItemMouseLeave = function (event, link) {
-	        this.activeItem = null;
-	        this.activeLink = null;
-	    };
-	    TieredMenuSub.prototype.itemClick = function (event, item) {
-	        if (!item.url || item.routerLink) {
-	            event.preventDefault();
-	        }
-	        if (item.command) {
-	            if (!item.eventEmitter) {
-	                item.eventEmitter = new core_1.EventEmitter();
-	                item.eventEmitter.subscribe(item.command);
-	            }
-	            item.eventEmitter.emit(event);
-	        }
-	        if (item.routerLink) {
-	            this.router.navigate(item.routerLink);
-	        }
-	    };
-	    TieredMenuSub.prototype.listClick = function (event) {
-	        this.activeItem = null;
-	        this.activeLink = null;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], TieredMenuSub.prototype, "item", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], TieredMenuSub.prototype, "root", void 0);
-	    TieredMenuSub = __decorate([
-	        core_1.Component({
-	            selector: 'p-tieredMenuSub',
-	            template: "\n        <ul [ngClass]=\"{'ui-helper-reset':root, 'ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow':!root}\" class=\"ui-menu-list\"\n            (click)=\"listClick($event)\">\n            <template ngFor let-child [ngForOf]=\"(root ? item : item.items)\">\n                <li #item [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':child.items,'ui-menuitem-active':item==activeItem}\"\n                    (mouseenter)=\"onItemMouseEnter($event, item)\" (mouseleave)=\"onItemMouseLeave($event, item)\">\n                    <a #link [href]=\"child.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [ngClass]=\"{'ui-state-hover':link==activeLink}\" (click)=\"itemClick($event, child)\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <p-tieredMenuSub class=\"ui-submenu\" [item]=\"child\" *ngIf=\"child.items\"></p-tieredMenuSub>\n                </li>\n            </template>\n        </ul>\n    ",
-	            directives: [TieredMenuSub],
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [domhandler_1.DomHandler, router_1.Router, common_1.Location])
-	    ], TieredMenuSub);
-	    return TieredMenuSub;
-	}());
-	exports.TieredMenuSub = TieredMenuSub;
-	var TieredMenu = (function () {
-	    function TieredMenu(el, domHandler, renderer) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.renderer = renderer;
-	    }
-	    TieredMenu.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        this.container = this.el.nativeElement.children[0];
-	        if (this.popup) {
-	            this.documentClickListener = this.renderer.listenGlobal('body', 'click', function () {
-	                if (!_this.preventDocumentDefault) {
-	                    _this.hide();
-	                }
-	                _this.preventDocumentDefault = false;
-	            });
-	        }
-	    };
-	    TieredMenu.prototype.toggle = function (event) {
-	        if (this.container.offsetParent)
-	            this.hide();
-	        else
-	            this.show(event);
-	        this.preventDocumentDefault = true;
-	    };
-	    TieredMenu.prototype.show = function (event) {
-	        this.container.style.display = 'block';
-	        this.domHandler.absolutePosition(this.container, event.target);
-	        this.domHandler.fadeIn(this.container, 250);
-	    };
-	    TieredMenu.prototype.hide = function () {
-	        this.container.style.display = 'none';
-	    };
-	    TieredMenu.prototype.unsubscribe = function (item) {
-	        if (item.eventEmitter) {
-	            item.eventEmitter.unsubscribe();
-	        }
-	        if (item.items) {
-	            for (var _i = 0, _a = item.items; _i < _a.length; _i++) {
-	                var childItem = _a[_i];
-	                this.unsubscribe(childItem);
-	            }
-	        }
-	    };
-	    TieredMenu.prototype.ngOnDestroy = function () {
-	        if (this.popup) {
-	            this.documentClickListener();
-	        }
-	        if (this.model) {
-	            for (var _i = 0, _a = this.model; _i < _a.length; _i++) {
-	                var item = _a[_i];
-	                this.unsubscribe(item);
-	            }
-	        }
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Array)
-	    ], TieredMenu.prototype, "model", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], TieredMenu.prototype, "popup", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], TieredMenu.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], TieredMenu.prototype, "styleClass", void 0);
-	    TieredMenu = __decorate([
-	        core_1.Component({
-	            selector: 'p-tieredMenu',
-	            template: "\n        <div [ngClass]=\"{'ui-tieredmenu ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix':true,'ui-menu-dynamic ui-shadow':popup}\" \n            [class]=\"styleClass\" [ngStyle]=\"style\">\n            <p-tieredMenuSub [item]=\"model\" root=\"root\"></p-tieredMenuSub>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler],
-	            directives: [TieredMenuSub]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
-	    ], TieredMenu);
-	    return TieredMenu;
-	}());
-	exports.TieredMenu = TieredMenu;
-	
-
-/***/ },
-/* 1058 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var TOGGLEBUTTON_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return ToggleButton; }),
-	    multi: true
-	});
-	var ToggleButton = (function () {
-	    function ToggleButton() {
-	        this.onLabel = 'Yes';
-	        this.offLabel = 'No';
-	        this.onChange = new core_1.EventEmitter();
-	        this.checked = false;
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	    }
-	    ToggleButton.prototype.getIconClass = function () {
-	        var baseClass = 'ui-button-icon-left fa fa-fw';
-	        return baseClass + ' ' + (this.checked ? this.onIcon : this.offIcon);
-	    };
-	    ToggleButton.prototype.toggle = function (event) {
-	        if (!this.disabled) {
-	            this.checked = !this.checked;
-	            this.onModelChange(this.checked);
-	            this.onModelTouched();
-	            this.onChange.emit({
-	                originalEvent: event,
-	                checked: this.checked
-	            });
-	        }
-	    };
-	    ToggleButton.prototype.writeValue = function (value) {
-	        this.checked = value;
-	    };
-	    ToggleButton.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    ToggleButton.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], ToggleButton.prototype, "onLabel", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], ToggleButton.prototype, "offLabel", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], ToggleButton.prototype, "onIcon", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], ToggleButton.prototype, "offIcon", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], ToggleButton.prototype, "disabled", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], ToggleButton.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], ToggleButton.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], ToggleButton.prototype, "onChange", void 0);
-	    ToggleButton = __decorate([
-	        core_1.Component({
-	            selector: 'p-toggleButton',
-	            template: "\n        <div [ngClass]=\"{'ui-button ui-togglebutton ui-widget ui-state-default ui-corner-all': true, 'ui-button-text-only': (!onIcon&&!offIcon), 'ui-button-text-icon-left': (onIcon&&offIcon),\n                'ui-state-active': checked, 'ui-state-hover': hover&&!disabled, 'ui-state-disabled': disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\" \n                (click)=\"toggle($event)\" (mouseenter)=\"hover=true\" (mouseleave)=\"hover=false\">\n            <span *ngIf=\"onIcon||offIcon\" [class]=\"getIconClass()\"></span>\n            <span class=\"ui-button-text ui-unselectable-text\">{{checked ? onLabel : offLabel}}</span>\n        </div>\n    ",
-	            providers: [TOGGLEBUTTON_VALUE_ACCESSOR]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], ToggleButton);
-	    return ToggleButton;
-	}());
-	exports.ToggleButton = ToggleButton;
-	
-
-/***/ },
-/* 1059 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var Toolbar = (function () {
-	    function Toolbar() {
-	    }
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], Toolbar.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Toolbar.prototype, "styleClass", void 0);
-	    Toolbar = __decorate([
-	        core_1.Component({
-	            selector: 'p-toolbar',
-	            template: "\n        <div [ngClass]=\"'ui-toolbar ui-widget ui-widget-header ui-corner-all ui-helper-clearfix'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ng-content></ng-content>\n        </div>\n    "
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Toolbar);
-	    return Toolbar;
-	}());
-	exports.Toolbar = Toolbar;
-	
-
-/***/ },
-/* 1060 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
-	var Tooltip = (function () {
-	    function Tooltip(el, domHandler) {
-	        this.el = el;
-	        this.domHandler = domHandler;
-	        this.tooltipPosition = 'right';
-	        this.tooltipEvent = 'hover';
-	    }
-	    Tooltip.prototype.onMouseEnter = function (e) {
-	        if (this.tooltipEvent === 'hover') {
-	            this.show();
-	        }
-	    };
-	    Tooltip.prototype.onMouseLeave = function (e) {
-	        if (this.tooltipEvent === 'hover') {
-	            this.hide();
-	        }
-	    };
-	    Tooltip.prototype.onFocus = function (e) {
-	        if (this.tooltipEvent === 'focus') {
-	            this.show();
-	        }
-	    };
-	    Tooltip.prototype.onBlur = function (e) {
-	        if (this.tooltipEvent === 'focus') {
-	            this.hide();
-	        }
-	    };
-	    Tooltip.prototype.show = function () {
-	        this.create();
-	        var rect = this.el.nativeElement.getBoundingClientRect();
-	        var targetTop = rect.top + document.body.scrollTop;
-	        var targetLeft = rect.left + document.body.scrollLeft;
-	        var left;
-	        var top;
-	        this.container.style.display = 'block';
-	        switch (this.tooltipPosition) {
-	            case 'right':
-	                left = targetLeft + this.domHandler.getOuterWidth(this.el.nativeElement);
-	                top = targetTop + (this.domHandler.getOuterHeight(this.el.nativeElement) - this.domHandler.getOuterHeight(this.container)) / 2;
-	                break;
-	            case 'left':
-	                left = targetLeft - this.domHandler.getOuterWidth(this.container);
-	                top = targetTop + (this.domHandler.getOuterHeight(this.el.nativeElement) - this.domHandler.getOuterHeight(this.container)) / 2;
-	                break;
-	            case 'top':
-	                left = targetLeft + (this.domHandler.getOuterWidth(this.el.nativeElement) - this.domHandler.getOuterWidth(this.container)) / 2;
-	                top = targetTop - this.domHandler.getOuterHeight(this.container);
-	                break;
-	            case 'bottom':
-	                left = targetLeft + (this.domHandler.getOuterWidth(this.el.nativeElement) - this.domHandler.getOuterWidth(this.container)) / 2;
-	                top = targetTop + this.domHandler.getOuterHeight(this.el.nativeElement);
-	                break;
-	        }
-	        this.container.style.left = left + 'px';
-	        this.container.style.top = top + 'px';
-	        this.domHandler.fadeIn(this.container, 250);
-	        this.container.style.zIndex = ++domhandler_1.DomHandler.zindex;
-	    };
-	    Tooltip.prototype.hide = function () {
-	        this.container.style.display = 'none';
-	        this.destroy();
-	    };
-	    Tooltip.prototype.create = function () {
-	        this.container = document.createElement('div');
-	        this.container.className = 'ui-widget ui-tooltip ui-tooltip-' + this.tooltipPosition;
-	        var tooltipArrow = document.createElement('div');
-	        tooltipArrow.className = 'ui-tooltip-arrow';
-	        this.container.appendChild(tooltipArrow);
-	        var tooltipText = document.createElement('div');
-	        tooltipText.className = 'ui-tooltip-text ui-shadow ui-corner-all';
-	        tooltipText.innerHTML = this.text;
-	        this.container.appendChild(tooltipText);
-	        document.body.appendChild(this.container);
-	    };
-	    Tooltip.prototype.destroy = function () {
-	        document.body.removeChild(this.container);
-	    };
-	    __decorate([
-	        core_1.Input('pTooltip'), 
-	        __metadata('design:type', String)
-	    ], Tooltip.prototype, "text", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Tooltip.prototype, "tooltipPosition", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], Tooltip.prototype, "tooltipEvent", void 0);
-	    __decorate([
-	        core_1.HostListener('mouseenter', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Tooltip.prototype, "onMouseEnter", null);
-	    __decorate([
-	        core_1.HostListener('mouseout', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Tooltip.prototype, "onMouseLeave", null);
-	    __decorate([
-	        core_1.HostListener('focus', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Tooltip.prototype, "onFocus", null);
-	    __decorate([
-	        core_1.HostListener('blur', ['$event']), 
-	        __metadata('design:type', Function), 
-	        __metadata('design:paramtypes', [Object]), 
-	        __metadata('design:returntype', void 0)
-	    ], Tooltip.prototype, "onBlur", null);
-	    Tooltip = __decorate([
-	        core_1.Directive({
-	            selector: '[pTooltip]',
-	            host: {},
-	            providers: [domhandler_1.DomHandler]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
-	    ], Tooltip);
-	    return Tooltip;
-	}());
-	exports.Tooltip = Tooltip;
-	
-
-/***/ },
-/* 1061 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var TreeNodeTemplateLoader = (function () {
-	    function TreeNodeTemplateLoader(viewContainer) {
-	        this.viewContainer = viewContainer;
-	    }
-	    TreeNodeTemplateLoader.prototype.ngOnInit = function () {
-	        var view = this.viewContainer.createEmbeddedView(this.template, {
-	            '\$implicit': this.node
-	        });
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], TreeNodeTemplateLoader.prototype, "node", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', core_1.TemplateRef)
-	    ], TreeNodeTemplateLoader.prototype, "template", void 0);
-	    TreeNodeTemplateLoader = __decorate([
-	        core_1.Component({
-	            selector: 'p-treeNodeTemplateLoader',
-	            template: ""
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ViewContainerRef])
-	    ], TreeNodeTemplateLoader);
-	    return TreeNodeTemplateLoader;
-	}());
-	exports.TreeNodeTemplateLoader = TreeNodeTemplateLoader;
-	
-
-/***/ },
-/* 1062 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var __param = (this && this.__param) || function (paramIndex, decorator) {
-	    return function (target, key) { decorator(target, key, paramIndex); }
-	};
-	var core_1 = __webpack_require__(1);
-	var tree_1 = __webpack_require__(497);
-	var treenodetemplateloader_1 = __webpack_require__(1061);
-	var UITreeNode = (function () {
-	    function UITreeNode(tree) {
-	        this.tree = tree;
-	        this.hover = false;
-	        this.expanded = false;
-	    }
-	    UITreeNode.prototype.getIcon = function () {
-	        var icon;
-	        if (this.node.icon)
-	            icon = this.node.icon;
-	        else
-	            icon = this.expanded ? this.node.expandedIcon : this.node.collapsedIcon;
-	        return UITreeNode.ICON_CLASS + ' ' + icon;
-	    };
-	    UITreeNode.prototype.isLeaf = function () {
-	        return this.node.leaf == false ? false : !(this.node.children && this.node.children.length);
-	    };
-	    UITreeNode.prototype.toggle = function (event) {
-	        if (this.expanded)
-	            this.tree.onNodeCollapse.emit({ originalEvent: event, node: this.node });
-	        else
-	            this.tree.onNodeExpand.emit({ originalEvent: event, node: this.node });
-	        this.expanded = !this.expanded;
-	    };
-	    UITreeNode.prototype.onNodeClick = function (event) {
-	        this.tree.onNodeClick(event, this.node);
-	    };
-	    UITreeNode.prototype.isSelected = function () {
-	        return this.tree.isSelected(this.node);
-	    };
-	    UITreeNode.ICON_CLASS = 'ui-treenode-icon fa fa-fw';
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], UITreeNode.prototype, "node", void 0);
-	    UITreeNode = __decorate([
-	        core_1.Component({
-	            selector: 'p-treeNode',
-	            template: "\n        <li class=\"ui-treenode\" *ngIf=\"node\">\n            <div class=\"ui-treenode-content\" [ngClass]=\"{'ui-treenode-selectable': tree.selectionMode}\" \n                (mouseenter)=\"hover=true\" (mouseleave)=\"hover=false\" (click)=\"onNodeClick($event)\">\n                <span class=\"ui-tree-toggler fa fa-fw\" [ngClass]=\"{'fa-caret-right':!expanded,'fa-caret-down':expanded}\" *ngIf=\"!isLeaf()\"\n                        (click)=\"toggle($event)\"></span\n                ><span class=\"ui-treenode-leaf-icon\" *ngIf=\"isLeaf()\"></span\n                ><span [class]=\"getIcon()\" *ngIf=\"node.icon||node.expandedIcon||node.collapsedIcon\"></span\n                ><span class=\"ui-treenode-label ui-corner-all\" \n                    [ngClass]=\"{'ui-state-hover':hover&&tree.selectionMode,'ui-state-highlight':isSelected()}\">\n                        <span *ngIf=\"!tree.template\">{{node.label}}</span>\n                        <p-treeNodeTemplateLoader [node]=\"node\" [template]=\"tree.template\" *ngIf=\"tree.template\"></p-treeNodeTemplateLoader>\n                    </span>\n            </div>\n            <ul class=\"ui-treenode-children\" style=\"display: none;\" *ngIf=\"node.children\" [style.display]=\"expanded ? 'block' : 'none'\">\n                <p-treeNode *ngFor=\"let childNode of node.children\" [node]=\"childNode\"></p-treeNode>\n            </ul>\n        </li>\n    ",
-	            directives: [UITreeNode, treenodetemplateloader_1.TreeNodeTemplateLoader]
-	        }),
-	        __param(0, core_1.Inject(core_1.forwardRef(function () { return tree_1.Tree; }))), 
-	        __metadata('design:paramtypes', [tree_1.Tree])
-	    ], UITreeNode);
-	    return UITreeNode;
-	}());
-	exports.UITreeNode = UITreeNode;
-	
-
-/***/ },
-/* 1063 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var __param = (this && this.__param) || function (paramIndex, decorator) {
-	    return function (target, key) { decorator(target, key, paramIndex); }
-	};
-	var core_1 = __webpack_require__(1);
-	var treetable_1 = __webpack_require__(498);
-	var columntemplateloader_1 = __webpack_require__(494);
-	var UITreeRow = (function () {
-	    function UITreeRow(treeTable) {
-	        this.treeTable = treeTable;
-	        this.level = 0;
-	        this.expanded = false;
-	    }
-	    UITreeRow.prototype.toggle = function (event) {
-	        if (this.expanded)
-	            this.treeTable.onNodeCollapse.emit({ originalEvent: event, node: this.node });
-	        else
-	            this.treeTable.onNodeExpand.emit({ originalEvent: event, node: this.node });
-	        this.expanded = !this.expanded;
-	    };
-	    UITreeRow.prototype.isLeaf = function () {
-	        return this.node.leaf == false ? false : !(this.node.children && this.node.children.length);
-	    };
-	    UITreeRow.prototype.isSelected = function () {
-	        return this.treeTable.isSelected(this.node);
-	    };
-	    UITreeRow.prototype.onRowClick = function (event) {
-	        this.treeTable.onRowClick(event, this.node);
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], UITreeRow.prototype, "node", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], UITreeRow.prototype, "level", void 0);
-	    UITreeRow = __decorate([
-	        core_1.Component({
-	            selector: '[pTreeRow]',
-	            template: "\n        <div class=\"ui-treetable-row\" [ngClass]=\"{'ui-state-hover':hover&&treeTable.selectionMode,'ui-state-highlight':isSelected(node)}\">\n            <td *ngFor=\"let col of treeTable.columns; let i=index\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\"\n                (mouseenter)=\"hover=true\" (mouseleave)=\"hover=false\" (click)=\"onRowClick($event)\">\n                <span *ngIf=\"i==0\" class=\"ui-treetable-toggler fa fa-fw ui-c\" [ngClass]=\"{'fa-caret-down':expanded,'fa-caret-right':!expanded}\"\n                    [ngStyle]=\"{'margin-left':level*16 + 'px','visibility': isLeaf() ? 'hidden' : 'visible'}\"\n                    (click)=\"toggle($event)\"></span>\n                <span *ngIf=\"!col.template\">{{node.data[col.field]}}</span>\n                <p-columnTemplateLoader [column]=\"col\" [rowData]=\"node\" *ngIf=\"col.template\"></p-columnTemplateLoader>\n            </td>\n        </div>\n        <div *ngIf=\"node.children\" class=\"ui-treetable-row\" [style.display]=\"expanded ? 'table-row' : 'none'\">\n            <td [attr.colspan]=\"treeTable.columns.length\" class=\"ui-treetable-child-table-container\">\n                <table>\n                    <tbody pTreeRow *ngFor=\"let childNode of node.children\" [node]=\"childNode\" [level]=\"level+1\"></tbody>\n                </table>\n            </td>\n        </div>\n    ",
-	            directives: [UITreeRow, columntemplateloader_1.ColumnTemplateLoader]
-	        }),
-	        __param(0, core_1.Inject(core_1.forwardRef(function () { return treetable_1.TreeTable; }))), 
-	        __metadata('design:paramtypes', [treetable_1.TreeTable])
-	    ], UITreeRow);
-	    return UITreeRow;
-	}());
-	exports.UITreeRow = UITreeRow;
-	
 
 /***/ }
 ]);

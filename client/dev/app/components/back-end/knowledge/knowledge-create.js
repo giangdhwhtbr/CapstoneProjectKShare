@@ -41,4 +41,3 @@ var CreateKnowledgeComponent = (function () {
     return CreateKnowledgeComponent;
 }());
 exports.CreateKnowledgeComponent = CreateKnowledgeComponent;
-//# sourceMappingURL=knowledge-create.js.map

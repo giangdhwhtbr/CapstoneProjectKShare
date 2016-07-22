@@ -45,4 +45,3 @@ var CreateSubCategoryComponent = (function () {
     return CreateSubCategoryComponent;
 }());
 exports.CreateSubCategoryComponent = CreateSubCategoryComponent;
-//# sourceMappingURL=sub-knowledge-create.js.map

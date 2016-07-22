@@ -23,7 +23,7 @@ var knowledges_list_1 = require('./back-end/knowledge/knowledges-list');
 var requests_list_1 = require("./back-end/request/requests-list");
 var request_update_1 = require("./back-end/request/request-update");
 var badword_update_1 = require("./back-end/badword/badword-update");
-var badword_1 = require("./back-end/badword/badword");
+var badwords_list_1 = require("./back-end/badword/badwords-list");
 var user_list_1 = require("./back-end/users/user-list");
 var AdminComponent = (function () {
     function AdminComponent() {
@@ -31,7 +31,7 @@ var AdminComponent = (function () {
     AdminComponent = __decorate([
         core_1.Component({
             selector: 'kshare',
-            template: "\n  <nav-bar></nav-bar>\n  <sidebar></sidebar>\n  <router-outlet></router-outlet>\n  ",
+            template: "\n  <div id=\"wrapper\">\n    <nav class=\"navbar navbar-inverse navbar-fixed-top\" role=\"navigation\">\n      <nav-bar></nav-bar>\n      <sidebar></sidebar>\n    </nav>\n    <router-outlet></router-outlet>\n  </div>\n  ",
             directives: [
                 router_1.ROUTER_DIRECTIVES,
                 nav_bar_1.NavbarComponent,
@@ -41,7 +41,7 @@ var AdminComponent = (function () {
                 user_list_1.UserListComponent,
                 requests_list_1.RequestListComponent,
                 knowledges_list_1.KnowledgeListComponent,
-                badword_1.BadwordComponent,
+                badwords_list_1.BadwordListComponent,
                 badword_update_1.UpdateBadwordComponent,
                 knowledge_update_1.UpdateKnowledgeComponent,
                 request_update_1.UpdateRequestComponent,

@@ -14,7 +14,6 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var router_1 = require('@angular/router');
-var router_2 = require('@angular/router');
 var nav_bar_1 = require('../shared/nav-bar');
 var side_bar_1 = require('../shared/side-bar');
 var users_1 = require('../../../services/users');
@@ -73,10 +72,9 @@ var UserInfoComponent = (function () {
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(users_1.UserService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, users_1.UserService, router_2.Router, (typeof (_a = typeof router_2.RouteSegment !== 'undefined' && router_2.RouteSegment) === 'function' && _a) || Object, auth_1.AuthService])
+        __metadata('design:paramtypes', [common_1.FormBuilder, users_1.UserService, router_1.Router, (typeof (_a = typeof router_1.RouteSegment !== 'undefined' && router_1.RouteSegment) === 'function' && _a) || Object, auth_1.AuthService])
     ], UserInfoComponent);
     return UserInfoComponent;
     var _a;
 }());
 exports.UserInfoComponent = UserInfoComponent;
-//# sourceMappingURL=user-info.js.map

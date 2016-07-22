@@ -10,12 +10,8 @@ import {
   Control,
   FORM_DIRECTIVES,
 } from '@angular/common';
-import { ROUTER_DIRECTIVES } from '@angular/router';
-import {
-  Router,
-  Routes,
-  RouteSegment
-} from '@angular/router';
+import { ROUTER_DIRECTIVES,Router,RouteSegment } from '@angular/router';
+
 
 import  { NavbarComponent } from '../shared/nav-bar';
 import  { SidebarComponent }  from '../shared/side-bar';
