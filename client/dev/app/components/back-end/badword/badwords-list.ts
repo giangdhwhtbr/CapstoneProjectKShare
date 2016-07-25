@@ -31,7 +31,6 @@ export class BadwordListComponent {
         .getAllBadwords()
         .subscribe((badwords) => {
           this.badwords = badwords;
-          console.log("1234");
         });
   }
 

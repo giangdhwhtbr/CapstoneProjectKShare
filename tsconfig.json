@@ -22,7 +22,6 @@
   "files": [
     "client/dev/app/app.component.ts",
     "client/dev/app/app.routes.ts",
-    "client/dev/demo/fabricjs.d.ts",
     "client/dev/app/routes/kshare.routes.ts",
     "client/dev/app/routes/admin.routes.ts",
     "client/dev/app/components/back-end/badword/badword-create.ts",

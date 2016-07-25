@@ -60,7 +60,6 @@ export class UserInfoComponent {
     }
     this._userService.getUserById(this.id).subscribe(
       (user) => {
-        console.log(user);
         this.user = user;
     },
       (error) => {

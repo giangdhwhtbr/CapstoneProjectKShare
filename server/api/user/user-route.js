@@ -55,6 +55,14 @@ module.exports = class userRoutes {
       });
     router
       .route('/api/resetPassword/:email')
-      .get(userController.resetPassword)
+      .get(userController.resetPassword);
+
+   router
+      .route('/api/is-user-exist/:username')
+      .get(userController.checkUserExist);
+      
+  router
+      .route('/api/user-picture')
+      .post(userController.updateUserPicture);
   }
 }

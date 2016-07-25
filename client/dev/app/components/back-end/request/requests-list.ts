@@ -59,7 +59,6 @@ export class RequestListComponent {
   }
 
   deleteRequest(request: Request) {
-    console.log(request);
     this._requestService
       .deleteRequest(request)
       .subscribe(() => {

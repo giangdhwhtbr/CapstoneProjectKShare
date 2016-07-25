@@ -52,7 +52,6 @@ export class KnowledgeListComponent {
   ngOnInit(): void {
     this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
       this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
-      console.log(this.knowledges);
     });
   }
   private deleteKnowledge(id):void {

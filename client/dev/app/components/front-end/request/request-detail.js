@@ -62,7 +62,6 @@ var RequestDetailClientComponent = (function () {
             for (var i = 0; i < _this.subscribers.length; i++) {
                 if (_this.userToken === _this.subscribers[i]) {
                     _this.checkSubcribedUser = true;
-                    console.log(_this.checkSubcribedUser + " " + i);
                     break;
                 }
             }
@@ -107,12 +106,16 @@ var RequestDetailClientComponent = (function () {
             });
         }
     };
-    RequestDetailClientComponent.prototype.addKshare = function (learner, lecturer, requestId, requestTitle, offerId) {
-        var _this = this;
+    RequestDetailClientComponent.prototype.addKshare = function (learner, lecturer, requestId, offerId) {
         this._kspaceService
-            .addKSpace(learner, lecturer, requestId, requestTitle, offerId)
+            .addKSpace(learner, lecturer, requestId, offerId)
             .subscribe(function (r) {
-            _this.router.navigateByUrl('/kspace/info/' + r._id);
+            //this._chatService.addChatRoom(r._id)
+            //  .subscribe((c) => {
+            //    this.rid = c._id;
+            //    console.log("add chat room successfull");
+            //    this.router.navigateByUrl('/kshare/front.kspace/' + r._id + '/' + this.rid);
+            //  });
         });
     };
     RequestDetailClientComponent.prototype.addSubcriber = function (id) {
@@ -148,4 +151,3 @@ var RequestDetailClientComponent = (function () {
     return RequestDetailClientComponent;
 }());
 exports.RequestDetailClientComponent = RequestDetailClientComponent;
-//# sourceMappingURL=request-detail.js.map

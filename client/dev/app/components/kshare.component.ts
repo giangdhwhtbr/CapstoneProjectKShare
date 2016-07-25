@@ -28,8 +28,7 @@ import { KSpaceComponent } from "./front-end/kspace/kspace";
 import { KSpaceListComponent } from "./front-end/kspace/kspace-list";
 import { KSpaceInfoComponent } from "./front-end/kspace/kspace-info";
 import { FriendListComponent } from "./front-end/user-profile/friend-list";
-
-
+import { UserProfileBarComponent } from "./front-end/user-profile/user-profile-bar";
 
 /**
  * Page components
@@ -64,7 +63,8 @@ import { FriendListComponent } from "./front-end/user-profile/friend-list";
     KSpaceListComponent,
     KSpaceInfoComponent,
     UserProfileComponent,
-    FriendListComponent
+    FriendListComponent,
+    UserProfileBarComponent
   ]
 })
 export class KshareComponent {

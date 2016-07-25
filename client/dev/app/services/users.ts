@@ -14,16 +14,18 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class UserService {
   private _usersUrl = '/api/user/:id';
+  private _profilePictureUrl = '/api/user-picture';
   private _friendUrl = '/api/friendship/:id';
   private _getFriendUrl = '/api/getFriendship';
   private _getRequestByUserUrl = '/api/requests-user/:user';
+  private _isUserExistUrl = '/api/is-user-exist/:username';
+  private _friendshipStatusUrl = '/api/friendship-status/:user1/:user2';
 
   constructor(private _http: Http) { }
 
   getAllUsers(): Observable<User[]> {
     return this._http.get(this._usersUrl.replace(':id', ''))
-      .toPromise()
-      .then((res) => res.json())
+      .map((res) => res.json())
       .catch(this.handleError);
   }
 
@@ -63,14 +65,14 @@ export class UserService {
       firstName: user.firstName,
       lastName: user.lastName,
       displayName: user.displayName,
-      birthday: formatDate(user.birthday),
+      birthday: user.birthday,
       username: user.username,
       password: user.password,
       email: user.email,
       role: user.role,
-      ownKnowledgeId: user.ownKnowledgeId.split(","),
-      interestedKnowledgeId: user.interestedKnowledgeId.split(","),
-      onlineTime: user.onlineTime.split(",")
+      ownKnowledgeId: user.ownKnowledgeId,
+      interestedKnowledgeId: user.interestedKnowledgeId,
+      onlineTime: user.onlineTime
     });
 
     return this._http
@@ -91,11 +93,26 @@ export class UserService {
       username: user.username,
       password: user.password,
       email: user.email,
-      role: user.role
+      role: user.role,
+      linkImg: user.linkImg
     });
     return this._http
       .put(this._usersUrl.replace(':id', user._id), _user, options)
       .map((r) => r.json());
+  }
+
+  updateAvartaLink(user: string, link:string): Observable<any> {
+    let header = new Headers;
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    let _info = JSON.stringify({
+      username: user,
+      linkImg: link
+    });
+    console.log(_info);
+    return this._http
+      .post(this._profilePictureUrl, _info, options);
   }
 
   //add friend service
@@ -114,7 +131,7 @@ export class UserService {
   }
 
   //select friend of logined user
-  getFriendList(currentUser):Observable<any>{
+  getFriendList(currentUser:string):Observable<any>{
     let headers = new Headers({ 'Content-Type': 'application/json'});
     let options = new RequestOptions({ headers: headers });
 
@@ -128,7 +145,7 @@ export class UserService {
   }
 
   //get request of an user
-  getRequestByUser(user):Observable<any>{
+  getRequestByUser(user:string):Observable<any>{
 
     return this._http
       .get(this._getRequestByUserUrl.replace(':user',user))
@@ -137,7 +154,7 @@ export class UserService {
   }
 
   //delete friend request
-  deleteFriendRequest(user1, user2):Observable<any>{
+  deleteFriendRequest(user1:string, user2:string):Observable<any>{
     let headers = new Headers({ 'Content-Type': 'application/json'});
     let options = new RequestOptions({ headers: headers });
 
@@ -147,8 +164,40 @@ export class UserService {
     });
 
     return this._http
-      .put(this._friendUrl.replace(':id',''),_friendship,options)
-      .map((r) => r.json());
+      .put(this._friendUrl.replace(':id',''),_friendship,options);
+  }
+
+  //if user is exist, return 1, else return 0
+  checkUserExist(username:string):Observable<any>{
+    return this._http
+      .get(this._isUserExistUrl.replace(':username',username));
+  }
+
+  acceptFriendRequest(user1:string, user2:string):Observable<any>{
+    console.log(user1 + ' ' + user2);
+    return this._http
+      .get(this._friendshipStatusUrl.replace(':user1', user1).replace(':user2',user2));
+  }
+
+  makeFileRequest(url: string, params: Array<string>, files: Array<File>) {
+    return new Promise((resolve, reject) => {
+      var formData: any = new FormData();
+      var xhr = new XMLHttpRequest();
+      for (var i = 0; i < files.length; i++) {
+        formData.append("uploads[]", files[i], files[i].name);
+      }
+      xhr.onreadystatechange = function () {
+        if (xhr.readyState == 4) {
+          if (xhr.status == 200) {
+            resolve(JSON.parse(xhr.response));
+          } else {
+            reject(xhr.response);
+          }
+        }
+      }
+      xhr.open("POST", url, true);
+      xhr.send(formData);
+    });
   }
 
   private handleError(error: Response) {

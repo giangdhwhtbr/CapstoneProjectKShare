@@ -18,6 +18,30 @@ friendshipSchema.statics.getAll = () => {
       });
 }
 
+friendshipSchema.statics.updateFriendship = (info) => {
+  return new Promise((resolve, reject) => {
+      console.log(info);
+    info.save((err, saved) => {
+      err ? reject(err)
+        : resolve(saved);
+    });
+  });
+}
+
+friendshipSchema.statics.getFriendShipByRUserAndAUser = (rUser) => {
+
+  return new Promise((resolve, reject) => {
+    FriendShip
+      .find({
+        "user1": rUser
+      })
+      .exec((err, friendship) => {
+        err ? reject(err)
+          : resolve(friendship);
+      });
+  });
+}
+
 friendshipSchema.statics.createFriendShip = (friendship) => {
     return new Promise((resolve, reject) => {
       if (!_.isObject(friendship))

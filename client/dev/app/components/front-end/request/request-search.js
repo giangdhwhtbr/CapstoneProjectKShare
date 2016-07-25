@@ -21,15 +21,14 @@ var RequestCategoryComponent = (function () {
         this.route
             .params
             .subscribe(function (params) {
-            _this.id = params['id'];
-            _this.type = params['type'];
+            var type = params['type'];
+            _this.typee = type;
+            var id = params['id'];
+            _this.identify = id;
         });
-    }
-    RequestCategoryComponent.prototype.ngOnInit = function () {
-        var _this = this;
         //get templates from children category
-        if (this.type === "subcategory") {
-            this._requestService.getRequestByKnowledgeId(this.id).subscribe(function (requests) {
+        if (this.typee === "subcategory") {
+            this._requestService.getRequestByKnowledgeId(this.identify).subscribe(function (requests) {
                 //format date
                 var formatDate = function (date) {
                     if (date) {
@@ -48,8 +47,8 @@ var RequestCategoryComponent = (function () {
             });
         }
         //get templates from parent category
-        if (this.type === "category") {
-            this._requestService.getKnowledgeByParent(this.id).subscribe(function (knowledges) {
+        if (this.typee === "category") {
+            this._requestService.getKnowledgeByParent(this.identify).subscribe(function (knowledges) {
                 var formatDate = function (date) {
                     if (date) {
                         var newDate, day, month, year;
@@ -63,7 +62,7 @@ var RequestCategoryComponent = (function () {
                 _this.knowledges = knowledges;
                 for (var i = 0; i < _this.knowledges.length; i++) {
                     _this._requestService.getRequestByKnowledgeId(_this.knowledges[i]._id).subscribe(function (requests) {
-                        //for each child back.knowledge get requests
+                        //for each child knowledge get requests
                         for (var j = 0; j < requests.length; j++) {
                             a.push(requests[j]);
                         }
@@ -78,7 +77,7 @@ var RequestCategoryComponent = (function () {
                 console.log(Error);
             });
         }
-    };
+    }
     __decorate([
         core_1.Input(), 
         __metadata('design:type', String)
@@ -95,4 +94,3 @@ var RequestCategoryComponent = (function () {
     return RequestCategoryComponent;
 }());
 exports.RequestCategoryComponent = RequestCategoryComponent;
-//# sourceMappingURL=request-search.js.map

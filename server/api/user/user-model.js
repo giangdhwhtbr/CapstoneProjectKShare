@@ -116,6 +116,10 @@ const userSchema = new mongoose.Schema({
   resetPasswordExpires: {
     type: Date
   },
+  linkImg:{
+    type:String,
+    default: 'uploads/images.jpg'
+  },
   lastAccessedAt:{type:Date}
 });
 
