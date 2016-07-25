@@ -17,22 +17,27 @@ module.exports = class RouteConfig {
         application.use(express.static(_root + _clientFiles));
         application.use(bodyParser.json());
         // parse application/x-www-form-urlencoded
-        application.use(bodyParser.urlencoded({ extended: false }))
+        application.use(bodyParser.urlencoded({extended: false}))
         application.use(morgan('dev'));
-        application.use(contentLength.validateMax({max: 9999}));
+        //application.use(contentLength.validateMax({max: 9999}));
         application.use(helmet());
+        application.use(function (req, res, next) {
+            res.header("Access-Control-Allow-Origin", "*");
+            res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+            next();
+        });
         require('../api/user/config/passport')(passport);
         application.use(expressSession({
-          secret: 'kshare',
-          cookie: { maxAge: 60000 },
-          secure: false,
-          httpOnly: false,
-          resave: true,
-          saveUninitialized: true
+            secret: 'kshare',
+            cookie: {maxAge: 60000},
+            secure: false,
+            httpOnly: false,
+            resave: true,
+            saveUninitialized: true
         }));
 
         // Add passport's middleware
-      application.use(passport.initialize());
-      application.use(passport.session());
+        application.use(passport.initialize());
+        application.use(passport.session());
     }
 }

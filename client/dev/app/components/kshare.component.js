@@ -32,6 +32,10 @@ var kspace_1 = require("./front-end/kspace/kspace");
 var kspace_list_1 = require("./front-end/kspace/kspace-list");
 var kspace_info_1 = require("./front-end/kspace/kspace-info");
 var friend_list_1 = require("./front-end/user-profile/friend-list");
+var create_article_1 = require("./front-end/article/create-article");
+var detail_article_1 = require("./front-end/article/detail-article");
+var list_article_1 = require("./front-end/article/list-article");
+var displayArtByTag_1 = require("./front-end/tag/displayArtByTag");
 /**
  * Page components
  */
@@ -60,7 +64,11 @@ var KshareComponent = (function () {
                 kspace_list_1.KSpaceListComponent,
                 kspace_info_1.KSpaceInfoComponent,
                 user_profile_1.UserProfileComponent,
-                friend_list_1.FriendListComponent
+                friend_list_1.FriendListComponent,
+                create_article_1.CreateArticleComponent,
+                detail_article_1.detailArticleComponent,
+                list_article_1.listArticleComponent,
+                displayArtByTag_1.displayArtByTagComponent
             ]
         })
     ], KshareComponent);
