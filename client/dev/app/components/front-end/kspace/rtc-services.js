@@ -1,7 +1,6 @@
 /**
  * Created by GiangDH on 7/12/16.
  */
-"use strict";
 var WebRCTService = (function () {
     function WebRCTService() {
     }
@@ -20,12 +19,13 @@ var WebRCTService = (function () {
                 video.oncontextmenu = function () { return false; };
                 remotes.appendChild(container);
                 var kspacePanel = $('#kspace-panel');
-                $('#' + container.id).click(function () {
-                    kspacePanel.find('video').remove();
-                    $('#' + container.id).find('video').clone().appendTo('#kspace-panel');
-                    var video = kspacePanel.find('video');
-                    video.css('width', '100%');
-                    video.css('height', '100%');
+                var v = webrtc.getDomId(peer);
+                var vid = document.getElementById(v);
+                vid.setAttribute("control", "");
+                $('#' + v).click(function () {
+                    var chalkboard = document.getElementById('chalkboard');
+                    var ctx = chalkboard.getContext('2d');
+                    ctx.drawImage(vid, 5, 5, chalkboard.clientWidth, chalkboard.clientHeight);
                 });
             }
             // }
@@ -59,6 +59,6 @@ var WebRCTService = (function () {
         }
     };
     return WebRCTService;
-}());
+})();
 exports.WebRCTService = WebRCTService;
 //# sourceMappingURL=rtc-services.js.map

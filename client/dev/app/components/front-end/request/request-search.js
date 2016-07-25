@@ -1,16 +1,13 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var requests_1 = require('../../../services/requests');
 var RequestCategoryComponent = (function () {
     function RequestCategoryComponent(_requestService, router, route) {
         var _this = this;
@@ -18,14 +15,16 @@ var RequestCategoryComponent = (function () {
         this.router = router;
         this.route = route;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
-        this.route
-            .params
-            .subscribe(function (params) {
+        this.changeRoute = false;
+        this.route.params.subscribe(function (params) {
             _this.id = params['id'];
             _this.type = params['type'];
         });
     }
     RequestCategoryComponent.prototype.ngOnInit = function () {
+        this.loadRequest(s);
+    };
+    RequestCategoryComponent.prototype.loadRequests = function () {
         var _this = this;
         //get templates from children category
         if (this.type === "subcategory") {
@@ -80,19 +79,17 @@ var RequestCategoryComponent = (function () {
         }
     };
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', String)
-    ], RequestCategoryComponent.prototype, "search", void 0);
+        core_1.Input()
+    ], RequestCategoryComponent.prototype, "search");
     RequestCategoryComponent = __decorate([
         core_1.Component({
             selector: 'request-search-cli',
             templateUrl: 'client/dev/app/components/front-end/request/templates/request-search.html',
             styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
             directives: [router_1.ROUTER_DIRECTIVES]
-        }), 
-        __metadata('design:paramtypes', [requests_1.RequestService, router_1.Router, router_1.ActivatedRoute])
+        })
     ], RequestCategoryComponent);
     return RequestCategoryComponent;
-}());
+})();
 exports.RequestCategoryComponent = RequestCategoryComponent;
 //# sourceMappingURL=request-search.js.map

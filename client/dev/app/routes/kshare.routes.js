@@ -1,4 +1,3 @@
-"use strict";
 //Root Component
 var kshare_component_1 = require('../components/kshare.component');
 //Function Components
@@ -69,6 +68,7 @@ exports.KShareRoutes = [
                     },
                     {
                         path: ':type/:id',
+                        pathMatch: 'full',
                         component: request_search_1.RequestCategoryComponent
                     },
                     {
@@ -81,7 +81,7 @@ exports.KShareRoutes = [
                 path: '',
                 component: home_1.HomeComponent
             }
-        ],
+        ]
     },
     {
         path: 'room',

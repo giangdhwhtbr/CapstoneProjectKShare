@@ -20832,7 +20832,9 @@ webpackJsonp([1],[
 	                return _this.runCanActivate(s.route);
 	            }
 	            else if (s instanceof CanDeactivate) {
-	                return _this.runCanDeactivate(s.component, s.route);
+	                // workaround https://github.com/Microsoft/TypeScript/issues/7271
+	                var s2 = s;
+	                return _this.runCanDeactivate(s2.component, s2.route);
 	            }
 	            else {
 	                throw new Error('Cannot be reached');
@@ -32035,9 +32037,6 @@ webpackJsonp([1],[
 	var router_1 = __webpack_require__(175);
 	var router_state_1 = __webpack_require__(114);
 	var RouterLink = (function () {
-	    /**
-	     * @internal
-	     */
 	    function RouterLink(router, route, locationStrategy) {
 	        this.router = router;
 	        this.route = route;
@@ -47359,9 +47358,6 @@ webpackJsonp([1],[
 	var url_tree_1 = __webpack_require__(77);
 	var router_link_1 = __webpack_require__(270);
 	var RouterLinkActive = (function () {
-	    /**
-	     * @internal
-	     */
 	    function RouterLinkActive(router, element, renderer) {
 	        var _this = this;
 	        this.router = router;
@@ -47499,8 +47495,13 @@ webpackJsonp([1],[
 	        catch (e) {
 	            if (!(e instanceof core_1.NoComponentFactoryError))
 	                throw e;
-	            var componentName = component ? component.name : null;
-	            console.warn("'" + componentName + "' not found in precompile array.  To ensure all components referred to by the RouterConfig are compiled, you must add '" + componentName + "' to the 'precompile' array of your application component. This will be required in a future release of the router.");
+	            // TODO: vsavkin uncomment this once CompoentResolver is deprecated
+	            // const componentName = component ? component.name : null;
+	            // console.warn(
+	            //     `'${componentName}' not found in precompile array.  To ensure all components referred
+	            //     to by the RouterConfig are compiled, you must add '${componentName}' to the
+	            //     'precompile' array of your application component. This will be required in a future
+	            //     release of the router.`);
 	            factory = snapshot._resolvedComponentFactory;
 	        }
 	        var inj = core_1.ReflectiveInjector.fromResolvedProviders(providers, this.location.parentInjector);
