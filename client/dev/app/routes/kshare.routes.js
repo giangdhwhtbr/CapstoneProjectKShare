@@ -12,6 +12,9 @@ var kspace_info_1 = require("../components/front-end/kspace/kspace-info");
 var friend_list_1 = require("../components/front-end/user-profile/friend-list");
 var user_profile_1 = require("../components/front-end/user-profile/user-profile");
 var create_article_1 = require("../components/front-end/article/create-article");
+var detail_article_1 = require("../components/front-end/article/detail-article");
+var list_article_1 = require("../components/front-end/article/list-article");
+var displayArtByTag_1 = require("../components/front-end/tag/displayArtByTag");
 exports.KShareRoutes = [
     {
         path: '',
@@ -41,6 +44,23 @@ exports.KShareRoutes = [
                     {
                         path: 'create',
                         component: create_article_1.CreateArticleComponent
+                    },
+                    {
+                        path: 'list',
+                        component: list_article_1.listArticleComponent
+                    },
+                    {
+                        path: ':id',
+                        component: detail_article_1.detailArticleComponent
+                    }
+                ]
+            },
+            {
+                path: 'tag',
+                children: [
+                    {
+                        path: ':id',
+                        component: displayArtByTag_1.displayArtByTagComponent
                     }
                 ]
             },

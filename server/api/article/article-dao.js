@@ -42,7 +42,6 @@ articleSchema.statics.getArticleByTagId = (idTag) => {
     if(!_.isString(idTag)){
       return reject(new TypeError('ID is not a String.'));
     }
-    console.log(idTag);
     Article
       .find({'tags':idTag})
       .exec((err, article) => {

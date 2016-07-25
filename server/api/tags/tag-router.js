@@ -14,6 +14,6 @@ module.exports = class TagRoutes {
 
     router.route('/api/tags/:id')
       .delete(TagController.deleteTag)
-      .get(TagController.getTagById);
+      .get(TagController.getArticleByTagId);
   }
 }

@@ -28,7 +28,12 @@ import { KSpaceComponent } from "./front-end/kspace/kspace";
 import { KSpaceListComponent } from "./front-end/kspace/kspace-list";
 import { KSpaceInfoComponent } from "./front-end/kspace/kspace-info";
 import { FriendListComponent } from "./front-end/user-profile/friend-list";
+
 import { CreateArticleComponent } from "./front-end/article/create-article";
+import { detailArticleComponent } from "./front-end/article/detail-article";
+import { listArticleComponent } from "./front-end/article/list-article";
+
+import { displayArtByTagComponent } from "./front-end/tag/displayArtByTag";
 
 
 
@@ -66,7 +71,10 @@ import { CreateArticleComponent } from "./front-end/article/create-article";
     KSpaceInfoComponent,
     UserProfileComponent,
     FriendListComponent,
-    CreateArticleComponent
+    CreateArticleComponent,
+    detailArticleComponent,
+    listArticleComponent,
+    displayArtByTagComponent
   ]
 })
 export class KshareComponent {

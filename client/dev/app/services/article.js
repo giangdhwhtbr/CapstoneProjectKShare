@@ -14,14 +14,14 @@ var http_1 = require('@angular/http');
 var ArticleService = (function () {
     function ArticleService(_http) {
         this._http = _http;
-        this._requestsUrl = '/api/artices/:id';
+        this._requestsUrl = '/api/article/:id';
     }
-    //getAllRequests(): Observable<Request[]> {
-    //  return this._http.get(this._requestsUrl.replace(':id',''))
-    //    .map((r) => r.json())
-    //    .catch(this.handleError);
-    //}
-    ArticleService.prototype.addArticle = function (_title, _content, newTag) {
+    ArticleService.prototype.getAllArts = function () {
+        return this._http.get(this._requestsUrl.replace(':id', ''))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    ArticleService.prototype.addArticle = function (_title, _content, oldTag, newTag) {
         var header = new http_1.Headers;
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
@@ -29,13 +29,18 @@ var ArticleService = (function () {
             art: {
                 title: _title,
                 content: _content,
-                tags: []
+                tags: oldTag
             },
             newTag: newTag
         });
         return this._http
             .post(this._requestsUrl.replace(':id', ''), _data, options)
             .map(function (r) { return r.json(); });
+    };
+    ArticleService.prototype.getArtById = function (id) {
+        return this._http.get(this._requestsUrl.replace(':id', id))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
     };
     ArticleService = __decorate([
         core_1.Injectable()

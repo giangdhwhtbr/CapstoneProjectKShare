@@ -10,6 +10,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
  * Created by Duc Duong on 7/12/2016.
  */
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
 var tag_1 = require('../../../services/tag');
 var primeng_1 = require('primeng/primeng');
@@ -27,33 +28,45 @@ var CKEditor = (function () {
     return CKEditor;
 })();
 var CreateArticleComponent = (function () {
-    function CreateArticleComponent(_articleService, _tagService) {
+    function CreateArticleComponent(_articleService, _tagService, router, route) {
         this._articleService = _articleService;
         this._tagService = _tagService;
+        this.router = router;
+        this.route = route;
         this.filesToUpload = [];
-        this.textCk = "";
     }
     CreateArticleComponent.prototype.ngOnInit = function () {
         this.CreateUploadImageCkeditor();
         this.addCommandBtnCk();
         this.loadAllKnw();
-        console.log($('#ModalUploadImgCkeditor'));
     };
-    CreateArticleComponent.prototype.filterKnwTag = function () {
-    };
-    CreateArticleComponent.prototype.show = function () {
-        console.log(this.tags);
+    CreateArticleComponent.prototype.filterONTag = function () {
+        var oldTag = [];
+        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+            var e = _a[_i];
+            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+                var e1 = _c[_b];
+                if (e.name == e1) {
+                    oldTag.push(e._id);
+                    var index = this.tags.indexOf(e1);
+                    if (index > -1) {
+                        this.tags.splice(index, 1);
+                    }
+                }
+            }
+        }
+        return [oldTag, this.tags];
     };
     CreateArticleComponent.prototype.filterKnw = function (event) {
         var query = event.query;
         this.filteredKnw = [];
         for (var i = 0; i < this.tagsEx.length; i++) {
-            if (this.tagsEx[i].name.includes(query.toLowerCase())) {
+            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
                 this.filteredKnw.push(this.tagsEx[i].name);
             }
         }
         if (this.filteredKnw.length == 0) {
-            this.filteredKnw.push(query);
+            this.filteredKnw.push(query.trim());
         }
     };
     //load all knowledge
@@ -118,10 +131,11 @@ var CreateArticleComponent = (function () {
         $("#bdOpenModal").trigger("click");
     };
     CreateArticleComponent.prototype.postArticle = function () {
-        this.textCk = CKEDITOR.instances.editor1.getData();
-        this.summary = CKEDITOR.instances.editor1.getSelection().root.$.innerText;
-        this._articleService.addArticle(this.titelArticle, this.textCk).subscribe(function (article) {
-            console.log(article);
+        var _this = this;
+        this.contentCk = CKEDITOR.instances.editor1.getData();
+        var tags = this.filterONTag();
+        this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1]).subscribe(function (article) {
+            _this.router.navigateByUrl('/article/' + article._id);
         }, function (error) {
             console.log(error.text());
         });
@@ -130,8 +144,8 @@ var CreateArticleComponent = (function () {
         core_1.Component({
             selector: 'create-article',
             templateUrl: 'client/dev/app/components/front-end/article/templates/create-article.html',
-            styleUrls: ['client/dev/app/components/front-end/article/styles/create-article.css'],
-            directives: [CKEditor, primeng_1.AutoComplete],
+            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
+            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES],
             providers: [article_1.ArticleService, tag_1.TagService]
         })
     ], CreateArticleComponent);

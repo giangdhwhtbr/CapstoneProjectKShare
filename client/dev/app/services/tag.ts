@@ -8,13 +8,16 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class TagService {
-  private _tagUrl = '/api/tags/:id';
-  constructor(private _http: Http) { }
+    private _tagUrl = '/api/tags/:id';
 
-  getAllTags(): Observable<Tag[]> {
-    return this._http.get(this._tagUrl.replace(':id', ''))
-      .map((r) => r.json())
-      .catch(this.handleError);
-  }
+    constructor(private _http:Http) {
+    }
+
+
+    getArtByTag():Observable<Tag[]> {
+        return this._http.get(this._tagUrl.replace(':id', ''))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
 
 }

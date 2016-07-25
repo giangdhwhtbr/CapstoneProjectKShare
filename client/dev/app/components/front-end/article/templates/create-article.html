@@ -1,4 +1,4 @@
-<div class="container create-article">
+<div class="container article">
   <div >
 
     <div class="titleDiv row">
@@ -66,10 +66,8 @@
     <p-autoComplete  [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
                       [multiple]="true" [(ngModel)]="tags" >
     </p-autoComplete>
-    {{tags}}
     <!--end tags-->
     <button type="button" class="btn btn-primary" (click)="postArticle()">Submit article</button>
-    <button type="button" class="btn btn-primary" (click)="show()">Show</button>
   </div>
 
 </div>

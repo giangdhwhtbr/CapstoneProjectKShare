@@ -1,0 +1,16 @@
+<div *ngIf="article" class="container article">
+    <h3>
+        {{article.title}}
+    </h3>
+    <div class="bodyArt">
+
+    </div>
+    <div *ngIf="tags" class="tags">
+        tags : <span *ngFor="let t of tags">
+            <a [routerLink]="['/tag',t._id]">{{t.name}}</a>,
+        </span>
+    </div>
+    <div class="dateCreate">
+        {{article.createdAt | date:"dd/MM/yyyy"}}
+    </div>
+</div>

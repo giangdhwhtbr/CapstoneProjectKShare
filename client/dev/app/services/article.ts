@@ -8,18 +8,18 @@ import { Observable } from 'rxjs/Observable';
 
 @Injectable()
 export class ArticleService {
-  private _requestsUrl = '/api/artices/:id';
+  private _requestsUrl = '/api/article/:id';
 
   constructor(private _http:Http) {
   }
 
-  //getAllRequests(): Observable<Request[]> {
-  //  return this._http.get(this._requestsUrl.replace(':id',''))
-  //    .map((r) => r.json())
-  //    .catch(this.handleError);
-  //}
+  getAllArts(): Observable<Request[]> {
+    return this._http.get(this._requestsUrl.replace(':id',''))
+      .map((r) => r.json())
+      .catch(this.handleError);
+  }
 
-  addArticle(_title:string, _content:string,newTag:string[]):Observable<any> {
+  addArticle(_title:string, _content:string,oldTag:string[],newTag:string[]):Observable<any> {
     let header = new Headers;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
@@ -28,7 +28,7 @@ export class ArticleService {
         art:{
           title: _title,
           content: _content,
-          tags:[]
+          tags:oldTag
         },
         newTag:newTag
       }
@@ -38,11 +38,11 @@ export class ArticleService {
       .map((r) => r.json());
   }
 
-  //getRequestById(id:string):Observable<any> {
-  //  return this._http.get(this._requestsUrl.replace(':id', id))
-  //    .map((r) => r.json())
-  //    .catch(this.handleError);
-  //}
+  getArtById(id:string):Observable<any> {
+    return this._http.get(this._requestsUrl.replace(':id', id))
+      .map((r) => r.json())
+      .catch(this.handleError);
+  }
 
   //delete templates
   //deleteRequest(request:Request):Observable<any> {

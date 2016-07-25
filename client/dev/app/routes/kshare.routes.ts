@@ -16,7 +16,12 @@ import { KSpaceListComponent } from "../components/front-end/kspace/kspace-list"
 import { KSpaceInfoComponent } from "../components/front-end/kspace/kspace-info";
 import { FriendListComponent } from "../components/front-end/user-profile/friend-list";
 import { UserProfileComponent } from "../components/front-end/user-profile/user-profile";
+
 import { CreateArticleComponent } from "../components/front-end/article/create-article";
+import { detailArticleComponent } from "../components/front-end/article/detail-article";
+import { listArticleComponent } from "../components/front-end/article/list-article";
+
+import { displayArtByTagComponent } from "../components/front-end/tag/displayArtByTag";
 
 export const KShareRoutes:RouterConfig = [
     {
@@ -47,6 +52,23 @@ export const KShareRoutes:RouterConfig = [
                     {
                         path: 'create',
                         component: CreateArticleComponent
+                    },
+                    {
+                        path:'list',
+                        component:listArticleComponent
+                    },
+                    {
+                        path:':id',
+                        component:detailArticleComponent
+                    }
+                ]
+            },
+            {
+                path:'tag',
+                children:[
+                    {
+                        path:':id',
+                        component:displayArtByTagComponent
                     }
                 ]
             },

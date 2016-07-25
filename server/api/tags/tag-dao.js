@@ -66,6 +66,30 @@ tagSchema.statics.getTagById = (id) => {
       });
   });
 }
+tagSchema.statics.getTagByIds = (ids) => {
+
+  return new Promise((resolve, reject) => {
+    Tag
+      .find({'_id': { $in: ids}
+      })
+      .exec((err, tags) => {
+        err ? reject(err)
+          : resolve(tags);
+      });
+  });
+}
+
+
+tagSchema.statics.getTagsByArtId = (id) => {
+  return new Promise((resolve,reject)=>{
+    Tag
+        .find({'articles':id})
+        .exec((err, tag) => {
+          err ? reject(err)
+              : resolve(tags);
+        });
+  });
+}
 
 tagSchema.statics.updateTag = (tag) => {
   return new Promise((resolve, reject) => {

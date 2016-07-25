@@ -1,4 +1,4 @@
-.create-article{
+.article{
   margin-top: 100px;
 }
 .isLinkPn{
@@ -12,4 +12,8 @@
 }
 .editor{
   margin-bottom: 1em;
+}
+.bodyArt .img{
+  width:100%;
+  max-width:700px;
 }

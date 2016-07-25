@@ -8,11 +8,11 @@ const ArticleController = require('./article-controller');
 module.exports = class ArticleRoutes {
   static init(router) {
     router
-      .route('/api/artices')
+      .route('/api/article')
       .get(ArticleController.getAllArticles)
       .post(ArticleController.createArticle);
 
-    router.route('/api/artices/:id')
+    router.route('/api/article/:id')
       .delete(ArticleController.deleteArticle)
       .get(ArticleController.getArticleById)
       .put(ArticleController.updateArticleById);

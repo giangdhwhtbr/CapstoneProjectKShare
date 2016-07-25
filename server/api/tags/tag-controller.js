@@ -26,6 +26,36 @@ module.exports = class TagController {
     }
   }
 
+
+  static getArticleByTagId(req, res) {
+    if (req.params && req.params.id) {
+      ArticleDAO
+          .getArticleByTagId(req.params.id)
+          .then((art) => {
+            console.log(art);
+            res.status(200).json(art)
+          })
+          .catch(error => res.status(400).json(error));
+    } else {
+      res.status(404).json({
+        "message": "No article Id in templates"
+      });
+    }
+  }
+
+  static getTagsByArtId(req,res){
+    if(req.params && req.params.id){
+      TagDAO
+        .getTagsByArtId(req.params.id)
+        .then(tag => res.status(200).json(tag))
+        .catch(error => res.status(400).json(error));
+    }else{
+      res.status(404).json({
+        "message"    :   "No tag Id in templates"
+      });
+    }
+  }
+
   static createTag(req, res) {
     let _Tag = req.body;
 
