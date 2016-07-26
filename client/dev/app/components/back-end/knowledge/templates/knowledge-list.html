@@ -1,88 +1,148 @@
-<nav-bar></nav-bar>
-<sidebar></sidebar>
-<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-  <div class="row">
-    <ol class="breadcrumb">
-    </ol>
-  </div>
-  <!--/.row-->
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Knowledges Management</h1>
-    </div>
-  </div>
-<knowledge-create></knowledge-create>
+<div id="page-wrapper">
+  <div class="container-fluid">
 
-  <!--/.row-->
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-md-3">
-              <button type="button" class="btn btn-primary btn-lg" data-toggle="modal"
-                      data-target="#modalCreateKnowledge">
-                Create Knowledge
-              </button>
-            </div>
-            <div class="col-md-9"></div>
-            <div class="col-md-3"></div>
+      <!-- Page Heading -->
+      <div class="row">
+          <div class="col-lg-12">
+              <ol class="breadcrumb">
+                  <li>
+                      <i class="fa fa-dashboard"></i>  <a href="index.html">Bảng</a>
+                  </li>
+                  <li class="active">
+                      <i class="fa fa-file"></i> Quản lý tri thức
+                  </li>
+              </ol>
           </div>
-          <div class="row">
-            <div class="col-md-12">
-              <table class="table mg-top-15px" align="center">
-                <thead>
-                  <tr class="tb-header">
-                    <th>Knowledge</th>
-                    <th>Description</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody *ngFor="let knowledge of knowledges">
-                  <tr data-toggle="collapse" [attr.data-target]="'.' + knowledge._id">
-                    <td>{{knowledge.name}}</td>
-                    <td>{{knowledge.description}}</td>
-                    <th>
-                      <button class="glyphicon glyphicon-trash btn btn-danger" (click)="deleteKnowledge(knowledge._id)"></button>
-                      <a [routerLink]="['/admin/knowledges/'+ knowledge._id]"><span class="btn btn-warning glyphicon glyphicon-pencil"></span></a>
-                      <button class="glyphicon glyphicon-send btn btn-primary" data-toggle="modal" [attr.data-target]="'#' + knowledge._id"></button>
-                      <sub-create kId="{{knowledge._id}}"></sub-create>
-                    </th>
-                  </tr>
-                  <tr bgcolor="#5bc0de" *ngFor="let subCate of knowledge.subCategory" class="collapse" class="{{knowledge._id}}" hidden>
-                    <td>{{subCate.name}}</td>
-                    <td>{{subCate.description}}</td>
-                    <th>
-                      <button class="glyphicon glyphicon-trash btn btn-danger" (click)="deleteKnowledge(subCate._id)"></button>
-                      <a [routerLink]="['/admin/knowledges/'+ subCate._id]"><span class="btn btn-warning glyphicon glyphicon-pencil"></span></a>
-                    </th>
-                  </tr>
-                </tbody>
-              </table>
-              <!--<ul class="list-group">
-                <li class="list-group-item" *ngFor="let back.knowledge of knowledges" data-toggle="collapse" data-target=".sub">
-                  <span>{{back.knowledge.name}}</span>
-                  <span>{{back.knowledge.description}}</span>
-                  <button class="glyphicon glyphicon-trash btn btn-danger" (click)="deleteKnowledge(back.knowledge._id)"></button>
-                  <a [routerLink]="['/admin/knowledges/'+ back.knowledge._id]"><span class="btn btn-warning glyphicon glyphicon-pencil"></span></a>
-                  <button class="glyphicon glyphicon-send btn btn-primary" data-toggle="modal" data-target="#modalCreateSubCategory"></button>
-                  <sub-create kId="{{back.knowledge._id}}"></sub-create>
-                  <ul class="collapse list-group sub" *ngIf="back.knowledge.subCategory.length > 0">
-                    <li *ngFor="let subCate of back.knowledge.subCategory" class="list-group-item">
-                      <span>{{subCate.name}}</span>
-                      <span>{{subCate.description}}</span>
-                      <button class="glyphicon glyphicon-trash btn btn-danger" (click)="deleteKnowledge(subCate._id)"></button>
-                      <a [routerLink]="['/admin/knowledges/'+ subCate._id]"><span class="btn btn-warning glyphicon glyphicon-pencil"></span></a>
-                    </li>
-                  </ul>
-                </li>
-              </ul>-->
-            </div>
+          <div class="col-lg-12">
+              <h1 class="page-header">
+                  Quản lý tri thức
+              </h1>
+          </div>
+      </div>
+      <!-- /.row -->
+      <div class="col-lg-8">
+        <div class="row">
+          <div class="input-group">
+            <input type="text" class="form-control" id="filter" placeholder="Tìm kiếm" [(ngModel)]="filter">
+            <span class="input-group-btn" style="width:0;">
+              <button type="button" class="btn btn-info" id="submit" data-toggle="collapse" data-target="#create">Tạo</button>
+            </span>
           </div>
         </div>
       </div>
-    </div>
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="create">
+            <form role="form" id="create" class="collapse" [ngFormModel]="knowledgeForm" (ngSubmit)="addKnowledge(knowledgeForm.value)">
+              <div class="form-group">
+                <label for="title">Tiêu đề</label>
+                <input class="form-control" type="text" required="required" id="name" name="name"
+                       [ngFormControl]="knowledgeForm.controls['name']"/>
+                <label for="description">Nội dung</label>
+                <textarea class="form-control" type="text" required="required" id="description" name="description"
+                          [ngFormControl]="knowledgeForm.controls['description']"></textarea>
+                <button type="submit" class="btn btn-success">Hoàn thành</button>
+                <button type="reset" class="btn btn-warning">Nhập lại</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+            <div>
+                <table class="table table-responsive">
+                    <thead class="thead-inverse">
+                        <tr>
+                          <th>STT</th>
+                          <th>Tri thức</th>
+                          <th>Nội dung</th>
+                          <th>Chức năng</th>
+                        </tr>
+                    </thead>
+                    <tbody class="searchable" *ngFor="let knowledge of knowledges | stringFilter: filter| paginate: { itemsPerPage: 10, currentPage: page }">
+                        <tr>
+                          <td></td>
+                          <td>{{knowledge.name}}</td>
+                          <td>{{knowledge.description}}</td>
+                          <td class="center">
+          									<a class="btn btn-info" [routerLink]="['/admin/knowledges/'+ knowledge._id]">
+          										<i class="fa fa-pencil-square-o white"></i>
+          									</a>
+          									<a class="btn btn-danger" (click)="deleteKnowledge(knowledge._id)">
+          										<i class="fa fa-trash-o white"></i>
+          									</a>
+                            <a class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#' + knowledge._id">
+                              <i class="fa fa-plus"></i>
+                            </a>
+                            <div class="modal fade" id="{{knowledge._id}}" tabindex="-1" role="dialog" aria-labelledby="modalSubCategory">
+                              <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                  <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                                    <h4 class="modal-title" id="myModalLabel">Tạo</h4>
+                                  </div>
+                                  <div class="modal-body">
+                                    <form role="form" [ngFormModel]="subCategoryForm" (ngSubmit)="addSubKnowledge(subCategoryForm.value)">
+                                      <div class="row" hidden>
+                                        <div class="col-md-12">
+                                          <label for="_id">Parent</label>
+                                          <input class="form-control" type="text" value="{{knowledge._id}}" [ngModel]="knowledge._id" [ngFormControl]="subCategoryForm.controls['parent']"
+                                                  required="required" id="_id" name="knowledge._id"/>
+                                        </div>
+                                      </div>
+
+                                      <div class="row">
+                                        <div class="col-md-12">
+                                          <label for="description">Tên</label>
+                                          <textarea class="form-control" type="text" required="required" id="name" name="name"
+                                                    [ngFormControl]="subCategoryForm.controls['name']"></textarea>
+                                        </div>
+                                      </div>
+                                      <div class="row">
+                                        <div class="col-md-12">
+                                          <label for="description">Nội dung</label>
+                                          <textarea class="form-control" type="text" required="required" id="description" name="description"
+                                                    [ngFormControl]="subCategoryForm.controls['description']"></textarea>
+                                        </div>
+                                      </div>
+                                      <br>
+                                      <div class="row">
+                                        <div class="col-md-12">
+                                          <button type="submit" class="btn btn-primary">Tạo</button>
+                                          <button type="reset" class="btn btn-warning">Nhập lại</button>
+                                        </div>
+                                      </div>
+                                    </form>
+                                  </div>
+                                  <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <a class="btn btn-success" data-toggle="collapse" [attr.data-target]="'.' + knowledge._id">
+          										<i class="fa fa-code-fork" aria-hidden="true"></i>
+          									</a>
+          								</td>
+                        </tr>
+                        <tr bgcolor="#5bc0de" *ngFor="let subCate of knowledge.subCategory" class="collapse" class="{{knowledge._id}}" hidden>
+                          <td></td>
+                          <td>{{subCate.name}}</td>
+                          <td>{{subCate.description}}</td>
+                          <th>
+                            <a class="btn btn-info" [routerLink]="['/admin/knowledges/'+ subCate._id]">
+          										<i class="fa fa-pencil-square-o white"></i>
+          									</a>
+          									<a class="btn btn-danger" (click)="deleteKnowledge(subCate._id)">
+          										<i class="fa fa-trash-o white"></i>
+          									</a>
+                          </th>
+                        </tr>
+                    </tbody>
+                </table>
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+            </div>
+        </div>
   </div>
-  <!--/.row-->
 </div>
-<!--/.main-->

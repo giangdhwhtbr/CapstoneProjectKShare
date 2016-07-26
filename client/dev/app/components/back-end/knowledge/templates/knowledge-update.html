@@ -1,34 +1,37 @@
-<div class="container" id="knowledgeUpdate" style="min-height:437px">
-  <div class="col-xs-12 col-sm-9 fixEfMenu">
-    <div class="panel panel-default card-rq">
-      <form role="form" [ngFormModel]="updateKnowledgeForm" (ngSubmit)="updateKnowledge(updateKnowledgeForm.value)">
-
-        <div class="panel-body">
-          <p class="lead">Chỉnh sửa <b>{{name}}</b></p>
-          <div class="form-group" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-            <label class="control-label" for="title">Tên </label>
-            <input class="form-control" id="name" type="text" [ngModel]="name" [ngFormControl]="updateKnowledgeForm.controls['name']"
-            />
-          </div>
-          <br>
-
-          <div class="form-group" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu" hidden>
-            <label class="control-label" for="id">ID </label>
-            <input class="form-control" id="id" type="text" [ngModel]="id" [ngFormControl]="updateKnowledgeForm.controls['_id']" />
-          </div>
-
-          <div class="form-group" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-            <label class="control-label" for="description">Nội dung </label>
-            <textarea class="form-control" id="description" type="text" [ngModel]="description" [ngFormControl]="updateKnowledgeForm.controls['description']"></textarea>
-          </div>
-        </div>
-        <br>
-        <button type="submit" class="btn btn-primary"><span class="glyphicon glyphicon-ok"></span>Cập nhập</button>
-        <!--<button type="reset" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span>Hủy bỏ</button>-->
-        <a [routerLink]="['/admin/knowledges']"><span class="btn btn-danger glyphicon glyphicon-remove">Hủy</span></a>
-
-        <br>
-      </form>
-    </div>
-  </div>
+<div id="page-wrapper">
+  <div class="container-fluid">
+		<div class="row">
+				<div class="col-lg-12">
+						<ol class="breadcrumb">
+								<li>
+										<i class="fa fa-dashboard"></i>  <a href="index.html">Bảng</a>
+								</li>
+								<li>
+										<i class="fa fa-file"></i> <a [routerLink]="['/admin/knowledges']">Quản lý tri thức</a>
+								</li>
+								<li class="active">
+										<i class="fa fa-file"></i> Thông tin tri thức
+								</li>
+						</ol>
+				</div>
+		</div>
+		<div class="row" *ngIf="knowledge">
+			<div class="col-lg-12">
+				<div class="update">
+					<form role="form" id="update" [ngFormModel]="updateKnowledgeForm" (ngSubmit)="updateKnowledge(updateKnowledgeForm.value)">
+						<div class="form-group">
+								<h4>Thông tin tri thức <strong>{{knowledge.name}}</strong> </h4>
+                <label class="control-label" for="name">Tên </label>
+								<input class="form-control" type="text" required="required" id="name" name="name" [ngModel]="name" [ngFormControl]="updateKnowledgeForm.controls['name']">
+								<input class="form-control" name="_id" id="id" type="hidden" [ngModel]="id" [ngFormControl]="updateKnowledgeForm.controls['_id']">
+                <label class="control-label" for="description">Nội dung </label>
+                <textarea class="form-control" id="description" type="text" [ngModel]="description" [ngFormControl]="updateKnowledgeForm.controls['description']"></textarea>
+								<button type="submit" class="btn btn-success">Hoàn thành</button>
+								<button type="reset" class="btn btn-warning">Nhập lại</button>
+						</div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

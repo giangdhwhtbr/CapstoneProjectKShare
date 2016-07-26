@@ -1,18 +1,12 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 var core_1 = require('@angular/core');
-var $ = require('jquery');
-var paper = require('paper');
-var io = require('socket.io');
-var primeng_1 = require('primeng/primeng');
 var brushColor = $('#color-picker').val();
 var ChalkBoardComponent = (function () {
     function ChalkBoardComponent() {
@@ -22,21 +16,17 @@ var ChalkBoardComponent = (function () {
             { label: '#03a9f4', value: '#03a9f4' }
         ];
         this.brushSizes = [
-            { label: '1px', value: '1' },
-            { label: '2px', value: '2' },
-            { label: '3px', value: '3' },
-            { label: '4px', value: '4' },
-            { label: '5px', value: '5' },
-            { label: '6px', value: '6' },
-            { label: '7px', value: '7' },
-            { label: '8px', value: '8' },
-            { label: '9px', value: '9' },
-            { label: '10px', value: '10' }
+            { label: '1', value: '1' },
+            { label: '2', value: '3' },
+            { label: '3', value: '5' },
+            { label: '4', value: '10' },
+            { label: '5', value: '20' },
+            { label: '6', value: '30' },
+            { label: '7', value: '50' }
         ];
     }
     ChalkBoardComponent.prototype.ngOnInit = function () {
-        var socket = io('http://192.168.1.7:3333');
-        var sessionId = socket.sessionid;
+        var sessionId;
         var drawing = false;
         var mode = 'draw';
         var path;
@@ -44,9 +34,26 @@ var ChalkBoardComponent = (function () {
         var strokeColor = 'white';
         var strokeWidth = 1;
         var colorStore;
+        var room = this.id;
+        var socket = io('http://localhost:3333');
+        socket.emit('subscribe', room);
         var chalkboard = document.getElementById('chalkboard');
         // Initiate the paper at canvas id="chalkboard"
         paper.setup(chalkboard);
+        //initiate setting
+        var drawToolShow = false;
+        $('#draw-tools').hide();
+        //show draw-tools
+        $('#draw-option').click(function () {
+            if (!drawToolShow) {
+                $('#draw-tools').show();
+                drawToolShow = true;
+            }
+            else {
+                $('#draw-tools').hide();
+                drawToolShow = false;
+            }
+        });
         $('#color-picker').change(function () {
             if ($('#color-picker').val() !== 'white') {
                 $('#color-picker').css('color', 'white');
@@ -132,9 +139,10 @@ var ChalkBoardComponent = (function () {
                 x: x,
                 y: y,
                 color: color,
-                width: width
+                width: width,
+                room: room
             };
-            socket.emit('startPoint', data, sessionId);
+            socket.emit('startPoint', data);
         }
         /**
         * function emitPathPoint(x,y)
@@ -143,35 +151,35 @@ var ChalkBoardComponent = (function () {
         function emitPathPoint(x, y) {
             var data = {
                 x: x,
-                y: y
+                y: y,
+                room: room
             };
-            socket.emit('pathpoint', data, sessionId);
+            socket.emit('pathpoint', data);
         }
         /**
          * When socket receive startPoint, call function streamStartPath(x,y)
          */
         socket.on('startPoint', function (data) {
-            console.log('Stream Start point', data);
             streamStartPath(data.x, data.y, data.color, data.width);
         });
         /**
          * When socket receive pathpoint, call function streamDraw(x,y)
          */
         socket.on('pathpoint', function (data) {
-            console.log('draw event recieved:', data);
             streamDraw(data.x, data.y);
         });
     };
+    __decorate([
+        core_1.Input()
+    ], ChalkBoardComponent.prototype, "id");
     ChalkBoardComponent = __decorate([
         core_1.Component({
             selector: 'chalkboard',
-            template: "\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n        <div id=\"draw-tools\">\n            <select id=\"color-picker\" class=\"tool-btn\">\n                <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n            </select>\n            <hr>\n            <select id=\"brush-size\" class=\"tool-btn\">\n                <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n            </select>\n            <hr>\n            <p id=\"eraser\">\n                <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n            </p>\n        </div>\n    ",
-            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"],
-            directives: [primeng_1.Dropdown]
-        }), 
-        __metadata('design:paramtypes', [])
+            template: "\n        <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n        <div id=\"draw-tools\">\n            <select id=\"color-picker\" class=\"tool-btn\">\n                <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n            </select>\n            <hr>\n            <select id=\"brush-size\" class=\"tool-btn\">\n                <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n            </select>\n            <hr>\n            <p id=\"eraser\">\n                <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n            </p>\n        </div>\n    ",
+            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
+        })
     ], ChalkBoardComponent);
     return ChalkBoardComponent;
-}());
+})();
 exports.ChalkBoardComponent = ChalkBoardComponent;
 //# sourceMappingURL=chalkboard.js.map

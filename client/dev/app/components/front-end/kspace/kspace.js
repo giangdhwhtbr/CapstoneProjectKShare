@@ -1,21 +1,17 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 var core_1 = require('@angular/core');
-var kspace_1 = require('../../../services/kspace');
 var rtc_services_1 = require('./rtc-services');
 var router_1 = require('@angular/router');
+var common_1 = require('@angular/common');
 //import { ChatComponent } from './chat';
 var chalkboard_1 = require('./chalkboard');
-var SimpleWebRTC = require('../../../../asserts/js/simplewebrtc.js');
-var $ = require('jquery');
 var KSpaceComponent = (function () {
     function KSpaceComponent(router, route, _kspaceService, rtcService) {
         var _this = this;
@@ -23,6 +19,7 @@ var KSpaceComponent = (function () {
         this.route = route;
         this._kspaceService = _kspaceService;
         this.rtcService = rtcService;
+        this.messages = [];
         this.route
             .params
             .subscribe(function (params) {
@@ -30,6 +27,12 @@ var KSpaceComponent = (function () {
         });
         this.username = localStorage.getItem('username');
     }
+    KSpaceComponent.prototype.chatting = function (mess) {
+        var username = this.username;
+        var messages = this.messages;
+        messages.push(username + ': ' + mess);
+        this.messages = messages;
+    };
     /*
     * Init when the component is initiated
     *
@@ -45,44 +48,70 @@ var KSpaceComponent = (function () {
         var kspacePanel = $('#kspace-panel');
         var chatBox = $('#chat-box-panel');
         var drawTools = $('#draw-tools-panel');
+        // initiate setting
+        var chatToolShow = false;
+        $('#chat-panel').hide();
+        //show chat-panel
+        $('#chat').click(function () {
+            if (!chatToolShow) {
+                $('#chat-panel').show();
+                $('#kspace-panel').css('right', '18%');
+                $('#draw-option').css('margin-left', '96.8%');
+                chatToolShow = true;
+            }
+            else {
+                $('#chat-panel').hide();
+                $('#kspace-panel').css('right', '6%');
+                $('#draw-option').css('margin-left', '97.15%');
+                chatToolShow = false;
+            }
+        });
         this._kspaceService
             .getKSpaceById(this.id)
             .subscribe(function (kspace) {
             var room = kspace._id;
             var username = _this.username;
             var rtc = _this.rtcService;
-            if (username) {
+            var socket = io('http://localhost:3333');
+            socket.emit('subscribe', room);
+            // $('#chat-form').submit(function () {
+            //   var message = $('#chat-input').val()
+            //   if(message && username){
+            //     var messages = showMessage(username, message);
+            //     this.messages = messages;
+            //   }
+            // })
+            var isKspaceUser = function () {
+                if (username === kspace.lecturer || username === kspace.learner) {
+                    return true;
+                }
+                return false;
+            };
+            if (isKspaceUser) {
                 // initiate webrtc
-                var isKspaceUser = function () {
-                    if (username === kspace.lecturer || username === kspace.learner) {
-                        return true;
-                    }
-                    return false;
-                };
                 if (username === kspace.lecturer) {
                     var webrtc = new SimpleWebRTC({
-                        // the element that will hold local video
                         localVideoEl: 'localVideo',
-                        // the element that will hold remote videos
                         remoteVideosEl: '',
                         autoRequestMedia: true,
-                        log: true,
-                        autoRemoveVideos: true,
                         nick: username,
                         localVideo: {
                             autoplay: true,
                             mirror: true,
                             muted: true // mute local video stream to prevent echo
-                        }
+                        },
+                        log: true,
+                        debug: false
                     });
                 }
-                else {
+                else if (username === kspace.learner) {
                     var webrtc = new SimpleWebRTC({
                         remoteVideosEl: '',
                         nick: username,
-                        media: { video: true, audio: true }
+                        media: { video: false, audio: true }
                     });
                 }
+                console.log(webrtc);
                 rtc.rtcSetting(webrtc, room, kspace.lecturer);
                 var peers = webrtc.getPeers();
                 var sharescreenToken = false;
@@ -107,15 +136,15 @@ var KSpaceComponent = (function () {
             styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES,
+                common_1.FORM_DIRECTIVES,
                 chalkboard_1.ChalkBoardComponent
             ],
             providers: [
                 rtc_services_1.WebRCTService
             ]
-        }), 
-        __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, kspace_1.KSpaceService, rtc_services_1.WebRCTService])
+        })
     ], KSpaceComponent);
     return KSpaceComponent;
-}());
+})();
 exports.KSpaceComponent = KSpaceComponent;
 //# sourceMappingURL=kspace.js.map

@@ -1,76 +1,163 @@
-<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-  <div class="row">
-    <ol class="breadcrumb">
-      <li>
-        <a href="#">
-          <svg class="glyph stroked home">
-            <use xlink:href="#stroked-home"></use>
-          </svg>
-        </a>
-      </li>
-      <li class="active">Users</li>
-    </ol>
-  </div>
-  <!--/.row-->
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Users Management</h1>
-    </div>
-    <hr>
-  </div>
-  <!--/.row-->
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="panel panel-default">
-        <div class="panel-body">
+<div id="page-wrapper">
+  <div class="container-fluid">
 
-          <div class="row">
-            <div class="col-md-3">
-              <button type="button" class="ui-widget-header ui-helper-clearfix" id="createUser" data-toggle="modal"
-                      data-target="#modalCreateUser">
-                Create User
-              </button>
-              <!-- Modal Create User -->
-              <user-create></user-create>
-            </div>
-            <div class="col-md-9"></div>
-            <div class="col-md-3"></div>
+      <!-- Page Heading -->
+      <div class="row">
+          <div class="col-lg-12">
+              <ol class="breadcrumb">
+                  <li>
+                      <i class="fa fa-dashboard"></i>  <a href="index.html">Bảng</a>
+                  </li>
+                  <li class="active">
+                      <i class="fa fa-file"></i> Quản lý người dùng
+                  </li>
+              </ol>
           </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div *ngIf="errorMessage">
-                {{errorMessage}}
-              </div>
-              <p-dataTable [value]="users" resizableColumns="true" [rows]="10" [paginator]="true" [globalFilter]="gb">
-                <header>
-                  <h4 style="color:white; font-weight: 500;">User List</h4>
-                </header>
-                <footer>There are {{numOfUser}} users</footer>
-                <p-column field="name.firstName" header="First Name" [sortable]="true"></p-column>
-                <p-column field="name.lastName" header="Last Name"[sortable]="true"></p-column>
-                <p-column field="displayName" header="Display Name"[sortable]="true"></p-column>
-                <p-column field="birthday" header="Birthday"[sortable]="true">
-                  <template let-col let-user="rowData">
-                      {{user[col.field] | date:"dd/MM/yyyy"}}
-                  </template>
-                </p-column>
-                <p-column field="username" header="Username"[sortable]="true"></p-column>
-                <p-column field="email" header="Email"[sortable]="true"></p-column>
-                <p-column field="role" header="Role"[sortable]="true"></p-column>
-                <p-column field="createdAt" header="Created At"[sortable]="true">
-                  <template let-col let-user="rowData">
-                    {{user[col.field] | date:"dd/MM/yyyy"}}
-                  </template>
-                </p-column>
-              </p-dataTable>
-            </div>
+          <div class="col-lg-12">
+              <h1 class="page-header">
+                  Quản lý người dùng
+              </h1>
           </div>
-          <!-- /.row -->
-
+      </div>
+      <!-- /.row -->
+      <div class="col-lg-8">
+        <div class="row">
+          <div class="input-group">
+            <input type="text" class="form-control" id="filter" placeholder="Tìm kiếm" [(ngModel)]="filter">
+            <span class="input-group-btn" style="width:0;">
+              <button type="button" class="btn btn-info" id="submit" data-toggle="collapse" data-target="#create">Tạo</button>
+            </span>
+          </div>
         </div>
       </div>
-    </div>
+      <div class="row">
+        <div class="col-lg-8">
+          <div class="create">
+            <form role="form" id="create" class="collapse" [ngFormModel]="userForm" (ngSubmit)="addUser(userForm.value)">
+              <div class="form-group">
+                  <label for="firstName">First name</label>
+                  <input class="form-control"
+                         type="text"
+                         required="required"
+                         id="firstName"
+                         name="firstName"
+                         [ngFormControl]="userForm.controls['firstName']"/>
+                   <label for="lastName">Last name</label>
+                   <input class="form-control"
+                          type="text"
+                          required="required"
+                          id="lastName"
+                          name="lastName"
+                          [ngFormControl]="userForm.controls['lastName']"/>
+                    <label for="displayName">Display Name</label>
+                    <input class="form-control"
+                           type="text"
+                           required="required"
+                           id="displayName"
+                           name="displayName"
+                           [ngFormControl]="userForm.controls['displayName']"/>
+                 <label for="displayName">Birthday</label>
+                 <input class="form-control"
+                        type="date"
+                        required="required"
+                        id="birthday"
+                        name="birthday"
+                        [ngFormControl]="userForm.controls['birthday']"/>
+                 <label for="username">Username</label>
+                 <input class="form-control"
+                        type="text"
+                        required="required"
+                        id="username"
+                        name="username"
+                        [ngFormControl]="userForm.controls['username']"/>
+                 <label for="password">Password</label>
+                 <input class="form-control"
+                        type="password"
+                        required="required"
+                        id="password"
+                        name="password"
+                        [ngFormControl]="userForm.controls['password']"/>
+                 <label for="email">Email</label>
+                 <input class="form-control"
+                        type="email"
+                        required="required"
+                        id="email"
+                        name="email"
+                        [ngFormControl]="userForm.controls['email']"/>
+                 <label for="role">Role</label>
+                 <select name="role"
+                         id="role"
+                         required="required"
+                         class="form-control"
+                         [ngFormControl]="userForm.controls['role']"
+                 >
+                   <option value="admin">Admin</option>
+                   <option value="manager">Manager</option>
+                   <option value="instructor">Instructor</option>
+                   <option value="normal" selected>Normal</option>
+                 </select>
+                 <label for="email">Lĩnh vực am hiểu  </label>
+                 <input class="form-control"
+                        type="text"
+                        required="required"
+                        id="ownKnowledgeId"
+                        name="ownKnowledgeId"
+                        [ngFormControl]="userForm.controls['ownKnowledgeId']"/>
+                 <label for="email">Lĩnh vực quan tâm   </label>
+                 <input class="form-control"
+                        type="text"
+                        required="required"
+                        id="interestedKnowledgeId"
+                        name="interestedKnowledgeId"
+                        [ngFormControl]="userForm.controls['interestedKnowledgeId']"/>
+                 <label for="email">Thời gian    </label>
+                 <input class="form-control"
+                        type="text"
+                        required="required"
+                        id="onlineTime"
+                        name="onlineTime"
+                        [ngFormControl]="userForm.controls['onlineTime']"/>
+                  <button type="submit" class="btn btn-success">Hoàn thành</button>
+                  <button type="reset" class="btn btn-warning">Nhập lại</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-lg-12">
+            <div>
+                <table class="table table-striped table-responsive searchable">
+                    <thead class="thead-inverse">
+                        <tr>
+                          <th>STT</th>
+                          <th>Tên</th>
+                          <th>Họ</th>
+                          <th>Tên hiển thị</th>
+                          <th>Sinh nhật</th>
+                          <th>Tên người dùng</th>
+                          <th>Email</th>
+                          <th>Vai trò</th>
+                          <th>Ngày tạo</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let user of users | stringFilter: filter|paginate: { itemsPerPage: 10, currentPage: page }">
+                          <td></td>
+                          <td>{{user.firstname}}</td>
+                          <td>{{user.lastname}}</td>
+                          <td>{{user.displayname}}</td>
+                          <td>{{user.birthday}}</td>
+                          <td>{{user.username}}</td>
+                          <td>{{user.email}}</td>
+                          <td>{{user.role}}</td>
+                          <td>{{user.createdAt}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <footer>There are {{numOfUser}} users</footer>
+                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+            </div>
+        </div>
   </div>
-  <!--/.row-->
 </div>
-
