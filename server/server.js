@@ -9,7 +9,7 @@ const os = require('os');
 const express = require('express');
 
 const app = express();
-const http = require('http');
+const https = require('https');
 
 const fs = require('fs');
 const RoutesConfig = require('./config/routes.conf');
@@ -17,6 +17,8 @@ const PoliciesConfig = require('./config/policies.conf');
 const DBConfig = require('./config/db.conf');
 const Routes = require('./routes/index');
 const socket = require('socket.io');
+
+const KSpaceCtrl = require('./api/kspace/kspace-controller');
 
 RoutesConfig.init(app);
 PoliciesConfig.init();
@@ -29,7 +31,7 @@ const opts = {
 }
 
 
-const server = http.createServer(app)
+const server = https.createServer(opts,app)
      .listen(PORT, () => {
        console.log(`up and running @: ${os.hostname()} on port: ${PORT}`);
        console.log(`enviroment: ${process.env.NODE_ENV}`);
@@ -50,14 +52,28 @@ io.sockets.on('connection', function (socket) {
   });
 
   socket.on('subscribe', function(room) { 
-        console.log('joining room', room);
         socket.join(room); 
     })
 
   socket.on('unsubscribe', function(room) {  
-      console.log('leaving room', room);
       socket.leave(room); 
   })
 
+  socket.on("chat_message", function(data){
+        KSpaceCtrl.updateChatLog(data)
+        .then(kspace => {
+          var dataReturn = {
+            user: data.createdUser,
+            msg: data.message,
+            url: data.dataURL
+          }
+          io.in(data.id).emit("chat_message", dataReturn);
+        })
+        .catch(error => {
+          var dataReturn = 'Server Error!'
+          io.in.data.id.emit("chat_message",dataReturn);
+        });
+
+    });
 });
 

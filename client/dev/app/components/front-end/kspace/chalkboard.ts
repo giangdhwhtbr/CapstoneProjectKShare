@@ -48,17 +48,16 @@ export class ChalkBoardComponent {
     }
     @Input() id: string;
     ngOnInit():void {
-            var sessionId;
             var drawing = false;
             var mode = 'draw';
-            var path;
-            var streamPath;
+            var path: any;
+            var streamPath: any;
             var strokeColor: string = 'white';
             var strokeWidth = 1;
             var colorStore :string ;
             var room = this.id;
             
-            var socket = io('http://localhost:3333');
+            var socket = io('https://localhost:3333');
             socket.emit('subscribe', room);
             var chalkboard = document.getElementById('chalkboard');
             // Initiate the paper at canvas id="chalkboard"

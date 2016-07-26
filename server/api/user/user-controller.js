@@ -70,22 +70,44 @@ module.exports = class userController {
   }
 
   static updateUser(req, res){
+    console.log(req.body);
     if(req.params && req.params.id) {
       var currentDate = new Date();
         userDAO.getUserById(req.params.id)
           .then(user => {
-            user.name.firstName = req.body.firstName,
-            user.name.lastName  = req.body.lastName,
-            user.displayName    = req.body.displayName,
-            user.username       = req.body.username,
-            user.password       = req.body.password,
-            user.email          = req.body.email,
-            user.role           = req.body.role,
-            user.knowledgeId    = req.body.knowledgeId,
-            user.status         = req.body.status,
-            user.updatedAt      = currentDate;
-
-            //res.status(200).json(user);
+            if(req.body.firstName){
+              user.name.firstName = req.body.firstName;
+            }
+            if(req.body.lastName){
+              user.name.lastName  = req.body.lastName;
+            }
+            if(req.body.displayName){
+              user.displayName    = req.body.displayName;              
+            }
+            if(req.body.username){
+              user.username       = req.body.username;
+            }
+            if(req.body.password){
+              user.password       = req.body.password;
+            }
+            if(req.body.email){
+              user.email          = req.body.email;
+            }
+            if(req.body.role){
+              user.role           = req.body.role;
+            }
+            if(req.body.ownKnowledgeId){
+              user.ownKnowledgeId    = req.body.ownKnowledgeId;
+            }
+            if(req.body.interestedKnowledgeId){
+              user.interestedKnowledgeId    = req.body.interestedKnowledgeId;
+            }
+            if(req.body.status){
+              user.status         = req.body.status;
+            }
+              user.updatedAt      = currentDate;
+          
+            
             userDAO.updateUserById(user)
               .then(user => res.status(200).json(user))
               .catch(error => res.status(400).json(error));

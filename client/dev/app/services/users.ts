@@ -79,19 +79,31 @@ export class UserService {
   }
 
 
-  updateUser(user: User): Observable<any> {
+  updateUser(user: any): Observable<any> {
     let headers = new Headers({ 'Content-Type': 'application/json'});
     let options = new RequestOptions({ headers: headers });
+    var ownk,ink;
 
+
+    if(user.ownKnowledgeId && user.ownKnowledgeId.length){
+      ownk = user.ownKnowledgeId.split(",");
+    }
+    if(user.interestedKnowledgeId && user.interestedKnowledgeId.length){
+      ink = user.ownKnowledgeId.split(",");
+    }
     let _user = JSON.stringify({
       _id: user._id,
       firstName: user.firstName,
       lastName: user.lastName,
       displayName: user.displayName,
+      birthday: user.birthday,
+      phone: user.phone,
       username: user.username,
       password: user.password,
       email: user.email,
-      role: user.role
+      role: user.role,
+      ownKnowledgeId: ownk,
+      interestedKnowledgeId: ink,
     });
     return this._http
       .put(this._usersUrl.replace(':id', user._id), _user, options)

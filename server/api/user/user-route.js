@@ -11,14 +11,13 @@ module.exports = class userRoutes {
     router
       .route('/api/user')
       .get(userPolicies.isAllowed,userController.getAll)
-      .post(userController.createNew)
-      .put(userController.getUserByUserName);
+      .post(userController.createNew);
 
     router
       .route('/api/user/:id')
       .get(userController.getUserById)
-      .delete(userPolicies.isAllowed,userController.removeById)
       .put(userController.updateUser);
+      
 
     router
       .route('/api/login')

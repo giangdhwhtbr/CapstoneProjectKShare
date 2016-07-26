@@ -25,11 +25,26 @@
         </div>
         <div id="chat-panel">
           <div id="chat-box-output" class="panel panel-default chat-box">
-            <p *ngFor="let mess of messages" >{{mess}}</p>
+            <div *ngFor="let msg of messages ">
+              <div *ngIf="!msg.sender">
+                <ul class="msg-box other-msg-box">
+                  <li>{{msg.user}} :</li>
+                  <li> {{msg.msg}} </li>
+                  <li *ngIf="msg.url"><img src="{{msg.url}}" alt=""></li>
+                </ul>
+              </div>
+              <div *ngIf="msg.sender" class="own-msg">
+                <ul class="msg-box own-msg-box">
+                  <li> {{msg.msg}}</li>
+                  <li *ngIf="msg.url"><img src="{{msg.url}}" alt=""></li>
+                </ul>
+              </div>
+            </div>
           </div>
-          <form id="chat-form">
-            <textarea id="chat-input" #mess class="panel panel-default" placeholder="chat here"></textarea>
-            <button type="submit" id="btn-send" (click)="chatting(mess.value)"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+          <form id="chat-form" (ngSubmit)="send(mess,img)" >
+            <input type="checkbox" id="img" name="img" [(ngModel)]="img" value="">
+            <input type="text" id="chat-input" [(ngModel)]="mess" class="panel panel-default" placeholder="chat here">   
+            <button type="submit" id="btn-send"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
           </form>
         </div>
         <button id="chat"><i class="fa fa-comments-o fa-2x" aria-hidden="true"></i></button>

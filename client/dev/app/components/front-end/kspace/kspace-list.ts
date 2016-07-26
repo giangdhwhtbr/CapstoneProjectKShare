@@ -56,11 +56,9 @@ export class KSpaceListComponent{
     private router: Router
   ){}
   ngOnInit():void {
-    console.log('dmc');
     this._kspaceService
       .getAllKSpace()
       .subscribe((kspaces) => {
-        console.log(kspaces);
           for (var i = 0; i < kspaces.length; i++) {
             kspaces[i].createdAt = new Date(kspaces[i].createdAt);
           }

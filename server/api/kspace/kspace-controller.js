@@ -3,7 +3,7 @@
 "use strict";
 const mongoose = require('mongoose');
 const KSpaceDAO = require('./KSpace-dao');
-
+const Promise = require('bluebird');
 module.exports = class KSpaceController {
   //get all KSpaces controller
   static getAll(req, res) {
@@ -46,6 +46,26 @@ module.exports = class KSpaceController {
         console.log(error);
         res.status(400).json(error)
       });
+  }
+
+  static updateChatLog(data) {
+    var currentDate = new Date();
+    
+    var log = {
+      createdAt: currentDate,
+      createdUser: data.createdUser,
+      message: data.message,
+      dataURL: data.dataURL
+    }
+    
+
+   return KSpaceDAO.getKSpaceById(data.id)
+    .then(kspace => {
+      kspace.chatlog.push(log);
+      return KSpaceDAO.updateKSpaceById(kspace)
+              .then(kspace => {return kspace})
+              .catch(error => {return error});
+    });
   }
 
 

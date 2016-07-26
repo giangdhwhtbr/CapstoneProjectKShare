@@ -7,6 +7,7 @@ export interface User {
   lastName: string;
   displayName: string;
   birthday: Date;
+  phone: string;
   username: string;
   password: string;
   email: string;

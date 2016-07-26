@@ -22,8 +22,6 @@ declare var SimpleWebRTC: any;
 declare var $: any;
 declare var io: any;
 
-
-
 @Component ({
   selector: 'kspace',
   templateUrl:'client/dev/app/components/front-end/kspace/templates/kspace.html',
@@ -46,7 +44,9 @@ export class KSpaceComponent {
     lecturer: string;
     learner: string;
 
-    messages: string[] = [];
+    messages: Array<any>;
+    mess: String;
+    socket: any;
 
     constructor(
       public router:Router,
@@ -60,15 +60,54 @@ export class KSpaceComponent {
           this.id = params['id'];
         });
      this.username = localStorage.getItem('username');
+     this.messages = [];
+     this.socket = io('https://localhost:3333');
+     this.socket.emit('subscribe', this.id);
+     this.socket.on("chat_message", (dataReturn) => {
+       var isSender: boolean = false;
+
+       if(dataReturn.user == this.username) {
+         isSender = true;
+       }
+
+          var msgObject = {
+            user: dataReturn.user,
+            msg:  dataReturn.msg,
+            url: dataReturn.url,
+            sender: isSender
+          }
+          this.messages.push(msgObject); 
+      });
   }
 
-  chatting(mess:string): void {
-    var username = this.username;
-    var messages = this.messages;
+  send(message:string, img: any) {
+      if(img){
+        
+        var chalkboard = document.getElementById("chalkboard");
+        var ctx = chalkboard.getContext("2d");
+        var dataURL = chalkboard.toDataURL();
 
-    messages.push(username+': '+mess);
-    this.messages = messages;
+        var data = {
+          id: this.id,
+          createdUser: this.username,
+          message: message,
+          dataURL: dataURL
+        }
+        this.socket.emit("chat_message", data);
+        this.mess = "";
 
+      }else {
+
+        var data = {
+          id: this.id,
+          createdUser: this.username,
+          message: message
+        }
+        this.socket.emit("chat_message", data);
+        this.mess = "";
+
+      }
+        
   }
 
   /*
@@ -111,23 +150,27 @@ export class KSpaceComponent {
     this._kspaceService
       .getKSpaceById(this.id)
       .subscribe(kspace => {
+        var chatlog = kspace.chatlog;
+        var isSender:boolean = false;
+        for (var log of chatlog){
+          var msg = log.createdUser +': '+log.message;
+          if(log.createdUser == this.username){
+            isSender = true;
+          } else {
+            isSender = false;
+          }
+          var msgObject = {
+            user: log.createdUser,
+            msg:  log.message,
+            sender: isSender,
+            url: log.dataURL
+          } 
+          this.messages.push(msgObject);
+        }
+
         var room = kspace._id;
         var username = this.username;
         var rtc = this.rtcService;
-        var socket = io('http://localhost:3333');
-        socket.emit('subscribe', room);
-
-
-      // $('#chat-form').submit(function () {
-      //   var message = $('#chat-input').val()
-      //   if(message && username){
-      //     var messages = showMessage(username, message);
-      //     this.messages = messages;
-      //   }
-      // })
-
-
-     
 
         var isKspaceUser = function() {
           if(username === kspace.lecturer || username === kspace.learner){
@@ -135,8 +178,8 @@ export class KSpaceComponent {
           }
           return false;
         };
-        
-        if (isKspaceUser){
+        if (isKspaceUser()){
+          
           // initiate webrtc
           if(username === kspace.lecturer){
             var webrtc = new SimpleWebRTC({
@@ -159,8 +202,6 @@ export class KSpaceComponent {
               media: { video: false, audio: true}
             })
           }
-
-          console.log(webrtc);
           rtc.rtcSetting(webrtc,room,kspace.lecturer);
           var peers = webrtc.getPeers();
           var sharescreenToken: boolean = false;
