@@ -42,7 +42,7 @@ export class HeaderComponent {
     //   //this.countUnReadNoti = 0;
     //   this._noti.getNotificationByUser(user).subscribe(
     //     (notifications) => {
-    //       this.notifications = notifications.reverse();
+    //       this.notifications = notifications;
 
     //       // for (var i = 0; i < notifications.length; i++) {
     //       //   if (notifications[i].status === "Chưa đọc") {
@@ -56,6 +56,7 @@ export class HeaderComponent {
     this.socket.on('receive notification', function (data) {
       if (localStorage.getItem('username') === data.data.user) {
         console.log(data.data);
+        //console.log(this.getNotificationByUser());
         // getNotificationByUser(localStorage.getItem('username'));
 
         //show noti 
@@ -92,7 +93,6 @@ export class HeaderComponent {
     this._noti.getNotificationByUser(this.userToken).subscribe(
       (notifications) => {
         this.notifications = notifications;
-        this.notifications.reverse();
 
         for (var i = 0; i < notifications.length; i++) {
           if (notifications[i].status === "Chưa đọc") {

@@ -17,84 +17,116 @@ import { KSpaceInfoComponent } from "../components/front-end/kspace/kspace-info"
 import { FriendListComponent } from "../components/front-end/user-profile/friend-list";
 import { UserProfileComponent } from "../components/front-end/user-profile/user-profile";
 
-export const KShareRoutes: RouterConfig = [
-  {
-    path: '',
-    component: KshareComponent,
-    children: [
-      {
-        path: 'user',
-        children: [
-          {
-            path: ':name',
-            children: [
-              {
-                path: 'friends',
-                component: FriendListComponent
-              },
-              {
-                path: '',
-                component: UserProfileComponent
-              }
-            ]
-          }
-        ]
-      },
-      {
-        path: 'kspace',
-        children: [
-          {
-            path: 'info',
-            children: [{
-              path:':id',
-              component: KSpaceInfoComponent
-            }]
-          },
-          {
-            path: '',
-            component: KSpaceListComponent
-          }
-        ]
-      },
-      {
-        path: 'requests',
-        children: [
-          {
-            path: ':id',
-            children:[
-              {
-                path: 'info',
-                component:RequestDetailClientComponent
-              },
-              {
-                path: 'update',
-                component: RequestUpdateClientComponent
-              }
-            ]
-          },
-          {
-            path: ':type/:id',
-            pathMatch: 'full',
-            component: RequestCategoryComponent
-          },
-          {
-            path: '',
-            component: RequestListClientComponent
-          }
-        ]
-      },
-      {
+import { CreateArticleComponent } from "../components/front-end/article/create-article";
+import { detailArticleComponent } from "../components/front-end/article/detail-article";
+import { listArticleComponent } from "../components/front-end/article/list-article";
+
+import { displayArtByTagComponent } from "../components/front-end/tag/displayArtByTag";
+
+export const KShareRoutes:RouterConfig = [
+    {
         path: '',
-        component: HomeComponent
-      }
-    ],
-  },
-  {
-    path: 'room',
-    children: [{
-      path:':id',
-      component: KSpaceComponent
-    }]
-  },
+        component: KshareComponent,
+        children: [
+            {
+                path: 'user',
+                children: [
+                    {
+                        path: ':name',
+                        children: [
+                            {
+                                path: 'friends',
+                                component: FriendListComponent
+                            },
+                            {
+                                path: '',
+                                component: UserProfileComponent
+                            }
+                        ]
+                    }
+                ]
+            },
+            {
+                path: 'article',
+                children: [
+                    {
+                        path: 'create',
+                        component: CreateArticleComponent
+                    },
+                    {
+                        path:'list',
+                        component:listArticleComponent
+                    },
+                    {
+                        path:':id',
+                        component:detailArticleComponent
+                    }
+                ]
+            },
+            {
+                path:'tag',
+                children:[
+                    {
+                        path:':id',
+                        component:displayArtByTagComponent
+                    }
+                ]
+            },
+            {
+                path: 'kspace',
+                children: [
+                    {
+                        path: 'info',
+                        children: [{
+                            path: ':id',
+                            component: KSpaceInfoComponent
+                        }]
+                    },
+                    {
+                        path: '',
+                        component: KSpaceListComponent
+                    }
+                ]
+            },
+            {
+                path: 'requests',
+                children: [
+                    {
+                        path: ':id',
+                        children: [
+                            {
+                                path: 'info',
+                                component: RequestDetailClientComponent
+                            },
+                            {
+                                path: 'update',
+                                component: RequestUpdateClientComponent
+                            }
+                        ]
+                    },
+                    {
+                        path: ':type/:id',
+                        pathMatch: 'full',
+                        component: RequestCategoryComponent
+                    },
+                    {
+                        path: '',
+                        component: RequestListClientComponent
+                    }
+                ]
+            },
+            {
+                path: '',
+                component: HomeComponent
+            }
+        ],
+    },
+    {
+        path: 'room',
+        children: [{
+            path: ':id',
+            component: KSpaceComponent
+        }]
+    },
 ];
 

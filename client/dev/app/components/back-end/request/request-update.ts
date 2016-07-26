@@ -11,7 +11,6 @@ import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  }
 @Component({
   selector: 'request-update-cli',
   templateUrl: 'client/dev/app/components/back-end/request/templates/request-update.html',
-  styleUrls: ['client/dev/asserts/css/backend-styles.css'],
   directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES]
 })
 

@@ -1,20 +1,35 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var common_1 = require('@angular/common');
 var badword_1 = require('../../../services/badword');
 var badword_update_1 = require('./badword-update');
+var ng2_pagination_1 = require('ng2-pagination');
+var filter_1 = require('../shared/filter');
 var BadwordListComponent = (function () {
-    function BadwordListComponent(badwordService) {
+    function BadwordListComponent(fb, badwordService, router) {
         this.badwordService = badwordService;
+        this.router = router;
         this.pageTitle = 'Badword List';
+        this.filter = '';
+        this.maxSize = 7;
+        this.directionLinks = true;
+        this.autoHide = false;
+        this.config = {
+            id: 'advanced',
+            itemsPerPage: 10,
+            currentPage: 1
+        };
+        this.badwordForm = fb.group({
+            "word": [""]
+        });
     }
     BadwordListComponent.prototype.ngOnInit = function () {
         this.getAll();
@@ -25,7 +40,6 @@ var BadwordListComponent = (function () {
             .getAllBadwords()
             .subscribe(function (badwords) {
             _this.badwords = badwords;
-            console.log("1234");
         });
     };
     BadwordListComponent.prototype.deleteBadword = function (id) {
@@ -46,16 +60,25 @@ var BadwordListComponent = (function () {
             return badwords;
         });
     };
+    BadwordListComponent.prototype.addBadword = function (word) {
+        var _this = this;
+        this.badwordService
+            .addBadword(word)
+            .subscribe(function (word) {
+            _this.badwords.push(word);
+            _this.badwordForm.controls["word"].updateValue("");
+        });
+    };
     BadwordListComponent = __decorate([
         core_1.Component({
             selector: 'badword-list',
             templateUrl: 'client/dev/app/components/back-end/badword/templates/badword-list.html',
-            styleUrls: ['client/dev/app/components/back-end/badword/styles/badword.css'],
-            directives: [badword_update_1.UpdateBadwordComponent]
-        }), 
-        __metadata('design:paramtypes', [badword_1.BadwordService])
+            directives: [ng2_pagination_1.PaginationControlsCmp, badword_update_1.UpdateBadwordComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES],
+            providers: [badword_1.BadwordService, ng2_pagination_1.PaginationService],
+            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
+        })
     ], BadwordListComponent);
     return BadwordListComponent;
-}());
+})();
 exports.BadwordListComponent = BadwordListComponent;
 //# sourceMappingURL=badwords-list.js.map

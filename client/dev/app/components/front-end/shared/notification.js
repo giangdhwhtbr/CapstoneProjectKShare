@@ -1,12 +1,10 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 var core_1 = require('@angular/core');
 var PushNotificationComponent = (function () {
@@ -98,90 +96,70 @@ var PushNotificationComponent = (function () {
     PushNotificationComponent.prototype.ngOnChanges = function () {
     };
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', String)
-    ], PushNotificationComponent.prototype, "title", void 0);
+        core_1.Input()
+    ], PushNotificationComponent.prototype, "title");
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', String)
-    ], PushNotificationComponent.prototype, "body", void 0);
+        core_1.Input()
+    ], PushNotificationComponent.prototype, "body");
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', String)
-    ], PushNotificationComponent.prototype, "icon", void 0);
+        core_1.Input()
+    ], PushNotificationComponent.prototype, "icon");
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', String)
-    ], PushNotificationComponent.prototype, "sound", void 0);
+        core_1.Input()
+    ], PushNotificationComponent.prototype, "sound");
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Object)
-    ], PushNotificationComponent.prototype, "data", void 0);
+        core_1.Input()
+    ], PushNotificationComponent.prototype, "data");
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', String)
-    ], PushNotificationComponent.prototype, "tag", void 0);
+        core_1.Input()
+    ], PushNotificationComponent.prototype, "tag");
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', String)
-    ], PushNotificationComponent.prototype, "dir", void 0);
+        core_1.Input()
+    ], PushNotificationComponent.prototype, "dir");
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', String)
-    ], PushNotificationComponent.prototype, "lang", void 0);
+        core_1.Input()
+    ], PushNotificationComponent.prototype, "lang");
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Boolean)
-    ], PushNotificationComponent.prototype, "renotify", void 0);
+        core_1.Input()
+    ], PushNotificationComponent.prototype, "renotify");
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Boolean)
-    ], PushNotificationComponent.prototype, "sticky", void 0);
+        core_1.Input()
+    ], PushNotificationComponent.prototype, "sticky");
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Array)
-    ], PushNotificationComponent.prototype, "vibrate", void 0);
+        core_1.Input()
+    ], PushNotificationComponent.prototype, "vibrate");
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Boolean)
-    ], PushNotificationComponent.prototype, "noscreen", void 0);
+        core_1.Input()
+    ], PushNotificationComponent.prototype, "noscreen");
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Boolean)
-    ], PushNotificationComponent.prototype, "silent", void 0);
+        core_1.Input()
+    ], PushNotificationComponent.prototype, "silent");
     __decorate([
-        core_1.Input(), 
-        __metadata('design:type', Number)
-    ], PushNotificationComponent.prototype, "closeDelay", void 0);
+        core_1.Input()
+    ], PushNotificationComponent.prototype, "closeDelay");
     __decorate([
-        core_1.Output('load'), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], PushNotificationComponent.prototype, "onLoad", void 0);
+        core_1.Output('load')
+    ], PushNotificationComponent.prototype, "onLoad");
     __decorate([
-        core_1.Output('show'), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], PushNotificationComponent.prototype, "onShow", void 0);
+        core_1.Output('show')
+    ], PushNotificationComponent.prototype, "onShow");
     __decorate([
-        core_1.Output('close'), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], PushNotificationComponent.prototype, "onClose", void 0);
+        core_1.Output('close')
+    ], PushNotificationComponent.prototype, "onClose");
     __decorate([
-        core_1.Output('error'), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], PushNotificationComponent.prototype, "onError", void 0);
+        core_1.Output('error')
+    ], PushNotificationComponent.prototype, "onError");
     __decorate([
-        core_1.Output('action'), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], PushNotificationComponent.prototype, "onClick", void 0);
+        core_1.Output('action')
+    ], PushNotificationComponent.prototype, "onClick");
     PushNotificationComponent = __decorate([
         core_1.Component({
             selector: 'push-notification',
             styles: [':host { display: none; }'],
             template: ''
-        }), 
-        __metadata('design:paramtypes', [])
+        })
     ], PushNotificationComponent);
     return PushNotificationComponent;
-}());
+})();
 exports.PushNotificationComponent = PushNotificationComponent;
 //# sourceMappingURL=notification.js.map

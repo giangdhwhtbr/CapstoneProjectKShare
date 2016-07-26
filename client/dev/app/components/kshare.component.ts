@@ -28,7 +28,18 @@ import { KSpaceComponent } from "./front-end/kspace/kspace";
 import { KSpaceListComponent } from "./front-end/kspace/kspace-list";
 import { KSpaceInfoComponent } from "./front-end/kspace/kspace-info";
 import { FriendListComponent } from "./front-end/user-profile/friend-list";
+<<<<<<< HEAD
 import { UserProfileBarComponent } from "./front-end/user-profile/user-profile-bar";
+=======
+
+import { CreateArticleComponent } from "./front-end/article/create-article";
+import { detailArticleComponent } from "./front-end/article/detail-article";
+import { listArticleComponent } from "./front-end/article/list-article";
+
+import { displayArtByTagComponent } from "./front-end/tag/displayArtByTag";
+
+
+>>>>>>> b18a0ce6157f668ba535f8791f5485b10789cd10
 
 /**
  * Page components
@@ -64,7 +75,14 @@ import { UserProfileBarComponent } from "./front-end/user-profile/user-profile-b
     KSpaceInfoComponent,
     UserProfileComponent,
     FriendListComponent,
+<<<<<<< HEAD
     UserProfileBarComponent
+=======
+    CreateArticleComponent,
+    detailArticleComponent,
+    listArticleComponent,
+    displayArtByTagComponent
+>>>>>>> b18a0ce6157f668ba535f8791f5485b10789cd10
   ]
 })
 export class KshareComponent {
