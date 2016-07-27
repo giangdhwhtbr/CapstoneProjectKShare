@@ -17,14 +17,14 @@
     <div *ngIf="searchs && searchs.length" id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu">
       <div class="panel panel-default card-rq" *ngFor="let search of searchs| paginate: configRs">
         <div class="panel-body">
-          <a [routerLink]="['info/',search._id]">
+          <a [routerLink]="[search._id,'info/']">
             <p class="lead">{{search.title}}</p>
           </a>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
             Nội dung : {{search.description}}
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-            Người tạo : {{search.user}}
+            <a [routerLink]="['/user/',search.user]">Người tạo : {{search.user}}</a>
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
             Trạng thái : {{search.status}}
@@ -50,7 +50,7 @@
           Nội dung : {{request.description}}
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-          Người tạo : {{request.user}}
+          Người tạo :<a [routerLink]="['/user/',request.user]"> {{request.user}}</a>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
           Trạng thái : {{request.status}}

@@ -36,7 +36,9 @@ export class BadwordListComponent {
     this.badwordService
         .getAllBadwords()
         .subscribe((badwords) => {
-          this.badwords=badwords;
+
+          this.badwords = badwords;
+
         });
   }
 

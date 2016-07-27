@@ -13,5 +13,9 @@ module.exports = class FriendShipRoutes {
     router
         .route('/api/getFriendship')
         .post(FriendShipController.getFriendShipByUser);
+    
+    router
+        .route('/api/friendship-status/:user1/:user2')
+        .get(FriendShipController.changeStatusFriendship);
     }
 }

@@ -16,4 +16,6 @@ export interface User {
   onlineTime:[string];
   createdAt: string;
   updatedAt: string;
+  level:string;
+  linkImg:string;
 }
