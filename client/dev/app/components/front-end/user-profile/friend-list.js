@@ -10,14 +10,15 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 //components
-var notification_1 = require('../shared/notification');
+var request_friend_record_1 = require('./request-friend-record');
+var friend_record_1 = require('./friend-record');
+var user_profile_bar_1 = require('./user-profile-bar');
 var FriendListComponent = (function () {
-    function FriendListComponent(router, route, _userService, _knowledgeService) {
+    function FriendListComponent(router, route, _userService) {
         var _this = this;
         this.router = router;
         this.route = route;
         this._userService = _userService;
-        this._knowledgeService = _knowledgeService;
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
         this.route
@@ -27,9 +28,11 @@ var FriendListComponent = (function () {
         });
     }
     FriendListComponent.prototype.ngOnInit = function () {
-        console.log(this.name);
         this.pendingRequests = [];
+        this.acceptedRequest = [];
+        this.friendNames = [];
         this.getFriendList();
+        //this.getFriendName();
     };
     //get friend list: pending and accepted
     FriendListComponent.prototype.getFriendList = function () {
@@ -43,8 +46,26 @@ var FriendListComponent = (function () {
                 if (_this.friendships[i].user2 === _this.name && _this.friendships[i].status === "pending") {
                     _this.pendingRequests.push(_this.friendships[i]);
                 }
+                if (_this.friendships[i].user2 === _this.name && _this.friendships[i].status === "accepted") {
+                    _this.acceptedRequest.push(_this.friendships[i]);
+                }
+                if (_this.friendships[i].user1 === _this.name && _this.friendships[i].status === "accepted") {
+                    _this.acceptedRequest.push(_this.friendships[i]);
+                }
             }
+            _this.getFriendName();
+            console.log(_this.acceptedRequest);
         });
+    };
+    FriendListComponent.prototype.getFriendName = function () {
+        for (var i = 0; i < this.acceptedRequest.length; i++) {
+            if (this.acceptedRequest[i].user1 === this.name) {
+                this.friendNames.push(this.acceptedRequest[i].user2);
+            }
+            else {
+                this.friendNames.push(this.acceptedRequest[i].user1);
+            }
+        }
     };
     FriendListComponent = __decorate([
         core_1.Component({
@@ -53,7 +74,9 @@ var FriendListComponent = (function () {
             styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES,
-                notification_1.PushNotificationComponent
+                request_friend_record_1.RequestFriendRecordComponent,
+                friend_record_1.FriendRecordComponent,
+                user_profile_bar_1.UserProfileBarComponent
             ]
         })
     ], FriendListComponent);

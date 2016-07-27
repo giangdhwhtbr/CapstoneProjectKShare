@@ -15,6 +15,22 @@ const KSpaceSchema = new mongoose.Schema({
     ref: 'User',
     required: true
   },
+  chatlog:[ 
+    {
+      createdAt:{
+        type: Date
+      },
+      createdUser:{
+        type: String
+      },
+      message: {
+        type: String
+      },
+      dataURL: {
+        type: String
+      }
+    }
+  ],
   requestId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Request',

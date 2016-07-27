@@ -39,7 +39,6 @@ var UserInfoComponent = (function () {
             this.router.navigate(['Home']);
         }
         this._userService.getUserById(this.id).subscribe(function (user) {
-            console.log(user);
             _this.user = user;
         }, function (error) {
             console.log(error.text());

@@ -12,7 +12,6 @@ import { HeaderComponent } from "./front-end/shared/header";
 import { SideBarComponent } from "./front-end/shared/side-bar";
 import { FooterComponent } from "./front-end/shared/footer";
 import { LoginComponent} from "./front-end/shared/login";
-import { RegisterComponent} from "./front-end/shared/register";
 
 import { UserProfileComponent } from "./front-end/user-profile/user-profile";
 
@@ -28,6 +27,9 @@ import { KSpaceComponent } from "./front-end/kspace/kspace";
 import { KSpaceListComponent } from "./front-end/kspace/kspace-list";
 import { KSpaceInfoComponent } from "./front-end/kspace/kspace-info";
 import { FriendListComponent } from "./front-end/user-profile/friend-list";
+<<<<<<< HEAD
+import { UserProfileBarComponent } from "./front-end/user-profile/user-profile-bar";
+=======
 
 import { CreateArticleComponent } from "./front-end/article/create-article";
 import { detailArticleComponent } from "./front-end/article/detail-article";
@@ -37,6 +39,7 @@ import { EditArticleComponent } from "./front-end/article/edit-article";
 import { displayArtByTagComponent } from "./front-end/tag/displayArtByTag";
 
 
+>>>>>>> b18a0ce6157f668ba535f8791f5485b10789cd10
 
 /**
  * Page components
@@ -50,16 +53,13 @@ import { displayArtByTagComponent } from "./front-end/tag/displayArtByTag";
     <sidebar></sidebar>
     <router-outlet></router-outlet>
     <login></login>
-    <register></register>
-    <footer></footer>
   `,
   directives: [
     ROUTER_DIRECTIVES,
     HeaderComponent,
     SideBarComponent,
     FooterComponent,
-    LoginComponent,
-    RegisterComponent
+    LoginComponent
   ],
   precompile: [
     HomeComponent,
@@ -72,11 +72,15 @@ import { displayArtByTagComponent } from "./front-end/tag/displayArtByTag";
     KSpaceInfoComponent,
     UserProfileComponent,
     FriendListComponent,
+<<<<<<< HEAD
+    UserProfileBarComponent
+=======
     CreateArticleComponent,
     detailArticleComponent,
     listArticleComponent,
     EditArticleComponent,
     displayArtByTagComponent
+>>>>>>> b18a0ce6157f668ba535f8791f5485b10789cd10
   ]
 })
 export class KshareComponent {

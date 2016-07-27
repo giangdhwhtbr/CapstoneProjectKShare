@@ -9,8 +9,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 //cores
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-//components
-var notification_1 = require('../shared/notification');
 var RequestRecordComponent = (function () {
     function RequestRecordComponent(router, route, _userService, _knowledgeService) {
         this.router = router;
@@ -30,7 +28,6 @@ var RequestRecordComponent = (function () {
     RequestRecordComponent.prototype.ngOnInit = function () {
         //this.createdAt = this.formatDate(createdAt);
         this.id = this.knowledgeId;
-        console.log(this.id);
         this.getKnowledgeNameOfRequest();
     };
     RequestRecordComponent.prototype.getKnowledgeNameOfRequest = function () {
@@ -66,8 +63,7 @@ var RequestRecordComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/user-profile/templates/request-record.html',
             styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES,
-                notification_1.PushNotificationComponent
+                router_1.ROUTER_DIRECTIVES
             ]
         })
     ], RequestRecordComponent);

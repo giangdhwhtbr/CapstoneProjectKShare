@@ -2,9 +2,9 @@
 import { Component, OnInit, DoCheck  } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
-//components
-import { PushNotificationComponent } from '../shared/notification';
+//Component
 import { RequestRecordComponent } from './request-record';
+import { UserProfileBarComponent} from './user-profile-bar';
 
 //services
 import { UserService } from '../../../services/users';
@@ -23,8 +23,8 @@ import { Knowledge } from '../../../interface/knowledge';
   styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
   directives: [
     ROUTER_DIRECTIVES,
-    PushNotificationComponent,
-    RequestRecordComponent
+    RequestRecordComponent,
+    UserProfileBarComponent
   ]
 })
 
@@ -32,6 +32,9 @@ export class UserProfileComponent implements DoCheck {
 
   //name of user in current profile page
   name: string;
+
+  isExist: boolean;
+  isFriend: boolean;
 
   roleToken: string;
   userToken: string;
@@ -41,6 +44,9 @@ export class UserProfileComponent implements DoCheck {
 
   //check if a user was sent friend request by current user
   checkSentRequestUser: boolean;
+
+  //check if a current user is received a request of a user
+  checkIsRecivedRequest:boolean;
 
   differ: any;
 
@@ -54,7 +60,7 @@ export class UserProfileComponent implements DoCheck {
 
   knowledgeName: string;
 
-  constructor(public router : Router, private route : ActivatedRoute, public _userService: UserService,
+  constructor(public router: Router, private route: ActivatedRoute, public _userService: UserService,
     public _knowledgeService: KnowledgeService) {
     this.route
       .params
@@ -63,7 +69,6 @@ export class UserProfileComponent implements DoCheck {
       });
     this.roleToken = localStorage.getItem('role');
     this.userToken = localStorage.getItem('username');
-    this.buttonTitle = "Thêm bạn";
 
   }
 
@@ -77,60 +82,15 @@ export class UserProfileComponent implements DoCheck {
       }
     );
 
-    //check if current user is staying in his/her profile page
-    if (this.name === this.userToken) {
-      this.checkUser = true;
+    this.checkUserExist();
+
+    if (this.isExist = true) {
+      this.getRequestByUser();
     }
-
-    this.getFriendList();
-    this.getRequestByUser();
-
-    setTimeout(() => {
-      this.differ = this.friendList;
-      console.log(this.friendList);
-      console.log(this.differ);
-    }, 1000);
+    
 
   }
 
-  ngDoCheck(): void {
-    //boolean change = this.differ.diff(this.friendlist);
-    var isDiffirent;
-    setTimeout(() => {
-      if (this.differ !== this.friendList) {
-        isDiffirent = true;
-      }
-      if (this.differ === this.friendList) {
-        isDiffirent = false;
-      }
-      console.log(isDiffirent);
-    }, 1000);
-
-  }
-
-  addFriend(): void {
-    this._userService
-      .addFriend(this.userToken, this.name)
-      .subscribe((r) => {
-        console.log('friendship was created by ' + this.userToken + ' and ' + this.name);
-      })
-
-    this.getFriendList();
-    // setTimeout(() => {
-    //   console.log(this.friendList);
-    //   console.log(this.differ);
-    // }, 1000);
-
-  }
-
-  deleteFriend(): void {
-    this._userService
-      .deleteFriendRequest(this.userToken, this.name)
-      .subscribe(() => {
-        console.log('delete successfull');
-      })
-    this.getFriendList();
-  }
 
   getRequestByUser(): void {
     this._userService
@@ -141,24 +101,6 @@ export class UserProfileComponent implements DoCheck {
           requests[i].modifiedDate = this.formatDate(requests[i].modifiedDate);
         }
         this.requests = requests;
-        console.log(this.requests);
-      })
-  }
-
-  //get friend list: pending and accepted
-  getFriendList(): void {
-    this.checkSentRequestUser = false;
-    this._userService
-      .getFriendList(this.userToken)
-      .subscribe((friendlist) => {
-        this.friendList = friendlist;
-        //check sent request
-        for (var i = 0; i < this.friendList.length; i++) {
-          if (friendlist[i].user2 === this.name && this.friendList[i].status === "pending") {
-            this.checkSentRequestUser = true;
-            break;
-          }
-        }
       })
   }
 
@@ -187,6 +129,20 @@ export class UserProfileComponent implements DoCheck {
     this._knowledgeService.findKnowledgeById(knowledgeId).subscribe(
       (knowledge) => {
         this.knowledgeName = knowledge.name;
+      },
+      (error) => {
+        console.log(error);
+      });
+  }
+
+  public checkUserExist() {
+    this._userService.checkUserExist(this.name).subscribe(
+      (isExist) => {
+        if (isExist._body === '0') {
+          this.isExist = false;
+        } else {
+          this.isExist = true;
+        }
       },
       (error) => {
         console.log(error);

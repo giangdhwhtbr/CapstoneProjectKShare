@@ -9,9 +9,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 //cores
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-//components
-var notification_1 = require('../shared/notification');
+//Component
 var request_record_1 = require('./request-record');
+var user_profile_bar_1 = require('./user-profile-bar');
 var UserProfileComponent = (function () {
     function UserProfileComponent(router, route, _userService, _knowledgeService) {
         var _this = this;
@@ -44,7 +44,6 @@ var UserProfileComponent = (function () {
         });
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
-        this.buttonTitle = "Thêm bạn";
     }
     UserProfileComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -53,52 +52,10 @@ var UserProfileComponent = (function () {
         }, function (error) {
             console.log(error);
         });
-        //check if current user is staying in his/her profile page
-        if (this.name === this.userToken) {
-            this.checkUser = true;
+        this.checkUserExist();
+        if (this.isExist = true) {
+            this.getRequestByUser();
         }
-        this.getFriendList();
-        this.getRequestByUser();
-        setTimeout(function () {
-            _this.differ = _this.friendList;
-            console.log(_this.friendList);
-            console.log(_this.differ);
-        }, 1000);
-    };
-    UserProfileComponent.prototype.ngDoCheck = function () {
-        var _this = this;
-        //boolean change = this.differ.diff(this.friendlist);
-        var isDiffirent;
-        setTimeout(function () {
-            if (_this.differ !== _this.friendList) {
-                isDiffirent = true;
-            }
-            if (_this.differ === _this.friendList) {
-                isDiffirent = false;
-            }
-            console.log(isDiffirent);
-        }, 1000);
-    };
-    UserProfileComponent.prototype.addFriend = function () {
-        var _this = this;
-        this._userService
-            .addFriend(this.userToken, this.name)
-            .subscribe(function (r) {
-            console.log('friendship was created by ' + _this.userToken + ' and ' + _this.name);
-        });
-        this.getFriendList();
-        // setTimeout(() => {
-        //   console.log(this.friendList);
-        //   console.log(this.differ);
-        // }, 1000);
-    };
-    UserProfileComponent.prototype.deleteFriend = function () {
-        this._userService
-            .deleteFriendRequest(this.userToken, this.name)
-            .subscribe(function () {
-            console.log('delete successfull');
-        });
-        this.getFriendList();
     };
     UserProfileComponent.prototype.getRequestByUser = function () {
         var _this = this;
@@ -110,24 +67,6 @@ var UserProfileComponent = (function () {
                 requests[i].modifiedDate = _this.formatDate(requests[i].modifiedDate);
             }
             _this.requests = requests;
-            console.log(_this.requests);
-        });
-    };
-    //get friend list: pending and accepted
-    UserProfileComponent.prototype.getFriendList = function () {
-        var _this = this;
-        this.checkSentRequestUser = false;
-        this._userService
-            .getFriendList(this.userToken)
-            .subscribe(function (friendlist) {
-            _this.friendList = friendlist;
-            //check sent request
-            for (var i = 0; i < _this.friendList.length; i++) {
-                if (friendlist[i].user2 === _this.name && _this.friendList[i].status === "pending") {
-                    _this.checkSentRequestUser = true;
-                    break;
-                }
-            }
         });
     };
     UserProfileComponent.prototype.getKnowledgeNameOfRequest = function (knowledgeId) {
@@ -139,6 +78,19 @@ var UserProfileComponent = (function () {
             console.log(error);
         });
     };
+    UserProfileComponent.prototype.checkUserExist = function () {
+        var _this = this;
+        this._userService.checkUserExist(this.name).subscribe(function (isExist) {
+            if (isExist._body === '0') {
+                _this.isExist = false;
+            }
+            else {
+                _this.isExist = true;
+            }
+        }, function (error) {
+            console.log(error);
+        });
+    };
     UserProfileComponent = __decorate([
         core_1.Component({
             selector: 'user-profile',
@@ -146,8 +98,8 @@ var UserProfileComponent = (function () {
             styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES,
-                notification_1.PushNotificationComponent,
-                request_record_1.RequestRecordComponent
+                request_record_1.RequestRecordComponent,
+                user_profile_bar_1.UserProfileBarComponent
             ]
         })
     ], UserProfileComponent);

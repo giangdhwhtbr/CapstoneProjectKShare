@@ -7,6 +7,7 @@ export interface User {
   lastName: string;
   displayName: string;
   birthday: Date;
+  phone: string;
   username: string;
   password: string;
   email: string;
@@ -16,4 +17,6 @@ export interface User {
   onlineTime:[string];
   createdAt: string;
   updatedAt: string;
+  level:string;
+  linkImg:string;
 }

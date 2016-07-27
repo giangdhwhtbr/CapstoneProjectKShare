@@ -48,31 +48,24 @@ const userSchema = new mongoose.Schema({
     trim: true,
     unique: [true, 'Username already exists'],
     lowercase: true,
-    default: '',
-    required: [true, 'Please fill in your username']
+    default: ''
   },
   password: {
     type: String,
     trim: true,
-    default: '',
-    required: [true, 'Please fill in your password'],
-    validate: [validatePass, 'password must be at least 8 characters including 1 uppercase letter, 1 special character and alphanumeric characters?']
+    default: ''
   },
   email: {
     type: String,
     trim: true,
     unique: true,
     lowercase: true,
-    default: '',
-    required: [true, 'Please fill in your email'],
-    validate: [validateEmail, "Email is not in the right form, let check it again!"]
+    default: ''
   },
   role: {
     type: String,
     trim: true,
-    default: '',
-    required: [true, 'Role can not blank'],
-    validate: [validateRole, "Role is not valid, try again!"]
+    default: ''
   },
   ownKnowledgeId: [
     {
@@ -115,6 +108,10 @@ const userSchema = new mongoose.Schema({
   },
   resetPasswordExpires: {
     type: Date
+  },
+  linkImg:{
+    type:String,
+    default: 'uploads/images.jpg'
   },
   lastAccessedAt:{type:Date}
 });

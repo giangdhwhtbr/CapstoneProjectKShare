@@ -18,11 +18,9 @@ var KSpaceListComponent = (function () {
     }
     KSpaceListComponent.prototype.ngOnInit = function () {
         var _this = this;
-        console.log('dmc');
         this._kspaceService
             .getAllKSpace()
             .subscribe(function (kspaces) {
-            console.log(kspaces);
             for (var i = 0; i < kspaces.length; i++) {
                 kspaces[i].createdAt = new Date(kspaces[i].createdAt);
             }

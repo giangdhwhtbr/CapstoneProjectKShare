@@ -10,6 +10,9 @@ var brushColor: string = $('#color-picker').val();
         <button id="draw-option"><i class="fa fa-bars fa-2x" aria-hidden="true"></i></button>
         <canvas id="chalkboard" resize=true keepalive=true></canvas>
         <div id="draw-tools">
+            <p id="new-page" (click)="newPage()" class="tool-btn">
+                <i class="fa fa-file-o fa-2x" aria-hidden="true"></i>
+            </p>
             <select id="color-picker" class="tool-btn">
                 <option *ngFor="let color of colors" value="{{color.value}}">{{color.label}}</option>
             </select>
@@ -21,6 +24,9 @@ var brushColor: string = $('#color-picker').val();
             <p id="eraser">
                 <i class="fa fa-eraser fa-2x" aria-hidden="true"></i>
             </p>
+            <div class="tool-btn" *ngFor="let page of pages" (click)="openPage(page.url)">
+                <i class="fa fa-file-o fa-2x" aria-hidden="true">{{page.page}}</i>
+            </div>
         </div>
     `,
     styleUrls:["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
@@ -29,8 +35,10 @@ var brushColor: string = $('#color-picker').val();
 export class ChalkBoardComponent {
     colors: any[];
     brushSizes: any[];
+    pages: Array<any>;
 
     constructor() {
+        this.pages = [];
         this.colors= [
             { label: '#ffffff', value: '#ffffff' },
             { label: '#de3535', value: '#DE3535' },
@@ -47,18 +55,39 @@ export class ChalkBoardComponent {
         ]
     }
     @Input() id: string;
+
+    // openPage(url): void {
+    //    var board =  $('#chalkboard');
+    //    board.css('background-image', 'url(' + url + ')');
+    // }
+    // newPage():void {
+    //     var canvas = document.getElementById('chalkboard');
+    //     var ctx = canvas.getContext('2d');
+    //     var currentBoard = canvas.toDataURL();
+
+    //     var page = this.pages.length + 1;
+
+    //     var data = {
+    //         page: page,
+    //         url: currentBoard
+    //     }
+
+    //     this.pages.push(data);
+
+    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+    // }
+
     ngOnInit():void {
-            var sessionId;
             var drawing = false;
             var mode = 'draw';
-            var path;
-            var streamPath;
+            var path: any;
+            var streamPath: any;
             var strokeColor: string = 'white';
             var strokeWidth = 1;
             var colorStore :string ;
             var room = this.id;
             
-            var socket = io('http://localhost:3333');
+            var socket = io('https://localhost:8081');
             socket.emit('subscribe', room);
             var chalkboard = document.getElementById('chalkboard');
             // Initiate the paper at canvas id="chalkboard"
@@ -77,6 +106,8 @@ export class ChalkBoardComponent {
                     drawToolShow = false;
                 }
             });
+            
+            
 
             $('#color-picker').change(function(){
                 if($('#color-picker').val()!=='white'){

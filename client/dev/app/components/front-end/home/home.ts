@@ -16,6 +16,6 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 export class HomeComponent {
   pageTitle: string = 'Welcome to Knowledge Sharing Network';
   ngOinit(): void{
-    console.log("what the fuck");
+
   }
 }

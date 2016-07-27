@@ -2,9 +2,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
-//components
-import { PushNotificationComponent } from '../shared/notification';
-
 //services
 import { UserService } from '../../../services/users';
 import { AuthService } from '../../../services/auth';
@@ -21,8 +18,7 @@ import { Knowledge } from '../../../interface/knowledge';
   templateUrl: 'client/dev/app/components/front-end/user-profile/templates/request-record.html',
   styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
   directives: [
-    ROUTER_DIRECTIVES,
-    PushNotificationComponent
+    ROUTER_DIRECTIVES
   ]
 })
 
@@ -46,7 +42,6 @@ export class RequestRecordComponent {
   ngOnInit(): void {
     //this.createdAt = this.formatDate(createdAt);
     this.id = this.knowledgeId;
-    console.log(this.id);
     this.getKnowledgeNameOfRequest();
   }
 

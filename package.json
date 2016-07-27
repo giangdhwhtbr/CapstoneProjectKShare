@@ -37,6 +37,7 @@
     "acl": "^0.4.9",
     "angular2-in-memory-web-api": "0.0.14",
     "angular2-jwt": "^0.1.16",
+    "angular2-notifications": "^0.2.3",
     "bluebird": "^3.3.4",
     "body-parser": "^1.5.0",
     "bootstrap": "^3.3.6",
