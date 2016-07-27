@@ -84,6 +84,7 @@ export class RequestListComponent {
   }
 
   private deleteRequest(id):void {
+
     this._requestService
       .deleteRequest(id)
       .subscribe(() => {

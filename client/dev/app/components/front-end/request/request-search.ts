@@ -1,5 +1,6 @@
-import { Component, OnInit,OnChanges, AfterViewInit, DoCheck, Input } from '@angular/core';
+import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
+import {RouteParams} from '@angular/router-deprecated';
 import { Request } from '../../../interface/request';
 import { Knowledge } from '../../../interface/knowledge';
 
@@ -16,28 +17,24 @@ export class RequestCategoryComponent {
   @Input() search: string;
   pageTitle: string = 'Welcome to Knowledge Sharing Network';
 
-  id: string;
-  type: string;
-  changeRoute: boolean = false;
+  // id: string;
+  // type: string;
+  identify: string;
+  typee: string;
+  constructor(private _requestService: RequestService, public router: Router, 
+                  private route: ActivatedRoute) {
+    this.route
+      .params
+      .subscribe(params => {
+        let type = params['type'];
+        this.typee = type;
+        let id = params['id'];
+        this.identify = id;
+      });
 
-
-  constructor(private _requestService: RequestService, public router: Router, private route: ActivatedRoute) {
-   this.route.params.subscribe(params => {
-                          this.id = params['id'];
-                          this.type = params['type'];
-                        });
-  }
-  requests: Request[];
-  knowledges: Knowledge[];
-
-  ngOnInit(): void {
-      this.loadRequest(s);
-  }
-
-  loadRequests():void {
       //get templates from children category
-    if (this.type === "subcategory") {
-      this._requestService.getRequestByKnowledgeId(this.id).subscribe(
+    if (this.typee === "subcategory") {
+      this._requestService.getRequestByKnowledgeId(this.identify).subscribe(
         (requests) => {
           //format date
           var formatDate = function (date) {
@@ -58,8 +55,8 @@ export class RequestCategoryComponent {
     }
 
     //get templates from parent category
-    if (this.type === "category") {
-      this._requestService.getKnowledgeByParent(this.id).subscribe(
+    if (this.typee === "category") {
+      this._requestService.getKnowledgeByParent(this.identify).subscribe(
         (knowledges) => {
           var formatDate = function (date) {
             if (date) {
@@ -75,7 +72,7 @@ export class RequestCategoryComponent {
           for (var i = 0; i < this.knowledges.length; i++) {
             this._requestService.getRequestByKnowledgeId(this.knowledges[i]._id).subscribe(
               (requests) => {
-                //for each child back.knowledge get requests
+                //for each child knowledge get requests
                 for (var j = 0; j < requests.length; j++) {
                   a.push(requests[j]);
                 }
@@ -92,6 +89,10 @@ export class RequestCategoryComponent {
           console.log(Error);
         });
     }
+ 
   }
+  requests: Request[];
+  knowledges: Knowledge[];
+
 
 }

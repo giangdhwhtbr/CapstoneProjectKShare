@@ -40,15 +40,10 @@ const server = https.createServer(opts,app)
 
 const io = socket(server);
 // Set socket.io listeners.
-// A user connects to the server (opens a socket)
-io.sockets.on('connection', function (socket) {
-
-  socket.on ('startPoint', function(data){
-    socket.in(data.room).broadcast.emit( 'startPoint', data );
-  });
-
-  socket.on( 'pathpoint', function( data) {
-    socket.in(data.room).broadcast.emit( 'pathpoint', data );
+io.on('connection', function (socket) {
+  //socket.broadcast.emit('notification', { hello: 'world' });
+  socket.on('send notification', function (data) {
+    socket.broadcast.emit('receive notification', {data})
   });
 
   socket.on('subscribe', function(room) { 
@@ -75,5 +70,5 @@ io.sockets.on('connection', function (socket) {
         });
 
     });
-});
 
+});

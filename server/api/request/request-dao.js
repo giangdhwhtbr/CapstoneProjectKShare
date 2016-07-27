@@ -83,7 +83,6 @@ requestSchema.statics.getRequestByUser = (user) => {
           : resolve(requests);
       });
   });
-  console.log('234');
 }
 
 //create back.request dao function

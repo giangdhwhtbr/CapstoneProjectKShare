@@ -11,7 +11,8 @@ module.exports = class userRoutes {
     router
       .route('/api/user')
       .get(userPolicies.isAllowed,userController.getAll)
-      .post(userController.createNew);
+      .post(userController.createNew)
+      .put(userController.getUserByUserName);
 
     router
       .route('/api/user/:id')
@@ -54,6 +55,14 @@ module.exports = class userRoutes {
       });
     router
       .route('/api/resetPassword/:email')
-      .get(userController.resetPassword)
+      .get(userController.resetPassword);
+
+   router
+      .route('/api/is-user-exist/:username')
+      .get(userController.checkUserExist);
+      
+  router
+      .route('/api/user-picture')
+      .post(userController.updateUserPicture);
   }
 }

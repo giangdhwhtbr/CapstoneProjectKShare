@@ -44,10 +44,13 @@ export class RequestDetailClientComponent {
   user: string;
   knowledgeId: string;
   subscribers: string[];
+
   //varialbe check to hide button when the status is deactive
   checkDeactive: boolean;
+
   //variable check to hide button, user can't front.offer their of templates
   checkCreatedUser: boolean;
+  
   //variable check to hide button, user can't subcribe twice in a templates
   checkSubcribedUser: boolean;
   offers: Offer[];
@@ -94,7 +97,6 @@ export class RequestDetailClientComponent {
           for (var i = 0; i < this.subscribers.length; i++) {
             if (this.userToken === this.subscribers[i]) {
               this.checkSubcribedUser = true;
-              console.log(this.checkSubcribedUser + " " + i);
               break;
             }
           }
@@ -149,11 +151,16 @@ export class RequestDetailClientComponent {
 
   }
 
-  addKshare(learner: string, lecturer: string, requestId: string, requestTitle:string, offerId: string): void {
+  addKshare(learner: string, lecturer: string, requestId: string, offerId: string): void {
     this._kspaceService
-      .addKSpace(learner, lecturer, requestId,requestTitle, offerId)
+      .addKSpace(learner, lecturer, requestId, offerId)
       .subscribe((r) => {
-        this.router.navigateByUrl('/kspace/info/' + r._id);
+        //this._chatService.addChatRoom(r._id)
+        //  .subscribe((c) => {
+        //    this.rid = c._id;
+        //    console.log("add chat room successfull");
+        //    this.router.navigateByUrl('/kshare/front.kspace/' + r._id + '/' + this.rid);
+        //  });
       })
   }
 

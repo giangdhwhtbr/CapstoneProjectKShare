@@ -66,6 +66,16 @@ userSchema.statics.getUserByUserName = (user) => {
   });
 }
 
+userSchema.statics.checkUserExist = (user) => {
+  return new Promise((resolve, reject) => {
+
+    User.count({ 'username' : user })
+        .exec((err, count) => {
+          err ? reject(err) : resolve(count);
+        });
+  });
+}
+
 userSchema.statics.createNew = (user) => {
   return new Promise((resolve, reject) => {
     if (!_.isObject(user)) {
@@ -105,6 +115,22 @@ userSchema.statics.updateUserById = (userinfo) => {
       err ? reject(err)
         : resolve(saved);
     });
+  });
+}
+
+userSchema.statics.updateUser = (userinfo) => {
+  return new Promise((resolve,reject) => {
+    if (!_.isObject(userinfo)) {
+      return reject(new TypeError('User is not a valid object.'));
+    }
+    User
+      .update(
+        { 'username': userinfo.username  },
+        { 'linkImg': userinfo.linkImg })
+      .exec((err, deleted) => {
+        err ? reject(err)
+          : resolve();
+      });
   });
 }
 

@@ -165,3 +165,26 @@ pagination-controls li{
 #searchdivid2 {
   padding-left:12%;
 }
+body {
+  padding-top:30px;
+}
+
+.glyphicon {
+  margin-bottom: 10px;
+  margin-right: 10px;
+}
+
+small {
+  display: block;
+  line-height: 1.428571429;
+  color: #999;
+}
+
+ul {
+  list-style: none;
+}
+
+.tab-pane {
+  margin-left: -40px;
+  margin-top: 15px;
+}
