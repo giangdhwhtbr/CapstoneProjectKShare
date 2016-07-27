@@ -1,0 +1,71 @@
+<div class="container mg-top-50">
+      <div class="row">
+        <div class="col-md-3"></div>
+        <div class="col-md-6">
+             <div class="loginPanel">
+                <div class="box-header">
+                  <h3>Cập nhật thông tin cá nhân</h3>
+                </div>
+                <form [ngFormModel]="updateUserForm" (ngSubmit)="update(updateUserForm.value)">
+                  <div class="form-group">
+                    <input class="form-control form-text"
+                          type="text"
+                          required
+                          placeholder="Họ và tên"
+                          name="fullname"
+                          [ngFormControl]="updateUserForm.controls['fullname']"
+                    >
+                  </div>
+                  <div class="form-group">
+                    <input class="form-control"
+                          type="date"
+                          placeholder="Ngày sinh"
+                          name="birthday"
+                          [ngFormControl]="updateUserForm.controls['birthday']"
+                    >
+                  </div>
+                  <div class="form-group">
+                    <input class="form-control form-text"
+                          type="text"
+                          required
+                          placeholder="Số điện thoại"
+                          name="phone"
+                          [ngFormControl]="updateUserForm.controls['phone']"
+                    >
+                  </div>
+                  <div class="form-group">
+                    <input #copass class="form-control"
+                          type="text"
+                          maxlength="100"
+                          placeholder="Lĩnh vực am hiểu"
+                          name="ownKnowledge"
+                          [ngFormControl]="updateUserForm.controls['ownKnowledge']"
+                    >
+                  </div>
+                  <div class="form-group">
+                    <input class="form-control form-text"
+                          type="text"
+                          maxlength="100"
+                          placeholder="Lĩnh vực quan tâm"
+                          name="interestedKnowledge"
+                          [ngFormControl]="updateUserForm.controls['interestedKnowledge']"
+                    >
+                  </div>
+                  
+                  <div class="row">
+                    <div class="col-sm-6">
+                      <button class="form-control btn btn-success" type="submit">Cập nhật</button>
+                    </div>
+                    <!-- /.col-sm-6 -->
+                    <div class="col-sm-6">
+                      <button class="form-control btn btn-primary" (click)="returnHome()">Trang chủ</button>
+                    </div>
+                  </div>
+                  <!-- /.row -->
+                </form>
+            </div>
+        </div>
+        <div class="col-md-3"></div>
+      </div>
+ </div>
+

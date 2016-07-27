@@ -24,7 +24,6 @@ export class AuthService {
       username: user.username,
       password: user.password
     })
-    var usertoken = user.username;
     return this._http.post(this._loginUrl,_user,options)
       .map(res => res.json());
   }

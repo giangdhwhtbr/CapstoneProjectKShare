@@ -17,8 +17,8 @@ module.exports = class userRoutes {
     router
       .route('/api/user/:id')
       .get(userController.getUserById)
-      .delete(userPolicies.isAllowed,userController.removeById)
       .put(userController.updateUser);
+      
 
     router
       .route('/api/login')

@@ -16,6 +16,9 @@ import { KSpaceListComponent } from "../components/front-end/kspace/kspace-list"
 import { KSpaceInfoComponent } from "../components/front-end/kspace/kspace-info";
 import { FriendListComponent } from "../components/front-end/user-profile/friend-list";
 import { UserProfileComponent } from "../components/front-end/user-profile/user-profile";
+import { RegisterComponent } from '../components/front-end/user/register/register';
+import { RegisterInfoComponent } from '../components/front-end/user/register/info';
+import { RegisterSuccessComponent } from '../components/front-end/user/register/success';
 
 import { CreateArticleComponent } from "../components/front-end/article/create-article";
 import { detailArticleComponent } from "../components/front-end/article/detail-article";
@@ -23,26 +26,43 @@ import { listArticleComponent } from "../components/front-end/article/list-artic
 
 import { displayArtByTagComponent } from "../components/front-end/tag/displayArtByTag";
 
-export const KShareRoutes:RouterConfig = [
-    {
-        path: '',
-        component: KshareComponent,
+export const KShareRoutes: RouterConfig = [
+  {
+    path: '',
+    component: KshareComponent,
+    children: [
+      {
+        path: 'reg',
+        children: [
+          {
+            path: '',
+            component: RegisterComponent
+          },
+          {
+            path: 'info/:id',
+            component: RegisterInfoComponent
+          },
+          {
+            path: 'success',
+            component: RegisterSuccessComponent
+          }
+        ]
+      },
+      {
+        path: 'user',
         children: [
             {
-                path: 'user',
+                path: ':name',
                 children: [
                     {
-                        path: ':name',
-                        children: [
-                            {
-                                path: 'friends',
-                                component: FriendListComponent
-                            },
-                            {
-                                path: '',
-                                component: UserProfileComponent
-                            }
-                        ]
+                        path: 'friends',
+                        component: FriendListComponent
+                    },
+                    {
+                        path: '',
+                        component: UserProfileComponent
+                    }
+                ]
                     }
                 ]
             },

@@ -21,11 +21,12 @@ declare var io: any;
 })
 
 export class HeaderComponent {
-  notiTitle: string = 'Nhận được lời mời kết bạn';
+  notiTitle: string;
   loginToken: boolean = false;
   userToken: string;
   roleToken: string;
   countUnReadNoti: number;
+  link:string;
   isDiffirent: boolean;
   socket: any;
 
@@ -38,29 +39,16 @@ export class HeaderComponent {
   }
 
   ngOnInit(): void {
-    // function getNotificationByUser(user: string) {
-    //   //this.countUnReadNoti = 0;
-    //   this._noti.getNotificationByUser(user).subscribe(
-    //     (notifications) => {
-    //       this.notifications = notifications;
-
-    //       // for (var i = 0; i < notifications.length; i++) {
-    //       //   if (notifications[i].status === "Chưa đọc") {
-    //       //     this.countUnReadNoti++;
-    //       //   }
-    //       // }
-    //     });
-    // }
-
+    this.link = '';
     this.socket = io('https://localhost:3333');
-    this.socket.on('receive notification', function (data) {
+    this.socket.on('receive notification', (data) => {
       if (localStorage.getItem('username') === data.data.user) {
         console.log(data.data);
-        //console.log(this.getNotificationByUser());
-        // getNotificationByUser(localStorage.getItem('username'));
+        this.getNotificationByUser(this.userToken);
 
         //show noti 
-        this.notiTitle = 'Bạn đã nhận được lời mời kết bạn';
+        this.notiTitle = data.data.title;
+        this.link = data.data.link;
         var x = document.getElementById("snackbar")
         x.className = "show";
         setTimeout(function () { x.className = x.className.replace("show", ""); }, 10000);
@@ -104,6 +92,7 @@ export class HeaderComponent {
   }
 
   changeStatusNotification(): void {
+    this.countUnReadNoti = 0;
     this._noti.changeStatusNotification(this.userToken).subscribe(
       (notifications) => {
         console.log('change status notification successful');

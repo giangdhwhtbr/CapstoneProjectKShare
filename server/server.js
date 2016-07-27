@@ -18,6 +18,8 @@ const DBConfig = require('./config/db.conf');
 const Routes = require('./routes/index');
 const socket = require('socket.io');
 
+const KSpaceCtrl = require('./api/kspace/kspace-controller');
+
 RoutesConfig.init(app);
 PoliciesConfig.init();
 DBConfig.init();
@@ -43,4 +45,30 @@ io.on('connection', function (socket) {
   socket.on('send notification', function (data) {
     socket.broadcast.emit('receive notification', {data})
   });
+
+  socket.on('subscribe', function(room) { 
+        socket.join(room); 
+    })
+
+  socket.on('unsubscribe', function(room) {  
+      socket.leave(room); 
+  })
+
+  socket.on("chat_message", function(data){
+        KSpaceCtrl.updateChatLog(data)
+        .then(kspace => {
+          var dataReturn = {
+            user: data.createdUser,
+            msg: data.message,
+            url: data.dataURL
+          }
+          io.in(data.id).emit("chat_message", dataReturn);
+        })
+        .catch(error => {
+          var dataReturn = 'Server Error!'
+          io.in.data.id.emit("chat_message",dataReturn);
+        });
+
+    });
+
 });
