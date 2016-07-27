@@ -6,4 +6,4 @@ demo
 npm-debug.log
 tests
 .vscode
-client/dist
+"client/dist"
