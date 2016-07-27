@@ -15,6 +15,7 @@ var RequestCategoryComponent = (function () {
         this.router = router;
         this.route = route;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
+<<<<<<< HEAD
         this.route
             .params
             .subscribe(function (params) {
@@ -23,6 +24,19 @@ var RequestCategoryComponent = (function () {
             var id = params['id'];
             _this.identify = id;
         });
+=======
+        this.changeRoute = false;
+        this.route.params.subscribe(function (params) {
+            _this.id = params['id'];
+            _this.type = params['type'];
+        });
+    }
+    RequestCategoryComponent.prototype.ngOnInit = function () {
+        this.loadRequest(s);
+    };
+    RequestCategoryComponent.prototype.loadRequests = function () {
+        var _this = this;
+>>>>>>> b18a0ce6157f668ba535f8791f5485b10789cd10
         //get templates from children category
         if (this.typee === "subcategory") {
             this._requestService.getRequestByKnowledgeId(this.identify).subscribe(function (requests) {
@@ -89,4 +103,3 @@ var RequestCategoryComponent = (function () {
     return RequestCategoryComponent;
 })();
 exports.RequestCategoryComponent = RequestCategoryComponent;
-//# sourceMappingURL=request-search.js.map
