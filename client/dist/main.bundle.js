@@ -16757,6 +16757,7 @@ webpackJsonp([2],[
 	var brushColor = $('#color-picker').val();
 	var ChalkBoardComponent = (function () {
 	    function ChalkBoardComponent() {
+	        this.pages = [];
 	        this.colors = [
 	            { label: '#ffffff', value: '#ffffff' },
 	            { label: '#de3535', value: '#DE3535' },
@@ -16772,6 +16773,22 @@ webpackJsonp([2],[
 	            { label: '7', value: '50' }
 	        ];
 	    }
+	    // openPage(url): void {
+	    //    var board =  $('#chalkboard');
+	    //    board.css('background-image', 'url(' + url + ')');
+	    // }
+	    // newPage():void {
+	    //     var canvas = document.getElementById('chalkboard');
+	    //     var ctx = canvas.getContext('2d');
+	    //     var currentBoard = canvas.toDataURL();
+	    //     var page = this.pages.length + 1;
+	    //     var data = {
+	    //         page: page,
+	    //         url: currentBoard
+	    //     }
+	    //     this.pages.push(data);
+	    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
+	    // }
 	    ChalkBoardComponent.prototype.ngOnInit = function () {
 	        var drawing = false;
 	        var mode = 'draw';
@@ -16922,7 +16939,7 @@ webpackJsonp([2],[
 	    ChalkBoardComponent = __decorate([
 	        core_1.Component({
 	            selector: 'chalkboard',
-	            template: "\n        <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n        <div id=\"draw-tools\">\n            <select id=\"color-picker\" class=\"tool-btn\">\n                <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n            </select>\n            <hr>\n            <select id=\"brush-size\" class=\"tool-btn\">\n                <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n            </select>\n            <hr>\n            <p id=\"eraser\">\n                <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n            </p>\n        </div>\n    ",
+	            template: "\n        <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n        <div id=\"draw-tools\">\n            <p id=\"new-page\" (click)=\"newPage()\" class=\"tool-btn\">\n                <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n            </p>\n            <select id=\"color-picker\" class=\"tool-btn\">\n                <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n            </select>\n            <hr>\n            <select id=\"brush-size\" class=\"tool-btn\">\n                <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n            </select>\n            <hr>\n            <p id=\"eraser\">\n                <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n            </p>\n            <div class=\"tool-btn\" *ngFor=\"let page of pages\" (click)=\"openPage(page.url)\">\n                <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\">{{page.page}}</i>\n            </div>\n        </div>\n    ",
 	            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
 	        }), 
 	        __metadata('design:paramtypes', [])

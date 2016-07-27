@@ -49,35 +49,35 @@ export class KSpaceComponent {
     socket: any;
 
     constructor(
-      public router:Router,
-      private route:ActivatedRoute,
-      private _kspaceService: KSpaceService,
-      private rtcService: WebRCTService
-      ) {
-      this.route
-        .params
-        .subscribe(params => {
-          this.id = params['id'];
+        public router:Router,
+        private route:ActivatedRoute,
+        private _kspaceService: KSpaceService,
+        private rtcService: WebRCTService
+        ) {
+        this.route
+          .params
+          .subscribe(params => {
+            this.id = params['id'];
+          });
+      this.username = localStorage.getItem('username');
+      this.messages = [];
+      this.socket = io('https://localhost:3333');
+      this.socket.emit('subscribe', this.id);
+      this.socket.on("chat_message", (dataReturn) => {
+        var isSender: boolean = false;
+
+        if(dataReturn.user == this.username) {
+          isSender = true;
+        }
+
+            var msgObject = {
+              user: dataReturn.user,
+              msg:  dataReturn.msg,
+              url: dataReturn.url,
+              sender: isSender
+            }
+            this.messages.push(msgObject); 
         });
-     this.username = localStorage.getItem('username');
-     this.messages = [];
-     this.socket = io('https://localhost:3333');
-     this.socket.emit('subscribe', this.id);
-     this.socket.on("chat_message", (dataReturn) => {
-       var isSender: boolean = false;
-
-       if(dataReturn.user == this.username) {
-         isSender = true;
-       }
-
-          var msgObject = {
-            user: dataReturn.user,
-            msg:  dataReturn.msg,
-            url: dataReturn.url,
-            sender: isSender
-          }
-          this.messages.push(msgObject); 
-      });
   }
 
   send(message:string, img: any) {
