@@ -61,7 +61,7 @@ export class KSpaceComponent {
           });
       this.username = localStorage.getItem('username');
       this.messages = [];
-      this.socket = io('https://localhost:3333');
+      this.socket = io('https://localhost:8081');
       this.socket.emit('subscribe', this.id);
       this.socket.on("chat_message", (dataReturn) => {
         var isSender: boolean = false;
