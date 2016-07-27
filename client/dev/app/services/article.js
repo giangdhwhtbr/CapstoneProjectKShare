@@ -21,15 +21,17 @@ var ArticleService = (function () {
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
-    ArticleService.prototype.addArticle = function (_title, _content, oldTag, newTag) {
+    ArticleService.prototype.addArticle = function (_title, _content, oldTag, newTag, stt, user) {
         var header = new http_1.Headers;
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var _data = JSON.stringify({
             art: {
+                ofUser: user,
                 title: _title,
                 content: _content,
-                tags: oldTag
+                tags: oldTag,
+                status: stt
             },
             newTag: newTag
         });
@@ -41,6 +43,29 @@ var ArticleService = (function () {
         return this._http.get(this._requestsUrl.replace(':id', id))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
+    };
+    //delete templates
+    //deleteRequest(request:Request):Observable<any> {
+    //  return this._http
+    //    .delete(this._requestsUrl.replace(':id', request._id))
+    //    .map((r) => r.json());
+    //}
+    //deleteRequestById(id:string):Observable<any> {
+    //  return this._http
+    //    .delete(this._requestsUrl.replace(':id', id))
+    //    .map((r) => r.json());
+    //}
+    ArticleService.prototype.updateArtById = function (art, newTag, id) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _data = JSON.stringify({
+            art: art,
+            newTag: newTag
+        });
+        return this._http
+            .put(this._requestsUrl.replace(':id', id), _data, options)
+            .map(function (r) { return r.json(); });
     };
     ArticleService = __decorate([
         core_1.Injectable()

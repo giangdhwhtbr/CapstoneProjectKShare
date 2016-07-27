@@ -1,3 +1,6 @@
+/**
+ * Created by Duc Duong on 7/25/2016.
+ */
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
     switch (arguments.length) {
@@ -6,9 +9,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
-/**
- * Created by Duc Duong on 7/25/2016.
- */
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
@@ -22,10 +22,6 @@ var listArticleComponent = (function () {
         var _this = this;
         this._artService.getAllArts().subscribe(function (arts) {
             _this.listArt = arts;
-            for (var _i = 0, _a = _this.listArt; _i < _a.length; _i++) {
-                var a = _a[_i];
-                a.createdAt = new Date(a.createdAt);
-            }
         });
     };
     listArticleComponent = __decorate([

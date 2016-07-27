@@ -1,7 +1,21 @@
 <div *ngIf="article" class="container article">
-    <h3>
+    <span class="titleArtDe">
         {{article.title}}
-    </h3>
+    </span>
+    <span class="byAu">by {{article.ofUser}}</span>
+    <div class="row">
+        <div class="col-sm-12">
+            <span *ngIf="article.status=='public'"><i class="fa fa-hand-paper-o" aria-hidden="true"></i> public</span>
+            <span *ngIf="article.status=='private'"><i class="fa fa-hand-rock-o" aria-hidden="true"></i> private</span>
+        </div>
+    </div>
+    <div class="row">
+        <div class="btn-group btn-art">
+            <a class="btn btn-primary " href="/article/edit/{{article._id}} ">Edit</a>
+            <a class="btn btn-primary " href="/article/edit/{{article._id}} ">Close Article</a>
+            <a class="btn btn-primary " href="/article/edit/{{article._id}} ">Report</a>
+        </div>
+    </div>
     <div class="bodyArt">
 
     </div>

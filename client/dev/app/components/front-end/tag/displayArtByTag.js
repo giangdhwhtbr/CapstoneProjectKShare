@@ -28,7 +28,6 @@ var displayArtByTagComponent = (function () {
         var _this = this;
         this._tagService.getArtByTag(this.id).subscribe(function (arts) {
             _this.listArt = arts;
-            console.log(_this.listArt);
         });
     };
     displayArtByTagComponent = __decorate([

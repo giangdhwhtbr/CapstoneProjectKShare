@@ -35,6 +35,7 @@ var friend_list_1 = require("./front-end/user-profile/friend-list");
 var create_article_1 = require("./front-end/article/create-article");
 var detail_article_1 = require("./front-end/article/detail-article");
 var list_article_1 = require("./front-end/article/list-article");
+var edit_article_1 = require("./front-end/article/edit-article");
 var displayArtByTag_1 = require("./front-end/tag/displayArtByTag");
 /**
  * Page components
@@ -68,6 +69,7 @@ var KshareComponent = (function () {
                 create_article_1.CreateArticleComponent,
                 detail_article_1.detailArticleComponent,
                 list_article_1.listArticleComponent,
+                edit_article_1.EditArticleComponent,
                 displayArtByTag_1.displayArtByTagComponent
             ]
         })

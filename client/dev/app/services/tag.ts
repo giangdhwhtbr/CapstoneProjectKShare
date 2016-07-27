@@ -13,9 +13,14 @@ export class TagService {
     constructor(private _http:Http) {
     }
 
-
-    getArtByTag():Observable<Tag[]> {
+    getAllTag():Observable<Tag[]> {
         return this._http.get(this._tagUrl.replace(':id', ''))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
+
+    getArtByTag(id):Observable<any[]> {
+        return this._http.get(this._tagUrl.replace(':id', id))
             .map((r) => r.json())
             .catch(this.handleError);
     }

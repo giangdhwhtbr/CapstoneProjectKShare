@@ -32,7 +32,7 @@ export class displayArtByTagComponent implements OnInit{
     ngOnInit(){
         this._tagService.getArtByTag(this.id).subscribe((arts)=>{
             this.listArt =arts;
-            console.log(this.listArt);
         });
     }
+
 }

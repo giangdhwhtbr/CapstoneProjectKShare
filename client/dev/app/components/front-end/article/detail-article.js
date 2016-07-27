@@ -39,6 +39,9 @@ var detailArticleComponent = (function () {
             $('.bodyArt').html(this.article.content);
         }
     };
+    detailArticleComponent.prototype.editArt = function (id) {
+        this.router.navigateByUrl('/article/edit/' + this.id);
+    };
     detailArticleComponent = __decorate([
         core_1.Component({
             selector: 'detail-article',

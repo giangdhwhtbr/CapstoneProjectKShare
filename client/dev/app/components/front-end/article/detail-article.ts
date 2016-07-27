@@ -50,4 +50,8 @@ export class detailArticleComponent implements OnInit,AfterViewChecked{
         }
     }
 
+    editArt(id:string){
+        this.router.navigateByUrl('/article/edit/'+this.id);
+    }
+
 }

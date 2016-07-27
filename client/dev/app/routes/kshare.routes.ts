@@ -20,6 +20,7 @@ import { UserProfileComponent } from "../components/front-end/user-profile/user-
 import { CreateArticleComponent } from "../components/front-end/article/create-article";
 import { detailArticleComponent } from "../components/front-end/article/detail-article";
 import { listArticleComponent } from "../components/front-end/article/list-article";
+import { EditArticleComponent } from "../components/front-end/article/edit-article";
 
 import { displayArtByTagComponent } from "../components/front-end/tag/displayArtByTag";
 
@@ -54,8 +55,12 @@ export const KShareRoutes:RouterConfig = [
                         component: CreateArticleComponent
                     },
                     {
-                        path:'list',
+                        path:'',
                         component:listArticleComponent
+                    },
+                    {
+                        path:'edit/:id',
+                        component:EditArticleComponent
                     },
                     {
                         path:':id',
