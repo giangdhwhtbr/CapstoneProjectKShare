@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
-import {RouteParams} from '@angular/router-deprecated';
 import { Request } from '../../../interface/request';
 import { Knowledge } from '../../../interface/knowledge';
 
