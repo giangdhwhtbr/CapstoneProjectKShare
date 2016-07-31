@@ -28,7 +28,7 @@ var ChalkBoardComponent = (function () {
     }
     // openPage(url): void {
     //    var board =  $('#chalkboard');
-    //    board.css('background-image', 'url(' + url + ')');
+    //    board.css('background-image', 'url(' + imageUrl + ')');
     // }
     // newPage():void {
     //     var canvas = document.getElementById('chalkboard');

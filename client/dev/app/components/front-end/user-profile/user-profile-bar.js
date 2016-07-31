@@ -84,7 +84,7 @@ var UserProfileBarComponent = (function () {
             var body = 'Bạn đã nhận được lời mời kết bạn của ' + this.userToken;
             var link = '/user/' + this.name + '/friends';
             alert("đã gửi lời mời kết bạn thành công");
-            var socket = io('https://localhost:3333');
+            var socket = io('https://localhost:8081');
             socket.emit('send notification', {
                 title: title,
                 body: body,

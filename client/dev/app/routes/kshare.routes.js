@@ -14,11 +14,14 @@ var user_profile_1 = require("../components/front-end/user-profile/user-profile"
 var register_1 = require('../components/front-end/user/register/register');
 var info_1 = require('../components/front-end/user/register/info');
 var success_1 = require('../components/front-end/user/register/success');
+var login_1 = require("../components/front-end/user/login/login");
 var create_article_1 = require("../components/front-end/article/create-article");
 var detail_article_1 = require("../components/front-end/article/detail-article");
 var list_article_1 = require("../components/front-end/article/list-article");
 var edit_article_1 = require("../components/front-end/article/edit-article");
 var displayArtByTag_1 = require("../components/front-end/tag/displayArtByTag");
+var auth_1 = require('./auth');
+var auth_2 = require('../services/auth');
 exports.KShareRoutes = [
     {
         path: '',
@@ -26,6 +29,7 @@ exports.KShareRoutes = [
         children: [
             {
                 path: 'reg',
+                canActivate: [auth_1.AdminAuthGuard],
                 children: [
                     {
                         path: '',
@@ -40,6 +44,11 @@ exports.KShareRoutes = [
                         component: success_1.RegisterSuccessComponent
                     }
                 ]
+            },
+            {
+                path: 'login',
+                canActivate: [auth_1.AdminAuthGuard],
+                component: login_1.LoginComponent
             },
             {
                 path: 'user',
@@ -146,4 +155,5 @@ exports.KShareRoutes = [
             }]
     },
 ];
+exports.authProviders = [auth_1.AdminAuthGuard, auth_2.AuthService];
 //# sourceMappingURL=kshare.routes.js.map

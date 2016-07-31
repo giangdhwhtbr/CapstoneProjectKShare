@@ -11,25 +11,23 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
  */
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-// import * as io from 'socket.io';
 var HeaderComponent = (function () {
     function HeaderComponent(_auth, router, _noti) {
         this._auth = _auth;
         this.router = router;
         this._noti = _noti;
-        this.loginToken = false;
+        this.loginToken = localStorage.getItem('username') ? true : false;
         this.userToken = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
     }
     HeaderComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.link = '';
-        this.socket = io('https://localhost:3333');
+        this.socket = io('https://localhost:8081');
         this.socket.on('receive notification', function (data) {
             if (localStorage.getItem('username') === data.data.user) {
-                console.log(data.data);
                 _this.getNotificationByUser(_this.userToken);
-                //show noti 
+                //show noti
                 _this.notiTitle = data.data.title;
                 _this.link = data.data.link;
                 var x = document.getElementById("snackbar");
@@ -37,9 +35,6 @@ var HeaderComponent = (function () {
                 setTimeout(function () { x.className = x.className.replace("show", ""); }, 10000);
             }
         });
-        if (this.userToken) {
-            this.loginToken = true;
-        }
         this.getNotificationByUser();
     };
     HeaderComponent.prototype.logout = function () {

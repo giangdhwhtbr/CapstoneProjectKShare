@@ -6,10 +6,12 @@ var request_update_1 = require("../components/back-end/request/request-update");
 var badword_update_1 = require("../components/back-end/badword/badword-update");
 var badwords_list_1 = require("../components/back-end/badword/badwords-list");
 var user_list_1 = require("../components/back-end/users/user-list");
+var auth_1 = require('./auth');
 exports.AdminRoutes = [
     {
         path: 'admin',
         component: admin_component_1.AdminComponent,
+        canActivate: [auth_1.AdminAuthGuard],
         children: [
             {
                 path: 'users',

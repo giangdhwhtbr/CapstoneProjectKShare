@@ -22,7 +22,8 @@ var RegisterInfoComponent = (function () {
             _this.userId = params['id'];
         });
         this.updateUserForm = fb.group({
-            fullname: [""],
+            fullName: [""],
+            displayName: [""],
             birthday: [""],
             phone: [""],
             ownKnowledge: [""],
@@ -33,7 +34,8 @@ var RegisterInfoComponent = (function () {
         var _this = this;
         user = {
             _id: this.userId,
-            firstName: user.fullname,
+            fullName: user.fullName,
+            displayName: user.displayName,
             birthday: user.birthday,
             ownKnowledgeId: user.ownKnowledge,
             interestedKnowledgeId: user.interestedKnowledge

@@ -1,4 +1,3 @@
-
 <div class="navbar-header-common">
   <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
     <div class="container topnav">
@@ -16,7 +15,7 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <a class="navbar-brand topnav" [routerLink]="['/']">Kshare.xyz</a>
-        <ul class="nav navbar-nav navbar-right" *ngIf="userToken">
+        <ul class="nav navbar-nav navbar-right" *ngIf="loginToken">
           <li>
             <a [routerLink]="['/kspace']" class="pd-bot-0"><i class="fa fa-television" data-toggle="dropdown" aria-hidden="true"></i></a>
           </li>
@@ -37,13 +36,13 @@
           </li>
           <!--end notification-->
           <li>
-            <a [routerLink]="['/requests']" class="pd-bot-0"><i class="fa fa-comments-o" 
+            <a [routerLink]="['/requests']" class="pd-bot-0"><i class="fa fa-comments-o"
                                                                         aria-hidden="true"></i></a>
           </li>
           <li>
             <div class="btn-group" style="padding-top:8%;padding-right:8%;">
               <button type="button" style="border:none;" class="btn btn-default" aria-haspopup="true" aria-expanded="false" [routerLink]="['/user/' + userToken]">
-              {{userToken}} 
+              {{userToken}}
             </button>
             </div>
           </li>
@@ -51,7 +50,7 @@
             <button class="btn btn-success btLogin" (click)="logout()">Logout</button>
           </li>
         </ul>
-        <ul class="nav navbar-nav navbar-right" *ngIf="!userToken">
+        <ul class="nav navbar-nav navbar-right" *ngIf="!loginToken">
           <li>
             <a [routerLink]="['/kspace']" class="pd-bot-0">Giới thiệu </a>
           </li>
@@ -59,7 +58,7 @@
             <a [routerLink]="['/kspace']" class="pd-bot-0">Trải nghiệm Kspace </a>
           </li>
           <li>
-            <button class="btn btn-success btLogin" id="btnShowLogin" data-toggle="modal" data-target="#modalLogin">Login</button>
+            <button class="btn btn-success btLogin" id="btnShowLogin" [routerLink]="['/login']">Login</button>
           </li>
         </ul>
       </div>

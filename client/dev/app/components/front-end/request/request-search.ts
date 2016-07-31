@@ -20,7 +20,7 @@ export class RequestCategoryComponent {
   // type: string;
   identify: string;
   typee: string;
-  constructor(private _requestService: RequestService, public router: Router, 
+  constructor(private _requestService: RequestService, public router: Router,
                   private route: ActivatedRoute) {
     this.route
       .params
@@ -88,7 +88,7 @@ export class RequestCategoryComponent {
           console.log(Error);
         });
     }
- 
+
   }
   requests: Request[];
   knowledges: Knowledge[];

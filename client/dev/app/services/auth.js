@@ -51,19 +51,6 @@ var AuthService = (function () {
         localStorage.removeItem('username');
         localStorage.removeItem('userrole');
     };
-    AuthService.prototype.isLoggedIn = function () {
-        return this._http.get(this._checkLoginUrl).map(function (res) { return res.json(); }).catch(this.handleError);
-    };
-    AuthService.prototype.dashboardFilter = function () {
-        var roleToken = localStorage.getItem('userrole');
-        if (!roleToken) {
-            return false;
-        }
-        else if (roleToken !== 'admin') {
-            return false;
-        }
-        return true;
-    };
     AuthService.prototype.handleError = function (error) {
         return Observable_1.Observable.throw(error.json());
     };

@@ -22,17 +22,10 @@ var CreateUserComponent = (function () {
         this.pageHeader = "Create User";
         this.users = [];
         this.userForm = fb.group({
-            firstName: [""],
-            lastName: [""],
-            displayName: [""],
-            birthday: [""],
             username: ["", common_1.Validators.required],
             password: ["", common_1.Validators.required],
             email: ["", common_1.Validators.required],
-            role: ["", common_1.Validators.required],
-            ownKnowledgeId: [""],
-            interestedKnowledgeId: [""],
-            onlineTime: [""]
+            role: ["", common_1.Validators.required]
         });
     }
     CreateUserComponent.prototype.addUser = function (user) {

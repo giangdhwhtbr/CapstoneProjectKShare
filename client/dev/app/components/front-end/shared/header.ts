@@ -10,7 +10,6 @@ import { AuthService } from '../../../services/auth';
 import { NotificationService } from '../../../services/notification';
 declare var io: any;
 
-// import * as io from 'socket.io';
 
 @Component({
   selector: 'header',
@@ -22,7 +21,7 @@ declare var io: any;
 
 export class HeaderComponent {
   notiTitle: string;
-  loginToken: boolean = false;
+  loginToken: boolean;
   userToken: string;
   roleToken: string;
   countUnReadNoti: number;
@@ -31,22 +30,21 @@ export class HeaderComponent {
   socket: any;
 
   notifications: Notification[];
-  
+
   constructor(private _auth: AuthService, public router: Router, public _noti: NotificationService) {
+    this.loginToken = localStorage.getItem('username') ? true : false;
     this.userToken = localStorage.getItem('username');
     this.roleToken = localStorage.getItem('userrole');
-
   }
 
   ngOnInit(): void {
     this.link = '';
-    this.socket = io('https://localhost:3333');
+    this.socket = io('https://localhost:8081');
     this.socket.on('receive notification', (data) => {
       if (localStorage.getItem('username') === data.data.user) {
-        console.log(data.data);
         this.getNotificationByUser(this.userToken);
 
-        //show noti 
+        //show noti
         this.notiTitle = data.data.title;
         this.link = data.data.link;
         var x = document.getElementById("snackbar")
@@ -56,9 +54,7 @@ export class HeaderComponent {
 
     });
 
-    if (this.userToken) {
-      this.loginToken = true;
-    }
+
     this.getNotificationByUser();
 
   }

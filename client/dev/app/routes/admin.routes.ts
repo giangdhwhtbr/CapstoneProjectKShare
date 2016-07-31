@@ -14,11 +14,14 @@ import { UpdateBadwordComponent } from "../components/back-end/badword/badword-u
 import { BadwordListComponent } from "../components/back-end/badword/badwords-list";
 import { UserListComponent } from "../components/back-end/users/user-list";
 
+import { AdminAuthGuard } from './auth';
+
 
 export const AdminRoutes: RouterConfig = [
   {
     path: 'admin',
     component: AdminComponent,
+    canActivate: [ AdminAuthGuard ],
     children: [
       {
         path: 'users',

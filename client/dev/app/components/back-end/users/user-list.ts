@@ -16,14 +16,6 @@ import {
   Control,
   FORM_DIRECTIVES,
 } from '@angular/common';
-import {
-  DataTable,
-  Column,
-  Header,
-  MultiSelect,
-  Footer,
-  InputText
-} from 'primeng/primeng';
 
 import  { User } from '../../../interface/user';
 
@@ -31,6 +23,7 @@ import  { UserService} from '../../../services/users';
 import  { AuthService} from '../../../services/auth';
 import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance } from 'ng2-pagination';
 import {StringFilterPipe} from '../shared/filter';
+
 @Component({
   selector: 'user-list',
   templateUrl: 'client/dev/app/components/back-end/users/templates/user-list.html',
@@ -49,25 +42,18 @@ export class UserListComponent {
   userForm: ControlGroup;
   constructor(@Inject(FormBuilder) fb:FormBuilder,private _userService: UserService, private _auth:AuthService, private router: Router){
     this.userForm = fb.group({
-      firstName : [""],
-      lastName : [""],
-      displayName: [""],
-      birthday: [""],
       username: ["",Validators.required],
       password: ["",Validators.required],
       email: ["",Validators.required],
-      role: ["",Validators.required],
-      ownKnowledgeId: [""],
-      interestedKnowledgeId: [""],
-      onlineTime: [""]
+      role: ["",Validators.required]
     })
   }
 
   ngOnInit(): void {
     this._userService
       .getAllUsers()
-      .then(
-      (users) => {
+      .subscribe(
+      (users) => {console.log(users);
         for (var i = 0; i < users.length; i++) {
           if (users[i].birthday) {
             users[i].birthday = new Date(users[i].birthday);
@@ -85,5 +71,22 @@ export class UserListComponent {
         console.log(error);
       }
     );
+  }
+
+  addUser(user: any): void {
+    this._userService
+      .addUser(user)
+      .subscribe(
+        response => {
+          this.users.push(response);
+        },
+        error => {
+          console.log(error.text());
+        }
+      );
+  }
+
+  banUser(userid: string): void  {
+    this._userService.banUser(userid).subscribe(response => {console.log(response)},error => {});
   }
 }

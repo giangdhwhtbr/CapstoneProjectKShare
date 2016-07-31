@@ -11,8 +11,6 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 import { HeaderComponent } from "./front-end/shared/header";
 import { SideBarComponent } from "./front-end/shared/side-bar";
 import { FooterComponent } from "./front-end/shared/footer";
-import { LoginComponent} from "./front-end/shared/login";
-
 import { UserProfileComponent } from "./front-end/user-profile/user-profile";
 
 /**
@@ -28,12 +26,9 @@ import { KSpaceListComponent } from "./front-end/kspace/kspace-list";
 import { KSpaceInfoComponent } from "./front-end/kspace/kspace-info";
 import { FriendListComponent } from "./front-end/user-profile/friend-list";
 import { UserProfileBarComponent } from "./front-end/user-profile/user-profile-bar";
-
 import { CreateArticleComponent } from "./front-end/article/create-article";
 import { detailArticleComponent } from "./front-end/article/detail-article";
 import { listArticleComponent } from "./front-end/article/list-article";
-import { EditArticleComponent } from "./front-end/article/edit-article";
-
 import { displayArtByTagComponent } from "./front-end/tag/displayArtByTag";
 
 /**
@@ -47,14 +42,12 @@ import { displayArtByTagComponent } from "./front-end/tag/displayArtByTag";
     <header></header>
     <sidebar></sidebar>
     <router-outlet></router-outlet>
-    <login></login>
   `,
   directives: [
     ROUTER_DIRECTIVES,
     HeaderComponent,
     SideBarComponent,
     FooterComponent,
-    LoginComponent
   ],
   precompile: [
     HomeComponent,
@@ -71,7 +64,6 @@ import { displayArtByTagComponent } from "./front-end/tag/displayArtByTag";
     CreateArticleComponent,
     detailArticleComponent,
     listArticleComponent,
-    EditArticleComponent,
     displayArtByTagComponent
   ]
 })

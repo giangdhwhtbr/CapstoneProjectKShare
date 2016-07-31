@@ -56,7 +56,7 @@ export class UserProfileBarComponent {
   }
 
   ngOnInit(): void {
-    
+
     this.linkImg = '';
     this._userService.getUserByUserName(this.name).subscribe(
       (user) => {
@@ -105,7 +105,7 @@ export class UserProfileBarComponent {
 
       alert("đã gửi lời mời kết bạn thành công");
 
-      var socket = io('https://localhost:3333');
+      var socket = io('https://localhost:8081');
       socket.emit('send notification', {
         title: title,
         body: body,
