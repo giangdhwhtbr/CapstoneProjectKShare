@@ -13888,21 +13888,6 @@ webpackJsonp([2],[
 	    };
 	    EditArticleComponent.prototype.ngAfterViewChecked = function () {
 	    };
-	    //getDataArt() {
-	    //    this._articleService.getArtById(this.id).subscribe((art)=> {
-	    //
-	    //        if (art.ofUser != this.userToken) {
-	    //            this.isEdited = false;
-	    //        } else {
-	    //            this.art = art;
-	    //            this.titelArticle = art.title;
-	    //            for (let e of this.art.tagsFD) {
-	    //                this.tags.push(e.name);
-	    //            }
-	    //        }
-	    //
-	    //    });
-	    //}
 	    EditArticleComponent.prototype.filterONTag = function () {
 	        var oldTag = [];
 	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {

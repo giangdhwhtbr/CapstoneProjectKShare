@@ -109,22 +109,6 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
     ngAfterViewChecked() {
     }
 
-    //getDataArt() {
-    //    this._articleService.getArtById(this.id).subscribe((art)=> {
-    //
-    //        if (art.ofUser != this.userToken) {
-    //            this.isEdited = false;
-    //        } else {
-    //            this.art = art;
-    //            this.titelArticle = art.title;
-    //            for (let e of this.art.tagsFD) {
-    //                this.tags.push(e.name);
-    //            }
-    //        }
-    //
-    //    });
-    //}
-
     filterONTag() {
         let oldTag = [];
         for (let e of this.tagsEx) {
