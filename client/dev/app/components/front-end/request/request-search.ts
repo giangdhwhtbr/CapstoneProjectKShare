@@ -1,6 +1,5 @@
 import { Component, OnInit, Input, OnChanges } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
-import {RouteParams} from '@angular/router-deprecated';
 import { Request } from '../../../interface/request';
 import { Knowledge } from '../../../interface/knowledge';
 
@@ -21,7 +20,7 @@ export class RequestCategoryComponent {
   // type: string;
   identify: string;
   typee: string;
-  constructor(private _requestService: RequestService, public router: Router, 
+  constructor(private _requestService: RequestService, public router: Router,
                   private route: ActivatedRoute) {
     this.route
       .params
@@ -89,7 +88,7 @@ export class RequestCategoryComponent {
           console.log(Error);
         });
     }
- 
+
   }
   requests: Request[];
   knowledges: Knowledge[];

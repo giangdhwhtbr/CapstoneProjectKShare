@@ -24,7 +24,6 @@ import {RequestService} from "./services/requests";
 import {UserService} from "./services/users";
 import {AuthService} from "./services/auth";
 import {KSpaceService} from "./services/kspace";
-import {SocketIOService} from "./services/socket.io.services";
 import {NotificationService} from "./services/notification";
 
 @Component({
@@ -42,7 +41,6 @@ import {NotificationService} from "./services/notification";
     OfferService,
     KnowledgeService,
     KSpaceService,
-    SocketIOService,
     NotificationService
   ]
 })

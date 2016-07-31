@@ -20,6 +20,7 @@ export class UserService {
   private _getRequestByUserUrl = '/api/requests-user/:user';
   private _isUserExistUrl = '/api/is-user-exist/:username';
   private _friendshipStatusUrl = '/api/friendship-status/:user1/:user2';
+  private _banUrl = '/api/ban/:id';
 
   constructor(private _http: Http) { }
 
@@ -62,17 +63,10 @@ export class UserService {
       }
     }
     let _user = JSON.stringify({
-      firstName: user.firstName,
-      lastName: user.lastName,
-      displayName: user.displayName,
-      birthday: user.birthday,
       username: user.username,
       password: user.password,
       email: user.email,
-      role: user.role,
-      ownKnowledgeId: user.ownKnowledgeId,
-      interestedKnowledgeId: user.interestedKnowledgeId,
-      onlineTime: user.onlineTime
+      role: user.role
     });
 
     return this._http
@@ -86,7 +80,6 @@ export class UserService {
     let options = new RequestOptions({ headers: headers });
     var ownk,ink;
 
-
     if(user.ownKnowledgeId && user.ownKnowledgeId.length){
       ownk = user.ownKnowledgeId.split(",");
     }
@@ -94,18 +87,17 @@ export class UserService {
       ink = user.ownKnowledgeId.split(",");
     }
     let _user = JSON.stringify({
-      _id: user._id,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      displayName: user.displayName,
-      birthday: user.birthday,
-      phone: user.phone,
-      username: user.username,
-      password: user.password,
-      email: user.email,
-      role: user.role,
-      linkImg: user.linkImg,
-      ownKnowledgeId: ownk,
+      _id                  : user._id,
+      fullName             : user.fullName,
+      displayName          : user.displayName,
+      birthday             : user.birthday,
+      phone                : user.phone,
+      username             : user.username,
+      password             : user.password,
+      email                : user.email,
+      role                 : user.role,
+      linkImg              : user.linkImg,
+      ownKnowledgeId       : ownk,
       interestedKnowledgeId: ink
 
     });
@@ -113,6 +105,19 @@ export class UserService {
       .put(this._usersUrl.replace(':id', user._id), _user, options)
       .map((r) => r.json());
   }
+
+
+  banUser(userId: string): Observable<any> {
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    let data = JSON.stringify({
+      admin: localStorage.getItem('username')
+    });
+    return this._http
+      .put(this._banUrl.replace(':id',userId), data, options);
+  }
+
 
   updateAvartaLink(user: string, link:string): Observable<any> {
     let header = new Headers;

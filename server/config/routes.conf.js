@@ -29,7 +29,7 @@ module.exports = class RouteConfig {
             res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
             next();
         });
-        require('../api/user/config/passport')(passport);
+
         application.use(expressSession({
             secret: 'kshare',
             cookie: {maxAge: 60000},
@@ -42,5 +42,7 @@ module.exports = class RouteConfig {
         // Add passport's middleware
         application.use(passport.initialize());
         application.use(passport.session());
+
+        require('../api/user/config/passport')(passport);
     }
 }

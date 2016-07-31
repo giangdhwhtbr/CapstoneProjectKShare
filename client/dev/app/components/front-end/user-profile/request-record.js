@@ -1,16 +1,18 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 //cores
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-//components
-var notification_1 = require('../shared/notification');
+//services
+var users_1 = require('../../../services/users');
+var knowledge_1 = require('../../../services/knowledge');
 var RequestRecordComponent = (function () {
     function RequestRecordComponent(router, route, _userService, _knowledgeService) {
         this.router = router;
@@ -30,7 +32,6 @@ var RequestRecordComponent = (function () {
     RequestRecordComponent.prototype.ngOnInit = function () {
         //this.createdAt = this.formatDate(createdAt);
         this.id = this.knowledgeId;
-        console.log(this.id);
         this.getKnowledgeNameOfRequest();
     };
     RequestRecordComponent.prototype.getKnowledgeNameOfRequest = function () {
@@ -43,33 +44,39 @@ var RequestRecordComponent = (function () {
         });
     };
     __decorate([
-        core_1.Input('title')
-    ], RequestRecordComponent.prototype, "title");
+        core_1.Input('title'), 
+        __metadata('design:type', String)
+    ], RequestRecordComponent.prototype, "title", void 0);
     __decorate([
-        core_1.Input('description')
-    ], RequestRecordComponent.prototype, "description");
+        core_1.Input('description'), 
+        __metadata('design:type', String)
+    ], RequestRecordComponent.prototype, "description", void 0);
     __decorate([
-        core_1.Input('createdAt')
-    ], RequestRecordComponent.prototype, "createdAt");
+        core_1.Input('createdAt'), 
+        __metadata('design:type', String)
+    ], RequestRecordComponent.prototype, "createdAt", void 0);
     __decorate([
-        core_1.Input('knowledgeId')
-    ], RequestRecordComponent.prototype, "knowledgeId");
+        core_1.Input('knowledgeId'), 
+        __metadata('design:type', String)
+    ], RequestRecordComponent.prototype, "knowledgeId", void 0);
     __decorate([
-        core_1.Input('status')
-    ], RequestRecordComponent.prototype, "status");
+        core_1.Input('status'), 
+        __metadata('design:type', String)
+    ], RequestRecordComponent.prototype, "status", void 0);
     __decorate([
-        core_1.Input('requestId')
-    ], RequestRecordComponent.prototype, "requestId");
+        core_1.Input('requestId'), 
+        __metadata('design:type', String)
+    ], RequestRecordComponent.prototype, "requestId", void 0);
     RequestRecordComponent = __decorate([
         core_1.Component({
             selector: 'request-record',
             templateUrl: 'client/dev/app/components/front-end/user-profile/templates/request-record.html',
             styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES,
-                notification_1.PushNotificationComponent
+                router_1.ROUTER_DIRECTIVES
             ]
-        })
+        }), 
+        __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, users_1.UserService, knowledge_1.KnowledgeService])
     ], RequestRecordComponent);
     return RequestRecordComponent;
 })();

@@ -35,6 +35,7 @@ userSchema.statics.getUserById = (id) => {
     }
     User
       .findById(id)
+      .select("-username -password -email -role -salt")
       .exec((err, user) => {
         err ? reject(err)
           : resolve(user);

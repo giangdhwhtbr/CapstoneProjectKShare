@@ -11,8 +11,6 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
 import { HeaderComponent } from "./front-end/shared/header";
 import { SideBarComponent } from "./front-end/shared/side-bar";
 import { FooterComponent } from "./front-end/shared/footer";
-import { LoginComponent} from "./front-end/shared/login";
-
 import { UserProfileComponent } from "./front-end/user-profile/user-profile";
 
 /**
@@ -27,18 +25,11 @@ import { KSpaceComponent } from "./front-end/kspace/kspace";
 import { KSpaceListComponent } from "./front-end/kspace/kspace-list";
 import { KSpaceInfoComponent } from "./front-end/kspace/kspace-info";
 import { FriendListComponent } from "./front-end/user-profile/friend-list";
-<<<<<<< HEAD
 import { UserProfileBarComponent } from "./front-end/user-profile/user-profile-bar";
-=======
-
 import { CreateArticleComponent } from "./front-end/article/create-article";
 import { detailArticleComponent } from "./front-end/article/detail-article";
 import { listArticleComponent } from "./front-end/article/list-article";
-
 import { displayArtByTagComponent } from "./front-end/tag/displayArtByTag";
-
-
->>>>>>> b18a0ce6157f668ba535f8791f5485b10789cd10
 
 /**
  * Page components
@@ -51,14 +42,12 @@ import { displayArtByTagComponent } from "./front-end/tag/displayArtByTag";
     <header></header>
     <sidebar></sidebar>
     <router-outlet></router-outlet>
-    <login></login>
   `,
   directives: [
     ROUTER_DIRECTIVES,
     HeaderComponent,
     SideBarComponent,
     FooterComponent,
-    LoginComponent
   ],
   precompile: [
     HomeComponent,
@@ -71,14 +60,11 @@ import { displayArtByTagComponent } from "./front-end/tag/displayArtByTag";
     KSpaceInfoComponent,
     UserProfileComponent,
     FriendListComponent,
-<<<<<<< HEAD
-    UserProfileBarComponent
-=======
+    UserProfileBarComponent,
     CreateArticleComponent,
     detailArticleComponent,
     listArticleComponent,
     displayArtByTagComponent
->>>>>>> b18a0ce6157f668ba535f8791f5485b10789cd10
   ]
 })
 export class KshareComponent {

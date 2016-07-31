@@ -10,22 +10,20 @@ import {
   FormBuilder,
   ControlGroup,
   Control,
-  FORM_DIRECTIVES,
-  CORE_DIRECTIVES
+  FORM_DIRECTIVES
 } from '@angular/common';
 import {
   Router,
   ROUTER_DIRECTIVES
 } from '@angular/router';
-import { User } from '../../../interface/user.ts';
-import { AuthService } from '../../../services/auth';
+import { User } from '../../../../interface/user.ts';
+import { AuthService } from '../../../../services/auth';
 @Component({
   selector : 'login',
-  templateUrl: 'client/dev/app/components/front-end/shared/templates/login.html',
-  styleUrls: ['client/dev/app/components/front-end/shared/styles/login.css'],
+  templateUrl: 'client/dev/app/components/front-end/user/login/templates/login.html',
+  styleUrls: ['client/dev/app/components/front-end/user/login/styles/login.css'],
   directives:[
     ROUTER_DIRECTIVES,
-    CORE_DIRECTIVES,
     FORM_DIRECTIVES
   ]
 })
@@ -36,7 +34,10 @@ export class LoginComponent {
   loginForm: ControlGroup;
   userValid:string;
   passValid:string;
+  bannedMessage: string;
   constructor(@Inject(FormBuilder) fb:FormBuilder, @Inject(AuthService) private _authService: AuthService, public router: Router) {
+    this.userValid="";
+    this.passValid="";
     this.loginForm = fb.group({
       username: ["",Validators.required],
       password: ["",Validators.required]
@@ -48,13 +49,6 @@ export class LoginComponent {
       .login(user)
       .subscribe(
         res => {
-          if(res.invalidUsername){
-            this.userValid = '*'+res.invalidUsername;
-            this.passValid = null;
-          } else if(res.invalidPassword){
-            this.passValid = '*'+res.invalidPassword;
-            this.userValid = null;
-          } else {
             localStorage.setItem('username', res.username);
 
             if(res.role == 'admin'){
@@ -62,11 +56,23 @@ export class LoginComponent {
             }else{
               localStorage.setItem('userrole', 'normal');
             }
-            window.location.reload();
-          }
+
+            this.router.navigate(['/']);
         },
         error => {
-          console.log(error);
+          if(error._body){
+            error = JSON.parse(error._body);
+
+            if(error.invalidUsername){
+              this.userValid = '*'+error.invalidUsername;
+              this.passValid = null;
+            }else if(error.invalidPassword){
+              this.passValid = '*'+error.invalidPassword;
+              this.userValid = null;
+            } else if (error.message){
+              this.bannedMessage =  '*'+error.message;
+            }
+          }
         }
       );
   }

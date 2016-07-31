@@ -5,7 +5,7 @@ import { Injectable } from '@angular/core';
 import { User } from '../interface/user';
 import { Response, Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
@@ -13,6 +13,8 @@ export class AuthService {
   private _loginUrl = '/api/login';
   private _logOutUrl = '/api/logout';
   private _checkLoginUrl = '/api/checkLogin/';
+
+  redirectUrl: string;
   constructor(private _http: Http) {
 
   }
@@ -50,20 +52,7 @@ export class AuthService {
     localStorage.removeItem('username');
     localStorage.removeItem('userrole');
   }
-  isLoggedIn(): Observable<string[]> {
-   return this._http.get(this._checkLoginUrl).map((res)=>res.json()).catch(this.handleError);
-  }
 
-  dashboardFilter(){
-    let roleToken = localStorage.getItem('userrole');
-
-    if(!roleToken){
-      return false;
-    }else if(roleToken !== 'admin'){
-      return false
-    }
-    return true;
-  }
 
   private handleError(error: Response) {
     return Observable.throw(error.json());

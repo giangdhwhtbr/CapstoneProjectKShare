@@ -1,10 +1,11 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
@@ -25,7 +26,7 @@ var KnowledgeService = (function () {
         var _knowledge = JSON.stringify({
             name: knowledge.name,
             description: knowledge.description,
-            parent: knowledge.parent
+            parent: knowledge.parent,
         });
         return this._http
             .post(this._knowledgesUrl.replace(':id', ''), _knowledge, options)
@@ -46,7 +47,7 @@ var KnowledgeService = (function () {
         var options = new http_1.RequestOptions({ headers: headers });
         var _knowledge = JSON.stringify({
             name: knowledge.name,
-            description: knowledge.description
+            description: knowledge.description,
         });
         return this._http
             .put(this._knowledgesUrl.replace(':id', knowledge._id), _knowledge, options)
@@ -78,7 +79,8 @@ var KnowledgeService = (function () {
         return Observable_1.Observable.throw(error.json().error || 'Server error');
     };
     KnowledgeService = __decorate([
-        core_1.Injectable()
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [http_1.Http])
     ], KnowledgeService);
     return KnowledgeService;
 })();

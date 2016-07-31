@@ -23,19 +23,17 @@ var validatePass = function(password){
   return pattern.test(password);
 }
 const userSchema = new mongoose.Schema({
-  name : {
-    firstName: {
-      type: String,
-      trim: true,
-      default: ''
-    },
-    lastName: {
-      type: String,
-      trim: true,
-      default: ''
-    }
+  fullName: {
+    type: String,
+    trim: true,
+    default: ''
   },
   displayName: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  phone: {
     type: String,
     trim: true,
     default: ''
@@ -48,24 +46,31 @@ const userSchema = new mongoose.Schema({
     trim: true,
     unique: [true, 'Username already exists'],
     lowercase: true,
-    default: ''
+    default: '',
+    required: [true, 'Please fill in your username']
   },
   password: {
     type: String,
     trim: true,
-    default: ''
+    default: '',
+    required: [true, 'Please fill in your password'],
+    validate: [validatePass, 'password must be at least 8 characters including 1 uppercase letter, 1 special character and alphanumeric characters?']
   },
   email: {
     type: String,
     trim: true,
     unique: true,
     lowercase: true,
-    default: ''
+    default: '',
+    required: [true, 'Please fill in your email'],
+    validate: [validateEmail, "Email is not in the right form, let check it again!"]
   },
   role: {
     type: String,
     trim: true,
-    default: ''
+    default: '',
+    required: [true, 'Role can not blank'],
+    validate: [validateRole, "Role is not valid, try again!"]
   },
   ownKnowledgeId: [
     {
@@ -95,7 +100,18 @@ const userSchema = new mongoose.Schema({
     max: 5
   },
   status:{
-    type: Boolean
+      admin: {
+        type: String
+      },
+      time: {
+        type: String
+      },
+      bannedAt: {
+        type: Date
+      },
+      banStatus: {
+        type: Boolean
+      }
   },
   salt: {
     type: String,

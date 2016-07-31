@@ -51,23 +51,19 @@ module.exports = class userController {
     userDAO
       .getUserByUserName(req.body.username)
       .then(user => {
-        user.linkImg = req.body.linkImg;  
+        user.linkImg = req.body.linkImg;
         console.log(user);
         userDAO.updateUser(user)
             .then(user => res.status(200).json(user))
             .catch(error => res.status(400).json(error));
       })
       .catch(error => res.status(400).json(error));
-
   }
 
   static createNew(req, res) {
     var currentDate = new Date();
     var user = {
-      name: {
-        firstName: req.body.firstName,
-        lastName: req.body.lastName,
-      },
+      fullName: req.body.fullName,
       displayName: req.body.displayName,
       username: req.body.username,
       password: req.body.password,
@@ -84,7 +80,6 @@ module.exports = class userController {
     if (!req.body.role) {
       user.role = "normal"
     }
-    console.log(user);
     userDAO
       .createNew(user)
       .then(user => res.status(200).json(user))
@@ -92,52 +87,50 @@ module.exports = class userController {
   }
 
   static updateUser(req, res){
-    console.log(req.body);
     if(req.params && req.params.id) {
       var currentDate = new Date();
         userDAO.getUserById(req.params.id)
           .then(user => {
-            if(req.body.firstName){
-              user.name.firstName = req.body.firstName;
-            }
-            if(req.body.lastName){
-              user.name.lastName  = req.body.lastName;
-            }
-            if(req.body.displayName){
-              user.displayName    = req.body.displayName;              
-            }
-            if(req.body.username){
-              user.username       = req.body.username;
-            }
-            if(req.body.password){
-              user.password       = req.body.password;
-            }
-            if(req.body.email){
-              user.email          = req.body.email;
-            }
-            if(req.body.role){
-              user.role           = req.body.role;
-            }
-            if(req.body.ownKnowledgeId){
-              user.ownKnowledgeId    = req.body.ownKnowledgeId;
-            }
-            if(req.body.interestedKnowledgeId){
-              user.interestedKnowledgeId    = req.body.interestedKnowledgeId;
-            }
-            if(req.body.status){
-              user.status         = req.body.status;
-            }
-              user.updatedAt      = currentDate;
-          
-            
+
+              user.fullName               = req.body.fullName;
+              user.displayName            = req.body.displayName;
+              user.phone                  = req.body.phone;
+              user.ownKnowledgeId         = req.body.ownKnowledgeId;
+              user.interestedKnowledgeId  = req.body.interestedKnowledgeId;
+              user.status                 = req.body.status;
+              user.updatedAt              = currentDate;
+
             userDAO.updateUserById(user)
-              .then(user => res.status(200).json(user))
-              .catch(error => res.status(400).json(error));
+              .then( user                => res.status(200).json(user))
+              .catch( error              => res.status(400).json(error));
           })
           .catch(error => res.status(400).json(error));
     }else{
       res.status(404).json({
-        "message": "No Userid in templates"
+        "message": "User Id is not valid"
+      });
+    }
+  }
+
+  static banUser(req,res) {
+    if(req.params && req.params.id) {
+      var currentDate = new Date();
+      userDAO.getUserById(req.params.id)
+        .then(user => {
+          user.status = {
+            admin: req.admin,
+            time: '86400000',
+            bannedAt: currentDate,
+            banStatus: true
+          }
+          userDAO.updateUserById(user)
+            .then( user                => res.status(200).json(user))
+            .catch( error              => res.status(400).json(error));
+        })
+        .catch(error => res.status(400).json(error));
+    }else{
+      res.status(404).json({
+        "message": "User Id is not valid"
       });
     }
   }

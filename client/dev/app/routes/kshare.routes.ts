@@ -19,12 +19,14 @@ import { UserProfileComponent } from "../components/front-end/user-profile/user-
 import { RegisterComponent } from '../components/front-end/user/register/register';
 import { RegisterInfoComponent } from '../components/front-end/user/register/info';
 import { RegisterSuccessComponent } from '../components/front-end/user/register/success';
-
+import { LoginComponent} from "../components/front-end/user/login/login";
 import { CreateArticleComponent } from "../components/front-end/article/create-article";
 import { detailArticleComponent } from "../components/front-end/article/detail-article";
 import { listArticleComponent } from "../components/front-end/article/list-article";
-
 import { displayArtByTagComponent } from "../components/front-end/tag/displayArtByTag";
+
+import { AdminAuthGuard }          from './auth';
+import { AuthService }        from '../services/auth';
 
 export const KShareRoutes: RouterConfig = [
   {
@@ -33,6 +35,7 @@ export const KShareRoutes: RouterConfig = [
     children: [
       {
         path: 'reg',
+        canActivate: [ AdminAuthGuard ],
         children: [
           {
             path: '',
@@ -47,6 +50,11 @@ export const KShareRoutes: RouterConfig = [
             component: RegisterSuccessComponent
           }
         ]
+      },
+      {
+        path: 'login',
+        canActivate: [ AdminAuthGuard ],
+        component: LoginComponent
       },
       {
         path: 'user',
@@ -150,3 +158,5 @@ export const KShareRoutes: RouterConfig = [
     },
 ];
 
+
+export const authProviders = [AdminAuthGuard, AuthService];

@@ -1,10 +1,11 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 /**
  * Created by GiangDH on 5/8/16.
@@ -24,7 +25,7 @@ var requests_1 = require("./services/requests");
 var users_1 = require("./services/users");
 var auth_1 = require("./services/auth");
 var kspace_1 = require("./services/kspace");
-var socket_io_services_1 = require("./services/socket.io.services");
+var notification_1 = require("./services/notification");
 var AppComponent = (function () {
     function AppComponent() {
         this.pageTitle = 'Knowledge Sharing Network';
@@ -45,9 +46,10 @@ var AppComponent = (function () {
                 request_offer_1.OfferService,
                 knowledge_1.KnowledgeService,
                 kspace_1.KSpaceService,
-                socket_io_services_1.SocketIOService
+                notification_1.NotificationService
             ]
-        })
+        }), 
+        __metadata('design:paramtypes', [])
     ], AppComponent);
     return AppComponent;
 })();
