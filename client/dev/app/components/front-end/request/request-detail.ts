@@ -52,7 +52,7 @@ export class RequestDetailClientComponent {
   //check if request is accepted
   checkIsAcceped: boolean = false;
 
-  //variable check to hide button, user can't front.offer their of templates
+  //variable check to hide button, user can't offer their of templates
   checkCreatedUser: boolean;
 
   //variable check to hide button, user can't subcribe twice in a templates
