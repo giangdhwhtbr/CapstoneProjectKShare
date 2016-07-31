@@ -6,7 +6,7 @@
 const mongoose = require('mongoose');
 
 const tagSchema = {
-  name: {type: String, required: true, trim: true},
+  name: {type: String, required: true, trim: true ,unique:true},
   articles:  [{ type:mongoose.Schema.Types.ObjectId, ref:"Article"}]
 }
 

@@ -6,6 +6,7 @@ import { Component, OnInit,Pipe,PipeTransform } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../../services/article';
 import {ArticleService} from "../../../services/article";
+import { AuthService } from '../../../services/auth';
 
 @Component ({
     selector: 'list-article',
@@ -20,14 +21,23 @@ import {ArticleService} from "../../../services/article";
 export class listArticleComponent implements OnInit {
 
     listArt:Array<any>;
+    roleToken:string;
+    userToken:string;
 
     constructor(public router:Router, private route:ActivatedRoute, private _artService:ArticleService) {
-
+        this.roleToken = localStorage.getItem('role');
+        this.userToken = localStorage.getItem('username');
     }
 
     ngOnInit() {
         this._artService.getAllArts().subscribe((arts)=> {
-            this.listArt = arts;
+            for(let i =0;i < arts.length;i++){
+                if(arts[i].status=="private" && arts[i].ofUser!=this.userToken){
+                    arts.splice(i,1);
+                    console.log(i);
+                }
+            }
+            this.listArt=arts;
         });
     }
 }

@@ -27,3 +27,9 @@
 .byAu{
   font-style: italic;
 }
+.noti-err{
+  margin-top: 12rem;
+}
+.text-noti-err-edit{
+  font-size: 3rem;
+}

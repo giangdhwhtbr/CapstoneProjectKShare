@@ -1854,7 +1854,7 @@
 				// ... use insert method is was defined.
 				else if ( widgetDef.insert )
 					widgetDef.insert();
-				// ... or create a brand-new widget from template.
+				// ... or create a brand-new widget from templates.
 				else if ( widgetDef.template ) {
 					var defaults = typeof widgetDef.defaults == 'function' ? widgetDef.defaults() : widgetDef.defaults,
 						element = CKEDITOR.dom.element.createFromHtml( widgetDef.template.output( defaults ) ),

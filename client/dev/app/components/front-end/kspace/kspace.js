@@ -149,9 +149,17 @@ var KSpaceComponent = (function () {
                 }
                 else if (username === kspace.learner) {
                     var webrtc = new SimpleWebRTC({
+                        localVideoEl: 'localVideo',
                         remoteVideosEl: '',
+                        autoRequestMedia: true,
                         nick: username,
-                        media: { video: false, audio: true }
+                        localVideo: {
+                            autoplay: true,
+                            mirror: true,
+                            muted: true // mute local video stream to prevent echo
+                        },
+                        log: true,
+                        debug: false
                     });
                 }
                 rtc.rtcSetting(webrtc, room, kspace.lecturer);

@@ -2,6 +2,7 @@
 
 const KnowledgeDAO = require('./knowledge-dao');
 const TagDAO = require('../tags/tag-dao');
+const ArticleDAO = require('../article/article-dao');
 
 module.exports = class KnowledgeController {
     static getAll(req, res) {
@@ -40,6 +41,21 @@ module.exports = class KnowledgeController {
         }
     }
 
+    static getArticleByKnwId(req, res) {
+        if (req.params && req.params.id) {
+            ArticleDAO
+                .getArticleByKnwId(req.params.id)
+                .then((arts) => {
+                    res.status(200).json(arts);
+                })
+                .catch(error => res.status(400).json(error));
+        } else {
+            res.status(404).json({
+                "message": "No article Id in templates"
+            });
+        }
+    }
+
     //get child back.knowledge from parent back.knowledge
     static getKnowledgeByParent(req, res) {
         if (req.params && req.params.id) {
@@ -59,8 +75,23 @@ module.exports = class KnowledgeController {
 
         KnowledgeDAO
             .deleteKnowledge(_id)
-            .then(() => res.status(200).end())
-            .catch(error => res.status(400).json(error));
+            .then(() => {
+                //delete knowledge id in article
+                ArticleDAO
+                    .getArticleByKnwId(_id)
+                    .then(art => {
+                        for (let a of art) {
+                            var index = a.knowledge.indexOf(_id);
+                            if (index >= 0) {
+                                a.knowledge.splice(index, 1);
+                                a.save();
+                            }
+                        }
+                        // code more here
+                        res.status(200).end();
+                    })
+                    .catch(error => res.status(400).json(error));
+            }).catch(error => res.status(400).json(error));
     }
 
     static updateKnowledge(req, res) {

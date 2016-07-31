@@ -35,34 +35,6 @@
           <div class="create">
             <form role="form" id="create" class="collapse" [ngFormModel]="userForm" (ngSubmit)="addUser(userForm.value)">
               <div class="form-group">
-                  <label for="firstName">First name</label>
-                  <input class="form-control"
-                         type="text"
-                         required="required"
-                         id="firstName"
-                         name="firstName"
-                         [ngFormControl]="userForm.controls['firstName']"/>
-                   <label for="lastName">Last name</label>
-                   <input class="form-control"
-                          type="text"
-                          required="required"
-                          id="lastName"
-                          name="lastName"
-                          [ngFormControl]="userForm.controls['lastName']"/>
-                    <label for="displayName">Display Name</label>
-                    <input class="form-control"
-                           type="text"
-                           required="required"
-                           id="displayName"
-                           name="displayName"
-                           [ngFormControl]="userForm.controls['displayName']"/>
-                 <label for="displayName">Birthday</label>
-                 <input class="form-control"
-                        type="date"
-                        required="required"
-                        id="birthday"
-                        name="birthday"
-                        [ngFormControl]="userForm.controls['birthday']"/>
                  <label for="username">Username</label>
                  <input class="form-control"
                         type="text"
@@ -92,31 +64,8 @@
                          [ngFormControl]="userForm.controls['role']"
                  >
                    <option value="admin">Admin</option>
-                   <option value="manager">Manager</option>
-                   <option value="instructor">Instructor</option>
                    <option value="normal" selected>Normal</option>
                  </select>
-                 <label for="email">Lĩnh vực am hiểu  </label>
-                 <input class="form-control"
-                        type="text"
-                        required="required"
-                        id="ownKnowledgeId"
-                        name="ownKnowledgeId"
-                        [ngFormControl]="userForm.controls['ownKnowledgeId']"/>
-                 <label for="email">Lĩnh vực quan tâm   </label>
-                 <input class="form-control"
-                        type="text"
-                        required="required"
-                        id="interestedKnowledgeId"
-                        name="interestedKnowledgeId"
-                        [ngFormControl]="userForm.controls['interestedKnowledgeId']"/>
-                 <label for="email">Thời gian    </label>
-                 <input class="form-control"
-                        type="text"
-                        required="required"
-                        id="onlineTime"
-                        name="onlineTime"
-                        [ngFormControl]="userForm.controls['onlineTime']"/>
                   <button type="submit" class="btn btn-success">Hoàn thành</button>
                   <button type="reset" class="btn btn-warning">Nhập lại</button>
               </div>
@@ -131,27 +80,30 @@
                     <thead class="thead-inverse">
                         <tr>
                           <th>STT</th>
-                          <th>Tên</th>
-                          <th>Họ</th>
+                          <th>Tài khoản</th>
+                          <th>Họ và Tên</th>
                           <th>Tên hiển thị</th>
                           <th>Sinh nhật</th>
-                          <th>Tên người dùng</th>
                           <th>Email</th>
                           <th>Vai trò</th>
                           <th>Ngày tạo</th>
+                          <th>Ngày chỉnh sửa</th>
+                          <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr *ngFor="let user of users | stringFilter: filter|paginate: { itemsPerPage: 10, currentPage: page }">
                           <td></td>
-                          <td>{{user.firstname}}</td>
-                          <td>{{user.lastname}}</td>
-                          <td>{{user.displayname}}</td>
-                          <td>{{user.birthday}}</td>
                           <td>{{user.username}}</td>
+                          <td>{{user.fullName}}</td>
+                          <td>{{user.displayname}}</td>
+                          <td>{{user.birthday | date:"dd/MM/yyyy"}}</td>
                           <td>{{user.email}}</td>
                           <td>{{user.role}}</td>
-                          <td>{{user.createdAt}}</td>
+                          <td>{{user.createdAt | date:"dd/MM/yyyy"}}</td>
+                          <td>{{user.updatedAt | date:"dd/MM/yyyy" }}</td>
+                          <td><button
+                            (click)="banUser(user._id)"><i class="fa fa-ban" aria-hidden="true"></i></button></td>
                         </tr>
                     </tbody>
                 </table>

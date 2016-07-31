@@ -56,7 +56,7 @@ export class UserProfileBarComponent {
   }
 
   ngOnInit(): void {
-    
+
     this.linkImg = '';
     this._userService.getUserByUserName(this.name).subscribe(
       (user) => {

@@ -41,17 +41,10 @@ export class CreateUserComponent {
 
   constructor(@Inject(FormBuilder) fb:FormBuilder, @Inject(UserService) private _userService: UserService, public router: Router) {
     this.userForm = fb.group({
-      firstName : [""],
-      lastName : [""],
-      displayName: [""],
-      birthday: [""],
       username: ["",Validators.required],
       password: ["",Validators.required],
       email: ["",Validators.required],
-      role: ["",Validators.required],
-      ownKnowledgeId: [""],
-      interestedKnowledgeId: [""],
-      onlineTime: [""]
+      role: ["",Validators.required]
     })
   }
   addUser(user: any): void {

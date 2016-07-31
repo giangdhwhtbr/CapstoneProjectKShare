@@ -15,12 +15,14 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var router_1 = require('@angular/router');
-var auth_1 = require('../../../services/auth');
+var auth_1 = require('../../../../services/auth');
 var LoginComponent = (function () {
     function LoginComponent(fb, _authService, router) {
         this._authService = _authService;
         this.router = router;
         this.user = [];
+        this.userValid = "";
+        this.passValid = "";
         this.loginForm = fb.group({
             username: ["", common_1.Validators.required],
             password: ["", common_1.Validators.required]
@@ -31,36 +33,38 @@ var LoginComponent = (function () {
         this._authService
             .login(user)
             .subscribe(function (res) {
-            if (res.invalidUsername) {
-                _this.userValid = '*' + res.invalidUsername;
-                _this.passValid = null;
-            }
-            else if (res.invalidPassword) {
-                _this.passValid = '*' + res.invalidPassword;
-                _this.userValid = null;
+            localStorage.setItem('username', res.username);
+            if (res.role == 'admin') {
+                localStorage.setItem('userrole', res.role);
             }
             else {
-                localStorage.setItem('username', res.username);
-                if (res.role == 'admin') {
-                    localStorage.setItem('userrole', res.role);
-                }
-                else {
-                    localStorage.setItem('userrole', 'normal');
-                }
-                window.location.reload();
+                localStorage.setItem('userrole', 'normal');
             }
+            _this.router.navigate(['/']);
         }, function (error) {
-            console.log(error);
+            if (error._body) {
+                error = JSON.parse(error._body);
+                if (error.invalidUsername) {
+                    _this.userValid = '*' + error.invalidUsername;
+                    _this.passValid = null;
+                }
+                else if (error.invalidPassword) {
+                    _this.passValid = '*' + error.invalidPassword;
+                    _this.userValid = null;
+                }
+                else if (error.message) {
+                    _this.bannedMessage = '*' + error.message;
+                }
+            }
         });
     };
     LoginComponent = __decorate([
         core_1.Component({
             selector: 'login',
-            templateUrl: 'client/dev/app/components/front-end/shared/templates/login.html',
-            styleUrls: ['client/dev/app/components/front-end/shared/styles/login.css'],
+            templateUrl: 'client/dev/app/components/front-end/user/login/templates/login.html',
+            styleUrls: ['client/dev/app/components/front-end/user/login/styles/login.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES,
-                common_1.CORE_DIRECTIVES,
                 common_1.FORM_DIRECTIVES
             ]
         }),

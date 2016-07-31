@@ -11,9 +11,10 @@ const articleSchema = {
     title: {type: String, required: true, trim: true},
     content: {type: String, required: true, trim: true},
     tags: [{type: mongoose.Schema.Types.ObjectId, ref: "Tag", childPath: "articles"}],
+    knowledge: [{type: mongoose.Schema.Types.ObjectId, ref: "Knowledge", childPath: "articles"}],
     createdAt: {type: Date, default: Date.now()},
     tagsFD: [],
-    status: {type: String, required: true, default: 'public'}
+    status: {type: String, required: true, default: 'public',enum: ['public', 'pending', 'private']}
 }
 
 

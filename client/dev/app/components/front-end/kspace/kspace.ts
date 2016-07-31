@@ -197,9 +197,17 @@ export class KSpaceComponent {
             });
           }else if(username === kspace.learner) {
             var webrtc = new SimpleWebRTC({
+              localVideoEl: 'localVideo',
               remoteVideosEl: '',
+              autoRequestMedia: true,
               nick: username,
-              media: { video: false, audio: true}
+              localVideo: {
+                autoplay: true, // automatically play the video stream on the page
+                mirror: true, // flip the local video to mirror mode (for UX)
+                muted: true // mute local video stream to prevent echo
+              },
+              log: true,
+              debug: false
             })
           }
           rtc.rtcSetting(webrtc,room,kspace.lecturer);

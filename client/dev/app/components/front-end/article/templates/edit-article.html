@@ -1,5 +1,5 @@
 <div class="container article">
-    <div>
+    <div *ngIf="isEdited">
 
         <div class="titleDiv row">
             <div class="col-xs-12">
@@ -77,6 +77,15 @@
         </p-autoComplete>
         <!--end tags-->
         <button type="button" class="btn btn-primary" (click)="editArticle(stt.value)">Submit</button>
+    </div>
+    <div *ngIf="!isEdited">
+        <div class="noti-err">
+            <div class="row">
+                <div class="col-xs-offset-3 col-xs-9">
+                    <i class="fa fa-ban fa-3x" aria-hidden="true"></i><span class="text-noti-err-edit">Nội dung này không khả dụng</span>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>

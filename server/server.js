@@ -45,7 +45,13 @@ io.on('connection', function (socket) {
   socket.on('send notification', function (data) {
     socket.broadcast.emit('receive notification', {data})
   });
+  socket.on ('startPoint', function(data){
+    socket.in(data.room).broadcast.emit( 'startPoint', data );
+  });
 
+  socket.on( 'pathpoint', function( data) {
+    socket.in(data.room).broadcast.emit( 'pathpoint', data );
+  });
   socket.on('subscribe', function(room) { 
         socket.join(room); 
     })

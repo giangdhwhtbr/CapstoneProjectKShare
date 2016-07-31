@@ -10,6 +10,10 @@ import { AuthService } from '../../../services/auth';
 import { NotificationService } from '../../../services/notification';
 declare var io: any;
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> c1468ad7ca27c4782ad676f155b38ed3f6c67fca
 @Component({
   selector: 'header',
   templateUrl: 'client/dev/app/components/front-end/shared/templates/header.html',
@@ -20,7 +24,7 @@ declare var io: any;
 
 export class HeaderComponent {
   notiTitle: string;
-  loginToken: boolean = false;
+  loginToken: boolean;
   userToken: string;
   roleToken: string;
   countUnReadNoti: number;
@@ -31,9 +35,9 @@ export class HeaderComponent {
   notifications: Notification[];
 
   constructor(private _auth: AuthService, public router: Router, public _noti: NotificationService) {
+    this.loginToken = localStorage.getItem('username') ? true : false;
     this.userToken = localStorage.getItem('username');
     this.roleToken = localStorage.getItem('userrole');
-
   }
 
   ngOnInit(): void {
@@ -50,7 +54,7 @@ export class HeaderComponent {
         audio.play();
         this.getNotificationByUser(data.data.user);
 
-        //show noti 
+        //show noti
         this.notiTitle = data.data.title;
         this.link = data.data.link;
         var x = document.getElementById("snackbar")
@@ -60,9 +64,7 @@ export class HeaderComponent {
 
     });
 
-    if (this.userToken) {
-      this.loginToken = true;
-    }
+
     this.getNotificationByUser();
 
   }

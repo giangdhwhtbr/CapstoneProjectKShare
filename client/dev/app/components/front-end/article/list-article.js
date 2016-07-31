@@ -17,10 +17,18 @@ var listArticleComponent = (function () {
         this.router = router;
         this.route = route;
         this._artService = _artService;
+        this.roleToken = localStorage.getItem('role');
+        this.userToken = localStorage.getItem('username');
     }
     listArticleComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._artService.getAllArts().subscribe(function (arts) {
+            for (var i = 0; i < arts.length; i++) {
+                if (arts[i].status == "private" && arts[i].ofUser != _this.userToken) {
+                    arts.splice(i, 1);
+                    console.log(i);
+                }
+            }
             _this.listArt = arts;
         });
     };

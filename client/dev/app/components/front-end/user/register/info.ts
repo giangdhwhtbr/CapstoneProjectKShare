@@ -12,7 +12,7 @@ import { User } from '../../../../interface/user.ts';
 import { UserService } from '../../../../services/users';
 @Component({
     templateUrl : `client/dev/app/components/front-end/user/register/templates/info.html`,
-    styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'] 
+    styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css']
 })
 
 export class RegisterInfoComponent {
@@ -20,9 +20,9 @@ export class RegisterInfoComponent {
     userId: string ='';
     updateUserForm: ControlGroup;
     constructor (
-        private fb : FormBuilder, 
-        private router:Router, 
-        private _userService: UserService, 
+        private fb : FormBuilder,
+        private router:Router,
+        private _userService: UserService,
         private route: ActivatedRoute
     ){
         this.route
@@ -32,7 +32,8 @@ export class RegisterInfoComponent {
             });
 
         this.updateUserForm = fb.group({
-            fullname: [""],
+            fullName: [""],
+            displayName: [""],
             birthday: [""],
             phone: [""],
             ownKnowledge: [""],
@@ -43,7 +44,8 @@ export class RegisterInfoComponent {
     update(user:any):void {
         user = {
             _id: this.userId,
-            firstName: user.fullname,
+            fullName: user.fullName,
+            displayName: user.displayName,
             birthday: user.birthday,
             ownKnowledgeId: user.ownKnowledge,
             interestedKnowledgeId: user.interestedKnowledge

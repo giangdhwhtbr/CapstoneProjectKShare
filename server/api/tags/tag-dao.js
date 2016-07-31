@@ -70,7 +70,8 @@ tagSchema.statics.getTagByIds = (ids) => {
 
   return new Promise((resolve, reject) => {
     Tag
-      .find({'_id': { $in: ids}
+      .find({
+        '_id': { $in: ids}
       })
       .exec((err, tags) => {
         err ? reject(err)

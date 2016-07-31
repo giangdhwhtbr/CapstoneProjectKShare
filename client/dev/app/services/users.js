@@ -22,6 +22,7 @@ var UserService = (function () {
         this._getRequestByUserUrl = '/api/requests-user/:user';
         this._isUserExistUrl = '/api/is-user-exist/:username';
         this._friendshipStatusUrl = '/api/friendship-status/:user1/:user2';
+        this._banUrl = '/api/ban/:id';
     }
     UserService.prototype.getAllUsers = function () {
         return this._http.get(this._usersUrl.replace(':id', ''))
@@ -57,17 +58,10 @@ var UserService = (function () {
             }
         };
         var _user = JSON.stringify({
-            firstName: user.firstName,
-            lastName: user.lastName,
-            displayName: user.displayName,
-            birthday: user.birthday,
             username: user.username,
             password: user.password,
             email: user.email,
-            role: user.role,
-            ownKnowledgeId: user.ownKnowledgeId,
-            interestedKnowledgeId: user.interestedKnowledgeId,
-            onlineTime: user.onlineTime
+            role: user.role
         });
         return this._http
             .post(this._usersUrl.replace(':id', ''), _user, options)
@@ -85,8 +79,7 @@ var UserService = (function () {
         }
         var _user = JSON.stringify({
             _id: user._id,
-            firstName: user.firstName,
-            lastName: user.lastName,
+            fullName: user.fullName,
             displayName: user.displayName,
             birthday: user.birthday,
             phone: user.phone,
@@ -101,6 +94,15 @@ var UserService = (function () {
         return this._http
             .put(this._usersUrl.replace(':id', user._id), _user, options)
             .map(function (r) { return r.json(); });
+    };
+    UserService.prototype.banUser = function (userId) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var data = JSON.stringify({
+            admin: localStorage.getItem('username')
+        });
+        return this._http
+            .put(this._banUrl.replace(':id', userId), data, options);
     };
     UserService.prototype.updateAvartaLink = function (user, link) {
         var header = new http_1.Headers;
