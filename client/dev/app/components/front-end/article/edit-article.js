@@ -53,7 +53,7 @@ var EditArticleComponent = (function () {
         this._tagService = _tagService;
         this.router = router;
         this.route = route;
-        this.dataCnt = 'fuck';
+        this.isEdited = true;
         this.filesToUpload = [];
         this.tags = [];
         this.route
@@ -61,27 +61,46 @@ var EditArticleComponent = (function () {
             .subscribe(function (params) {
             _this.id = params['id'];
         });
+        this.roleToken = localStorage.getItem('userrole');
+        this.userToken = localStorage.getItem('username');
     }
     EditArticleComponent.prototype.ngOnInit = function () {
-        this.CreateUploadImageCkeditor();
-        this.addCommandBtnCk();
-        this.getDataArt();
-        this.loadAllTags();
-    };
-    EditArticleComponent.prototype.ngAfterViewChecked = function () {
-    };
-    EditArticleComponent.prototype.getDataArt = function () {
         var _this = this;
         this._articleService.getArtById(this.id).subscribe(function (art) {
-            _this.art = art;
-            _this.titelArticle = art.title;
-            console.log(_this.art);
-            for (var _i = 0, _a = _this.art.tagsFD; _i < _a.length; _i++) {
-                var e = _a[_i];
-                _this.tags.push(e.name);
+            if (art.ofUser != _this.userToken && _this.roleToken != "admin") {
+                console.log(_this.roleToken);
+                _this.isEdited = false;
+            }
+            else {
+                _this.art = art;
+                _this.titelArticle = art.title;
+                for (var _i = 0, _a = _this.art.tagsFD; _i < _a.length; _i++) {
+                    var e = _a[_i];
+                    _this.tags.push(e.name);
+                }
+                _this.CreateUploadImageCkeditor();
+                _this.addCommandBtnCk();
+                _this.loadAllTags();
             }
         });
     };
+    EditArticleComponent.prototype.ngAfterViewChecked = function () {
+    };
+    //getDataArt() {
+    //    this._articleService.getArtById(this.id).subscribe((art)=> {
+    //
+    //        if (art.ofUser != this.userToken) {
+    //            this.isEdited = false;
+    //        } else {
+    //            this.art = art;
+    //            this.titelArticle = art.title;
+    //            for (let e of this.art.tagsFD) {
+    //                this.tags.push(e.name);
+    //            }
+    //        }
+    //
+    //    });
+    //}
     EditArticleComponent.prototype.filterONTag = function () {
         var oldTag = [];
         for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {

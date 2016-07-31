@@ -7,11 +7,11 @@ webpackJsonp([2],[
 	 * Angular
 	 */
 	var platform_browser_dynamic_1 = __webpack_require__(399);
-	var app_routes_1 = __webpack_require__(616);
+	var app_routes_1 = __webpack_require__(621);
 	/*
 	 * components
 	 */
-	var app_component_1 = __webpack_require__(615);
+	var app_component_1 = __webpack_require__(620);
 	platform_browser_dynamic_1.bootstrap(app_component_1.AppComponent, app_routes_1.APP_ROUTER_PROVIDERS).catch(function (err) { return console.error(err); });
 	// import {DemoPaper} from './demo/demo-paper';
 	// bootstrap(DemoPaper);
@@ -1852,7 +1852,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(8);
 	var router_1 = __webpack_require__(5);
 	//services
-	var badword_1 = __webpack_require__(429);
+	var badword_1 = __webpack_require__(434);
 	var UpdateBadwordComponent = (function () {
 	    function UpdateBadwordComponent(fb, _badwordService, router, route) {
 	        var _this = this;
@@ -13187,7 +13187,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	var common_1 = __webpack_require__(8);
-	var badword_1 = __webpack_require__(429);
+	var badword_1 = __webpack_require__(434);
 	var badword_update_1 = __webpack_require__(279);
 	var ng2_pagination_1 = __webpack_require__(143);
 	var filter_1 = __webpack_require__(181);
@@ -13282,7 +13282,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(8);
 	var knowledge_1 = __webpack_require__(47);
 	var knowledge_update_1 = __webpack_require__(280);
-	var sub_knowledge_create_1 = __webpack_require__(618);
+	var sub_knowledge_create_1 = __webpack_require__(623);
 	var ng2_pagination_1 = __webpack_require__(143);
 	var filter_1 = __webpack_require__(181);
 	var KnowledgeListComponent = (function () {
@@ -13568,6 +13568,535 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	/**
+	 * Created by Duc Duong on 7/12/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var article_1 = __webpack_require__(182);
+	var tag_1 = __webpack_require__(285);
+	var primeng_1 = __webpack_require__(506);
+	var $ = __webpack_require__(317);
+	var CKEditor = (function () {
+	    function CKEditor(_elm) {
+	        CKEDITOR.replace(_elm.nativeElement);
+	    }
+	    CKEditor = __decorate([
+	        core_1.Component({
+	            selector: 'ck-editor',
+	            template: ""
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
+	    ], CKEditor);
+	    return CKEditor;
+	    var _a;
+	}());
+	var CreateArticleComponent = (function () {
+	    function CreateArticleComponent(_articleService, _tagService, router, route) {
+	        this._articleService = _articleService;
+	        this._tagService = _tagService;
+	        this.router = router;
+	        this.route = route;
+	        this.filesToUpload = [];
+	        this.roleToken = localStorage.getItem('role');
+	        this.userToken = localStorage.getItem('username');
+	    }
+	    CreateArticleComponent.prototype.ngOnInit = function () {
+	        if (this.userToken == null) {
+	            this.router.navigateByUrl('/');
+	        }
+	        this.CreateUploadImageCkeditor();
+	        this.addCommandBtnCk();
+	        this.loadAllTags();
+	    };
+	    CreateArticleComponent.prototype.filterONTag = function () {
+	        var oldTag = [];
+	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	            var e = _a[_i];
+	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                var e1 = _c[_b];
+	                if (e.name == e1) {
+	                    oldTag.push(e._id);
+	                    var index = this.tags.indexOf(e1);
+	                    if (index > -1) {
+	                        this.tags.splice(index, 1);
+	                    }
+	                }
+	            }
+	        }
+	        return [oldTag, this.tags];
+	    };
+	    CreateArticleComponent.prototype.filterKnw = function (event) {
+	        var query = event.query;
+	        this.filteredKnw = [];
+	        for (var i = 0; i < this.tagsEx.length; i++) {
+	            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
+	                this.filteredKnw.push(this.tagsEx[i].name);
+	            }
+	        }
+	        if (this.filteredKnw.length == 0) {
+	            this.filteredKnw.push(query.trim());
+	        }
+	    };
+	    //load all knowledge
+	    CreateArticleComponent.prototype.loadAllTags = function () {
+	        var _this = this;
+	        this._tagService.getAllTag().subscribe(function (tags) {
+	            _this.tagsEx = tags;
+	            console.log(_this.tagsEx);
+	        });
+	    };
+	    CreateArticleComponent.prototype.insertLinkToBox = function (link) {
+	        CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
+	    };
+	    // ckeditor
+	    CreateArticleComponent.prototype.addCommandBtnCk = function () {
+	        CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
+	    };
+	    CreateArticleComponent.prototype.CreateUploadImageCkeditor = function () {
+	        CKEDITOR.instances.editor1.ui.addButton('uploadImage', {
+	            label: 'Upload Image',
+	            command: 'uploadImage',
+	            icon: '/client/dev/asserts/images/icon-img-ck.png'
+	        });
+	    };
+	    CreateArticleComponent.prototype.makeFileRequest = function (url, params, files) {
+	        return new Promise(function (resolve, reject) {
+	            var formData = new FormData();
+	            var xhr = new XMLHttpRequest();
+	            for (var i = 0; i < files.length; i++) {
+	                formData.append("uploads[]", files[i], files[i].name);
+	            }
+	            xhr.onreadystatechange = function () {
+	                if (xhr.readyState == 4) {
+	                    if (xhr.status == 200) {
+	                        resolve(JSON.parse(xhr.response));
+	                    }
+	                    else {
+	                        reject(xhr.response);
+	                    }
+	                }
+	            };
+	            xhr.open("POST", url, true);
+	            xhr.send(formData);
+	        });
+	    };
+	    // uploading image
+	    CreateArticleComponent.prototype.uploadImageCk = function () {
+	        if (this.filesToUpload) {
+	            this.makeFileRequest("/api/media", [], this.filesToUpload).then(function (result) {
+	                var link = '/uploads/' + result[0].filename;
+	                CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" style="height:536px; width:858px" /></p>');
+	            }, function (error) {
+	                console.error(error);
+	            });
+	        }
+	    };
+	    //action button upload
+	    CreateArticleComponent.prototype.fileChangeEvent = function (fileInput) {
+	        this.filesToUpload = fileInput.target.files;
+	    };
+	    CreateArticleComponent.prototype.openModalImg = function () {
+	        $("#bdOpenModal").trigger("click");
+	    };
+	    CreateArticleComponent.prototype.postArticle = function (stt) {
+	        var _this = this;
+	        this.contentCk = CKEDITOR.instances.editor1.getData();
+	        var tags = this.filterONTag();
+	        this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (article) {
+	            _this.router.navigateByUrl('/article/' + article._id);
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	    };
+	    CreateArticleComponent = __decorate([
+	        core_1.Component({
+	            selector: 'create-article',
+	            templateUrl: 'client/dev/app/components/front-end/article/templates/create-article.html',
+	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
+	            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES],
+	            providers: [article_1.ArticleService, tag_1.TagService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
+	    ], CreateArticleComponent);
+	    return CreateArticleComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.CreateArticleComponent = CreateArticleComponent;
+	
+
+/***/ },
+/* 420 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 7/24/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var article_1 = __webpack_require__(182);
+	var $ = __webpack_require__(317);
+	var detailArticleComponent = (function () {
+	    function detailArticleComponent(router, route, _articleService) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._articleService = _articleService;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	        });
+	    }
+	    detailArticleComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._articleService.getArtById(this.id).subscribe(function (art) {
+	            _this.article = art;
+	            _this.tags = art.tagsFD;
+	            _this.article.createdAt = new Date(_this.article.createdAt);
+	            console.log(_this.article);
+	        });
+	    };
+	    detailArticleComponent.prototype.ngAfterViewChecked = function () {
+	        if (this.article != undefined) {
+	            $('.bodyArt').html(this.article.content);
+	        }
+	    };
+	    detailArticleComponent.prototype.editArt = function (id) {
+	        this.router.navigateByUrl('/article/edit/' + this.id);
+	    };
+	    detailArticleComponent = __decorate([
+	        core_1.Component({
+	            selector: 'detail-article',
+	            templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
+	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ],
+	            providers: [article_1.ArticleService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object])
+	    ], detailArticleComponent);
+	    return detailArticleComponent;
+	    var _a, _b, _c;
+	}());
+	exports.detailArticleComponent = detailArticleComponent;
+	
+
+/***/ },
+/* 421 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 7/26/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var article_1 = __webpack_require__(182);
+	var tag_1 = __webpack_require__(285);
+	var primeng_1 = __webpack_require__(506);
+	var $ = __webpack_require__(317);
+	var CKEditor = (function () {
+	    function CKEditor(_elm, _articleService, router, route) {
+	        var _this = this;
+	        this._articleService = _articleService;
+	        this.router = router;
+	        this.route = route;
+	        CKEDITOR.replace(_elm.nativeElement);
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	        });
+	    }
+	    CKEditor.prototype.ngOnInit = function () {
+	        this.getDataArt();
+	    };
+	    CKEditor.prototype.getDataArt = function () {
+	        var _this = this;
+	        this._articleService.getArtById(this.id).subscribe(function (art) {
+	            _this.art = art;
+	            CKEDITOR.instances.editor1.setData(_this.art.content + '');
+	        });
+	    };
+	    CKEditor = __decorate([
+	        core_1.Component({
+	            selector: 'ck-editor',
+	            template: ""
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object, (typeof (_b = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
+	    ], CKEditor);
+	    return CKEditor;
+	    var _a, _b, _c, _d;
+	}());
+	var EditArticleComponent = (function () {
+	    function EditArticleComponent(_articleService, _tagService, router, route) {
+	        var _this = this;
+	        this._articleService = _articleService;
+	        this._tagService = _tagService;
+	        this.router = router;
+	        this.route = route;
+	        this.isEdited = true;
+	        this.filesToUpload = [];
+	        this.tags = [];
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	        });
+	        this.roleToken = localStorage.getItem('userrole');
+	        this.userToken = localStorage.getItem('username');
+	    }
+	    EditArticleComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._articleService.getArtById(this.id).subscribe(function (art) {
+	            if (art.ofUser != _this.userToken && _this.roleToken != "admin") {
+	                console.log(_this.roleToken);
+	                _this.isEdited = false;
+	            }
+	            else {
+	                _this.art = art;
+	                _this.titelArticle = art.title;
+	                for (var _i = 0, _a = _this.art.tagsFD; _i < _a.length; _i++) {
+	                    var e = _a[_i];
+	                    _this.tags.push(e.name);
+	                }
+	                _this.CreateUploadImageCkeditor();
+	                _this.addCommandBtnCk();
+	                _this.loadAllTags();
+	            }
+	        });
+	    };
+	    EditArticleComponent.prototype.ngAfterViewChecked = function () {
+	    };
+	    //getDataArt() {
+	    //    this._articleService.getArtById(this.id).subscribe((art)=> {
+	    //
+	    //        if (art.ofUser != this.userToken) {
+	    //            this.isEdited = false;
+	    //        } else {
+	    //            this.art = art;
+	    //            this.titelArticle = art.title;
+	    //            for (let e of this.art.tagsFD) {
+	    //                this.tags.push(e.name);
+	    //            }
+	    //        }
+	    //
+	    //    });
+	    //}
+	    EditArticleComponent.prototype.filterONTag = function () {
+	        var oldTag = [];
+	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	            var e = _a[_i];
+	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                var e1 = _c[_b];
+	                if (e.name == e1) {
+	                    oldTag.push(e._id);
+	                    var index = this.tags.indexOf(e1);
+	                    if (index > -1) {
+	                        this.tags.splice(index, 1);
+	                    }
+	                }
+	            }
+	        }
+	        return [oldTag, this.tags];
+	    };
+	    EditArticleComponent.prototype.filterKnw = function (event) {
+	        var query = event.query;
+	        this.filteredKnw = [];
+	        for (var i = 0; i < this.tagsEx.length; i++) {
+	            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
+	                this.filteredKnw.push(this.tagsEx[i].name);
+	            }
+	        }
+	        if (this.filteredKnw.length == 0) {
+	            this.filteredKnw.push(query.trim());
+	        }
+	    };
+	    //load all knowledge
+	    EditArticleComponent.prototype.loadAllTags = function () {
+	        var _this = this;
+	        this._tagService.getAllTag().subscribe(function (tags) {
+	            _this.tagsEx = tags;
+	            console.log(_this.tagsEx);
+	        });
+	    };
+	    EditArticleComponent.prototype.insertLinkToBox = function (link) {
+	        CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
+	    };
+	    // ckeditor
+	    EditArticleComponent.prototype.addCommandBtnCk = function () {
+	        CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
+	    };
+	    EditArticleComponent.prototype.CreateUploadImageCkeditor = function () {
+	        CKEDITOR.instances.editor1.ui.addButton('uploadImage', {
+	            label: 'Upload Image',
+	            command: 'uploadImage',
+	            icon: '/client/dev/asserts/images/icon-img-ck.png'
+	        });
+	    };
+	    EditArticleComponent.prototype.makeFileRequest = function (url, params, files) {
+	        return new Promise(function (resolve, reject) {
+	            var formData = new FormData();
+	            var xhr = new XMLHttpRequest();
+	            for (var i = 0; i < files.length; i++) {
+	                formData.append("uploads[]", files[i], files[i].name);
+	            }
+	            xhr.onreadystatechange = function () {
+	                if (xhr.readyState == 4) {
+	                    if (xhr.status == 200) {
+	                        resolve(JSON.parse(xhr.response));
+	                    }
+	                    else {
+	                        reject(xhr.response);
+	                    }
+	                }
+	            };
+	            xhr.open("POST", url, true);
+	            xhr.send(formData);
+	        });
+	    };
+	    // uploading image
+	    EditArticleComponent.prototype.uploadImageCk = function () {
+	        if (this.filesToUpload) {
+	            this.makeFileRequest("/api/media", [], this.filesToUpload).then(function (result) {
+	                var link = '/uploads/' + result[0].filename;
+	                CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" style="height:536px; width:858px" /></p>');
+	            }, function (error) {
+	                console.error(error);
+	            });
+	        }
+	    };
+	    //action button upload
+	    EditArticleComponent.prototype.fileChangeEvent = function (fileInput) {
+	        this.filesToUpload = fileInput.target.files;
+	    };
+	    EditArticleComponent.prototype.openModalImg = function () {
+	        $("#bdOpenModal").trigger("click");
+	    };
+	    EditArticleComponent.prototype.editArticle = function (stt) {
+	        var _this = this;
+	        this.art.content = CKEDITOR.instances.editor1.getData();
+	        var tags = this.filterONTag();
+	        this.art.tags = tags[0];
+	        this.art.title = this.titelArticle;
+	        console.log(this.art.status);
+	        this.art.status = stt;
+	        console.log(this.art.status);
+	        this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe(function (article) {
+	            _this.router.navigateByUrl('/article/' + article._id);
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	    };
+	    EditArticleComponent = __decorate([
+	        core_1.Component({
+	            selector: 'create-article',
+	            templateUrl: 'client/dev/app/components/front-end/article/templates/edit-article.html',
+	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
+	            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES],
+	            providers: [article_1.ArticleService, tag_1.TagService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
+	    ], EditArticleComponent);
+	    return EditArticleComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.EditArticleComponent = EditArticleComponent;
+	
+
+/***/ },
+/* 422 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Duc Duong on 7/25/2016.
+	 */
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var article_1 = __webpack_require__(182);
+	var listArticleComponent = (function () {
+	    function listArticleComponent(router, route, _artService) {
+	        this.router = router;
+	        this.route = route;
+	        this._artService = _artService;
+	        this.roleToken = localStorage.getItem('role');
+	        this.userToken = localStorage.getItem('username');
+	    }
+	    listArticleComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._artService.getAllArts().subscribe(function (arts) {
+	            for (var i = 0; i < arts.length; i++) {
+	                if (arts[i].status == "private" && arts[i].ofUser != _this.userToken) {
+	                    arts.splice(i, 1);
+	                    console.log(i);
+	                }
+	            }
+	            _this.listArt = arts;
+	        });
+	    };
+	    listArticleComponent = __decorate([
+	        core_1.Component({
+	            selector: 'list-article',
+	            templateUrl: 'client/dev/app/components/front-end/article/templates/list-article.html',
+	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ],
+	            providers: [article_1.ArticleService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object])
+	    ], listArticleComponent);
+	    return listArticleComponent;
+	    var _a, _b, _c;
+	}());
+	exports.listArticleComponent = listArticleComponent;
+	
+
+/***/ },
+/* 423 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
 	 * Created by GiangDH on 5/18/16.
 	 */
 	var core_1 = __webpack_require__(1);
@@ -13594,7 +14123,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 420 */
+/* 424 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13664,7 +14193,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 421 */
+/* 425 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13719,7 +14248,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 422 */
+/* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13734,11 +14263,11 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var kspace_1 = __webpack_require__(134);
-	var rtc_services_1 = __webpack_require__(627);
+	var rtc_services_1 = __webpack_require__(628);
 	var router_1 = __webpack_require__(5);
 	var common_1 = __webpack_require__(8);
 	//import { ChatComponent } from './chat';
-	var chalkboard_1 = __webpack_require__(626);
+	var chalkboard_1 = __webpack_require__(627);
 	var KSpaceComponent = (function () {
 	    function KSpaceComponent(router, route, _kspaceService, rtcService) {
 	        var _this = this;
@@ -13921,7 +14450,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 423 */
+/* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13940,7 +14469,7 @@ webpackJsonp([2],[
 	var request_offer_1 = __webpack_require__(284);
 	var knowledge_1 = __webpack_require__(47);
 	var kspace_1 = __webpack_require__(134);
-	var offer_create_1 = __webpack_require__(628);
+	var offer_create_1 = __webpack_require__(629);
 	var RequestDetailClientComponent = (function () {
 	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
 	        var _this = this;
@@ -14081,7 +14610,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 424 */
+/* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14097,8 +14626,8 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	var requests_1 = __webpack_require__(81);
-	var friend_list_1 = __webpack_require__(630);
-	var request_create_1 = __webpack_require__(619);
+	var friend_list_1 = __webpack_require__(631);
+	var request_create_1 = __webpack_require__(624);
 	var request_search_1 = __webpack_require__(282);
 	var auth_1 = __webpack_require__(51);
 	var router_2 = __webpack_require__(5);
@@ -14174,7 +14703,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 425 */
+/* 429 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14256,7 +14785,63 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 426 */
+/* 430 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Duc Duong on 7/25/2016.
+	 */
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var tag_1 = __webpack_require__(285);
+	var displayArtByTagComponent = (function () {
+	    function displayArtByTagComponent(router, route, _tagService) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._tagService = _tagService;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	        });
+	    }
+	    displayArtByTagComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._tagService.getArtByTag(this.id).subscribe(function (arts) {
+	            _this.listArt = arts;
+	        });
+	    };
+	    displayArtByTagComponent = __decorate([
+	        core_1.Component({
+	            selector: 'list-article-by-tag',
+	            templateUrl: 'client/dev/app/components/front-end/tag/templates/display-article-by-tag.html',
+	            styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ],
+	            providers: [tag_1.TagService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _c) || Object])
+	    ], displayArtByTagComponent);
+	    return displayArtByTagComponent;
+	    var _a, _b, _c;
+	}());
+	exports.displayArtByTagComponent = displayArtByTagComponent;
+	
+
+/***/ },
+/* 431 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14353,7 +14938,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 427 */
+/* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14474,7 +15059,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 428 */
+/* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14495,24 +15080,32 @@ webpackJsonp([2],[
 	/**
 	 * Shared components
 	 */
-	var header_1 = __webpack_require__(631);
-	var side_bar_1 = __webpack_require__(633);
-	var footer_1 = __webpack_require__(629);
-	var login_1 = __webpack_require__(632);
-	var user_profile_1 = __webpack_require__(427);
+	var header_1 = __webpack_require__(632);
+	var side_bar_1 = __webpack_require__(634);
+	var footer_1 = __webpack_require__(630);
+	var login_1 = __webpack_require__(633);
+	var user_profile_1 = __webpack_require__(432);
 	/**
 	 * Page components
 	 */
-	var home_1 = __webpack_require__(419);
-	var request_list_1 = __webpack_require__(424);
-	var request_detail_1 = __webpack_require__(423);
-	var request_update_1 = __webpack_require__(425);
+	var home_1 = __webpack_require__(423);
+	var request_list_1 = __webpack_require__(428);
+	var request_detail_1 = __webpack_require__(427);
+	var request_update_1 = __webpack_require__(429);
 	var request_search_1 = __webpack_require__(282);
-	var kspace_1 = __webpack_require__(422);
-	var kspace_list_1 = __webpack_require__(421);
-	var kspace_info_1 = __webpack_require__(420);
-	var friend_list_1 = __webpack_require__(426);
+	var kspace_1 = __webpack_require__(426);
+	var kspace_list_1 = __webpack_require__(425);
+	var kspace_info_1 = __webpack_require__(424);
+	var friend_list_1 = __webpack_require__(431);
 	var user_profile_bar_1 = __webpack_require__(283);
+	var create_article_1 = __webpack_require__(419);
+	var detail_article_1 = __webpack_require__(420);
+	var list_article_1 = __webpack_require__(422);
+	var edit_article_1 = __webpack_require__(421);
+	var displayArtByTag_1 = __webpack_require__(430);
+	/**
+	 * Page components
+	 */
 	var KshareComponent = (function () {
 	    function KshareComponent() {
 	    }
@@ -14538,7 +15131,12 @@ webpackJsonp([2],[
 	                kspace_info_1.KSpaceInfoComponent,
 	                user_profile_1.UserProfileComponent,
 	                friend_list_1.FriendListComponent,
-	                user_profile_bar_1.UserProfileBarComponent
+	                user_profile_bar_1.UserProfileBarComponent,
+	                create_article_1.CreateArticleComponent,
+	                detail_article_1.detailArticleComponent,
+	                list_article_1.listArticleComponent,
+	                edit_article_1.EditArticleComponent,
+	                displayArtByTag_1.displayArtByTagComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -14549,7 +15147,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 429 */
+/* 434 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14625,7 +15223,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 430 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14635,7 +15233,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subject_1 = __webpack_require__(19);
-	var queue_1 = __webpack_require__(454);
+	var queue_1 = __webpack_require__(459);
 	var observeOn_1 = __webpack_require__(290);
 	/**
 	 * @class ReplaySubject<T>
@@ -14709,7 +15307,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=ReplaySubject.js.map
 
 /***/ },
-/* 431 */
+/* 436 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14730,11 +15328,11 @@ webpackJsonp([2],[
 	__webpack_require__(651);
 	__webpack_require__(652);
 	__webpack_require__(653);
-	__webpack_require__(432);
-	__webpack_require__(433);
+	__webpack_require__(437);
+	__webpack_require__(438);
 	__webpack_require__(654);
 	__webpack_require__(655);
-	__webpack_require__(434);
+	__webpack_require__(439);
 	__webpack_require__(656);
 	__webpack_require__(657);
 	__webpack_require__(660);
@@ -14761,7 +15359,7 @@ webpackJsonp([2],[
 	__webpack_require__(680);
 	__webpack_require__(685);
 	__webpack_require__(681);
-	__webpack_require__(435);
+	__webpack_require__(440);
 	__webpack_require__(682);
 	__webpack_require__(683);
 	__webpack_require__(684);
@@ -14777,24 +15375,24 @@ webpackJsonp([2],[
 	__webpack_require__(666);
 	__webpack_require__(694);
 	__webpack_require__(695);
-	__webpack_require__(436);
+	__webpack_require__(441);
 	__webpack_require__(187);
 	__webpack_require__(696);
 	__webpack_require__(697);
 	__webpack_require__(698);
-	__webpack_require__(437);
+	__webpack_require__(442);
 	__webpack_require__(286);
 	__webpack_require__(699);
 	__webpack_require__(700);
-	__webpack_require__(438);
+	__webpack_require__(443);
 	__webpack_require__(701);
 	__webpack_require__(702);
-	__webpack_require__(439);
+	__webpack_require__(444);
 	__webpack_require__(703);
 	__webpack_require__(705);
 	__webpack_require__(704);
 	__webpack_require__(706);
-	__webpack_require__(440);
+	__webpack_require__(445);
 	__webpack_require__(707);
 	__webpack_require__(708);
 	__webpack_require__(709);
@@ -14811,7 +15409,7 @@ webpackJsonp([2],[
 	__webpack_require__(720);
 	__webpack_require__(721);
 	__webpack_require__(722);
-	__webpack_require__(441);
+	__webpack_require__(446);
 	__webpack_require__(723);
 	__webpack_require__(724);
 	__webpack_require__(725);
@@ -14820,7 +15418,7 @@ webpackJsonp([2],[
 	__webpack_require__(728);
 	__webpack_require__(729);
 	__webpack_require__(730);
-	__webpack_require__(442);
+	__webpack_require__(447);
 	__webpack_require__(731);
 	__webpack_require__(732);
 	__webpack_require__(733);
@@ -14838,11 +15436,11 @@ webpackJsonp([2],[
 	exports.Subscriber = Subscriber_1.Subscriber;
 	var AsyncSubject_1 = __webpack_require__(184);
 	exports.AsyncSubject = AsyncSubject_1.AsyncSubject;
-	var ReplaySubject_1 = __webpack_require__(430);
+	var ReplaySubject_1 = __webpack_require__(435);
 	exports.ReplaySubject = ReplaySubject_1.ReplaySubject;
 	var BehaviorSubject_1 = __webpack_require__(185);
 	exports.BehaviorSubject = BehaviorSubject_1.BehaviorSubject;
-	var ConnectableObservable_1 = __webpack_require__(443);
+	var ConnectableObservable_1 = __webpack_require__(448);
 	exports.ConnectableObservable = ConnectableObservable_1.ConnectableObservable;
 	var Notification_1 = __webpack_require__(186);
 	exports.Notification = Notification_1.Notification;
@@ -14852,11 +15450,11 @@ webpackJsonp([2],[
 	exports.ArgumentOutOfRangeError = ArgumentOutOfRangeError_1.ArgumentOutOfRangeError;
 	var ObjectUnsubscribedError_1 = __webpack_require__(294);
 	exports.ObjectUnsubscribedError = ObjectUnsubscribedError_1.ObjectUnsubscribedError;
-	var UnsubscriptionError_1 = __webpack_require__(455);
+	var UnsubscriptionError_1 = __webpack_require__(460);
 	exports.UnsubscriptionError = UnsubscriptionError_1.UnsubscriptionError;
-	var asap_1 = __webpack_require__(453);
+	var asap_1 = __webpack_require__(458);
 	var async_1 = __webpack_require__(41);
-	var queue_1 = __webpack_require__(454);
+	var queue_1 = __webpack_require__(459);
 	var rxSubscriber_1 = __webpack_require__(192);
 	var observable_1 = __webpack_require__(191);
 	var iterator_1 = __webpack_require__(135);
@@ -14900,11 +15498,6 @@ webpackJsonp([2],[
 	//# sourceMappingURL=Rx.js.map
 
 /***/ },
-/* 432 */,
-/* 433 */,
-/* 434 */,
-/* 435 */,
-/* 436 */,
 /* 437 */,
 /* 438 */,
 /* 439 */,
@@ -14914,7 +15507,12 @@ webpackJsonp([2],[
 /* 443 */,
 /* 444 */,
 /* 445 */,
-/* 446 */
+/* 446 */,
+/* 447 */,
+/* 448 */,
+/* 449 */,
+/* 450 */,
+/* 451 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15012,8 +15610,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=filter.js.map
 
 /***/ },
-/* 447 */,
-/* 448 */
+/* 452 */,
+/* 453 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15148,8 +15746,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=merge.js.map
 
 /***/ },
-/* 449 */,
-/* 450 */
+/* 454 */,
+/* 455 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15308,11 +15906,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=mergeMapTo.js.map
 
 /***/ },
-/* 451 */
+/* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ReplaySubject_1 = __webpack_require__(430);
+	var ReplaySubject_1 = __webpack_require__(435);
 	var multicast_1 = __webpack_require__(119);
 	/**
 	 * @param bufferSize
@@ -15331,7 +15929,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=publishReplay.js.map
 
 /***/ },
-/* 452 */
+/* 457 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15445,7 +16043,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=race.js.map
 
 /***/ },
-/* 453 */
+/* 458 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15454,7 +16052,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=asap.js.map
 
 /***/ },
-/* 454 */
+/* 459 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15463,10 +16061,10 @@ webpackJsonp([2],[
 	//# sourceMappingURL=queue.js.map
 
 /***/ },
-/* 455 */,
-/* 456 */,
-/* 457 */,
-/* 458 */
+/* 460 */,
+/* 461 */,
+/* 462 */,
+/* 463 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -15476,11 +16074,6 @@ webpackJsonp([2],[
 	//# sourceMappingURL=noop.js.map
 
 /***/ },
-/* 459 */,
-/* 460 */,
-/* 461 */,
-/* 462 */,
-/* 463 */,
 /* 464 */,
 /* 465 */,
 /* 466 */,
@@ -15512,7 +16105,12 @@ webpackJsonp([2],[
 /* 492 */,
 /* 493 */,
 /* 494 */,
-/* 495 */
+/* 495 */,
+/* 496 */,
+/* 497 */,
+/* 498 */,
+/* 499 */,
+/* 500 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15569,7 +16167,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 496 */
+/* 501 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15619,7 +16217,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 497 */
+/* 502 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15670,7 +16268,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 498 */
+/* 503 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15732,7 +16330,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 499 */
+/* 504 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15870,7 +16468,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 500 */
+/* 505 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16030,7 +16628,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 501 */
+/* 506 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16038,7 +16636,7 @@ webpackJsonp([2],[
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
 	__export(__webpack_require__(34));
-	__export(__webpack_require__(495));
+	__export(__webpack_require__(500));
 	__export(__webpack_require__(1016));
 	__export(__webpack_require__(1017));
 	__export(__webpack_require__(1018));
@@ -16091,25 +16689,20 @@ webpackJsonp([2],[
 	__export(__webpack_require__(1060));
 	__export(__webpack_require__(1061));
 	__export(__webpack_require__(1062));
-	__export(__webpack_require__(497));
+	__export(__webpack_require__(502));
 	__export(__webpack_require__(1064));
-	__export(__webpack_require__(498));
+	__export(__webpack_require__(503));
 	__export(__webpack_require__(1063));
 	__export(__webpack_require__(1065));
 	__export(__webpack_require__(1066));
 	__export(__webpack_require__(1067));
 	__export(__webpack_require__(1068));
 	__export(__webpack_require__(1069));
-	__export(__webpack_require__(499));
-	__export(__webpack_require__(500));
+	__export(__webpack_require__(504));
+	__export(__webpack_require__(505));
 	
 
 /***/ },
-/* 502 */,
-/* 503 */,
-/* 504 */,
-/* 505 */,
-/* 506 */,
 /* 507 */,
 /* 508 */,
 /* 509 */,
@@ -16218,7 +16811,12 @@ webpackJsonp([2],[
 /* 612 */,
 /* 613 */,
 /* 614 */,
-/* 615 */
+/* 615 */,
+/* 616 */,
+/* 617 */,
+/* 618 */,
+/* 619 */,
+/* 620 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16236,9 +16834,9 @@ webpackJsonp([2],[
 	 */
 	var core_1 = __webpack_require__(1);
 	var http_1 = __webpack_require__(46);
-	__webpack_require__(431); // Load all features
+	__webpack_require__(436); // Load all features
 	var router_1 = __webpack_require__(5);
-	var kshare_component_1 = __webpack_require__(428);
+	var kshare_component_1 = __webpack_require__(433);
 	//import { UserComponent } from "./user.component";
 	/**
 	 * services
@@ -16283,7 +16881,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 616 */
+/* 621 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16300,7 +16898,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 617 */
+/* 622 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16317,11 +16915,11 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 6/4/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	__webpack_require__(431); // Load all features
+	__webpack_require__(436); // Load all features
 	var router_1 = __webpack_require__(5);
 	// Layout component
-	var nav_bar_1 = __webpack_require__(620);
-	var side_bar_1 = __webpack_require__(621);
+	var nav_bar_1 = __webpack_require__(625);
+	var side_bar_1 = __webpack_require__(626);
 	// Functions
 	var knowledge_update_1 = __webpack_require__(280);
 	var knowledges_list_1 = __webpack_require__(416);
@@ -16360,7 +16958,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 618 */
+/* 623 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16414,7 +17012,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 619 */
+/* 624 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16483,7 +17081,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 620 */
+/* 625 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16527,7 +17125,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 621 */
+/* 626 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16565,509 +17163,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 622 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	/**
-	 * Created by Duc Duong on 7/12/2016.
-	 */
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	var article_1 = __webpack_require__(182);
-	var tag_1 = __webpack_require__(285);
-	var primeng_1 = __webpack_require__(501);
-	var $ = __webpack_require__(317);
-	var CKEditor = (function () {
-	    function CKEditor(_elm) {
-	        CKEDITOR.replace(_elm.nativeElement);
-	    }
-	    CKEditor = __decorate([
-	        core_1.Component({
-	            selector: 'ck-editor',
-	            template: ""
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
-	    ], CKEditor);
-	    return CKEditor;
-	    var _a;
-	}());
-	var CreateArticleComponent = (function () {
-	    function CreateArticleComponent(_articleService, _tagService, router, route) {
-	        this._articleService = _articleService;
-	        this._tagService = _tagService;
-	        this.router = router;
-	        this.route = route;
-	        this.filesToUpload = [];
-	        this.roleToken = localStorage.getItem('role');
-	        this.userToken = localStorage.getItem('username');
-	    }
-	    CreateArticleComponent.prototype.ngOnInit = function () {
-	        if (this.userToken == null) {
-	            this.router.navigateByUrl('/');
-	        }
-	        this.CreateUploadImageCkeditor();
-	        this.addCommandBtnCk();
-	        this.loadAllTags();
-	    };
-	    CreateArticleComponent.prototype.filterONTag = function () {
-	        var oldTag = [];
-	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
-	            var e = _a[_i];
-	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
-	                var e1 = _c[_b];
-	                if (e.name == e1) {
-	                    oldTag.push(e._id);
-	                    var index = this.tags.indexOf(e1);
-	                    if (index > -1) {
-	                        this.tags.splice(index, 1);
-	                    }
-	                }
-	            }
-	        }
-	        return [oldTag, this.tags];
-	    };
-	    CreateArticleComponent.prototype.filterKnw = function (event) {
-	        var query = event.query;
-	        this.filteredKnw = [];
-	        for (var i = 0; i < this.tagsEx.length; i++) {
-	            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
-	                this.filteredKnw.push(this.tagsEx[i].name);
-	            }
-	        }
-	        if (this.filteredKnw.length == 0) {
-	            this.filteredKnw.push(query.trim());
-	        }
-	    };
-	    //load all knowledge
-	    CreateArticleComponent.prototype.loadAllTags = function () {
-	        var _this = this;
-	        this._tagService.getAllTag().subscribe(function (tags) {
-	            _this.tagsEx = tags;
-	            console.log(_this.tagsEx);
-	        });
-	    };
-	    CreateArticleComponent.prototype.insertLinkToBox = function (link) {
-	        CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
-	    };
-	    // ckeditor
-	    CreateArticleComponent.prototype.addCommandBtnCk = function () {
-	        CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
-	    };
-	    CreateArticleComponent.prototype.CreateUploadImageCkeditor = function () {
-	        CKEDITOR.instances.editor1.ui.addButton('uploadImage', {
-	            label: 'Upload Image',
-	            command: 'uploadImage',
-	            icon: '/client/dev/asserts/images/icon-img-ck.png'
-	        });
-	    };
-	    CreateArticleComponent.prototype.makeFileRequest = function (url, params, files) {
-	        return new Promise(function (resolve, reject) {
-	            var formData = new FormData();
-	            var xhr = new XMLHttpRequest();
-	            for (var i = 0; i < files.length; i++) {
-	                formData.append("uploads[]", files[i], files[i].name);
-	            }
-	            xhr.onreadystatechange = function () {
-	                if (xhr.readyState == 4) {
-	                    if (xhr.status == 200) {
-	                        resolve(JSON.parse(xhr.response));
-	                    }
-	                    else {
-	                        reject(xhr.response);
-	                    }
-	                }
-	            };
-	            xhr.open("POST", url, true);
-	            xhr.send(formData);
-	        });
-	    };
-	    // uploading image
-	    CreateArticleComponent.prototype.uploadImageCk = function () {
-	        if (this.filesToUpload) {
-	            this.makeFileRequest("/api/media", [], this.filesToUpload).then(function (result) {
-	                var link = '/uploads/' + result[0].filename;
-	                CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" style="height:536px; width:858px" /></p>');
-	            }, function (error) {
-	                console.error(error);
-	            });
-	        }
-	    };
-	    //action button upload
-	    CreateArticleComponent.prototype.fileChangeEvent = function (fileInput) {
-	        this.filesToUpload = fileInput.target.files;
-	    };
-	    CreateArticleComponent.prototype.openModalImg = function () {
-	        $("#bdOpenModal").trigger("click");
-	    };
-	    CreateArticleComponent.prototype.postArticle = function (stt) {
-	        var _this = this;
-	        this.contentCk = CKEDITOR.instances.editor1.getData();
-	        var tags = this.filterONTag();
-	        this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (article) {
-	            _this.router.navigateByUrl('/article/' + article._id);
-	        }, function (error) {
-	            console.log(error.text());
-	        });
-	    };
-	    CreateArticleComponent = __decorate([
-	        core_1.Component({
-	            selector: 'create-article',
-	            templateUrl: 'client/dev/app/components/front-end/article/templates/create-article.html',
-	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
-	            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES],
-	            providers: [article_1.ArticleService, tag_1.TagService]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
-	    ], CreateArticleComponent);
-	    return CreateArticleComponent;
-	    var _a, _b, _c, _d;
-	}());
-	exports.CreateArticleComponent = CreateArticleComponent;
-	
-
-/***/ },
-/* 623 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	/**
-	 * Created by Duc Duong on 7/24/2016.
-	 */
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	var article_1 = __webpack_require__(182);
-	var $ = __webpack_require__(317);
-	var detailArticleComponent = (function () {
-	    function detailArticleComponent(router, route, _articleService) {
-	        var _this = this;
-	        this.router = router;
-	        this.route = route;
-	        this._articleService = _articleService;
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.id = params['id'];
-	        });
-	    }
-	    detailArticleComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this._articleService.getArtById(this.id).subscribe(function (art) {
-	            _this.article = art;
-	            _this.tags = art.tagsFD;
-	            _this.article.createdAt = new Date(_this.article.createdAt);
-	            console.log(_this.article);
-	        });
-	    };
-	    detailArticleComponent.prototype.ngAfterViewChecked = function () {
-	        if (this.article != undefined) {
-	            $('.bodyArt').html(this.article.content);
-	        }
-	    };
-	    detailArticleComponent.prototype.editArt = function (id) {
-	        this.router.navigateByUrl('/article/edit/' + this.id);
-	    };
-	    detailArticleComponent = __decorate([
-	        core_1.Component({
-	            selector: 'detail-article',
-	            templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
-	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES
-	            ],
-	            providers: [article_1.ArticleService]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object])
-	    ], detailArticleComponent);
-	    return detailArticleComponent;
-	    var _a, _b, _c;
-	}());
-	exports.detailArticleComponent = detailArticleComponent;
-	
-
-/***/ },
-/* 624 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	/**
-	 * Created by Duc Duong on 7/26/2016.
-	 */
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	var article_1 = __webpack_require__(182);
-	var tag_1 = __webpack_require__(285);
-	var primeng_1 = __webpack_require__(501);
-	var $ = __webpack_require__(317);
-	var CKEditor = (function () {
-	    function CKEditor(_elm, _articleService, router, route) {
-	        var _this = this;
-	        this._articleService = _articleService;
-	        this.router = router;
-	        this.route = route;
-	        CKEDITOR.replace(_elm.nativeElement);
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.id = params['id'];
-	        });
-	    }
-	    CKEditor.prototype.ngOnInit = function () {
-	        this.getDataArt();
-	    };
-	    CKEditor.prototype.getDataArt = function () {
-	        var _this = this;
-	        this._articleService.getArtById(this.id).subscribe(function (art) {
-	            _this.art = art;
-	            CKEDITOR.instances.editor1.setData(_this.art.content + '');
-	        });
-	    };
-	    CKEditor = __decorate([
-	        core_1.Component({
-	            selector: 'ck-editor',
-	            template: ""
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object, (typeof (_b = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
-	    ], CKEditor);
-	    return CKEditor;
-	    var _a, _b, _c, _d;
-	}());
-	var EditArticleComponent = (function () {
-	    function EditArticleComponent(_articleService, _tagService, router, route) {
-	        var _this = this;
-	        this._articleService = _articleService;
-	        this._tagService = _tagService;
-	        this.router = router;
-	        this.route = route;
-	        this.dataCnt = 'fuck';
-	        this.filesToUpload = [];
-	        this.tags = [];
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.id = params['id'];
-	        });
-	    }
-	    EditArticleComponent.prototype.ngOnInit = function () {
-	        this.CreateUploadImageCkeditor();
-	        this.addCommandBtnCk();
-	        this.getDataArt();
-	        this.loadAllTags();
-	    };
-	    EditArticleComponent.prototype.ngAfterViewChecked = function () {
-	    };
-	    EditArticleComponent.prototype.getDataArt = function () {
-	        var _this = this;
-	        this._articleService.getArtById(this.id).subscribe(function (art) {
-	            _this.art = art;
-	            _this.titelArticle = art.title;
-	            console.log(_this.art);
-	            for (var _i = 0, _a = _this.art.tagsFD; _i < _a.length; _i++) {
-	                var e = _a[_i];
-	                _this.tags.push(e.name);
-	            }
-	        });
-	    };
-	    EditArticleComponent.prototype.filterONTag = function () {
-	        var oldTag = [];
-	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
-	            var e = _a[_i];
-	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
-	                var e1 = _c[_b];
-	                if (e.name == e1) {
-	                    oldTag.push(e._id);
-	                    var index = this.tags.indexOf(e1);
-	                    if (index > -1) {
-	                        this.tags.splice(index, 1);
-	                    }
-	                }
-	            }
-	        }
-	        return [oldTag, this.tags];
-	    };
-	    EditArticleComponent.prototype.filterKnw = function (event) {
-	        var query = event.query;
-	        this.filteredKnw = [];
-	        for (var i = 0; i < this.tagsEx.length; i++) {
-	            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
-	                this.filteredKnw.push(this.tagsEx[i].name);
-	            }
-	        }
-	        if (this.filteredKnw.length == 0) {
-	            this.filteredKnw.push(query.trim());
-	        }
-	    };
-	    //load all knowledge
-	    EditArticleComponent.prototype.loadAllTags = function () {
-	        var _this = this;
-	        this._tagService.getAllTag().subscribe(function (tags) {
-	            _this.tagsEx = tags;
-	            console.log(_this.tagsEx);
-	        });
-	    };
-	    EditArticleComponent.prototype.insertLinkToBox = function (link) {
-	        CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
-	    };
-	    // ckeditor
-	    EditArticleComponent.prototype.addCommandBtnCk = function () {
-	        CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
-	    };
-	    EditArticleComponent.prototype.CreateUploadImageCkeditor = function () {
-	        CKEDITOR.instances.editor1.ui.addButton('uploadImage', {
-	            label: 'Upload Image',
-	            command: 'uploadImage',
-	            icon: '/client/dev/asserts/images/icon-img-ck.png'
-	        });
-	    };
-	    EditArticleComponent.prototype.makeFileRequest = function (url, params, files) {
-	        return new Promise(function (resolve, reject) {
-	            var formData = new FormData();
-	            var xhr = new XMLHttpRequest();
-	            for (var i = 0; i < files.length; i++) {
-	                formData.append("uploads[]", files[i], files[i].name);
-	            }
-	            xhr.onreadystatechange = function () {
-	                if (xhr.readyState == 4) {
-	                    if (xhr.status == 200) {
-	                        resolve(JSON.parse(xhr.response));
-	                    }
-	                    else {
-	                        reject(xhr.response);
-	                    }
-	                }
-	            };
-	            xhr.open("POST", url, true);
-	            xhr.send(formData);
-	        });
-	    };
-	    // uploading image
-	    EditArticleComponent.prototype.uploadImageCk = function () {
-	        if (this.filesToUpload) {
-	            this.makeFileRequest("/api/media", [], this.filesToUpload).then(function (result) {
-	                var link = '/uploads/' + result[0].filename;
-	                CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" style="height:536px; width:858px" /></p>');
-	            }, function (error) {
-	                console.error(error);
-	            });
-	        }
-	    };
-	    //action button upload
-	    EditArticleComponent.prototype.fileChangeEvent = function (fileInput) {
-	        this.filesToUpload = fileInput.target.files;
-	    };
-	    EditArticleComponent.prototype.openModalImg = function () {
-	        $("#bdOpenModal").trigger("click");
-	    };
-	    EditArticleComponent.prototype.editArticle = function (stt) {
-	        var _this = this;
-	        this.art.content = CKEDITOR.instances.editor1.getData();
-	        var tags = this.filterONTag();
-	        this.art.tags = tags[0];
-	        this.art.title = this.titelArticle;
-	        console.log(this.art.status);
-	        this.art.status = stt;
-	        console.log(this.art.status);
-	        this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe(function (article) {
-	            _this.router.navigateByUrl('/article/' + article._id);
-	        }, function (error) {
-	            console.log(error.text());
-	        });
-	    };
-	    EditArticleComponent = __decorate([
-	        core_1.Component({
-	            selector: 'create-article',
-	            templateUrl: 'client/dev/app/components/front-end/article/templates/edit-article.html',
-	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
-	            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES],
-	            providers: [article_1.ArticleService, tag_1.TagService]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
-	    ], EditArticleComponent);
-	    return EditArticleComponent;
-	    var _a, _b, _c, _d;
-	}());
-	exports.EditArticleComponent = EditArticleComponent;
-	
-
-/***/ },
-/* 625 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Created by Duc Duong on 7/25/2016.
-	 */
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	var article_1 = __webpack_require__(182);
-	var listArticleComponent = (function () {
-	    function listArticleComponent(router, route, _artService) {
-	        this.router = router;
-	        this.route = route;
-	        this._artService = _artService;
-	    }
-	    listArticleComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this._artService.getAllArts().subscribe(function (arts) {
-	            _this.listArt = arts;
-	        });
-	    };
-	    listArticleComponent = __decorate([
-	        core_1.Component({
-	            selector: 'list-article',
-	            templateUrl: 'client/dev/app/components/front-end/article/templates/list-article.html',
-	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES
-	            ],
-	            providers: [article_1.ArticleService]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object])
-	    ], listArticleComponent);
-	    return listArticleComponent;
-	    var _a, _b, _c;
-	}());
-	exports.listArticleComponent = listArticleComponent;
-	
-
-/***/ },
-/* 626 */
+/* 627 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17277,7 +17373,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 627 */
+/* 628 */
 /***/ function(module, exports) {
 
 	/**
@@ -17347,7 +17443,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 628 */
+/* 629 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17408,7 +17504,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 629 */
+/* 630 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17442,7 +17538,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 630 */
+/* 631 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17474,7 +17570,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 631 */
+/* 632 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17571,7 +17667,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 632 */
+/* 633 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17653,7 +17749,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 633 */
+/* 634 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17708,62 +17804,6 @@ webpackJsonp([2],[
 	    var _a;
 	}());
 	exports.SideBarComponent = SideBarComponent;
-	
-
-/***/ },
-/* 634 */
-/***/ function(module, exports, __webpack_require__) {
-
-	/**
-	 * Created by Duc Duong on 7/25/2016.
-	 */
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	var tag_1 = __webpack_require__(285);
-	var displayArtByTagComponent = (function () {
-	    function displayArtByTagComponent(router, route, _tagService) {
-	        var _this = this;
-	        this.router = router;
-	        this.route = route;
-	        this._tagService = _tagService;
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.id = params['id'];
-	        });
-	    }
-	    displayArtByTagComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this._tagService.getArtByTag(this.id).subscribe(function (arts) {
-	            _this.listArt = arts;
-	        });
-	    };
-	    displayArtByTagComponent = __decorate([
-	        core_1.Component({
-	            selector: 'list-article-by-tag',
-	            templateUrl: 'client/dev/app/components/front-end/tag/templates/display-article-by-tag.html',
-	            styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES
-	            ],
-	            providers: [tag_1.TagService]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _c) || Object])
-	    ], displayArtByTagComponent);
-	    return displayArtByTagComponent;
-	    var _a, _b, _c;
-	}());
-	exports.displayArtByTagComponent = displayArtByTagComponent;
 	
 
 /***/ },
@@ -18231,7 +18271,7 @@ webpackJsonp([2],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var admin_component_1 = __webpack_require__(617);
+	var admin_component_1 = __webpack_require__(622);
 	var knowledge_update_1 = __webpack_require__(280);
 	var knowledges_list_1 = __webpack_require__(416);
 	var requests_list_1 = __webpack_require__(417);
@@ -18307,26 +18347,26 @@ webpackJsonp([2],[
 
 	"use strict";
 	//Root Component
-	var kshare_component_1 = __webpack_require__(428);
+	var kshare_component_1 = __webpack_require__(433);
 	//Function Components
-	var home_1 = __webpack_require__(419);
-	var request_list_1 = __webpack_require__(424);
-	var request_detail_1 = __webpack_require__(423);
-	var request_update_1 = __webpack_require__(425);
+	var home_1 = __webpack_require__(423);
+	var request_list_1 = __webpack_require__(428);
+	var request_detail_1 = __webpack_require__(427);
+	var request_update_1 = __webpack_require__(429);
 	var request_search_1 = __webpack_require__(282);
-	var kspace_1 = __webpack_require__(422);
-	var kspace_list_1 = __webpack_require__(421);
-	var kspace_info_1 = __webpack_require__(420);
-	var friend_list_1 = __webpack_require__(426);
-	var user_profile_1 = __webpack_require__(427);
+	var kspace_1 = __webpack_require__(426);
+	var kspace_list_1 = __webpack_require__(425);
+	var kspace_info_1 = __webpack_require__(424);
+	var friend_list_1 = __webpack_require__(431);
+	var user_profile_1 = __webpack_require__(432);
 	var register_1 = __webpack_require__(639);
 	var info_1 = __webpack_require__(638);
 	var success_1 = __webpack_require__(640);
-	var create_article_1 = __webpack_require__(622);
-	var detail_article_1 = __webpack_require__(623);
-	var list_article_1 = __webpack_require__(625);
-	var edit_article_1 = __webpack_require__(624);
-	var displayArtByTag_1 = __webpack_require__(634);
+	var create_article_1 = __webpack_require__(419);
+	var detail_article_1 = __webpack_require__(420);
+	var list_article_1 = __webpack_require__(422);
+	var edit_article_1 = __webpack_require__(421);
+	var displayArtByTag_1 = __webpack_require__(430);
 	exports.KShareRoutes = [
 	    {
 	        path: '',
@@ -18639,7 +18679,7 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var race_1 = __webpack_require__(452);
+	var race_1 = __webpack_require__(457);
 	Observable_1.Observable.race = race_1.raceStatic;
 	//# sourceMappingURL=race.js.map
 
@@ -18929,7 +18969,7 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var filter_1 = __webpack_require__(446);
+	var filter_1 = __webpack_require__(451);
 	Observable_1.Observable.prototype.filter = filter_1.filter;
 	//# sourceMappingURL=filter.js.map
 
@@ -19020,7 +19060,7 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var merge_1 = __webpack_require__(448);
+	var merge_1 = __webpack_require__(453);
 	Observable_1.Observable.prototype.merge = merge_1.merge;
 	//# sourceMappingURL=merge.js.map
 
@@ -19030,7 +19070,7 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var mergeMapTo_1 = __webpack_require__(450);
+	var mergeMapTo_1 = __webpack_require__(455);
 	Observable_1.Observable.prototype.flatMapTo = mergeMapTo_1.mergeMapTo;
 	Observable_1.Observable.prototype.mergeMapTo = mergeMapTo_1.mergeMapTo;
 	//# sourceMappingURL=mergeMapTo.js.map
@@ -19091,7 +19131,7 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var publishReplay_1 = __webpack_require__(451);
+	var publishReplay_1 = __webpack_require__(456);
 	Observable_1.Observable.prototype.publishReplay = publishReplay_1.publishReplay;
 	//# sourceMappingURL=publishReplay.js.map
 
@@ -19101,7 +19141,7 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var race_1 = __webpack_require__(452);
+	var race_1 = __webpack_require__(457);
 	Observable_1.Observable.prototype.race = race_1.race;
 	//# sourceMappingURL=race.js.map
 
@@ -20181,7 +20221,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var noop_1 = __webpack_require__(458);
+	var noop_1 = __webpack_require__(463);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -20346,7 +20386,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var asap_1 = __webpack_require__(453);
+	var asap_1 = __webpack_require__(458);
 	var isNumeric_1 = __webpack_require__(295);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
@@ -20581,7 +20621,7 @@ webpackJsonp([2],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var merge_1 = __webpack_require__(448);
+	var merge_1 = __webpack_require__(453);
 	exports.merge = merge_1.mergeStatic;
 	//# sourceMappingURL=merge.js.map
 
@@ -21426,7 +21466,7 @@ webpackJsonp([2],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var publishReplay_1 = __webpack_require__(451);
+	var publishReplay_1 = __webpack_require__(456);
 	/**
 	 * @param bufferSize
 	 * @param windowTime
@@ -21626,7 +21666,7 @@ webpackJsonp([2],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeMap_1 = __webpack_require__(449);
+	var mergeMap_1 = __webpack_require__(454);
 	/**
 	 * Projects each source value to an Observable which is merged in the output
 	 * Observable, in a serialized fashion waiting for each one to complete before
@@ -21694,7 +21734,7 @@ webpackJsonp([2],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeMapTo_1 = __webpack_require__(450);
+	var mergeMapTo_1 = __webpack_require__(455);
 	/**
 	 * Projects each source value to the same Observable which is merged multiple
 	 * times in a serialized fashion on the output Observable.
@@ -23160,7 +23200,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(7);
-	var noop_1 = __webpack_require__(458);
+	var noop_1 = __webpack_require__(463);
 	/**
 	 * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.
 	 *
@@ -23481,7 +23521,7 @@ webpackJsonp([2],[
 
 	"use strict";
 	var not_1 = __webpack_require__(847);
-	var filter_1 = __webpack_require__(446);
+	var filter_1 = __webpack_require__(451);
 	/**
 	 * @param predicate
 	 * @param thisArg
@@ -23503,7 +23543,7 @@ webpackJsonp([2],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var map_1 = __webpack_require__(447);
+	var map_1 = __webpack_require__(452);
 	/**
 	 * Maps each source value (an object) to its specified nested property.
 	 *
@@ -27416,7 +27456,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var accordion_1 = __webpack_require__(495);
+	var accordion_1 = __webpack_require__(500);
 	var common_1 = __webpack_require__(34);
 	var AccordionTab = (function () {
 	    function AccordionTab(accordion) {
@@ -29464,7 +29504,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var column_1 = __webpack_require__(319);
-	var columntemplateloader_1 = __webpack_require__(496);
+	var columntemplateloader_1 = __webpack_require__(501);
 	var rowexpansionloader_1 = __webpack_require__(1029);
 	var common_1 = __webpack_require__(34);
 	var common_2 = __webpack_require__(34);
@@ -35743,7 +35783,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var splitbuttonitem_1 = __webpack_require__(497);
+	var splitbuttonitem_1 = __webpack_require__(502);
 	var domhandler_1 = __webpack_require__(11);
 	var router_1 = __webpack_require__(5);
 	var SplitButton = (function () {
@@ -35946,7 +35986,7 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var tabpanel_1 = __webpack_require__(498);
+	var tabpanel_1 = __webpack_require__(503);
 	var TabView = (function () {
 	    function TabView(el, tabPanels) {
 	        var _this = this;
@@ -36648,7 +36688,7 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var tree_1 = __webpack_require__(499);
+	var tree_1 = __webpack_require__(504);
 	var treenodetemplateloader_1 = __webpack_require__(1070);
 	var UITreeNode = (function () {
 	    function UITreeNode(tree) {
@@ -36717,8 +36757,8 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var treetable_1 = __webpack_require__(500);
-	var columntemplateloader_1 = __webpack_require__(496);
+	var treetable_1 = __webpack_require__(505);
+	var columntemplateloader_1 = __webpack_require__(501);
 	var UITreeRow = (function () {
 	    function UITreeRow(treeTable) {
 	        this.treeTable = treeTable;
