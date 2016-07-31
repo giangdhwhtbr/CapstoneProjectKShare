@@ -16,7 +16,6 @@ var HomeComponent = (function () {
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
     }
     HomeComponent.prototype.ngOinit = function () {
-        console.log("what the fuck");
     };
     HomeComponent = __decorate([
         core_1.Component({

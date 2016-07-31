@@ -6,17 +6,36 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
         case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
     }
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var primeng_1 = require('primeng/primeng');
-var user_create_1 = require('./user-create');
+var common_1 = require('@angular/common');
+var users_1 = require('../../../services/users');
+var ng2_pagination_1 = require('ng2-pagination');
+var filter_1 = require('../shared/filter');
 var UserListComponent = (function () {
-    function UserListComponent(_userService, _auth, router) {
+    function UserListComponent(fb, _userService, _auth, router) {
         this._userService = _userService;
         this._auth = _auth;
         this.router = router;
-        this.pageTitle = 'user';
+        this.pageTitle = 'users';
+        this.filter = '';
         this.numOfUser = 0;
+        this.userForm = fb.group({
+            firstName: [""],
+            lastName: [""],
+            displayName: [""],
+            birthday: [""],
+            username: ["", common_1.Validators.required],
+            password: ["", common_1.Validators.required],
+            email: ["", common_1.Validators.required],
+            role: ["", common_1.Validators.required],
+            ownKnowledgeId: [""],
+            interestedKnowledgeId: [""],
+            onlineTime: [""]
+        });
     }
     UserListComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -43,23 +62,11 @@ var UserListComponent = (function () {
         core_1.Component({
             selector: 'user-list',
             templateUrl: 'client/dev/app/components/back-end/users/templates/user-list.html',
-            styleUrls: [
-                'client/dev/asserts/css/backend-styles.css',
-                'client/dev/app/components/back-end/users/styles/user.css'
-            ],
-            directives: [
-                user_create_1.CreateUserComponent,
-                primeng_1.DataTable,
-                primeng_1.Column,
-                primeng_1.Header,
-                primeng_1.Footer,
-                primeng_1.MultiSelect,
-                router_1.ROUTER_DIRECTIVES
-            ],
-            providers: [
-                user_create_1.CreateUserComponent
-            ]
-        })
+            directives: [router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES],
+            providers: [users_1.UserService, ng2_pagination_1.PaginationService],
+            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
+        }),
+        __param(0, core_1.Inject(common_1.FormBuilder))
     ], UserListComponent);
     return UserListComponent;
 })();

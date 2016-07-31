@@ -82,8 +82,7 @@ offerSchema.statics.updateOfferById = (offerinfo) => {
     if (!_.isObject(offerinfo)) {
       return reject(new TypeError('Offer is not a valid object.'));
     }
-    //let _user = new User(userinfo);
-    // res.status(200).json(requestinfo);
+
     offerinfo.save((err, saved) => {
       err ? reject(err)
         : resolve(saved);

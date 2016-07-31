@@ -1,9 +1,9 @@
 /**
  * Created by Duc Duong on 7/25/2016.
  */
+
 import { Component, OnInit,Pipe,PipeTransform } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
-import { Router } from "@angular/router";
 import { ArticleService } from '../../../services/article';
 import {ArticleService} from "../../../services/article";
 
@@ -28,9 +28,6 @@ export class listArticleComponent implements OnInit {
     ngOnInit() {
         this._artService.getAllArts().subscribe((arts)=> {
             this.listArt = arts;
-            for(let a of this.listArt){
-                a.createdAt = new Date(a.createdAt);
-            }
         });
     }
 }

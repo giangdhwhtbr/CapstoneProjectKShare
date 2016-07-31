@@ -19,19 +19,52 @@ var KSpaceComponent = (function () {
         this.route = route;
         this._kspaceService = _kspaceService;
         this.rtcService = rtcService;
-        this.messages = [];
         this.route
             .params
             .subscribe(function (params) {
             _this.id = params['id'];
         });
         this.username = localStorage.getItem('username');
+        this.messages = [];
+        this.socket = io('https://localhost:8081');
+        this.socket.emit('subscribe', this.id);
+        this.socket.on("chat_message", function (dataReturn) {
+            var isSender = false;
+            if (dataReturn.user == _this.username) {
+                isSender = true;
+            }
+            var msgObject = {
+                user: dataReturn.user,
+                msg: dataReturn.msg,
+                url: dataReturn.url,
+                sender: isSender
+            };
+            _this.messages.push(msgObject);
+        });
     }
-    KSpaceComponent.prototype.chatting = function (mess) {
-        var username = this.username;
-        var messages = this.messages;
-        messages.push(username + ': ' + mess);
-        this.messages = messages;
+    KSpaceComponent.prototype.send = function (message, img) {
+        if (img) {
+            var chalkboard = document.getElementById("chalkboard");
+            var ctx = chalkboard.getContext("2d");
+            var dataURL = chalkboard.toDataURL();
+            var data = {
+                id: this.id,
+                createdUser: this.username,
+                message: message,
+                dataURL: dataURL
+            };
+            this.socket.emit("chat_message", data);
+            this.mess = "";
+        }
+        else {
+            var data = {
+                id: this.id,
+                createdUser: this.username,
+                message: message
+            };
+            this.socket.emit("chat_message", data);
+            this.mess = "";
+        }
     };
     /*
     * Init when the component is initiated
@@ -69,25 +102,35 @@ var KSpaceComponent = (function () {
         this._kspaceService
             .getKSpaceById(this.id)
             .subscribe(function (kspace) {
+            var chatlog = kspace.chatlog;
+            var isSender = false;
+            for (var _i = 0; _i < chatlog.length; _i++) {
+                var log = chatlog[_i];
+                var msg = log.createdUser + ': ' + log.message;
+                if (log.createdUser == _this.username) {
+                    isSender = true;
+                }
+                else {
+                    isSender = false;
+                }
+                var msgObject = {
+                    user: log.createdUser,
+                    msg: log.message,
+                    sender: isSender,
+                    url: log.dataURL
+                };
+                _this.messages.push(msgObject);
+            }
             var room = kspace._id;
             var username = _this.username;
             var rtc = _this.rtcService;
-            var socket = io('http://localhost:3333');
-            socket.emit('subscribe', room);
-            // $('#chat-form').submit(function () {
-            //   var message = $('#chat-input').val()
-            //   if(message && username){
-            //     var messages = showMessage(username, message);
-            //     this.messages = messages;
-            //   }
-            // })
             var isKspaceUser = function () {
                 if (username === kspace.lecturer || username === kspace.learner) {
                     return true;
                 }
                 return false;
             };
-            if (isKspaceUser) {
+            if (isKspaceUser()) {
                 // initiate webrtc
                 if (username === kspace.lecturer) {
                     var webrtc = new SimpleWebRTC({
@@ -111,7 +154,6 @@ var KSpaceComponent = (function () {
                         media: { video: false, audio: true }
                     });
                 }
-                console.log(webrtc);
                 rtc.rtcSetting(webrtc, room, kspace.lecturer);
                 var peers = webrtc.getPeers();
                 var sharescreenToken = false;

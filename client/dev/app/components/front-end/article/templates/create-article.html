@@ -1,73 +1,93 @@
 <div class="container article">
-  <div >
+    <div>
 
-    <div class="titleDiv row">
-      <div class="col-xs-12">
-        <label for="inputTitle">Title</label>
-        <input class="form-control input-sm" id="inputTitle" [(ngModel)]="titelArticle" type="text">
-      </div>
-    </div>
-    <div class="editor">
-      <ck-editor>ckeditor_inst_1</ck-editor>
-    </div>
-    <button type="button" id="bdOpenModal" data-toggle="modal" data-target="#ModalUploadImgCkeditor" data-backdrop="static" data-keyboard="false" style="display: none;"></button>
-    <div id="ModalUploadImgCkeditor" class="modal fade" >
-      <div class="modal-dialog">
-
-        <!-- Modal content-->
-        <div class="modal-content">
-          <div class="modal-header">
-            <button type="button" class="close" data-dismiss="modal">&times;</button>
-            <h4 class="modal-title">Insert Image</h4>
-          </div>
-          <div class="modal-body">
-            <div  class="container">
-              <div id="groupCollapse" class="panel-group">
-                <div  class="panel panel-default isLinkPn">
-                  <div class="panel-heading" style="cursor:pointer">
-                    <h4 class="panel-title" data-toggle="collapse" data-parent="#groupCollapse" href="#insertImgBody">
-                      1. Insert image by link
-                    </h4>
-                  </div>
-                  <div id="insertImgBody" class="panel-collapse collapse">
-                    <div class="panel-body">
-                      <div class="col-xs-6">
-                        <label for="linkIsImg">Paste image's link here</label>
-                        <input #linkIsImg class="form-control" id="linkIsImg" type="text"/>
-                      </div>
-                    </div>
-                    <div class="panel-footer">
-                      <button type="button" class="btn btn-success" (click)="insertLinkToBox(linkIsImg.value)" data-dismiss="modal">Insert</button>
-                    </div>
-                  </div>
-                </div>
-                <div class="panel panel-default isLinkPn">
-                  <div class="panel-heading" style="cursor:pointer">
-                    <h4 class="panel-title" data-toggle="collapse" data-parent="#groupCollapse"  href="#uploadImgLocal">
-                      2. Upload image from your computer
-                    </h4>
-                  </div>
-                  <div id="uploadImgLocal" class="panel-collapse collapse">
-                    <div class="panel-body">
-                      <input #fileInput id="uploadImg" (change)="fileChangeEvent($event)" type="file" accept="image/*" />
-                    </div>
-                    <div class="panel-footer">
-                      <button type="button" class="btn btn-success" (click)="uploadImageCk()" data-dismiss="modal">Upload and insert</button>
-                    </div>
-                  </div>
-                </div>
-              </div>
+        <div class="titleDiv row">
+            <div class="col-xs-12">
+                <label for="inputTitle">Title</label>
+                <input class="form-control input-sm" id="inputTitle" [(ngModel)]="titelArticle" type="text">
             </div>
-          </div>
         </div>
-      </div>
+        <div class="row">
+            <div class="col-xs-2">
+                <label for="inputTitle">Status</label>
+                <select #stt class="form-control input-sm">
+                    <option value="public" selected>Public</option>
+                    <option value="private">Private</option>
+                </select>
+            </div>
+        </div>
+
+            <div class="editor">
+                <ck-editor>ckeditor_inst_1</ck-editor>
+            </div>
+
+        <button type="button" id="bdOpenModal" data-toggle="modal" data-target="#ModalUploadImgCkeditor"
+                data-backdrop="static" data-keyboard="false" style="display: none;"></button>
+        <div id="ModalUploadImgCkeditor" class="modal fade">
+            <div class="modal-dialog">
+
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Insert Image</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="container">
+                            <div id="groupCollapse" class="panel-group">
+                                <div class="panel panel-default isLinkPn">
+                                    <div class="panel-heading" style="cursor:pointer">
+                                        <h4 class="panel-title" data-toggle="collapse" data-parent="#groupCollapse"
+                                            href="#insertImgBody">
+                                            1. Insert image by link
+                                        </h4>
+                                    </div>
+                                    <div id="insertImgBody" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <div class="col-xs-6">
+                                                <label for="linkIsImg">Paste image's link here</label>
+                                                <input #linkIsImg class="form-control" id="linkIsImg" type="text"/>
+                                            </div>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <button type="button" class="btn btn-success"
+                                                    (click)="insertLinkToBox(linkIsImg.value)" data-dismiss="modal">
+                                                Insert
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel panel-default isLinkPn">
+                                    <div class="panel-heading" style="cursor:pointer">
+                                        <h4 class="panel-title" data-toggle="collapse" data-parent="#groupCollapse"
+                                            href="#uploadImgLocal">
+                                            2. Upload image from your computer
+                                        </h4>
+                                    </div>
+                                    <div id="uploadImgLocal" class="panel-collapse collapse">
+                                        <div class="panel-body">
+                                            <input #fileInput id="uploadImg" (change)="fileChangeEvent($event)"
+                                                   type="file" accept="image/*"/>
+                                        </div>
+                                        <div class="panel-footer">
+                                            <button type="button" class="btn btn-success" (click)="uploadImageCk()"
+                                                    data-dismiss="modal">Upload and insert
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!--end editor -->
+        <p-autoComplete [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
+                        [multiple]="true" [(ngModel)]="tags">
+        </p-autoComplete>
+        <!--end tags-->
+        <button type="button" class="btn btn-primary" (click)="postArticle(stt.value)">Submit article</button>
     </div>
-    <!--end editor -->
-    <p-autoComplete  [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
-                      [multiple]="true" [(ngModel)]="tags" >
-    </p-autoComplete>
-    <!--end tags-->
-    <button type="button" class="btn btn-primary" (click)="postArticle()">Submit article</button>
-  </div>
 
 </div>

@@ -9,7 +9,8 @@ const _offerSchema = {
     price: {type: Number, required: true},
     createdAt: { type: Date, default: Date.now },
     message: { type: String, required: true, trim: true },
-    modifiedDate: { type: Date }
+    modifiedDate: { type: Date },
+    status: { type:String, default:'pending' }
 }
 
 module.exports = mongoose.Schema(_offerSchema);

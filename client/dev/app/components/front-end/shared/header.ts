@@ -10,8 +10,6 @@ import { AuthService } from '../../../services/auth';
 import { NotificationService } from '../../../services/notification';
 declare var io: any;
 
-// import * as io from 'socket.io';
-
 @Component({
   selector: 'header',
   templateUrl: 'client/dev/app/components/front-end/shared/templates/header.html',
@@ -26,12 +24,12 @@ export class HeaderComponent {
   userToken: string;
   roleToken: string;
   countUnReadNoti: number;
-  link:string;
+  link: string;
   isDiffirent: boolean;
   socket: any;
 
   notifications: Notification[];
-  
+
   constructor(private _auth: AuthService, public router: Router, public _noti: NotificationService) {
     this.userToken = localStorage.getItem('username');
     this.roleToken = localStorage.getItem('userrole');
@@ -39,12 +37,18 @@ export class HeaderComponent {
   }
 
   ngOnInit(): void {
+
     this.link = '';
-    this.socket = io('https://localhost:3333');
+    this.socket = io('https://localhost:8081');
     this.socket.on('receive notification', (data) => {
       if (localStorage.getItem('username') === data.data.user) {
-        console.log(data.data);
-        this.getNotificationByUser(this.userToken);
+        //audio of notification
+        var audio = new Audio();
+        audio.src = "https://localhost:8081/client/dev/asserts/gets-in-the-way.mp3";
+        console.log(audio);
+        audio.load();
+        audio.play();
+        this.getNotificationByUser(data.data.user);
 
         //show noti 
         this.notiTitle = data.data.title;

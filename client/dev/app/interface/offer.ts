@@ -7,4 +7,5 @@ export interface Offer {
   message: string;
   modifiedDate: string;
   user: string;
+  status:string;
 }

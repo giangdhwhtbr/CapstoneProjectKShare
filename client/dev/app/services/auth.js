@@ -27,7 +27,6 @@ var AuthService = (function () {
             username: user.username,
             password: user.password
         });
-        var usertoken = user.username;
         return this._http.post(this._loginUrl, _user, options)
             .map(function (res) { return res.json(); });
     };

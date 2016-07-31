@@ -34,11 +34,16 @@ var CreateArticleComponent = (function () {
         this.router = router;
         this.route = route;
         this.filesToUpload = [];
+        this.roleToken = localStorage.getItem('role');
+        this.userToken = localStorage.getItem('username');
     }
     CreateArticleComponent.prototype.ngOnInit = function () {
+        if (this.userToken == null) {
+            this.router.navigateByUrl('/');
+        }
         this.CreateUploadImageCkeditor();
         this.addCommandBtnCk();
-        this.loadAllKnw();
+        this.loadAllTags();
     };
     CreateArticleComponent.prototype.filterONTag = function () {
         var oldTag = [];
@@ -70,9 +75,9 @@ var CreateArticleComponent = (function () {
         }
     };
     //load all knowledge
-    CreateArticleComponent.prototype.loadAllKnw = function () {
+    CreateArticleComponent.prototype.loadAllTags = function () {
         var _this = this;
-        this._tagService.getAllTags().subscribe(function (tags) {
+        this._tagService.getAllTag().subscribe(function (tags) {
             _this.tagsEx = tags;
             console.log(_this.tagsEx);
         });
@@ -130,11 +135,11 @@ var CreateArticleComponent = (function () {
     CreateArticleComponent.prototype.openModalImg = function () {
         $("#bdOpenModal").trigger("click");
     };
-    CreateArticleComponent.prototype.postArticle = function () {
+    CreateArticleComponent.prototype.postArticle = function (stt) {
         var _this = this;
         this.contentCk = CKEDITOR.instances.editor1.getData();
         var tags = this.filterONTag();
-        this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1]).subscribe(function (article) {
+        this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (article) {
             _this.router.navigateByUrl('/article/' + article._id);
         }, function (error) {
             console.log(error.text());

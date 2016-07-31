@@ -15,8 +15,13 @@ var TagService = (function () {
         this._http = _http;
         this._tagUrl = '/api/tags/:id';
     }
-    TagService.prototype.getArtByTag = function () {
+    TagService.prototype.getAllTag = function () {
         return this._http.get(this._tagUrl.replace(':id', ''))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    TagService.prototype.getArtByTag = function (id) {
+        return this._http.get(this._tagUrl.replace(':id', id))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };

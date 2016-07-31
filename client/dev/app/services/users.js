@@ -16,14 +16,16 @@ var UserService = (function () {
     function UserService(_http) {
         this._http = _http;
         this._usersUrl = '/api/user/:id';
+        this._profilePictureUrl = '/api/user-picture';
         this._friendUrl = '/api/friendship/:id';
         this._getFriendUrl = '/api/getFriendship';
         this._getRequestByUserUrl = '/api/requests-user/:user';
+        this._isUserExistUrl = '/api/is-user-exist/:username';
+        this._friendshipStatusUrl = '/api/friendship-status/:user1/:user2';
     }
     UserService.prototype.getAllUsers = function () {
         return this._http.get(this._usersUrl.replace(':id', ''))
-            .toPromise()
-            .then(function (res) { return res.json(); })
+            .map(function (res) { return res.json(); })
             .catch(this.handleError);
     };
     UserService.prototype.getUserById = function (id) {
@@ -58,14 +60,14 @@ var UserService = (function () {
             firstName: user.firstName,
             lastName: user.lastName,
             displayName: user.displayName,
-            birthday: formatDate(user.birthday),
+            birthday: user.birthday,
             username: user.username,
             password: user.password,
             email: user.email,
             role: user.role,
-            ownKnowledgeId: user.ownKnowledgeId.split(","),
-            interestedKnowledgeId: user.interestedKnowledgeId.split(","),
-            onlineTime: user.onlineTime.split(",")
+            ownKnowledgeId: user.ownKnowledgeId,
+            interestedKnowledgeId: user.interestedKnowledgeId,
+            onlineTime: user.onlineTime
         });
         return this._http
             .post(this._usersUrl.replace(':id', ''), _user, options)
@@ -74,19 +76,43 @@ var UserService = (function () {
     UserService.prototype.updateUser = function (user) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
+        var ownk, ink;
+        if (user.ownKnowledgeId && user.ownKnowledgeId.length) {
+            ownk = user.ownKnowledgeId.split(",");
+        }
+        if (user.interestedKnowledgeId && user.interestedKnowledgeId.length) {
+            ink = user.ownKnowledgeId.split(",");
+        }
         var _user = JSON.stringify({
             _id: user._id,
             firstName: user.firstName,
             lastName: user.lastName,
             displayName: user.displayName,
+            birthday: user.birthday,
+            phone: user.phone,
             username: user.username,
             password: user.password,
             email: user.email,
-            role: user.role
+            role: user.role,
+            linkImg: user.linkImg,
+            ownKnowledgeId: ownk,
+            interestedKnowledgeId: ink
         });
         return this._http
             .put(this._usersUrl.replace(':id', user._id), _user, options)
             .map(function (r) { return r.json(); });
+    };
+    UserService.prototype.updateAvartaLink = function (user, link) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _info = JSON.stringify({
+            username: user,
+            linkImg: link
+        });
+        console.log(_info);
+        return this._http
+            .post(this._profilePictureUrl, _info, options);
     };
     //add friend service
     UserService.prototype.addFriend = function (requestUser, acceptUser) {
@@ -127,8 +153,38 @@ var UserService = (function () {
             acceptUser: user2
         });
         return this._http
-            .put(this._friendUrl.replace(':id', ''), _friendship, options)
-            .map(function (r) { return r.json(); });
+            .put(this._friendUrl.replace(':id', ''), _friendship, options);
+    };
+    //if user is exist, return 1, else return 0
+    UserService.prototype.checkUserExist = function (username) {
+        return this._http
+            .get(this._isUserExistUrl.replace(':username', username));
+    };
+    UserService.prototype.acceptFriendRequest = function (user1, user2) {
+        console.log(user1 + ' ' + user2);
+        return this._http
+            .get(this._friendshipStatusUrl.replace(':user1', user1).replace(':user2', user2));
+    };
+    UserService.prototype.makeFileRequest = function (url, params, files) {
+        return new Promise(function (resolve, reject) {
+            var formData = new FormData();
+            var xhr = new XMLHttpRequest();
+            for (var i = 0; i < files.length; i++) {
+                formData.append("uploads[]", files[i], files[i].name);
+            }
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(JSON.parse(xhr.response));
+                    }
+                    else {
+                        reject(xhr.response);
+                    }
+                }
+            };
+            xhr.open("POST", url, true);
+            xhr.send(formData);
+        });
     };
     UserService.prototype.handleError = function (error) {
         return Observable_1.Observable.throw(error);

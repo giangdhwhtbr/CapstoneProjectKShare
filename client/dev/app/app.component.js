@@ -25,6 +25,7 @@ var users_1 = require("./services/users");
 var auth_1 = require("./services/auth");
 var kspace_1 = require("./services/kspace");
 var socket_io_services_1 = require("./services/socket.io.services");
+var notification_1 = require("./services/notification");
 var AppComponent = (function () {
     function AppComponent() {
         this.pageTitle = 'Knowledge Sharing Network';
@@ -45,7 +46,8 @@ var AppComponent = (function () {
                 request_offer_1.OfferService,
                 knowledge_1.KnowledgeService,
                 kspace_1.KSpaceService,
-                socket_io_services_1.SocketIOService
+                socket_io_services_1.SocketIOService,
+                notification_1.NotificationService
             ]
         })
     ], AppComponent);

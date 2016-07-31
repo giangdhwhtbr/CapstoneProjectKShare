@@ -105,13 +105,16 @@ export class UserProfileBarComponent {
 
       alert("đã gửi lời mời kết bạn thành công");
 
-      var socket = io('https://localhost:3333');
+      //using socket io to send notification
+      var socket = io('https://localhost:8081');
       socket.emit('send notification', {
         title: title,
         body: body,
         link: link,
         user: this.name
       });
+
+      //save notification to database
       this._noti.createNotification(title, body, this.name, link).subscribe(
         (notification) => {
           console.log(notification);

@@ -45,10 +45,10 @@ module.exports = class ArticleController {
                     });
 
                     TagDAO.getTagByIds(article.tags).then((ts)=> {
-                        ts.map((e,i)=>{
-                            ts[i].articles=[];
+                        ts.map((e, i)=> {
+                            ts[i].articles = [];
                         });
-                        article.tagsFD=ts;
+                        article.tagsFD = ts;
                         article.save();
                         res.status(200).json(article);
                     }).catch(err=>res.status(400).json(err));
@@ -68,25 +68,27 @@ module.exports = class ArticleController {
                     article.title = _data.art.title;
                     article.content = _data.art.content;
                     article.tags = _data.art.tags;
+                    article.status=_data.art.status;
 
                     TagDAO.createArrayTag(_data.newTag).then((tags)=> {
 
                         ArticleDAO.updateArticle(article)
                             .then((articleUpdated) => {
 
+                                tags.map((e, i)=> {
+                                    articleUpdated.tags.push(e);
+                                });
+
+                                TagDAO.getTagByIds(articleUpdated.tags).then((ts)=> {
 
 
-                                TagDAO.getTagByIds(article.tags).then((ts)=> {
 
-                                    tags.map((e, i)=> {
-                                        articleUpdated.tags.push(e);
+                                    ts.map((e, i)=> {
+                                        ts[i].articles = [];
                                     });
-
-                                    ts.map((e,i)=>{
-                                        ts[i].articles=[];
-                                    });
-
-                                    articleUpdated.tagsFD=ts;
+                                    console.log(ts);
+                                    articleUpdated.tagsFD = ts;
+                                    console.log(articleUpdated.tagsFD);
                                     articleUpdated.save();
                                     res.status(200).json(articleUpdated);
                                 }).catch(err=>res.status(400).json(err));

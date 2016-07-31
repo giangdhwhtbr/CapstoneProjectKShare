@@ -10,7 +10,8 @@ import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 import {ArticleService} from '../../../services/article';
 import {TagService} from '../../../services/tag';
-import {AutoComplete} from 'primeng/primeng';
+import { AuthService } from '../../../services/auth';
+import {AutoComplete,SelectButton,SelectItem} from 'primeng/primeng';
 
 import * as $ from 'jquery';
 
@@ -38,7 +39,7 @@ export class CreateArticleComponent implements OnInit {
     filesToUpload:Array<File>;
     contentCk:string;
     titelArticle:string;
-    summary:string;
+    status:string;
 
 
     filteredKnw:string[];
@@ -46,14 +47,22 @@ export class CreateArticleComponent implements OnInit {
     tags:any[];
     tagsEx:Array<string>;
 
+    userToken: string;
+    roleToken: string;
+
     constructor(private _articleService:ArticleService, private _tagService:TagService, public router:Router,private route: ActivatedRoute) {
         this.filesToUpload = [];
+        this.roleToken = localStorage.getItem('role');
+        this.userToken = localStorage.getItem('username');
     }
 
     ngOnInit() {
+        if(this.userToken==null){
+            this.router.navigateByUrl('/');
+        }
         this.CreateUploadImageCkeditor();
         this.addCommandBtnCk();
-        this.loadAllKnw();
+        this.loadAllTags();
     }
 
     filterONTag() {
@@ -87,8 +96,8 @@ export class CreateArticleComponent implements OnInit {
     }
 
     //load all knowledge
-    loadAllKnw() {
-        this._tagService.getAllTags().subscribe((tags) => {
+    loadAllTags() {
+        this._tagService.getAllTag().subscribe((tags) => {
             this.tagsEx = tags;
             console.log(this.tagsEx);
         });
@@ -154,10 +163,10 @@ export class CreateArticleComponent implements OnInit {
         $("#bdOpenModal").trigger("click");
     }
 
-    postArticle() {
+    postArticle(stt:any) {
         this.contentCk = CKEDITOR.instances.editor1.getData();
         let tags = this.filterONTag();
-        this._articleService.addArticle(this.titelArticle, this.contentCk,tags[0],tags[1]).subscribe((article)=> {
+        this._articleService.addArticle(this.titelArticle, this.contentCk,tags[0],tags[1],stt,this.userToken).subscribe((article)=> {
                 this.router.navigateByUrl('/article/'+article._id);
             },
             (error) => {
