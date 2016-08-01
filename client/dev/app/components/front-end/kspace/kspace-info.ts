@@ -11,6 +11,8 @@ import { SEMANTIC_COMPONENTS, SEMANTIC_DIRECTIVES } from "ng-semantic";
   template: `
       <div class="container mg-top-50">
         <h3>{{title}}</h3>
+        {{rateAve}}
+         <sm-rating class="massive star" disable [initialRating]="[rateAve]"></sm-rating>
         <br>
         <button (click)="accessRoom()">{{accessRoomBtn}}</button>
         <hr>
@@ -56,6 +58,8 @@ export class KSpaceInfoComponent implements OnInit {
   ratePoint: number;
   reviews: any;
 
+  rateAve: number;
+
   // error message
   errorMessage: any;
 
@@ -74,6 +78,7 @@ export class KSpaceInfoComponent implements OnInit {
       kspace => {
         this.title = kspace.requestTitle;
         this.reviews = kspace.reviews;
+        this.rateAve = kspace.rateAve;
         for (var log of kspace.chatlog){
           if(log.dataURL){
 

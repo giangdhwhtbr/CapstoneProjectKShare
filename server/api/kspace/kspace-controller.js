@@ -98,8 +98,18 @@ module.exports = class KSpaceController {
             rate: req.body.rate
           };
 
-          kspace.reviews.push(_review);
+          if(kspace.reviews.length){
+            var sumR = 0;
+            for (var k in kspace.reviews){
+              sumR += kspace.reviews[k].rate;
+            }
+            kspace.rateAve = sumR / kspace.reviews.length;
+          }else {
+            kspace.rateAve = req.body.rate;
+          }
 
+          kspace.reviews.push(_review);
+          console.log(kspace);
           // Update KSpace
           KSpaceDAO.updateKSpaceById(kspace)
             .then(kspace => {

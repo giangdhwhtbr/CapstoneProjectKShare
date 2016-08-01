@@ -47,6 +47,14 @@ const KSpaceSchema = new mongoose.Schema({
       }
     }
   ],
+  rateAve: {
+    type: Number,
+    rate: {
+      type: Number,
+      min: 1,
+      max: 5
+    }
+  },
   requestId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Request',
