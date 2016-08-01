@@ -20,16 +20,26 @@ var CreateSubCategoryComponent = (function () {
     CreateSubCategoryComponent.prototype.ngOnInit = function () {
     };
     CreateSubCategoryComponent.prototype.addKnowledge = function (knowledge) {
+        var _this = this;
         this._knowledgeService.addKnowledge(knowledge).subscribe(function (knowledge) {
-            console.log('success');
-        }, function (error) {
-            console.log(error.text());
+            _this.subCategoryForm.controls["name"].updateValue("");
+            _this.subCategoryForm.controls["description"].updateValue("");
+            for (var i = 0; i < _this.knowledges.length; i++) {
+                var a = _this.knowledges[i]["subCategory"];
+                console.log(a);
+                if (_this.knowledges[i]._id === knowledge.parent) {
+                    a.push(knowledge);
+                    _this.knowledges[i]["subCategory"] = a;
+                }
+            }
         });
-        window.location.reload();
     };
     __decorate([
         core_1.Input('kId')
     ], CreateSubCategoryComponent.prototype, "kId");
+    __decorate([
+        core_1.Input()
+    ], CreateSubCategoryComponent.prototype, "knowledges");
     CreateSubCategoryComponent = __decorate([
         core_1.Component({
             selector: 'sub-create',

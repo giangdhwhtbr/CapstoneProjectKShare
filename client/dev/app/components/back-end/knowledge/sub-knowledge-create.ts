@@ -1,7 +1,7 @@
 import {
   Component,
   Inject,
-  Input
+  Input,Output
 } from '@angular/core';
 
 import {
@@ -13,7 +13,8 @@ import {
 } from '@angular/common';
 
 import { KnowledgeService } from '../../../services/knowledge';
-
+import { Knowledge } from '../../../interface/knowledge';
+declare var $:any
 @Component({
   selector: 'sub-create',
   templateUrl: 'client/dev/app/components/back-end/knowledge/templates/sub-knowledge-create.html',
@@ -21,7 +22,7 @@ import { KnowledgeService } from '../../../services/knowledge';
 })
 export class CreateSubCategoryComponent {
    @Input('kId') kId: string;
-
+   @Input() knowledges: Knowledge[];
    subCategoryForm: ControlGroup;
 
    constructor(fb: FormBuilder, private _knowledgeService: KnowledgeService) {
@@ -37,14 +38,19 @@ export class CreateSubCategoryComponent {
   }
   addKnowledge(knowledge) {
     this._knowledgeService.addKnowledge(knowledge).subscribe((knowledge)=> {
-      console.log('success');
-    },
-    (error) => {
-      console.log(error.text());
+      (<Control>this.subCategoryForm.controls["name"]).updateValue("");
+      (<Control>this.subCategoryForm.controls["description"]).updateValue("");
+      for(var i=0;i<this.knowledges.length;i++){
+        var a = this.knowledges[i]["subCategory"];
+        console.log(a);
+        if(this.knowledges[i]._id===knowledge.parent){
+          a.push(knowledge);
+          this.knowledges[i]["subCategory"]=a;
+        }
+
+      }
     }
     );
-
-    window.location.reload();
   }
 
 }

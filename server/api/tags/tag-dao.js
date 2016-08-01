@@ -29,7 +29,8 @@ tagSchema.statics.createTag = (tag) => {
 
         Tag
             .find({"name": _tag.name}).exec((err, tagFound) => {
-            if (tag) {
+            if (tagFound.length!=0) {
+                console.log(tagFound);
                 err ? reject(err) : resolve(tagFound);
             } else {
                 _tag.save((err, saved) => {
