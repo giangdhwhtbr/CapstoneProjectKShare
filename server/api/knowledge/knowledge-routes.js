@@ -22,5 +22,9 @@ module.exports = class KnowledgeRoutes {
         router
             .route('/api/knowledges/articles/:id')
             .get(KnowledgeController.getArticleByKnwId);
+
+        router
+            .route('/api/knowledges/knowledgestatus/:id')
+            .put(KnowledgeController.changeKnowledgeStatus);
     }
 }

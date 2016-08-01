@@ -6,7 +6,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class KnowledgeService {
     private _knowledgesUrl = '/api/knowledges/:id';
-
+    private _knowledgeStatusUrl = '/api/knowledges/knowledgestatus/:id';
     constructor(private _http:Http) {
     }
 
@@ -75,6 +75,19 @@ export class KnowledgeService {
         }
         knowledges = parent;
         return parent;
+    }
+
+    changeKnowledgeStatus(knowledge:Knowledge):Observable<any> {
+        let header = new Headers;
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+        let _knowledge = JSON.stringify({
+            status: !knowledge.status,
+        });
+
+        return this._http
+            .put(this._knowledgeStatusUrl.replace(':id', knowledge._id), _knowledge, options)
+            .map((r) => r.json());
     }
 
     private handleError(error:Response) {
