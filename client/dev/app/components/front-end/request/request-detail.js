@@ -105,16 +105,12 @@ var RequestDetailClientComponent = (function () {
             });
         }
     };
-    RequestDetailClientComponent.prototype.addKshare = function (learner, lecturer, requestId, offerId) {
+    RequestDetailClientComponent.prototype.addKshare = function (learner, lecturer, requestId, requestTitle, offerId) {
+        var _this = this;
         this._kspaceService
-            .addKSpace(learner, lecturer, requestId, offerId)
+            .addKSpace(learner, lecturer, requestId, requestTitle, offerId)
             .subscribe(function (r) {
-            //this._chatService.addChatRoom(r._id)
-            //  .subscribe((c) => {
-            //    this.rid = c._id;
-            //    console.log("add chat room successfull");
-            //    this.router.navigateByUrl('/kshare/front.kspace/' + r._id + '/' + this.rid);
-            //  });
+            _this.router.navigate(['/kspace/info/' + r._id]);
         });
     };
     RequestDetailClientComponent.prototype.addSubcriber = function (id) {

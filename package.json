@@ -61,6 +61,7 @@
     "morgan": "^1.5.2",
     "multer": "^1.1.0",
     "newrelic": "^1.18.2",
+    "ng-semantic": "^1.0.36",
     "ng2-bootstrap": "^1.0.17",
     "ng2-pagination": "^0.3.1",
     "nodemailer": "^2.4.2",

@@ -117,11 +117,11 @@ module.exports = class userController {
       var currentDate = new Date();
       userDAO.getUserById(req.params.id)
         .then(user => {
-          user.status = {
+          user.banStatus = {
             admin: req.admin,
             time: '86400000',
             bannedAt: currentDate,
-            banStatus: true
+            status: true
           }
           userDAO.updateUserById(user)
             .then( user                => res.status(200).json(user))

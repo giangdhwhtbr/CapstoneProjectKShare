@@ -41,7 +41,7 @@ var LoginComponent = (function () {
             else {
                 localStorage.setItem('userrole', 'normal');
             }
-            _this.router.navigate(['/']);
+            window.location.reload();
         }, function (error) {
             if (error._body) {
                 error = JSON.parse(error._body);

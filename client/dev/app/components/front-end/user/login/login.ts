@@ -53,11 +53,10 @@ export class LoginComponent {
 
             if(res.role == 'admin'){
               localStorage.setItem('userrole', res.role);
-            }else{
+            }else {
               localStorage.setItem('userrole', 'normal');
             }
-
-            this.router.navigate(['/']);
+            window.location.reload();
         },
         error => {
           if(error._body){
