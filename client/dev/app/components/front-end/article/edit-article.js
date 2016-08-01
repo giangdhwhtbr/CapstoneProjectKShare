@@ -68,7 +68,6 @@ var EditArticleComponent = (function () {
         var _this = this;
         this._articleService.getArtById(this.id).subscribe(function (art) {
             if (art.ofUser != _this.userToken && _this.roleToken != "admin") {
-                console.log(_this.roleToken);
                 _this.isEdited = false;
             }
             else {

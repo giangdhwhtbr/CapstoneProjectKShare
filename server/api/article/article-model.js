@@ -14,7 +14,7 @@ const articleSchema = {
     knowledge: [{type: mongoose.Schema.Types.ObjectId, ref: "Knowledge", childPath: "articles"}],
     createdAt: {type: Date, default: Date.now()},
     tagsFD: [],
-    status: {type: String, required: true, default: 'public',enum: ['public', 'pending', 'private']}
+    status: {type: String, required: true, default: 'public',enum: ['public', 'pending', 'private','deactivate']}
 }
 
 

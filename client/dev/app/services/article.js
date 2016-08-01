@@ -44,12 +44,11 @@ var ArticleService = (function () {
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
-    //delete templates
-    //deleteRequest(request:Request):Observable<any> {
-    //  return this._http
-    //    .delete(this._requestsUrl.replace(':id', request._id))
-    //    .map((r) => r.json());
-    //}
+    ArticleService.prototype.deactivateArticle = function (id) {
+        return this._http
+            .delete(this._requestsUrl.replace(':id', id))
+            .map(function (r) { return r.json(); });
+    };
     //deleteRequestById(id:string):Observable<any> {
     //  return this._http
     //    .delete(this._requestsUrl.replace(':id', id))

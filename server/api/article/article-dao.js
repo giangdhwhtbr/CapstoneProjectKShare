@@ -87,7 +87,7 @@ articleSchema.statics.updateArticle = (article) => {
         });
     });
 }
-articleSchema.statics.deleteArticleById = (id) => {
+articleSchema.statics.deactivateArticleById = (id) => {
     return new Promise((resolve, reject) => {
         if (!_.isString(id))
             return reject(new TypeError('Id is not a valid string.'));
@@ -95,9 +95,10 @@ articleSchema.statics.deleteArticleById = (id) => {
         Article
             .findById(id)
             .exec((err, article) => {
-                article.remove();
+                article.status ="deactivate";
+                article.save();
                 err ? reject(err)
-                    : resolve();
+                    : resolve({"mes":"this article is deactivated"});
             });
     });
 }

@@ -13,7 +13,7 @@ module.exports = class ArticleRoutes {
       .post(ArticleController.createArticle);
 
     router.route('/api/article/:id')
-      .delete(ArticleController.deleteArticle)
+      .delete(ArticleController.deactivateArticle)
       .get(ArticleController.getArticleById)
       .put(ArticleController.updateArticleById);
 

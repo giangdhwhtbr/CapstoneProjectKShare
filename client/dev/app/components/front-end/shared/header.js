@@ -26,7 +26,13 @@ var HeaderComponent = (function () {
         this.socket = io('https://localhost:8081');
         this.socket.on('receive notification', function (data) {
             if (localStorage.getItem('username') === data.data.user) {
-                _this.getNotificationByUser(_this.userToken);
+                //audio of notification
+                var audio = new Audio();
+                audio.src = "https://localhost:8081/client/dev/asserts/gets-in-the-way.mp3";
+                console.log(audio);
+                audio.load();
+                audio.play();
+                _this.getNotificationByUser(data.data.user);
                 //show noti
                 _this.notiTitle = data.data.title;
                 _this.link = data.data.link;

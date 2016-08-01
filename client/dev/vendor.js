@@ -13,6 +13,9 @@ require('@angular/router');
 // AngularClass
 require('@angularclass/webpack-toolkit');
 require('@angularclass/request-idle-callback');
+require('@angular2-material/core');
+require('@angular2-material/button');
+require('@angular2-material/card');
 // RxJS
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/mergeMap');
