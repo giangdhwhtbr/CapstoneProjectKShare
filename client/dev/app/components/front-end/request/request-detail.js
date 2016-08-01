@@ -1,18 +1,13 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var requests_1 = require('../../../services/requests');
-var request_offer_1 = require('../../../services/request-offer');
-var knowledge_1 = require('../../../services/knowledge');
-var kspace_1 = require('../../../services/kspace');
 var offer_create_1 = require('../offer/offer-create');
 var RequestDetailClientComponent = (function () {
     function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
@@ -24,6 +19,8 @@ var RequestDetailClientComponent = (function () {
         this._kspaceService = _kspaceService;
         this.route = route;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
+        //check if request is accepted
+        this.checkIsAcceped = false;
         this.route
             .params
             .subscribe(function (params) {
@@ -47,6 +44,16 @@ var RequestDetailClientComponent = (function () {
                 }
             };
             request.createdAt = formatDate(request.createdAt);
+            if (request.status === 'accepted') {
+                request.status = 'Đã được chấp nhận';
+                _this.checkIsAcceped = true;
+            }
+            else if (request.status === 'pending') {
+                request.status = 'Đang chờ';
+            }
+            else {
+                request.status = 'Đã kết thúc';
+            }
             request.userlink = '/user/' + request.user;
             _this._id = request._id;
             _this.updateLink = '/requests/' + request._id + '/update';
@@ -87,6 +94,12 @@ var RequestDetailClientComponent = (function () {
             };
             for (var i = 0; i < offers.length; i++) {
                 offers[i].createdAt = formatDate(offers[i].createdAt);
+                if (offers[i].status === 'pending') {
+                    offers[i].status = 'Đang chờ';
+                }
+                else {
+                    offers[i].status = 'Được chấp nhận';
+                }
             }
             _this.offers = offers;
         }, function (error) {
@@ -110,6 +123,20 @@ var RequestDetailClientComponent = (function () {
         this._kspaceService
             .addKSpace(learner, lecturer, requestId, requestTitle, offerId)
             .subscribe(function (r) {
+            console.log('create kspace successfull');
+            //update offer status
+            _this._offerService.updateOffer(offerId, 'accepted')
+                .subscribe(function (c) {
+                console.log('change status offer successfull');
+            });
+            _this.request.status = 'accepted';
+            //update request status
+            _this._requestService.updateRequest(_this.request)
+                .subscribe(function (c) {
+                console.log(_this.request);
+                console.log('change status request successfull');
+            });
+            _this.checkIsAcceped = true;
             _this.router.navigate(['/kspace/info/' + r._id]);
         });
     };
@@ -140,8 +167,7 @@ var RequestDetailClientComponent = (function () {
                 router_1.ROUTER_DIRECTIVES,
                 offer_create_1.CreateOfferComponent
             ]
-        }), 
-        __metadata('design:paramtypes', [requests_1.RequestService, request_offer_1.OfferService, router_1.Router, knowledge_1.KnowledgeService, kspace_1.KSpaceService, router_1.ActivatedRoute])
+        })
     ], RequestDetailClientComponent);
     return RequestDetailClientComponent;
 })();
