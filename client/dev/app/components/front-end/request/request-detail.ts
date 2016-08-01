@@ -54,7 +54,7 @@ export class RequestDetailClientComponent {
 
   //variable check to hide button, user can't offer their of templates
   checkCreatedUser: boolean;
-
+  
   //variable check to hide button, user can't subcribe twice in a templates
   checkSubcribedUser: boolean;
   offers: Offer[];
@@ -187,6 +187,7 @@ export class RequestDetailClientComponent {
             console.log('change status request successfull');
           });
         this.checkIsAcceped = true;
+          this.router.navigate(['/kspace/info/'+r._id]);
       })
   }
 

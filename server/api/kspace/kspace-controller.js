@@ -3,6 +3,7 @@
 "use strict";
 const mongoose = require('mongoose');
 const KSpaceDAO = require('./KSpace-dao');
+const UserDAO = require('../user/user-dao');
 const Promise = require('bluebird');
 module.exports = class KSpaceController {
   //get all KSpaces controller
@@ -30,7 +31,6 @@ module.exports = class KSpaceController {
   //create a new front.KSpace controller
   static createNew(req, res) {
     var currentDate = new Date();
-
     var kspace = {
       lecturer : req.body.lecturer,
       learner  : req.body.learner,
@@ -39,6 +39,7 @@ module.exports = class KSpaceController {
       offerId: req.body.offerId,
       createdAt: currentDate
     };
+    console.log(kspace);
     KSpaceDAO
       .createNew(kspace)
       .then(KSpace => res.status(200).json(KSpace))
@@ -49,15 +50,14 @@ module.exports = class KSpaceController {
   }
 
   static updateChatLog(data) {
-    var currentDate = new Date();
-    
+
     var log = {
-      createdAt: currentDate,
+      createdAt: this.currentDate,
       createdUser: data.createdUser,
       message: data.message,
       dataURL: data.dataURL
     }
-    
+
 
    return KSpaceDAO.getKSpaceById(data.id)
     .then(kspace => {
@@ -65,7 +65,102 @@ module.exports = class KSpaceController {
       return KSpaceDAO.updateKSpaceById(kspace)
               .then(kspace => {return kspace})
               .catch(error => {return error});
+    })
+    .catch(error => {
+       console.log(error);
+       res.status(400).json(error)
     });
+  }
+
+  // User review a kSpace and rate for it
+  static createReview(req, res) {
+    var currentDate = new Date();
+    var username = req.body.createdUser;
+    if(req.params && req.params.id) {
+      // Get KSpace to update
+      KSpaceDAO.getKSpaceById(req.params.id)
+      .then (kspace => {
+
+        function hasReviewed() {
+          for (var k in kspace.reviews) {
+            if(kspace.reviews[k].createdUser === username){
+              return true;
+            }
+          }
+          return false;
+        }
+
+        if(!hasReviewed()){
+          var _review = {
+            createdAt: currentDate,
+            createdUser: username,
+            content: req.body.content,
+            rate: req.body.rate
+          };
+
+          if(kspace.reviews.length){
+            var sumR = 0;
+            for (var k in kspace.reviews){
+              sumR += kspace.reviews[k].rate;
+            }
+            kspace.rateAve = sumR / kspace.reviews.length;
+          }else {
+            kspace.rateAve = req.body.rate;
+          }
+
+          kspace.reviews.push(_review);
+          console.log(kspace);
+          // Update KSpace
+          KSpaceDAO.updateKSpaceById(kspace)
+            .then(kspace => {
+              var _rateData = {
+                kspaceId: kspace._id,
+                rate: req.body.rate,
+                ratedUser: username,
+                rateAt: currentDate
+              };
+              // Need to update User's rating -> Find user by username
+              UserDAO.getUserByUserName(kspace.lecturer)
+                .then(user => {
+                  if(!user.rates.length){
+                    var sum = 0;
+                    for (var r in user.rates){
+                      sum += user.rates[r].rate;
+                    }
+                    user.rateAve = sum/user.rates.length;
+                  } else {
+                    user.rateAve = req.body.rate
+                  }
+
+                  user.rates.push(_rateData);
+
+                  // Update User 's Rate
+                  UserDAO.updateUserById(user)
+                    .then(user => res.status(200).json(kspace.reviews))
+                    .catch(error => {
+                      res.status(400).json(error);
+                    });
+                }).catch (error => {
+                res.status(400).json(error);
+              });
+
+            })
+            .catch(error => {
+              res.status(400).json(error);
+            });
+        }else {
+          res.status(400).json({message: 'Bạn đã đánh giá kspace này rồi, nếu muốn thay đổi thông tin, hãy click vào' +
+          ' nút cập nhật '});
+        }
+
+      }).catch (error => {
+        res.status(400).json(error);
+      });
+    }else {
+      res.status(404).json({
+        "message"    :   "No KSpace ID"
+      });
+    }
   }
 
 

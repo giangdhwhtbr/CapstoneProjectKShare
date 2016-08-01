@@ -34,8 +34,16 @@ var KSpaceService = (function () {
             requestTitle: requestTitle,
             offerId: offerId
         });
+        console.log(_kspace);
         return this._http
             .post(this._kspaceUrl.replace(':id', ''), _kspace, options)
+            .map(function (r) { return r.json(); });
+    };
+    KSpaceService.prototype.createReview = function (data) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var api = '/api/kspace/:id/review';
+        return this._http.post(api.replace(':id', data.id), data, options)
             .map(function (r) { return r.json(); });
     };
     KSpaceService.prototype.handleError = function (error) {

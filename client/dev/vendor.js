@@ -19,6 +19,7 @@ require('@angular2-material/card');
 // RxJS
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/mergeMap');
+require('ng-semantic');
 if ('production' === ENV) {
 }
 else {
