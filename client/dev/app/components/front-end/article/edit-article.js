@@ -109,6 +109,9 @@ var EditArticleComponent = (function () {
             if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
                 this.filteredKnw.push(this.tagsEx[i].name);
             }
+            if (i == this.tagsEx.length - 1) {
+                this.filteredKnw.unshift(query.trim());
+            }
         }
         if (this.filteredKnw.length == 0) {
             this.filteredKnw.push(query.trim());

@@ -59,7 +59,7 @@ export class ArticleService {
   //    .map((r) => r.json());
   //}
 
-  updateArtById(art:any,newTag:string[],id:string):Observable<any> {
+  updateArtById(art:any,newTag:any[],id:string):Observable<any> {
     let header = new Headers;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
