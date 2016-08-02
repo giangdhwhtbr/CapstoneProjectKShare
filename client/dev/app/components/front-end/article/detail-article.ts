@@ -6,8 +6,6 @@ import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 import { ArticleService } from '../../../services/article';
 import { AuthService } from '../../../services/auth';
-import { MD_CARD_DIRECTIVES } from '@angular2-material/card';
-import { MD_BUTTON_DIRECTIVES } from '@angular2-material/button';
 import * as $ from 'jquery';
 
 @Component({
@@ -15,7 +13,7 @@ import * as $ from 'jquery';
     templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
     directives: [
-        ROUTER_DIRECTIVES,MD_CARD_DIRECTIVES,MD_BUTTON_DIRECTIVES
+        ROUTER_DIRECTIVES
     ],
     providers: [ArticleService]
 })
@@ -62,7 +60,7 @@ export class detailArticleComponent implements OnInit,AfterViewChecked {
         });
     }
 
-    deactivateArticle(id) {
+    deactivateArticle(id:string) {
         if (id) {
             this._articleService.deactivateArticle(id).subscribe((mes)=> {
                 $('.messOff').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Success!</strong> ' + mes.mes + ' </div>');

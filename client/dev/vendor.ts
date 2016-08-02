@@ -16,9 +16,6 @@ import '@angular/router';
 import '@angularclass/webpack-toolkit';
 import '@angularclass/request-idle-callback';
 
-import '@angular2-material/core';
-import '@angular2-material/button';
-import '@angular2-material/card';
 
 // RxJS
 import 'rxjs/add/operator/map';

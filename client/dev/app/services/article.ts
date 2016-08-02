@@ -19,7 +19,7 @@ export class ArticleService {
       .catch(this.handleError);
   }
 
-  addArticle(_title:string, _content:string,oldTag:string[],newTag:string[],stt:string,user:string):Observable<any> {
+  addArticle(_title:string, _content:string,oldTag:any[],newTag:any[],stt:any,user:string):Observable<any> {
     let header = new Headers;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
@@ -47,7 +47,7 @@ export class ArticleService {
   }
 
 
-  deactivateArticle(id:any):Observable<any> {
+  deactivateArticle(id:string):Observable<any> {
     return this._http
       .delete(this._requestsUrl.replace(':id', id))
       .map((r) => r.json());
@@ -73,53 +73,5 @@ export class ArticleService {
       .put(this._requestsUrl.replace(':id', id), _data, options)
       .map((r) => r.json());
   }
-  //
-  //getRequestByKnowledgeId(id:string):Observable<any> {
-  //  return this._http
-  //    .post(this._requestsUrl.replace(':id', id), '')
-  //    .map((r) => r.json());
-  //}
-  //
-  //// get child back.knowledge from parent back.knowledge
-  //getKnowledgeByParent(id:string):Observable<any> {
-  //  return this._http.get(this._getKnowledgeByParentUrl.replace(':id', id))
-  //    .map((r) => r.json())
-  //    .catch(this.handleError);
-  //}
-  //
-  ////add a subcriber to templates subcribers
-  //updateSubcriber(id:string, subcriber:string):Observable<any> {
-  //  let header = new Headers;
-  //  let headers = new Headers({'Content-Type': 'application/json'});
-  //  let options = new RequestOptions({headers: headers});
-  //  let _subcriber = JSON.stringify({
-  //    subcriber: subcriber
-  //  });
-  //  return this._http.post(this._statusSubcriberUrl.replace(':id', id), _subcriber, options)
-  //    .map((r) => r.json());
-  //}
-  //
-  ////change status request
-  //changeStatusRequest(id:string):Observable<any> {
-  //  return this._http.get(this._requestStatusUrl.replace(':id', id))
-  //    .map((r) => r.json());
-  //}
-  //
-  ////search request
-  //searchRequest(search:string):Observable<any> {
-  //  let headers = new Headers({'Content-Type': 'application/json'});
-  //  let options = new RequestOptions({headers: headers});
-  //  let _search = JSON.stringify({
-  //    text: search
-  //  });
-  //  return this._http
-  //    .post(this._searchRequetsUrl.replace(':id', ''), _search, options)
-  //    .map((r) => r.json());
-  //}
-  //
-  //private handleError(error:Response) {
-  //  console.error(error);
-  //  return Observable.throw(error.json().error || 'Server error');
-  //}
 
 }

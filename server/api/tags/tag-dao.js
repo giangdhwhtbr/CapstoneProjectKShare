@@ -11,7 +11,7 @@ tagSchema.statics.getAll = () => {
     return new Promise((resolve, reject) => {
         let _query = {};
 
-        Tag.findById()
+        Tag
             .find(_query)
             .exec((err, tags) => {
                 err ? reject(err)

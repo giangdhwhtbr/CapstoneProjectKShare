@@ -12,8 +12,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
-var card_1 = require('@angular2-material/card');
-var button_1 = require('@angular2-material/button');
 var $ = require('jquery');
 var detailArticleComponent = (function () {
     function detailArticleComponent(router, route, _articleService) {
@@ -71,7 +69,7 @@ var detailArticleComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
             styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES, card_1.MD_CARD_DIRECTIVES, button_1.MD_BUTTON_DIRECTIVES
+                router_1.ROUTER_DIRECTIVES
             ],
             providers: [article_1.ArticleService]
         })
