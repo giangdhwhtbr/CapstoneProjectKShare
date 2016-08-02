@@ -7,15 +7,13 @@ const mongoose = require('mongoose');
 const KSpaceSchema = new mongoose.Schema({
   lecturer: {
     type: String,
-    ref: 'User',
     required: true
   },
   learner: {
     type: String,
-    ref: 'User',
     required: true
   },
-  chatlog:[ 
+  chatlog:[
     {
       createdAt:{
         type: Date
@@ -31,6 +29,32 @@ const KSpaceSchema = new mongoose.Schema({
       }
     }
   ],
+  reviews: [
+    {
+      createdAt: {
+        type: Date
+      },
+      createdUser: {
+        type: String
+      },
+      content: {
+        type: String
+      },
+      rate: {
+        type: Number,
+        min: 1,
+        max: 5
+      }
+    }
+  ],
+  rateAve: {
+    type: Number,
+    rate: {
+      type: Number,
+      min: 1,
+      max: 5
+    }
+  },
   requestId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Request',

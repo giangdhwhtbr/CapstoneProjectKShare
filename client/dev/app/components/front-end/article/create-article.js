@@ -14,7 +14,6 @@ var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
 var tag_1 = require('../../../services/tag');
 var primeng_1 = require('primeng/primeng');
-var $ = require('jquery');
 var CKEditor = (function () {
     function CKEditor(_elm) {
         CKEDITOR.replace(_elm.nativeElement);
@@ -68,6 +67,9 @@ var CreateArticleComponent = (function () {
         for (var i = 0; i < this.tagsEx.length; i++) {
             if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
                 this.filteredKnw.push(this.tagsEx[i].name);
+            }
+            if (i == this.tagsEx.length - 1) {
+                this.filteredKnw.unshift(query.trim());
             }
         }
         if (this.filteredKnw.length == 0) {

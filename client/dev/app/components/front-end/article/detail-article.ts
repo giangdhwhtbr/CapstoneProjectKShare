@@ -5,53 +5,79 @@ import { Component, OnInit,AfterViewChecked ,Pipe,PipeTransform } from '@angular
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 import { ArticleService } from '../../../services/article';
-
+import { AuthService } from '../../../services/auth';
 import * as $ from 'jquery';
 
 @Component({
     selector: 'detail-article',
     templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
-    styleUrls:  ['client/dev/app/components/front-end/article/styles/article.css'],
+    styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
     directives: [
         ROUTER_DIRECTIVES
     ],
-    providers:[ArticleService]
+    providers: [ArticleService]
 })
 
-export class detailArticleComponent implements OnInit,AfterViewChecked{
+export class detailArticleComponent implements OnInit,AfterViewChecked {
 
     article:any;
     id:string;
     tags:Array<any>;
 
-    constructor( public router:Router,private route: ActivatedRoute,private _articleService:ArticleService){
+    roleToken:string;
+    userToken:string;
+
+    canSee:boolean = true;
+    isDeAc:boolean = false;
+
+    constructor(public router:Router, private route:ActivatedRoute, private _articleService:ArticleService) {
         this.route
             .params
             .subscribe(params => {
                 this.id = params['id'];
             });
+        this.roleToken = localStorage.getItem('userrole');
+        this.userToken = localStorage.getItem('username');
     }
 
-    ngOnInit(){
-        this._articleService.getArtById(this.id).subscribe((art)=>{
-            this.article=art;
+    ngOnInit() {
+        this._articleService.getArtById(this.id).subscribe((art)=> {
+            if ((art.ofUser != this.userToken && this.roleToken != "admin" && art.status == "private") || (this.roleToken != "admin" && art.status == "deactivate")) {
+                this.canSee = false;
+            } else {
 
-            this.tags=art.tagsFD;
+                this.article = art;
 
-            this.article.createdAt = new Date(this.article.createdAt);
+                this.tags = art.tagsFD;
 
-            console.log(this.article);
+                this.article.createdAt = new Date(this.article.createdAt);
+
+                if (art.status == "deactivate") {
+                    this.isDeAc = true;
+                }
+            }
+
         });
     }
 
-    ngAfterViewChecked(){
-        if(this.article!=undefined){
+    deactivateArticle(id:string) {
+        if (id) {
+            this._articleService.deactivateArticle(id).subscribe((mes)=> {
+                $('.messOff').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Success!</strong> ' + mes.mes + ' </div>');
+                this.isDeAc = true;
+                $('#clsArtBtn').hide();
+            });
+        }
+    }
+
+    ngAfterViewChecked() {
+        if (this.article != undefined) {
             $('.bodyArt').html(this.article.content);
         }
     }
 
-    editArt(id:string){
-        this.router.navigateByUrl('/article/edit/'+this.id);
+    editArt(id:string) {
+        this.router.navigateByUrl('/article/edit/' + this.id);
     }
 
 }

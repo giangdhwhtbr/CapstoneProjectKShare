@@ -57,10 +57,10 @@ userSchema.statics.getUserByEmail = (email) => {
 }
 
 // get user by username
-userSchema.statics.getUserByUserName = (user) => {
+userSchema.statics.getUserByUserName = (username) => {
   return new Promise((resolve, reject) => {
-
-    User.findOne({ 'username' : user })
+    User.findOne({ 'username' : username })
+        .select("-username -password -email -role -salt")
         .exec((err, user) => {
           err ? reject(err) : resolve(user);
         });

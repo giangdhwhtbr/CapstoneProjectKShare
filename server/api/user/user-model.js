@@ -94,12 +94,29 @@ const userSchema = new mongoose.Schema({
     min: 1,
     max: 10
   },
+  rates :[{
+    kspaceId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'KSpace'
+    },
+    rate: {
+      type: Number,
+      min: 1,
+      max: 5
+    },
+    rateAt: {
+      type: Date
+    },
+    ratedUser: {
+      type: String
+    }
+  }],
   rateAve:{
     type: Number,
     min: 0,
     max: 5
   },
-  status:{
+  banStatus:{
       admin: {
         type: String
       },
@@ -109,7 +126,7 @@ const userSchema = new mongoose.Schema({
       bannedAt: {
         type: Date
       },
-      banStatus: {
+      status: {
         type: Boolean
       }
   },

@@ -14,8 +14,10 @@ var sub_knowledge_create_1 = require('./sub-knowledge-create');
 var ng2_pagination_1 = require('ng2-pagination');
 var filter_1 = require('../shared/filter');
 var KnowledgeListComponent = (function () {
-    function KnowledgeListComponent(fb, _knowledgeService) {
+    function KnowledgeListComponent(fb, _elRef, _knowledgeService, _requestService) {
+        this._elRef = _elRef;
         this._knowledgeService = _knowledgeService;
+        this._requestService = _requestService;
         this.pageTitle = 'Knowledge List';
         this.knowledgeForm = fb.group({
             "name": [""],
@@ -29,10 +31,37 @@ var KnowledgeListComponent = (function () {
     }
     KnowledgeListComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this._requestService.getAllRequests().subscribe(function (requests) {
+            _this.requests = requests;
+        });
         this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
-            console.log(knowledges);
-            /*this.knowledges = this._knowledgeService.getChildFromParent(knowledges);*/
+            for (var i = 0; i < knowledges.length; i++) {
+                var length = 0;
+                for (var j = 0; j < _this.requests.length; j++) {
+                    if (_this.requests[j].knowledgeId == knowledges[i]._id) {
+                        length++;
+                        knowledges[i]["requestLength"] = length;
+                    }
+                }
+            }
             _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+            console.log(_this.knowledges);
+            for (var i = 0; i < _this.knowledges.length; i++) {
+                var a = 0;
+                for (var j = 0; j < _this.knowledges[i]["subCategory"].length; j++) {
+                    a += _this.knowledges[i]["subCategory"][j]["requestLength"];
+                    _this.knowledges[i]["requestLength"] = a;
+                }
+            }
+            for (var i = 0; i < _this.knowledges.length - 1; i++) {
+                for (var j = 1; j < _this.knowledges.length; j++) {
+                    if (_this.knowledges[i]["requestLength"] < _this.knowledges[j]["requestLength"]) {
+                        _this.knowledge = _this.knowledges[i];
+                        _this.knowledges[i] = _this.knowledges[j];
+                        _this.knowledges[j] = _this.knowledge;
+                    }
+                }
+            }
         });
     };
     KnowledgeListComponent.prototype.deleteKnowledge = function (id) {
@@ -56,23 +85,32 @@ var KnowledgeListComponent = (function () {
             _this.knowledgeForm.controls["description"].updateValue("");
         });
     };
-    KnowledgeListComponent.prototype.addSubKnowledge = function (knowledge) {
+    KnowledgeListComponent.prototype.changeKnowledgeStatus = function (knowledge) {
         var _this = this;
         this._knowledgeService
-            .addKnowledge(knowledge)
-            .subscribe(function (m) {
-            _this.subCategoryForm.controls["name"].updateValue("");
-            _this.subCategoryForm.controls["description"].updateValue("");
-            for (var i = 0; i < _this.knowledges.length; i++) {
-                if (_this.knowledges[i]._id === m.parent) {
-                    console.log(_this.knowledges[i]._id);
-                    var a = [];
-                    a.push(m);
-                    _this.knowledges[i]["subCategory"] = a;
+            .changeKnowledgeStatus(knowledge)
+            .subscribe(function (knowledge) {
+            if (knowledge.hasOwnProperty("subCategory")) {
+                for (var i = 0; i < knowledge["subCategory"].length; i++) {
+                    if (knowledge["subCategory"][i].status == knowledge.status) {
+                        _this._knowledgeService
+                            .changeKnowledgeStatus(knowledge["subCategory"][i])
+                            .subscribe(function (knowledge) {
+                        });
+                    }
                 }
             }
+            _this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+                _this.knowledges = knowledges;
+            });
         });
     };
+    KnowledgeListComponent.prototype.hide = function () {
+        $(".collapse").collapse("hide");
+    };
+    __decorate([
+        core_1.Input()
+    ], KnowledgeListComponent.prototype, "knowledge");
     KnowledgeListComponent = __decorate([
         core_1.Component({
             selector: 'knowledge-list',

@@ -68,7 +68,6 @@ var EditArticleComponent = (function () {
         var _this = this;
         this._articleService.getArtById(this.id).subscribe(function (art) {
             if (art.ofUser != _this.userToken && _this.roleToken != "admin") {
-                console.log(_this.roleToken);
                 _this.isEdited = false;
             }
             else {
@@ -109,6 +108,9 @@ var EditArticleComponent = (function () {
         for (var i = 0; i < this.tagsEx.length; i++) {
             if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
                 this.filteredKnw.push(this.tagsEx[i].name);
+            }
+            if (i == this.tagsEx.length - 1) {
+                this.filteredKnw.unshift(query.trim());
             }
         }
         if (this.filteredKnw.length == 0) {

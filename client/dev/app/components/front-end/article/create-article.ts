@@ -13,8 +13,7 @@ import {TagService} from '../../../services/tag';
 import { AuthService } from '../../../services/auth';
 import {AutoComplete,SelectButton,SelectItem} from 'primeng/primeng';
 
-import * as $ from 'jquery';
-
+declare var $ :any;
 
 @Component({
     selector: 'ck-editor',
@@ -45,7 +44,7 @@ export class CreateArticleComponent implements OnInit {
     filteredKnw:string[];
 
     tags:any[];
-    tagsEx:Array<string>;
+    tagsEx:Array<any>;
 
     userToken: string;
     roleToken: string;
@@ -66,7 +65,7 @@ export class CreateArticleComponent implements OnInit {
     }
 
     filterONTag() {
-        let oldTag = [];
+        let oldTag: any[]=[];
         for (let e of this.tagsEx) {
             for (let e1 of this.tags) {
                 if (e.name == e1) {
@@ -88,6 +87,9 @@ export class CreateArticleComponent implements OnInit {
         for (let i = 0; i < this.tagsEx.length; i++) {
             if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
                 this.filteredKnw.push(this.tagsEx[i].name);
+            }
+            if(i==this.tagsEx.length-1){
+                this.filteredKnw.unshift(query.trim());
             }
         }
         if (this.filteredKnw.length == 0) {

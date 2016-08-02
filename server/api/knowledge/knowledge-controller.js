@@ -27,6 +27,7 @@ module.exports = class KnowledgeController {
             }).catch(error => res.status(400).json(error));
     }
 
+
     //get back.knowledge by back.knowledge ID
     static getKnowledgeById(req, res) {
         if (req.params && req.params.id) {
@@ -111,5 +112,24 @@ module.exports = class KnowledgeController {
                 "message": "No Knowledge in templates"
             });
         }
+    }
+
+    static changeKnowledgeStatus(req, res){
+      var currentDate = new Date();
+      if(req.params && req.params.id) {
+          KnowledgeDAO.getKnowledgeById(req.params.id)
+            .then(knowledge => {
+              knowledge.status = !knowledge.status
+
+              KnowledgeDAO.updateKnowledge(knowledge)
+                .then(knowledge => res.status(200).json(knowledge))
+                .catch(error => res.status(400).json(error));
+            })
+            .catch(error => res.status(400).json(error));
+      }else{
+        res.status(404).json({
+          "message"    :   "No knowledge id in templates"
+        });
+      }
     }
 }

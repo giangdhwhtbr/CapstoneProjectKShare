@@ -25,12 +25,12 @@ module.exports = function(passport){
           return done(null, false, { invalidPassword: 'Incorrect password.'});
         }
 
-        if(user.status.banStatus) {
+        if(user.banStatus.status) {
           var currentDate = new Date();
-          var difftime = currentDate.getTime() - user.status.bannedAt.getTime();
+          var difftime = currentDate.getTime() - user.banStatus.bannedAt.getTime();
 
-          if (difftime < user.status.time){
-            return done(null, false, { message: 'Tài khoản của bạn đang bị khoá trong 1 ngày kể từ '+user.status.bannedAt+', vui lòng đăng' +
+          if (difftime < user.banStatus.time){
+            return done(null, false, { message: 'Tài khoản của bạn đang bị khoá trong 1 ngày kể từ '+user.banStatus.bannedAt+', vui lòng đăng' +
             ' nhập' +
             ' lại' +
             ' sau'})

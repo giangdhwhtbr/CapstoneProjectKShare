@@ -4,4 +4,5 @@ export interface Knowledge {
   description:string;
   update:string;
   parent:string;
+  status:boolean;
 }

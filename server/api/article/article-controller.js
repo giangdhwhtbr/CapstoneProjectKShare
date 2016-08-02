@@ -12,6 +12,15 @@ module.exports = class ArticleController {
         ArticleDAO
             .getAll()
             .then(articles => {
+                for (let i = articles.length - 1; i >= 0; i--) {
+                    if (articles[i].status === "deactivate") {
+                        let index = articles.indexOf(articles[i]);
+                        if (index > -1) {
+                            console.log(index);
+                            articles.splice(index, 1);
+                        }
+                    }
+                }
                 res.status(200).json(articles);
             })
             .catch(error => res.status(400).json(error));
@@ -137,12 +146,12 @@ module.exports = class ArticleController {
     }
 
 
-    static deleteArticle(req, res) {
+    static deactivateArticle(req, res) {
         let _id = req.params.id;
 
         ArticleDAO
-            .deleteArticleById(_id)
-            .then(() => res.status(200).end())
+            .deactivateArticleById(_id)
+            .then((mes) => res.status(200).json(mes))
             .catch(error => res.status(400).json(error));
     }
 

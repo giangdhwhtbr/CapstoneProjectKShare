@@ -21,6 +21,7 @@ webpackJsonp([1],[
 	// RxJS
 	__webpack_require__(187);
 	__webpack_require__(288);
+	__webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"ng-semantic\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	if (false) {
 	}
 	else {
