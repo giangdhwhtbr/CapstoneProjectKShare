@@ -69,7 +69,7 @@ module.exports = class TagController {
         let _id = req.params.id;
 
         TagDAO
-            .deleteTagById(_id)
+            .deactivateTagById(_id)
             .then(() => {
                 ArticleDAO
                     .getArticleByTagId(_id)
