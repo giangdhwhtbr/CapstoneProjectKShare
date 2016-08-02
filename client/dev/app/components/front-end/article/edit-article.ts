@@ -86,7 +86,7 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
 
     ngOnInit() {
         this._articleService.getArtById(this.id).subscribe((art)=> {
-
+            console.log(this.roleToken);
             if (art.ofUser != this.userToken && this.roleToken!="admin") {
                 console.log(this.roleToken);
                 this.isEdited = false;

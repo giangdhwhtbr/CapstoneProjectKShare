@@ -77,5 +77,7 @@ module.exports = class userRoutes {
   router
       .route('/api/user-picture')
       .post(userController.updateUserPicture);
+
   }
+
 }

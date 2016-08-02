@@ -17,6 +17,7 @@ import { UpdateRequestComponent } from "./back-end/request/request-update";
 import { UpdateBadwordComponent } from "./back-end/badword/badword-update";
 import { BadwordListComponent } from "./back-end/badword/badwords-list";
 import { UserListComponent } from "./back-end/users/user-list";
+import { ReportListComponent } from "./back-end/report/reports-list";
 
 @Component({
   selector: 'kshare',
@@ -42,6 +43,7 @@ import { UserListComponent } from "./back-end/users/user-list";
     UpdateBadwordComponent,
     UpdateKnowledgeComponent,
     UpdateRequestComponent,
+    ReportListComponent
   ]
 })
 export class AdminComponent {}

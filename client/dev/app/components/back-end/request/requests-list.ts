@@ -1,4 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Pipe,
+  PipeTransform,
+  Inject
+} from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
 
@@ -64,35 +70,30 @@ export class RequestListComponent {
   }
 
   ngOnInit(): void {
+    this.getAllRequest();
+  }
+
+  deactivateRequest(id: string) {
+    var r = confirm("Bạn có muốn kết thúc yêu cầu này?");
+    if (r == true) {
+      this._requestService
+        .changeStatusRequest(id)
+        .subscribe((r) => {
+          console.log("deactivate sucess");
+          this.getAllRequest();
+        })
+    }
+  }
+
+  getAllRequest(){
     this._requestService.getAllRequests().subscribe((requests) => {
-      var formatDate = function (date){
-        if(date) {
-          var newDate, day, month, year;
-          year = date.substr(0, 4);
-          month = date.substr(5, 2);
-          day = date.substr(8, 2);
-          return newDate = day + '/' + month + '/' + year;
-        }
-      };
 
       for (var i = 0; i < requests.length; i++) {
-        requests[i].createdAt = formatDate(requests[i].createdAt);
-        requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
+        requests[i].createdAt = new Date(requests[i].createdAt);
+        requests[i].modifiedDate = new Date(requests[i].modifiedDate);
       }
       this.requests = requests;
     });
-  }
-
-  private deleteRequest(id):void {
-
-    this._requestService
-      .deleteRequest(id)
-      .subscribe(() => {
-        this.requests.forEach((t, i) => {
-          if (t._id === id)
-            return this.requests.splice(i, 1);
-        });
-      })
   }
 
 }
