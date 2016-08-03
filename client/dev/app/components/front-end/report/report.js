@@ -19,6 +19,7 @@ var ReportComponent = (function () {
             "title": [""],
             "content": [""],
             "user": [""],
+            "reportedUser": [""],
             "link": [""]
         });
     }
@@ -40,11 +41,15 @@ var ReportComponent = (function () {
                         });
                     }
                 }
+                window.location.reload();
             });
         }, function (error) {
             console.log(error);
         });
     };
+    __decorate([
+        core_1.Input('reportedUser')
+    ], ReportComponent.prototype, "reportedUser");
     ReportComponent = __decorate([
         core_1.Component({
             selector: 'report',

@@ -19,33 +19,52 @@ module.exports = class RequestController {
     }
 
     static createRequest(req, res) {
-        let _request = req.body;
 
-        console.log(_request);
-        RequestDAO
-            .createRequest(_request)
-            .then(request => res.status(201).json(request))
-            .catch(error => res.status(400).json(_request));
+        let _data = req.body;
+        //create new tags in database
+        TagDAO.createArrayTag(_data.newTag).then((tags)=> {
+
+            RequestDAO
+                .createRequest(_data.request)
+                .then((request) => {
+                    // push the new tag to the new request
+                    for (let e of request) {
+                        request.tags.push(e);
+                    }
+                    request.save();
+                    res.status(201).json(request)
+                }).catch(error => res.status(400).json(_request));
+        }).catch((error)=>res.status(400).json(error));
+
     }
 
     static updateRequest(req, res) {
         if (req.params && req.params.id) {
             var currentDate = new Date();
+            let _data = req.body;
             RequestDAO.getRequestById(req.params.id)
                 .then(request => {
-                    request.userId = req.params.id,
-                        request.title = req.body.title,
-                        request.description = req.body.description,
-                        request.knowledgeId = req.body.knowledgeId,
-                        request.modifiedDate = currentDate;
-                    request.status = req.body.status;
+                    request.title = _data.rq.title;
+                    request.description = _data.rq.description;
+                    request.knowledgeId = _data.rq.knowledgeId;
+                    request.modifiedDate = currentDate;
+                    request.status = _data.rq.status;
+                    request.tags = _data.rq.tags;
+                    request.status = _data.rq.status;
 
-                    // res.status(200).json(templates);
-                    RequestDAO.updateRequestById(request)
-                        .then(request => res.status(200).json(request))
-                        .catch(error => res.status(400).json(error));
-                })
-                .catch(error => res.status(400).json(error));
+                    TagDAO.createArrayTag(_data.newTag).then((tags)=> {
+
+                        RequestDAO.updateRequestById(request).then(request => {
+                            tags.map((e, i)=> {
+                                request.tags.push(e);
+                            });
+                            tags.save();
+
+                            res.status(200).json(request);
+                        }).catch(error => res.status(400).json(error));
+
+                    }).catch((error)=>res.status(400).json(error));
+                }).catch(error => res.status(400).json(error));
         } else {
             res.status(404).json({
                 "message": "No Request id in templates"
