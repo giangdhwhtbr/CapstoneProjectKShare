@@ -23,11 +23,11 @@
     <div class="col-lg-8">
       <div class="row">
         <div class="input-group">
-          <input type="text"/>
+          <input type="text" class="form-control" id="filter" placeholder="Tìm kiếm" [(ngModel)]="filter">
         </div>
       </div>
     </div>
-    
+    <br/>
     <div class="row">
       <div class="col-lg-12">
         <div>
@@ -38,15 +38,17 @@
                 <th>Báo cáo vi phạm</th>
                 <th>Nội dung</th>
                 <th>Người gửi</th>
+                <th>Người vi phạm</th>
                 <th></th>
               </tr>
             </thead>
             <tbody *ngIf="reports">
-              <tr *ngFor="let report of reports">
+              <tr *ngFor="let report of reports | stringFilter: filter">
                 <td></td>
                 <td><a [routerLink]="[report.link]">{{report.title}}</a></td>
                 <td>{{report.content}}</td>
                 <td><a [routerLink]="['/user/'+report.user]">{{report.user}}</a></td>
+                <td><a [routerLink]="['/user/'+report.reportedUser]">{{report.reportedUser}}</a></td>
                 <td><button (click)="deactivateReport(report._id)" class="btn btn-danger btn-small glyphicon glyphicon-remove"></button></td>
               </tr>
             </tbody>

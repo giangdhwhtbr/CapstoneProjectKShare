@@ -7,6 +7,10 @@ const _reportSchema = {
         type: String, 
         required: true
     },
+    reportedUser: {
+        type: String,
+        required: true
+    },
     title: {
         type: String,
         required: true

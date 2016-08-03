@@ -19,7 +19,8 @@ export class ReportListComponent {
     errorMessage: string;
     badwordForm: ControlGroup;
     reports: Report[];
-
+    public filter: string = '';
+    
     constructor(fb: FormBuilder, private _reportService: ReportService, private router: Router) {
 
     }

@@ -35,6 +35,14 @@
 
           <div class="row">
             <div class="col-md-12">
+              <label for="reportedUser">Người vi phạm</label>
+              <input class="form-control" type="text" required="required" id="user" name="reportedUser" [ngModel]="reportedUser" [ngFormControl]="reportForm.controls['reportedUser']"
+                disabled />
+            </div>
+          </div>
+
+          <div class="row" hidden>
+            <div class="col-md-12">
               <label for="link">Đường dẫn</label>
               <input class="form-control" type="text" required="required" id="link" name="link" [ngModel]="link" [ngFormControl]="reportForm.controls['link']"
                 disabled/>

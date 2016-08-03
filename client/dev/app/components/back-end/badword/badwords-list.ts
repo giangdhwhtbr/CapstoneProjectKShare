@@ -42,7 +42,7 @@ export class BadwordListComponent {
         });
   }
 
-  private deleteBadword(id):void {
+  private deleteBadword(id: string):void {
     this.badwordService
       .deleteBadword(id)
       .subscribe(() => {
@@ -53,7 +53,7 @@ export class BadwordListComponent {
       })
   }
 
-  findBadwordById(id):void {
+  findBadwordById(id: string) {
     this.badwordService
         .findBadwordById(id)
         .subscribe((badwords) => {
@@ -61,7 +61,7 @@ export class BadwordListComponent {
         });
   }
 
-  addBadword(word):void {
+  addBadword(word:Badword) {
     this.badwordService
         .addBadword(word)
         .subscribe((word) => {

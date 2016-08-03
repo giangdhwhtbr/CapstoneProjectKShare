@@ -98,7 +98,7 @@ var RequestDetailClientComponent = (function () {
                 .changeStatusRequest(this.id)
                 .subscribe(function (r) {
                 console.log("deactivate sucess");
-                _this.router.navigateByUrl('/kshare/requests/');
+                _this.router.navigateByUrl('/requests/');
             });
         }
     };

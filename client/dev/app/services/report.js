@@ -22,7 +22,8 @@ var ReportService = (function () {
             title: report.title,
             content: report.content,
             user: report.user,
-            link: report.link
+            link: report.link,
+            reportedUser: report.reportedUser
         });
         return this._http
             .post(this._Url.replace(':id', ''), _report, options)

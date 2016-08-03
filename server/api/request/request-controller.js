@@ -11,6 +11,13 @@ module.exports = class RequestController {
             .catch(error => res.status(400).json(error));
     }
 
+    static getAllRequestForAdmin(req, res) {
+        RequestDAO
+            .getAllRequestForAdmin()
+            .then(requests => res.status(200).json(requests))
+            .catch(error => res.status(400).json(error));
+    }
+
     static createRequest(req, res) {
         let _data = req.body;
         //create new tags in database
@@ -41,6 +48,7 @@ module.exports = class RequestController {
                     request.modifiedDate = currentDate;
                     request.status = _data.rq.status;
                     request.tags = _data.rq.tags;
+                    request.status = _data.rq.status;
 
                     TagDAO.createArrayTag(_data.newTag).then((tags)=> {
 
@@ -82,7 +90,6 @@ module.exports = class RequestController {
             .fullTextSearchRequest(req.body.text)
             .then(request => res.status(200).json(request))
             .catch(error => res.status(400).json(error));
-
     }
 
     static getRequestByKnowledgeId(req, res) {

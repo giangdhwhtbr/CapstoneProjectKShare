@@ -20,28 +20,28 @@ import { OfferService } from '../../../services/request-offer';
 import { CreateRequestComponent } from './request-create';
 import { CreateOfferComponent  } from '../../front-end/offer/offer-create';
 import { UpdateRequestComponent } from './request-update';
-import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance } from 'ng2-pagination';
+import { PaginationControlsCmp, PaginatePipe, PaginationService, IPaginationInstance } from 'ng2-pagination';
 import {StringFilterPipe} from '../shared/filter';
 @Component({
   selector: 'request-list',
   templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-  directives: [UpdateRequestComponent,ROUTER_DIRECTIVES,PaginationControlsCmp,ROUTER_DIRECTIVES,FORM_DIRECTIVES],
-  providers: [RequestService,PaginationService],
-  pipes: [PaginatePipe,StringFilterPipe]
+  directives: [UpdateRequestComponent, ROUTER_DIRECTIVES, PaginationControlsCmp, ROUTER_DIRECTIVES, FORM_DIRECTIVES],
+  providers: [RequestService, PaginationService],
+  pipes: [PaginatePipe, StringFilterPipe]
 })
 
 export class RequestListComponent {
   pageTitle: string = 'Request List';
   errorMessage: string;
-  requests:Request[];
-  user:string;
-  roleToken:string;
+  requests: Request[];
+  user: string;
+  roleToken: string;
   requestForm: ControlGroup;
   public filter: string = '';
   knowledges: Knowledge[];
 
-  constructor(@Inject(FormBuilder) fb: FormBuilder, @Inject(RequestService) private _requestService: RequestService, private _knowledgeService: KnowledgeService,
-                    private _authService: AuthService) {
+  constructor( @Inject(FormBuilder) fb: FormBuilder, @Inject(RequestService) private _requestService: RequestService, private _knowledgeService: KnowledgeService,
+    private _authService: AuthService) {
     this.user = localStorage.getItem('username');
     this.roleToken = localStorage.getItem('userrole');
 
@@ -57,15 +57,15 @@ export class RequestListComponent {
   }
 
   addRequest(request) {
-    this._requestService.addRequest(request).subscribe((request)=> {
+    this._requestService.addRequest(request).subscribe((request) => {
       this.requests.push(request);
       (<Control>this.requestForm.controls["title"]).updateValue("");
       (<Control>this.requestForm.controls["description"]).updateValue("");
       (<Control>this.requestForm.controls["knowledgeId"]).updateValue("");
     },
-    (error) => {
-      console.log(error.text());
-    }
+      (error) => {
+        console.log(error.text());
+      }
     );
   }
 
@@ -74,23 +74,36 @@ export class RequestListComponent {
   }
 
   deactivateRequest(id: string) {
-    var r = confirm("Bạn có muốn kết thúc yêu cầu này?");
-    if (r == true) {
-      this._requestService
-        .changeStatusRequest(id)
-        .subscribe((r) => {
-          console.log("deactivate sucess");
-          this.getAllRequest();
-        })
-    }
+    this._requestService
+      .changeStatusRequest(id)
+      .subscribe((r) => {
+        console.log("deactivate sucess");
+        this.getAllRequest();
+      })
   }
 
-  getAllRequest(){
-    this._requestService.getAllRequests().subscribe((requests) => {
+  activateRequest(request: Request) {
+    request.status = 'pending';
+    this._requestService
+      .updateRequest(request)
+      .subscribe((r) => {
+        this.getAllRequest();
+      })
+  }
+
+  getAllRequest() {
+    this._requestService.getAllRequestAdmin().subscribe((requests) => {
 
       for (var i = 0; i < requests.length; i++) {
         requests[i].createdAt = new Date(requests[i].createdAt);
         requests[i].modifiedDate = new Date(requests[i].modifiedDate);
+        if(requests[i].status === 'active' || requests[i].status === 'pending'){
+          requests[i].status = "Đang chờ";
+        } else if (requests[i].status === 'deactive'){
+          requests[i].status = "Kết thúc";
+        } else if (requests[i].status === 'accepted') {
+          requests[i].status = "Được chấp nhận";
+        }
       }
       this.requests = requests;
     });

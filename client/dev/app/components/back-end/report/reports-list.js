@@ -16,6 +16,7 @@ var ReportListComponent = (function () {
         this._reportService = _reportService;
         this.router = router;
         this.pageTitle = 'Report List';
+        this.filter = '';
     }
     ReportListComponent.prototype.ngOnInit = function () {
         this.getAll();

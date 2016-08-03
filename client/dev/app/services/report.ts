@@ -17,7 +17,8 @@ export class ReportService {
       title: report.title,
       content: report.content,
       user: report.user,
-      link: report.link
+      link: report.link,
+      reportedUser: report.reportedUser
     });
 
     return this._http

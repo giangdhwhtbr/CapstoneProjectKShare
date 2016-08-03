@@ -157,10 +157,9 @@ export class RequestDetailClientComponent {
         .changeStatusRequest(this.id)
         .subscribe((r) => {
           console.log("deactivate sucess");
-          this.router.navigateByUrl('/kshare/requests/');
+          this.router.navigateByUrl('/requests/');
         })
     }
-
   }
 
   addKshare(learner: string, lecturer: string, requestId: string, requestTitle: string, offerId: string): void {

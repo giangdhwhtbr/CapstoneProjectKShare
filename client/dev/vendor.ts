@@ -21,8 +21,6 @@ import '@angularclass/request-idle-callback';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/mergeMap';
 
-import 'ng-semantic';
-
 if ('production' === ENV) {
   // Production
 

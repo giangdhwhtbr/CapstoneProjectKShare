@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export  class RequestService {
   private _requestsUrl = '/api/requests/:id';
+  private _requestsAdminUrl = '/api/requests-admin/:id';
   private _getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
   private _searchRequetsUrl = '/api/requests-search/:id';
   private _statusSubcriberUrl = '/api/requests-subcriber/:id';
@@ -15,6 +16,12 @@ export  class RequestService {
 
   getAllRequests(): Observable<Request[]> {
     return this._http.get(this._requestsUrl.replace(':id',''))
+      .map((r) => r.json())
+      .catch(this.handleError);
+  }
+
+  getAllRequestAdmin(): Observable<Request[]> {
+    return this._http.get(this._requestsAdminUrl.replace(':id',''))
       .map((r) => r.json())
       .catch(this.handleError);
   }
@@ -64,7 +71,6 @@ export  class RequestService {
       knowledgeId: request.knowledgeId,
       status: request.status
     });
-    console.log(_request);
     return this._http
               .put(this._requestsUrl.replace(':id',request._id),_request,options)
               .map((r) => r.json());

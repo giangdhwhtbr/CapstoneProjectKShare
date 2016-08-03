@@ -23,7 +23,6 @@ import { RequestService } from '../../../services/requests';
 import { UpdateKnowledgeComponent } from './knowledge-update';
 import { CreateSubCategoryComponent } from './sub-knowledge-create';
 import { AuthService} from '../../../services/auth';
-import { CreateKnowledgeComponent } from './knowledge-create';
 import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance } from 'ng2-pagination';
 import {StringFilterPipe} from '../shared/filter';
 declare var $:any
@@ -57,42 +56,11 @@ export class KnowledgeListComponent {
             "description": [""],
             "parent": [""]
         });
+        this.sort();
     }
 
     ngOnInit():void {
-        this._requestService.getAllRequests().subscribe((requests) => {
-            this.requests = requests;
-        });
-        this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
-            for (var i = 0; i < knowledges.length; i++) {
-                var length = 0;
-                for (var j = 0; j < this.requests.length; j++) {
-                    if (this.requests[j].knowledgeId == knowledges[i]._id) {
-                        length++;
-                        knowledges[i]["requestLength"] = length;
-                    }
-                }
-            }
-            this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
-            console.log(this.knowledges);
-            for (var i = 0; i < this.knowledges.length; i++) {
-                var a = 0;
-                for (var j = 0; j < this.knowledges[i]["subCategory"].length; j++) {
-                    a += this.knowledges[i]["subCategory"][j]["requestLength"];
-                    this.knowledges[i]["requestLength"] = a;
-                }
-            }
-
-            for (var i = 0; i < this.knowledges.length - 1; i++) {
-                for (var j = 1; j < this.knowledges.length; j++) {
-                    if (this.knowledges[i]["requestLength"] < this.knowledges[j]["requestLength"]) {
-                        this.knowledge = this.knowledges[i];
-                        this.knowledges[i] = this.knowledges[j];
-                        this.knowledges[j] = this.knowledge;
-                    }
-                }
-            }
-        });
+        this.sort();
     }
 
     private deleteKnowledge(id):void {
@@ -111,34 +79,64 @@ export class KnowledgeListComponent {
             .addKnowledge(knowledge)
             .subscribe((m) => {
                 this.knowledges.push(m);
+                this.sort();
                 (<Control>this.knowledgeForm.controls["name"]).updateValue("");
                 (<Control>this.knowledgeForm.controls["description"]).updateValue("");
             });
     }
 
     changeKnowledgeStatus(knowledge):void {
-        this._knowledgeService
-            .changeKnowledgeStatus(knowledge)
-            .subscribe((knowledge) => {
-                if (knowledge.hasOwnProperty("subCategory")) {
-                    for (var i = 0; i < knowledge["subCategory"].length; i++) {
-                        if (knowledge["subCategory"][i].status == knowledge.status) {
-                            this._knowledgeService
-                                .changeKnowledgeStatus(knowledge["subCategory"][i])
-                                .subscribe((knowledge) => {
-
-                                })
-                        }
-                    }
-                }
-                this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
-                    this.knowledges=knowledges;
-                });
-
-            });
-
+      this._knowledgeService
+          .changeKnowledgeStatus(knowledge)
+          .subscribe((knowledge) => {
+          });
+          if(knowledge.hasOwnProperty("subCategory")){
+            for(var i = 0 ;i < knowledge["subCategory"].length;i++){
+              if(knowledge["subCategory"][i].status==knowledge.status){
+                this._knowledgeService
+                    .changeKnowledgeStatus(knowledge["subCategory"][i])
+                    .subscribe((knowledge) => {})
+              }
+            }
+          }
+        this.sort();
     }
+    //sắp xếp knowledge dựa vào số lượng request
+    sort():void {
+      this._requestService.getAllRequests().subscribe((requests) => {
+          this.requests = requests;
+      });
+      this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
+          for (var i = 0; i < knowledges.length; i++) {
+              var length = 0;
+              knowledges[i]["requestLength"]=0;
+              for (var j = 0; j < this.requests.length; j++) {
+                  if (this.requests[j].knowledgeId == knowledges[i]._id) {
+                      length++;
+                      knowledges[i]["requestLength"] = length;
+                  }
+              }
+          }
+          this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
+          for (var i = 0; i < this.knowledges.length; i++) {
+              var a = 0;
+              for (var j = 0; j < this.knowledges[i]["subCategory"].length; j++) {
+                  a += this.knowledges[i]["subCategory"][j]["requestLength"];
+                  this.knowledges[i]["requestLength"] = a;
+              }
+          }
 
+          for (var i = 0; i < this.knowledges.length - 1; i++) {
+              for (var j = i+1; j < this.knowledges.length; j++) {
+                  if (this.knowledges[i]["requestLength"] < this.knowledges[j]["requestLength"]) {
+                      this.knowledge = this.knowledges[i];
+                      this.knowledges[i] = this.knowledges[j];
+                      this.knowledges[j] = this.knowledge;
+                  }
+              }
+          }
+      });
+    }
     hide():void {
         $(".collapse").collapse("hide");
     }

@@ -28,41 +28,10 @@ var KnowledgeListComponent = (function () {
             "description": [""],
             "parent": [""]
         });
+        this.sort();
     }
     KnowledgeListComponent.prototype.ngOnInit = function () {
-        var _this = this;
-        this._requestService.getAllRequests().subscribe(function (requests) {
-            _this.requests = requests;
-        });
-        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
-            for (var i = 0; i < knowledges.length; i++) {
-                var length = 0;
-                for (var j = 0; j < _this.requests.length; j++) {
-                    if (_this.requests[j].knowledgeId == knowledges[i]._id) {
-                        length++;
-                        knowledges[i]["requestLength"] = length;
-                    }
-                }
-            }
-            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
-            console.log(_this.knowledges);
-            for (var i = 0; i < _this.knowledges.length; i++) {
-                var a = 0;
-                for (var j = 0; j < _this.knowledges[i]["subCategory"].length; j++) {
-                    a += _this.knowledges[i]["subCategory"][j]["requestLength"];
-                    _this.knowledges[i]["requestLength"] = a;
-                }
-            }
-            for (var i = 0; i < _this.knowledges.length - 1; i++) {
-                for (var j = 1; j < _this.knowledges.length; j++) {
-                    if (_this.knowledges[i]["requestLength"] < _this.knowledges[j]["requestLength"]) {
-                        _this.knowledge = _this.knowledges[i];
-                        _this.knowledges[i] = _this.knowledges[j];
-                        _this.knowledges[j] = _this.knowledge;
-                    }
-                }
-            }
-        });
+        this.sort();
     };
     KnowledgeListComponent.prototype.deleteKnowledge = function (id) {
         var _this = this;
@@ -81,28 +50,61 @@ var KnowledgeListComponent = (function () {
             .addKnowledge(knowledge)
             .subscribe(function (m) {
             _this.knowledges.push(m);
+            _this.sort();
             _this.knowledgeForm.controls["name"].updateValue("");
             _this.knowledgeForm.controls["description"].updateValue("");
         });
     };
     KnowledgeListComponent.prototype.changeKnowledgeStatus = function (knowledge) {
-        var _this = this;
         this._knowledgeService
             .changeKnowledgeStatus(knowledge)
             .subscribe(function (knowledge) {
-            if (knowledge.hasOwnProperty("subCategory")) {
-                for (var i = 0; i < knowledge["subCategory"].length; i++) {
-                    if (knowledge["subCategory"][i].status == knowledge.status) {
-                        _this._knowledgeService
-                            .changeKnowledgeStatus(knowledge["subCategory"][i])
-                            .subscribe(function (knowledge) {
-                        });
+        });
+        if (knowledge.hasOwnProperty("subCategory")) {
+            for (var i = 0; i < knowledge["subCategory"].length; i++) {
+                if (knowledge["subCategory"][i].status == knowledge.status) {
+                    this._knowledgeService
+                        .changeKnowledgeStatus(knowledge["subCategory"][i])
+                        .subscribe(function (knowledge) { });
+                }
+            }
+        }
+        this.sort();
+    };
+    //sắp xếp knowledge dựa vào số lượng request
+    KnowledgeListComponent.prototype.sort = function () {
+        var _this = this;
+        this._requestService.getAllRequests().subscribe(function (requests) {
+            _this.requests = requests;
+        });
+        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+            for (var i = 0; i < knowledges.length; i++) {
+                var length = 0;
+                knowledges[i]["requestLength"] = 0;
+                for (var j = 0; j < _this.requests.length; j++) {
+                    if (_this.requests[j].knowledgeId == knowledges[i]._id) {
+                        length++;
+                        knowledges[i]["requestLength"] = length;
                     }
                 }
             }
-            _this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
-                _this.knowledges = knowledges;
-            });
+            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+            for (var i = 0; i < _this.knowledges.length; i++) {
+                var a = 0;
+                for (var j = 0; j < _this.knowledges[i]["subCategory"].length; j++) {
+                    a += _this.knowledges[i]["subCategory"][j]["requestLength"];
+                    _this.knowledges[i]["requestLength"] = a;
+                }
+            }
+            for (var i = 0; i < _this.knowledges.length - 1; i++) {
+                for (var j = i + 1; j < _this.knowledges.length; j++) {
+                    if (_this.knowledges[i]["requestLength"] < _this.knowledges[j]["requestLength"]) {
+                        _this.knowledge = _this.knowledges[i];
+                        _this.knowledges[i] = _this.knowledges[j];
+                        _this.knowledges[j] = _this.knowledge;
+                    }
+                }
+            }
         });
     };
     KnowledgeListComponent.prototype.hide = function () {

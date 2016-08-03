@@ -13,6 +13,7 @@ var RequestService = (function () {
     function RequestService(_http) {
         this._http = _http;
         this._requestsUrl = '/api/requests/:id';
+        this._requestsAdminUrl = '/api/requests-admin/:id';
         this._getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
         this._searchRequetsUrl = '/api/requests-search/:id';
         this._statusSubcriberUrl = '/api/requests-subcriber/:id';
@@ -20,6 +21,11 @@ var RequestService = (function () {
     }
     RequestService.prototype.getAllRequests = function () {
         return this._http.get(this._requestsUrl.replace(':id', ''))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    RequestService.prototype.getAllRequestAdmin = function () {
+        return this._http.get(this._requestsAdminUrl.replace(':id', ''))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
@@ -64,7 +70,6 @@ var RequestService = (function () {
             knowledgeId: request.knowledgeId,
             status: request.status
         });
-        console.log(_request);
         return this._http
             .put(this._requestsUrl.replace(':id', request._id), _request, options)
             .map(function (r) { return r.json(); });
