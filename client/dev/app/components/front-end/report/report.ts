@@ -1,10 +1,10 @@
-import { Component, OnInit, Inject } from '@angular/core';
+import { Component, OnInit, Inject, Input } from '@angular/core';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
 
 import { ReportService } from '../../../services/report';
 import { NotificationService } from '../../../services/notification';
 import { UserService } from '../../../services/users';
-
+import { Report } from '../../../interface/report';
 @Component({
   selector: 'report',
   templateUrl: 'client/dev/app/components/front-end/report/templates/report.html',
@@ -18,6 +18,7 @@ import { UserService } from '../../../services/users';
 export class ReportComponent {
   user: string;
   link: string;
+  @Input('reportedUser') reportedUser: string;
   reportForm: ControlGroup;
 
   constructor(fb: FormBuilder, private _reportService: ReportService, private _noti: NotificationService,
@@ -29,6 +30,7 @@ export class ReportComponent {
       "title": [""],
       "content": [""],
       "user": [""],
+      "reportedUser": [""],
       "link": [""]
     });
 
@@ -36,7 +38,7 @@ export class ReportComponent {
   ngOnInit(): void {
 
   }
-  addReport(report) {
+  addReport(report:Report) {
     this._reportService.addReport(report).subscribe((report) => {
 
       //call function send notification for admin realtime
@@ -50,16 +52,16 @@ export class ReportComponent {
             this._noti.alertNotification(title, users[i].username, link);
             //add notification into database
             this._noti.createNotification(title, users[i].username, link).subscribe((r) => {
-              
             });
           }
         }
+        window.location.reload();
       })
 
     },
       (error) => {
         console.log(error);
-      }
+      });
   }
 }
 

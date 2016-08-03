@@ -10,6 +10,13 @@ module.exports = class RequestController {
         .catch(error => res.status(400).json(error));
   }
 
+  static getAllRequestForAdmin(req, res) {
+      RequestDAO
+        .getAllRequestForAdmin()
+        .then(requests => res.status(200).json(requests))
+        .catch(error => res.status(400).json(error));
+  }
+
   static createRequest(req, res) {
       let _request = req.body;
 

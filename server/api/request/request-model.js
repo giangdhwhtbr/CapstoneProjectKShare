@@ -18,7 +18,8 @@ const _requestSchema = new Schema ({
  //_requestSchema.plugin(textSearch);
 
 _requestSchema.index({
-    description: 'text'
+    description: 'text',
+    title: 'text'
 });
 
 module.exports = (_requestSchema);

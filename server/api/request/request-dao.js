@@ -18,6 +18,19 @@ requestSchema.statics.getAll = () => {
   });
 }
 
+//get all back.request dao function
+requestSchema.statics.getAllRequestForAdmin = () => {
+  return new Promise((resolve, reject) => {
+    
+    Request
+      .find()
+      .exec((err, requests) => {
+        err ? reject(err)
+          : resolve(requests);
+      });
+  });
+}
+
 //get back.request by id dao function
 requestSchema.statics.getRequestById = (id) => {
 
