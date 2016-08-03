@@ -29,7 +29,7 @@ tagSchema.statics.createTag = (tag) => {
 
         Tag
             .find({"name": _tag.name}).exec((err, tagFound) => {
-            if (tagFound.length!=0) {
+            if (tagFound.length != 0) {
                 console.log(tagFound);
                 err ? reject(err) : resolve(tagFound);
             } else {
@@ -114,7 +114,7 @@ tagSchema.statics.updateTag = (tag) => {
     });
 }
 
-tagSchema.statics.deleteTagById = (id) => {
+tagSchema.statics.deactivateTagById = (id) => {
     return new Promise((resolve, reject) => {
         if (!_.isString(id))
             return reject(new TypeError('Id is not a valid string.'));
@@ -122,9 +122,14 @@ tagSchema.statics.deleteTagById = (id) => {
         Tag
             .findById(id)
             .exec((err, tag) => {
-                tag.remove();
-                err ? reject(err)
-                    : resolve();
+
+                if (err) {
+                    reject(err)
+                } else {
+                    tag.status = false;
+                    tag.save();
+                    resolve();
+                }
             });
     });
 }

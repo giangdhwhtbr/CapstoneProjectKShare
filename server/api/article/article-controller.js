@@ -16,7 +16,6 @@ module.exports = class ArticleController {
                     if (articles[i].status === "deactivate") {
                         let index = articles.indexOf(articles[i]);
                         if (index > -1) {
-                            console.log(index);
                             articles.splice(index, 1);
                         }
                     }
@@ -42,8 +41,6 @@ module.exports = class ArticleController {
 
     static createArticle(req, res) {
         let _data = req.body;
-
-        let title = _data.art.title;
 
         //create new tags in database
         TagDAO.createArrayTag(_data.newTag).then((tags)=> {

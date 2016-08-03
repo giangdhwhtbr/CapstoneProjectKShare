@@ -28,7 +28,6 @@ var listArticleComponent = (function () {
                 if (arts[i].status == "private" && arts[i].ofUser != _this.userToken) {
                     console.log(arts[i].status);
                     arts.splice(i, 1);
-                    console.log(i);
                 }
             }
             _this.listArt = arts;

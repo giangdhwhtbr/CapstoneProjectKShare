@@ -619,32 +619,28 @@ webpackJsonp([2],[
 	            .post(this._usersUrl.replace(':id', ''), _user, options)
 	            .map(function (r) { return r.json(); });
 	    };
-	    UserService.prototype.updateUser = function (user) {
+	    UserService.prototype.updateUser = function (user, _newTag) {
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
 	        var ownk, ink;
-	        if (user.ownKnowledgeId && user.ownKnowledgeId.length) {
-	            ownk = user.ownKnowledgeId.split(",");
-	        }
-	        if (user.interestedKnowledgeId && user.interestedKnowledgeId.length) {
-	            ink = user.ownKnowledgeId.split(",");
-	        }
-	        var _user = JSON.stringify({
-	            _id: user._id,
-	            fullName: user.fullName,
-	            displayName: user.displayName,
-	            birthday: user.birthday,
-	            phone: user.phone,
-	            username: user.username,
-	            password: user.password,
-	            email: user.email,
-	            role: user.role,
-	            linkImg: user.linkImg,
-	            ownKnowledgeId: ownk,
-	            interestedKnowledgeId: ink
+	        var _data = JSON.stringify({
+	            user: {
+	                _id: user._id,
+	                fullName: user.fullName,
+	                displayName: user.displayName,
+	                birthday: user.birthday,
+	                phone: user.phone,
+	                username: user.username,
+	                password: user.password,
+	                email: user.email,
+	                role: user.role,
+	                linkImg: user.linkImg,
+	                ownKnowledgeIds: user.ownKnowledgeIds,
+	            },
+	            newTag: _newTag
 	        });
 	        return this._http
-	            .put(this._usersUrl.replace(':id', user._id), _user, options)
+	            .put(this._usersUrl.replace(':id', user._id), _data, options)
 	            .map(function (r) { return r.json(); });
 	    };
 	    UserService.prototype.banUser = function (userId) {
@@ -3561,41 +3557,10 @@ webpackJsonp([2],[
 	            "description": [""],
 	            "parent": [""]
 	        });
+	        this.sort();
 	    }
 	    KnowledgeListComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this._requestService.getAllRequests().subscribe(function (requests) {
-	            _this.requests = requests;
-	        });
-	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
-	            for (var i = 0; i < knowledges.length; i++) {
-	                var length = 0;
-	                for (var j = 0; j < _this.requests.length; j++) {
-	                    if (_this.requests[j].knowledgeId == knowledges[i]._id) {
-	                        length++;
-	                        knowledges[i]["requestLength"] = length;
-	                    }
-	                }
-	            }
-	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
-	            console.log(_this.knowledges);
-	            for (var i = 0; i < _this.knowledges.length; i++) {
-	                var a = 0;
-	                for (var j = 0; j < _this.knowledges[i]["subCategory"].length; j++) {
-	                    a += _this.knowledges[i]["subCategory"][j]["requestLength"];
-	                    _this.knowledges[i]["requestLength"] = a;
-	                }
-	            }
-	            for (var i = 0; i < _this.knowledges.length - 1; i++) {
-	                for (var j = 1; j < _this.knowledges.length; j++) {
-	                    if (_this.knowledges[i]["requestLength"] < _this.knowledges[j]["requestLength"]) {
-	                        _this.knowledge = _this.knowledges[i];
-	                        _this.knowledges[i] = _this.knowledges[j];
-	                        _this.knowledges[j] = _this.knowledge;
-	                    }
-	                }
-	            }
-	        });
+	        this.sort();
 	    };
 	    KnowledgeListComponent.prototype.deleteKnowledge = function (id) {
 	        var _this = this;
@@ -3614,28 +3579,61 @@ webpackJsonp([2],[
 	            .addKnowledge(knowledge)
 	            .subscribe(function (m) {
 	            _this.knowledges.push(m);
+	            _this.sort();
 	            _this.knowledgeForm.controls["name"].updateValue("");
 	            _this.knowledgeForm.controls["description"].updateValue("");
 	        });
 	    };
 	    KnowledgeListComponent.prototype.changeKnowledgeStatus = function (knowledge) {
-	        var _this = this;
 	        this._knowledgeService
 	            .changeKnowledgeStatus(knowledge)
 	            .subscribe(function (knowledge) {
-	            if (knowledge.hasOwnProperty("subCategory")) {
-	                for (var i = 0; i < knowledge["subCategory"].length; i++) {
-	                    if (knowledge["subCategory"][i].status == knowledge.status) {
-	                        _this._knowledgeService
-	                            .changeKnowledgeStatus(knowledge["subCategory"][i])
-	                            .subscribe(function (knowledge) {
-	                        });
+	        });
+	        if (knowledge.hasOwnProperty("subCategory")) {
+	            for (var i = 0; i < knowledge["subCategory"].length; i++) {
+	                if (knowledge["subCategory"][i].status == knowledge.status) {
+	                    this._knowledgeService
+	                        .changeKnowledgeStatus(knowledge["subCategory"][i])
+	                        .subscribe(function (knowledge) { });
+	                }
+	            }
+	        }
+	        this.sort();
+	    };
+	    //sắp xếp knowledge dựa vào số lượng request
+	    KnowledgeListComponent.prototype.sort = function () {
+	        var _this = this;
+	        this._requestService.getAllRequests().subscribe(function (requests) {
+	            _this.requests = requests;
+	        });
+	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            for (var i = 0; i < knowledges.length; i++) {
+	                var length = 0;
+	                knowledges[i]["requestLength"] = 0;
+	                for (var j = 0; j < _this.requests.length; j++) {
+	                    if (_this.requests[j].knowledgeId == knowledges[i]._id) {
+	                        length++;
+	                        knowledges[i]["requestLength"] = length;
 	                    }
 	                }
 	            }
-	            _this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
-	                _this.knowledges = knowledges;
-	            });
+	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+	            for (var i = 0; i < _this.knowledges.length; i++) {
+	                var a = 0;
+	                for (var j = 0; j < _this.knowledges[i]["subCategory"].length; j++) {
+	                    a += _this.knowledges[i]["subCategory"][j]["requestLength"];
+	                    _this.knowledges[i]["requestLength"] = a;
+	                }
+	            }
+	            for (var i = 0; i < _this.knowledges.length - 1; i++) {
+	                for (var j = i + 1; j < _this.knowledges.length; j++) {
+	                    if (_this.knowledges[i]["requestLength"] < _this.knowledges[j]["requestLength"]) {
+	                        _this.knowledge = _this.knowledges[i];
+	                        _this.knowledges[i] = _this.knowledges[j];
+	                        _this.knowledges[j] = _this.knowledge;
+	                    }
+	                }
+	            }
 	        });
 	    };
 	    KnowledgeListComponent.prototype.hide = function () {
@@ -3985,6 +3983,7 @@ webpackJsonp([2],[
 	            this.router.navigateByUrl('/');
 	        }
 	        this.CreateUploadImageCkeditor();
+	        this.CreateYoutubeBtnCkeditor();
 	        this.addCommandBtnCk();
 	        this.loadAllTags();
 	    };
@@ -3994,10 +3993,13 @@ webpackJsonp([2],[
 	            var e = _a[_i];
 	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
 	                var e1 = _c[_b];
+	                //catch old tags
 	                if (e.name == e1) {
 	                    oldTag.push(e._id);
+	                    //find out old tags in data tags user
 	                    var index = this.tags.indexOf(e1);
 	                    if (index > -1) {
+	                        //remove old tags to catch new tags
 	                        this.tags.splice(index, 1);
 	                    }
 	                }
@@ -4031,15 +4033,36 @@ webpackJsonp([2],[
 	    CreateArticleComponent.prototype.insertLinkToBox = function (link) {
 	        CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
 	    };
+	    CreateArticleComponent.prototype.insertYoutubeToBox = function (link) {
+	        //https://www.youtube.com/watch?v=mraul5-1TBE
+	        var i = link.indexOf("=");
+	        link = link.substring(i + 1, link.length);
+	        var s = '<p><iframe frameborder="0" height="315" scrolling="no" src="https://www.youtube.com/embed/' + link + '" width="500"></iframe></p>';
+	        CKEDITOR.instances.editor1.insertHtml(s);
+	    };
 	    // ckeditor
 	    CreateArticleComponent.prototype.addCommandBtnCk = function () {
 	        CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
+	        CKEDITOR.instances.editor1.addCommand('youtube', { exec: this.openModalYoutube });
+	    };
+	    CreateArticleComponent.prototype.openModalImg = function () {
+	        $("#bdOpenModal").trigger("click");
+	    };
+	    CreateArticleComponent.prototype.openModalYoutube = function () {
+	        $("#youtubeOpenModal").trigger("click");
 	    };
 	    CreateArticleComponent.prototype.CreateUploadImageCkeditor = function () {
 	        CKEDITOR.instances.editor1.ui.addButton('uploadImage', {
 	            label: 'Upload Image',
 	            command: 'uploadImage',
 	            icon: '/client/dev/asserts/images/icon-img-ck.png'
+	        });
+	    };
+	    CreateArticleComponent.prototype.CreateYoutubeBtnCkeditor = function () {
+	        CKEDITOR.instances.editor1.ui.addButton('youtube', {
+	            label: 'Add youtube',
+	            command: 'youtube',
+	            icon: '/client/dev/asserts/images/icon-youtube.png'
 	        });
 	    };
 	    CreateArticleComponent.prototype.makeFileRequest = function (url, params, files) {
@@ -4078,13 +4101,11 @@ webpackJsonp([2],[
 	    CreateArticleComponent.prototype.fileChangeEvent = function (fileInput) {
 	        this.filesToUpload = fileInput.target.files;
 	    };
-	    CreateArticleComponent.prototype.openModalImg = function () {
-	        $("#bdOpenModal").trigger("click");
-	    };
 	    CreateArticleComponent.prototype.postArticle = function (stt) {
 	        var _this = this;
 	        this.contentCk = CKEDITOR.instances.editor1.getData();
-	        var tags = this.filterONTag();
+	        var tags = [];
+	        tags = this.filterONTag();
 	        this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (article) {
 	            _this.router.navigateByUrl('/article/' + article._id);
 	        }, function (error) {
@@ -4147,16 +4168,18 @@ webpackJsonp([2],[
 	    detailArticleComponent.prototype.ngOnInit = function () {
 	        var _this = this;
 	        this._articleService.getArtById(this.id).subscribe(function (art) {
-	            if ((art.ofUser != _this.userToken && _this.roleToken != "admin" && art.status == "private") || (_this.roleToken != "admin" && art.status == "deactivate")) {
-	                _this.canSee = false;
-	            }
-	            else {
+	            if ((art.ofUser == _this.userToken && art.status == 'private')
+	                || (_this.roleToken == 'admin')
+	                || (_this.roleToken != 'admin' && art.status == 'public')) {
 	                _this.article = art;
 	                _this.tags = art.tagsFD;
 	                _this.article.createdAt = new Date(_this.article.createdAt);
 	                if (art.status == "deactivate") {
 	                    _this.isDeAc = true;
 	                }
+	            }
+	            else {
+	                _this.canSee = false;
 	            }
 	        });
 	    };
@@ -4232,7 +4255,6 @@ webpackJsonp([2],[
 	                if (arts[i].status == "private" && arts[i].ofUser != _this.userToken) {
 	                    console.log(arts[i].status);
 	                    arts.splice(i, 1);
-	                    console.log(i);
 	                }
 	            }
 	            _this.listArt = arts;
@@ -18532,13 +18554,16 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(5);
 	var common_1 = __webpack_require__(8);
 	var users_1 = __webpack_require__(52);
+	var tag_1 = __webpack_require__(287);
+	var primeng_1 = __webpack_require__(508);
 	var RegisterInfoComponent = (function () {
-	    function RegisterInfoComponent(fb, router, _userService, route) {
+	    function RegisterInfoComponent(fb, router, _userService, route, _tagService) {
 	        var _this = this;
 	        this.fb = fb;
 	        this.router = router;
 	        this._userService = _userService;
 	        this.route = route;
+	        this._tagService = _tagService;
 	        this.user = [];
 	        this.userId = '';
 	        this.route
@@ -18550,22 +18575,68 @@ webpackJsonp([2],[
 	            fullName: [""],
 	            displayName: [""],
 	            birthday: [""],
-	            phone: [""],
-	            ownKnowledge: [""],
-	            interestedKnowledge: [""]
+	            phone: [""]
 	        });
 	    }
+	    RegisterInfoComponent.prototype.ngOnInit = function () {
+	        this.loadAllTags();
+	    };
+	    //tags control
+	    RegisterInfoComponent.prototype.filterONTag = function () {
+	        var oldTag = [];
+	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	            var e = _a[_i];
+	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                var e1 = _c[_b];
+	                //catch old tags
+	                if (e.name == e1) {
+	                    oldTag.push(e._id);
+	                    //find out old tags in data tags user
+	                    var index = this.tags.indexOf(e1);
+	                    if (index > -1) {
+	                        //remove old tags to catch new tags
+	                        this.tags.splice(index, 1);
+	                    }
+	                }
+	            }
+	        }
+	        return [oldTag, this.tags];
+	    };
+	    RegisterInfoComponent.prototype.filterKnw = function (event) {
+	        var query = event.query;
+	        this.filteredKnw = [];
+	        for (var i = 0; i < this.tagsEx.length; i++) {
+	            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
+	                this.filteredKnw.push(this.tagsEx[i].name);
+	            }
+	            if (i == this.tagsEx.length - 1) {
+	                this.filteredKnw.unshift(query.trim());
+	            }
+	        }
+	        if (this.filteredKnw.length == 0) {
+	            this.filteredKnw.push(query.trim());
+	        }
+	    };
+	    RegisterInfoComponent.prototype.loadAllTags = function () {
+	        var _this = this;
+	        this._tagService.getAllTag().subscribe(function (tags) {
+	            _this.tagsEx = tags;
+	            console.log(_this.tagsEx);
+	        });
+	    };
+	    //end control tags
 	    RegisterInfoComponent.prototype.update = function (user) {
 	        var _this = this;
+	        var tags;
+	        tags = this.filterONTag(); //0 -> oldTags , 1 -> newTags
 	        user = {
 	            _id: this.userId,
 	            fullName: user.fullName,
 	            displayName: user.displayName,
 	            birthday: user.birthday,
-	            ownKnowledgeId: user.ownKnowledge,
-	            interestedKnowledgeId: user.interestedKnowledge
+	            ownKnowledgeIds: tags[0]
 	        };
-	        this._userService.updateUser(user).subscribe(function (res) {
+	        this._userService.updateUser(user, tags[1]).subscribe(function (res) {
 	            _this.router.navigateByUrl('/reg/success');
 	        }, function (err) {
 	            console.log(err);
@@ -18577,12 +18648,14 @@ webpackJsonp([2],[
 	    RegisterInfoComponent = __decorate([
 	        core_1.Component({
 	            templateUrl: "client/dev/app/components/front-end/user/register/templates/info.html",
-	            styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css']
+	            styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
+	            directives: [primeng_1.AutoComplete],
+	            providers: [tag_1.TagService]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object, (typeof (_e = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _e) || Object])
 	    ], RegisterInfoComponent);
 	    return RegisterInfoComponent;
-	    var _a, _b, _c, _d;
+	    var _a, _b, _c, _d, _e;
 	}());
 	exports.RegisterInfoComponent = RegisterInfoComponent;
 	
@@ -18847,7 +18920,7 @@ webpackJsonp([2],[
 	        children: [
 	            {
 	                path: 'reg',
-	                canActivate: [auth_1.AdminAuthGuard],
+	                //canActivate: [ AdminAuthGuard ],
 	                children: [
 	                    {
 	                        path: '',

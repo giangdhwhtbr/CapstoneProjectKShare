@@ -29,7 +29,7 @@ exports.KShareRoutes = [
         children: [
             {
                 path: 'reg',
-                canActivate: [auth_1.AdminAuthGuard],
+                //canActivate: [ AdminAuthGuard ],
                 children: [
                     {
                         path: '',

@@ -41,6 +41,7 @@ var CreateArticleComponent = (function () {
             this.router.navigateByUrl('/');
         }
         this.CreateUploadImageCkeditor();
+        this.CreateYoutubeBtnCkeditor();
         this.addCommandBtnCk();
         this.loadAllTags();
     };
@@ -50,10 +51,13 @@ var CreateArticleComponent = (function () {
             var e = _a[_i];
             for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
                 var e1 = _c[_b];
+                //catch old tags
                 if (e.name == e1) {
                     oldTag.push(e._id);
+                    //find out old tags in data tags user
                     var index = this.tags.indexOf(e1);
                     if (index > -1) {
+                        //remove old tags to catch new tags
                         this.tags.splice(index, 1);
                     }
                 }
@@ -87,15 +91,36 @@ var CreateArticleComponent = (function () {
     CreateArticleComponent.prototype.insertLinkToBox = function (link) {
         CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
     };
+    CreateArticleComponent.prototype.insertYoutubeToBox = function (link) {
+        //https://www.youtube.com/watch?v=mraul5-1TBE
+        var i = link.indexOf("=");
+        link = link.substring(i + 1, link.length);
+        var s = '<p><iframe frameborder="0" height="315" scrolling="no" src="https://www.youtube.com/embed/' + link + '" width="500"></iframe></p>';
+        CKEDITOR.instances.editor1.insertHtml(s);
+    };
     // ckeditor
     CreateArticleComponent.prototype.addCommandBtnCk = function () {
         CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
+        CKEDITOR.instances.editor1.addCommand('youtube', { exec: this.openModalYoutube });
+    };
+    CreateArticleComponent.prototype.openModalImg = function () {
+        $("#bdOpenModal").trigger("click");
+    };
+    CreateArticleComponent.prototype.openModalYoutube = function () {
+        $("#youtubeOpenModal").trigger("click");
     };
     CreateArticleComponent.prototype.CreateUploadImageCkeditor = function () {
         CKEDITOR.instances.editor1.ui.addButton('uploadImage', {
             label: 'Upload Image',
             command: 'uploadImage',
             icon: '/client/dev/asserts/images/icon-img-ck.png'
+        });
+    };
+    CreateArticleComponent.prototype.CreateYoutubeBtnCkeditor = function () {
+        CKEDITOR.instances.editor1.ui.addButton('youtube', {
+            label: 'Add youtube',
+            command: 'youtube',
+            icon: '/client/dev/asserts/images/icon-youtube.png'
         });
     };
     CreateArticleComponent.prototype.makeFileRequest = function (url, params, files) {
@@ -134,13 +159,11 @@ var CreateArticleComponent = (function () {
     CreateArticleComponent.prototype.fileChangeEvent = function (fileInput) {
         this.filesToUpload = fileInput.target.files;
     };
-    CreateArticleComponent.prototype.openModalImg = function () {
-        $("#bdOpenModal").trigger("click");
-    };
     CreateArticleComponent.prototype.postArticle = function (stt) {
         var _this = this;
         this.contentCk = CKEDITOR.instances.editor1.getData();
-        var tags = this.filterONTag();
+        var tags = [];
+        tags = this.filterONTag();
         this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (article) {
             _this.router.navigateByUrl('/article/' + article._id);
         }, function (error) {

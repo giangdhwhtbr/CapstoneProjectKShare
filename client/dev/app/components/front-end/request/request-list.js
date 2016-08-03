@@ -35,19 +35,13 @@ var RequestListClientComponent = (function () {
         var _this = this;
         this.hide = false;
         this._requestService.getAllRequests().subscribe(function (requests) {
-            var formatDate = function (date) {
-                if (date) {
-                    var newDate, day, month, year;
-                    year = date.substr(0, 4);
-                    month = date.substr(5, 2);
-                    day = date.substr(8, 2);
-                    return newDate = day + '/' + month + '/' + year;
-                }
-            };
             for (var i = 0; i < requests.length; i++) {
-                requests[i].createdAt = formatDate(requests[i].createdAt);
-                requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
+                requests[i].createdAt = new Date(requests[i].createdAt);
+                requests[i].modifiedDate = new Date(requests[i].modifiedDate);
                 requests[i].link = requests[i]._id + '/info';
+                if (requests[i].status === 'pending') {
+                    requests[i].status = 'Đang chờ';
+                }
             }
             _this.requests = requests;
         });
@@ -55,6 +49,12 @@ var RequestListClientComponent = (function () {
     RequestListClientComponent.prototype.search = function (search) {
         var _this = this;
         this._requestService.searchRequest(search).subscribe(function (requests) {
+            for (var i = 0; i < requests.length; i++) {
+                requests[i].createdAt = new Date(requests[i].createdAt);
+                if (requests[i].status === 'pending') {
+                    requests[i].status = 'Đang chờ';
+                }
+            }
             _this.searchs = requests;
             _this.hide = true;
         });

@@ -12,10 +12,11 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var HeaderComponent = (function () {
-    function HeaderComponent(_auth, router, _noti) {
+    function HeaderComponent(_auth, router, _noti, _userService) {
         this._auth = _auth;
         this.router = router;
         this._noti = _noti;
+        this._userService = _userService;
         this.loginToken = localStorage.getItem('username') ? true : false;
         this.userToken = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
@@ -29,7 +30,6 @@ var HeaderComponent = (function () {
                 //audio of notification
                 var audio = new Audio();
                 audio.src = "https://localhost:8081/client/dev/asserts/gets-in-the-way.mp3";
-                console.log(audio);
                 audio.load();
                 audio.play();
                 _this.getNotificationByUser(data.data.user);
