@@ -9,7 +9,7 @@ const _offerSchema = {
     price: {type: Number, required: true},
     createdAt: { type: Date, default: Date.now },
     message: { type: String, required: true, trim: true },
-    modifiedDate: { type: Date },
+    updatedAt: { type: Date },
     status: { type:String, default:'pending' }
 }
 
