@@ -10,6 +10,7 @@ const ChatRoomRoutes = require('../api/chatRoom/chatRoom-routes');
 const MessageRoutes = require('../api/message/message-routes');
 const FriendShipRoutes = require('../api/friendship/friendship-routes');
 const NotificationRoutes = require('../api/notification/notification-routes');
+const ReportRoutes = require('../api/report/report-routes');
 
 const ArticleRoutes = require('../api/article/article-router');
 const MediaRoutes = require('../api/media/media-router');
@@ -30,6 +31,7 @@ module.exports = class Routes {
         ArticleRoutes.init(router);
         MediaRoutes.init(router);
         TagRoutes.init(router);
+        ReportRoutes.init(router);
 
         router
             .route('*')

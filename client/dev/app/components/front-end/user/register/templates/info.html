@@ -1,80 +1,67 @@
 <div class="container mg-top-50">
-      <div class="row">
+    <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
-             <div class="loginPanel">
+            <div class="loginPanel">
                 <div class="box-header">
-                  <h3>Cập nhật thông tin cá nhân</h3>
+                    <h3>Cập nhật thông tin cá nhân</h3>
                 </div>
                 <form [ngFormModel]="updateUserForm" (ngSubmit)="update(updateUserForm.value)">
-                  <div class="form-group">
-                    <input class="form-control form-text"
-                          type="text"
-                          required
-                          placeholder="Họ và tên"
-                          name="fullName"
-                          [ngFormControl]="updateUserForm.controls['fullName']"
-                    >
-                  </div>
-                  <div class="form-group">
-                    <input class="form-control form-text"
-                           type="text"
-                           required
-                           placeholder="Tên hiển thị"
-                           name="displayName"
-                           [ngFormControl]="updateUserForm.controls['displayName']"
-                    >
-                  </div>
-                  <div class="form-group">
-                    <input class="form-control"
-                          type="date"
-                          placeholder="Ngày sinh"
-                          name="birthday"
-                          [ngFormControl]="updateUserForm.controls['birthday']"
-                    >
-                  </div>
-                  <div class="form-group">
-                    <input class="form-control form-text"
-                          type="text"
-                          required
-                          placeholder="Số điện thoại"
-                          name="phone"
-                          [ngFormControl]="updateUserForm.controls['phone']"
-                    >
-                  </div>
-                  <div class="form-group">
-                    <input #copass class="form-control"
-                          type="text"
-                          maxlength="100"
-                          placeholder="Lĩnh vực am hiểu"
-                          name="ownKnowledge"
-                          [ngFormControl]="updateUserForm.controls['ownKnowledge']"
-                    >
-                  </div>
-                  <div class="form-group">
-                    <input class="form-control form-text"
-                          type="text"
-                          maxlength="100"
-                          placeholder="Lĩnh vực quan tâm"
-                          name="interestedKnowledge"
-                          [ngFormControl]="updateUserForm.controls['interestedKnowledge']"
-                    >
-                  </div>
+                    <div class="form-group">
+                        <input class="form-control form-text"
+                               type="text"
+                               required
+                               placeholder="Họ và tên"
+                               name="fullName"
+                               [ngFormControl]="updateUserForm.controls['fullName']"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control form-text"
+                               type="text"
+                               required
+                               placeholder="Tên hiển thị"
+                               name="displayName"
+                               [ngFormControl]="updateUserForm.controls['displayName']"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control"
+                               type="date"
+                               placeholder="Ngày sinh"
+                               name="birthday"
+                               [ngFormControl]="updateUserForm.controls['birthday']"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control form-text"
+                               type="text"
+                               required
+                               placeholder="Số điện thoại"
+                               name="phone"
+                               [ngFormControl]="updateUserForm.controls['phone']"
+                        >
+                    </div>
+                    <span>Lĩnh vực am hiểu</span> :<br><!--end editor -->
+                    <p-autoComplete [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
+                                    [multiple]="true" [(ngModel)]="tags">
+                    </p-autoComplete>
+                    <!--end tags-->
 
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <button class="form-control btn btn-success" type="submit">Cập nhật</button>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <button class="form-control btn btn-success" type="submit">Cập nhật</button>
+                        </div>
+                        <!-- /.col-sm-6 -->
+                        <div class="col-sm-6">
+                            <button class="form-control btn btn-primary" (click)="returnHome()">Trang chủ</button>
+                        </div>
                     </div>
-                    <!-- /.col-sm-6 -->
-                    <div class="col-sm-6">
-                      <button class="form-control btn btn-primary" (click)="returnHome()">Trang chủ</button>
-                    </div>
-                  </div>
-                  <!-- /.row -->
+                    <!-- /.row -->
                 </form>
             </div>
         </div>
         <div class="col-md-3"></div>
-      </div>
- </div>
+    </div>
+</div>
 

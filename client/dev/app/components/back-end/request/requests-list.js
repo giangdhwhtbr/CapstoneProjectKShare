@@ -48,33 +48,28 @@ var RequestListComponent = (function () {
         });
     };
     RequestListComponent.prototype.ngOnInit = function () {
+        this.getAllRequest();
+    };
+    RequestListComponent.prototype.deactivateRequest = function (id) {
+        var _this = this;
+        var r = confirm("Bạn có muốn kết thúc yêu cầu này?");
+        if (r == true) {
+            this._requestService
+                .changeStatusRequest(id)
+                .subscribe(function (r) {
+                console.log("deactivate sucess");
+                _this.getAllRequest();
+            });
+        }
+    };
+    RequestListComponent.prototype.getAllRequest = function () {
         var _this = this;
         this._requestService.getAllRequests().subscribe(function (requests) {
-            var formatDate = function (date) {
-                if (date) {
-                    var newDate, day, month, year;
-                    year = date.substr(0, 4);
-                    month = date.substr(5, 2);
-                    day = date.substr(8, 2);
-                    return newDate = day + '/' + month + '/' + year;
-                }
-            };
             for (var i = 0; i < requests.length; i++) {
-                requests[i].createdAt = formatDate(requests[i].createdAt);
-                requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
+                requests[i].createdAt = new Date(requests[i].createdAt);
+                requests[i].modifiedDate = new Date(requests[i].modifiedDate);
             }
             _this.requests = requests;
-        });
-    };
-    RequestListComponent.prototype.deleteRequest = function (id) {
-        var _this = this;
-        this._requestService
-            .deleteRequest(id)
-            .subscribe(function () {
-            _this.requests.forEach(function (t, i) {
-                if (t._id === id)
-                    return _this.requests.splice(i, 1);
-            });
         });
     };
     RequestListComponent = __decorate([

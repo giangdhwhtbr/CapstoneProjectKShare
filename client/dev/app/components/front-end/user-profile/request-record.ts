@@ -43,6 +43,11 @@ export class RequestRecordComponent {
     //this.createdAt = this.formatDate(createdAt);
     this.id = this.knowledgeId;
     this.getKnowledgeNameOfRequest();
+    if (this.status === 'pending'){
+      this.status = 'Đang chờ';
+    }else{
+      this.status = 'Đã được chấp nhận';
+    }
   }
 
    public formatDate = function (date) {

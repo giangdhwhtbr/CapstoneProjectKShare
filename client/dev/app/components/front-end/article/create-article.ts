@@ -60,6 +60,7 @@ export class CreateArticleComponent implements OnInit {
             this.router.navigateByUrl('/');
         }
         this.CreateUploadImageCkeditor();
+        this.CreateYoutubeBtnCkeditor();
         this.addCommandBtnCk();
         this.loadAllTags();
     }
@@ -68,10 +69,13 @@ export class CreateArticleComponent implements OnInit {
         let oldTag: any[]=[];
         for (let e of this.tagsEx) {
             for (let e1 of this.tags) {
+                //catch old tags
                 if (e.name == e1) {
                     oldTag.push(e._id);
+                    //find out old tags in data tags user
                     let index = this.tags.indexOf(e1);
                     if(index>-1){
+                        //remove old tags to catch new tags
                         this.tags.splice(index,1);
                     }
                 }
@@ -108,10 +112,25 @@ export class CreateArticleComponent implements OnInit {
     insertLinkToBox(link:string) {
         CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
     }
+    insertYoutubeToBox(link:string){
+        //https://www.youtube.com/watch?v=mraul5-1TBE
+        let i = link.indexOf("=");
+        link = link.substring(i+1,link.length);
+        let s = '<p><iframe frameborder="0" height="315" scrolling="no" src="https://www.youtube.com/embed/'+link+'" width="500"></iframe></p>';
+        CKEDITOR.instances.editor1.insertHtml(s);
+    }
 
     // ckeditor
     addCommandBtnCk() {
         CKEDITOR.instances.editor1.addCommand('uploadImage', {exec: this.openModalImg});
+        CKEDITOR.instances.editor1.addCommand('youtube', {exec: this.openModalYoutube});
+    }
+
+    openModalImg() {
+        $("#bdOpenModal").trigger("click");
+    }
+    openModalYoutube() {
+        $("#youtubeOpenModal").trigger("click");
     }
 
     CreateUploadImageCkeditor() {
@@ -120,6 +139,14 @@ export class CreateArticleComponent implements OnInit {
                 label: 'Upload Image',
                 command: 'uploadImage',
                 icon: '/client/dev/asserts/images/icon-img-ck.png'
+            });
+    }
+    CreateYoutubeBtnCkeditor() {
+        CKEDITOR.instances.editor1.ui.addButton('youtube',
+            {
+                label: 'Add youtube',
+                command: 'youtube',
+                icon: '/client/dev/asserts/images/icon-youtube.png'
             });
     }
 
@@ -161,13 +188,12 @@ export class CreateArticleComponent implements OnInit {
         this.filesToUpload = <Array<File>> fileInput.target.files;
     }
 
-    openModalImg() {
-        $("#bdOpenModal").trigger("click");
-    }
+
 
     postArticle(stt:any) {
         this.contentCk = CKEDITOR.instances.editor1.getData();
-        let tags = this.filterONTag();
+        let tags:any[]=[];
+        tags = this.filterONTag();
         this._articleService.addArticle(this.titelArticle, this.contentCk,tags[0],tags[1],stt,this.userToken).subscribe((article)=> {
                 this.router.navigateByUrl('/article/'+article._id);
             },

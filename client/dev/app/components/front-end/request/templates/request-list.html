@@ -30,7 +30,7 @@
             Trạng thái : {{search.status}}
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-            Ngày tạo : {{search.createdAt}}
+            Ngày tạo : {{search.createdAt | date:"dd/MM/yyyy"}}
           </div>
         </div>
       </div>
@@ -56,7 +56,7 @@
           Trạng thái : {{request.status}}
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-          Ngày tạo : {{request.createdAt}}
+          Ngày tạo : {{request.createdAt | date:"dd/MM/yyyy"}}
         </div>
       </div>
     </div>

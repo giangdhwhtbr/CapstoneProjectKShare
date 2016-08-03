@@ -20,7 +20,9 @@ export class RequestUpdateClientComponent {
   updateRequestFormCli: ControlGroup;
 
   id: string;
-
+  userToken: string;
+  roleToken: string;
+  isCreatedUser: boolean;
   request: Request;
   _id: string;
   title: string;
@@ -43,7 +45,8 @@ export class RequestUpdateClientComponent {
       .subscribe(params => {
         this.id = params['id'];
       });
-
+    this.userToken = localStorage.getItem('username');
+    this.roleToken = localStorage.getItem('userrole');
     this.updateRequestFormCli = fb.group({
       "_id": [""],
       "title": [""],
@@ -52,7 +55,8 @@ export class RequestUpdateClientComponent {
     });
   }
 
-  ngOnInit():void {
+  ngOnInit():void {  
+    
     //get all back.knowledge
     this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
       this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
@@ -60,6 +64,11 @@ export class RequestUpdateClientComponent {
 
     this._requestService.getRequestById(this.id).subscribe(
       (request) => {
+        if(this.userToken !== request.user){
+          this.isCreatedUser = false;
+        }else{
+          this.isCreatedUser = true;
+        }
         this.request = request;
         this.title = request.title;
         this._id = request._id;
@@ -74,6 +83,7 @@ export class RequestUpdateClientComponent {
   updateRequest(request) {
     this._requestService.updateRequest(request).subscribe((request)=> {
       console.log('update successed');
+      this.router.navigateByUrl('requests/' + this._id + '/info');
     },
     (error) => {
       console.log(error.text());

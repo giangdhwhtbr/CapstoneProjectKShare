@@ -13,6 +13,7 @@ import { UpdateRequestComponent } from "../components/back-end/request/request-u
 import { UpdateBadwordComponent } from "../components/back-end/badword/badword-update";
 import { BadwordListComponent } from "../components/back-end/badword/badwords-list";
 import { UserListComponent } from "../components/back-end/users/user-list";
+import { ReportListComponent } from "../components/back-end/report/reports-list";
 
 import { AdminAuthGuard } from './auth';
 
@@ -29,6 +30,15 @@ export const AdminRoutes: RouterConfig = [
           {
             path: '',
             component: UserListComponent
+          }
+        ]
+      },
+      {
+        path: 'reports',
+        children: [
+          {
+            path: '',
+            component: ReportListComponent
           }
         ]
       },

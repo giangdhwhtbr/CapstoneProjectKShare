@@ -8,7 +8,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
-var Observable_1 = require('rxjs/Observable');
 var NotificationService = (function () {
     function NotificationService(_http) {
         this._http = _http;
@@ -23,30 +22,30 @@ var NotificationService = (function () {
             user: username
         });
         return this._http.post(this._getNotificationUrl.replace(':id', ''), _info, options)
-            .map(function (r) { return r.json(); })
-            .catch(this.handleError);
+            .map(function (r) { return r.json(); });
     };
-    NotificationService.prototype.createNotification = function (title, body, user, link) {
+    NotificationService.prototype.alertNotification = function (title, user, link) {
+        var socket = io('https://localhost:8081');
+        socket.emit('send notification', {
+            title: title,
+            link: link,
+            user: user
+        });
+    };
+    NotificationService.prototype.createNotification = function (title, user, link) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var _info = JSON.stringify({
             title: title,
             user: user,
-            body: body,
             link: link
         });
         return this._http.post(this._notificationUrl, _info, options)
-            .map(function (r) { return r.json(); })
-            .catch(this.handleError);
+            .map(function (r) { return r.json(); });
     };
     NotificationService.prototype.changeStatusNotification = function (user) {
         return this._http.get(this._statusNotificationUrl.replace(':user', user))
-            .map(function (r) { return r.json(); })
-            .catch(this.handleError);
-    };
-    NotificationService.prototype.handleError = function (error) {
-        console.error(error);
-        return Observable_1.Observable.throw(error.json().error);
+            .map(function (r) { return r.json(); });
     };
     NotificationService = __decorate([
         core_1.Injectable()

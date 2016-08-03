@@ -37,7 +37,7 @@ export const KShareRoutes: RouterConfig = [
     children: [
       {
         path: 'reg',
-        canActivate: [ AdminAuthGuard ],
+        //canActivate: [ AdminAuthGuard ],
         children: [
           {
             path: '',

@@ -9,6 +9,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var offer_create_1 = require('../offer/offer-create');
+var report_1 = require('../report/report');
 var RequestDetailClientComponent = (function () {
     function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
         var _this = this;
@@ -26,7 +27,7 @@ var RequestDetailClientComponent = (function () {
             .subscribe(function (params) {
             _this.id = params['id'];
         });
-        this.roleToken = localStorage.getItem('role');
+        this.roleToken = localStorage.getItem('userrole');
         this.userToken = localStorage.getItem('username');
     }
     RequestDetailClientComponent.prototype.ngOnInit = function () {
@@ -34,25 +35,13 @@ var RequestDetailClientComponent = (function () {
         //get templates when load the page
         this._requestService.getRequestById(this.id)
             .subscribe(function (request) {
-            var formatDate = function (date) {
-                if (date) {
-                    var newDate, day, month, year;
-                    year = date.substr(0, 4);
-                    month = date.substr(5, 2);
-                    day = date.substr(8, 2);
-                    return newDate = day + '/' + month + '/' + year;
-                }
-            };
-            request.createdAt = formatDate(request.createdAt);
+            request.createdAt = new Date(request.createdAt);
             if (request.status === 'accepted') {
                 request.status = 'Đã được chấp nhận';
                 _this.checkIsAcceped = true;
             }
-            else if (request.status === 'pending') {
-                request.status = 'Đang chờ';
-            }
             else {
-                request.status = 'Đã kết thúc';
+                request.status = 'Đang chờ';
             }
             request.userlink = '/user/' + request.user;
             _this._id = request._id;
@@ -81,19 +70,14 @@ var RequestDetailClientComponent = (function () {
                 console.log(error);
             });
         }, function (error) { return console.log(error); });
+        this.getOfferByRequestId();
+    };
+    RequestDetailClientComponent.prototype.getOfferByRequestId = function () {
+        var _this = this;
         //get front.offer of the templates when load the page
         this._offerService.getOfferByRequestId(this.id).subscribe(function (offers) {
-            var formatDate = function (date) {
-                if (date) {
-                    var newDate, day, month, year;
-                    year = date.substr(0, 4);
-                    month = date.substr(5, 2);
-                    day = date.substr(8, 2);
-                    return newDate = day + '/' + month + '/' + year;
-                }
-            };
             for (var i = 0; i < offers.length; i++) {
-                offers[i].createdAt = formatDate(offers[i].createdAt);
+                offers[i].createdAt = new Date(offers[i].createdAt);
                 if (offers[i].status === 'pending') {
                     offers[i].status = 'Đang chờ';
                 }
@@ -137,6 +121,7 @@ var RequestDetailClientComponent = (function () {
                 console.log('change status request successfull');
             });
             _this.checkIsAcceped = true;
+            //window.location.reload();
             _this.router.navigate(['/kspace/info/' + r._id]);
         });
     };
@@ -165,7 +150,8 @@ var RequestDetailClientComponent = (function () {
             styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES,
-                offer_create_1.CreateOfferComponent
+                offer_create_1.CreateOfferComponent,
+                report_1.ReportComponent
             ]
         })
     ], RequestDetailClientComponent);

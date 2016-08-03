@@ -32,9 +32,22 @@ h4,
 h5,
 h6 {
   font-family: "Lato","Helvetica Neue",Helvetica,Arial,sans-serif;
-  font-weight: 700;
 }
 
+textarea:hover,
+input:hover,
+textarea:active,
+input:active,
+textarea:focus,
+input:focus,
+button:focus,
+button:active,
+button:hover
+{
+  outline:0px !important;
+  -webkit-appearance:none !important;;
+  box-shadow: none !important;
+}
 
 .mg-top-50{
   margin-top: 50px;

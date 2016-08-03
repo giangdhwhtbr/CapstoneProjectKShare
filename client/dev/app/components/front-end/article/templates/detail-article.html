@@ -18,7 +18,7 @@
                 <div class="btn-group btn-art">
                     <a *ngIf="roleToken=='admin' || article.ofUser==userToken" class="btn btn-primary "
                        href="/article/edit/{{article._id}} ">Edit</a>
-                    <a id="clsArtBtn" *ngIf="(roleToken=='admin' || article.ofUser==userToken) && article.status!='deactivate'" class="btn btn-primary"
+                    <a id="clsArtBtn" *ngIf="(roleToken=='admin' || article.ofUser==userToken)&& article.status!='deactivate'" class="btn btn-primary"
                        (click)="deactivateArticle(article._id)">Close Article</a>
                     <a class="btn btn-primary " href="">Report</a>
                 </div>

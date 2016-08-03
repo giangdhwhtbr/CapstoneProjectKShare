@@ -9,8 +9,17 @@ module.exports = class TagController {
     static getAllTags(req, res) {
         TagDAO
             .getAll()
-            .then(tags => res.status(200).json(tags))
-            .catch(error => res.status(400).json(error));
+            .then(tags => {
+                for (let i = tags.length - 1; i >= 0; i--) {
+                    if (tags[i].status === false) {
+                        let index = tags.indexOf(tags[i]);
+                        if (index > -1) {
+                            tags.splice(index, 1);
+                        }
+                    }
+                }
+                res.status(200).json(tags);
+            }).catch(error => res.status(400).json(error));
     }
 
     static getTagById(req, res) {
@@ -31,27 +40,22 @@ module.exports = class TagController {
         if (req.params && req.params.id) {
             ArticleDAO
                 .getArticleByTagId(req.params.id)
-                .then((art) => {
-                    console.log(art);
-                    res.status(200).json(art)
-                })
-                .catch(error => res.status(400).json(error));
+                .then((arts) => {
+
+                    for (let i = arts.length - 1; i >= 0; i--) {
+                        if (arts[i].status === "deactivate") {
+                            let index = arts.indexOf(arts[i]);
+                            if (index > -1) {
+                                arts.splice(index, 1);
+                            }
+                        }
+                    }
+
+                    res.status(200).json(arts)
+                }).catch(error => res.status(400).json(error));
         } else {
             res.status(404).json({
                 "message": "No article Id in templates"
-            });
-        }
-    }
-
-    static getTagsByArtId(req, res) {
-        if (req.params && req.params.id) {
-            TagDAO
-                .getTagsByArtId(req.params.id)
-                .then(tag => res.status(200).json(tag))
-                .catch(error => res.status(400).json(error));
-        } else {
-            res.status(404).json({
-                "message": "No tag Id in templates"
             });
         }
     }
@@ -91,15 +95,6 @@ module.exports = class TagController {
                     .catch(error => res.status(400).json(error));
             })
             .catch(error => res.status(400).json(error));
-    }
-
-    static updateTag(req, res) {
-        let _tag = req.body;
-
-        TagDAO
-            .updateTag(_tag)
-            .then((tagUpdated)=>res.status(201).json(tagUpdated))
-            .catch((err)=> res.status(400).json(err));
     }
 
 }

@@ -8,10 +8,9 @@ const _ = require('lodash');
 //get all back.request dao function
 requestSchema.statics.getAll = () => {
   return new Promise((resolve, reject) => {
-    let _query = {};
 
     Request
-      .find(_query)
+      .find({ status: { $nin: ['deactive','accepted'] }})
       .exec((err, requests) => {
         err ? reject(err)
           : resolve(requests);
@@ -76,7 +75,10 @@ requestSchema.statics.getRequestByUser = (user) => {
   return new Promise((resolve, reject) => {
     Request
       .find({
-        'user': user
+        'user': user,
+        'status':{
+          $ne: "deactive"
+        }
       })
       .exec((err, requests) => {
         err ? reject(err)

@@ -16,15 +16,6 @@ var UserProfileBarComponent = (function () {
         this.route = route;
         this._userService = _userService;
         this._noti = _noti;
-        this.notification = {
-            show: false,
-            title: 'Demo notification!',
-            body: 'ng2-notifications',
-            icon: 'https://goo.gl/3eqeiE',
-            action: function () {
-                window.open('https://github.com/alexcastillo/ng2-notifications');
-            }
-        };
         this.formatDate = function (date) {
             if (date) {
                 var newDate, day, month, year;
@@ -81,19 +72,12 @@ var UserProfileBarComponent = (function () {
             });
             //create a notification to user who get accepted a friend request
             var title = 'Lời mời kết bạn từ ' + this.userToken;
-            var body = 'Bạn đã nhận được lời mời kết bạn của ' + this.userToken;
             var link = '/user/' + this.name + '/friends';
             alert("đã gửi lời mời kết bạn thành công");
-            //using socket io to send notification
-            var socket = io('https://localhost:8081');
-            socket.emit('send notification', {
-                title: title,
-                body: body,
-                link: link,
-                user: this.name
-            });
+            //call function using socket io to send notification
+            this._noti.alertNotification(title, this.name, link);
             //save notification to database
-            this._noti.createNotification(title, body, this.name, link).subscribe(function (notification) {
+            this._noti.createNotification(title, this.name, link).subscribe(function (notification) {
                 console.log(notification);
             });
         }

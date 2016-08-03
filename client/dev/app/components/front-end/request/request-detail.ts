@@ -1,4 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Pipe,
+  PipeTransform,
+  Inject
+} from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 import { Request } from '../../../interface/request';
@@ -17,6 +23,7 @@ import { SideBarComponent } from '../shared/side-bar';
 import { FriendListComponent} from '../shared/friend-list';
 
 import { CreateOfferComponent } from '../offer/offer-create';
+import { ReportComponent } from '../report/report';
 
 @Component({
   selector: 'request-detail-cli',
@@ -24,7 +31,8 @@ import { CreateOfferComponent } from '../offer/offer-create';
   styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
   directives: [
     ROUTER_DIRECTIVES,
-    CreateOfferComponent
+    CreateOfferComponent,
+    ReportComponent
   ]
 })
 
@@ -66,32 +74,23 @@ export class RequestDetailClientComponent {
       .subscribe(params => {
         this.id = params['id'];
       });
-    this.roleToken = localStorage.getItem('role');
+    this.roleToken = localStorage.getItem('userrole');
     this.userToken = localStorage.getItem('username');
   }
   ngOnInit(): void {
     //get templates when load the page
     this._requestService.getRequestById(this.id)
       .subscribe(request => {
-        var formatDate = function (date) {
-          if (date) {
-            var newDate, day, month, year;
-            year = date.substr(0, 4);
-            month = date.substr(5, 2);
-            day = date.substr(8, 2);
-            return newDate = day + '/' + month + '/' + year;
-          }
-        };
-        request.createdAt = formatDate(request.createdAt);
+
+        request.createdAt = new Date(request.createdAt);
+
         if (request.status === 'accepted') {
           request.status = 'Đã được chấp nhận';
           this.checkIsAcceped = true;
-        }
-        else if (request.status === 'pending') {
-          request.status = 'Đang chờ';
         } else {
-          request.status = 'Đã kết thúc';
+          request.status = 'Đang chờ';
         }
+
         request.userlink = '/user/' + request.user;
         this._id = request._id;
         this.updateLink = '/requests/' + request._id + '/update';
@@ -127,21 +126,16 @@ export class RequestDetailClientComponent {
           }
           );
       }, error => console.log(error));
+      this.getOfferByRequestId();
+  }
+
+  getOfferByRequestId() {
     //get front.offer of the templates when load the page
     this._offerService.getOfferByRequestId(this.id).subscribe(
       (offers) => {
-        var formatDate = function (date) {
-          if (date) {
-            var newDate, day, month, year;
-            year = date.substr(0, 4);
-            month = date.substr(5, 2);
-            day = date.substr(8, 2);
-            return newDate = day + '/' + month + '/' + year;
-          }
-        };
 
         for (var i = 0; i < offers.length; i++) {
-          offers[i].createdAt = formatDate(offers[i].createdAt);
+          offers[i].createdAt = new Date(offers[i].createdAt);
           if (offers[i].status === 'pending') {
             offers[i].status = 'Đang chờ';
           } else {
@@ -187,6 +181,9 @@ export class RequestDetailClientComponent {
             console.log('change status request successfull');
           });
         this.checkIsAcceped = true;
+
+        //window.location.reload();
+
           this.router.navigate(['/kspace/info/'+r._id]);
       })
   }

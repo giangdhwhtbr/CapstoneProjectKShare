@@ -6,6 +6,7 @@ var request_update_1 = require("../components/back-end/request/request-update");
 var badword_update_1 = require("../components/back-end/badword/badword-update");
 var badwords_list_1 = require("../components/back-end/badword/badwords-list");
 var user_list_1 = require("../components/back-end/users/user-list");
+var reports_list_1 = require("../components/back-end/report/reports-list");
 var auth_1 = require('./auth');
 exports.AdminRoutes = [
     {
@@ -19,6 +20,15 @@ exports.AdminRoutes = [
                     {
                         path: '',
                         component: user_list_1.UserListComponent
+                    }
+                ]
+            },
+            {
+                path: 'reports',
+                children: [
+                    {
+                        path: '',
+                        component: reports_list_1.ReportListComponent
                     }
                 ]
             },
