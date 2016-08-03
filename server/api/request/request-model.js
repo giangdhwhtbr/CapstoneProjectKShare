@@ -12,7 +12,8 @@ const _requestSchema = new Schema ({
     status: { type: String, default: 'pending' },
     modifiedDate: { type: Date },
     knowledgeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Knowledge',required: true },
-    subcribers: [String]
+    subcribers: [String],
+    tags: [{type: mongoose.Schema.Types.ObjectId, ref: "Tag", childPath: "request"}]
 });
 
  //_requestSchema.plugin(textSearch);
