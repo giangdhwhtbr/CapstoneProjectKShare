@@ -1,4 +1,3 @@
-"use strict";
 var admin_component_1 = require('../components/admin.component');
 var knowledge_update_1 = require('../components/back-end/knowledge/knowledge-update');
 var knowledges_list_1 = require('../components/back-end/knowledge/knowledges-list');
