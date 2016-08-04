@@ -19,6 +19,6 @@ export class NavbarComponent {
   logout(): void {
     this._auth.logout();
     this._auth.logoutClient();
-    this.router.navigateByUrl('/kshare');
+    this.router.navigateByUrl('/');
   }
 }

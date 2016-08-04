@@ -1,10 +1,9 @@
+"use strict";
 var admin_component_1 = require('../components/admin.component');
 var knowledge_update_1 = require('../components/back-end/knowledge/knowledge-update');
 var knowledges_list_1 = require('../components/back-end/knowledge/knowledges-list');
 var requests_list_1 = require("../components/back-end/request/requests-list");
 var request_update_1 = require("../components/back-end/request/request-update");
-var badword_update_1 = require("../components/back-end/badword/badword-update");
-var badwords_list_1 = require("../components/back-end/badword/badwords-list");
 var user_list_1 = require("../components/back-end/users/user-list");
 var reports_list_1 = require("../components/back-end/report/reports-list");
 var auth_1 = require('./auth');
@@ -55,19 +54,6 @@ exports.AdminRoutes = [
                     {
                         path: ':id',
                         component: request_update_1.UpdateRequestComponent
-                    }
-                ]
-            },
-            {
-                path: 'badwords',
-                children: [
-                    {
-                        path: '',
-                        component: badwords_list_1.BadwordListComponent
-                    },
-                    {
-                        path: ':id',
-                        component: badword_update_1.UpdateBadwordComponent
                     }
                 ]
             },
