@@ -12,15 +12,17 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 var core_1 = require('@angular/core');
 var requests_1 = require('../../../services/requests');
 var knowledge_1 = require('../../../services/knowledge');
+var tag_1 = require('../../../services/tag');
 var primeng_1 = require('primeng/primeng');
 var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
 var UpdateRequestComponent = (function () {
-    function UpdateRequestComponent(fb, _requestService, router, route, _knowledgeService) {
+    function UpdateRequestComponent(fb, _requestService, router, route, _tagService, _knowledgeService) {
         var _this = this;
         this._requestService = _requestService;
         this.router = router;
         this.route = route;
+        this._tagService = _tagService;
         this._knowledgeService = _knowledgeService;
         this.route
             .params
@@ -98,17 +100,18 @@ var UpdateRequestComponent = (function () {
         }, function (error) {
             console.log(error.text());
         });
-        this.router.navigateByUrl('admin/requests');
+        // this.router.navigateByUrl('admin/requests');
     };
     UpdateRequestComponent = __decorate([
         core_1.Component({
             selector: 'request-update-cli',
             templateUrl: 'client/dev/app/components/back-end/request/templates/request-update.html',
-            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, primeng_1.AutoComplete]
+            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, primeng_1.AutoComplete],
+            providers: [tag_1.TagService]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(requests_1.RequestService)),
-        __param(4, core_1.Inject(knowledge_1.KnowledgeService))
+        __param(5, core_1.Inject(knowledge_1.KnowledgeService))
     ], UpdateRequestComponent);
     return UpdateRequestComponent;
 })();

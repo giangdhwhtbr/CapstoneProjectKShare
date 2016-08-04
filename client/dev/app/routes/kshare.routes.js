@@ -6,6 +6,7 @@ var request_list_1 = require("../components/front-end/request/request-list");
 var request_detail_1 = require("../components/front-end/request/request-detail");
 var request_update_1 = require("../components/front-end/request/request-update");
 var request_search_1 = require("../components/front-end/request/request-search");
+var request_create_1 = require("../components/back-end/request/request-create");
 var kspace_1 = require("../components/front-end/kspace/kspace");
 var kspace_list_1 = require("../components/front-end/kspace/kspace-list");
 var kspace_info_1 = require("../components/front-end/kspace/kspace-info");
@@ -117,6 +118,10 @@ exports.KShareRoutes = [
             {
                 path: 'requests',
                 children: [
+                    {
+                        path: 'create',
+                        component: request_create_1.CreateRequestComponent
+                    },
                     {
                         path: ':id',
                         children: [

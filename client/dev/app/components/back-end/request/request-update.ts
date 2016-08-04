@@ -4,6 +4,7 @@ import { Knowledge } from '../../../interface/knowledge';
 
 import { RequestService } from '../../../services/requests';
 import { KnowledgeService } from '../../../services/knowledge';
+import { TagService } from '../../../services/tag';
 import {AutoComplete} from 'primeng/primeng';
 
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
@@ -12,7 +13,8 @@ import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  }
 @Component({
     selector: 'request-update-cli',
     templateUrl: 'client/dev/app/components/back-end/request/templates/request-update.html',
-    directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES, AutoComplete]
+    directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES, AutoComplete],
+    providers:[TagService]
 })
 
 export class UpdateRequestComponent {
@@ -37,6 +39,7 @@ export class UpdateRequestComponent {
                 @Inject(RequestService) private _requestService:RequestService,
                 public router:Router,
                 private route:ActivatedRoute,
+                private _tagService:TagService,
                 @Inject(KnowledgeService)
                 private _knowledgeService:KnowledgeService) {
         this.route
@@ -125,7 +128,7 @@ export class UpdateRequestComponent {
                 console.log(error.text());
             }
         );
-        this.router.navigateByUrl('admin/requests');
+       // this.router.navigateByUrl('admin/requests');
     }
 
 }
