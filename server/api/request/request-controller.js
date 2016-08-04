@@ -19,6 +19,7 @@ module.exports = class RequestController {
     }
 
     static createRequest(req, res) {
+
         let _data = req.body;
         //create new tags in database
         TagDAO.createArrayTag(_data.newTag).then((tags)=> {
@@ -35,6 +36,7 @@ module.exports = class RequestController {
                     res.status(201).json(request);
                 }).catch(error => res.status(400).json(error));
         }).catch((error)=>res.status(400).json(error));
+
     }
 
     static updateRequest(req, res) {
@@ -68,6 +70,7 @@ module.exports = class RequestController {
             res.status(404).json({
                 "message": "No Request id in templates"
             });
+
         }
     }
 
