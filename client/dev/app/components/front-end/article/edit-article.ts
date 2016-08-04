@@ -211,7 +211,8 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
 
     editArticle(stt:string) {
         this.art.content = CKEDITOR.instances.editor1.getData();
-        let tags = this.filterONTag();
+        let tags:any[]=[];
+        tags = this.filterONTag();
         this.art.tags = tags[0];
         this.art.title = this.titelArticle;
         console.log(this.art.status);

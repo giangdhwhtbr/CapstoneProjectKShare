@@ -94,7 +94,7 @@ module.exports = class ArticleController {
                     article.content = _data.art.content;
                     article.tags = _data.art.tags;
                     article.status = _data.art.status;
-                    article.createdAt = new Date();
+                    article.updatedAt = new Date();
 
                     TagDAO.createArrayTag(_data.newTag).then((tags)=> {
 

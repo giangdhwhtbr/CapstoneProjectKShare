@@ -1,44 +1,56 @@
 <div id="page-wrapper">
-  <div class="container-fluid">
-		<div class="row">
-				<div class="col-lg-12">
-						<ol class="breadcrumb">
-								<li>
-										<i class="fa fa-dashboard"></i>  <a href="index.html">Bảng</a>
-								</li>
-								<li>
-										<i class="fa fa-file"></i> <a [routerLink]="['/admin/requests']">Quản lý yêu cầu</a>
-								</li>
-								<li class="active">
-										<i class="fa fa-file"></i> Thông tin yêu cầu
-								</li>
-						</ol>
-				</div>
-		</div>
-		<div class="row" *ngIf="request">
-			<div class="col-lg-12">
-				<div class="update">
-					<form role="form" id="update" [ngFormModel]="updateRequestFormCli" (ngSubmit)="updateRequest(updateRequestFormCli.value)">
-						<div class="form-group">
-								<h4>Thông tin yêu cầu <strong>{{request.title}}</strong> </h4>
-                <label class="control-label" for="title">Tiêu đề </label>
-                <input class="form-control" id="title" type="text" [ngModel]="title" [ngFormControl]="updateRequestFormCli.controls['title']"/>
-								<input class="form-control" id="id" type="hidden" [ngModel]="id" [ngFormControl]="updateRequestFormCli.controls['_id']" />
-                <label for="knowledge">Lĩnh vực</label>
-                <select class="form-control" id="knowledge" [ngFormControl]="updateRequestFormCli.controls['knowledgeId']" [ngModel]="knowledgeId">
-                  <option selected="selected">Chọn lĩnh vực</option>
-                  <optgroup *ngFor="let k of knowledges" label="{{k.name}}">
-                    <option *ngFor="let sub of k.subCategory" value={{sub._id}}>{{sub.name}}</option>
-                  </optgroup>
-                </select>
-                <label class="control-label" for="description">Nội dung </label>
-                <textarea class="form-control" id="description" type="text" [ngModel]="description" [ngFormControl]="updateRequestFormCli.controls['description']"></textarea>
-                <button type="submit" class="btn btn-success">Hoàn thành</button>
-								<button type="reset" class="btn btn-warning">Nhập lại</button>
-						</div>
-					</form>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i> <a href="index.html">Bảng</a>
+                    </li>
+                    <li>
+                        <i class="fa fa-file"></i> <a [routerLink]="['/admin/requests']">Quản lý yêu cầu</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-file"></i> Thông tin yêu cầu
+                    </li>
+                </ol>
+            </div>
+        </div>
+        <div class="row" *ngIf="request">
+            <div class="col-lg-12">
+                <div class="update">
+                    <form role="form" id="update" [ngFormModel]="updateRequestFormCli"
+                          (ngSubmit)="updateRequest(updateRequestFormCli.value)">
+                        <div class="form-group">
+                            <h4>Thông tin yêu cầu <strong>{{request.title}}</strong></h4>
+                            <label class="control-label" for="title">Tiêu đề </label>
+                            <input class="form-control" id="title" type="text" [ngModel]="title"
+                                   [ngFormControl]="updateRequestFormCli.controls['title']"/>
+                            <input class="form-control" id="id" type="hidden" [ngModel]="id"
+                                   [ngFormControl]="updateRequestFormCli.controls['_id']"/>
+                            <label for="knowledge">Lĩnh vực</label>
+                            <select class="form-control" id="knowledge"
+                                    [ngFormControl]="updateRequestFormCli.controls['knowledgeId']"
+                                    [ngModel]="knowledgeId">
+                                <option selected="selected">Chọn lĩnh vực</option>
+                                <optgroup *ngFor="let k of knowledges" label="{{k.name}}">
+                                    <option *ngFor="let sub of k.subCategory" value={{sub._id}}>{{sub.name}}</option>
+                                </optgroup>
+                            </select>
+                            <label class="control-label" for="description">Nội dung </label>
+                            <textarea class="form-control" id="description" type="text" [ngModel]="description"
+                                      [ngFormControl]="updateRequestFormCli.controls['description']"></textarea>
+                            <p><span>Câu hỏi này liên quan tới</span></p>
+                            <!--end editor -->
+                            <p-autoComplete  [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
+                                             [multiple]="true" [(ngModel)]="tags" >
+                            </p-autoComplete>
+                            <!--end tags-->
+                            <button type="submit" class="btn btn-success">Hoàn thành</button>
+                            <button type="reset" class="btn btn-warning">Nhập lại</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
