@@ -1,8 +1,0 @@
-<form role="form" id="create" class="collapse" [ngFormModel]="badwordForm" (ngSubmit)="addBadword(badwordForm.value)">
-  <div class="form-group">
-      <label>Nhập từ</label>
-      <input class="form-control" type="text" required="required" id="word" name="word" [ngFormControl]="badwordForm.controls['word']">
-      <button type="submit" class="btn btn-success">Hoàn thành</button>
-      <button type="reset" class="btn btn-warning">Nhập lại</button>
-  </div>
-</form>

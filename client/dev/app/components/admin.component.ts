@@ -14,8 +14,6 @@ import { UpdateKnowledgeComponent } from './back-end/knowledge/knowledge-update'
 import { KnowledgeListComponent } from './back-end/knowledge/knowledges-list';
 import { RequestListComponent } from "./back-end/request/requests-list";
 import { UpdateRequestComponent } from "./back-end/request/request-update";
-import { UpdateBadwordComponent } from "./back-end/badword/badword-update";
-import { BadwordListComponent } from "./back-end/badword/badwords-list";
 import { UserListComponent } from "./back-end/users/user-list";
 import { ReportListComponent } from "./back-end/report/reports-list";
 
@@ -39,8 +37,6 @@ import { ReportListComponent } from "./back-end/report/reports-list";
     UserListComponent,
     RequestListComponent,
     KnowledgeListComponent,
-    BadwordListComponent,
-    UpdateBadwordComponent,
     UpdateKnowledgeComponent,
     UpdateRequestComponent,
     ReportListComponent
