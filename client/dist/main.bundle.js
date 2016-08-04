@@ -16986,6 +16986,7 @@ webpackJsonp([2],[
 	        this.router = router;
 	    }
 	    NavbarComponent.prototype.logout = function () {
+	        alert("123");
 	        this._auth.logout();
 	        this._auth.logoutClient();
 	        this.router.navigateByUrl('/');
