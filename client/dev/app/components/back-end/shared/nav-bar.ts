@@ -17,7 +17,6 @@ export class NavbarComponent {
 
   }
   logout(): void {
-    alert("123");
     this._auth.logout();
     this._auth.logoutClient();
     this.router.navigateByUrl('/');
