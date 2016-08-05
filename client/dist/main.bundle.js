@@ -4970,6 +4970,7 @@ webpackJsonp([2],[
 	        this._auth = _auth;
 	        this.router = router;
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
+	        this.isExistRecord = false;
 	        this.configRq = {
 	            id: 'rq',
 	            itemsPerPage: 10,
@@ -5003,21 +5004,24 @@ webpackJsonp([2],[
 	    };
 	    RequestListClientComponent.prototype.search = function (search) {
 	        var _this = this;
-	        console.log(search);
 	        if (search === '') {
 	            this.getAllRequests();
 	        }
 	        else {
 	            this._requestService.searchRequest(search).subscribe(function (requests) {
-	                console.log(requests);
 	                for (var i = 0; i < requests.length; i++) {
 	                    requests[i].createdAt = new Date(requests[i].createdAt);
 	                    if (requests[i].status === 'pending') {
 	                        requests[i].status = 'Đang chờ';
 	                    }
 	                }
+	                if (requests.length === 0) {
+	                    _this.isExistRecord = true;
+	                }
+	                else {
+	                    _this.isExistRecord = false;
+	                }
 	                _this.requests = requests;
-	                console.log(_this.requests);
 	            });
 	        }
 	    };

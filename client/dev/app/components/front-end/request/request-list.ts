@@ -34,6 +34,7 @@ import { PaginationControlsCmp, PaginatePipe, PaginationService, IPaginationInst
 export class RequestListClientComponent {
   pageTitle: string = 'Welcome to Knowledge Sharing Network';
   text: string;
+  isExistRecord:boolean = false;
   roleToken: string;
   userToken: string;
   link: string;
@@ -75,20 +76,22 @@ export class RequestListClientComponent {
   }
 
   search(search: string) {
-    console.log(search);
     if (search === '') {
       this.getAllRequests();
     } else {
       this._requestService.searchRequest(search).subscribe((requests) => {
-        console.log(requests);
         for (var i = 0; i < requests.length; i++) {
           requests[i].createdAt = new Date(requests[i].createdAt);
           if (requests[i].status === 'pending') {
             requests[i].status = 'Đang chờ';
           }
         }
+        if (requests.length === 0){
+          this.isExistRecord = true;
+        }else{
+          this.isExistRecord = false;
+        }
         this.requests = requests;
-        console.log(this.requests);
       });
     }
   }
