@@ -13,58 +13,34 @@
   <br>
   <div class="container" style="min-height:437px">
     <request-create></request-create>
-    <!--search-->
-    <div *ngIf="searchs && searchs.length" id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu">
-      <div class="panel panel-default card-rq" *ngFor="let search of searchs| paginate: configRs">
+
+    <br>
+    <!-- list all-->
+    <div id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu">
+      <div class="panel panel-default card-rq" *ngFor="let request of requests| paginate:configRq">
         <div class="panel-body">
-          <a [routerLink]="[search._id,'info/']">
-            <p class="lead">{{search.title}}</p>
+          <a [routerLink]="['/requests/'+request._id+'/info']">
+            <p class="lead">{{request.title}}</p>
           </a>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-            Nội dung : {{search.description}}
+            Nội dung : {{request.description}}
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-            <a [routerLink]="['/user/',search.user]">Người tạo : {{search.user}}</a>
+            Người tạo :<a [routerLink]="['/user/',request.user]"> {{request.user}}</a>
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-            Trạng thái : {{search.status}}
+            Trạng thái : {{request.status}}
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-            Ngày tạo : {{search.createdAt | date:"dd/MM/yyyy"}}
+            Ngày tạo : {{request.createdAt | date:"dd/MM/yyyy"}}
           </div>
         </div>
       </div>
-      <pagination-controls [id]="configRs.id" (pageChange)="configRs.currentPage  = $event" directionLinks="true" autoHide="true">
+      <pagination-controls [id]="configRq.id" (pageChange)="configRq.currentPage  = $event" directionLinks="true" autoHide="true">
       </pagination-controls>
     </div>
-
-  <br>
-  <!-- list all-->
-  <div id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu" [hidden]="hide">
-    <div class="panel panel-default card-rq" *ngFor="let request of requests| paginate:configRq">
-      <div class="panel-body">
-        <a [routerLink]="[request.link]">
-          <p class="lead">{{request.title}}</p>
-        </a>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-          Nội dung : {{request.description}}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-          Người tạo :<a [routerLink]="['/user/',request.user]"> {{request.user}}</a>
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-          Trạng thái : {{request.status}}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-          Ngày tạo : {{request.createdAt | date:"dd/MM/yyyy"}}
-        </div>
-      </div>
-    </div>
-    <pagination-controls [id]="configRq.id" (pageChange)="configRq.currentPage  = $event" directionLinks="true" autoHide="true">
-    </pagination-controls>
+    <!--<friend-list></friend-list>-->
   </div>
-  <!--<friend-list></friend-list>-->
-</div>
 
 </div>
 <!-- /.container -->

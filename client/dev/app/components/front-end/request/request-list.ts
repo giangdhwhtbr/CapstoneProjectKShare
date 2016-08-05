@@ -34,7 +34,6 @@ import { PaginationControlsCmp, PaginatePipe, PaginationService, IPaginationInst
 export class RequestListClientComponent {
   pageTitle: string = 'Welcome to Knowledge Sharing Network';
   text: string;
-  hide: boolean;
   roleToken: string;
   userToken: string;
   link: string;
@@ -54,10 +53,13 @@ export class RequestListClientComponent {
     this.userToken = localStorage.getItem('username');
   }
   requests: Request[];
-  searchs: Request[];
 
   ngOnInit(): void {
-    this.hide = false;
+    // this.hide = false;
+    this.getAllRequests();
+  }
+
+  getAllRequests() {
     this._requestService.getAllRequests().subscribe((requests) => {
 
       for (var i = 0; i < requests.length; i++) {
@@ -73,16 +75,22 @@ export class RequestListClientComponent {
   }
 
   search(search: string) {
-    this._requestService.searchRequest(search).subscribe((requests) => {
-      for (var i = 0; i < requests.length; i++) {
-        requests[i].createdAt = new Date(requests[i].createdAt);
-        if (requests[i].status === 'pending') {
-          requests[i].status = 'Đang chờ';
+    console.log(search);
+    if (search === '') {
+      this.getAllRequests();
+    } else {
+      this._requestService.searchRequest(search).subscribe((requests) => {
+        console.log(requests);
+        for (var i = 0; i < requests.length; i++) {
+          requests[i].createdAt = new Date(requests[i].createdAt);
+          if (requests[i].status === 'pending') {
+            requests[i].status = 'Đang chờ';
+          }
         }
-      }
-      this.searchs = requests;
-      this.hide = true;
-    });
+        this.requests = requests;
+        console.log(this.requests);
+      });
+    }
   }
 
 }

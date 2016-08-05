@@ -4984,8 +4984,11 @@ webpackJsonp([2],[
 	        this.userToken = localStorage.getItem('username');
 	    }
 	    RequestListClientComponent.prototype.ngOnInit = function () {
+	        // this.hide = false;
+	        this.getAllRequests();
+	    };
+	    RequestListClientComponent.prototype.getAllRequests = function () {
 	        var _this = this;
-	        this.hide = false;
 	        this._requestService.getAllRequests().subscribe(function (requests) {
 	            for (var i = 0; i < requests.length; i++) {
 	                requests[i].createdAt = new Date(requests[i].createdAt);
@@ -5000,16 +5003,23 @@ webpackJsonp([2],[
 	    };
 	    RequestListClientComponent.prototype.search = function (search) {
 	        var _this = this;
-	        this._requestService.searchRequest(search).subscribe(function (requests) {
-	            for (var i = 0; i < requests.length; i++) {
-	                requests[i].createdAt = new Date(requests[i].createdAt);
-	                if (requests[i].status === 'pending') {
-	                    requests[i].status = 'Đang chờ';
+	        console.log(search);
+	        if (search === '') {
+	            this.getAllRequests();
+	        }
+	        else {
+	            this._requestService.searchRequest(search).subscribe(function (requests) {
+	                console.log(requests);
+	                for (var i = 0; i < requests.length; i++) {
+	                    requests[i].createdAt = new Date(requests[i].createdAt);
+	                    if (requests[i].status === 'pending') {
+	                        requests[i].status = 'Đang chờ';
+	                    }
 	                }
-	            }
-	            _this.searchs = requests;
-	            _this.hide = true;
-	        });
+	                _this.requests = requests;
+	                console.log(_this.requests);
+	            });
+	        }
 	    };
 	    RequestListClientComponent = __decorate([
 	        core_1.Component({
