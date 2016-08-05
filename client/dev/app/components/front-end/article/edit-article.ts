@@ -1,68 +1,110 @@
 /**
- * Created by Duc Duong on 7/12/2016.
+ * Created by Duc Duong on 7/26/2016.
  */
 import {
     Component,
     OnInit,
-    ElementRef
+    ElementRef,
+    AfterViewChecked
 } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 import {ArticleService} from '../../../services/article';
 import {TagService} from '../../../services/tag';
+import {AutoComplete} from 'primeng/primeng';
 import { AuthService } from '../../../services/auth';
-import {AutoComplete,SelectButton,SelectItem} from 'primeng/primeng';
 
 import * as $ from 'jquery';
-
 
 @Component({
     selector: 'ck-editor',
     template: ``
 })
-class CKEditor {
-    constructor(_elm:ElementRef) {
-        CKEDITOR.replace(_elm.nativeElement);
-    }
-}
 
+class CKEditor implements OnInit,AfterViewChecked {
+
+    art:any;
+
+    constructor(_elm:ElementRef, private _articleService:ArticleService, public router:Router, private route:ActivatedRoute) {
+        CKEDITOR.replace(_elm.nativeElement);
+        this.route
+            .params
+            .subscribe(params => {
+                this.id = params['id'];
+            });
+    }
+
+    ngOnInit() {
+        this.getDataArt();
+    }
+
+    getDataArt() {
+        this._articleService.getArtById(this.id).subscribe((art)=> {
+            this.art = art;
+            CKEDITOR.instances.editor1.setData(this.art.content + '');
+        });
+    }
+
+}
 
 @Component({
     selector: 'create-article',
-    templateUrl: 'client/dev/app/components/front-end/article/templates/create-article.html',
+    templateUrl: 'client/dev/app/components/front-end/article/templates/edit-article.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
-    directives: [CKEditor, AutoComplete,ROUTER_DIRECTIVES],
+    directives: [CKEditor, AutoComplete, ROUTER_DIRECTIVES],
     providers: [ArticleService, TagService]
 })
 
-export class CreateArticleComponent implements OnInit {
+export class EditArticleComponent implements OnInit,AfterViewChecked {
     filesToUpload:Array<File>;
     contentCk:string;
     titelArticle:string;
-    status:string;
-
+    id:string;
+    art:any;
 
     filteredKnw:string[];
 
     tags:any[];
     tagsEx:Array<string>;
 
-    userToken: string;
-    roleToken: string;
+    isEdited:boolean = true;
 
-    constructor(private _articleService:ArticleService, private _tagService:TagService, public router:Router,private route: ActivatedRoute) {
+    roleToken:string;
+    userToken:string;
+
+    constructor(private _articleService:ArticleService, private _tagService:TagService, public router:Router, private route:ActivatedRoute) {
         this.filesToUpload = [];
-        this.roleToken = localStorage.getItem('role');
+        this.tags = [];
+        this.route
+            .params
+            .subscribe(params => {
+                this.id = params['id'];
+            });
+        this.roleToken = localStorage.getItem('userrole');
         this.userToken = localStorage.getItem('username');
     }
 
     ngOnInit() {
-        if(this.userToken==null){
-            this.router.navigateByUrl('/');
-        }
-        this.CreateUploadImageCkeditor();
-        this.addCommandBtnCk();
-        this.loadAllTags();
+        this._articleService.getArtById(this.id).subscribe((art)=> {
+            if (art.ofUser != this.userToken && this.roleToken!="admin") {
+                this.isEdited = false;
+            } else {
+                this.art = art;
+                this.titelArticle = art.title;
+                for (let e of this.art.tagsFD) {
+                    this.tags.push(e.name);
+                }
+                this.CreateUploadImageCkeditor();
+                this.addCommandBtnCk();
+                this.loadAllTags();
+
+            }
+
+        });
+
+    }
+
+    ngAfterViewChecked() {
     }
 
     filterONTag() {
@@ -72,13 +114,13 @@ export class CreateArticleComponent implements OnInit {
                 if (e.name == e1) {
                     oldTag.push(e._id);
                     let index = this.tags.indexOf(e1);
-                    if(index>-1){
-                        this.tags.splice(index,1);
+                    if (index > -1) {
+                        this.tags.splice(index, 1);
                     }
                 }
             }
         }
-        return [oldTag,this.tags];
+        return [oldTag, this.tags];
     }
 
 
@@ -163,11 +205,16 @@ export class CreateArticleComponent implements OnInit {
         $("#bdOpenModal").trigger("click");
     }
 
-    postArticle(stt:any) {
-        this.contentCk = CKEDITOR.instances.editor1.getData();
+    editArticle(stt:string) {
+        this.art.content = CKEDITOR.instances.editor1.getData();
         let tags = this.filterONTag();
-        this._articleService.addArticle(this.titelArticle, this.contentCk,tags[0],tags[1],stt,this.userToken).subscribe((article)=> {
-                this.router.navigateByUrl('/article/'+article._id);
+        this.art.tags = tags[0];
+        this.art.title = this.titelArticle;
+        console.log(this.art.status);
+        this.art.status = stt;
+        console.log(this.art.status);
+        this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe((article)=> {
+                this.router.navigateByUrl('/article/' + article._id);
             },
             (error) => {
                 console.log(error.text());

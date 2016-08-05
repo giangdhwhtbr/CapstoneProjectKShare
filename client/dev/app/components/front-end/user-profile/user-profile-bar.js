@@ -88,6 +88,7 @@ var UserProfileBarComponent = (function () {
             var body = 'Bạn đã nhận được lời mời kết bạn của ' + this.userToken;
             var link = '/user/' + this.name + '/friends';
             alert("đã gửi lời mời kết bạn thành công");
+            //using socket io to send notification
             var socket = io('https://localhost:8081');
             socket.emit('send notification', {
                 title: title,
@@ -95,6 +96,7 @@ var UserProfileBarComponent = (function () {
                 link: link,
                 user: this.name
             });
+            //save notification to database
             this._noti.createNotification(title, body, this.name, link).subscribe(function (notification) {
                 console.log(notification);
             });

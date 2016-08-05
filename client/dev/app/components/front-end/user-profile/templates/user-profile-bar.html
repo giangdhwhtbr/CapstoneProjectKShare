@@ -15,12 +15,12 @@
         <!-- END SIDEBAR USER TITLE -->
         <!-- SIDEBAR BUTTONS -->
         <div class="profile-userbuttons">
-            <button *ngIf="!checkUser && !checkSentRequestUser && !isFriend && !checkIsRecivedRequest" type="button" class="btn btn-success btn-sm"
+            <button *ngIf="userToken!== null &&!checkUser && !checkSentRequestUser && !isFriend && !checkIsRecivedRequest" type="button" class="btn btn-success btn-sm"
                 (click)="addFriend()">Thêm bạn</button>
             <button *ngIf="!checkUser && checkSentRequestUser" (click)="deleteFriend()" type="button" class="btn btn-success btn-sm">Đã gửi kết bạn</button>
             <button *ngIf="!checkUser && isFriend" (click)="deleteFriend()" type="button" class="btn btn-success btn-sm">Đã là bạn bè</button>
             <button *ngIf="!checkUser && checkIsRecivedRequest" [routerLink]="['/user/' + userToken + '/friends']" class="btn btn-primary btn-sm">Đồng ý kết bạn</button>
-            <button *ngIf="!checkUser" type="button" class="btn btn-danger btn-sm">Gửi tin nhắn</button>
+            <button *ngIf="userToken!== null&&!checkUser" type="button" class="btn btn-danger btn-sm">Gửi tin nhắn</button>
             <input *ngIf="  checkUser" type="file" (change)="fileChangeEvent($event)" type="file" accept="image/*"/>
         </div>
         <!-- END SIDEBAR BUTTONS -->

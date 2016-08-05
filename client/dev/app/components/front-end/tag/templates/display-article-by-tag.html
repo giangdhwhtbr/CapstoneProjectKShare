@@ -12,11 +12,14 @@
             <p>
                 tags :
                 <span *ngFor="let t of a.tagsFD">
-                    <a [routerLink]="['/tag',t._id]">{{t.name}}</a>,
+                    <a href="/tag/{{t._id}}">{{t.name}}</a>,
                 </span>
             </p>
             <p>
                 <span class="dateArt">{{a.createdAt | date:"dd/MM/yyyy"}}</span>
+            </p>
+            <p>
+                <span *ngIf="a.ofUser" class="author">by : <a [routerLink]="['/user',a.ofUser]">{{a.ofUser}}</a> </span>
             </p>
         </div>
     </div>

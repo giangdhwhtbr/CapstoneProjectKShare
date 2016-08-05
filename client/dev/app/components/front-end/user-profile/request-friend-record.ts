@@ -1,6 +1,7 @@
 //cores
 import { Component, OnInit, Input } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
+declare var io: any;
 
 //services
 import { UserService } from '../../../services/users';
@@ -27,6 +28,7 @@ export class RequestFriendRecordComponent {
   displayname: string;
   email: string;
   level: string;
+  socket: any;
 
   isFriend: boolean;
 
@@ -44,6 +46,7 @@ export class RequestFriendRecordComponent {
     this.isAdded = false;
     this.isFriend = true;
     this.getUserInformation();
+    this.socket = io('https://localhost:8081');
   }
 
   acceptRequest(): void {
@@ -58,6 +61,15 @@ export class RequestFriendRecordComponent {
         var body = 'Bạn và ' + this.name + ' đã là bạn bè!';
         var link = '/user/' + this.name;
 
+        //using socket io to send notification
+        this.socket.emit('send notification', {
+          title: title,
+          body: body,
+          link: link,
+          user: this.requestUser
+        });
+
+        //save notification to database
         this._noti.createNotification(title, body, this.requestUser, link).subscribe(
           (notification) => {
             console.log('create a notification to ' + this.name);

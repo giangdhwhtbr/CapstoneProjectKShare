@@ -19,7 +19,7 @@
     "prebuild:dev": "npm run clean:dist",
     "build:dev": "webpack --config config/webpack.dev.js --progress --profile --colors --display-error-details --display-cached",
     "prebuild:prod": "npm run clean:dist",
-    "build:prod": "webpack --config config/webpack.prod.js  --progress --profile --colors --display-error-details --display-cached --bail",
+    "build:prod": "webpack --config config/webpack.prod.js  --progress --profile --colors --display-error-details --display-cached",
     "postinstall": "typings install"
   },
   "dependencies": {
@@ -56,7 +56,7 @@
     "localStorage": "^1.0.3",
     "lodash": "^4.6.1",
     "mongoose": "^4.4.7",
-    "mongoose-relationship": "^0.1.5",
+    "mongoose-relationship": "0.1.5",
     "mongoose-text-search": "0.0.2",
     "morgan": "^1.5.2",
     "multer": "^1.1.0",

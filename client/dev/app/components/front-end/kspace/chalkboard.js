@@ -13,7 +13,7 @@ var ChalkBoardComponent = (function () {
     function ChalkBoardComponent() {
         this.pages = [];
         this.colors = [
-            { label: '#ffffff', value: '#ffffff' },
+            { label: '#000000', value: '#000000' },
             { label: '#de3535', value: '#DE3535' },
             { label: '#03a9f4', value: '#03a9f4' }
         ];
@@ -27,30 +27,46 @@ var ChalkBoardComponent = (function () {
             { label: '7', value: '50' }
         ];
     }
-    // openPage(url): void {
-    //    var board =  $('#chalkboard');
-    //    board.css('background-image', 'url(' + imageUrl + ')');
-    // }
-    // newPage():void {
-    //     var canvas = document.getElementById('chalkboard');
-    //     var ctx = canvas.getContext('2d');
-    //     var currentBoard = canvas.toDataURL();
-    //     var page = this.pages.length + 1;
-    //     var data = {
-    //         page: page,
-    //         url: currentBoard
-    //     }
-    //     this.pages.push(data);
-    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // }
+    ChalkBoardComponent.prototype.newPage = function () {
+        var json = paper.exportJSON(paper.project.activeLayer);
+        var pageNumber;
+        var link;
+        var c = confirm("Ban muốn tạo trang mới chứ?");
+        if (c) {
+            paper.project.clear();
+            var newLayer = new paper.Layer();
+            newLayer.activate();
+            if (!this.pages.length) {
+                pageNumber = 1;
+            }
+            else {
+                pageNumber = this.pages.length + 1;
+            }
+            var data = {
+                pageNumber: pageNumber,
+                link: '#page' + pageNumber,
+                json: json,
+                createdAt: new Date()
+            };
+            this.pages.push(data);
+        }
+    };
+    ChalkBoardComponent.prototype.changeBoard = function (json, num) {
+        if (num) {
+            paper.project.clear();
+            paper.importJSON(json);
+        }
+        else {
+            this.currentPage = paper.exportJSON(paper.project.activeLayer);
+            console.log(this.currentPage);
+        }
+    };
     ChalkBoardComponent.prototype.ngOnInit = function () {
         var drawing = false;
-        var mode = 'draw';
         var path;
         var streamPath;
-        var strokeColor = 'white';
+        var strokeColor = 'black';
         var strokeWidth = 1;
-        var colorStore;
         var room = this.id;
         var socket = io('https://localhost:8081');
         socket.emit('subscribe', room);
@@ -72,8 +88,8 @@ var ChalkBoardComponent = (function () {
             }
         });
         $('#color-picker').change(function () {
-            if ($('#color-picker').val() !== 'white') {
-                $('#color-picker').css('color', 'white');
+            if ($('#color-picker').val() !== 'black') {
+                $('#color-picker').css('color', 'black');
             }
             if ($('#color-picker').val()) {
                 $('#color-picker').css('background-color', $('#color-picker').val());
@@ -86,7 +102,7 @@ var ChalkBoardComponent = (function () {
             }
         });
         $('#eraser').click(function () {
-            strokeColor = '#000000';
+            strokeColor = '#ffffff';
         });
         /**
          * Catch event when mouse down, create new path, emit start point
@@ -96,8 +112,8 @@ var ChalkBoardComponent = (function () {
             path = new paper.Path();
             path.strokeColor = strokeColor;
             path.strokeWidth = strokeWidth;
-            var x = event.pageX - 0.1879935275 * $(window).width();
-            var y = event.pageY - 0.036667 * $(window).height();
+            var x = event.pageX - 0.249 * $(window).width();
+            var y = event.pageY - 120;
             path.add(new paper.Point(x, y));
             emitStartPoint(x, y, strokeColor, strokeWidth);
         });
@@ -107,8 +123,8 @@ var ChalkBoardComponent = (function () {
          */
         $('#chalkboard').mousemove(function (event) {
             if (drawing) {
-                var x = event.pageX - 0.1879935275 * $(window).width();
-                var y = event.pageY - 0.036667 * $(window).height();
+                var x = event.pageX - 0.249 * $(window).width();
+                var y = event.pageY - 120;
                 draw(x, y);
                 emitPathPoint(x, y);
             }
@@ -193,7 +209,7 @@ var ChalkBoardComponent = (function () {
     ChalkBoardComponent = __decorate([
         core_1.Component({
             selector: 'chalkboard',
-            template: "\n        <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n        <div id=\"draw-tools\">\n            <p id=\"new-page\" (click)=\"newPage()\" class=\"tool-btn\">\n                <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n            </p>\n            <select id=\"color-picker\" class=\"tool-btn\">\n                <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n            </select>\n            <hr>\n            <select id=\"brush-size\" class=\"tool-btn\">\n                <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n            </select>\n            <hr>\n            <p id=\"eraser\">\n                <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n            </p>\n            <div class=\"tool-btn\" *ngFor=\"let page of pages\" (click)=\"openPage(page.url)\">\n                <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\">{{page.page}}</i>\n            </div>\n        </div>\n    ",
+            template: "\n\n    <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let page of pages\"><a (click)=\"changeBoard(page.json, page.pageNumber)\">B\u1EA3ng           {{page                                        .pageNumber}}</a></li>\n        </ul>\n      </div>\n    </div>\n\n      <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n      <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n\n      <div id=\"draw-tools\">\n          <p id=\"new-page\" (click)=\"newPage()\"  href=\"#modal1\" class=\"tool-btn\">\n              <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n          </p>\n          <select id=\"color-picker\" class=\"tool-btn\">\n              <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n          </select>\n          <hr>\n          <select id=\"brush-size\" class=\"tool-btn\">\n              <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n          </select>\n          <hr>\n          <p id=\"eraser\">\n              <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n          </p>\n      </div>\n    ",
             styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
         }), 
         __metadata('design:paramtypes', [])

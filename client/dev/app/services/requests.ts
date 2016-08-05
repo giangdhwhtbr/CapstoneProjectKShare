@@ -61,7 +61,8 @@ export  class RequestService {
       _id : '',
       title : request.title,
       description : request.description,
-      knowledgeId: request.knowledgeId
+      knowledgeId: request.knowledgeId,
+      status: request.status
     });
     console.log(_request);
     return this._http

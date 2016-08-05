@@ -1,16 +1,50 @@
-<div *ngIf="article" class="container article">
-    <h3>
-        {{article.title}}
-    </h3>
-    <div class="bodyArt">
+<div class="container article">
+    <div *ngIf="article">
+        <div *ngIf="canSee">
+            <span class="titleArtDe"> {{article.title}}</span>
+            <span class="byAu">by <a [routerLink]="['/user',article.ofUser]">{{article.ofUser}}</a></span>
 
-    </div>
-    <div *ngIf="tags" class="tags">
-        tags : <span *ngFor="let t of tags">
+            <div class="row">
+                <div class="col-sm-12">
+                <span *ngIf="article.status=='public'"><i class="fa fa-hand-paper-o"
+                                                          aria-hidden="true"></i> public</span>
+                <span *ngIf="article.status=='private'"><i class="fa fa-hand-rock-o"
+                                                           aria-hidden="true"></i> private</span>
+                    <span *ngIf="article.status=='deactivate'"><i class="fa fa-times-circle-o" aria-hidden="true"></i> deactivate</span>
+                    <span *ngIf="article.status=='pending'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> pending</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="btn-group btn-art">
+                    <a *ngIf="roleToken=='admin' || article.ofUser==userToken" class="btn btn-primary "
+                       href="/article/edit/{{article._id}} ">Edit</a>
+                    <a id="clsArtBtn" *ngIf="(roleToken=='admin' || article.ofUser==userToken) && article.status!='deactivate'" class="btn btn-primary"
+                       (click)="deactivateArticle(article._id)">Close Article</a>
+                    <a class="btn btn-primary " href="">Report</a>
+                </div>
+            </div>
+            <div class="messOff">
+
+            </div>
+            <div class="bodyArt" [class.deAc]="isDeAc">
+
+            </div>
+            <div *ngIf="tags" class="tags">
+                tags : <span *ngFor="let t of tags">
             <a [routerLink]="['/tag',t._id]">{{t.name}}</a>,
         </span>
+            </div>
+            <div class="dateCreate">
+                {{article.createdAt | date:"dd/MM/yyyy"}}
+            </div>
+        </div>
     </div>
-    <div class="dateCreate">
-        {{article.createdAt | date:"dd/MM/yyyy"}}
+
+    <div *ngIf="!canSee" class="noti-err">
+        <div class="row">
+            <div class="col-xs-offset-3 col-xs-9">
+                <i class="fa fa-ban fa-3x" aria-hidden="true"></i><span class="text-noti-err-edit">Nội dung này không khả dụng</span>
+            </div>
+        </div>
     </div>
 </div>

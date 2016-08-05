@@ -1,3 +1,4 @@
+<audio id="xyz" src="gets-in-the-way.mp3" preload="auto"></audio>
 <div class="navbar-header-common">
   <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
     <div class="container topnav">
@@ -24,7 +25,7 @@
             <a (click)="changeStatusNotification()" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">
               <i data-count="2" class="glyphicon glyphicon-bell notification-icon"></i>
               <span class="badge">{{countUnReadNoti}}</span></a>
-            <ul class="dropdown-menu" role="menu"><b>Chưa đọc <span style="color:red;">{{countUnReadNoti}}</span></b>
+            <ul class="dropdown-menu" role="menu">
               <li *ngFor="let notification of notifications">
                 <a [routerLink]="[notification.link]">
                   <span *ngIf="notification.status === 'Đã đọc'">{{notification.title}}</span>

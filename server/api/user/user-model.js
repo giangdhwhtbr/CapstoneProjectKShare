@@ -2,23 +2,22 @@
 
 const mongoose = require('mongoose');
 var validator = require('validator');
-const crypto  = require('crypto');
+const crypto = require('crypto');
 
 
-
-var validateEmail = function(email){
+var validateEmail = function (email) {
   return validator.isEmail(email);
 }
 
 var validateRole = function (role) {
-  if(role == "admin" || role == "manager" || role == "instructor" || role == "normal"){
+  if (role == "admin" || role == "manager" || role == "instructor" || role == "normal") {
     return true;
-  }else {
+  } else {
     return false;
   }
 }
 
-var validatePass = function(password){
+var validatePass = function (password) {
   var pattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
   return pattern.test(password);
 }
@@ -38,7 +37,7 @@ const userSchema = new mongoose.Schema({
     trim: true,
     default: ''
   },
-  birthday:{
+  birthday: {
     type: Date
   },
   username: {
@@ -89,12 +88,12 @@ const userSchema = new mongoose.Schema({
       type: String
     }
   ],
-  level:{
+  level: {
     type: Number,
     min: 1,
     max: 10
   },
-  rates :[{
+  rates: [{
     kspaceId: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'KSpace'
@@ -111,24 +110,24 @@ const userSchema = new mongoose.Schema({
       type: String
     }
   }],
-  rateAve:{
+  rateAve: {
     type: Number,
     min: 0,
     max: 5
   },
-  banStatus:{
-      admin: {
-        type: String
-      },
-      time: {
-        type: String
-      },
-      bannedAt: {
-        type: Date
-      },
-      status: {
-        type: Boolean
-      }
+  banStatus: {
+    admin: {
+      type: String
+    },
+    time: {
+      type: String
+    },
+    bannedAt: {
+      type: Date
+    },
+    status: {
+      type: Boolean
+    }
   },
   salt: {
     type: String,
@@ -142,11 +141,11 @@ const userSchema = new mongoose.Schema({
   resetPasswordExpires: {
     type: Date
   },
-  linkImg:{
-    type:String,
+  linkImg: {
+    type: String,
     default: 'uploads/images.jpg'
   },
-  lastAccessedAt:{type:Date}
+  lastAccessedAt: {type: Date}
 });
 
 /**

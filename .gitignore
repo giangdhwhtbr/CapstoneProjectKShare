@@ -6,5 +6,6 @@ demo
 npm-debug.log
 tests
 .vscode
-"client/dist"
-"uploads/*"
+client/dist
+uploads/*
+

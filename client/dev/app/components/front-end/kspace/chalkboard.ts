@@ -7,27 +7,35 @@ var brushColor: string = $('#color-picker').val();
 @Component ({
     selector: 'chalkboard',
     template: `
-        <button id="draw-option"><i class="fa fa-bars fa-2x" aria-hidden="true"></i></button>
-        <canvas id="chalkboard" resize=true keepalive=true></canvas>
-        <div id="draw-tools">
-            <p id="new-page" (click)="newPage()" class="tool-btn">
-                <i class="fa fa-file-o fa-2x" aria-hidden="true"></i>
-            </p>
-            <select id="color-picker" class="tool-btn">
-                <option *ngFor="let color of colors" value="{{color.value}}">{{color.label}}</option>
-            </select>
-            <hr>
-            <select id="brush-size" class="tool-btn">
-                <option *ngFor="let size of brushSizes" value="{{size.value}}">{{size.label}}</option>
-            </select>
-            <hr>
-            <p id="eraser">
-                <i class="fa fa-eraser fa-2x" aria-hidden="true"></i>
-            </p>
-            <div class="tool-btn" *ngFor="let page of pages" (click)="openPage(page.url)">
-                <i class="fa fa-file-o fa-2x" aria-hidden="true">{{page.page}}</i>
-            </div>
-        </div>
+
+    <div class="row">
+      <div class="col s12">
+        <ul class="tabs">
+          <li class="tab col s1"><a class="active" (click)="changeBoard(currentPage)">Bảng chính</a></li>
+          <li class="tab col s1" *ngFor="let page of pages"><a (click)="changeBoard(page.json, page.pageNumber)">Bảng           {{page                                        .pageNumber}}</a></li>
+        </ul>
+      </div>
+    </div>
+
+      <button id="draw-option"><i class="fa fa-bars fa-2x" aria-hidden="true"></i></button>
+      <canvas id="chalkboard" resize=true keepalive=true></canvas>
+
+      <div id="draw-tools">
+          <p id="new-page" (click)="newPage()"  href="#modal1" class="tool-btn">
+              <i class="fa fa-file-o fa-2x" aria-hidden="true"></i>
+          </p>
+          <select id="color-picker" class="tool-btn">
+              <option *ngFor="let color of colors" value="{{color.value}}">{{color.label}}</option>
+          </select>
+          <hr>
+          <select id="brush-size" class="tool-btn">
+              <option *ngFor="let size of brushSizes" value="{{size.value}}">{{size.label}}</option>
+          </select>
+          <hr>
+          <p id="eraser">
+              <i class="fa fa-eraser fa-2x" aria-hidden="true"></i>
+          </p>
+      </div>
     `,
     styleUrls:["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
 })
@@ -36,11 +44,12 @@ export class ChalkBoardComponent {
     colors: any[];
     brushSizes: any[];
     pages: Array<any>;
+    currentPage: any;
 
     constructor() {
         this.pages = [];
         this.colors= [
-            { label: '#ffffff', value: '#ffffff' },
+            { label: '#000000', value: '#000000' },
             { label: '#de3535', value: '#DE3535' },
             { label: '#03a9f4', value: '#03a9f4' }
         ];
@@ -56,37 +65,56 @@ export class ChalkBoardComponent {
     }
     @Input() id: string;
 
-    // openPage(url): void {
-    //    var board =  $('#chalkboard');
-    //    board.css('background-image', 'url(' + imageUrl + ')');
-    // }
-    // newPage():void {
-    //     var canvas = document.getElementById('chalkboard');
-    //     var ctx = canvas.getContext('2d');
-    //     var currentBoard = canvas.toDataURL();
 
-    //     var page = this.pages.length + 1;
+     newPage():void {
+       var json = paper.exportJSON(paper.project.activeLayer);
+       var pageNumber: number;
+       var link: string;
 
-    //     var data = {
-    //         page: page,
-    //         url: currentBoard
-    //     }
+       var c = confirm("Ban muốn tạo trang mới chứ?");
 
-    //     this.pages.push(data);
+       if (c){
+         paper.project.clear();
+         var newLayer = new paper.Layer();
+         newLayer.activate();
 
-    //     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    // }
+         if(!this.pages.length){
+           pageNumber = 1;
+         }else {
+           pageNumber = this.pages.length + 1;
+         }
+
+         var data = {
+           pageNumber: pageNumber,
+           link: '#page'+pageNumber,
+           json: json,
+           createdAt: new Date()
+         };
+
+         this.pages.push(data);
+       }
+
+     }
+
+    changeBoard(json: any,num:number){
+      if(num){
+        paper.project.clear();
+        paper.importJSON(json);
+      }else {
+        this.currentPage = paper.exportJSON(paper.project.activeLayer);
+        console.log(this.currentPage);
+      }
+    }
 
     ngOnInit():void {
-            var drawing = false;
-            var mode = 'draw';
+
+      var drawing = false;
             var path: any;
             var streamPath: any;
-            var strokeColor: string = 'white';
+            var strokeColor: string = 'black';
             var strokeWidth = 1;
-            var colorStore :string ;
             var room = this.id;
-            
+
             var socket = io('https://localhost:8081');
             socket.emit('subscribe', room);
             var chalkboard = document.getElementById('chalkboard');
@@ -95,7 +123,7 @@ export class ChalkBoardComponent {
 
             //initiate setting
             var drawToolShow: boolean = false;
-            $('#draw-tools').hide();          
+            $('#draw-tools').hide();
             //show draw-tools
             $('#draw-option').click(function(){
                 if(!drawToolShow){
@@ -108,8 +136,8 @@ export class ChalkBoardComponent {
             });
 
             $('#color-picker').change(function(){
-                if($('#color-picker').val()!=='white'){
-                    $('#color-picker').css('color','white');
+                if($('#color-picker').val()!=='black'){
+                    $('#color-picker').css('color','black');
                 }
                 if($('#color-picker').val()){
                     $('#color-picker').css('background-color',$('#color-picker').val());
@@ -123,7 +151,7 @@ export class ChalkBoardComponent {
             })
 
             $('#eraser').click(function(){
-                strokeColor = '#000000';
+                strokeColor = '#ffffff';
             })
 
             /**
@@ -131,11 +159,11 @@ export class ChalkBoardComponent {
              */
             $('#chalkboard').mousedown(function(event){
                     drawing = true;
-                    path = new paper.Path(); 
+                    path = new paper.Path();
                     path.strokeColor = strokeColor;
                     path.strokeWidth = strokeWidth;
-                    var x = event.pageX - 0.1879935275*$(window).width();
-                    var y = event.pageY - 0.036667*$(window).height(); 
+                    var x = event.pageX - 0.249*$(window).width();
+                    var y = event.pageY - 120;
                     path.add(new paper.Point(x,y));
                     emitStartPoint(x,y,strokeColor,strokeWidth);
             });
@@ -146,9 +174,9 @@ export class ChalkBoardComponent {
              */
             $('#chalkboard').mousemove(function(event){
                 if(drawing){
-                    var x = event.pageX - 0.1879935275*$(window).width();
-                    var y = event.pageY - 0.036667*$(window).height(); 
-                    draw(x, y);                
+                    var x = event.pageX - 0.249*$(window).width();
+                    var y = event.pageY - 120;
+                    draw(x, y);
                     emitPathPoint( x, y);
                 }
             });
@@ -163,7 +191,7 @@ export class ChalkBoardComponent {
              * function draw(x, y)
              * Add point(x,y) to the path
              */
-            
+
             function draw( x, y) {
                 path.add(new paper.Point(x,y));
                 path.smooth();
@@ -183,7 +211,7 @@ export class ChalkBoardComponent {
             }
 
             /**
-             * function streamDraw(x,y) 
+             * function streamDraw(x,y)
              * Add point(x,y) to the stream path
              */
             function streamDraw (x,y){
@@ -192,7 +220,7 @@ export class ChalkBoardComponent {
             }
 
             /**
-             * function emitStartPoint(x,y) 
+             * function emitStartPoint(x,y)
              * Send the start point (x,y) to the server
              */
             function emitStartPoint(x,y,color,width) {
@@ -204,10 +232,10 @@ export class ChalkBoardComponent {
                     room
                 };
                 socket.emit( 'startPoint', data)
-                
+
             }
              /**
-             * function emitPathPoint(x,y) 
+             * function emitPathPoint(x,y)
              * Send the path's point (x,y) to the server
              */
             function emitPathPoint( x, y) {

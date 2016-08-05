@@ -20,25 +20,49 @@ var detailArticleComponent = (function () {
         this.router = router;
         this.route = route;
         this._articleService = _articleService;
+        this.canSee = true;
+        this.isDeAc = false;
         this.route
             .params
             .subscribe(function (params) {
             _this.id = params['id'];
         });
+        this.roleToken = localStorage.getItem('userrole');
+        this.userToken = localStorage.getItem('username');
     }
     detailArticleComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._articleService.getArtById(this.id).subscribe(function (art) {
-            _this.article = art;
-            _this.tags = art.tagsFD;
-            _this.article.createdAt = new Date(_this.article.createdAt);
-            console.log(_this.article);
+            if ((art.ofUser != _this.userToken && _this.roleToken != "admin" && art.status == "private") || (_this.roleToken != "admin" && art.status == "deactivate")) {
+                _this.canSee = false;
+            }
+            else {
+                _this.article = art;
+                _this.tags = art.tagsFD;
+                _this.article.createdAt = new Date(_this.article.createdAt);
+                if (art.status == "deactivate") {
+                    _this.isDeAc = true;
+                }
+            }
         });
+    };
+    detailArticleComponent.prototype.deactivateArticle = function (id) {
+        var _this = this;
+        if (id) {
+            this._articleService.deactivateArticle(id).subscribe(function (mes) {
+                $('.messOff').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Success!</strong> ' + mes.mes + ' </div>');
+                _this.isDeAc = true;
+                $('#clsArtBtn').hide();
+            });
+        }
     };
     detailArticleComponent.prototype.ngAfterViewChecked = function () {
         if (this.article != undefined) {
             $('.bodyArt').html(this.article.content);
         }
+    };
+    detailArticleComponent.prototype.editArt = function (id) {
+        this.router.navigateByUrl('/article/edit/' + this.id);
     };
     detailArticleComponent = __decorate([
         core_1.Component({

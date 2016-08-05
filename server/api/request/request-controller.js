@@ -30,6 +30,7 @@ static updateRequest(req, res){
             request.description = req.body.description,
             request.knowledgeId = req.body.knowledgeId,
             request.modifiedDate = currentDate;
+            request.status = req.body.status;
 
             // res.status(200).json(templates);
             RequestDAO.updateRequestById(request)

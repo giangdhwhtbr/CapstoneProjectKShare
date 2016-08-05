@@ -1,3 +1,6 @@
+/**
+ * Created by Duc Duong on 7/25/2016.
+ */
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -7,9 +10,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-/**
- * Created by Duc Duong on 7/25/2016.
- */
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
@@ -18,15 +18,21 @@ var listArticleComponent = (function () {
         this.router = router;
         this.route = route;
         this._artService = _artService;
+        this.roleToken = localStorage.getItem('role');
+        this.userToken = localStorage.getItem('username');
     }
     listArticleComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._artService.getAllArts().subscribe(function (arts) {
-            _this.listArt = arts;
-            for (var _i = 0, _a = _this.listArt; _i < _a.length; _i++) {
-                var a = _a[_i];
-                a.createdAt = new Date(a.createdAt);
+            console.log(arts.length);
+            for (var i = 0; i < arts.length; i++) {
+                if (arts[i].status == "private" && arts[i].ofUser != _this.userToken) {
+                    console.log(arts[i].status);
+                    arts.splice(i, 1);
+                    console.log(i);
+                }
             }
+            _this.listArt = arts;
         });
     };
     listArticleComponent = __decorate([

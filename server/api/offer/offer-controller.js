@@ -38,13 +38,7 @@ static updateOffer(req, res){
       var currentDate = new Date();
         OfferDAO.getOfferById(req.params.id)
           .then(offer => {
-            offer.userId = req.body.userId,
-            offer.requestId = req.body.requestId,
-            offer.numOfLecture = req.body.numOfLecture,
-            offer.price = req.body.price,
-            offer.message = req.body.message,
-            offer.modifiedDate = currentDate,
-
+            offer.status = req.body.status
             // res.status(200).json(templates);
             OfferDAO.updateOfferById(offer)
               .then(offer => res.status(200).json(offer))

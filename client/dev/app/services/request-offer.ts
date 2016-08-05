@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import { Offer } from '../interface/offer';
-import { Http, Response, Headers,RequestOptions } from '@angular/http';
+import { Http, Response, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 
 @Injectable()
-export  class OfferService {
+export class OfferService {
   private _Url = '/api/offers/:id';
   constructor(private _http: Http) { }
 
 
-  addOffer(offer: Offer):Observable<any>{
+  addOffer(offer: Offer): Observable<any> {
     let header = new Headers;
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
@@ -22,14 +22,28 @@ export  class OfferService {
     });
     //console.log(_offer);
     return this._http
-              .post(this._Url.replace(':id',''),_offer,options)
-              .map((r) => r.json());
+      .post(this._Url.replace(':id', ''), _offer, options)
+      .map((r) => r.json());
   }
 
-  getOfferByRequestId(id: string):Observable<any>{
-    return this._http.post(this._Url.replace(':id',id),'')
+  getOfferByRequestId(id: string): Observable<any> {
+    return this._http.post(this._Url.replace(':id', id), '')
       .map((r) => r.json())
       .catch(this.handleError);
+  }
+
+  updateOffer(id: string, newstatus:string) {
+    let header = new Headers;
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    let _offer = JSON.stringify({
+      status: newstatus
+    });
+
+    return this._http
+      .put(this._Url.replace(':id', id), _offer, options)
+      .map((r) => r.json());
   }
 
   private handleError(error: Response) {

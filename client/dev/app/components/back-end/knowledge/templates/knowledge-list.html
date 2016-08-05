@@ -57,6 +57,7 @@
                           <th>STT</th>
                           <th>Tri thức</th>
                           <th>Nội dung</th>
+                          <th>Trạng thái</th>
                           <th>Chức năng</th>
                         </tr>
                     </thead>
@@ -65,79 +66,45 @@
                           <td></td>
                           <td>{{knowledge.name}}</td>
                           <td>{{knowledge.description}}</td>
+                          <td *ngIf="knowledge.status==true">active</td>
+                          <td *ngIf="knowledge.status==false">deactive</td>
                           <td class="center">
-          									<a class="btn btn-info" [routerLink]="['/admin/knowledges/'+ knowledge._id]">
+          									<a class="btn btn-info" *ngIf="knowledge.status==true" [routerLink]="['/admin/knowledges/'+ knowledge._id]">
           										<i class="fa fa-pencil-square-o white"></i>
           									</a>
-          									<a class="btn btn-danger" (click)="deleteKnowledge(knowledge._id)">
-          										<i class="fa fa-trash-o white"></i>
+          									<a class="btn btn-danger" *ngIf="knowledge.status==true" (click)="changeKnowledgeStatus(knowledge)">
+          										<i class="fa fa-times white"></i>
           									</a>
-                            <a class="btn btn-primary" data-toggle="modal" [attr.data-target]="'#' + knowledge._id">
+                            <a class="btn btn-warning" *ngIf="knowledge.status==false" (click)="changeKnowledgeStatus(knowledge)">
+          										<i class="fa fa fa-check white"></i>
+          									</a>
+                            <a class="btn btn-primary" *ngIf="knowledge.status==true" (click)="hide()" data-toggle="modal" [attr.data-target]="'#' + knowledge._id">
                               <i class="fa fa-plus"></i>
                             </a>
-                            <div class="modal fade" id="{{knowledge._id}}" tabindex="-1" role="dialog" aria-labelledby="modalSubCategory">
-                              <div class="modal-dialog" role="document">
-                                <div class="modal-content">
-                                  <div class="modal-header">
-                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                    <h4 class="modal-title" id="myModalLabel">Tạo</h4>
-                                  </div>
-                                  <div class="modal-body">
-                                    <form role="form" [ngFormModel]="subCategoryForm" (ngSubmit)="addSubKnowledge(subCategoryForm.value)">
-                                      <div class="row" hidden>
-                                        <div class="col-md-12">
-                                          <label for="_id">Parent</label>
-                                          <input class="form-control" type="text" value="{{knowledge._id}}" [ngModel]="knowledge._id" [ngFormControl]="subCategoryForm.controls['parent']"
-                                                  required="required" id="_id" name="knowledge._id"/>
-                                        </div>
-                                      </div>
 
-                                      <div class="row">
-                                        <div class="col-md-12">
-                                          <label for="description">Tên</label>
-                                          <textarea class="form-control" type="text" required="required" id="name" name="name"
-                                                    [ngFormControl]="subCategoryForm.controls['name']"></textarea>
-                                        </div>
-                                      </div>
-                                      <div class="row">
-                                        <div class="col-md-12">
-                                          <label for="description">Nội dung</label>
-                                          <textarea class="form-control" type="text" required="required" id="description" name="description"
-                                                    [ngFormControl]="subCategoryForm.controls['description']"></textarea>
-                                        </div>
-                                      </div>
-                                      <br>
-                                      <div class="row">
-                                        <div class="col-md-12">
-                                          <button type="submit" class="btn btn-primary">Tạo</button>
-                                          <button type="reset" class="btn btn-warning">Nhập lại</button>
-                                        </div>
-                                      </div>
-                                    </form>
-                                  </div>
-                                  <div class="modal-footer">
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Thoát</button>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
+                            <sub-create [knowledges]="knowledges" kId="{{knowledge._id}}"></sub-create>
                             <a class="btn btn-success" data-toggle="collapse" [attr.data-target]="'.' + knowledge._id">
           										<i class="fa fa-code-fork" aria-hidden="true"></i>
           									</a>
           								</td>
                         </tr>
-                        <tr bgcolor="#5bc0de" *ngFor="let subCate of knowledge.subCategory" class="collapse" class="{{knowledge._id}}" hidden>
+                        <tr bgcolor="#5bc0de" *ngFor="let subCate of knowledge.subCategory" class="{{knowledge._id}}" hidden>
                           <td></td>
                           <td>{{subCate.name}}</td>
                           <td>{{subCate.description}}</td>
-                          <th>
-                            <a class="btn btn-info" [routerLink]="['/admin/knowledges/'+ subCate._id]">
+                          <td *ngIf="subCate.status==true">active</td>
+                          <td *ngIf="subCate.status==false">deactive</td>
+                          <td>
+                            <a class="btn btn-info" *ngIf="subCate.status==true" [routerLink]="['/admin/knowledges/'+ subCate._id]">
           										<i class="fa fa-pencil-square-o white"></i>
           									</a>
-          									<a class="btn btn-danger" (click)="deleteKnowledge(subCate._id)">
-          										<i class="fa fa-trash-o white"></i>
+                            <a class="btn btn-danger" *ngIf="subCate.status==true" (click)="changeKnowledgeStatus(subCate)">
+          										<i class="fa fa-times white"></i>
           									</a>
-                          </th>
+                            <a class="btn btn-warning" *ngIf="subCate.status==false&&knowledge.status==true" (click)="changeKnowledgeStatus(subCate)">
+          										<i class="fa fa-check white"></i>
+          									</a>
+                          </td>
                         </tr>
                     </tbody>
                 </table>

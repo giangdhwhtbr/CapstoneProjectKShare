@@ -24,6 +24,8 @@ var RequestDetailClientComponent = (function () {
         this._kspaceService = _kspaceService;
         this.route = route;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
+        //check if request is accepted
+        this.checkIsAcceped = false;
         this.route
             .params
             .subscribe(function (params) {
@@ -47,6 +49,16 @@ var RequestDetailClientComponent = (function () {
                 }
             };
             request.createdAt = formatDate(request.createdAt);
+            if (request.status === 'accepted') {
+                request.status = 'Đã được chấp nhận';
+                _this.checkIsAcceped = true;
+            }
+            else if (request.status === 'pending') {
+                request.status = 'Đang chờ';
+            }
+            else {
+                request.status = 'Đã kết thúc';
+            }
             request.userlink = '/user/' + request.user;
             _this._id = request._id;
             _this.updateLink = '/requests/' + request._id + '/update';
@@ -87,6 +99,12 @@ var RequestDetailClientComponent = (function () {
             };
             for (var i = 0; i < offers.length; i++) {
                 offers[i].createdAt = formatDate(offers[i].createdAt);
+                if (offers[i].status === 'pending') {
+                    offers[i].status = 'Đang chờ';
+                }
+                else {
+                    offers[i].status = 'Được chấp nhận';
+                }
             }
             _this.offers = offers;
         }, function (error) {
@@ -110,6 +128,20 @@ var RequestDetailClientComponent = (function () {
         this._kspaceService
             .addKSpace(learner, lecturer, requestId, requestTitle, offerId)
             .subscribe(function (r) {
+            console.log('create kspace successfull');
+            //update offer status
+            _this._offerService.updateOffer(offerId, 'accepted')
+                .subscribe(function (c) {
+                console.log('change status offer successfull');
+            });
+            _this.request.status = 'accepted';
+            //update request status
+            _this._requestService.updateRequest(_this.request)
+                .subscribe(function (c) {
+                console.log(_this.request);
+                console.log('change status request successfull');
+            });
+            _this.checkIsAcceped = true;
             _this.router.navigate(['/kspace/info/' + r._id]);
         });
     };

@@ -13,22 +13,24 @@ export class ArticleService {
   constructor(private _http:Http) {
   }
 
-  getAllArts(): Observable<Request[]> {
+  getAllArts(): Observable<any[]> {
     return this._http.get(this._requestsUrl.replace(':id',''))
       .map((r) => r.json())
       .catch(this.handleError);
   }
 
-  addArticle(_title:string, _content:string,oldTag:string[],newTag:string[]):Observable<any> {
+  addArticle(_title:string, _content:string,oldTag:string[],newTag:string[],stt:string,user:string):Observable<any> {
     let header = new Headers;
     let headers = new Headers({'Content-Type': 'application/json'});
     let options = new RequestOptions({headers: headers});
     let _data = JSON.stringify(
       {
         art:{
+          ofUser:user,
           title: _title,
           content: _content,
-          tags:oldTag
+          tags:oldTag,
+          status:stt
         },
         newTag:newTag
       }
@@ -44,12 +46,12 @@ export class ArticleService {
       .catch(this.handleError);
   }
 
-  //delete templates
-  //deleteRequest(request:Request):Observable<any> {
-  //  return this._http
-  //    .delete(this._requestsUrl.replace(':id', request._id))
-  //    .map((r) => r.json());
-  //}
+
+  deactivateArticle(id:any):Observable<any> {
+    return this._http
+      .delete(this._requestsUrl.replace(':id', id))
+      .map((r) => r.json());
+  }
 
   //deleteRequestById(id:string):Observable<any> {
   //  return this._http
@@ -57,21 +59,20 @@ export class ArticleService {
   //    .map((r) => r.json());
   //}
 
-  //updateRequest(request:Request):Observable<any> {
-  //  let header = new Headers;
-  //  let headers = new Headers({'Content-Type': 'application/json'});
-  //  let options = new RequestOptions({headers: headers});
-  //  let _request = JSON.stringify({
-  //    _id: '',
-  //    title: request.title,
-  //    description: request.description,
-  //    knowledgeId: request.knowledgeId
-  //  });
-  //  console.log(_request);
-  //  return this._http
-  //    .put(this._requestsUrl.replace(':id', request._id), _request, options)
-  //    .map((r) => r.json());
-  //}
+  updateArtById(art:any,newTag:string[],id:string):Observable<any> {
+    let header = new Headers;
+    let headers = new Headers({'Content-Type': 'application/json'});
+    let options = new RequestOptions({headers: headers});
+    let _data = JSON.stringify(
+        {
+          art:art,
+          newTag:newTag
+        }
+    );
+    return this._http
+      .put(this._requestsUrl.replace(':id', id), _data, options)
+      .map((r) => r.json());
+  }
   //
   //getRequestByKnowledgeId(id:string):Observable<any> {
   //  return this._http

@@ -1,5 +1,5 @@
 <div class="container article">
-    <div>
+    <div *ngIf="isEdited">
 
         <div class="titleDiv row">
             <div class="col-xs-12">
@@ -16,14 +16,11 @@
                 </select>
             </div>
         </div>
-
-            <div class="editor">
-                <ck-editor>ckeditor_inst_1</ck-editor>
-            </div>
-
-        <button type="button" id="bdOpenModal" data-toggle="modal" data-target="#ModalUploadImgCkeditor"
-                data-backdrop="static" data-keyboard="false" style="display: none;"></button>
-        <div id="ModalUploadImgCkeditor" class="modal fade">
+        <div class="editor">
+            <ck-editor>ckeditor_inst_1</ck-editor>
+        </div>
+        <button type="button" id="bdOpenModal" data-toggle="modal" data-target="#ModalUploadImgCkeditor" data-backdrop="static" data-keyboard="false" style="display: none;"></button>
+        <div id="ModalUploadImgCkeditor" class="modal fade" >
             <div class="modal-dialog">
 
                 <!-- Modal content-->
@@ -33,12 +30,11 @@
                         <h4 class="modal-title">Insert Image</h4>
                     </div>
                     <div class="modal-body">
-                        <div class="container">
+                        <div  class="container">
                             <div id="groupCollapse" class="panel-group">
-                                <div class="panel panel-default isLinkPn">
+                                <div  class="panel panel-default isLinkPn">
                                     <div class="panel-heading" style="cursor:pointer">
-                                        <h4 class="panel-title" data-toggle="collapse" data-parent="#groupCollapse"
-                                            href="#insertImgBody">
+                                        <h4 class="panel-title" data-toggle="collapse" data-parent="#groupCollapse" href="#insertImgBody">
                                             1. Insert image by link
                                         </h4>
                                     </div>
@@ -50,29 +46,22 @@
                                             </div>
                                         </div>
                                         <div class="panel-footer">
-                                            <button type="button" class="btn btn-success"
-                                                    (click)="insertLinkToBox(linkIsImg.value)" data-dismiss="modal">
-                                                Insert
-                                            </button>
+                                            <button type="button" class="btn btn-success" (click)="insertLinkToBox(linkIsImg.value)" data-dismiss="modal">Insert</button>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="panel panel-default isLinkPn">
                                     <div class="panel-heading" style="cursor:pointer">
-                                        <h4 class="panel-title" data-toggle="collapse" data-parent="#groupCollapse"
-                                            href="#uploadImgLocal">
+                                        <h4 class="panel-title" data-toggle="collapse" data-parent="#groupCollapse"  href="#uploadImgLocal">
                                             2. Upload image from your computer
                                         </h4>
                                     </div>
                                     <div id="uploadImgLocal" class="panel-collapse collapse">
                                         <div class="panel-body">
-                                            <input #fileInput id="uploadImg" (change)="fileChangeEvent($event)"
-                                                   type="file" accept="image/*"/>
+                                            <input #fileInput id="uploadImg" (change)="fileChangeEvent($event)" type="file" accept="image/*" />
                                         </div>
                                         <div class="panel-footer">
-                                            <button type="button" class="btn btn-success" (click)="uploadImageCk()"
-                                                    data-dismiss="modal">Upload and insert
-                                            </button>
+                                            <button type="button" class="btn btn-success" (click)="uploadImageCk()" data-dismiss="modal">Upload and insert</button>
                                         </div>
                                     </div>
                                 </div>
@@ -83,11 +72,20 @@
             </div>
         </div>
         <!--end editor -->
-        <p-autoComplete [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
-                        [multiple]="true" [(ngModel)]="tags">
+        <p-autoComplete  [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
+                         [multiple]="true" [(ngModel)]="tags" >
         </p-autoComplete>
         <!--end tags-->
-        <button type="button" class="btn btn-primary" (click)="postArticle(stt.value)">Submit article</button>
+        <button type="button" class="btn btn-primary" (click)="editArticle(stt.value)">Submit</button>
+    </div>
+    <div *ngIf="!isEdited">
+        <div class="noti-err">
+            <div class="row">
+                <div class="col-xs-offset-3 col-xs-9">
+                    <i class="fa fa-ban fa-3x" aria-hidden="true"></i><span class="text-noti-err-edit">Nội dung này không khả dụng</span>
+                </div>
+            </div>
+        </div>
     </div>
 
 </div>

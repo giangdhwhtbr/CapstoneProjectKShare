@@ -18,6 +18,7 @@ var login_1 = require("../components/front-end/user/login/login");
 var create_article_1 = require("../components/front-end/article/create-article");
 var detail_article_1 = require("../components/front-end/article/detail-article");
 var list_article_1 = require("../components/front-end/article/list-article");
+var edit_article_1 = require("../components/front-end/article/edit-article");
 var displayArtByTag_1 = require("../components/front-end/tag/displayArtByTag");
 var auth_1 = require('./auth');
 var auth_2 = require('../services/auth');
@@ -75,8 +76,12 @@ exports.KShareRoutes = [
                         component: create_article_1.CreateArticleComponent
                     },
                     {
-                        path: 'list',
+                        path: '',
                         component: list_article_1.listArticleComponent
+                    },
+                    {
+                        path: 'edit/:id',
+                        component: edit_article_1.EditArticleComponent
                     },
                     {
                         path: ':id',

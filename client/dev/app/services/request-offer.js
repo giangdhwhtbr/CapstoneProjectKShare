@@ -36,6 +36,17 @@ var OfferService = (function () {
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
+    OfferService.prototype.updateOffer = function (id, newstatus) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _offer = JSON.stringify({
+            status: newstatus
+        });
+        return this._http
+            .put(this._Url.replace(':id', id), _offer, options)
+            .map(function (r) { return r.json(); });
+    };
     OfferService.prototype.handleError = function (error) {
         console.error(error);
         return Observable_1.Observable.throw(error.json().error || 'Server error');

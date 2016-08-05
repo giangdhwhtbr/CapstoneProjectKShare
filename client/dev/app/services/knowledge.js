@@ -14,6 +14,7 @@ var KnowledgeService = (function () {
     function KnowledgeService(_http) {
         this._http = _http;
         this._knowledgesUrl = '/api/knowledges/:id';
+        this._knowledgeStatusUrl = '/api/knowledges/knowledgestatus/:id';
     }
     KnowledgeService.prototype.getAllKnowledges = function () {
         return this._http.get(this._knowledgesUrl.replace(':id', ''))
@@ -73,6 +74,17 @@ var KnowledgeService = (function () {
         }
         knowledges = parent;
         return parent;
+    };
+    KnowledgeService.prototype.changeKnowledgeStatus = function (knowledge) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _knowledge = JSON.stringify({
+            status: !knowledge.status,
+        });
+        return this._http
+            .put(this._knowledgeStatusUrl.replace(':id', knowledge._id), _knowledge, options)
+            .map(function (r) { return r.json(); });
     };
     KnowledgeService.prototype.handleError = function (error) {
         console.error(error);
