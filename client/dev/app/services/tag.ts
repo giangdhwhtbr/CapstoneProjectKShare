@@ -25,4 +25,18 @@ export class TagService {
             .catch(this.handleError);
     }
 
+    getTagsByIds(ids:string[]):Observable<any[]> {
+        let header = new Headers;
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+        let _data = JSON.stringify(
+            {
+                ids:ids
+            }
+        );
+        return this._http
+            .post('/api/tags/TagNames', _data, options)
+            .map((r) => r.json());
+    }
+
 }

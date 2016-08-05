@@ -43,11 +43,22 @@ var UpdateRequestComponent = (function () {
             _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
         });
         this._requestService.getRequestById(this.id).subscribe(function (request) {
-            _this.request = request;
-            _this.title = request.title;
-            _this.description = request.description;
-            _this._id = request._id;
-            _this.loadAllTags();
+            var ids = [];
+            ids = request.tags;
+            _this._tagService.getTagsByIds(ids).subscribe(function (tags) {
+                _this.request = request;
+                _this.title = request.title;
+                _this.description = request.description;
+                _this._id = request._id;
+                console.log(tags);
+                var nameArr = [];
+                for (var _i = 0; _i < tags.length; _i++) {
+                    var e = tags[_i];
+                    nameArr.push(e.name);
+                }
+                _this.tags = nameArr;
+                _this.loadAllTags();
+            });
         }, function (error) {
             console.log(error.text());
         });
@@ -95,11 +106,14 @@ var UpdateRequestComponent = (function () {
     UpdateRequestComponent.prototype.updateRequest = function (request) {
         var tags = [];
         tags = this.filterONTag();
-        this._requestService.updateRequest(request, tags[0], tags[1]).subscribe(function (request) {
-            console.log('update successed');
-        }, function (error) {
-            console.log(error.text());
-        });
+        console.log(request);
+        //this._requestService.updateRequest(request, tags[0], tags[1]).subscribe((request) => {
+        //        console.log('update successed');
+        //    },
+        //    (error) => {
+        //        console.log(error.text());
+        //    }
+        //);
         // this.router.navigateByUrl('admin/requests');
     };
     UpdateRequestComponent = __decorate([

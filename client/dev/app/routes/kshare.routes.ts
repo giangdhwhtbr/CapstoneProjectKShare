@@ -10,6 +10,7 @@ import { HomeComponent} from "../components/front-end/home/home";
 import { RequestListClientComponent } from "../components/front-end/request/request-list";
 import { RequestDetailClientComponent } from "../components/front-end/request/request-detail";
 import { RequestUpdateClientComponent } from "../components/front-end/request/request-update";
+import { UpdateRequestComponent } from "../components/back-end/request/request-update";
 import { RequestCategoryComponent } from "../components/front-end/request/request-search";
 import { CreateRequestComponent } from "../components/back-end/request/request-create";
 import { KSpaceComponent } from "../components/front-end/kspace/kspace";
@@ -139,7 +140,7 @@ export const KShareRoutes:RouterConfig = [
                             },
                             {
                                 path: 'update',
-                                component: RequestUpdateClientComponent
+                                component: UpdateRequestComponent
                             }
                         ]
                     },

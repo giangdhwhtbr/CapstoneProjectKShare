@@ -8,12 +8,14 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var tag_1 = require('../../../services/tag');
 var friend_list_1 = require('../shared/friend-list');
 var request_create_1 = require('../../back-end/request/request-create');
 var request_search_1 = require('./request-search');
 var ng2_pagination_1 = require('ng2-pagination');
 var RequestListClientComponent = (function () {
-    function RequestListClientComponent(_requestService, _auth, router) {
+    function RequestListClientComponent(_tagService, _requestService, _auth, router) {
+        this._tagService = _tagService;
         this._requestService = _requestService;
         this._auth = _auth;
         this.router = router;
@@ -35,6 +37,13 @@ var RequestListClientComponent = (function () {
         var _this = this;
         this.hide = false;
         this._requestService.getAllRequests().subscribe(function (requests) {
+            var arrIds = [];
+            for (var _i = 0; _i < requests.length; _i++) {
+                var e = requests[_i];
+                arrIds.concat(e.tags);
+            }
+            console.log(arrIds);
+            //this._tagService.getTagsByIds().subscribe();
             for (var i = 0; i < requests.length; i++) {
                 requests[i].createdAt = new Date(requests[i].createdAt);
                 requests[i].modifiedDate = new Date(requests[i].modifiedDate);
@@ -71,7 +80,7 @@ var RequestListClientComponent = (function () {
                 request_create_1.CreateRequestComponent,
                 request_search_1.RequestCategoryComponent
             ],
-            providers: [ng2_pagination_1.PaginationService],
+            providers: [ng2_pagination_1.PaginationService, tag_1.TagService],
             pipes: [ng2_pagination_1.PaginatePipe]
         })
     ], RequestListClientComponent);

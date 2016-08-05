@@ -14,7 +14,7 @@ import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  }
     selector: 'request-update-cli',
     templateUrl: 'client/dev/app/components/back-end/request/templates/request-update.html',
     directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES, AutoComplete],
-    providers:[TagService]
+    providers: [TagService]
 })
 
 export class UpdateRequestComponent {
@@ -64,12 +64,28 @@ export class UpdateRequestComponent {
 
         this._requestService.getRequestById(this.id).subscribe(
             (request) => {
-                this.request = request;
-                this.title = request.title;
-                this.description = request.description;
-                this._id = request._id;
 
-                this.loadAllTags();
+                let ids:string[] = [];
+                ids = request.tags;
+
+                this._tagService.getTagsByIds(ids).subscribe((tags)=> {
+
+                    this.request = request;
+                    this.title = request.title;
+                    this.description = request.description;
+                    this._id = request._id;
+
+                    console.log(tags);
+                    let nameArr :string[]=[];
+                    for (let e of tags) {
+                        nameArr.push(e.name);
+                    }
+                    this.tags=nameArr;
+
+                    this.loadAllTags();
+
+
+                });
             },
             (error) => {
                 console.log(error.text());
@@ -119,16 +135,17 @@ export class UpdateRequestComponent {
     }
 
     updateRequest(request) {
-        let tags:any[]=[];
+        let tags:any[] = [];
         tags = this.filterONTag();
-        this._requestService.updateRequest(request,tags[0],tags[1]).subscribe((request) => {
-                console.log('update successed');
-            },
-            (error) => {
-                console.log(error.text());
-            }
-        );
-       // this.router.navigateByUrl('admin/requests');
+        console.log(request);
+        //this._requestService.updateRequest(request, tags[0], tags[1]).subscribe((request) => {
+        //        console.log('update successed');
+        //    },
+        //    (error) => {
+        //        console.log(error.text());
+        //    }
+        //);
+        // this.router.navigateByUrl('admin/requests');
     }
 
 }
