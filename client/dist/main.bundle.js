@@ -5020,7 +5020,7 @@ webpackJsonp([2],[
 	            var arrIds = [];
 	            for (var _i = 0, requests_2 = requests; _i < requests_2.length; _i++) {
 	                var e = requests_2[_i];
-	                arrIds.concat(e.tags);
+	                arrIds = arrIds.concat(e.tags);
 	            }
 	            console.log(arrIds);
 	            //this._tagService.getTagsByIds().subscribe();

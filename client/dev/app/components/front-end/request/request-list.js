@@ -40,7 +40,7 @@ var RequestListClientComponent = (function () {
             var arrIds = [];
             for (var _i = 0; _i < requests.length; _i++) {
                 var e = requests[_i];
-                arrIds.concat(e.tags);
+                arrIds = arrIds.concat(e.tags);
             }
             console.log(arrIds);
             //this._tagService.getTagsByIds().subscribe();

@@ -63,7 +63,7 @@ export class RequestListClientComponent {
         this._requestService.getAllRequests().subscribe((requests) => {
             let arrIds:any[]=[];
             for(let e of requests){
-                arrIds.concat(e.tags);
+                arrIds=arrIds.concat(e.tags);
             }
 
             console.log(arrIds);
