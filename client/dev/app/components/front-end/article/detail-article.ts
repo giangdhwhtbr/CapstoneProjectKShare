@@ -6,7 +6,7 @@ import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 import { ArticleService } from '../../../services/article';
 import { AuthService } from '../../../services/auth';
-import * as $ from 'jquery';
+declare var $:any;
 
 @Component({
     selector: 'detail-article',

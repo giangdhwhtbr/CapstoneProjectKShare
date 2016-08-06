@@ -29,18 +29,25 @@ var RequestService = (function () {
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
-    RequestService.prototype.addRequest = function (request) {
+    RequestService.prototype.addRequest = function (request, oldTag, newTag) {
         var header = new http_1.Headers;
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
-        var _request = JSON.stringify({
-            title: request.title,
-            description: request.description,
-            knowledgeId: request.knowledgeId,
-            user: request.user
+        console.log(oldTag);
+        console.log(newTag);
+        var _data = JSON.stringify({
+            request: {
+                title: request.title,
+                description: request.description,
+                knowledgeId: request.knowledgeId,
+                user: request.user,
+                tags: oldTag
+            },
+            newTag: newTag
         });
+        console.log(_data);
         return this._http
-            .post(this._requestsUrl.replace(':id', ''), _request, options)
+            .post(this._requestsUrl.replace(':id', ''), _data, options)
             .map(function (r) { return r.json(); });
     };
     RequestService.prototype.getRequestById = function (id) {
@@ -59,19 +66,23 @@ var RequestService = (function () {
             .delete(this._requestsUrl.replace(':id', id))
             .map(function (r) { return r.json(); });
     };
-    RequestService.prototype.updateRequest = function (request) {
+    RequestService.prototype.updateRequest = function (request, oldTag, newTag) {
         var header = new http_1.Headers;
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
-        var _request = JSON.stringify({
-            _id: '',
-            title: request.title,
-            description: request.description,
-            knowledgeId: request.knowledgeId,
-            status: request.status
+        var _data = JSON.stringify({
+            rq: {
+                _id: '',
+                title: request.title,
+                description: request.description,
+                knowledgeId: request.knowledgeId,
+                status: request.status,
+                tags: oldTag
+            },
+            newTag: newTag
         });
         return this._http
-            .put(this._requestsUrl.replace(':id', request._id), _request, options)
+            .put(this._requestsUrl.replace(':id', request._id), _data, options)
             .map(function (r) { return r.json(); });
     };
     RequestService.prototype.getRequestByKnowledgeId = function (id) {

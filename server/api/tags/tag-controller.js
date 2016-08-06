@@ -34,6 +34,12 @@ module.exports = class TagController {
             });
         }
     }
+    static getTagByIds(req, res) {
+        TagDAO
+            .getTagByIds(req.body.ids)
+            .then(tags => res.status(200).json(tags))
+            .catch(error => res.status(400).json(error));
+    }
 
 
     static getArticleByTagId(req, res) {

@@ -20,8 +20,6 @@ var knowledge_update_1 = require('./back-end/knowledge/knowledge-update');
 var knowledges_list_1 = require('./back-end/knowledge/knowledges-list');
 var requests_list_1 = require("./back-end/request/requests-list");
 var request_update_1 = require("./back-end/request/request-update");
-var badword_update_1 = require("./back-end/badword/badword-update");
-var badwords_list_1 = require("./back-end/badword/badwords-list");
 var user_list_1 = require("./back-end/users/user-list");
 var reports_list_1 = require("./back-end/report/reports-list");
 var AdminComponent = (function () {
@@ -40,8 +38,6 @@ var AdminComponent = (function () {
                 user_list_1.UserListComponent,
                 requests_list_1.RequestListComponent,
                 knowledges_list_1.KnowledgeListComponent,
-                badwords_list_1.BadwordListComponent,
-                badword_update_1.UpdateBadwordComponent,
                 knowledge_update_1.UpdateKnowledgeComponent,
                 request_update_1.UpdateRequestComponent,
                 reports_list_1.ReportListComponent

@@ -28,12 +28,13 @@ module.exports = class RequestController {
                 .createRequest(_data.request)
                 .then((request) => {
                     // push the new tag to the new request
-                    for (let e of request) {
+                    for (let e of tags) {
                         request.tags.push(e);
                     }
+                    console.log(request);
                     request.save();
-                    res.status(201).json(request)
-                }).catch(error => res.status(400).json(_request));
+                    res.status(201).json(request);
+                }).catch(error => res.status(400).json(error));
         }).catch((error)=>res.status(400).json(error));
 
     }

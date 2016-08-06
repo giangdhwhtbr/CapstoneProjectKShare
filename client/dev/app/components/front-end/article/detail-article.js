@@ -12,7 +12,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
-var $ = require('jquery');
 var detailArticleComponent = (function () {
     function detailArticleComponent(router, route, _articleService) {
         var _this = this;

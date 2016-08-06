@@ -10,8 +10,6 @@ import { UpdateKnowledgeComponent } from '../components/back-end/knowledge/knowl
 import { KnowledgeListComponent } from '../components/back-end/knowledge/knowledges-list';
 import { RequestListComponent } from "../components/back-end/request/requests-list";
 import { UpdateRequestComponent } from "../components/back-end/request/request-update";
-import { UpdateBadwordComponent } from "../components/back-end/badword/badword-update";
-import { BadwordListComponent } from "../components/back-end/badword/badwords-list";
 import { UserListComponent } from "../components/back-end/users/user-list";
 import { ReportListComponent } from "../components/back-end/report/reports-list";
 
@@ -65,19 +63,6 @@ export const AdminRoutes: RouterConfig = [
           {
             path: ':id',
             component: UpdateRequestComponent
-          }
-        ]
-      },
-      {
-        path: 'badwords',
-        children: [
-          {
-            path: '',
-            component: BadwordListComponent
-          } ,
-          {
-            path: ':id',
-            component: UpdateBadwordComponent
           }
         ]
       },

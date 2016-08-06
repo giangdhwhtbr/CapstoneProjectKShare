@@ -14,6 +14,7 @@ var RequestCategoryComponent = (function () {
         this._requestService = _requestService;
         this.router = router;
         this.route = route;
+        //@Input() search: string;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
         this.route
             .params
@@ -26,19 +27,9 @@ var RequestCategoryComponent = (function () {
         //get templates from children category
         if (this.typee === "subcategory") {
             this._requestService.getRequestByKnowledgeId(this.identify).subscribe(function (requests) {
-                //format date
-                var formatDate = function (date) {
-                    if (date) {
-                        var newDate, day, month, year;
-                        year = date.substr(0, 4);
-                        month = date.substr(5, 2);
-                        day = date.substr(8, 2);
-                        return newDate = day + '/' + month + '/' + year;
-                    }
-                };
                 for (var i = 0; i < requests.length; i++) {
-                    requests[i].createdAt = formatDate(requests[i].createdAt);
-                    requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
+                    requests[i].createdAt = new Date(requests[i].createdAt);
+                    requests[i].modifiedDate = new Date(requests[i].modifiedDate);
                 }
                 _this.requests = requests;
             });
@@ -46,15 +37,6 @@ var RequestCategoryComponent = (function () {
         //get templates from parent category
         if (this.typee === "category") {
             this._requestService.getKnowledgeByParent(this.identify).subscribe(function (knowledges) {
-                var formatDate = function (date) {
-                    if (date) {
-                        var newDate, day, month, year;
-                        year = date.substr(0, 4);
-                        month = date.substr(5, 2);
-                        day = date.substr(8, 2);
-                        return newDate = day + '/' + month + '/' + year;
-                    }
-                };
                 var a = [];
                 _this.knowledges = knowledges;
                 for (var i = 0; i < _this.knowledges.length; i++) {
@@ -64,8 +46,11 @@ var RequestCategoryComponent = (function () {
                             a.push(requests[j]);
                         }
                         for (var i = 0; i < a.length; i++) {
-                            a[i].createdAt = formatDate(requests[i].createdAt);
-                            a[i].modifiedDate = formatDate(requests[i].modifiedDate);
+                            a[i].createdAt = new Date(requests[i].createdAt);
+                            a[i].modifiedDate = new Date(requests[i].modifiedDate);
+                            if (requests[i].status === 'pending') {
+                                requests[i].status = 'Đang chờ';
+                            }
                         }
                         _this.requests = a;
                     });
@@ -75,9 +60,6 @@ var RequestCategoryComponent = (function () {
             });
         }
     }
-    __decorate([
-        core_1.Input()
-    ], RequestCategoryComponent.prototype, "search");
     RequestCategoryComponent = __decorate([
         core_1.Component({
             selector: 'request-search-cli',

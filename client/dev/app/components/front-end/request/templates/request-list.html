@@ -5,14 +5,13 @@
       <input #text type="text" class="form-control" placeholder="Nhập nội dung tìm kiếm">
     </div>
     <button (click)="search(text.value)" type="submit" class="btn btn-small">Tìm kiếm</button>
-    <button *ngIf="userToken != null" type="button" class="btn btn-primary btn-small" data-toggle="modal" data-target="#modalCreateRequest">
+    <button *ngIf="userToken != null" type="button" class="btn btn-primary btn-small" [routerLink]="['/requests/create']">
       Create
     </button>
   </form>
   <br>
   <br>
   <div class="container" style="min-height:437px">
-    <request-create></request-create>
 
     <br>
     <!-- list all-->
@@ -20,27 +19,31 @@
       <div *ngIf="isExistRecord">
         <h1>Không có yêu cầu nào được tìm thấy</h1>
       </div>
-      <div class="panel panel-default card-rq" *ngFor="let request of requests| paginate:configRq">
+      <div class="panel panel-default card-rq" *ngFor="let e of _data">
         <div class="panel-body">
-          <a [routerLink]="['/requests/'+request._id+'/info']">
-            <p class="lead">{{request.title}}</p>
+          <a [routerLink]="['/requests/'+e.req._id+'/info']">
+            <p class="lead">{{e.req.title}}</p>
           </a>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-            Nội dung : {{request.description}}
+            Nội dung : {{e.req.description}}
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-            Người tạo :<a [routerLink]="['/user/',request.user]"> {{request.user}}</a>
+            Người tạo :<a [routerLink]="['/user/',e.req.user]"> {{e.req.user}}</a>
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-            Trạng thái : {{request.status}}
+            Trạng thái : {{e.req.status}}
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-            Ngày tạo : {{request.createdAt | date:"dd/MM/yyyy"}}
+            Ngày tạo : {{e.req.createdAt | date:"dd/MM/yyyy"}}
           </div>
+          <p>
+            tags :
+                <span *ngFor="let t of e.tags">
+                    <a [routerLink]="['/tag',t._id]">{{t.name}}</a>,
+                </span>
+          </p>
         </div>
       </div>
-      <pagination-controls [id]="configRq.id" (pageChange)="configRq.currentPage  = $event" directionLinks="true" autoHide="true">
-      </pagination-controls>
     </div>
     <!--<friend-list></friend-list>-->
   </div>

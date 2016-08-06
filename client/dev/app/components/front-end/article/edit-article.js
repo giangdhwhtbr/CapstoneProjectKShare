@@ -181,7 +181,8 @@ var EditArticleComponent = (function () {
     EditArticleComponent.prototype.editArticle = function (stt) {
         var _this = this;
         this.art.content = CKEDITOR.instances.editor1.getData();
-        var tags = this.filterONTag();
+        var tags = [];
+        tags = this.filterONTag();
         this.art.tags = tags[0];
         this.art.title = this.titelArticle;
         console.log(this.art.status);

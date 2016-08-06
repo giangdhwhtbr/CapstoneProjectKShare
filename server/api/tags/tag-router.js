@@ -6,14 +6,17 @@
 const TagController = require('./tag-controller');
 
 module.exports = class TagRoutes {
-  static init(router) {
-    router
-      .route('/api/tags')
-      .get(TagController.getAllTags)
-      .post(TagController.createTag);
+    static init(router) {
+        router
+            .route('/api/tags')
+            .get(TagController.getAllTags)
+            .post(TagController.createTag);
 
-    router.route('/api/tags/:id')
-      .delete(TagController.deleteTag)
-      .get(TagController.getArticleByTagId);
-  }
+        router.route('/api/tags/:id')
+            .delete(TagController.deleteTag)
+            .get(TagController.getArticleByTagId);
+
+        router.route('/api/tags/TagNames')
+            .post(TagController.getTagByIds);
+    }
 }
