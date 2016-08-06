@@ -20,6 +20,7 @@ var RequestListClientComponent = (function () {
         this._auth = _auth;
         this.router = router;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
+        this._data = [];
         this.configRq = {
             id: 'rq',
             itemsPerPage: 10,
@@ -37,22 +38,41 @@ var RequestListClientComponent = (function () {
         var _this = this;
         this.hide = false;
         this._requestService.getAllRequests().subscribe(function (requests) {
+            //get all tag's ids of list request
             var arrIds = [];
             for (var _i = 0; _i < requests.length; _i++) {
                 var e = requests[_i];
-                arrIds = arrIds.concat(e.tags);
-            }
-            console.log(arrIds);
-            //this._tagService.getTagsByIds().subscribe();
-            for (var i = 0; i < requests.length; i++) {
-                requests[i].createdAt = new Date(requests[i].createdAt);
-                requests[i].modifiedDate = new Date(requests[i].modifiedDate);
-                requests[i].link = requests[i]._id + '/info';
-                if (requests[i].status === 'pending') {
-                    requests[i].status = 'Đang chờ';
+                for (var _a = 0, _b = e.tags; _a < _b.length; _a++) {
+                    var t = _b[_a];
+                    var i = arrIds.indexOf(t);
+                    if (i < 0) {
+                        arrIds.push(t);
+                    }
                 }
             }
-            _this.requests = requests;
+            //get all tag relate to ids
+            _this._tagService.getTagsByIds(arrIds).subscribe(function (tags) {
+                for (var i = 0; i < requests.length; i++) {
+                    _this._data.push({
+                        req: requests[i],
+                        tags: []
+                    });
+                    requests[i].createdAt = new Date(requests[i].createdAt);
+                    requests[i].modifiedDate = new Date(requests[i].modifiedDate);
+                    requests[i].link = requests[i]._id + '/info';
+                    if (requests[i].status === 'pending') {
+                        requests[i].status = 'Đang chờ';
+                    }
+                    for (var _i = 0; _i < tags.length; _i++) {
+                        var t = tags[_i];
+                        if (requests[i].tags.indexOf(t._id) > -1) {
+                            _this._data[i].tags.push(t);
+                        }
+                    }
+                }
+                console.log(_this._data);
+                _this.requests = requests;
+            });
         });
     };
     RequestListClientComponent.prototype.search = function (search) {

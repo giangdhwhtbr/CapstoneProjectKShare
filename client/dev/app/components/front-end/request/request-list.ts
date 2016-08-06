@@ -39,6 +39,12 @@ export class RequestListClientComponent {
     roleToken:string;
     userToken:string;
     link:string;
+
+    requests:Request[];
+    searchs:Request[];
+
+    _data:any[]=[];
+
     public configRq:IPaginationInstance = {
         id: 'rq',
         itemsPerPage: 10,
@@ -55,30 +61,51 @@ export class RequestListClientComponent {
         this.userToken = localStorage.getItem('username');
     }
 
-    requests:Request[];
-    searchs:Request[];
 
     ngOnInit():void {
         this.hide = false;
         this._requestService.getAllRequests().subscribe((requests) => {
+
+            //get all tag's ids of list request
             let arrIds:any[]=[];
+
             for(let e of requests){
-                arrIds=arrIds.concat(e.tags);
-            }
-
-            console.log(arrIds);
-
-            //this._tagService.getTagsByIds().subscribe();
-
-            for (var i = 0; i < requests.length; i++) {
-                requests[i].createdAt = new Date(requests[i].createdAt);
-                requests[i].modifiedDate = new Date(requests[i].modifiedDate);
-                requests[i].link = requests[i]._id + '/info';
-                if (requests[i].status === 'pending') {
-                    requests[i].status = 'Đang chờ';
+                for(let t of e.tags){
+                    let i = arrIds.indexOf(t);
+                    if(i<0){
+                        arrIds.push(t);
+                    }
                 }
             }
-            this.requests = requests;
+
+            //get all tag relate to ids
+            this._tagService.getTagsByIds(arrIds).subscribe((tags)=>{
+
+                for (var i = 0; i < requests.length; i++) {
+
+                    this._data.push({
+                        req:requests[i],
+                        tags:[]
+                    });
+
+                    requests[i].createdAt = new Date(requests[i].createdAt);
+                    requests[i].modifiedDate = new Date(requests[i].modifiedDate);
+                    requests[i].link = requests[i]._id + '/info';
+                    if (requests[i].status === 'pending') {
+                        requests[i].status = 'Đang chờ';
+                    }
+
+                    for(let t of tags){
+                        if( requests[i].tags.indexOf(t._id)>-1){
+                            this._data[i].tags.push(t);
+                        }
+                    }
+                }
+                console.log(this._data);
+                this.requests = requests;
+            });
+
+
         });
     }
 

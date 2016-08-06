@@ -66,6 +66,12 @@
                         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
                             Ngày tạo : {{request.createdAt | date:"dd/MM/yyyy"}}
                         </div>
+                        <!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">-->
+                            <!--tags :-->
+                                    <!--<span *ngFor="let t of _dataTags[requests.indexOf(request)]">-->
+                                        <!--<a *ngIf="t" [routerLink]="['/tag',t._id]">{{t.name}}</a>,-->
+                                    <!--</span>-->
+                        <!--</div>-->
                     </div>
                 </div>
                 <pagination-controls [id]="configRq.id" (pageChange)="configRq.currentPage  = $event"
