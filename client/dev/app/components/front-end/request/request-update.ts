@@ -12,7 +12,7 @@ import { KnowledgeService } from '../../../services/knowledge';
 @Component({
   selector: 'request-update-cli',
   templateUrl: 'client/dev/app/components/front-end/request/templates/request-update.html',
-  styleUrls:  ['client/dev/app/components/front-end/request/styles/request.css'],
+  styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
   directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES]
 })
 
@@ -31,14 +31,14 @@ export class RequestUpdateClientComponent {
   knowledgeId: string;
 
   constructor(
-      @Inject(FormBuilder)
-      fb: FormBuilder,
-      @Inject(RequestService)
-      private _requestService: RequestService,
-      public router: Router,
-      private route: ActivatedRoute,
-      @Inject(KnowledgeService)
-      private _knowledgeService: KnowledgeService ) {
+    @Inject(FormBuilder)
+    fb: FormBuilder,
+    @Inject(RequestService)
+    private _requestService: RequestService,
+    public router: Router,
+    private route: ActivatedRoute,
+    @Inject(KnowledgeService)
+    private _knowledgeService: KnowledgeService) {
 
     this.route
       .params
@@ -55,8 +55,8 @@ export class RequestUpdateClientComponent {
     });
   }
 
-  ngOnInit():void {  
-    
+  ngOnInit(): void {
+
     //get all back.knowledge
     this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
       this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
@@ -64,30 +64,30 @@ export class RequestUpdateClientComponent {
 
     this._requestService.getRequestById(this.id).subscribe(
       (request) => {
-        if(this.userToken !== request.user){
+        if (this.userToken !== request.user) {
           this.isCreatedUser = false;
-        }else{
+        } else {
           this.isCreatedUser = true;
         }
         this.request = request;
         this.title = request.title;
         this._id = request._id;
         this.description = request.description;
-    },
+      },
       (error) => {
         console.log(error.text());
       }
     );
   }
 
-  updateRequest(request) {
-    this._requestService.updateRequest(request).subscribe((request)=> {
+  updateRequest(request: Request) {
+    this._requestService.updateRequest(request).subscribe((request) => {
       console.log('update successed');
       this.router.navigateByUrl('requests/' + this._id + '/info');
     },
-    (error) => {
-      console.log(error.text());
-    }
+      (error) => {
+        console.log(error.text());
+      }
     );
     //window.location.href = '/kshare/requests/'+this.id;
   }
