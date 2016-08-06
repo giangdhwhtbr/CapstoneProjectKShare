@@ -2338,6 +2338,7 @@ webpackJsonp([2],[
 	        this._requestService = _requestService;
 	        this.router = router;
 	        this.route = route;
+	        //@Input() search: string;
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
 	        this.route
 	            .params
@@ -2350,19 +2351,9 @@ webpackJsonp([2],[
 	        //get templates from children category
 	        if (this.typee === "subcategory") {
 	            this._requestService.getRequestByKnowledgeId(this.identify).subscribe(function (requests) {
-	                //format date
-	                var formatDate = function (date) {
-	                    if (date) {
-	                        var newDate, day, month, year;
-	                        year = date.substr(0, 4);
-	                        month = date.substr(5, 2);
-	                        day = date.substr(8, 2);
-	                        return newDate = day + '/' + month + '/' + year;
-	                    }
-	                };
 	                for (var i = 0; i < requests.length; i++) {
-	                    requests[i].createdAt = formatDate(requests[i].createdAt);
-	                    requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
+	                    requests[i].createdAt = new Date(requests[i].createdAt);
+	                    requests[i].modifiedDate = new Date(requests[i].modifiedDate);
 	                }
 	                _this.requests = requests;
 	            });
@@ -2370,15 +2361,6 @@ webpackJsonp([2],[
 	        //get templates from parent category
 	        if (this.typee === "category") {
 	            this._requestService.getKnowledgeByParent(this.identify).subscribe(function (knowledges) {
-	                var formatDate = function (date) {
-	                    if (date) {
-	                        var newDate, day, month, year;
-	                        year = date.substr(0, 4);
-	                        month = date.substr(5, 2);
-	                        day = date.substr(8, 2);
-	                        return newDate = day + '/' + month + '/' + year;
-	                    }
-	                };
 	                var a = [];
 	                _this.knowledges = knowledges;
 	                for (var i = 0; i < _this.knowledges.length; i++) {
@@ -2388,8 +2370,11 @@ webpackJsonp([2],[
 	                            a.push(requests[j]);
 	                        }
 	                        for (var i = 0; i < a.length; i++) {
-	                            a[i].createdAt = formatDate(requests[i].createdAt);
-	                            a[i].modifiedDate = formatDate(requests[i].modifiedDate);
+	                            a[i].createdAt = new Date(requests[i].createdAt);
+	                            a[i].modifiedDate = new Date(requests[i].modifiedDate);
+	                            if (requests[i].status === 'pending') {
+	                                requests[i].status = 'Đang chờ';
+	                            }
 	                        }
 	                        _this.requests = a;
 	                    });
@@ -2399,10 +2384,6 @@ webpackJsonp([2],[
 	            });
 	        }
 	    }
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], RequestCategoryComponent.prototype, "search", void 0);
 	    RequestCategoryComponent = __decorate([
 	        core_1.Component({
 	            selector: 'request-search-cli',
@@ -4992,31 +4973,24 @@ webpackJsonp([2],[
 	var request_search_1 = __webpack_require__(284);
 	var auth_1 = __webpack_require__(41);
 	var router_2 = __webpack_require__(5);
-	var ng2_pagination_1 = __webpack_require__(209);
 	var RequestListClientComponent = (function () {
-	    function RequestListClientComponent(_tagService, _requestService, _auth, router) {
-	        this._tagService = _tagService;
+	    function RequestListClientComponent(_requestService, _tagService, _auth, router) {
 	        this._requestService = _requestService;
+	        this._tagService = _tagService;
 	        this._auth = _auth;
 	        this.router = router;
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
+	        this.isExistRecord = false;
 	        this._data = [];
-	        this.configRq = {
-	            id: 'rq',
-	            itemsPerPage: 10,
-	            currentPage: 1
-	        };
-	        this.configRs = {
-	            id: 'rs',
-	            itemsPerPage: 10,
-	            currentPage: 1
-	        };
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
 	    RequestListClientComponent.prototype.ngOnInit = function () {
+	        // this.hide = false;
+	        this.getAllRequests();
+	    };
+	    RequestListClientComponent.prototype.getAllRequests = function () {
 	        var _this = this;
-	        this.hide = false;
 	        this._requestService.getAllRequests().subscribe(function (requests) {
 	            //get all tag's ids of list request
 	            var arrIds = [];
@@ -5057,16 +5031,26 @@ webpackJsonp([2],[
 	    };
 	    RequestListClientComponent.prototype.search = function (search) {
 	        var _this = this;
-	        this._requestService.searchRequest(search).subscribe(function (requests) {
-	            for (var i = 0; i < requests.length; i++) {
-	                requests[i].createdAt = new Date(requests[i].createdAt);
-	                if (requests[i].status === 'pending') {
-	                    requests[i].status = 'Đang chờ';
+	        if (search === '') {
+	            this.getAllRequests();
+	        }
+	        else {
+	            this._requestService.searchRequest(search).subscribe(function (requests) {
+	                for (var i = 0; i < requests.length; i++) {
+	                    requests[i].createdAt = new Date(requests[i].createdAt);
+	                    if (requests[i].status === 'pending') {
+	                        requests[i].status = 'Đang chờ';
+	                    }
 	                }
-	            }
-	            _this.searchs = requests;
-	            _this.hide = true;
-	        });
+	                if (requests.length === 0) {
+	                    _this.isExistRecord = true;
+	                }
+	                else {
+	                    _this.isExistRecord = false;
+	                }
+	                _this.requests = requests;
+	            });
+	        }
 	    };
 	    RequestListClientComponent = __decorate([
 	        core_1.Component({
@@ -5074,16 +5058,14 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-list.html',
 	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
 	            directives: [
-	                ng2_pagination_1.PaginationControlsCmp,
 	                router_1.ROUTER_DIRECTIVES,
 	                friend_list_1.FriendListComponent,
 	                request_create_1.CreateRequestComponent,
 	                request_search_1.RequestCategoryComponent
 	            ],
-	            providers: [ng2_pagination_1.PaginationService, tag_1.TagService],
-	            pipes: [ng2_pagination_1.PaginatePipe]
+	            providers: [tag_1.TagService]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object, (typeof (_d = typeof router_2.Router !== 'undefined' && router_2.Router) === 'function' && _d) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object, (typeof (_d = typeof router_2.Router !== 'undefined' && router_2.Router) === 'function' && _d) || Object])
 	    ], RequestListClientComponent);
 	    return RequestListClientComponent;
 	    var _a, _b, _c, _d;

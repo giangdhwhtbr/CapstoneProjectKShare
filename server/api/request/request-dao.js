@@ -11,7 +11,7 @@ requestSchema.statics.getAll = () => {
     return new Promise((resolve, reject) => {
 
         Request
-            .find({status: {$nin: ['deactive', 'accepted']}})
+            .find({ status: { $nin: ['deactive', 'accepted'] } })
             .exec((err, requests) => {
                 err ? reject(err)
                     : resolve(requests);
@@ -21,15 +21,15 @@ requestSchema.statics.getAll = () => {
 
 //get all back.request dao function
 requestSchema.statics.getAllRequestForAdmin = () => {
-  return new Promise((resolve, reject) => {
-    
-    Request
-      .find()
-      .exec((err, requests) => {
-        err ? reject(err)
-          : resolve(requests);
-      });
-  });
+    return new Promise((resolve, reject) => {
+
+        Request
+            .find()
+            .exec((err, requests) => {
+                err ? reject(err)
+                    : resolve(requests);
+            });
+    });
 }
 
 //get back.request by id dao function
@@ -54,9 +54,12 @@ requestSchema.statics.fullTextSearchRequest = (text) => {
     return new Promise((resolve, reject) => {
 
         Request
-            .find({'$text': {'$search': text}},
-                {score: {$meta: "textScore"}}
-            ).sort({score: {$meta: "textScore"}})
+            .find({
+                status: { $nin: ['deactive', 'accepted'] },
+                '$text': { '$search': text }
+            },
+            { score: { $meta: "textScore" } }
+            ).sort({ score: { $meta: "textScore" } })
             .exec((err, requests) => {
                 err ? reject(err)
                     : resolve(requests);
@@ -74,6 +77,7 @@ requestSchema.statics.getRequestByKnowledgeId = (id) => {
         }
         Request
             .find({
+                status: { $nin: ['deactive', 'accepted'] },
                 'knowledgeId': id
             })
             .exec((err, requests) => {
@@ -145,7 +149,7 @@ requestSchema.statics.updateRequestById = (requestinfo) => {
     });
 }
 
-requestSchema.plugin(relationship, {relationshipPathName: 'tags'});
+requestSchema.plugin(relationship, { relationshipPathName: 'tags' });
 
 const Request = mongoose.model('Request', requestSchema);
 

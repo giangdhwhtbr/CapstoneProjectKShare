@@ -14,7 +14,6 @@ import { CreateRequestComponent } from '../../back-end/request/request-create';
 import { RequestCategoryComponent} from './request-search';
 import { AuthService } from '../../../services/auth';
 import { Router } from "@angular/router";
-import { PaginationControlsCmp, PaginatePipe, PaginationService, IPaginationInstance } from 'ng2-pagination';
 
 
 @Component({
@@ -22,70 +21,58 @@ import { PaginationControlsCmp, PaginatePipe, PaginationService, IPaginationInst
     templateUrl: 'client/dev/app/components/front-end/request/templates/request-list.html',
     styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
     directives: [
-        PaginationControlsCmp,
         ROUTER_DIRECTIVES,
         FriendListComponent,
         CreateRequestComponent,
         RequestCategoryComponent
     ],
-    providers: [PaginationService, TagService],
-    pipes: [PaginatePipe]
+    providers: [ TagService]
 })
 
 export class RequestListClientComponent {
     pageTitle:string = 'Welcome to Knowledge Sharing Network';
     text:string;
-    hide:boolean;
+    isExistRecord:boolean = false;
     roleToken:string;
     userToken:string;
     link:string;
+    _data:any[] = [];
 
-    requests:Request[];
-    searchs:Request[];
-
-    _data:any[]=[];
-
-    public configRq:IPaginationInstance = {
-        id: 'rq',
-        itemsPerPage: 10,
-        currentPage: 1
-    };
-    public configRs:IPaginationInstance = {
-        id: 'rs',
-        itemsPerPage: 10,
-        currentPage: 1
-    };
-
-    constructor(private _tagService:TagService, private _requestService:RequestService, private _auth:AuthService, private router:Router) {
+    constructor(private _requestService:RequestService, private _tagService:TagService, private _auth:AuthService, private router:Router) {
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
     }
 
+    requests:Request[];
 
     ngOnInit():void {
-        this.hide = false;
+        // this.hide = false;
+        this.getAllRequests();
+    }
+
+    getAllRequests() {
         this._requestService.getAllRequests().subscribe((requests) => {
 
             //get all tag's ids of list request
-            let arrIds:any[]=[];
+            let arrIds:any[] = [];
 
-            for(let e of requests){
-                for(let t of e.tags){
+            for (let e of requests) {
+                for (let t of e.tags) {
                     let i = arrIds.indexOf(t);
-                    if(i<0){
+                    if (i < 0) {
                         arrIds.push(t);
                     }
                 }
             }
 
             //get all tag relate to ids
-            this._tagService.getTagsByIds(arrIds).subscribe((tags)=>{
+            this._tagService.getTagsByIds(arrIds).subscribe((tags)=> {
 
                 for (var i = 0; i < requests.length; i++) {
 
                     this._data.push({
-                        req:requests[i],
-                        tags:[]
+                        req: requests[i],
+                        tags: []
                     });
 
                     requests[i].createdAt = new Date(requests[i].createdAt);
@@ -95,8 +82,8 @@ export class RequestListClientComponent {
                         requests[i].status = 'Đang chờ';
                     }
 
-                    for(let t of tags){
-                        if( requests[i].tags.indexOf(t._id)>-1){
+                    for (let t of tags) {
+                        if (requests[i].tags.indexOf(t._id) > -1) {
                             this._data[i].tags.push(t);
                         }
                     }
@@ -110,16 +97,24 @@ export class RequestListClientComponent {
     }
 
     search(search:string) {
-        this._requestService.searchRequest(search).subscribe((requests) => {
-            for (var i = 0; i < requests.length; i++) {
-                requests[i].createdAt = new Date(requests[i].createdAt);
-                if (requests[i].status === 'pending') {
-                    requests[i].status = 'Đang chờ';
+        if (search === '') {
+            this.getAllRequests();
+        } else {
+            this._requestService.searchRequest(search).subscribe((requests) => {
+                for (var i = 0; i < requests.length; i++) {
+                    requests[i].createdAt = new Date(requests[i].createdAt);
+                    if (requests[i].status === 'pending') {
+                        requests[i].status = 'Đang chờ';
+                    }
                 }
-            }
-            this.searchs = requests;
-            this.hide = true;
-        });
+                if (requests.length === 0) {
+                    this.isExistRecord = true;
+                } else {
+                    this.isExistRecord = false;
+                }
+                this.requests = requests;
+            });
+        }
     }
 
 }
