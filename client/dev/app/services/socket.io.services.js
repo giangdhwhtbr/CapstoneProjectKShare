@@ -3,7 +3,7 @@ var SocketIOService = (function () {
     function SocketIOService() {
     }
     SocketIOService.prototype.ioInit = function () {
-        socket = io('http://localhost:8081');
+        socket = io('http://localhost:80');
         return socket;
     };
     SocketIOService.prototype.ioSubscribeRoom = function (room) {

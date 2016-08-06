@@ -1047,7 +1047,7 @@ webpackJsonp([2],[
 	            .map(function (r) { return r.json(); });
 	    };
 	    NotificationService.prototype.alertNotification = function (title, user, link) {
-	        var socket = io('https://localhost:8081');
+	        var socket = io('https://localhost:80');
 	        socket.emit('send notification', {
 	            title: title,
 	            link: link,
@@ -2205,17 +2205,19 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var common_1 = __webpack_require__(8);
+	var router_1 = __webpack_require__(5);
 	var knowledge_1 = __webpack_require__(48);
 	var requests_1 = __webpack_require__(59);
 	var auth_1 = __webpack_require__(41);
 	var tag_1 = __webpack_require__(97);
 	var primeng_1 = __webpack_require__(146);
 	var CreateRequestComponent = (function () {
-	    function CreateRequestComponent(_tagService, fb, _requestService, _knowledgeService, _authService) {
+	    function CreateRequestComponent(_tagService, fb, _requestService, _knowledgeService, _authService, router) {
 	        this._tagService = _tagService;
 	        this._requestService = _requestService;
 	        this._knowledgeService = _knowledgeService;
 	        this._authService = _authService;
+	        this.router = router;
 	        this.user = localStorage.getItem('username');
 	        this.roleToken = localStorage.getItem('userrole');
 	        this.requestForm = fb.group({
@@ -2275,14 +2277,15 @@ webpackJsonp([2],[
 	        });
 	    };
 	    CreateRequestComponent.prototype.addRequest = function (request) {
+	        var _this = this;
 	        var tags = [];
 	        tags = this.filterONTag();
 	        this._requestService.addRequest(request, tags[0], tags[1]).subscribe(function (request) {
 	            console.log(request);
+	            _this.router.navigateByUrl('/requests/' + request._id + '/info');
 	        }, function (error) {
 	            console.log(error.text());
 	        });
-	        window.location.reload();
 	    };
 	    CreateRequestComponent = __decorate([
 	        core_1.Component({
@@ -2294,10 +2297,10 @@ webpackJsonp([2],[
 	        }),
 	        __param(1, core_1.Inject(common_1.FormBuilder)),
 	        __param(2, core_1.Inject(requests_1.RequestService)), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _a) || Object, (typeof (_b = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _b) || Object, (typeof (_c = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _e) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _a) || Object, (typeof (_b = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _b) || Object, (typeof (_c = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _f) || Object])
 	    ], CreateRequestComponent);
 	    return CreateRequestComponent;
-	    var _a, _b, _c, _d, _e;
+	    var _a, _b, _c, _d, _e, _f;
 	}());
 	exports.CreateRequestComponent = CreateRequestComponent;
 	
@@ -2424,15 +2427,6 @@ webpackJsonp([2],[
 	        this.route = route;
 	        this._userService = _userService;
 	        this._noti = _noti;
-	        this.formatDate = function (date) {
-	            if (date) {
-	                var newDate, day, month, year;
-	                year = date.substr(0, 4);
-	                month = date.substr(5, 2);
-	                day = date.substr(8, 2);
-	                return newDate = day + '/' + month + '/' + year;
-	            }
-	        };
 	        this.route
 	            .params
 	            .subscribe(function (params) {
@@ -2446,6 +2440,7 @@ webpackJsonp([2],[
 	        this.linkImg = '';
 	        this._userService.getUserByUserName(this.name).subscribe(function (user) {
 	            _this.userProfile = user;
+	            console.log(_this.userProfile);
 	            _this.linkImg = user.linkImg;
 	        }, function (error) {
 	            console.log(error);
@@ -4609,7 +4604,7 @@ webpackJsonp([2],[
 	        });
 	        this.username = localStorage.getItem('username');
 	        this.messages = [];
-	        this.socket = io('https://localhost:8081');
+	        this.socket = io('https://localhost:80');
 	        this.socket.emit('subscribe', this.id);
 	        this.socket.on("chat_message", function (dataReturn) {
 	            var isSender = false;
@@ -4989,6 +4984,7 @@ webpackJsonp([2],[
 	        this.router = router;
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
 	        this.isExistRecord = false;
+	        this.arrIds = [];
 	        this._data = [];
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
@@ -4999,21 +4995,21 @@ webpackJsonp([2],[
 	    };
 	    RequestListClientComponent.prototype.getAllRequests = function () {
 	        var _this = this;
+	        this._data = [];
 	        this._requestService.getAllRequests().subscribe(function (requests) {
 	            //get all tag's ids of list request
-	            var arrIds = [];
 	            for (var _i = 0, requests_2 = requests; _i < requests_2.length; _i++) {
 	                var e = requests_2[_i];
 	                for (var _a = 0, _b = e.tags; _a < _b.length; _a++) {
 	                    var t = _b[_a];
-	                    var i = arrIds.indexOf(t);
+	                    var i = _this.arrIds.indexOf(t);
 	                    if (i < 0) {
-	                        arrIds.push(t);
+	                        _this.arrIds.push(t);
 	                    }
 	                }
 	            }
 	            //get all tag relate to ids
-	            _this._tagService.getTagsByIds(arrIds).subscribe(function (tags) {
+	            _this._tagService.getTagsByIds(_this.arrIds).subscribe(function (tags) {
 	                for (var i = 0; i < requests.length; i++) {
 	                    _this._data.push({
 	                        req: requests[i],
@@ -5045,19 +5041,45 @@ webpackJsonp([2],[
 	        }
 	        else {
 	            this._requestService.searchRequest(search).subscribe(function (requests) {
-	                for (var i = 0; i < requests.length; i++) {
-	                    requests[i].createdAt = new Date(requests[i].createdAt);
-	                    if (requests[i].status === 'pending') {
-	                        requests[i].status = 'Đang chờ';
+	                _this.arrIds = [];
+	                //get all tag's ids of list request
+	                for (var _i = 0, requests_3 = requests; _i < requests_3.length; _i++) {
+	                    var e = requests_3[_i];
+	                    for (var _a = 0, _b = e.tags; _a < _b.length; _a++) {
+	                        var t = _b[_a];
+	                        var i = _this.arrIds.indexOf(t);
+	                        if (i < 0) {
+	                            _this.arrIds.push(t);
+	                        }
 	                    }
 	                }
-	                if (requests.length === 0) {
-	                    _this.isExistRecord = true;
-	                }
-	                else {
-	                    _this.isExistRecord = false;
-	                }
-	                _this.requests = requests;
+	                //get all tag relate to ids
+	                _this._tagService.getTagsByIds(_this.arrIds).subscribe(function (tags) {
+	                    _this._data = [];
+	                    for (var i = 0; i < requests.length; i++) {
+	                        _this._data.push({
+	                            req: requests[i],
+	                            tags: []
+	                        });
+	                        requests[i].createdAt = new Date(requests[i].createdAt);
+	                        if (requests[i].status === 'pending') {
+	                            requests[i].status = 'Đang chờ';
+	                        }
+	                        for (var _i = 0, tags_2 = tags; _i < tags_2.length; _i++) {
+	                            var t = tags_2[_i];
+	                            if (requests[i].tags.indexOf(t._id) > -1) {
+	                                _this._data[i].tags.push(t);
+	                            }
+	                        }
+	                    }
+	                    if (requests.length === 0) {
+	                        _this.isExistRecord = true;
+	                    }
+	                    else {
+	                        _this.isExistRecord = false;
+	                    }
+	                    _this.requests = requests;
+	                });
 	            });
 	        }
 	    };
@@ -7561,7 +7583,7 @@ webpackJsonp([2],[
 	        var strokeWidth = 1;
 	        var colorStore;
 	        var room = this.id;
-	        var socket = io('https://localhost:8081');
+	        var socket = io('https://localhost:80');
 	        socket.emit('subscribe', room);
 	        var chalkboard = document.getElementById('chalkboard');
 	        // Initiate the paper at canvas id="chalkboard"
@@ -8127,12 +8149,12 @@ webpackJsonp([2],[
 	    HeaderComponent.prototype.ngOnInit = function () {
 	        var _this = this;
 	        this.link = '';
-	        this.socket = io('https://localhost:8081');
+	        this.socket = io('https://localhost:80');
 	        this.socket.on('receive notification', function (data) {
 	            if (localStorage.getItem('username') === data.data.user) {
 	                //audio of notification
 	                var audio = new Audio();
-	                audio.src = "https://localhost:8081/client/dev/asserts/gets-in-the-way.mp3";
+	                audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
 	                audio.load();
 	                audio.play();
 	                _this.getNotificationByUser(data.data.user);

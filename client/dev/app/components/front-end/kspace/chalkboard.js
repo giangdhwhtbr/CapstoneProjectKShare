@@ -51,7 +51,7 @@ var ChalkBoardComponent = (function () {
         var strokeWidth = 1;
         var colorStore;
         var room = this.id;
-        var socket = io('https://localhost:8081');
+        var socket = io('https://localhost:80');
         socket.emit('subscribe', room);
         var chalkboard = document.getElementById('chalkboard');
         // Initiate the paper at canvas id="chalkboard"

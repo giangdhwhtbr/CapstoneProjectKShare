@@ -2,7 +2,7 @@ declare var io:any;
 var socket;
 export class SocketIOService {
     ioInit() {
-        socket = io('http://localhost:8081');
+        socket = io('http://localhost:80');
         return socket;
     }
 

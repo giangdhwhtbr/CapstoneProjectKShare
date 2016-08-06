@@ -42,12 +42,12 @@ export class HeaderComponent {
   ngOnInit(): void {
 
     this.link = '';
-    this.socket = io('https://localhost:8081');
+    this.socket = io('https://localhost:80');
     this.socket.on('receive notification', (data) => {
       if (localStorage.getItem('username') === data.data.user) {
         //audio of notification
         var audio = new Audio();
-        audio.src = "https://localhost:8081/client/dev/asserts/gets-in-the-way.mp3";
+        audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
         audio.load();
         audio.play();
         this.getNotificationByUser(data.data.user);
