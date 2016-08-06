@@ -77,6 +77,7 @@ export class RequestListClientComponent {
 
   search(search: string) {
     if (search === '') {
+      this.isExistRecord = false;
       this.getAllRequests();
     } else {
       this._requestService.searchRequest(search).subscribe((requests) => {
@@ -91,6 +92,7 @@ export class RequestListClientComponent {
         }else{
           this.isExistRecord = false;
         }
+        console.log(this.isExistRecord);
         this.requests = requests;
       });
     }

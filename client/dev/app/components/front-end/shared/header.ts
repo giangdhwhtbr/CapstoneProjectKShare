@@ -28,6 +28,7 @@ export class HeaderComponent {
   link: string;
   isDiffirent: boolean;
   socket: any;
+  count: number = 2;
 
   notifications: Notification[];
 

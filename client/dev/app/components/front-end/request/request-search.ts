@@ -19,12 +19,10 @@ import { RequestService } from '../../../services/requests';
 })
 
 export class RequestCategoryComponent {
-  //@Input() search: string;
   pageTitle: string = 'Welcome to Knowledge Sharing Network';
 
-  // id: string;
-  // type: string;
   identify: string;
+  isExistRecord: boolean;
   typee: string;
   constructor(private _requestService: RequestService, public router: Router,
     private route: ActivatedRoute) {
@@ -41,7 +39,12 @@ export class RequestCategoryComponent {
     if (this.typee === "subcategory") {
       this._requestService.getRequestByKnowledgeId(this.identify).subscribe(
         (requests) => {
-
+          if (requests.length == 0) {
+            this.isExistRecord = true;
+          }
+          else {
+            this.isExistRecord = false;
+          }
           for (var i = 0; i < requests.length; i++) {
             requests[i].createdAt = new Date(requests[i].createdAt);
             requests[i].modifiedDate = new Date(requests[i].modifiedDate);
@@ -54,7 +57,7 @@ export class RequestCategoryComponent {
     if (this.typee === "category") {
       this._requestService.getKnowledgeByParent(this.identify).subscribe(
         (knowledges) => {
-          
+
           var a = [];
           this.knowledges = knowledges;
           for (var i = 0; i < this.knowledges.length; i++) {
@@ -71,6 +74,12 @@ export class RequestCategoryComponent {
                   if (requests[i].status === 'pending') {
                     requests[i].status = 'Đang chờ';
                   }
+                }
+                if (a.length == 0) {
+                  this.isExistRecord = true;
+                }
+                else {
+                  this.isExistRecord = false;
                 }
                 this.requests = a;
               });

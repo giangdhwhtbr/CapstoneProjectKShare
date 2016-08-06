@@ -31,48 +31,48 @@ import { AdminAuthGuard }          from './auth';
 import { AuthService }        from '../services/auth';
 
 export const KShareRoutes: RouterConfig = [
-  {
-    path: '',
-    component: KshareComponent,
-    children: [
-      {
-        path: 'reg',
-        //canActivate: [ AdminAuthGuard ],
-        children: [
-          {
-            path: '',
-            component: RegisterComponent
-          },
-          {
-            path: 'info/:id',
-            component: RegisterInfoComponent
-          },
-          {
-            path: 'success',
-            component: RegisterSuccessComponent
-          }
-        ]
-      },
-      {
-        path: 'login',
-        canActivate: [ AdminAuthGuard ],
-        component: LoginComponent
-      },
-      {
-        path: 'user',
+    {
+        path: '',
+        component: KshareComponent,
         children: [
             {
-                path: ':name',
+                path: 'reg',
+                //canActivate: [ AdminAuthGuard ],
                 children: [
                     {
-                        path: 'friends',
-                        component: FriendListComponent
+                        path: '',
+                        component: RegisterComponent
                     },
                     {
-                        path: '',
-                        component: UserProfileComponent
+                        path: 'info/:id',
+                        component: RegisterInfoComponent
+                    },
+                    {
+                        path: 'success',
+                        component: RegisterSuccessComponent
                     }
                 ]
+            },
+            {
+                path: 'login',
+                canActivate: [AdminAuthGuard],
+                component: LoginComponent
+            },
+            {
+                path: 'user',
+                children: [
+                    {
+                        path: ':name',
+                        children: [
+                            {
+                                path: 'friends',
+                                component: FriendListComponent
+                            },
+                            {
+                                path: '',
+                                component: UserProfileComponent
+                            }
+                        ]
                     }
                 ]
             },
@@ -84,25 +84,25 @@ export const KShareRoutes: RouterConfig = [
                         component: CreateArticleComponent
                     },
                     {
-                        path:'',
-                        component:listArticleComponent
+                        path: '',
+                        component: listArticleComponent
                     },
                     {
-                        path:'edit/:id',
-                        component:EditArticleComponent
+                        path: 'edit/:id',
+                        component: EditArticleComponent
                     },
                     {
-                        path:':id',
-                        component:detailArticleComponent
+                        path: ':id',
+                        component: detailArticleComponent
                     }
                 ]
             },
             {
-                path:'tag',
-                children:[
+                path: 'tag',
+                children: [
                     {
-                        path:':id',
-                        component:displayArtByTagComponent
+                        path: ':id',
+                        component: displayArtByTagComponent
                     }
                 ]
             },
@@ -152,6 +152,7 @@ export const KShareRoutes: RouterConfig = [
             {
                 path: '',
                 component: HomeComponent
+
             }
         ],
     },

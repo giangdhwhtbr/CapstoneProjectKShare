@@ -7,6 +7,9 @@
     <br>
     <br>
     <div class="panel panel-default card-rq" *ngFor="let request of requests">
+      <div *ngIf="isExistRecord">
+        <h1>Không có yêu cầu nào được tìm thấy</h1>
+      </div>
       <div class="panel-body">
         <a [routerLink]="['/kshare/requests/'+ request._id]">
           <p class="lead"> {{request.title}}</p>

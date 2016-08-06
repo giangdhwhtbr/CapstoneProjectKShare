@@ -2141,7 +2141,6 @@ webpackJsonp([2],[
 	        this._requestService = _requestService;
 	        this.router = router;
 	        this.route = route;
-	        //@Input() search: string;
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
 	        this.route
 	            .params
@@ -2154,6 +2153,12 @@ webpackJsonp([2],[
 	        //get templates from children category
 	        if (this.typee === "subcategory") {
 	            this._requestService.getRequestByKnowledgeId(this.identify).subscribe(function (requests) {
+	                if (requests.length == 0) {
+	                    _this.isExistRecord = true;
+	                }
+	                else {
+	                    _this.isExistRecord = false;
+	                }
 	                for (var i = 0; i < requests.length; i++) {
 	                    requests[i].createdAt = new Date(requests[i].createdAt);
 	                    requests[i].modifiedDate = new Date(requests[i].modifiedDate);
@@ -2178,6 +2183,12 @@ webpackJsonp([2],[
 	                            if (requests[i].status === 'pending') {
 	                                requests[i].status = 'Đang chờ';
 	                            }
+	                        }
+	                        if (a.length == 0) {
+	                            _this.isExistRecord = true;
+	                        }
+	                        else {
+	                            _this.isExistRecord = false;
 	                        }
 	                        _this.requests = a;
 	                    });
@@ -4986,6 +4997,7 @@ webpackJsonp([2],[
 	    RequestListClientComponent.prototype.search = function (search) {
 	        var _this = this;
 	        if (search === '') {
+	            this.isExistRecord = false;
 	            this.getAllRequests();
 	        }
 	        else {
@@ -5002,6 +5014,7 @@ webpackJsonp([2],[
 	                else {
 	                    _this.isExistRecord = false;
 	                }
+	                console.log(_this.isExistRecord);
 	                _this.requests = requests;
 	            });
 	        }
@@ -18031,6 +18044,7 @@ webpackJsonp([2],[
 	        this.router = router;
 	        this._noti = _noti;
 	        this._userService = _userService;
+	        this.count = 2;
 	        this.loginToken = localStorage.getItem('username') ? true : false;
 	        this.userToken = localStorage.getItem('username');
 	        this.roleToken = localStorage.getItem('userrole');
