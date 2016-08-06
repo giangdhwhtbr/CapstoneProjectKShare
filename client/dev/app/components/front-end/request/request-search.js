@@ -14,7 +14,6 @@ var RequestCategoryComponent = (function () {
         this._requestService = _requestService;
         this.router = router;
         this.route = route;
-        //@Input() search: string;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
         this.route
             .params
@@ -27,6 +26,12 @@ var RequestCategoryComponent = (function () {
         //get templates from children category
         if (this.typee === "subcategory") {
             this._requestService.getRequestByKnowledgeId(this.identify).subscribe(function (requests) {
+                if (requests.length == 0) {
+                    _this.isExistRecord = true;
+                }
+                else {
+                    _this.isExistRecord = false;
+                }
                 for (var i = 0; i < requests.length; i++) {
                     requests[i].createdAt = new Date(requests[i].createdAt);
                     requests[i].modifiedDate = new Date(requests[i].modifiedDate);
@@ -51,6 +56,12 @@ var RequestCategoryComponent = (function () {
                             if (requests[i].status === 'pending') {
                                 requests[i].status = 'Đang chờ';
                             }
+                        }
+                        if (a.length == 0) {
+                            _this.isExistRecord = true;
+                        }
+                        else {
+                            _this.isExistRecord = false;
                         }
                         _this.requests = a;
                     });

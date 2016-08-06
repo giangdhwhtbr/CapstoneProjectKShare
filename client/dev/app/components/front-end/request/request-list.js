@@ -71,6 +71,7 @@ var RequestListClientComponent = (function () {
     RequestListClientComponent.prototype.search = function (search) {
         var _this = this;
         if (search === '') {
+            this.isExistRecord = false;
             this.getAllRequests();
         }
         else {

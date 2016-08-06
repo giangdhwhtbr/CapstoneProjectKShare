@@ -17,6 +17,7 @@ var HeaderComponent = (function () {
         this.router = router;
         this._noti = _noti;
         this._userService = _userService;
+        this.count = 2;
         this.loginToken = localStorage.getItem('username') ? true : false;
         this.userToken = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');

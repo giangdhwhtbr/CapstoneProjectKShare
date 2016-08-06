@@ -137,15 +137,13 @@ export class UpdateRequestComponent {
     updateRequest(request) {
         let tags:any[] = [];
         tags = this.filterONTag();
-        console.log(request);
-        //this._requestService.updateRequest(request, tags[0], tags[1]).subscribe((request) => {
-        //        console.log('update successed');
-        //    },
-        //    (error) => {
-        //        console.log(error.text());
-        //    }
-        //);
-        // this.router.navigateByUrl('admin/requests');
+        this._requestService.updateRequest(request, tags[0], tags[1]).subscribe((request) => {
+                this.router.navigateByUrl('/requests/'+request._id+'/info');
+            },
+            (error) => {
+                console.log(error.text());
+            }
+        );
     }
 
 }
