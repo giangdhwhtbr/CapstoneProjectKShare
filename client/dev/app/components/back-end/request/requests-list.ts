@@ -3,7 +3,8 @@ import {
   OnInit,
   Pipe,
   PipeTransform,
-  Inject
+  Inject,
+    AfterViewChecked
 } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
@@ -30,7 +31,7 @@ import {StringFilterPipe} from '../shared/filter';
   pipes: [PaginatePipe, StringFilterPipe]
 })
 
-export class RequestListComponent {
+export class RequestListComponent implements AfterViewChecked{
   pageTitle: string = 'Request List';
   errorMessage: string;
   requests: Request[];
@@ -72,6 +73,8 @@ export class RequestListComponent {
   ngOnInit(): void {
     this.getAllRequest();
   }
+
+
 
   deactivateRequest(id: string) {
     this._requestService

@@ -3,6 +3,7 @@ import {
     OnInit,
     Pipe,
     PipeTransform,
+    AfterViewChecked,
     Inject
 } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
@@ -15,6 +16,7 @@ import { RequestCategoryComponent} from './request-search';
 import { AuthService } from '../../../services/auth';
 import { Router } from "@angular/router";
 
+declare var $ :any;
 
 @Component({
     selector: 'request-list-cli',
@@ -29,7 +31,7 @@ import { Router } from "@angular/router";
     providers: [TagService]
 })
 
-export class RequestListClientComponent {
+export class RequestListClientComponent implements AfterViewChecked{
     pageTitle: string = 'Welcome to Knowledge Sharing Network';
     text: string;
     isExistRecord: boolean = false;
@@ -49,6 +51,10 @@ export class RequestListClientComponent {
     ngOnInit(): void {
         // this.hide = false;
         this.getAllRequests();
+    }
+
+    ngAfterViewChecked(){
+
     }
 
     getAllRequests() {
@@ -72,7 +78,8 @@ export class RequestListClientComponent {
 
                     this._data.push({
                         req: requests[i],
-                        tags: []
+                        tags: [],
+                        sum:''
                     });
 
                     requests[i].createdAt = new Date(requests[i].createdAt);
@@ -81,6 +88,13 @@ export class RequestListClientComponent {
                     if (requests[i].status === 'pending') {
                         requests[i].status = 'Đang chờ';
                     }
+                    //get summary
+                    let html = requests[i].description;
+                    let div = document.createElement("div");
+                    div.innerHTML = html;
+                    let text = div.textContent || div.innerText || "";
+
+                    this._data[i].sum=text.substr(0,100)+" ......";
 
                     for (let t of tags) {
                         if (requests[i].tags.indexOf(t._id) > -1) {

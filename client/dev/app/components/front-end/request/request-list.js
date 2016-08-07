@@ -29,6 +29,8 @@ var RequestListClientComponent = (function () {
         // this.hide = false;
         this.getAllRequests();
     };
+    RequestListClientComponent.prototype.ngAfterViewChecked = function () {
+    };
     RequestListClientComponent.prototype.getAllRequests = function () {
         var _this = this;
         this._data = [];
@@ -49,7 +51,8 @@ var RequestListClientComponent = (function () {
                 for (var i = 0; i < requests.length; i++) {
                     _this._data.push({
                         req: requests[i],
-                        tags: []
+                        tags: [],
+                        sum: ''
                     });
                     requests[i].createdAt = new Date(requests[i].createdAt);
                     requests[i].modifiedDate = new Date(requests[i].modifiedDate);
@@ -57,6 +60,12 @@ var RequestListClientComponent = (function () {
                     if (requests[i].status === 'pending') {
                         requests[i].status = 'Đang chờ';
                     }
+                    //get summary
+                    var html = requests[i].description;
+                    var div = document.createElement("div");
+                    div.innerHTML = html;
+                    var text = div.textContent || div.innerText || "";
+                    _this._data[i].sum = text.substr(0, 100) + " ......";
                     for (var _i = 0; _i < tags.length; _i++) {
                         var t = tags[_i];
                         if (requests[i].tags.indexOf(t._id) > -1) {
