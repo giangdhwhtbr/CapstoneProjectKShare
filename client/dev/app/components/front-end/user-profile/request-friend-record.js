@@ -30,7 +30,6 @@ var RequestFriendRecordComponent = (function () {
         this.isAdded = false;
         this.isFriend = true;
         this.getUserInformation();
-        this.socket = io('https://localhost:8081');
     };
     RequestFriendRecordComponent.prototype.acceptRequest = function () {
         var _this = this;
@@ -40,17 +39,11 @@ var RequestFriendRecordComponent = (function () {
             alert("Bạn đã là bạn bè với " + _this.requestUser);
             _this.isAdded = true;
             var title = _this.name + ' chấp nhận kết bạn';
-            var body = 'Bạn và ' + _this.name + ' đã là bạn bè!';
             var link = '/user/' + _this.name;
-            //using socket io to send notification
-            _this.socket.emit('send notification', {
-                title: title,
-                body: body,
-                link: link,
-                user: _this.requestUser
-            });
+            //call function using socket io to send notification
+            _this._noti.alertNotification(title, _this.requestUser, link);
             //save notification to database
-            _this._noti.createNotification(title, body, _this.requestUser, link).subscribe(function (notification) {
+            _this._noti.createNotification(title, _this.requestUser, link).subscribe(function (notification) {
                 console.log('create a notification to ' + _this.name);
             });
         });

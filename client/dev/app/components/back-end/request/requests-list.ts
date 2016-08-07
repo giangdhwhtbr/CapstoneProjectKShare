@@ -1,4 +1,10 @@
-import { Component, Inject, OnInit } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Pipe,
+  PipeTransform,
+  Inject
+} from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
 
@@ -14,28 +20,28 @@ import { OfferService } from '../../../services/request-offer';
 import { CreateRequestComponent } from './request-create';
 import { CreateOfferComponent  } from '../../front-end/offer/offer-create';
 import { UpdateRequestComponent } from './request-update';
-import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance } from 'ng2-pagination';
+import { PaginationControlsCmp, PaginatePipe, PaginationService, IPaginationInstance } from 'ng2-pagination';
 import {StringFilterPipe} from '../shared/filter';
 @Component({
   selector: 'request-list',
   templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-  directives: [UpdateRequestComponent,ROUTER_DIRECTIVES,PaginationControlsCmp,ROUTER_DIRECTIVES,FORM_DIRECTIVES],
-  providers: [RequestService,PaginationService],
-  pipes: [PaginatePipe,StringFilterPipe]
+  directives: [UpdateRequestComponent, ROUTER_DIRECTIVES, PaginationControlsCmp, ROUTER_DIRECTIVES, FORM_DIRECTIVES],
+  providers: [RequestService, PaginationService],
+  pipes: [PaginatePipe, StringFilterPipe]
 })
 
 export class RequestListComponent {
   pageTitle: string = 'Request List';
   errorMessage: string;
-  requests:Request[];
-  user:string;
-  roleToken:string;
+  requests: Request[];
+  user: string;
+  roleToken: string;
   requestForm: ControlGroup;
   public filter: string = '';
   knowledges: Knowledge[];
 
-  constructor(@Inject(FormBuilder) fb: FormBuilder, @Inject(RequestService) private _requestService: RequestService, private _knowledgeService: KnowledgeService,
-                    private _authService: AuthService) {
+  constructor( @Inject(FormBuilder) fb: FormBuilder, @Inject(RequestService) private _requestService: RequestService, private _knowledgeService: KnowledgeService,
+    private _authService: AuthService) {
     this.user = localStorage.getItem('username');
     this.roleToken = localStorage.getItem('userrole');
 
@@ -51,48 +57,56 @@ export class RequestListComponent {
   }
 
   addRequest(request) {
-    this._requestService.addRequest(request).subscribe((request)=> {
+    this._requestService.addRequest(request).subscribe((request) => {
       this.requests.push(request);
       (<Control>this.requestForm.controls["title"]).updateValue("");
       (<Control>this.requestForm.controls["description"]).updateValue("");
       (<Control>this.requestForm.controls["knowledgeId"]).updateValue("");
     },
-    (error) => {
-      console.log(error.text());
-    }
+      (error) => {
+        console.log(error.text());
+      }
     );
   }
 
   ngOnInit(): void {
-    this._requestService.getAllRequests().subscribe((requests) => {
-      var formatDate = function (date){
-        if(date) {
-          var newDate, day, month, year;
-          year = date.substr(0, 4);
-          month = date.substr(5, 2);
-          day = date.substr(8, 2);
-          return newDate = day + '/' + month + '/' + year;
-        }
-      };
+    this.getAllRequest();
+  }
+
+  deactivateRequest(id: string) {
+    this._requestService
+      .changeStatusRequest(id)
+      .subscribe((r) => {
+        console.log("deactivate sucess");
+        this.getAllRequest();
+      })
+  }
+
+  activateRequest(request: Request) {
+    request.status = 'pending';
+    this._requestService
+      .updateRequest(request)
+      .subscribe((r) => {
+        this.getAllRequest();
+      })
+  }
+
+  getAllRequest() {
+    this._requestService.getAllRequestAdmin().subscribe((requests) => {
 
       for (var i = 0; i < requests.length; i++) {
-        requests[i].createdAt = formatDate(requests[i].createdAt);
-        requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
+        requests[i].createdAt = new Date(requests[i].createdAt);
+        requests[i].modifiedDate = new Date(requests[i].modifiedDate);
+        if(requests[i].status === 'active' || requests[i].status === 'pending'){
+          requests[i].status = "Đang chờ";
+        } else if (requests[i].status === 'deactive'){
+          requests[i].status = "Kết thúc";
+        } else if (requests[i].status === 'accepted') {
+          requests[i].status = "Được chấp nhận";
+        }
       }
       this.requests = requests;
     });
-  }
-
-  private deleteRequest(id):void {
-
-    this._requestService
-      .deleteRequest(id)
-      .subscribe(() => {
-        this.requests.forEach((t, i) => {
-          if (t._id === id)
-            return this.requests.splice(i, 1);
-        });
-      })
   }
 
 }

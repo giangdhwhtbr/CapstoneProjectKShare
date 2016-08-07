@@ -18,7 +18,7 @@ var NavbarComponent = (function () {
     NavbarComponent.prototype.logout = function () {
         this._auth.logout();
         this._auth.logoutClient();
-        this.router.navigateByUrl('/kshare');
+        this.router.navigateByUrl('/');
     };
     NavbarComponent = __decorate([
         core_1.Component({

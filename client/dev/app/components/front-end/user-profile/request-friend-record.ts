@@ -46,7 +46,6 @@ export class RequestFriendRecordComponent {
     this.isAdded = false;
     this.isFriend = true;
     this.getUserInformation();
-    this.socket = io('https://localhost:8081');
   }
 
   acceptRequest(): void {
@@ -58,19 +57,12 @@ export class RequestFriendRecordComponent {
         this.isAdded = true;
 
         var title = this.name + ' chấp nhận kết bạn';
-        var body = 'Bạn và ' + this.name + ' đã là bạn bè!';
         var link = '/user/' + this.name;
 
-        //using socket io to send notification
-        this.socket.emit('send notification', {
-          title: title,
-          body: body,
-          link: link,
-          user: this.requestUser
-        });
-
+        //call function using socket io to send notification
+        this._noti.alertNotification(title,this.requestUser,link);
         //save notification to database
-        this._noti.createNotification(title, body, this.requestUser, link).subscribe(
+        this._noti.createNotification(title, this.requestUser, link).subscribe(
           (notification) => {
             console.log('create a notification to ' + this.name);
           });

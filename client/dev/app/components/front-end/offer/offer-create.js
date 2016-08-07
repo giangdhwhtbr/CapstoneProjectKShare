@@ -7,17 +7,18 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-var __param = (this && this.__param) || function (paramIndex, decorator) {
-    return function (target, key) { decorator(target, key, paramIndex); }
-};
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var request_offer_1 = require('../../../services/request-offer');
 var auth_1 = require('../../../services/auth');
+var requests_1 = require('../../../services/requests');
+var notification_1 = require('../../../services/notification');
 var CreateOfferComponent = (function () {
-    function CreateOfferComponent(fb, _offerService, _authService) {
+    function CreateOfferComponent(fb, _offerService, _authService, _noti, _requestService) {
         this._offerService = _offerService;
         this._authService = _authService;
+        this._noti = _noti;
+        this._requestService = _requestService;
         this.user = localStorage.getItem('username');
         this.offerForm = fb.group({
             "price": [""],
@@ -28,12 +29,23 @@ var CreateOfferComponent = (function () {
         });
     }
     CreateOfferComponent.prototype.addOffer = function (offer) {
+        var _this = this;
         this._offerService.addOffer(offer).subscribe(function (offer) {
             console.log('success');
+            _this._requestService.getRequestById(offer.requestId).subscribe(function (request) {
+                //call function using socket io to send notification realtime
+                var title = _this.user + ' đã gửi một offer';
+                var link = '/requests/' + request._id + '/info';
+                _this._noti.alertNotification(title, request.user, link);
+                //save notification to database
+                _this._noti.createNotification(title, request.user, link).subscribe(function (notification) {
+                    console.log(notification);
+                    window.location.reload();
+                });
+            });
         }, function (error) {
             console.log(error.text());
         });
-        window.location.reload();
     };
     __decorate([
         core_1.Input('rid'), 
@@ -44,9 +56,8 @@ var CreateOfferComponent = (function () {
             selector: 'offer-create',
             templateUrl: 'client/dev/app/components/front-end/offer/templates/offer-create.html',
             directives: [common_1.FORM_DIRECTIVES]
-        }),
-        __param(0, core_1.Inject(common_1.FormBuilder)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, request_offer_1.OfferService, auth_1.AuthService])
+        }), 
+        __metadata('design:paramtypes', [common_1.FormBuilder, request_offer_1.OfferService, auth_1.AuthService, notification_1.NotificationService, requests_1.RequestService])
     ], CreateOfferComponent);
     return CreateOfferComponent;
 })();

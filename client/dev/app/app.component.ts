@@ -25,6 +25,7 @@ import {UserService} from "./services/users";
 import {AuthService} from "./services/auth";
 import {KSpaceService} from "./services/kspace";
 import {NotificationService} from "./services/notification";
+import {ReportService} from "./services/report";
 
 @Component({
   selector: 'kshare-app',
@@ -41,7 +42,8 @@ import {NotificationService} from "./services/notification";
     OfferService,
     KnowledgeService,
     KSpaceService,
-    NotificationService
+    NotificationService,
+    ReportService
   ]
 })
 export class AppComponent {

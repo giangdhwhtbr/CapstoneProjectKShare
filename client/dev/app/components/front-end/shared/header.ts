@@ -8,12 +8,9 @@ import { Notification } from '../../../interface/notification';
 
 import { AuthService } from '../../../services/auth';
 import { NotificationService } from '../../../services/notification';
+import { UserService } from '../../../services/users';
 declare var io: any;
 
-<<<<<<< HEAD
-=======
-
->>>>>>> c1468ad7ca27c4782ad676f155b38ed3f6c67fca
 @Component({
   selector: 'header',
   templateUrl: 'client/dev/app/components/front-end/shared/templates/header.html',
@@ -31,10 +28,12 @@ export class HeaderComponent {
   link: string;
   isDiffirent: boolean;
   socket: any;
+  count: number = 2;
 
   notifications: Notification[];
 
-  constructor(private _auth: AuthService, public router: Router, public _noti: NotificationService) {
+  constructor(private _auth: AuthService, public router: Router, public _noti: NotificationService,
+            private _userService: UserService) {
     this.loginToken = localStorage.getItem('username') ? true : false;
     this.userToken = localStorage.getItem('username');
     this.roleToken = localStorage.getItem('userrole');
@@ -49,7 +48,6 @@ export class HeaderComponent {
         //audio of notification
         var audio = new Audio();
         audio.src = "https://localhost:8081/client/dev/asserts/gets-in-the-way.mp3";
-        console.log(audio);
         audio.load();
         audio.play();
         this.getNotificationByUser(data.data.user);

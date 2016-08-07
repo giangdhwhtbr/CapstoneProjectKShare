@@ -27,6 +27,8 @@ var RequestUpdateClientComponent = (function () {
             .subscribe(function (params) {
             _this.id = params['id'];
         });
+        this.userToken = localStorage.getItem('username');
+        this.roleToken = localStorage.getItem('userrole');
         this.updateRequestFormCli = fb.group({
             "_id": [""],
             "title": [""],
@@ -41,6 +43,12 @@ var RequestUpdateClientComponent = (function () {
             _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
         });
         this._requestService.getRequestById(this.id).subscribe(function (request) {
+            if (_this.userToken !== request.user) {
+                _this.isCreatedUser = false;
+            }
+            else {
+                _this.isCreatedUser = true;
+            }
             _this.request = request;
             _this.title = request.title;
             _this._id = request._id;
@@ -50,8 +58,10 @@ var RequestUpdateClientComponent = (function () {
         });
     };
     RequestUpdateClientComponent.prototype.updateRequest = function (request) {
+        var _this = this;
         this._requestService.updateRequest(request).subscribe(function (request) {
             console.log('update successed');
+            _this.router.navigateByUrl('requests/' + _this._id + '/info');
         }, function (error) {
             console.log(error.text());
         });

@@ -2,7 +2,7 @@ export interface Knowledge {
   _id: string;
   name:string;
   description:string;
-  update:string;
+  updatedAt:string;
   parent:string;
   status:boolean;
 }

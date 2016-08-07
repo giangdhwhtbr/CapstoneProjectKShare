@@ -5,66 +5,48 @@
       <input #text type="text" class="form-control" placeholder="Nhập nội dung tìm kiếm">
     </div>
     <button (click)="search(text.value)" type="submit" class="btn btn-small">Tìm kiếm</button>
-    <button *ngIf="userToken != null" type="button" class="btn btn-primary btn-small" data-toggle="modal" data-target="#modalCreateRequest">
+    <button *ngIf="userToken != null" type="button" class="btn btn-primary btn-small" [routerLink]="['/requests/create']">
       Create
     </button>
   </form>
   <br>
   <br>
   <div class="container" style="min-height:437px">
-    <request-create></request-create>
-    <!--search-->
-    <div *ngIf="searchs && searchs.length" id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu">
-      <div class="panel panel-default card-rq" *ngFor="let search of searchs| paginate: configRs">
+
+    <br>
+    <!-- list all-->
+    <div id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu">
+      <div *ngIf="isExistRecord">
+        <h1>Không có yêu cầu nào được tìm thấy</h1>
+      </div>
+      <div class="panel panel-default card-rq" *ngFor="let e of _data">
         <div class="panel-body">
-          <a [routerLink]="[search._id,'info/']">
-            <p class="lead">{{search.title}}</p>
+          <a [routerLink]="['/requests/'+e.req._id+'/info']">
+            <p class="lead">{{e.req.title}}</p>
           </a>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-            Nội dung : {{search.description}}
+            Nội dung : {{e.req.description}}
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-            <a [routerLink]="['/user/',search.user]">Người tạo : {{search.user}}</a>
+            Người tạo :<a [routerLink]="['/user/',e.req.user]"> {{e.req.user}}</a>
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-            Trạng thái : {{search.status}}
+            Trạng thái : {{e.req.status}}
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-            Ngày tạo : {{search.createdAt}}
+            Ngày tạo : {{e.req.createdAt | date:"dd/MM/yyyy"}}
           </div>
-        </div>
-      </div>
-      <pagination-controls [id]="configRs.id" (pageChange)="configRs.currentPage  = $event" directionLinks="true" autoHide="true">
-      </pagination-controls>
-    </div>
-
-  <br>
-  <!-- list all-->
-  <div id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu" [hidden]="hide">
-    <div class="panel panel-default card-rq" *ngFor="let request of requests| paginate:configRq">
-      <div class="panel-body">
-        <a [routerLink]="[request.link]">
-          <p class="lead">{{request.title}}</p>
-        </a>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-          Nội dung : {{request.description}}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-          Người tạo :<a [routerLink]="['/user/',request.user]"> {{request.user}}</a>
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-          Trạng thái : {{request.status}}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-          Ngày tạo : {{request.createdAt}}
+          <p>
+            tags :
+                <span *ngFor="let t of e.tags">
+                    <a [routerLink]="['/tag',t._id]">{{t.name}}</a>,
+                </span>
+          </p>
         </div>
       </div>
     </div>
-    <pagination-controls [id]="configRq.id" (pageChange)="configRq.currentPage  = $event" directionLinks="true" autoHide="true">
-    </pagination-controls>
+    <!--<friend-list></friend-list>-->
   </div>
-  <!--<friend-list></friend-list>-->
-</div>
 
 </div>
 <!-- /.container -->

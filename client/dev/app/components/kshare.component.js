@@ -36,6 +36,7 @@ var create_article_1 = require("./front-end/article/create-article");
 var detail_article_1 = require("./front-end/article/detail-article");
 var list_article_1 = require("./front-end/article/list-article");
 var displayArtByTag_1 = require("./front-end/tag/displayArtByTag");
+var request_create_1 = require("./back-end/request/request-create");
 /**
  * Page components
  */
@@ -67,7 +68,8 @@ var KshareComponent = (function () {
                 create_article_1.CreateArticleComponent,
                 detail_article_1.detailArticleComponent,
                 list_article_1.listArticleComponent,
-                displayArtByTag_1.displayArtByTagComponent
+                displayArtByTag_1.displayArtByTagComponent,
+                request_create_1.CreateRequestComponent
             ]
         }), 
         __metadata('design:paramtypes', [])

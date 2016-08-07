@@ -36,7 +36,6 @@ export class listArticleComponent implements OnInit {
                 if(arts[i].status=="private" && arts[i].ofUser!=this.userToken){
                     console.log(arts[i].status);
                     arts.splice(i,1);
-                    console.log(i);
                 }
 
             }

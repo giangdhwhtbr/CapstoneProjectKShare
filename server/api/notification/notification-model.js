@@ -4,8 +4,7 @@ const mongoose = require('mongoose');
 
 const _notificationSchema = {
     user: { 
-        type: String, 
-        required: true, 
+        type: String,
         ref: 'User' 
     },
     createdAt: {
@@ -14,11 +13,8 @@ const _notificationSchema = {
     },
     title: {
         type: String, 
-        default: 'Notification title'
-    },
-    body: {
-        type: String,
-        default: 'Notification body'
+        default: 'Notification title',
+        required:true
     },
     incon: {
         type: String,
@@ -29,7 +25,8 @@ const _notificationSchema = {
         default: 'Chưa đọc'
     },
     link: {
-        type: String
+        type: String,
+        required:true
     } 
 }
 

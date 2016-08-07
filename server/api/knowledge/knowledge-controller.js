@@ -101,7 +101,7 @@ module.exports = class KnowledgeController {
                 .then(knowledge => {
                     knowledge.name = req.body.name,
                         knowledge.description = req.body.description,
-                        knowledge.update = new Date(),
+                        knowledge.updatedAt = new Date(),
                         KnowledgeDAO.updateKnowledge(knowledge)
                             .then(knowledge => res.status(200).json(knowledge))
                             .catch(error => res.status(400).json(error));

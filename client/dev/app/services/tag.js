@@ -27,6 +27,17 @@ var TagService = (function () {
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
+    TagService.prototype.getTagsByIds = function (ids) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _data = JSON.stringify({
+            ids: ids
+        });
+        return this._http
+            .post('/api/tags/TagNames', _data, options)
+            .map(function (r) { return r.json(); });
+    };
     TagService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

@@ -14,11 +14,14 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var auth_1 = require('../../../services/auth');
 var notification_1 = require('../../../services/notification');
+var users_1 = require('../../../services/users');
 var HeaderComponent = (function () {
-    function HeaderComponent(_auth, router, _noti) {
+    function HeaderComponent(_auth, router, _noti, _userService) {
         this._auth = _auth;
         this.router = router;
         this._noti = _noti;
+        this._userService = _userService;
+        this.count = 2;
         this.loginToken = localStorage.getItem('username') ? true : false;
         this.userToken = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
@@ -32,7 +35,6 @@ var HeaderComponent = (function () {
                 //audio of notification
                 var audio = new Audio();
                 audio.src = "https://localhost:8081/client/dev/asserts/gets-in-the-way.mp3";
-                console.log(audio);
                 audio.load();
                 audio.play();
                 _this.getNotificationByUser(data.data.user);
@@ -83,7 +85,7 @@ var HeaderComponent = (function () {
             directives: [
                 router_1.ROUTER_DIRECTIVES]
         }), 
-        __metadata('design:paramtypes', [auth_1.AuthService, router_1.Router, notification_1.NotificationService])
+        __metadata('design:paramtypes', [auth_1.AuthService, router_1.Router, notification_1.NotificationService, users_1.UserService])
     ], HeaderComponent);
     return HeaderComponent;
 })();

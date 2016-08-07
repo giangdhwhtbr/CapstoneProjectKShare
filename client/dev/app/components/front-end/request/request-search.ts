@@ -1,4 +1,10 @@
-import { Component, OnInit, Input, OnChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Pipe,
+  PipeTransform,
+  Inject
+} from '@angular/core';
 import { ROUTER_DIRECTIVES, Router, ActivatedRoute} from '@angular/router';
 import { Request } from '../../../interface/request';
 import { Knowledge } from '../../../interface/knowledge';
@@ -13,15 +19,13 @@ import { RequestService } from '../../../services/requests';
 })
 
 export class RequestCategoryComponent {
-  @Input() search: string;
   pageTitle: string = 'Welcome to Knowledge Sharing Network';
 
-  // id: string;
-  // type: string;
   identify: string;
+  isExistRecord: boolean;
   typee: string;
   constructor(private _requestService: RequestService, public router: Router,
-                  private route: ActivatedRoute) {
+    private route: ActivatedRoute) {
     this.route
       .params
       .subscribe(params => {
@@ -31,23 +35,19 @@ export class RequestCategoryComponent {
         this.identify = id;
       });
 
-      //get templates from children category
+    //get templates from children category
     if (this.typee === "subcategory") {
       this._requestService.getRequestByKnowledgeId(this.identify).subscribe(
         (requests) => {
-          //format date
-          var formatDate = function (date) {
-            if (date) {
-              var newDate, day, month, year;
-              year = date.substr(0, 4);
-              month = date.substr(5, 2);
-              day = date.substr(8, 2);
-              return newDate = day + '/' + month + '/' + year;
-            }
+          if (requests.length == 0) {
+            this.isExistRecord = true;
+          }
+          else {
+            this.isExistRecord = false;
           }
           for (var i = 0; i < requests.length; i++) {
-            requests[i].createdAt = formatDate(requests[i].createdAt);
-            requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
+            requests[i].createdAt = new Date(requests[i].createdAt);
+            requests[i].modifiedDate = new Date(requests[i].modifiedDate);
           }
           this.requests = requests;
         });
@@ -57,15 +57,7 @@ export class RequestCategoryComponent {
     if (this.typee === "category") {
       this._requestService.getKnowledgeByParent(this.identify).subscribe(
         (knowledges) => {
-          var formatDate = function (date) {
-            if (date) {
-              var newDate, day, month, year;
-              year = date.substr(0, 4);
-              month = date.substr(5, 2);
-              day = date.substr(8, 2);
-              return newDate = day + '/' + month + '/' + year;
-            }
-          };
+
           var a = [];
           this.knowledges = knowledges;
           for (var i = 0; i < this.knowledges.length; i++) {
@@ -77,8 +69,17 @@ export class RequestCategoryComponent {
                 }
 
                 for (var i = 0; i < a.length; i++) {
-                  a[i].createdAt = formatDate(requests[i].createdAt);
-                  a[i].modifiedDate = formatDate(requests[i].modifiedDate);
+                  a[i].createdAt = new Date(requests[i].createdAt);
+                  a[i].modifiedDate = new Date(requests[i].modifiedDate);
+                  if (requests[i].status === 'pending') {
+                    requests[i].status = 'Đang chờ';
+                  }
+                }
+                if (a.length == 0) {
+                  this.isExistRecord = true;
+                }
+                else {
+                  this.isExistRecord = false;
                 }
                 this.requests = a;
               });

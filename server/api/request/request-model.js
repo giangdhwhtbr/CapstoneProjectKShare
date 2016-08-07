@@ -10,15 +10,17 @@ const _requestSchema = new Schema ({
     createdAt: { type: Date, default: Date.now },
     description: { type: String, required: true, trim: true },
     status: { type: String, default: 'pending' },
-    modifiedDate: { type: Date },
+    updatedAt: { type: Date },
     knowledgeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Knowledge',required: true },
-    subcribers: [String]
+    subcribers: [String],
+    tags: [{type: mongoose.Schema.Types.ObjectId, ref: "Tag", childPath: "request"}]
 });
 
  //_requestSchema.plugin(textSearch);
 
 _requestSchema.index({
-    description: 'text'
+    description: 'text',
+    title: 'text'
 });
 
 module.exports = (_requestSchema);

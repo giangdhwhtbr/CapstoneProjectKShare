@@ -6,20 +6,20 @@ const crypto = require('crypto');
 
 
 var validateEmail = function (email) {
-  return validator.isEmail(email);
+    return validator.isEmail(email);
 }
 
 var validateRole = function (role) {
-  if (role == "admin" || role == "manager" || role == "instructor" || role == "normal") {
-    return true;
-  } else {
-    return false;
-  }
+    if (role == "admin" || role == "manager" || role == "instructor" || role == "normal") {
+        return true;
+    } else {
+        return false;
+    }
 }
 
 var validatePass = function (password) {
-  var pattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
-  return pattern.test(password);
+    var pattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
+    return pattern.test(password);
 }
 const userSchema = new mongoose.Schema({
   fullName: {
@@ -71,7 +71,7 @@ const userSchema = new mongoose.Schema({
     required: [true, 'Role can not blank'],
     validate: [validateRole, "Role is not valid, try again!"]
   },
-  ownKnowledgeId: [
+  ownKnowledgeIds: [
     {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Knowledge'
@@ -152,30 +152,30 @@ const userSchema = new mongoose.Schema({
  * Hook a pre save method to hash the password
  */
 userSchema.pre('save', function (next) {
-  if (this.password && this.isModified('password')) {
-    this.salt = crypto.randomBytes(16).toString('base64');
-    this.password = this.hashPassword(this.password);
-  }
+    if (this.password && this.isModified('password')) {
+        this.salt = crypto.randomBytes(16).toString('base64');
+        this.password = this.hashPassword(this.password);
+    }
 
-  next();
+    next();
 });
 
 /**
  * Create instance method for hashing a password
  */
 userSchema.methods.hashPassword = function (password) {
-  if (this.salt && password) {
-    return crypto.pbkdf2Sync(password, new Buffer(this.salt, 'base64'), 10000, 64).toString('base64');
-  } else {
-    return password;
-  }
+    if (this.salt && password) {
+        return crypto.pbkdf2Sync(password, new Buffer(this.salt, 'base64'), 10000, 64).toString('base64');
+    } else {
+        return password;
+    }
 };
 
 /**
  * Create instance method for authenticating user
  */
 userSchema.methods.authenticate = function (password) {
-  return this.password === this.hashPassword(password);
+    return this.password === this.hashPassword(password);
 };
 
 

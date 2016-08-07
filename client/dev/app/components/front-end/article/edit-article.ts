@@ -65,7 +65,7 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
     filteredKnw:string[];
 
     tags:any[];
-    tagsEx:Array<string>;
+    tagsEx:Array<any>;
 
     isEdited:boolean = true;
 
@@ -86,7 +86,8 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
 
     ngOnInit() {
         this._articleService.getArtById(this.id).subscribe((art)=> {
-            if (art.ofUser != this.userToken && this.roleToken!="admin") {
+
+            if (art.ofUser != this.userToken && this.roleToken != "admin") {
                 this.isEdited = false;
             } else {
                 this.art = art;
@@ -108,7 +109,7 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
     }
 
     filterONTag() {
-        let oldTag = [];
+        let oldTag:any[] = [];
         for (let e of this.tagsEx) {
             for (let e1 of this.tags) {
                 if (e.name == e1) {
@@ -130,6 +131,9 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
         for (let i = 0; i < this.tagsEx.length; i++) {
             if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
                 this.filteredKnw.push(this.tagsEx[i].name);
+            }
+            if (i == this.tagsEx.length - 1) {
+                this.filteredKnw.unshift(query.trim());
             }
         }
         if (this.filteredKnw.length == 0) {
@@ -207,7 +211,8 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
 
     editArticle(stt:string) {
         this.art.content = CKEDITOR.instances.editor1.getData();
-        let tags = this.filterONTag();
+        let tags:any[] = [];
+        tags = this.filterONTag();
         this.art.tags = tags[0];
         this.art.title = this.titelArticle;
         console.log(this.art.status);

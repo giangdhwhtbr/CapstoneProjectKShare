@@ -11,7 +11,6 @@ import { NotificationService } from '../../../services/notification';
 import { User } from '../../../interface/user';
 import { FriendShip } from '../../../interface/friendship';
 import { Notification } from '../../../interface/notification';
-declare var io: any;
 
 @Component({
   selector: 'user-profile-bar',
@@ -98,24 +97,18 @@ export class UserProfileBarComponent {
         .subscribe((r) => {
           console.log('friendship was created by ' + this.userToken + ' and ' + this.name);
         })
+
       //create a notification to user who get accepted a friend request
       var title = 'Lời mời kết bạn từ ' + this.userToken;
-      var body = 'Bạn đã nhận được lời mời kết bạn của ' + this.userToken;
       var link = '/user/' + this.name + '/friends';
 
       alert("đã gửi lời mời kết bạn thành công");
 
-      //using socket io to send notification
-      var socket = io('https://localhost:8081');
-      socket.emit('send notification', {
-        title: title,
-        body: body,
-        link: link,
-        user: this.name
-      });
+      //call function using socket io to send notification
+      this._noti.alertNotification(title, this.name, link);
 
       //save notification to database
-      this._noti.createNotification(title, body, this.name, link).subscribe(
+      this._noti.createNotification(title, this.name, link).subscribe(
         (notification) => {
           console.log(notification);
         });
@@ -169,16 +162,6 @@ export class UserProfileBarComponent {
 
       })
   }
-
-  public notification: any = {
-    show: false,
-    title: 'Demo notification!',
-    body: 'ng2-notifications',
-    icon: 'https://goo.gl/3eqeiE',
-    action: function () {
-      window.open('https://github.com/alexcastillo/ng2-notifications');
-    }
-  };
 
   public formatDate = function (date) {
     if (date) {

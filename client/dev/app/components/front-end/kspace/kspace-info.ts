@@ -5,7 +5,7 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { KSpaceService } from '../../../services/kspace';
 import { NgForm }    from '@angular/forms';
-import { SEMANTIC_COMPONENTS, SEMANTIC_DIRECTIVES } from "ng-semantic";
+// import { SEMANTIC_COMPONENTS, SEMANTIC_DIRECTIVES } from "ng-semantic";
 
 @Component ({
   template: `
@@ -46,9 +46,7 @@ import { SEMANTIC_COMPONENTS, SEMANTIC_DIRECTIVES } from "ng-semantic";
       </div>
     `,
   directives: [
-    ROUTER_DIRECTIVES,
-    SEMANTIC_COMPONENTS,
-    SEMANTIC_DIRECTIVES
+    ROUTER_DIRECTIVES
   ],
 })
 

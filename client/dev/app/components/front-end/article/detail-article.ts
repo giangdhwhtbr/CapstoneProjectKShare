@@ -6,8 +6,7 @@ import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 import { ArticleService } from '../../../services/article';
 import { AuthService } from '../../../services/auth';
-
-import * as $ from 'jquery';
+declare var $:any;
 
 @Component({
     selector: 'detail-article',
@@ -43,10 +42,10 @@ export class detailArticleComponent implements OnInit,AfterViewChecked {
 
     ngOnInit() {
         this._articleService.getArtById(this.id).subscribe((art)=> {
-            if ((art.ofUser != this.userToken && this.roleToken != "admin" && art.status == "private") || (this.roleToken != "admin" && art.status == "deactivate")) {
-                this.canSee = false;
-            } else {
 
+            if ((art.ofUser == this.userToken && art.status == 'private')
+                || (this.roleToken == 'admin')
+                || (this.roleToken != 'admin' && art.status == 'public')) {
                 this.article = art;
 
                 this.tags = art.tagsFD;
@@ -56,12 +55,15 @@ export class detailArticleComponent implements OnInit,AfterViewChecked {
                 if (art.status == "deactivate") {
                     this.isDeAc = true;
                 }
+            }else{
+                this.canSee=false;
             }
+
 
         });
     }
 
-    deactivateArticle(id) {
+    deactivateArticle(id:string) {
         if (id) {
             this._articleService.deactivateArticle(id).subscribe((mes)=> {
                 $('.messOff').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Success!</strong> ' + mes.mes + ' </div>');

@@ -13,7 +13,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
-var $ = require('jquery');
 var detailArticleComponent = (function () {
     function detailArticleComponent(router, route, _articleService) {
         var _this = this;
@@ -33,16 +32,18 @@ var detailArticleComponent = (function () {
     detailArticleComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._articleService.getArtById(this.id).subscribe(function (art) {
-            if ((art.ofUser != _this.userToken && _this.roleToken != "admin" && art.status == "private") || (_this.roleToken != "admin" && art.status == "deactivate")) {
-                _this.canSee = false;
-            }
-            else {
+            if ((art.ofUser == _this.userToken && art.status == 'private')
+                || (_this.roleToken == 'admin')
+                || (_this.roleToken != 'admin' && art.status == 'public')) {
                 _this.article = art;
                 _this.tags = art.tagsFD;
                 _this.article.createdAt = new Date(_this.article.createdAt);
                 if (art.status == "deactivate") {
                     _this.isDeAc = true;
                 }
+            }
+            else {
+                _this.canSee = false;
             }
         });
     };

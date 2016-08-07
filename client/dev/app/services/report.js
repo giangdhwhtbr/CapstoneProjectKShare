@@ -10,60 +10,50 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 var Observable_1 = require('rxjs/Observable');
-var BadwordService = (function () {
-    function BadwordService(_http) {
+var ReportService = (function () {
+    function ReportService(_http) {
         this._http = _http;
-        this._badwordsUrl = '/api/badwords/:id';
+        this._Url = '/api/reports/:id';
     }
-    BadwordService.prototype.getAllBadwords = function () {
-        return this._http.get(this._badwordsUrl.replace(':id', ''))
-            .map(function (r) { return r.json(); })
-            .do(function (data) { return console.log("All: " + JSON.stringify(data)); })
-            .catch(this.handleError);
-    };
-    BadwordService.prototype.addBadword = function (badword) {
+    ReportService.prototype.addReport = function (report) {
         var header = new http_1.Headers;
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
-        var _badword = JSON.stringify({
-            word: badword.word,
+        var _report = JSON.stringify({
+            title: report.title,
+            content: report.content,
+            user: report.user,
+            link: report.link,
+            reportedUser: report.reportedUser
         });
-        console.log(_badword);
-        console.log(header);
         return this._http
-            .post(this._badwordsUrl.replace(':id', ''), _badword, options)
+            .post(this._Url.replace(':id', ''), _report, options)
             .map(function (r) { return r.json(); });
     };
-    BadwordService.prototype.deleteBadword = function (id) {
+    ReportService.prototype.getAllReports = function () {
         return this._http
-            .delete(this._badwordsUrl.replace(':id', id));
-    };
-    BadwordService.prototype.findBadwordById = function (id) {
-        return this._http
-            .get(this._badwordsUrl.replace(':id', id))
+            .get(this._Url.replace(':id', ''))
             .map(function (r) { return r.json(); });
     };
-    BadwordService.prototype.updateBadword = function (badword) {
-        console.log(badword);
+    ReportService.prototype.deactivateReport = function (id) {
         var header = new http_1.Headers;
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
-        var _badword = JSON.stringify({
-            word: badword.word,
+        var _report = JSON.stringify({
+            status: 'deactive'
         });
         return this._http
-            .put(this._badwordsUrl.replace(':id', badword._id), _badword, options)
-            .map(function (r) { return r.json(); });
+            .put(this._Url.replace(':id', id), _report, options);
     };
-    BadwordService.prototype.handleError = function (error) {
+    ReportService.prototype.handleError = function (error) {
         console.error(error);
         return Observable_1.Observable.throw(error.json().error || 'Server error');
     };
-    BadwordService = __decorate([
+    ReportService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])
-    ], BadwordService);
-    return BadwordService;
+    ], ReportService);
+    return ReportService;
 })();
-exports.BadwordService = BadwordService;
-//# sourceMappingURL=badword.js.map
+exports.ReportService = ReportService;
+//# sourceMappingURL=report.js.map

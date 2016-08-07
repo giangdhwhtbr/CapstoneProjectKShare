@@ -68,32 +68,28 @@ var UserService = (function () {
             .post(this._usersUrl.replace(':id', ''), _user, options)
             .map(function (r) { return r.json(); });
     };
-    UserService.prototype.updateUser = function (user) {
+    UserService.prototype.updateUser = function (user, _newTag) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var ownk, ink;
-        if (user.ownKnowledgeId && user.ownKnowledgeId.length) {
-            ownk = user.ownKnowledgeId.split(",");
-        }
-        if (user.interestedKnowledgeId && user.interestedKnowledgeId.length) {
-            ink = user.ownKnowledgeId.split(",");
-        }
-        var _user = JSON.stringify({
-            _id: user._id,
-            fullName: user.fullName,
-            displayName: user.displayName,
-            birthday: user.birthday,
-            phone: user.phone,
-            username: user.username,
-            password: user.password,
-            email: user.email,
-            role: user.role,
-            linkImg: user.linkImg,
-            ownKnowledgeId: ownk,
-            interestedKnowledgeId: ink
+        var _data = JSON.stringify({
+            user: {
+                _id: user._id,
+                fullName: user.fullName,
+                displayName: user.displayName,
+                birthday: user.birthday,
+                phone: user.phone,
+                username: user.username,
+                password: user.password,
+                email: user.email,
+                role: user.role,
+                linkImg: user.linkImg,
+                ownKnowledgeIds: user.ownKnowledgeIds,
+            },
+            newTag: _newTag
         });
         return this._http
-            .put(this._usersUrl.replace(':id', user._id), _user, options)
+            .put(this._usersUrl.replace(':id', user._id), _data, options)
             .map(function (r) { return r.json(); });
     };
     UserService.prototype.banUser = function (userId) {

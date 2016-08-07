@@ -10,58 +10,91 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var requests_1 = require('../../../services/requests');
+var tag_1 = require('../../../services/tag');
 var friend_list_1 = require('../shared/friend-list');
 var request_create_1 = require('../../back-end/request/request-create');
 var request_search_1 = require('./request-search');
 var auth_1 = require('../../../services/auth');
 var router_2 = require("@angular/router");
-var ng2_pagination_1 = require('ng2-pagination');
 var RequestListClientComponent = (function () {
-    function RequestListClientComponent(_requestService, _auth, router) {
+    function RequestListClientComponent(_requestService, _tagService, _auth, router) {
         this._requestService = _requestService;
+        this._tagService = _tagService;
         this._auth = _auth;
         this.router = router;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
-        this.configRq = {
-            id: 'rq',
-            itemsPerPage: 10,
-            currentPage: 1
-        };
-        this.configRs = {
-            id: 'rs',
-            itemsPerPage: 10,
-            currentPage: 1
-        };
+        this.isExistRecord = false;
+        this._data = [];
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
     }
     RequestListClientComponent.prototype.ngOnInit = function () {
+        // this.hide = false;
+        this.getAllRequests();
+    };
+    RequestListClientComponent.prototype.getAllRequests = function () {
         var _this = this;
-        this.hide = false;
         this._requestService.getAllRequests().subscribe(function (requests) {
-            var formatDate = function (date) {
-                if (date) {
-                    var newDate, day, month, year;
-                    year = date.substr(0, 4);
-                    month = date.substr(5, 2);
-                    day = date.substr(8, 2);
-                    return newDate = day + '/' + month + '/' + year;
+            //get all tag's ids of list request
+            var arrIds = [];
+            for (var _i = 0; _i < requests.length; _i++) {
+                var e = requests[_i];
+                for (var _a = 0, _b = e.tags; _a < _b.length; _a++) {
+                    var t = _b[_a];
+                    var i = arrIds.indexOf(t);
+                    if (i < 0) {
+                        arrIds.push(t);
+                    }
                 }
-            };
-            for (var i = 0; i < requests.length; i++) {
-                requests[i].createdAt = formatDate(requests[i].createdAt);
-                requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
-                requests[i].link = requests[i]._id + '/info';
             }
-            _this.requests = requests;
+            //get all tag relate to ids
+            _this._tagService.getTagsByIds(arrIds).subscribe(function (tags) {
+                for (var i = 0; i < requests.length; i++) {
+                    _this._data.push({
+                        req: requests[i],
+                        tags: []
+                    });
+                    requests[i].createdAt = new Date(requests[i].createdAt);
+                    requests[i].modifiedDate = new Date(requests[i].modifiedDate);
+                    requests[i].link = requests[i]._id + '/info';
+                    if (requests[i].status === 'pending') {
+                        requests[i].status = 'Đang chờ';
+                    }
+                    for (var _i = 0; _i < tags.length; _i++) {
+                        var t = tags[_i];
+                        if (requests[i].tags.indexOf(t._id) > -1) {
+                            _this._data[i].tags.push(t);
+                        }
+                    }
+                }
+                console.log(_this._data);
+                _this.requests = requests;
+            });
         });
     };
     RequestListClientComponent.prototype.search = function (search) {
         var _this = this;
-        this._requestService.searchRequest(search).subscribe(function (requests) {
-            _this.searchs = requests;
-            _this.hide = true;
-        });
+        if (search === '') {
+            this.isExistRecord = false;
+            this.getAllRequests();
+        }
+        else {
+            this._requestService.searchRequest(search).subscribe(function (requests) {
+                for (var i = 0; i < requests.length; i++) {
+                    requests[i].createdAt = new Date(requests[i].createdAt);
+                    if (requests[i].status === 'pending') {
+                        requests[i].status = 'Đang chờ';
+                    }
+                }
+                if (requests.length === 0) {
+                    _this.isExistRecord = true;
+                }
+                else {
+                    _this.isExistRecord = false;
+                }
+                _this.requests = requests;
+            });
+        }
     };
     RequestListClientComponent = __decorate([
         core_1.Component({
@@ -69,16 +102,14 @@ var RequestListClientComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/request/templates/request-list.html',
             styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
             directives: [
-                ng2_pagination_1.PaginationControlsCmp,
                 router_1.ROUTER_DIRECTIVES,
                 friend_list_1.FriendListComponent,
                 request_create_1.CreateRequestComponent,
                 request_search_1.RequestCategoryComponent
             ],
-            providers: [ng2_pagination_1.PaginationService],
-            pipes: [ng2_pagination_1.PaginatePipe]
+            providers: [tag_1.TagService]
         }), 
-        __metadata('design:paramtypes', [requests_1.RequestService, auth_1.AuthService, router_2.Router])
+        __metadata('design:paramtypes', [requests_1.RequestService, tag_1.TagService, auth_1.AuthService, router_2.Router])
     ], RequestListClientComponent);
     return RequestListClientComponent;
 })();
