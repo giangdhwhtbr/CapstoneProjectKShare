@@ -144,30 +144,59 @@ module.exports = class userController {
         }
     }
 
-    static resetPassword(req, res) {
-        if (req.params && req.params.email) {
-            var currentDate = new Date();
-            userDAO.getUserByEmail(req.params.email)
-                .then(user => {
-                    user.resetPasswordToken = crypto.randomBytes(16).toString('base64');
-                    user.resetPasswordExpires = currentDate + 1;
+    static getUserByToken (req, res) {
+      if(req.params && req.params.token){
+        userDAO.getUserByToken(req.params.token)
+          .then ((user) => {
+            res.status(200).json(user);
+          })
+          .catch ((error) => {
+            res.status(400).json(error);
+          });
+      }
+    }
 
-                    transporter.sendMail(mailOptions(user.email, user.username, user.resetPasswordToken).resetPass, function (errors, info) {
-                        if (errors) {
-                            res.status(400).json(errors);
-                        }
-                        res.status(200).json(info);
-                    });
-                })
+    static changePassword(req,res) {
+        if(req.params && req.params.token){
+          userDAO.getUserByToken(req.params.token)
+            .then ((user) => {
+              user.password = req.body.password;
+              userDAO.updateUserById(user)
+              .then((user)=> res.status(200).json({status: 'success'}))
+              .catch((error) => res.status(400).json({status: 'failure'}));
+            })
+            .catch ((error) => {
+              res.status(400).json(error);
+            });
         }
     }
 
-    static removeById(req, res) {
-        let _id = req.params.id;
+    static sendEmailResetPassword(req, res) {
+        if (req.params && req.params.email) {
+            var currentDate = new Date();
+            userDAO.getUserByEmail(req.params.email)
+            .then(user => {
+                user.resetPasswordToken = crypto.randomBytes(16).toString('base64');
+                user.sendTokenDate = currentDate;
 
-        userDAO
-            .removeById(_id)
-            .then(() => res.status(200).end())
-            .catch(error => res.status(400).json(error));
+                userDAO.updateUserById(user)
+                .then((user) => {
+                  transporter.sendMail(mailOptions(user.email, user.username, user.resetPasswordToken).resetPass, function (errors, info) {
+                    if (errors) {
+                      res.status(400).json({status: 'failed'});
+                    }
+                    res.status(200).json({status: 'success'});
+                  });
+                })
+                .catch((err) => {
+                  console.log(err);
+                });
+
+            }).catch(error => {
+              res.status(400).json(error);
+            });
+        }else {
+          res.status(404).json('There is no email');
+        }
     }
-}
+};

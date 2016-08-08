@@ -22,13 +22,13 @@ import { RegisterComponent } from '../components/front-end/user/register/registe
 import { RegisterInfoComponent } from '../components/front-end/user/register/info';
 import { RegisterSuccessComponent } from '../components/front-end/user/register/success';
 import { LoginComponent} from "../components/front-end/user/login/login";
+import { ResetPasswordComponent } from "../components/front-end/user/reset-password/reset-pass";
+import { NewPasswordComponent } from "../components/front-end/user/reset-password/new-pass";
 import { CreateArticleComponent } from "../components/front-end/article/create-article";
 import { detailArticleComponent } from "../components/front-end/article/detail-article";
 import { listArticleComponent } from "../components/front-end/article/list-article";
 import { EditArticleComponent } from "../components/front-end/article/edit-article";
-
 import { displayArtByTagComponent } from "../components/front-end/tag/displayArtByTag";
-
 import { AdminAuthGuard }          from './auth';
 import { AuthService }        from '../services/auth';
 
@@ -60,6 +60,19 @@ export const KShareRoutes: RouterConfig = [
                 path: 'login',
                 canActivate: [AdminAuthGuard],
                 component: LoginComponent
+            },
+            {
+                path: 'reset-password',
+                children: [
+                  {
+                    path: '',
+                    component: ResetPasswordComponent
+                  },
+                  {
+                    path: ':token',
+                    component: NewPasswordComponent
+                  }
+                ]
             },
             {
                 path: 'user',

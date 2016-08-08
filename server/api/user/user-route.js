@@ -67,8 +67,12 @@ module.exports = class userRoutes {
       });
 
     router
-      .route('/api/resetPassword/:email')
-      .get(userController.resetPassword);
+      .route('/api/email-reset-pass/:email')
+      .get(userController.sendEmailResetPassword);
+    router
+      .route('/api/new-pass/:token')
+      .get(userController.getUserByToken)
+      .put(userController.changePassword);
 
    router
       .route('/api/is-user-exist/:username')

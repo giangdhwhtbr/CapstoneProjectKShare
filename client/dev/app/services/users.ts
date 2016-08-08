@@ -21,8 +21,40 @@ export class UserService {
     private _isUserExistUrl = '/api/is-user-exist/:username';
     private _friendshipStatusUrl = '/api/friendship-status/:user1/:user2';
     private _banUrl = '/api/ban/:id';
+    private _emailResetPass = '/api/email-reset-pass/:email';
+    private _changePass = '/api/new-pass/:token';
+
+
 
     constructor(private _http:Http) {
+    }
+
+    getUserByToken(token: string): Observable <any> {
+      return this._http.get(this._changePass.replace(':token',token))
+      .map((r) => r.json())
+      .catch(this.handleError);
+    }
+    updateNewPassword(password: string, token: string): Observable <any> {
+      let headers = new Headers({'Content-Type': 'application/json'});
+      let options = new RequestOptions({headers: headers});
+
+      var data = {
+        password: password,
+        token: token
+      };
+
+      return this._http.put(this._changePass.replace(':token',token),data,options)
+        .map((r) => r.json())
+        .catch(this.handleError);
+
+    }
+
+    sendEmailResetPassword(email: string): Observable <any> {
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+        return this._http.get(this._emailResetPass.replace(':email',email),options)
+              .map((r) => r.json())
+              .catch(this.handleError);
     }
 
     getAllUsers():Observable<User[]> {

@@ -78,16 +78,6 @@ const userSchema = new mongoose.Schema({
       childPath: "users"
     }
   ],
-  onlineTime: [
-    {
-      type: String
-    }
-  ],
-  level: {
-    type: Number,
-    min: 1,
-    max: 10
-  },
   rates: [{
     kspaceId: {
       type: mongoose.Schema.Types.ObjectId,
@@ -133,7 +123,7 @@ const userSchema = new mongoose.Schema({
   resetPasswordToken: {
     type: String
   },
-  resetPasswordExpires: {
+  sendTokenDate: {
     type: Date
   },
   linkImg: {
