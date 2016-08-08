@@ -60,7 +60,8 @@ export class RequestService {
             .catch(this.handleError);
     }
 
-    addRequest(request: Request, oldTag: any[], newTag: any[]): Observable<any> {
+    addRequest(request:Request ,content:string, oldTag:any[], newTag:any[]):Observable<any> {
+
         let header = new Headers;
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
@@ -69,7 +70,7 @@ export class RequestService {
             {
                 request: {
                     title: request.title,
-                    description: request.description,
+                    description: content,
                     knowledgeId: request.knowledgeId,
                     user: request.user,
                     tags: oldTag

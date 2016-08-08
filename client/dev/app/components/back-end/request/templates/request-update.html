@@ -14,12 +14,110 @@
                     <option *ngFor="let sub of k.subCategory" value={{sub._id}}>{{sub.name}}</option>
                 </optgroup>
             </select>
-            <label class="control-label" for="description">Nội dung </label>
-            <textarea class="form-control" id="description" type="text" [ngModel]="description" [ngFormControl]="updateRequestFormCli.controls['description']"></textarea>
+
+            <div class="editor">
+                <ck-editor>ckeditor_inst_1</ck-editor>
+            </div>
+            <button type="button" id="bdOpenModal" data-toggle="modal" data-target="#ModalUploadImgCkeditor"
+                    data-backdrop="static" data-keyboard="false" style="display: none;"></button>
+            <button type="button" id="youtubeOpenModal" data-toggle="modal" data-target="#ModalYTCkeditor"
+                    data-backdrop="static" data-keyboard="false" style="display: none;"></button>
+            <div id="ModalUploadImgCkeditor" class="modal fade">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Insert Image</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="container">
+                                <div id="groupCollapse" class="panel-group">
+                                    <div class="panel panel-default isLinkPn">
+                                        <div class="panel-heading" style="cursor:pointer">
+                                            <h4 class="panel-title" data-toggle="collapse" data-parent="#groupCollapse"
+                                                href="#insertImgBody">
+                                                1. Insert image by link
+                                            </h4>
+                                        </div>
+                                        <div id="insertImgBody" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <div class="col-xs-6">
+                                                    <label for="linkIsImg">Paste image's link here</label>
+                                                    <input #linkIsImg class="form-control" id="linkIsImg" type="text"/>
+                                                </div>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <button type="button" class="btn btn-success"
+                                                        (click)="insertLinkToBox(linkIsImg.value)" data-dismiss="modal">
+                                                    Insert
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="panel panel-default isLinkPn">
+                                        <div class="panel-heading" style="cursor:pointer">
+                                            <h4 class="panel-title" data-toggle="collapse" data-parent="#groupCollapse"
+                                                href="#uploadImgLocal">
+                                                2. Upload image from your computer
+                                            </h4>
+                                        </div>
+                                        <div id="uploadImgLocal" class="panel-collapse collapse">
+                                            <div class="panel-body">
+                                                <input #fileInput id="uploadImg" (change)="fileChangeEvent($event)"
+                                                       type="file" accept="image/*"/>
+                                            </div>
+                                            <div class="panel-footer">
+                                                <button type="button" class="btn btn-success" (click)="uploadImageCk()"
+                                                        data-dismiss="modal">Upload and insert
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="ModalYTCkeditor" class="modal fade">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Insert Image</h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="">
+                                <div class="panel-heading">
+                                    <div class="panel-body">
+                                        <div class="col-xs-6">
+                                            <label for="linkIsYT">Paste youtube's link here</label>
+                                            <input #linkYT class="form-control" id="linkIsYT" type="text"/>
+                                            <button type="button" class="btn btn-success"
+                                                    (click)="insertYoutubeToBox(linkYT.value)" data-dismiss="modal">
+                                                Insert
+                                            </button>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <p><span>Câu hỏi này liên quan tới</span></p>
             <!--end editor -->
-            <p-autoComplete [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1" [multiple]="true" [(ngModel)]="tags">
-            </p-autoComplete><br>
+            <p-autoComplete [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
+                            [multiple]="true" [(ngModel)]="tags">
+            </p-autoComplete>
+            <br>
             <!--end tags-->
             <button type="submit" class="btn btn-success">Hoàn thành</button>
             <button class="btn btn-danger" [routerLink]="['/requests/' + _id + '/info' ]" >Hủy</button>

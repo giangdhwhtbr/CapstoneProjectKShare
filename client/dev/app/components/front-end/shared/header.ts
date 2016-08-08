@@ -34,12 +34,23 @@ export class HeaderComponent {
 
   constructor(private _auth: AuthService, public router: Router, public _noti: NotificationService,
             private _userService: UserService) {
-    this.loginToken = localStorage.getItem('username') ? true : false;
     this.userToken = localStorage.getItem('username');
     this.roleToken = localStorage.getItem('userrole');
   }
 
   ngOnInit(): void {
+
+    this._auth.isLoggedIn().subscribe(res =>{
+      if(res.login){
+        this.loginToken = true;
+      }else {
+        this._auth.logoutClient();
+        this.loginToken = false;
+      }
+    },
+    error => {
+      console.log('Server error');
+    });
 
     this.link = '';
     this.socket = io('https://localhost:80');
@@ -61,10 +72,7 @@ export class HeaderComponent {
       }
 
     });
-
-
     this.getNotificationByUser();
-
   }
 
   logout(): void {

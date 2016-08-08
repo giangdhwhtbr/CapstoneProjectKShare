@@ -92,12 +92,9 @@ export class CreateArticleComponent implements OnInit {
             if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
                 this.filteredKnw.push(this.tagsEx[i].name);
             }
-            if(i==this.tagsEx.length-1){
+            if(this.filteredKnw.indexOf(query.trim())<0){
                 this.filteredKnw.unshift(query.trim());
             }
-        }
-        if (this.filteredKnw.length == 0) {
-            this.filteredKnw.push(query.trim());
         }
     }
 
@@ -108,6 +105,9 @@ export class CreateArticleComponent implements OnInit {
             console.log(this.tagsEx);
         });
     }
+
+
+    // ckeditor
 
     insertLinkToBox(link:string) {
         CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
@@ -120,7 +120,6 @@ export class CreateArticleComponent implements OnInit {
         CKEDITOR.instances.editor1.insertHtml(s);
     }
 
-    // ckeditor
     addCommandBtnCk() {
         CKEDITOR.instances.editor1.addCommand('uploadImage', {exec: this.openModalImg});
         CKEDITOR.instances.editor1.addCommand('youtube', {exec: this.openModalYoutube});
@@ -188,6 +187,7 @@ export class CreateArticleComponent implements OnInit {
         this.filesToUpload = <Array<File>> fileInput.target.files;
     }
 
+    //finish control Ckeditor
 
 
     postArticle(stt:any) {

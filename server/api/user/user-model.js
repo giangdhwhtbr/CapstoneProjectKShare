@@ -22,119 +22,125 @@ var validatePass = function (password) {
     return pattern.test(password);
 }
 const userSchema = new mongoose.Schema({
-    fullName: {
-        type: String,
-        trim: true,
-        default: ''
+  fullName: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  displayName: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  phone: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  birthday: {
+    type: Date
+  },
+  username: {
+    type: String,
+    trim: true,
+    unique: [true, 'Username already exists'],
+    lowercase: true,
+    default: '',
+    required: [true, 'Please fill in your username']
+  },
+  password: {
+    type: String,
+    trim: true,
+    default: '',
+    required: [true, 'Please fill in your password'],
+    validate: [validatePass, 'password must be at least 8 characters including 1 uppercase letter, 1 special character and alphanumeric characters?']
+  },
+  email: {
+    type: String,
+    trim: true,
+    unique: true,
+    lowercase: true,
+    default: '',
+    required: [true, 'Please fill in your email'],
+    validate: [validateEmail, "Email is not in the right form, let check it again!"]
+  },
+  role: {
+    type: String,
+    trim: true,
+    default: '',
+    required: [true, 'Role can not blank'],
+    validate: [validateRole, "Role is not valid, try again!"]
+  },
+  ownKnowledgeIds: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tag",
+      childPath: "users"
+    }
+  ],
+  onlineTime: [
+    {
+      type: String
+    }
+  ],
+  level: {
+    type: Number,
+    min: 1,
+    max: 10
+  },
+  rates: [{
+    kspaceId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'KSpace'
     },
-    displayName: {
-        type: String,
-        trim: true,
-        default: ''
+    rate: {
+      type: Number,
+      min: 1,
+      max: 5
     },
-    phone: {
-        type: String,
-        trim: true,
-        default: ''
+    rateAt: {
+      type: Date
     },
-    birthday: {
-        type: Date
+    ratedUser: {
+      type: String
+    }
+  }],
+  rateAve: {
+    type: Number,
+    min: 0,
+    max: 5
+  },
+  banStatus: {
+    admin: {
+      type: String
     },
-    username: {
-        type: String,
-        trim: true,
-        unique: [true, 'Username already exists'],
-        lowercase: true,
-        default: '',
-        required: [true, 'Please fill in your username']
+    time: {
+      type: String
     },
-    password: {
-        type: String,
-        trim: true,
-        default: '',
-        required: [true, 'Please fill in your password'],
-        validate: [validatePass, 'password must be at least 8 characters including 1 uppercase letter, 1 special character and alphanumeric characters?']
+    bannedAt: {
+      type: Date
     },
-    email: {
-        type: String,
-        trim: true,
-        unique: true,
-        lowercase: true,
-        default: '',
-        required: [true, 'Please fill in your email'],
-        validate: [validateEmail, "Email is not in the right form, let check it again!"]
-    },
-    role: {
-        type: String,
-        trim: true,
-        default: '',
-        required: [true, 'Role can not blank'],
-        validate: [validateRole, "Role is not valid, try again!"]
-    },
-    ownKnowledgeIds: [{type: mongoose.Schema.Types.ObjectId, ref: "Tag", childPath: "users"}],
-    onlineTime: [
-        {
-            type: String
-        }
-    ],
-    level: {
-        type: Number,
-        min: 1,
-        max: 10
-    },
-    rates: [{
-        kspaceId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'KSpace'
-        },
-        rate: {
-            type: Number,
-            min: 1,
-            max: 5
-        },
-        rateAt: {
-            type: Date
-        },
-        ratedUser: {
-            type: String
-        }
-    }],
-    rateAve: {
-        type: Number,
-        min: 0,
-        max: 5
-    },
-    banStatus: {
-        admin: {
-            type: String
-        },
-        time: {
-            type: String
-        },
-        bannedAt: {
-            type: Date
-        },
-        status: {
-            type: Boolean
-        }
-    },
-    salt: {
-        type: String,
-    },
-    createdAt: {type: Date, default: Date.now},
-    updatedAt: {type: Date},
-    /* For reset password */
-    resetPasswordToken: {
-        type: String
-    },
-    resetPasswordExpires: {
-        type: Date
-    },
-    linkImg: {
-        type: String,
-        default: 'uploads/images.jpg'
-    },
-    lastAccessedAt: {type: Date}
+    status: {
+      type: Boolean
+    }
+  },
+  salt: {
+    type: String,
+  },
+  createdAt: {type: Date, default: Date.now},
+  updatedAt: {type: Date},
+  /* For reset password */
+  resetPasswordToken: {
+    type: String
+  },
+  resetPasswordExpires: {
+    type: Date
+  },
+  linkImg: {
+    type: String,
+    default: 'uploads/images.jpg'
+  },
+  lastAccessedAt: {type: Date}
 });
 
 /**

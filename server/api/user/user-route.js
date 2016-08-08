@@ -31,7 +31,7 @@ module.exports = class userRoutes {
           }
           // Generate a JSON response reflecting authentication status
           if (! user) {
-            return res.send(401,info);
+            return res.status(401).send(info);
           }
           req.login(user, function(err){
             if(err){
@@ -41,7 +41,7 @@ module.exports = class userRoutes {
               username : user.username,
               role: user.role
             }
-            return res.send(data);
+            return res.status(200).send(data);
           });
         })(req, res, next);
       });
