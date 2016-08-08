@@ -210,7 +210,6 @@ export class KSpaceComponent {
             })
           }
           rtc.rtcSetting(webrtc,room,kspace.lecturer);
-          var peers = webrtc.getPeers();
           var sharescreenToken: boolean = false;
           shareScreenBtn.click(function () {
               sharescreenToken = rtc.shareScreen(webrtc,sharescreenToken);

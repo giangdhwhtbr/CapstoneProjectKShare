@@ -164,7 +164,6 @@ var KSpaceComponent = (function () {
                     });
                 }
                 rtc.rtcSetting(webrtc, room, kspace.lecturer);
-                var peers = webrtc.getPeers();
                 var sharescreenToken = false;
                 shareScreenBtn.click(function () {
                     sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);
