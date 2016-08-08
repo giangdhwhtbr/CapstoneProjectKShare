@@ -15,11 +15,12 @@ var requests_1 = require('../../../services/requests');
 var tag_1 = require('../../../services/tag');
 var primeng_1 = require('primeng/primeng');
 var CreateRequestComponent = (function () {
-    function CreateRequestComponent(_tagService, fb, _requestService, _knowledgeService, _authService) {
+    function CreateRequestComponent(_tagService, fb, _requestService, _knowledgeService, _authService, router) {
         this._tagService = _tagService;
         this._requestService = _requestService;
         this._knowledgeService = _knowledgeService;
         this._authService = _authService;
+        this.router = router;
         this.user = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
         this.requestForm = fb.group({
@@ -79,14 +80,15 @@ var CreateRequestComponent = (function () {
         });
     };
     CreateRequestComponent.prototype.addRequest = function (request) {
+        var _this = this;
         var tags = [];
         tags = this.filterONTag();
         this._requestService.addRequest(request, tags[0], tags[1]).subscribe(function (request) {
             console.log(request);
+            _this.router.navigateByUrl('/requests/' + request._id + '/info');
         }, function (error) {
             console.log(error.text());
         });
-        window.location.reload();
     };
     CreateRequestComponent = __decorate([
         core_1.Component({

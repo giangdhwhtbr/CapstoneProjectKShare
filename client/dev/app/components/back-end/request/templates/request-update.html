@@ -1,32 +1,28 @@
 <div *ngIf="request" class="container">
-    <form role="form" id="update" [ngFormModel]="updateRequestFormCli"
-          (ngSubmit)="updateRequest(updateRequestFormCli.value)">
+    <form role="form" id="update" [ngFormModel]="updateRequestFormCli" (ngSubmit)="updateRequest(updateRequestFormCli.value)">
         <div class="form-group">
             <h4>Thông tin yêu cầu <strong>{{request.title}}</strong></h4>
             <label class="control-label" for="title">Tiêu đề </label>
-            <input class="form-control" id="title" type="text" [ngModel]="title"
-                   [ngFormControl]="updateRequestFormCli.controls['title']"/>
-            <input class="form-control" id="id" type="hidden" [ngModel]="id"
-                   [ngFormControl]="updateRequestFormCli.controls['_id']"/>
+            <input class="form-control" id="title" type="text" [ngModel]="title" [ngFormControl]="updateRequestFormCli.controls['title']"
+            />
+            <input class="form-control" id="id" type="hidden" [ngModel]="id" [ngFormControl]="updateRequestFormCli.controls['_id']" />
             <label for="knowledge">Lĩnh vực</label>
-            <select class="form-control" id="knowledge"
-                    [ngFormControl]="updateRequestFormCli.controls['knowledgeId']"
-                    [ngModel]="knowledgeId" required>
+            <select class="form-control" id="knowledge" [ngFormControl]="updateRequestFormCli.controls['knowledgeId']" [ngModel]="knowledgeId"
+                required>
+                <option value="{{knowledgeId}}">{{kname}}</option>
                 <optgroup *ngFor="let k of knowledges" label="{{k.name}}">
                     <option *ngFor="let sub of k.subCategory" value={{sub._id}}>{{sub.name}}</option>
                 </optgroup>
             </select>
             <label class="control-label" for="description">Nội dung </label>
-                            <textarea class="form-control" id="description" type="text" [ngModel]="description"
-                                      [ngFormControl]="updateRequestFormCli.controls['description']"></textarea>
+            <textarea class="form-control" id="description" type="text" [ngModel]="description" [ngFormControl]="updateRequestFormCli.controls['description']"></textarea>
             <p><span>Câu hỏi này liên quan tới</span></p>
             <!--end editor -->
-            <p-autoComplete  [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
-                             [multiple]="true" [(ngModel)]="tags" >
+            <p-autoComplete [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1" [multiple]="true" [(ngModel)]="tags">
             </p-autoComplete><br>
             <!--end tags-->
             <button type="submit" class="btn btn-success">Hoàn thành</button>
-            <button type="reset" class="btn btn-warning">Nhập lại</button>
+            <button class="btn btn-danger" [routerLink]="['/requests/' + _id + '/info' ]" >Hủy</button>
         </div>
     </form>
 </div>

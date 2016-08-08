@@ -26,7 +26,7 @@ var KSpaceComponent = (function () {
         });
         this.username = localStorage.getItem('username');
         this.messages = [];
-        this.socket = io('https://localhost:8081');
+        this.socket = io('https://localhost:80');
         this.socket.emit('subscribe', this.id);
         this.socket.on("chat_message", function (dataReturn) {
             var isSender = false;

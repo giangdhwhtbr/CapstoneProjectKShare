@@ -12,10 +12,15 @@ module.exports = class ArticleRoutes {
       .get(ArticleController.getAllArticles)
       .post(ArticleController.createArticle);
 
-    router.route('/api/article/:id')
+    router
+      .route('/api/article/:id')
       .delete(ArticleController.deactivateArticle)
       .get(ArticleController.getArticleById)
       .put(ArticleController.updateArticleById);
 
+   router
+      .route('/api/articles-user')
+      .post(ArticleController.getArticlesByTagsOfUser)
+      .put(ArticleController.getArticlesExceptTagsOfUser);
   }
 }

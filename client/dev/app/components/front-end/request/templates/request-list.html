@@ -36,7 +36,7 @@
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
             Ngày tạo : {{e.req.createdAt | date:"dd/MM/yyyy"}}
           </div>
-          <p>
+          <p *ngIf="e.tags.length!=0">
             tags :
                 <span *ngFor="let t of e.tags">
                     <a [routerLink]="['/tag',t._id]">{{t.name}}</a>,

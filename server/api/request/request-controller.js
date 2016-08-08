@@ -11,6 +11,20 @@ module.exports = class RequestController {
             .catch(error => res.status(400).json(error));
     }
 
+    static getRequestsByTagsOfUser(req, res) {
+        RequestDAO
+            .getRequestsByTagsOfUser(req.body.userTags, req.body.x)
+            .then(requests => res.status(200).json(requests))
+            .catch(error => res.status(400).json(error));
+    }
+
+    static getRequestsExceptTagsOfUser(req, res) {
+        RequestDAO
+            .getRequestsExceptTagsOfUser(req.body.userTags, req.body.x)
+            .then(requests => res.status(200).json(requests))
+            .catch(error => res.status(400).json(error));
+    }
+
     static getAllRequestForAdmin(req, res) {
         RequestDAO
             .getAllRequestForAdmin()
@@ -59,7 +73,7 @@ module.exports = class RequestController {
                             tags.map((e, i)=> {
                                 request.tags.push(e);
                             });
-                            tags.save();
+                            request.save();
 
                             res.status(200).json(request);
                         }).catch(error => res.status(400).json(error));
@@ -111,7 +125,6 @@ module.exports = class RequestController {
 
     static getRequestByUser(req, res) {
         if (req.params) {
-            console.log('123');
             RequestDAO
                 .getRequestByUser(req.params.user)
                 .then(requests => res.status(200).json(requests))

@@ -36,15 +36,15 @@ class CKEditor {
 
 export class CreateArticleComponent implements OnInit {
     filesToUpload:Array<File>;
-    contentCk:string;
-    titelArticle:string;
+    contentCk:string="";
+    titelArticle:string="";
     status:string;
 
 
     filteredKnw:string[];
 
-    tags:any[];
-    tagsEx:Array<any>;
+    tags:any[]=[];
+    tagsEx:Array<any> =[];
 
     userToken: string;
     roleToken: string;

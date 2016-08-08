@@ -18,30 +18,31 @@ import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  }
 })
 
 export class UpdateRequestComponent {
-    updateRequestFormCli:ControlGroup;
+    updateRequestFormCli: ControlGroup;
 
-    knowledges:Knowledge[];
+    knowledges: Knowledge[];
 
-    id:string;
+    id: string;
 
-    request:Request;
-    _id:string;
-    title:string;
-    description:string;
-    knowledgeId:string;
+    request: Request;
+    _id: string;
+    title: string;
+    description: string;
+    knowledgeId: string;
+    kname: string
 
-    filteredKnw:string[];
+    filteredKnw: string[];
 
-    tags:any[];
-    tagsEx:Array<any>;
+    tags: any[];
+    tagsEx: Array<any>;
 
-    constructor(@Inject(FormBuilder) fb:FormBuilder,
-                @Inject(RequestService) private _requestService:RequestService,
-                public router:Router,
-                private route:ActivatedRoute,
-                private _tagService:TagService,
-                @Inject(KnowledgeService)
-                private _knowledgeService:KnowledgeService) {
+    constructor( @Inject(FormBuilder) fb: FormBuilder,
+        @Inject(RequestService) private _requestService: RequestService,
+        public router: Router,
+        private route: ActivatedRoute,
+        private _tagService: TagService,
+        @Inject(KnowledgeService)
+        private _knowledgeService: KnowledgeService) {
         this.route
             .params
             .subscribe(params => {
@@ -56,31 +57,34 @@ export class UpdateRequestComponent {
         });
     }
 
-    ngOnInit():void {
+    ngOnInit(): void {
         //get all back.knowledge
         this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
             this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
         });
-
         this._requestService.getRequestById(this.id).subscribe(
             (request) => {
 
-                let ids:string[] = [];
+                let ids: string[] = [];
                 ids = request.tags;
 
-                this._tagService.getTagsByIds(ids).subscribe((tags)=> {
+                this._tagService.getTagsByIds(ids).subscribe((tags) => {
 
                     this.request = request;
                     this.title = request.title;
                     this.description = request.description;
                     this._id = request._id;
+                    this.knowledgeId = request.knowledgeId;
 
+                    this._knowledgeService.findKnowledgeById(this.knowledgeId).subscribe((k) => {
+                        this.kname = k.name;
+                    });
                     console.log(tags);
-                    let nameArr :string[]=[];
+                    let nameArr: string[] = [];
                     for (let e of tags) {
                         nameArr.push(e.name);
                     }
-                    this.tags=nameArr;
+                    this.tags = nameArr;
 
                     this.loadAllTags();
 
@@ -94,7 +98,7 @@ export class UpdateRequestComponent {
     }
 
     filterONTag() {
-        let oldTag:any[] = [];
+        let oldTag: any[] = [];
         for (let e of this.tagsEx) {
             for (let e1 of this.tags) {
                 if (e.name == e1) {
@@ -135,17 +139,15 @@ export class UpdateRequestComponent {
     }
 
     updateRequest(request) {
-        let tags:any[] = [];
+        let tags: any[] = [];
         tags = this.filterONTag();
-        console.log(request);
-        //this._requestService.updateRequest(request, tags[0], tags[1]).subscribe((request) => {
-        //        console.log('update successed');
-        //    },
-        //    (error) => {
-        //        console.log(error.text());
-        //    }
-        //);
-        // this.router.navigateByUrl('admin/requests');
+        this._requestService.updateRequest(request, tags[0], tags[1]).subscribe((request) => {
+            this.router.navigateByUrl('/requests/' + request._id + '/info');
+        },
+            (error) => {
+                console.log(error.text());
+            }
+        );
     }
 
 }

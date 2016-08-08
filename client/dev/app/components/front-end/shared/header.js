@@ -17,6 +17,7 @@ var HeaderComponent = (function () {
         this.router = router;
         this._noti = _noti;
         this._userService = _userService;
+        this.count = 2;
         this.loginToken = localStorage.getItem('username') ? true : false;
         this.userToken = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
@@ -24,12 +25,12 @@ var HeaderComponent = (function () {
     HeaderComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.link = '';
-        this.socket = io('https://localhost:8081');
+        this.socket = io('https://localhost:80');
         this.socket.on('receive notification', function (data) {
             if (localStorage.getItem('username') === data.data.user) {
                 //audio of notification
                 var audio = new Audio();
-                audio.src = "https://localhost:8081/client/dev/asserts/gets-in-the-way.mp3";
+                audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
                 audio.load();
                 audio.play();
                 _this.getNotificationByUser(data.data.user);
