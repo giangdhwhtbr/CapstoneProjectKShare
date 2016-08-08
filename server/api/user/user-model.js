@@ -7,20 +7,25 @@ const crypto = require('crypto');
 
 var validateEmail = function (email) {
     return validator.isEmail(email);
-}
+};
 
 var validateRole = function (role) {
-    if (role == "admin" || role == "manager" || role == "instructor" || role == "normal") {
+    if (role == "admin"|| role == "normal") {
         return true;
     } else {
         return false;
     }
+};
+
+var validateUsername = function(username) {
+  var pattern = new RegExp('^[a-zA-Z0-9_.-]*$');
+  return pattern.test(username);
 }
 
 var validatePass = function (password) {
     var pattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
     return pattern.test(password);
-}
+};
 const userSchema = new mongoose.Schema({
   fullName: {
     type: String,
@@ -43,33 +48,35 @@ const userSchema = new mongoose.Schema({
   username: {
     type: String,
     trim: true,
-    unique: [true, 'Username already exists'],
+    unique: [true, 'Tên đăng nhập đã tồn tại '],
     lowercase: true,
     default: '',
-    required: [true, 'Please fill in your username']
+    required: [true, 'vui lòng điền tên đăng nhập '],
+    validate: [validateUsername, 'Tên đăng nhập chỉ được chứa kí tự alphabet và số ']
   },
   password: {
     type: String,
     trim: true,
     default: '',
-    required: [true, 'Please fill in your password'],
-    validate: [validatePass, 'password must be at least 8 characters including 1 uppercase letter, 1 special character and alphanumeric characters?']
+    required: [true, 'vui lòng nhập mật khẩu '],
+    validate: [validatePass, 'mât khẩu phải có ít nhất 8 kí tự, bao gồm 1 kí tự viết hoa, 1 kí tự viết thường, 1 kí' +
+    ' tự đặc biệt và 1 số' ]
   },
   email: {
     type: String,
     trim: true,
-    unique: true,
+    unique: [true,'email đã tồn tại '],
     lowercase: true,
     default: '',
-    required: [true, 'Please fill in your email'],
-    validate: [validateEmail, "Email is not in the right form, let check it again!"]
+    required: [true, 'vui lòng nhập email '],
+    validate: [validateEmail, "vui lòng nhập đúng email"]
   },
   role: {
     type: String,
     trim: true,
     default: '',
-    required: [true, 'Role can not blank'],
-    validate: [validateRole, "Role is not valid, try again!"]
+    required: true,
+    validate: [validateRole, "Role không tồn tại"]
   },
   ownKnowledgeIds: [
     {
@@ -141,7 +148,6 @@ userSchema.pre('save', function (next) {
         this.salt = crypto.randomBytes(16).toString('base64');
         this.password = this.hashPassword(this.password);
     }
-
     next();
 });
 
