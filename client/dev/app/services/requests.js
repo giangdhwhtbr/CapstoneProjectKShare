@@ -13,6 +13,7 @@ var RequestService = (function () {
     function RequestService(_http) {
         this._http = _http;
         this._requestsUrl = '/api/requests/:id';
+        this._requestUserUrl = '/api/requests-user';
         this._requestsAdminUrl = '/api/requests-admin/:id';
         this._getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
         this._searchRequetsUrl = '/api/requests-search/:id';
@@ -21,6 +22,32 @@ var RequestService = (function () {
     }
     RequestService.prototype.getAllRequests = function () {
         return this._http.get(this._requestsUrl.replace(':id', ''))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    //get all request which user's ownknowledgeIds same with tagid of request
+    RequestService.prototype.getRequestByUserTags = function (tags, num) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _data = JSON.stringify({
+            userTags: tags,
+            x: num
+        });
+        return this._http.put(this._requestsUrl.replace(':id', ''), _data, options)
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    //get all request which user's ownknowledgeIds not same with tagid of request
+    RequestService.prototype.getRequestExceptUserTags = function (tags, num) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _data = JSON.stringify({
+            userTags: tags,
+            x: num
+        });
+        return this._http.post(this._requestUserUrl, _data, options)
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
@@ -33,8 +60,6 @@ var RequestService = (function () {
         var header = new http_1.Headers;
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
-        console.log(oldTag);
-        console.log(newTag);
         var _data = JSON.stringify({
             request: {
                 title: request.title,
@@ -45,7 +70,6 @@ var RequestService = (function () {
             },
             newTag: newTag
         });
-        console.log(_data);
         return this._http
             .post(this._requestsUrl.replace(':id', ''), _data, options)
             .map(function (r) { return r.json(); });

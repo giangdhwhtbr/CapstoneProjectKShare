@@ -16,6 +16,7 @@ var ArticleService = (function () {
         this._http = _http;
         this._requestsUrl = '/api/article/:id';
         this._requestsGetDeArtUrl = '/api/art/de/:id';
+        this._articleUserUrl = '/api/articles-user';
     }
     ArticleService.prototype.getAllArts = function () {
         return this._http.get(this._requestsUrl.replace(':id', ''))
@@ -24,6 +25,32 @@ var ArticleService = (function () {
     };
     ArticleService.prototype.getAllDeArts = function () {
         return this._http.get(this._requestsGetDeArtUrl.replace(':id', ''))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    //get "num" article which user's ownknowledgeIds same with tagid of article
+    ArticleService.prototype.getArticlesByUserTags = function (tags, num) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _data = JSON.stringify({
+            userTags: tags,
+            x: num
+        });
+        return this._http.post(this._articleUserUrl, _data, options)
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    //get articles which user's ownknowledgeIds not same with tagid of article
+    ArticleService.prototype.getArticleExceptUserTags = function (tags, num) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _data = JSON.stringify({
+            userTags: tags,
+            x: num
+        });
+        return this._http.put(this._articleUserUrl, _data, options)
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };

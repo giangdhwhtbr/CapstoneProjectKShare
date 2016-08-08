@@ -2,6 +2,7 @@
 var kshare_component_1 = require('../components/kshare.component');
 //Function Components
 var home_1 = require("../components/front-end/home/home");
+var newsfeed_1 = require("../components/front-end/newsfeed/newsfeed");
 var request_list_1 = require("../components/front-end/request/request-list");
 var request_detail_1 = require("../components/front-end/request/request-detail");
 var request_update_1 = require("../components/back-end/request/request-update");
@@ -30,6 +31,10 @@ exports.KShareRoutes = [
         path: '',
         component: kshare_component_1.KshareComponent,
         children: [
+            {
+                path: 'newsfeed',
+                component: newsfeed_1.NewsFeedComponent
+            },
             {
                 path: 'reg',
                 //canActivate: [ AdminAuthGuard ],

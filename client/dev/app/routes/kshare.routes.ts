@@ -7,9 +7,9 @@ import { RouterConfig }          from '@angular/router';
 import { KshareComponent } from '../components/kshare.component';
 //Function Components
 import { HomeComponent} from "../components/front-end/home/home";
+import { NewsFeedComponent } from "../components/front-end/newsfeed/newsfeed";
 import { RequestListClientComponent } from "../components/front-end/request/request-list";
 import { RequestDetailClientComponent } from "../components/front-end/request/request-detail";
-import { RequestUpdateClientComponent } from "../components/front-end/request/request-update";
 import { UpdateRequestComponent } from "../components/back-end/request/request-update";
 import { RequestCategoryComponent } from "../components/front-end/request/request-search";
 import { CreateRequestComponent } from "../components/back-end/request/request-create";
@@ -38,6 +38,10 @@ export const KShareRoutes: RouterConfig = [
         path: '',
         component: KshareComponent,
         children: [
+            {
+                path: 'newsfeed',
+                component: NewsFeedComponent
+            },
             {
                 path: 'reg',
                 //canActivate: [ AdminAuthGuard ],

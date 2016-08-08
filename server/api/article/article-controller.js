@@ -42,6 +42,19 @@ module.exports = class ArticleController {
             .catch(error => res.status(400).json(error));
     }
 
+    static getArticlesByTagsOfUser(req, res) {
+        ArticleDAO
+            .getArticlesByTagsOfUser(req.body.userTags, req.body.x)
+            .then(articles => res.status(200).json(articles))
+            .catch(error => res.status(400).json(error));
+    }
+
+    static getArticlesExceptTagsOfUser(req, res) {
+        ArticleDAO
+            .getArticlesExceptTagsOfUser(req.body.userTags, req.body.x)
+            .then(articles => res.status(200).json(articles))
+            .catch(error => res.status(400).json(error));
+    }
 
     static getArticleById(req, res) {
         if (req.params && req.params.id) {

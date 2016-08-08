@@ -24,7 +24,6 @@ var user_profile_1 = require("./front-end/user-profile/user-profile");
 var home_1 = require("./front-end/home/home");
 var request_list_1 = require("./front-end/request/request-list");
 var request_detail_1 = require("./front-end/request/request-detail");
-var request_update_1 = require("./front-end/request/request-update");
 var request_search_1 = require("./front-end/request/request-search");
 var kspace_1 = require("./front-end/kspace/kspace");
 var kspace_list_1 = require("./front-end/kspace/kspace-list");
@@ -56,7 +55,6 @@ var KshareComponent = (function () {
                 home_1.HomeComponent,
                 request_list_1.RequestListClientComponent,
                 request_detail_1.RequestDetailClientComponent,
-                request_update_1.RequestUpdateClientComponent,
                 request_search_1.RequestCategoryComponent,
                 kspace_1.KSpaceComponent,
                 kspace_list_1.KSpaceListComponent,

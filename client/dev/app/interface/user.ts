@@ -11,7 +11,7 @@ export interface User {
   password: string;
   email: string;
   role: string;
-  ownKnowledgeId:[string];
+  ownKnowledgeIds:[string];
   interestedKnowledgeId:[string];
   onlineTime:[string];
   createdAt: string;
