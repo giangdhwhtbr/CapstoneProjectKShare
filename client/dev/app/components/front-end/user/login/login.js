@@ -21,6 +21,7 @@ var LoginComponent = (function () {
         this._authService = _authService;
         this.router = router;
         this.user = [];
+        this.errorMessage = '';
         this.userValid = "";
         this.passValid = "";
         this.loginForm = fb.group({
@@ -45,15 +46,14 @@ var LoginComponent = (function () {
             if (error._body) {
                 error = JSON.parse(error._body);
                 if (error.invalidUsername) {
-                    _this.userValid = '*' + error.invalidUsername;
-                    _this.passValid = null;
+                    _this.errorMessage = '*' + error.invalidUsername;
+                    console.log(_this.errorMessage);
                 }
                 else if (error.invalidPassword) {
-                    _this.passValid = '*' + error.invalidPassword;
-                    _this.userValid = null;
+                    _this.errorMessage = '*' + error.invalidPassword;
                 }
                 else if (error.message) {
-                    _this.bannedMessage = '*' + error.message;
+                    _this.errorMessage = '*' + error.message;
                 }
             }
         });

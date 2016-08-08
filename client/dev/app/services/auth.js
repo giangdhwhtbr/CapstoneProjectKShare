@@ -18,7 +18,7 @@ var AuthService = (function () {
         this._regUrl = '/api/user/';
         this._loginUrl = '/api/login';
         this._logOutUrl = '/api/logout';
-        this._checkLoginUrl = '/api/checkLogin/';
+        this._checkLoginUrl = '/api/checkLogin';
     }
     AuthService.prototype.login = function (user) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -39,6 +39,11 @@ var AuthService = (function () {
             email: user.email
         });
         return this._http.post(this._regUrl, _user, options)
+            .map(function (res) { return res.json(); })
+            .catch(this.handleError);
+    };
+    AuthService.prototype.isLoggedIn = function () {
+        return this._http.get(this._checkLoginUrl)
             .map(function (res) { return res.json(); })
             .catch(this.handleError);
     };

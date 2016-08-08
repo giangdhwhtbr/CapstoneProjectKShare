@@ -25,10 +25,7 @@ import { AuthService } from '../../../../services/auth';
 export class RegisterComponent {
     user:User;
     regForm:ControlGroup;
-    userValid:boolean;
-    passValid:boolean = false;
-    coPassValid:boolean;
-    emailValid:boolean;
+    errorMessage: string = '';
 
     constructor(public fb:FormBuilder, private _authService:AuthService, public router:Router) {
         this.regForm = fb.group({
@@ -40,10 +37,9 @@ export class RegisterComponent {
     }
 
     register(user:any):void {
-        if (user.password === user.copass) {
-            this.coPassValid = true;
-        }
-        if (this.coPassValid) {
+        if (user.password !== user.copass) {
+            this.errorMessage = 'Sai mật khẩu xác nhận! ';
+        }else {
             this._authService
                 .register(user)
                 .subscribe(
@@ -65,9 +61,18 @@ export class RegisterComponent {
                                 });
                     },
                     error => {
-                        console.log(error);
+                      if(error.errors) {
+                        var errors = error.errors;
+                        if(errors.username){
+                          this.errorMessage = errors.username.message;
+                        }else if(errors.password){
+                          this.errorMessage = errors.password.message;
+                        }else if(errors.email){
+                          this.errorMessage = errors.email.message;
+                        }
+                      }
                     }
-                );
+            );
         }
     }
 }

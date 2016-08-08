@@ -2,6 +2,7 @@
       <div class="row">
         <div class="col-md-3"></div>
         <div class="col-md-6">
+          <p *ngIf="errorMessage" style="color:red;">{{errorMessage}}</p>
              <div class="loginPanel">
                 <div class="box-header">
                   <h3>Đăng ký tài khoản Kshare</h3>
@@ -10,7 +11,7 @@
                   <div class="form-group">
                     <input class="form-control form-text"
                           type="text"
-                          required maxlength="20"
+                          required maxlength="30"
                           placeholder="Tên đăng nhập"
                           name="username"
                           [ngFormControl]="regForm.controls['username']"
@@ -19,7 +20,7 @@
                   <div class="form-group">
                     <input class="form-control"
                           type="password"
-                          required maxlength="20"
+                          required maxlength="30"
                           placeholder="Mật Khẩu"
                           name="password"
                           [ngFormControl]="regForm.controls['password']"
@@ -28,19 +29,16 @@
                   <div class="form-group">
                     <input #copass class="form-control"
                           type="password"
-                          required maxlength="20"
+                          required maxlength="30"
                           placeholder="Xác nhận mật khẩu"
                           name="copass"
                           [ngFormControl]="regForm.controls['copass']"
                     >
                   </div>
-                  <div *ngIf="!coPassValid ">
-                    <p style="color:red;">Sai mật khẩu xác nhận</p>
-                  </div>
                   <div class="form-group">
                     <input class="form-control form-text"
-                          type="text"
-                          required maxlength="20"
+                          type="email"
+                          required maxlength="50"
                           placeholder="Địa chỉ email"
                           name="email"
                           [ngFormControl]="regForm.controls['email']"

@@ -32,9 +32,7 @@ export class LoginComponent {
 
   user: User[] = [];
   loginForm: ControlGroup;
-  userValid:string;
-  passValid:string;
-  bannedMessage: string;
+  errorMessage: string = '';
   constructor(@Inject(FormBuilder) fb:FormBuilder, @Inject(AuthService) private _authService: AuthService, public router: Router) {
     this.userValid="";
     this.passValid="";
@@ -61,16 +59,15 @@ export class LoginComponent {
         error => {
           if(error._body){
             error = JSON.parse(error._body);
-
             if(error.invalidUsername){
-              this.userValid = '*'+error.invalidUsername;
-              this.passValid = null;
+              this.errorMessage = '*'+error.invalidUsername;
+              console.log(this.errorMessage);
             }else if(error.invalidPassword){
-              this.passValid = '*'+error.invalidPassword;
-              this.userValid = null;
+              this.errorMessage = '*'+error.invalidPassword;
             } else if (error.message){
-              this.bannedMessage =  '*'+error.message;
+              this.errorMessage =  '*'+error.message;
             }
+
           }
         }
       );

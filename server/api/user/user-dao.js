@@ -50,10 +50,24 @@ userSchema.statics.getUserByEmail = (email) => {
             return reject(new TypeError('Not valid email.'));
         }
         User.findOne({'email': email})
+            .select("_id username email resetPasswordToken sendTokenDate")
             .exec((err, user) => {
                 err ? reject(err) : resolve(user);
             });
     });
+}
+userSchema.statics.getUserByToken = (token) => {
+  token = token+'==';
+  return new Promise((resolve, reject) => {
+    if (!_.isString(token)) {
+      return reject(new TypeError('Not valid String.'));
+    }
+    User.findOne({'resetPasswordToken': token})
+      .select("_id password sendTokenDate")
+      .exec((err, user) => {
+        err ? reject(err) : resolve(user);
+      });
+  });
 }
 
 // get user by username
@@ -112,9 +126,9 @@ userSchema.statics.updateUserById = (userinfo) => {
         if (!_.isObject(userinfo)) {
             return reject(new TypeError('User is not a valid object.'));
         }
-        userinfo.save((err, saved) => {
+        userinfo.save((err, user) => {
             err ? reject(err)
-                : resolve(saved);
+                : resolve(user);
         });
     });
 }

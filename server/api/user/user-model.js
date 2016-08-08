@@ -7,134 +7,137 @@ const crypto = require('crypto');
 
 var validateEmail = function (email) {
     return validator.isEmail(email);
-}
+};
 
 var validateRole = function (role) {
-    if (role == "admin" || role == "manager" || role == "instructor" || role == "normal") {
+    if (role == "admin"|| role == "normal") {
         return true;
     } else {
         return false;
     }
+};
+
+var validateUsername = function(username) {
+  var pattern = new RegExp('^[a-zA-Z0-9_.-]*$');
+  return pattern.test(username);
 }
 
 var validatePass = function (password) {
     var pattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
     return pattern.test(password);
-}
+};
 const userSchema = new mongoose.Schema({
-    fullName: {
-        type: String,
-        trim: true,
-        default: ''
+  fullName: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  displayName: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  phone: {
+    type: String,
+    trim: true,
+    default: ''
+  },
+  birthday: {
+    type: Date
+  },
+  username: {
+    type: String,
+    trim: true,
+    unique: [true, 'Tên đăng nhập đã tồn tại '],
+    lowercase: true,
+    default: '',
+    required: [true, 'vui lòng điền tên đăng nhập '],
+    validate: [validateUsername, 'Tên đăng nhập chỉ được chứa kí tự alphabet và số ']
+  },
+  password: {
+    type: String,
+    trim: true,
+    default: '',
+    required: [true, 'vui lòng nhập mật khẩu '],
+    validate: [validatePass, 'mât khẩu phải có ít nhất 8 kí tự, bao gồm 1 kí tự viết hoa, 1 kí tự viết thường, 1 kí' +
+    ' tự đặc biệt và 1 số' ]
+  },
+  email: {
+    type: String,
+    trim: true,
+    unique: [true,'email đã tồn tại '],
+    lowercase: true,
+    default: '',
+    required: [true, 'vui lòng nhập email '],
+    validate: [validateEmail, "vui lòng nhập đúng email"]
+  },
+  role: {
+    type: String,
+    trim: true,
+    default: '',
+    required: true,
+    validate: [validateRole, "Role không tồn tại"]
+  },
+  ownKnowledgeIds: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Tag",
+      childPath: "users"
+    }
+  ],
+  rates: [{
+    kspaceId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'KSpace'
     },
-    displayName: {
-        type: String,
-        trim: true,
-        default: ''
+    rate: {
+      type: Number,
+      min: 1,
+      max: 5
     },
-    phone: {
-        type: String,
-        trim: true,
-        default: ''
+    rateAt: {
+      type: Date
     },
-    birthday: {
-        type: Date
+    ratedUser: {
+      type: String
+    }
+  }],
+  rateAve: {
+    type: Number,
+    min: 0,
+    max: 5
+  },
+  banStatus: {
+    admin: {
+      type: String
     },
-    username: {
-        type: String,
-        trim: true,
-        unique: [true, 'Username already exists'],
-        lowercase: true,
-        default: '',
-        required: [true, 'Please fill in your username']
+    time: {
+      type: String
     },
-    password: {
-        type: String,
-        trim: true,
-        default: '',
-        required: [true, 'Please fill in your password'],
-        validate: [validatePass, 'password must be at least 8 characters including 1 uppercase letter, 1 special character and alphanumeric characters?']
+    bannedAt: {
+      type: Date
     },
-    email: {
-        type: String,
-        trim: true,
-        unique: true,
-        lowercase: true,
-        default: '',
-        required: [true, 'Please fill in your email'],
-        validate: [validateEmail, "Email is not in the right form, let check it again!"]
-    },
-    role: {
-        type: String,
-        trim: true,
-        default: '',
-        required: [true, 'Role can not blank'],
-        validate: [validateRole, "Role is not valid, try again!"]
-    },
-    ownKnowledgeIds: [{type: mongoose.Schema.Types.ObjectId, ref: "Tag", childPath: "users"}],
-    onlineTime: [
-        {
-            type: String
-        }
-    ],
-    level: {
-        type: Number,
-        min: 1,
-        max: 10
-    },
-    rates: [{
-        kspaceId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'KSpace'
-        },
-        rate: {
-            type: Number,
-            min: 1,
-            max: 5
-        },
-        rateAt: {
-            type: Date
-        },
-        ratedUser: {
-            type: String
-        }
-    }],
-    rateAve: {
-        type: Number,
-        min: 0,
-        max: 5
-    },
-    banStatus: {
-        admin: {
-            type: String
-        },
-        time: {
-            type: String
-        },
-        bannedAt: {
-            type: Date
-        },
-        status: {
-            type: Boolean
-        }
-    },
-    salt: {
-        type: String,
-    },
-    createdAt: {type: Date, default: Date.now},
-    updatedAt: {type: Date},
-    /* For reset password */
-    resetPasswordToken: {
-        type: String
-    },
-    resetPasswordExpires: {
-        type: Date
-    },
-    linkImg: {
-        type: String,
-        default: 'uploads/images.jpg'
-    },
-    lastAccessedAt: {type: Date}
+    status: {
+      type: Boolean
+    }
+  },
+  salt: {
+    type: String,
+  },
+  createdAt: {type: Date, default: Date.now},
+  updatedAt: {type: Date},
+  /* For reset password */
+  resetPasswordToken: {
+    type: String
+  },
+  sendTokenDate: {
+    type: Date
+  },
+  linkImg: {
+    type: String,
+    default: 'uploads/images.jpg'
+  },
+  lastAccessedAt: {type: Date}
 });
 
 /**
@@ -145,7 +148,6 @@ userSchema.pre('save', function (next) {
         this.salt = crypto.randomBytes(16).toString('base64');
         this.password = this.hashPassword(this.password);
     }
-
     next();
 });
 

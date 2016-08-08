@@ -22,6 +22,13 @@ import { NgForm }    from '@angular/forms';
           <img src="{{img.url}}" style="background-color: black; border-radius: 10px;" alt="kspace" width="300" height="200">
           <br>
         </div>
+        <hr>
+        <h3>boards</h3>
+        <div *ngFor="let board of boards">
+          <h4>Board {{board.des}}</h4>
+          <img src="{{board.url}}"           style="background-color: whitesmoke; border:black; border-weight:1px ;                                                                      border-radius: 10px;" alt="kspace" width="300" height="200">
+          <br>
+        </div>
         <div id="createReview">
             <sm-message *ngIf="errorMessage" class="warning">
               <message-header>{{errorMessage.header}}</message-header>
@@ -53,6 +60,7 @@ import { NgForm }    from '@angular/forms';
 export class KSpaceInfoComponent implements OnInit {
   accessRoomBtn: string = 'Access Room';
   kspaceId: string;
+  lecturer: string;
   ratePoint: number;
   reviews: any;
 
@@ -64,10 +72,12 @@ export class KSpaceInfoComponent implements OnInit {
   constructor( private router: Router, private route: ActivatedRoute, private _kspaceService: KSpaceService) {
     this.route.params.subscribe(params => {
       this.kspaceId = params['id'];
+      this.lecturer = params['lecturer'];
     })
   }
 
   images: Array<any> = [];
+  boards: Array<any> = [];
   title: string;
   ngOnInit(): void {
     this._kspaceService
@@ -79,12 +89,20 @@ export class KSpaceInfoComponent implements OnInit {
         this.rateAve = parseInt(kspace.rateAve);
         for (var log of kspace.chatlog){
           if(log.dataURL){
-
             var data = {
               des: log.message,
               url: log.dataURL
             }
             this.images.push(data);
+          }
+        }
+        for (var board of kspace.boards){
+          if(board.dataURL){
+            var data = {
+              des: board.boardNumber,
+              url: board.dataURL
+            }
+            this.boards.push(data);
           }
         }
       }
@@ -133,7 +151,7 @@ export class KSpaceInfoComponent implements OnInit {
   accessRoom(): void {
     var specs = 'resizable=yes, fullscreen=yes';
     var name = '_blank';
-    var url = '/room/'+this.kspaceId;
+    var url = '/room/'+this.kspaceId+'/'+this.lecturer;
     window.open(url, name ,specs);
   }
 }

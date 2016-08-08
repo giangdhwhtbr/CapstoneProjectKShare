@@ -19,10 +19,9 @@ var KSpaceComponent = (function () {
         this.route = route;
         this._kspaceService = _kspaceService;
         this.rtcService = rtcService;
-        this.route
-            .params
-            .subscribe(function (params) {
+        this.route.params.subscribe(function (params) {
             _this.id = params['id'];
+            _this.lecturer = params['lecturer'];
         });
         this.username = localStorage.getItem('username');
         this.messages = [];
@@ -163,7 +162,6 @@ var KSpaceComponent = (function () {
                     });
                 }
                 rtc.rtcSetting(webrtc, room, kspace.lecturer);
-                var peers = webrtc.getPeers();
                 var sharescreenToken = false;
                 shareScreenBtn.click(function () {
                     sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);

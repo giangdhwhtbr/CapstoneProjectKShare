@@ -23,7 +23,32 @@ var UserService = (function () {
         this._isUserExistUrl = '/api/is-user-exist/:username';
         this._friendshipStatusUrl = '/api/friendship-status/:user1/:user2';
         this._banUrl = '/api/ban/:id';
+        this._emailResetPass = '/api/email-reset-pass/:email';
+        this._changePass = '/api/new-pass/:token';
     }
+    UserService.prototype.getUserByToken = function (token) {
+        return this._http.get(this._changePass.replace(':token', token))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    UserService.prototype.updateNewPassword = function (password, token) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var data = {
+            password: password,
+            token: token
+        };
+        return this._http.put(this._changePass.replace(':token', token), data, options)
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    UserService.prototype.sendEmailResetPassword = function (email) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this._http.get(this._emailResetPass.replace(':email', email), options)
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
     UserService.prototype.getAllUsers = function () {
         return this._http.get(this._usersUrl.replace(':id', ''))
             .map(function (res) { return res.json(); })

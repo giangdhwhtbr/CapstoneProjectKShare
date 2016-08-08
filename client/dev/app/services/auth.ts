@@ -12,7 +12,7 @@ export class AuthService {
   private _regUrl = '/api/user/';
   private _loginUrl = '/api/login';
   private _logOutUrl = '/api/logout';
-  private _checkLoginUrl = '/api/checkLogin/';
+  private _checkLoginUrl = '/api/checkLogin';
 
   redirectUrl: string;
   constructor(private _http: Http) {
@@ -43,7 +43,13 @@ export class AuthService {
       .catch(this.handleError);
   }
 
-  logout():Observable<string[]> {
+  isLoggedIn(): Observable<any> {
+    return this._http.get(this._checkLoginUrl)
+      .map((res)=>res.json())
+      .catch(this.handleError);
+  }
+
+  logout():Observable<any> {
     return this._http.get(this._logOutUrl)
       .map((res) => res.json())
       .catch(this.handleError);

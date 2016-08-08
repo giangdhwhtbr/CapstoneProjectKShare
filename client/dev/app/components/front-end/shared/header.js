@@ -18,12 +18,22 @@ var HeaderComponent = (function () {
         this._noti = _noti;
         this._userService = _userService;
         this.count = 2;
-        this.loginToken = localStorage.getItem('username') ? true : false;
         this.userToken = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
     }
     HeaderComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this._auth.isLoggedIn().subscribe(function (res) {
+            if (res.login) {
+                _this.loginToken = true;
+            }
+            else {
+                _this._auth.logoutClient();
+                _this.loginToken = false;
+            }
+        }, function (error) {
+            console.log('Server error');
+        });
         this.link = '';
         this.socket = io('https://localhost:80');
         this.socket.on('receive notification', function (data) {
