@@ -12,64 +12,74 @@ import { RequestListComponent } from "../components/back-end/request/requests-li
 import { UpdateRequestComponent } from "../components/back-end/request/request-update";
 import { UserListComponent } from "../components/back-end/users/user-list";
 import { ReportListComponent } from "../components/back-end/report/reports-list";
+import { TagListCtlComponent } from "../components/back-end/tag/tag-list-control";
+import { ArtListCtlComponent } from "../components/back-end/article/article-list-clt";
 
 import { AdminAuthGuard } from './auth';
 
 
-export const AdminRoutes: RouterConfig = [
-  {
-    path: 'admin',
-    component: AdminComponent,
-    canActivate: [ AdminAuthGuard ],
-    children: [
-      {
-        path: 'users',
+export const AdminRoutes:RouterConfig = [
+    {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [AdminAuthGuard],
         children: [
-          {
-            path: '',
-            component: UserListComponent
-          }
+            {
+                path: 'users',
+                children: [
+                    {
+                        path: '',
+                        component: UserListComponent
+                    }
+                ]
+            },
+            {
+                path: 'tags',
+                component: TagListCtlComponent
+            },
+            {
+                path: 'articles',
+                component: ArtListCtlComponent
+            },
+            {
+                path: 'reports',
+                children: [
+                    {
+                        path: '',
+                        component: ReportListComponent
+                    }
+                ]
+            },
+            {
+                path: 'knowledges',
+                children: [
+                    {
+                        path: '',
+                        component: KnowledgeListComponent
+                    },
+                    {
+                        path: ':id',
+                        component: UpdateKnowledgeComponent
+                    }
+                ]
+            },
+            {
+                path: 'requests',
+                children: [
+                    {
+                        path: '',
+                        component: RequestListComponent
+                    },
+                    {
+                        path: ':id',
+                        component: UpdateRequestComponent
+                    }
+                ]
+            },
+            {
+                path: '',
+                redirectTo: 'knowledges'
+            }
         ]
-      },
-      {
-        path: 'reports',
-        children: [
-          {
-            path: '',
-            component: ReportListComponent
-          }
-        ]
-      },
-      {
-        path: 'knowledges',
-        children: [
-          {
-            path: '',
-            component: KnowledgeListComponent
-          },
-          {
-            path: ':id',
-            component: UpdateKnowledgeComponent
-          }
-        ]
-      },
-      {
-        path: 'requests',
-        children: [
-          {
-            path: '',
-            component: RequestListComponent
-          },
-          {
-            path: ':id',
-            component: UpdateRequestComponent
-          }
-        ]
-      },
-      {
-        path: '',
-        redirectTo:'knowledges'
-      }
-    ]
-  }
+    }
 ];

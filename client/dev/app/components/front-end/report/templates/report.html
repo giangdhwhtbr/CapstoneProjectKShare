@@ -36,7 +36,7 @@
           <div class="row">
             <div class="col-md-12">
               <label for="reportedUser">Người vi phạm</label>
-              <input class="form-control" type="text" required="required" id="user" name="reportedUser" [ngModel]="reportedUser" [ngFormControl]="reportForm.controls['reportedUser']"
+              <input class="form-control" type="text" required="required" id="reportedUser" name="reportedUser" [ngModel]="reportedUser" [ngFormControl]="reportForm.controls['reportedUser']"
                 disabled />
             </div>
           </div>
@@ -51,6 +51,9 @@
           <br>
           <div class="row">
             <div class="col-md-12">
+              <div id="mess">
+
+              </div>
               <button type="submit" class="btn btn-primary">Gửi báo cáo</button>
               <button type="reset" class="btn btn-warning">Nhập lại</button>
             </div>
@@ -59,7 +62,7 @@
         </form>
       </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+        <button type="button" id="btnCl" class="btn btn-default" data-dismiss="modal">Đóng</button>
       </div>
     </div>
 

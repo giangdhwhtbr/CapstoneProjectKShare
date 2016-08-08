@@ -25,6 +25,23 @@ module.exports = class ArticleController {
             .catch(error => res.status(400).json(error));
     }
 
+    static getDeArticle(req, res) {
+        ArticleDAO
+            .getAll()
+            .then(articles => {
+                for (let i = articles.length - 1; i >= 0; i--) {
+                    if (articles[i].status != "deactivate") {
+                        let index = articles.indexOf(articles[i]);
+                        if (index > -1) {
+                            articles.splice(index, 1);
+                        }
+                    }
+                }
+                res.status(200).json(articles);
+            })
+            .catch(error => res.status(400).json(error));
+    }
+
 
     static getArticleById(req, res) {
         if (req.params && req.params.id) {
@@ -32,6 +49,22 @@ module.exports = class ArticleController {
                 .getArticleById(req.params.id)
                 .then(art => res.status(200).json(art))
                 .catch(error => res.status(400).json(error));
+        } else {
+            res.status(404).json({
+                "message": "No article Id in templates"
+            });
+        }
+    }
+
+    static activeArt(req, res) {
+        if (req.params && req.params.id) {
+            ArticleDAO
+                .getArticleById(req.params.id)
+                .then(art => {
+                    art.status="private";
+                    art.save();
+                    res.status(200).json(art);
+                }).catch(error => res.status(400).json(error));
         } else {
             res.status(404).json({
                 "message": "No article Id in templates"

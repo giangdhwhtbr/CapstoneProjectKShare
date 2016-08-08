@@ -9,12 +9,18 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ArticleService {
     private _requestsUrl = '/api/article/:id';
+    private _requestsGetDeArtUrl = '/api/art/de/:id';
 
     constructor(private _http:Http) {
     }
 
     getAllArts():Observable<any[]> {
         return this._http.get(this._requestsUrl.replace(':id', ''))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
+    getAllDeArts():Observable<any[]> {
+        return this._http.get(this._requestsGetDeArtUrl.replace(':id', ''))
             .map((r) => r.json())
             .catch(this.handleError);
     }
@@ -42,6 +48,11 @@ export class ArticleService {
 
     getArtById(id:string):Observable<any> {
         return this._http.get(this._requestsUrl.replace(':id', id))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
+    activeArt(id:string):Observable<any> {
+        return this._http.get(this._requestsGetDeArtUrl.replace(':id', id))
             .map((r) => r.json())
             .catch(this.handleError);
     }

@@ -18,5 +18,11 @@ module.exports = class TagRoutes {
 
         router.route('/api/tags/TagNames')
             .post(TagController.getTagByIds);
+
+        router.route('/api/tags/active/:id')
+            .get(TagController.activeTag);
+
+        router.route('/api/tag/deactive/')
+            .get(TagController.getAllDeactivatedTags);
     }
 }

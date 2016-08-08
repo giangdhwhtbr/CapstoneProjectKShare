@@ -91,7 +91,7 @@ var RequestListComponent = (function () {
         core_1.Component({
             selector: 'request-list',
             templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-            directives: [request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES],
+            directives: [request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, common_1.FORM_DIRECTIVES],
             providers: [requests_1.RequestService, ng2_pagination_1.PaginationService],
             pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
         }),

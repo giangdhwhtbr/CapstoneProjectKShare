@@ -15,9 +15,15 @@ var ArticleService = (function () {
     function ArticleService(_http) {
         this._http = _http;
         this._requestsUrl = '/api/article/:id';
+        this._requestsGetDeArtUrl = '/api/art/de/:id';
     }
     ArticleService.prototype.getAllArts = function () {
         return this._http.get(this._requestsUrl.replace(':id', ''))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    ArticleService.prototype.getAllDeArts = function () {
+        return this._http.get(this._requestsGetDeArtUrl.replace(':id', ''))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
@@ -41,6 +47,11 @@ var ArticleService = (function () {
     };
     ArticleService.prototype.getArtById = function (id) {
         return this._http.get(this._requestsUrl.replace(':id', id))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    ArticleService.prototype.activeArt = function (id) {
+        return this._http.get(this._requestsGetDeArtUrl.replace(':id', id))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };

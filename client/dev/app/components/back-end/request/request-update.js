@@ -41,6 +41,18 @@ var CKEditor = (function () {
             _this.addCommandBtnCk();
         });
     };
+    CKEditor.prototype.ngAfterViewChecked = function () {
+        var _this = this;
+        if (!this.req) {
+            this._requestService.getRequestById(this.id).subscribe(function (request) {
+                _this.req = request;
+                CKEDITOR.instances.editor1.setData(_this.req.description + '');
+                _this.CreateUploadImageCkeditor();
+                _this.CreateYoutubeBtnCkeditor();
+                _this.addCommandBtnCk();
+            });
+        }
+    };
     CKEditor.prototype.openModalImg = function () {
         $("#bdOpenModal").trigger("click");
     };
@@ -116,7 +128,6 @@ var UpdateRequestComponent = (function () {
                     _this.title = request.title;
                     _this.description = request.description;
                     _this._id = request._id;
-                    console.log(tags);
                     var nameArr = [];
                     for (var _i = 0; _i < tags.length; _i++) {
                         var e = tags[_i];
@@ -164,7 +175,6 @@ var UpdateRequestComponent = (function () {
         var _this = this;
         this._tagService.getAllTag().subscribe(function (tags) {
             _this.tagsEx = tags;
-            console.log(_this.tagsEx);
         });
     };
     // ckeditor
@@ -209,7 +219,6 @@ var UpdateRequestComponent = (function () {
         var tags = [];
         tags = this.filterONTag();
         request.description = CKEDITOR.instances.editor1.getData();
-        console.log(request);
         this._requestService.updateRequest(request, tags[0], tags[1]).subscribe(function (request) {
             _this.router.navigateByUrl('/requests/' + request._id + '/info');
         }, function (error) {

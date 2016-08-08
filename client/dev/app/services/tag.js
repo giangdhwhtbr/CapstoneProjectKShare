@@ -15,9 +15,16 @@ var TagService = (function () {
     function TagService(_http) {
         this._http = _http;
         this._tagUrl = '/api/tags/:id';
+        this._activeTag = '/api/tags/active/:id';
+        this._deactiveTag = '/api/tag/deactive/:id';
     }
     TagService.prototype.getAllTag = function () {
         return this._http.get(this._tagUrl.replace(':id', ''))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    TagService.prototype.getAllDeactiveTag = function () {
+        return this._http.get(this._deactiveTag.replace(':id', ''))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
@@ -35,6 +42,19 @@ var TagService = (function () {
         });
         return this._http
             .post('/api/tags/TagNames', _data, options)
+            .map(function (r) { return r.json(); });
+    };
+    TagService.prototype.activeTag = function (id) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this._http.get(this._activeTag.replace(':id', id))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    TagService.prototype.deactivateTag = function (id) {
+        return this._http
+            .delete(this._tagUrl.replace(':id', id))
             .map(function (r) { return r.json(); });
     };
     TagService = __decorate([

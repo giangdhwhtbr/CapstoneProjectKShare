@@ -26,7 +26,7 @@ import {StringFilterPipe} from '../shared/filter';
 @Component({
   selector: 'request-list',
   templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-  directives: [UpdateRequestComponent, ROUTER_DIRECTIVES, PaginationControlsCmp, ROUTER_DIRECTIVES, FORM_DIRECTIVES],
+  directives: [UpdateRequestComponent, ROUTER_DIRECTIVES, PaginationControlsCmp, FORM_DIRECTIVES],
   providers: [RequestService, PaginationService],
   pipes: [PaginatePipe, StringFilterPipe]
 })

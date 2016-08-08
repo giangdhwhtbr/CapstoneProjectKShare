@@ -22,6 +22,8 @@ var requests_list_1 = require("./back-end/request/requests-list");
 var request_update_1 = require("./back-end/request/request-update");
 var user_list_1 = require("./back-end/users/user-list");
 var reports_list_1 = require("./back-end/report/reports-list");
+var tag_list_control_1 = require("./back-end/tag/tag-list-control");
+var article_list_clt_1 = require("./back-end/article/article-list-clt");
 var AdminComponent = (function () {
     function AdminComponent() {
     }
@@ -40,7 +42,9 @@ var AdminComponent = (function () {
                 knowledges_list_1.KnowledgeListComponent,
                 knowledge_update_1.UpdateKnowledgeComponent,
                 request_update_1.UpdateRequestComponent,
-                reports_list_1.ReportListComponent
+                reports_list_1.ReportListComponent,
+                tag_list_control_1.TagListCtlComponent,
+                article_list_clt_1.ArtListCtlComponent
             ]
         })
     ], AdminComponent);

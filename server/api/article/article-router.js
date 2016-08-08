@@ -17,5 +17,10 @@ module.exports = class ArticleRoutes {
       .get(ArticleController.getArticleById)
       .put(ArticleController.updateArticleById);
 
+    router.route('/api/art/de')
+      .get(ArticleController.getDeArticle);
+    router.route('/api/art/de/:id')
+      .get(ArticleController.activeArt);
+
   }
 }
