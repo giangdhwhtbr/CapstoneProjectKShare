@@ -382,7 +382,7 @@ webpackJsonp([2],[
 	        this._regUrl = '/api/user/';
 	        this._loginUrl = '/api/login';
 	        this._logOutUrl = '/api/logout';
-	        this._checkLoginUrl = '/api/checkLogin/';
+	        this._checkLoginUrl = '/api/checkLogin';
 	    }
 	    AuthService.prototype.login = function (user) {
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -403,6 +403,11 @@ webpackJsonp([2],[
 	            email: user.email
 	        });
 	        return this._http.post(this._regUrl, _user, options)
+	            .map(function (res) { return res.json(); })
+	            .catch(this.handleError);
+	    };
+	    AuthService.prototype.isLoggedIn = function () {
+	        return this._http.get(this._checkLoginUrl)
 	            .map(function (res) { return res.json(); })
 	            .catch(this.handleError);
 	    };
@@ -18289,12 +18294,22 @@ webpackJsonp([2],[
 	        this._noti = _noti;
 	        this._userService = _userService;
 	        this.count = 2;
-	        this.loginToken = localStorage.getItem('username') ? true : false;
 	        this.userToken = localStorage.getItem('username');
 	        this.roleToken = localStorage.getItem('userrole');
 	    }
 	    HeaderComponent.prototype.ngOnInit = function () {
 	        var _this = this;
+	        this._auth.isLoggedIn().subscribe(function (res) {
+	            if (res.login) {
+	                _this.loginToken = true;
+	            }
+	            else {
+	                _this._auth.logoutClient();
+	                _this.loginToken = false;
+	            }
+	        }, function (error) {
+	            console.log('Server error');
+	        });
 	        this.link = '';
 	        this.socket = io('https://localhost:80');
 	        this.socket.on('receive notification', function (data) {
