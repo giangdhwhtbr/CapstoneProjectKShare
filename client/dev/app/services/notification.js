@@ -26,7 +26,7 @@ var NotificationService = (function () {
             .map(function (r) { return r.json(); });
     };
     NotificationService.prototype.alertNotification = function (title, user, link) {
-        var socket = io('https://localhost:8081');
+        var socket = io('https://localhost:80');
         socket.emit('send notification', {
             title: title,
             link: link,

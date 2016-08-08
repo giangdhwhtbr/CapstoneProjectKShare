@@ -105,17 +105,14 @@ var UpdateRequestComponent = (function () {
         });
     };
     UpdateRequestComponent.prototype.updateRequest = function (request) {
+        var _this = this;
         var tags = [];
         tags = this.filterONTag();
-        console.log(request);
-        //this._requestService.updateRequest(request, tags[0], tags[1]).subscribe((request) => {
-        //        console.log('update successed');
-        //    },
-        //    (error) => {
-        //        console.log(error.text());
-        //    }
-        //);
-        // this.router.navigateByUrl('admin/requests');
+        this._requestService.updateRequest(request, tags[0], tags[1]).subscribe(function (request) {
+            _this.router.navigateByUrl('/requests/' + request._id + '/info');
+        }, function (error) {
+            console.log(error.text());
+        });
     };
     UpdateRequestComponent = __decorate([
         core_1.Component({

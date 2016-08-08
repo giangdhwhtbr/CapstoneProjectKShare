@@ -21,14 +21,13 @@ var KSpaceComponent = (function () {
         this.route = route;
         this._kspaceService = _kspaceService;
         this.rtcService = rtcService;
-        this.route
-            .params
-            .subscribe(function (params) {
+        this.route.params.subscribe(function (params) {
             _this.id = params['id'];
+            _this.lecturer = params['lecturer'];
         });
         this.username = localStorage.getItem('username');
         this.messages = [];
-        this.socket = io('https://localhost:8081');
+        this.socket = io('https://localhost:80');
         this.socket.emit('subscribe', this.id);
         this.socket.on("chat_message", function (dataReturn) {
             var isSender = false;

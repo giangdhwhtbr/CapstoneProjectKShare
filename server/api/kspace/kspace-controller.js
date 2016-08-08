@@ -49,7 +49,7 @@ module.exports = class KSpaceController {
       });
   }
 
-  static updateChatLog(data) {
+  static updateChatLogs(data) {
 
     var log = {
       createdAt: this.currentDate,
@@ -70,6 +70,26 @@ module.exports = class KSpaceController {
        console.log(error);
        res.status(400).json(error)
     });
+  }
+
+  static updateBoards(data) {
+    var board = {
+      boardNumber: data.boardNumber,
+      boardJson: data.json,
+      dataURL: data.dataURL,
+      createdAt: new Date()
+    };
+    return KSpaceDAO.getKSpaceById(data.room)
+      .then(kspace => {
+        kspace.boards.push(board);
+        return KSpaceDAO.updateKSpaceById(kspace)
+          .then(kspace => {return kspace})
+          .catch(error => {return error});
+      })
+      .catch(error => {
+        console.log(error);
+        res.status(400).json(error)
+      });
   }
 
   // User review a kSpace and rate for it

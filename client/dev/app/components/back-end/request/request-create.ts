@@ -1,5 +1,6 @@
 import { Component, Inject, OnInit } from '@angular/core';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
+import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 import { KnowledgeService } from '../../../services/knowledge';
 import { RequestService} from '../../../services/requests';
@@ -28,7 +29,7 @@ export class CreateRequestComponent {
     tagsEx:Array<any>;
 
     constructor( private _tagService:TagService,@Inject(FormBuilder) fb:FormBuilder, @Inject(RequestService) private _requestService:RequestService, private _knowledgeService:KnowledgeService,
-                private _authService:AuthService) {
+                private _authService:AuthService, public router:Router) {
         this.user = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
 
@@ -95,12 +96,12 @@ export class CreateRequestComponent {
 
         this._requestService.addRequest(request,tags[0],tags[1]).subscribe((request)=> {
                 console.log(request);
+                this.router.navigateByUrl('/requests/' + request._id + '/info');
             },
             (error) => {
                 console.log(error.text());
             }
         );
-        window.location.reload();
     }
 
 }

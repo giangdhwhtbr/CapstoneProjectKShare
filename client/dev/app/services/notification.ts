@@ -24,7 +24,7 @@ export class NotificationService {
     }
 
     alertNotification(title: string, user: string, link: string) {
-        var socket = io('https://localhost:8081');
+        var socket = io('https://localhost:80');
         socket.emit('send notification', {
             title: title,
             link: link,

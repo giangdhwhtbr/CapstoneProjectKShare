@@ -59,7 +59,7 @@ module.exports = class RequestController {
                             tags.map((e, i)=> {
                                 request.tags.push(e);
                             });
-                            tags.save();
+                            request.save();
 
                             res.status(200).json(request);
                         }).catch(error => res.status(400).json(error));

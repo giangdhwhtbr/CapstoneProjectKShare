@@ -74,13 +74,8 @@ const userSchema = new mongoose.Schema({
   ownKnowledgeIds: [
     {
       type: mongoose.Schema.Types.ObjectId,
-      ref: 'Knowledge'
-    }
-  ],
-  interestedKnowledgeId: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Knowledge'
+      ref: "Tag",
+      childPath: "users"
     }
   ],
   onlineTime: [

@@ -12,17 +12,19 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 };
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
+var router_1 = require('@angular/router');
 var knowledge_1 = require('../../../services/knowledge');
 var requests_1 = require('../../../services/requests');
 var auth_1 = require('../../../services/auth');
 var tag_1 = require('../../../services/tag');
 var primeng_1 = require('primeng/primeng');
 var CreateRequestComponent = (function () {
-    function CreateRequestComponent(_tagService, fb, _requestService, _knowledgeService, _authService) {
+    function CreateRequestComponent(_tagService, fb, _requestService, _knowledgeService, _authService, router) {
         this._tagService = _tagService;
         this._requestService = _requestService;
         this._knowledgeService = _knowledgeService;
         this._authService = _authService;
+        this.router = router;
         this.user = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
         this.requestForm = fb.group({
@@ -82,14 +84,15 @@ var CreateRequestComponent = (function () {
         });
     };
     CreateRequestComponent.prototype.addRequest = function (request) {
+        var _this = this;
         var tags = [];
         tags = this.filterONTag();
         this._requestService.addRequest(request, tags[0], tags[1]).subscribe(function (request) {
             console.log(request);
+            _this.router.navigateByUrl('/requests/' + request._id + '/info');
         }, function (error) {
             console.log(error.text());
         });
-        window.location.reload();
     };
     CreateRequestComponent = __decorate([
         core_1.Component({
@@ -101,7 +104,7 @@ var CreateRequestComponent = (function () {
         }),
         __param(1, core_1.Inject(common_1.FormBuilder)),
         __param(2, core_1.Inject(requests_1.RequestService)), 
-        __metadata('design:paramtypes', [tag_1.TagService, common_1.FormBuilder, requests_1.RequestService, knowledge_1.KnowledgeService, auth_1.AuthService])
+        __metadata('design:paramtypes', [tag_1.TagService, common_1.FormBuilder, requests_1.RequestService, knowledge_1.KnowledgeService, auth_1.AuthService, router_1.Router])
     ], CreateRequestComponent);
     return CreateRequestComponent;
 })();

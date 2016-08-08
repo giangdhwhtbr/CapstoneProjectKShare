@@ -115,7 +115,7 @@ export const KShareRoutes: RouterConfig = [
                     {
                         path: 'info',
                         children: [{
-                            path: ':id',
+                            path: ':id/:lecturer',
                             component: KSpaceInfoComponent
                         }]
                     },
@@ -166,7 +166,7 @@ export const KShareRoutes: RouterConfig = [
     {
         path: 'room',
         children: [{
-            path: ':id',
+            path: ':id/:lecturer',
             component: KSpaceComponent
         }]
     },

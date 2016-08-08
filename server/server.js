@@ -40,28 +40,35 @@ const server = https.createServer(opts,app)
 
 const io = socket(server);
 // Set socket.io listeners.
-io.on('connection', function (socket) {
-  //socket.broadcast.emit('notification', { hello: 'world' });
-  socket.on('send notification', function (data) {
+io.on('connection',  (socket) => {
+  socket.on('send notification', (data) => {
     socket.broadcast.emit('receive notification', {data})
   });
-  socket.on ('startPoint', function(data){
+
+  //Listening for the start point and path points of the path when lecturer drawing
+  socket.on ('startPoint', (data) => {
     socket.in(data.room).broadcast.emit( 'startPoint', data );
   });
 
-  socket.on( 'pathpoint', function( data) {
+  socket.on( 'pathpoint',(data) => {
     socket.in(data.room).broadcast.emit( 'pathpoint', data );
   });
-  socket.on('subscribe', function(room) { 
-        socket.join(room); 
-    })
-
-  socket.on('unsubscribe', function(room) {  
-      socket.leave(room); 
-  })
-
-  socket.on("chat_message", function(data){
-        KSpaceCtrl.updateChatLog(data)
+  //Listening for the event "user subscribe board"
+  socket.on('subscribe', (data) => {
+        socket.join(data.room);
+        socket.in(data.room).broadcast.emit('userSubscribed',data);
+  });
+  //Listening for the event "user unsubscribe"
+  socket.on('unsubscribe', (room) => {
+      socket.leave(room);
+  });
+  //Listening for the event "lecturer sharing the board"
+  socket.on('shareBoard', (board) => {
+      socket.in(board.room).broadcast.emit('shareBoard',board);
+  });
+  //Listening for the event "user send message"
+  socket.on("chat_message", (data) => {
+        KSpaceCtrl.updateChatLogs(data)
         .then(kspace => {
           var dataReturn = {
             user: data.createdUser,
@@ -71,10 +78,35 @@ io.on('connection', function (socket) {
           io.in(data.id).emit("chat_message", dataReturn);
         })
         .catch(error => {
-          var dataReturn = 'Server Error!'
-          io.in.data.id.emit("chat_message",dataReturn);
+          console.log('Server error at saving chatlog!');
         });
 
+  });
+
+  //Listening for the event "Lecturer create new board"
+  socket.on('newBoard', (data) => {
+
+    KSpaceCtrl.updateBoards(data)
+    .then(kspace => {
+      var dataReturn = {
+        lecturer: data.lecturer,
+        boardNumber: data.boardNumber,
+        json: data.json
+      };
+      socket.in(data.room).broadcast.emit('newBoard',(dataReturn));
+    })
+    .catch(error =>{
+      console.log('Server error at update new board to kspace!');
     });
 
+  });
+  //Listening for the event "Lecturer change board"
+  socket.on('changeBoard', (data) =>{
+    var dataReturn = {
+      json: data.json,
+      lecturer: data.lecturer
+    };
+
+    socket.in(data.room).broadcast.emit('changeBoard',dataReturn);
+  });
 });

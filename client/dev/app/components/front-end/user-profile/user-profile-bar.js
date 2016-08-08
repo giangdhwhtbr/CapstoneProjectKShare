@@ -20,15 +20,6 @@ var UserProfileBarComponent = (function () {
         this.route = route;
         this._userService = _userService;
         this._noti = _noti;
-        this.formatDate = function (date) {
-            if (date) {
-                var newDate, day, month, year;
-                year = date.substr(0, 4);
-                month = date.substr(5, 2);
-                day = date.substr(8, 2);
-                return newDate = day + '/' + month + '/' + year;
-            }
-        };
         this.route
             .params
             .subscribe(function (params) {
@@ -42,6 +33,7 @@ var UserProfileBarComponent = (function () {
         this.linkImg = '';
         this._userService.getUserByUserName(this.name).subscribe(function (user) {
             _this.userProfile = user;
+            console.log(_this.userProfile);
             _this.linkImg = user.linkImg;
         }, function (error) {
             console.log(error);

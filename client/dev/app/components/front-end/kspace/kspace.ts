@@ -54,14 +54,13 @@ export class KSpaceComponent {
         private _kspaceService: KSpaceService,
         private rtcService: WebRCTService
         ) {
-        this.route
-          .params
-          .subscribe(params => {
-            this.id = params['id'];
-          });
+      this.route.params.subscribe(params => {
+        this.id = params['id'];
+        this.lecturer = params['lecturer'];
+      })
       this.username = localStorage.getItem('username');
       this.messages = [];
-      this.socket = io('https://localhost:8081');
+      this.socket = io('https://localhost:80');
       this.socket.emit('subscribe', this.id);
       this.socket.on("chat_message", (dataReturn) => {
         var isSender: boolean = false;
@@ -76,13 +75,13 @@ export class KSpaceComponent {
               url: dataReturn.url,
               sender: isSender
             }
-            this.messages.push(msgObject); 
+            this.messages.push(msgObject);
         });
   }
 
   send(message:string, img: any) {
       if(img){
-        
+
         var chalkboard = document.getElementById("chalkboard");
         var ctx = chalkboard.getContext("2d");
         var dataURL = chalkboard.toDataURL();
@@ -107,7 +106,7 @@ export class KSpaceComponent {
         this.mess = "";
 
       }
-        
+
   }
 
   /*
@@ -117,7 +116,7 @@ export class KSpaceComponent {
 
   ngOnInit(): void{
     // DOM elements
-    
+
     var shareScreenBtn = $('#sharescreen-btn');
     var chalkBoardBtn = $('#chalkboard-btn');
     var videoCallBtn = $('#videocall-btn');
@@ -125,7 +124,7 @@ export class KSpaceComponent {
     var localVideo = $('#localVideo');
     var remoteVideos = $('#remoteVideos');
     var kspacePanel = $('#kspace-panel');
-    
+
     var chatBox = $('#chat-box-panel');
     var drawTools = $('#draw-tools-panel');
 
@@ -164,7 +163,7 @@ export class KSpaceComponent {
             msg:  log.message,
             sender: isSender,
             url: log.dataURL
-          } 
+          }
           this.messages.push(msgObject);
         }
 
@@ -179,7 +178,7 @@ export class KSpaceComponent {
           return false;
         };
         if (isKspaceUser()){
-          
+
           // initiate webrtc
           if(username === kspace.lecturer){
             var webrtc = new SimpleWebRTC({
@@ -220,7 +219,7 @@ export class KSpaceComponent {
               kspacePanel.find('video').remove();
           });
 
-           
+
           }else {
             this.router.navigateByUrl('/');
           }

@@ -60,6 +60,7 @@ export class UserProfileBarComponent {
     this._userService.getUserByUserName(this.name).subscribe(
       (user) => {
         this.userProfile = user;
+        console.log(this.userProfile);
         this.linkImg = user.linkImg;
       }, (error) => {
         console.log(error);
@@ -87,8 +88,6 @@ export class UserProfileBarComponent {
     }
 
   }
-
-
 
   addFriend(): void {
     if (this.isFriend === false) {
@@ -161,16 +160,6 @@ export class UserProfileBarComponent {
         }
 
       })
-  }
-
-  public formatDate = function (date) {
-    if (date) {
-      var newDate, day, month, year;
-      year = date.substr(0, 4);
-      month = date.substr(5, 2);
-      day = date.substr(8, 2);
-      return newDate = day + '/' + month + '/' + year;
-    }
   }
 
   public checkIsFriend() {

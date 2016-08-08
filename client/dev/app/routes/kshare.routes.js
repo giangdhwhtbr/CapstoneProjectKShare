@@ -105,7 +105,7 @@ exports.KShareRoutes = [
                     {
                         path: 'info',
                         children: [{
-                                path: ':id',
+                                path: ':id/:lecturer',
                                 component: kspace_info_1.KSpaceInfoComponent
                             }]
                     },
@@ -155,7 +155,7 @@ exports.KShareRoutes = [
     {
         path: 'room',
         children: [{
-                path: ':id',
+                path: ':id/:lecturer',
                 component: kspace_1.KSpaceComponent
             }]
     },
