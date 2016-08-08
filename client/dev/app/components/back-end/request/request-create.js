@@ -18,6 +18,19 @@ var requests_1 = require('../../../services/requests');
 var auth_1 = require('../../../services/auth');
 var tag_1 = require('../../../services/tag');
 var primeng_1 = require('primeng/primeng');
+var CKEditor = (function () {
+    function CKEditor(_elm) {
+        CKEDITOR.replace(_elm.nativeElement);
+    }
+    CKEditor = __decorate([
+        core_1.Component({
+            selector: 'ck-editor',
+            template: ""
+        }), 
+        __metadata('design:paramtypes', [core_1.ElementRef])
+    ], CKEditor);
+    return CKEditor;
+})();
 var CreateRequestComponent = (function () {
     function CreateRequestComponent(_tagService, fb, _requestService, _knowledgeService, _authService, router) {
         this._tagService = _tagService;
@@ -36,6 +49,9 @@ var CreateRequestComponent = (function () {
     }
     CreateRequestComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.CreateUploadImageCkeditor();
+        this.CreateYoutubeBtnCkeditor();
+        this.addCommandBtnCk();
         this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
             _this.loadAllTags();
             _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
@@ -68,12 +84,9 @@ var CreateRequestComponent = (function () {
             if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
                 this.filteredKnw.push(this.tagsEx[i].name);
             }
-            if (i == this.tagsEx.length - 1) {
+            if (this.filteredKnw.indexOf(query.trim()) < 0) {
                 this.filteredKnw.unshift(query.trim());
             }
-        }
-        if (this.filteredKnw.length == 0) {
-            this.filteredKnw.push(query.trim());
         }
     };
     CreateRequestComponent.prototype.loadAllTags = function () {
@@ -87,19 +100,90 @@ var CreateRequestComponent = (function () {
         var _this = this;
         var tags = [];
         tags = this.filterONTag();
-        this._requestService.addRequest(request, tags[0], tags[1]).subscribe(function (request) {
-            console.log(request);
+        this.contentCk = CKEDITOR.instances.editor1.getData();
+        this._requestService.addRequest(request, this.contentCk, tags[0], tags[1]).subscribe(function (request) {
             _this.router.navigateByUrl('/requests/' + request._id + '/info');
         }, function (error) {
             console.log(error.text());
         });
+    };
+    // ckeditor
+    CreateRequestComponent.prototype.insertLinkToBox = function (link) {
+        CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
+    };
+    CreateRequestComponent.prototype.insertYoutubeToBox = function (link) {
+        //https://www.youtube.com/watch?v=mraul5-1TBE
+        var i = link.indexOf("=");
+        link = link.substring(i + 1, link.length);
+        var s = '<p><iframe frameborder="0" height="315" scrolling="no" src="https://www.youtube.com/embed/' + link + '" width="500"></iframe></p>';
+        CKEDITOR.instances.editor1.insertHtml(s);
+    };
+    CreateRequestComponent.prototype.addCommandBtnCk = function () {
+        CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
+        CKEDITOR.instances.editor1.addCommand('youtube', { exec: this.openModalYoutube });
+    };
+    CreateRequestComponent.prototype.openModalImg = function () {
+        $("#bdOpenModal").trigger("click");
+    };
+    CreateRequestComponent.prototype.openModalYoutube = function () {
+        $("#youtubeOpenModal").trigger("click");
+    };
+    CreateRequestComponent.prototype.CreateUploadImageCkeditor = function () {
+        CKEDITOR.instances.editor1.ui.addButton('uploadImage', {
+            label: 'Upload Image',
+            command: 'uploadImage',
+            icon: '/client/dev/asserts/images/icon-img-ck.png'
+        });
+    };
+    CreateRequestComponent.prototype.CreateYoutubeBtnCkeditor = function () {
+        CKEDITOR.instances.editor1.ui.addButton('youtube', {
+            label: 'Add youtube',
+            command: 'youtube',
+            icon: '/client/dev/asserts/images/icon-youtube.png'
+        });
+    };
+    CreateRequestComponent.prototype.makeFileRequest = function (url, params, files) {
+        return new Promise(function (resolve, reject) {
+            var formData = new FormData();
+            var xhr = new XMLHttpRequest();
+            for (var i = 0; i < files.length; i++) {
+                formData.append("uploads[]", files[i], files[i].name);
+            }
+            xhr.onreadystatechange = function () {
+                if (xhr.readyState == 4) {
+                    if (xhr.status == 200) {
+                        resolve(JSON.parse(xhr.response));
+                    }
+                    else {
+                        reject(xhr.response);
+                    }
+                }
+            };
+            xhr.open("POST", url, true);
+            xhr.send(formData);
+        });
+    };
+    // uploading image
+    CreateRequestComponent.prototype.uploadImageCk = function () {
+        if (this.filesToUpload) {
+            this.makeFileRequest("/api/media", [], this.filesToUpload).then(function (result) {
+                var link = '/uploads/' + result[0].filename;
+                CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" style="height:536px; width:858px" /></p>');
+            }, function (error) {
+                console.error(error);
+            });
+        }
+    };
+    //action button upload
+    CreateRequestComponent.prototype.fileChangeEvent = function (fileInput) {
+        this.filesToUpload = fileInput.target.files;
     };
     CreateRequestComponent = __decorate([
         core_1.Component({
             selector: 'request-create',
             templateUrl: 'client/dev/app/components/back-end/request/templates/request-create.html',
             styleUrls: ['client/dev/app/components/bac  k-end/request/templates/request.css'],
-            directives: [common_1.FORM_DIRECTIVES, primeng_1.AutoComplete],
+            directives: [common_1.FORM_DIRECTIVES, primeng_1.AutoComplete, CKEditor],
             providers: [tag_1.TagService]
         }),
         __param(1, core_1.Inject(common_1.FormBuilder)),

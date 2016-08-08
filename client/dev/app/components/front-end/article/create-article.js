@@ -74,12 +74,9 @@ var CreateArticleComponent = (function () {
             if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
                 this.filteredKnw.push(this.tagsEx[i].name);
             }
-            if (i == this.tagsEx.length - 1) {
+            if (this.filteredKnw.indexOf(query.trim()) < 0) {
                 this.filteredKnw.unshift(query.trim());
             }
-        }
-        if (this.filteredKnw.length == 0) {
-            this.filteredKnw.push(query.trim());
         }
     };
     //load all knowledge
@@ -90,6 +87,7 @@ var CreateArticleComponent = (function () {
             console.log(_this.tagsEx);
         });
     };
+    // ckeditor
     CreateArticleComponent.prototype.insertLinkToBox = function (link) {
         CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
     };
@@ -100,7 +98,6 @@ var CreateArticleComponent = (function () {
         var s = '<p><iframe frameborder="0" height="315" scrolling="no" src="https://www.youtube.com/embed/' + link + '" width="500"></iframe></p>';
         CKEDITOR.instances.editor1.insertHtml(s);
     };
-    // ckeditor
     CreateArticleComponent.prototype.addCommandBtnCk = function () {
         CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
         CKEDITOR.instances.editor1.addCommand('youtube', { exec: this.openModalYoutube });
@@ -161,6 +158,7 @@ var CreateArticleComponent = (function () {
     CreateArticleComponent.prototype.fileChangeEvent = function (fileInput) {
         this.filesToUpload = fileInput.target.files;
     };
+    //finish control Ckeditor
     CreateArticleComponent.prototype.postArticle = function (stt) {
         var _this = this;
         this.contentCk = CKEDITOR.instances.editor1.getData();

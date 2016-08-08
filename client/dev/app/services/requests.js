@@ -30,7 +30,7 @@ var RequestService = (function () {
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
-    RequestService.prototype.addRequest = function (request, oldTag, newTag) {
+    RequestService.prototype.addRequest = function (request, content, oldTag, newTag) {
         var header = new http_1.Headers;
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
@@ -39,7 +39,7 @@ var RequestService = (function () {
         var _data = JSON.stringify({
             request: {
                 title: request.title,
-                description: request.description,
+                description: content,
                 knowledgeId: request.knowledgeId,
                 user: request.user,
                 tags: oldTag

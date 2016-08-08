@@ -77,6 +77,11 @@ var RequestDetailClientComponent = (function () {
         }, function (error) { return console.log(error); });
         this.getOfferByRequestId();
     };
+    RequestDetailClientComponent.prototype.ngAfterViewChecked = function () {
+        if (this.request != undefined) {
+            $('#bodyReq').html(this.request.description);
+        }
+    };
     RequestDetailClientComponent.prototype.getOfferByRequestId = function () {
         var _this = this;
         //get front.offer of the templates when load the page
