@@ -2,6 +2,7 @@ webpackJsonp([2],[
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	/*
 	 * Angular
@@ -17,6 +18,23 @@ webpackJsonp([2],[
 	    app_routes_ts_1.APP_ROUTER_PROVIDERS,
 	    http_1.HTTP_PROVIDERS
 	]).catch(function (err) { return console.error(err); });
+=======
+	"use strict";
+	/*
+	 * Angular
+	 */
+	var platform_browser_dynamic_1 = __webpack_require__(401);
+	var app_routes_ts_1 = __webpack_require__(645);
+	var http_1 = __webpack_require__(40);
+	/*
+	 * components
+	 */
+	var app_component_1 = __webpack_require__(619);
+	platform_browser_dynamic_1.bootstrap(app_component_1.AppComponent, [
+	    app_routes_ts_1.APP_ROUTER_PROVIDERS,
+	    http_1.HTTP_PROVIDERS
+	]).catch(function (err) { return console.error(err); });
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
@@ -434,6 +452,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
+<<<<<<< HEAD
 /* 42 */,
 /* 43 */,
 /* 44 */,
@@ -752,9 +771,354 @@ webpackJsonp([2],[
 	    var _a;
 	}());
 	exports.KnowledgeService = KnowledgeService;
+=======
+/* 42 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by GiangDH on 5/8/16.
+	 */
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var http_1 = __webpack_require__(40);
+	var Observable_1 = __webpack_require__(2);
+	var UserService = (function () {
+	    function UserService(_http) {
+	        this._http = _http;
+	        this._usersUrl = '/api/user/:id';
+	        this._profilePictureUrl = '/api/user-picture';
+	        this._friendUrl = '/api/friendship/:id';
+	        this._getFriendUrl = '/api/getFriendship';
+	        this._getRequestByUserUrl = '/api/requests-user/:user';
+	        this._isUserExistUrl = '/api/is-user-exist/:username';
+	        this._friendshipStatusUrl = '/api/friendship-status/:user1/:user2';
+	        this._banUrl = '/api/ban/:id';
+	        this._emailResetPass = '/api/email-reset-pass/:email';
+	        this._changePass = '/api/new-pass/:token';
+	    }
+	    UserService.prototype.getUserByToken = function (token) {
+	        return this._http.get(this._changePass.replace(':token', token))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    UserService.prototype.updateNewPassword = function (password, token) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var data = {
+	            password: password,
+	            token: token
+	        };
+	        return this._http.put(this._changePass.replace(':token', token), data, options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    UserService.prototype.sendEmailResetPassword = function (email) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        return this._http.get(this._emailResetPass.replace(':email', email), options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    UserService.prototype.getAllUsers = function () {
+	        return this._http.get(this._usersUrl.replace(':id', ''))
+	            .map(function (res) { return res.json(); })
+	            .catch(this.handleError);
+	    };
+	    UserService.prototype.getUserById = function (id) {
+	        return this._http.get(this._usersUrl.replace(':id', id))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    //get user informations by username
+	    UserService.prototype.getUserByUserName = function (user) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _search = JSON.stringify({
+	            username: user
+	        });
+	        return this._http.put(this._usersUrl.replace(':id', ''), _search, options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    UserService.prototype.addUser = function (user) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var formatDate = function (date) {
+	            if (date) {
+	                var newDate, day, month, year;
+	                year = date.substr(6, 4);
+	                day = date.substr(3, 2);
+	                month = date.substr(0, 2);
+	                return newDate = year + '-' + month + '-' + day;
+	            }
+	        };
+	        var _user = JSON.stringify({
+	            username: user.username,
+	            password: user.password,
+	            email: user.email,
+	            role: user.role
+	        });
+	        return this._http
+	            .post(this._usersUrl.replace(':id', ''), _user, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    UserService.prototype.updateUser = function (user, _newTag) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var ownk, ink;
+	        var _data = JSON.stringify({
+	            user: {
+	                _id: user._id,
+	                fullName: user.fullName,
+	                displayName: user.displayName,
+	                birthday: user.birthday,
+	                phone: user.phone,
+	                username: user.username,
+	                password: user.password,
+	                email: user.email,
+	                role: user.role,
+	                linkImg: user.linkImg,
+	                ownKnowledgeIds: user.ownKnowledgeIds,
+	            },
+	            newTag: _newTag
+	        });
+	        return this._http
+	            .put(this._usersUrl.replace(':id', user._id), _data, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    UserService.prototype.banUser = function (userId) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var data = JSON.stringify({
+	            admin: localStorage.getItem('username')
+	        });
+	        return this._http
+	            .put(this._banUrl.replace(':id', userId), data, options);
+	    };
+	    UserService.prototype.updateAvartaLink = function (user, link) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _info = JSON.stringify({
+	            username: user,
+	            linkImg: link
+	        });
+	        console.log(_info);
+	        return this._http
+	            .post(this._profilePictureUrl, _info, options);
+	    };
+	    //add friend service
+	    UserService.prototype.addFriend = function (requestUser, acceptUser) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _friendship = JSON.stringify({
+	            user1: requestUser,
+	            user2: acceptUser
+	        });
+	        return this._http
+	            .post(this._friendUrl.replace(':id', ''), _friendship, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    //select friend of logined user
+	    UserService.prototype.getFriendList = function (currentUser) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _friendship = JSON.stringify({
+	            user: currentUser
+	        });
+	        return this._http
+	            .post(this._getFriendUrl, _friendship, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    //get request of an user
+	    UserService.prototype.getRequestByUser = function (user) {
+	        return this._http
+	            .get(this._getRequestByUserUrl.replace(':user', user))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    //delete friend request
+	    UserService.prototype.deleteFriendRequest = function (user1, user2) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _friendship = JSON.stringify({
+	            requestUser: user1,
+	            acceptUser: user2
+	        });
+	        return this._http
+	            .put(this._friendUrl.replace(':id', ''), _friendship, options);
+	    };
+	    //if user is exist, return 1, else return 0
+	    UserService.prototype.checkUserExist = function (username) {
+	        return this._http
+	            .get(this._isUserExistUrl.replace(':username', username));
+	    };
+	    UserService.prototype.acceptFriendRequest = function (user1, user2) {
+	        console.log(user1 + ' ' + user2);
+	        return this._http
+	            .get(this._friendshipStatusUrl.replace(':user1', user1).replace(':user2', user2));
+	    };
+	    UserService.prototype.makeFileRequest = function (url, params, files) {
+	        return new Promise(function (resolve, reject) {
+	            var formData = new FormData();
+	            var xhr = new XMLHttpRequest();
+	            for (var i = 0; i < files.length; i++) {
+	                formData.append("uploads[]", files[i], files[i].name);
+	            }
+	            xhr.onreadystatechange = function () {
+	                if (xhr.readyState == 4) {
+	                    if (xhr.status == 200) {
+	                        resolve(JSON.parse(xhr.response));
+	                    }
+	                    else {
+	                        reject(xhr.response);
+	                    }
+	                }
+	            };
+	            xhr.open("POST", url, true);
+	            xhr.send(formData);
+	        });
+	    };
+	    UserService.prototype.handleError = function (error) {
+	        return Observable_1.Observable.throw(error);
+	    };
+	    UserService = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+	    ], UserService);
+	    return UserService;
+	    var _a;
+	}());
+	exports.UserService = UserService;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */,
+/* 49 */,
+/* 50 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var http_1 = __webpack_require__(40);
+	var Observable_1 = __webpack_require__(2);
+	var KnowledgeService = (function () {
+	    function KnowledgeService(_http) {
+	        this._http = _http;
+	        this._knowledgesUrl = '/api/knowledges/:id';
+	        this._knowledgeStatusUrl = '/api/knowledges/knowledgestatus/:id';
+	    }
+	    KnowledgeService.prototype.getAllKnowledges = function () {
+	        return this._http.get(this._knowledgesUrl.replace(':id', ''))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    KnowledgeService.prototype.addKnowledge = function (knowledge) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _knowledge = JSON.stringify({
+	            name: knowledge.name,
+	            description: knowledge.description,
+	            parent: knowledge.parent,
+	        });
+	        return this._http
+	            .post(this._knowledgesUrl.replace(':id', ''), _knowledge, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    KnowledgeService.prototype.deleteKnowledge = function (id) {
+	        return this._http
+	            .delete(this._knowledgesUrl.replace(':id', id));
+	    };
+	    KnowledgeService.prototype.findKnowledgeById = function (id) {
+	        return this._http
+	            .get(this._knowledgesUrl.replace(':id', id))
+	            .map(function (r) { return r.json(); });
+	    };
+	    KnowledgeService.prototype.updateKnowledge = function (knowledge) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _knowledge = JSON.stringify({
+	            name: knowledge.name,
+	            description: knowledge.description,
+	        });
+	        return this._http
+	            .put(this._knowledgesUrl.replace(':id', knowledge._id), _knowledge, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    //get child of a back.knowledge parent
+	    KnowledgeService.prototype.getChildFromParent = function (knowledges) {
+	        var parent = [];
+	        var subCate = [];
+	        for (var i = 0; i < knowledges.length; i++) {
+	            if (!knowledges[i].hasOwnProperty('parent')) {
+	                parent.push(knowledges[i]);
+	            }
+	        }
+	        for (var i = 0; i < parent.length; i++) {
+	            for (var j = 0; j < knowledges.length; j++) {
+	                if ((knowledges[j].hasOwnProperty('parent')) && (knowledges[j].parent === parent[i]._id)) {
+	                    subCate.push(knowledges[j]);
+	                }
+	            }
+	            parent[i]["subCategory"] = subCate;
+	            subCate = [];
+	        }
+	        knowledges = parent;
+	        return parent;
+	    };
+	    KnowledgeService.prototype.changeKnowledgeStatus = function (knowledge) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _knowledge = JSON.stringify({
+	            status: !knowledge.status,
+	        });
+	        return this._http
+	            .put(this._knowledgeStatusUrl.replace(':id', knowledge._id), _knowledge, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    KnowledgeService.prototype.handleError = function (error) {
+	        console.error(error);
+	        return Observable_1.Observable.throw(error.json().error || 'Server error');
+	    };
+	    KnowledgeService = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+	    ], KnowledgeService);
+	    return KnowledgeService;
+	    var _a;
+	}());
+	exports.KnowledgeService = KnowledgeService;
+	
+
+/***/ },
+/* 51 */,
+/* 52 */,
 /* 53 */,
 /* 54 */,
 /* 55 */,
@@ -1476,25 +1840,27 @@ webpackJsonp([2],[
 	}
 	__export(__webpack_require__(35));
 	__export(__webpack_require__(500));
-	__export(__webpack_require__(1018));
-	__export(__webpack_require__(1019));
 	__export(__webpack_require__(1020));
+<<<<<<< HEAD
 	__export(__webpack_require__(146));
+=======
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	__export(__webpack_require__(1021));
 	__export(__webpack_require__(1022));
-	__export(__webpack_require__(1025));
-	__export(__webpack_require__(1026));
+	__export(__webpack_require__(145));
 	__export(__webpack_require__(1023));
 	__export(__webpack_require__(1024));
+	__export(__webpack_require__(1027));
+	__export(__webpack_require__(1028));
+	__export(__webpack_require__(1025));
+	__export(__webpack_require__(1026));
 	__export(__webpack_require__(321));
 	__export(__webpack_require__(35));
 	__export(__webpack_require__(35));
-	__export(__webpack_require__(1027));
-	__export(__webpack_require__(1028));
 	__export(__webpack_require__(1029));
 	__export(__webpack_require__(1030));
+	__export(__webpack_require__(1031));
 	__export(__webpack_require__(1032));
-	__export(__webpack_require__(1033));
 	__export(__webpack_require__(1034));
 	__export(__webpack_require__(1035));
 	__export(__webpack_require__(1036));
@@ -1503,9 +1869,9 @@ webpackJsonp([2],[
 	__export(__webpack_require__(1039));
 	__export(__webpack_require__(1040));
 	__export(__webpack_require__(1041));
-	__export(__webpack_require__(210));
 	__export(__webpack_require__(1042));
 	__export(__webpack_require__(1043));
+	__export(__webpack_require__(210));
 	__export(__webpack_require__(1044));
 	__export(__webpack_require__(1045));
 	__export(__webpack_require__(1046));
@@ -1514,9 +1880,9 @@ webpackJsonp([2],[
 	__export(__webpack_require__(1049));
 	__export(__webpack_require__(1050));
 	__export(__webpack_require__(1051));
-	__export(__webpack_require__(211));
 	__export(__webpack_require__(1052));
 	__export(__webpack_require__(1053));
+	__export(__webpack_require__(211));
 	__export(__webpack_require__(1054));
 	__export(__webpack_require__(1055));
 	__export(__webpack_require__(1056));
@@ -1528,15 +1894,17 @@ webpackJsonp([2],[
 	__export(__webpack_require__(1062));
 	__export(__webpack_require__(1063));
 	__export(__webpack_require__(1064));
-	__export(__webpack_require__(502));
-	__export(__webpack_require__(1066));
-	__export(__webpack_require__(503));
 	__export(__webpack_require__(1065));
-	__export(__webpack_require__(1067));
+	__export(__webpack_require__(1066));
+	__export(__webpack_require__(502));
 	__export(__webpack_require__(1068));
+	__export(__webpack_require__(503));
+	__export(__webpack_require__(1067));
 	__export(__webpack_require__(1069));
 	__export(__webpack_require__(1070));
 	__export(__webpack_require__(1071));
+	__export(__webpack_require__(1072));
+	__export(__webpack_require__(1073));
 	__export(__webpack_require__(504));
 	__export(__webpack_require__(505));
 	
@@ -1875,6 +2243,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
+<<<<<<< HEAD
 	var Subject_1 = __webpack_require__(19);
 	/**
 	 * @class AsyncSubject<T>
@@ -1885,6 +2254,28 @@ webpackJsonp([2],[
 	        _super.apply(this, arguments);
 	        this.value = null;
 	        this.hasNext = false;
+=======
+	var core_1 = __webpack_require__(1);
+	var requests_1 = __webpack_require__(59);
+	var knowledge_1 = __webpack_require__(50);
+	var tag_1 = __webpack_require__(97);
+	var primeng_1 = __webpack_require__(146);
+	var router_1 = __webpack_require__(5);
+	var common_1 = __webpack_require__(8);
+	var $ = __webpack_require__(499);
+	var CKEditor = (function () {
+	    function CKEditor(_elm, _requestService, router, route) {
+	        var _this = this;
+	        this._requestService = _requestService;
+	        this.router = router;
+	        this.route = route;
+	        CKEDITOR.replace(_elm.nativeElement);
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	        });
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	    }
 	    AsyncSubject.prototype._subscribe = function (subscriber) {
 	        if (this.hasCompleted && this.hasNext) {
@@ -2273,6 +2664,7 @@ webpackJsonp([2],[
 /* 282 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2341,12 +2733,83 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d;
 	}());
 	exports.UpdateKnowledgeComponent = UpdateKnowledgeComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var __param = (this && this.__param) || function (paramIndex, decorator) {
+	    return function (target, key) { decorator(target, key, paramIndex); }
+	};
+	var core_1 = __webpack_require__(1);
+	var knowledge_1 = __webpack_require__(50);
+	var router_1 = __webpack_require__(5);
+	var common_1 = __webpack_require__(8);
+	var UpdateKnowledgeComponent = (function () {
+	    function UpdateKnowledgeComponent(fb, _knowledgeService, router, route) {
+	        var _this = this;
+	        this._knowledgeService = _knowledgeService;
+	        this.router = router;
+	        this.route = route;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	        });
+	        this.updateKnowledgeForm = fb.group({
+	            "name": [""],
+	            "description": [""],
+	            "_id": [""],
+	        });
+	    }
+	    UpdateKnowledgeComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._knowledgeService.findKnowledgeById(this.id).subscribe(function (knowledge) {
+	            _this.knowledge = knowledge;
+	            _this.name = knowledge.name;
+	            _this.description = knowledge.description;
+	            _this._id = knowledge._id;
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	    };
+	    UpdateKnowledgeComponent.prototype.updateKnowledge = function (knowledge) {
+	        this._knowledgeService.updateKnowledge(knowledge).subscribe(function (knowledge) {
+	            console.log('update successed');
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	        this.router.navigateByUrl('admin/knowledges');
+	    };
+	    UpdateKnowledgeComponent = __decorate([
+	        core_1.Component({
+	            selector: 'knowledge-update',
+	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-update.html',
+	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
+	            providers: [knowledge_1.KnowledgeService]
+	        }),
+	        __param(0, core_1.Inject(common_1.FormBuilder)),
+	        __param(1, core_1.Inject(knowledge_1.KnowledgeService)), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
+	    ], UpdateKnowledgeComponent);
+	    return UpdateKnowledgeComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.UpdateKnowledgeComponent = UpdateKnowledgeComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
 /* 283 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2545,12 +3008,213 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d, _e, _f;
 	}());
 	exports.CreateRequestComponent = CreateRequestComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var __param = (this && this.__param) || function (paramIndex, decorator) {
+	    return function (target, key) { decorator(target, key, paramIndex); }
+	};
+	var core_1 = __webpack_require__(1);
+	var common_1 = __webpack_require__(8);
+	var router_1 = __webpack_require__(5);
+	var knowledge_1 = __webpack_require__(50);
+	var requests_1 = __webpack_require__(59);
+	var auth_1 = __webpack_require__(41);
+	var tag_1 = __webpack_require__(97);
+	var primeng_1 = __webpack_require__(146);
+	var CKEditor = (function () {
+	    function CKEditor(_elm) {
+	        CKEDITOR.replace(_elm.nativeElement);
+	    }
+	    CKEditor = __decorate([
+	        core_1.Component({
+	            selector: 'ck-editor',
+	            template: ""
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
+	    ], CKEditor);
+	    return CKEditor;
+	    var _a;
+	}());
+	var CreateRequestComponent = (function () {
+	    function CreateRequestComponent(_tagService, fb, _requestService, _knowledgeService, _authService, router) {
+	        this._tagService = _tagService;
+	        this._requestService = _requestService;
+	        this._knowledgeService = _knowledgeService;
+	        this._authService = _authService;
+	        this.router = router;
+	        this.user = localStorage.getItem('username');
+	        this.roleToken = localStorage.getItem('userrole');
+	        this.requestForm = fb.group({
+	            "knowledgeId": [""],
+	            "title": [""],
+	            "description": [""],
+	            "user": [""]
+	        });
+	    }
+	    CreateRequestComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.CreateUploadImageCkeditor();
+	        this.CreateYoutubeBtnCkeditor();
+	        this.addCommandBtnCk();
+	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            _this.loadAllTags();
+	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+	        });
+	    };
+	    CreateRequestComponent.prototype.filterONTag = function () {
+	        var oldTag = [];
+	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	            var e = _a[_i];
+	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                var e1 = _c[_b];
+	                //catch old tags
+	                if (e.name == e1) {
+	                    oldTag.push(e._id);
+	                    //find out old tags in data tags user
+	                    var index = this.tags.indexOf(e1);
+	                    if (index > -1) {
+	                        //remove old tags to catch new tags
+	                        this.tags.splice(index, 1);
+	                    }
+	                }
+	            }
+	        }
+	        return [oldTag, this.tags];
+	    };
+	    CreateRequestComponent.prototype.filterKnw = function (event) {
+	        var query = event.query;
+	        this.filteredKnw = [];
+	        for (var i = 0; i < this.tagsEx.length; i++) {
+	            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
+	                this.filteredKnw.push(this.tagsEx[i].name);
+	            }
+	            if (this.filteredKnw.indexOf(query.trim()) < 0) {
+	                this.filteredKnw.unshift(query.trim());
+	            }
+	        }
+	    };
+	    CreateRequestComponent.prototype.loadAllTags = function () {
+	        var _this = this;
+	        this._tagService.getAllTag().subscribe(function (tags) {
+	            _this.tagsEx = tags;
+	            console.log(_this.tagsEx);
+	        });
+	    };
+	    CreateRequestComponent.prototype.addRequest = function (request) {
+	        var _this = this;
+	        var tags = [];
+	        tags = this.filterONTag();
+	        this.contentCk = CKEDITOR.instances.editor1.getData();
+	        this._requestService.addRequest(request, this.contentCk, tags[0], tags[1]).subscribe(function (request) {
+	            _this.router.navigateByUrl('/requests/' + request._id + '/info');
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	    };
+	    // ckeditor
+	    CreateRequestComponent.prototype.insertLinkToBox = function (link) {
+	        CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
+	    };
+	    CreateRequestComponent.prototype.insertYoutubeToBox = function (link) {
+	        //https://www.youtube.com/watch?v=mraul5-1TBE
+	        var i = link.indexOf("=");
+	        link = link.substring(i + 1, link.length);
+	        var s = '<p><iframe frameborder="0" height="315" scrolling="no" src="https://www.youtube.com/embed/' + link + '" width="500"></iframe></p>';
+	        CKEDITOR.instances.editor1.insertHtml(s);
+	    };
+	    CreateRequestComponent.prototype.addCommandBtnCk = function () {
+	        CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
+	        CKEDITOR.instances.editor1.addCommand('youtube', { exec: this.openModalYoutube });
+	    };
+	    CreateRequestComponent.prototype.openModalImg = function () {
+	        $("#bdOpenModal").trigger("click");
+	    };
+	    CreateRequestComponent.prototype.openModalYoutube = function () {
+	        $("#youtubeOpenModal").trigger("click");
+	    };
+	    CreateRequestComponent.prototype.CreateUploadImageCkeditor = function () {
+	        CKEDITOR.instances.editor1.ui.addButton('uploadImage', {
+	            label: 'Upload Image',
+	            command: 'uploadImage',
+	            icon: '/client/dev/asserts/images/icon-img-ck.png'
+	        });
+	    };
+	    CreateRequestComponent.prototype.CreateYoutubeBtnCkeditor = function () {
+	        CKEDITOR.instances.editor1.ui.addButton('youtube', {
+	            label: 'Add youtube',
+	            command: 'youtube',
+	            icon: '/client/dev/asserts/images/icon-youtube.png'
+	        });
+	    };
+	    CreateRequestComponent.prototype.makeFileRequest = function (url, params, files) {
+	        return new Promise(function (resolve, reject) {
+	            var formData = new FormData();
+	            var xhr = new XMLHttpRequest();
+	            for (var i = 0; i < files.length; i++) {
+	                formData.append("uploads[]", files[i], files[i].name);
+	            }
+	            xhr.onreadystatechange = function () {
+	                if (xhr.readyState == 4) {
+	                    if (xhr.status == 200) {
+	                        resolve(JSON.parse(xhr.response));
+	                    }
+	                    else {
+	                        reject(xhr.response);
+	                    }
+	                }
+	            };
+	            xhr.open("POST", url, true);
+	            xhr.send(formData);
+	        });
+	    };
+	    // uploading image
+	    CreateRequestComponent.prototype.uploadImageCk = function () {
+	        if (this.filesToUpload) {
+	            this.makeFileRequest("/api/media", [], this.filesToUpload).then(function (result) {
+	                var link = '/uploads/' + result[0].filename;
+	                CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" style="height:536px; width:858px" /></p>');
+	            }, function (error) {
+	                console.error(error);
+	            });
+	        }
+	    };
+	    //action button upload
+	    CreateRequestComponent.prototype.fileChangeEvent = function (fileInput) {
+	        this.filesToUpload = fileInput.target.files;
+	    };
+	    CreateRequestComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-create',
+	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-create.html',
+	            styleUrls: ['client/dev/app/components/bac  k-end/request/templates/request.css'],
+	            directives: [common_1.FORM_DIRECTIVES, primeng_1.AutoComplete, CKEditor],
+	            providers: [tag_1.TagService]
+	        }),
+	        __param(1, core_1.Inject(common_1.FormBuilder)),
+	        __param(2, core_1.Inject(requests_1.RequestService)), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _a) || Object, (typeof (_b = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _b) || Object, (typeof (_c = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _f) || Object])
+	    ], CreateRequestComponent);
+	    return CreateRequestComponent;
+	    var _a, _b, _c, _d, _e, _f;
+	}());
+	exports.CreateRequestComponent = CreateRequestComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
 /* 284 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2640,12 +3304,104 @@ webpackJsonp([2],[
 	    var _a, _b, _c;
 	}());
 	exports.RequestCategoryComponent = RequestCategoryComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var requests_1 = __webpack_require__(59);
+	var RequestCategoryComponent = (function () {
+	    function RequestCategoryComponent(_requestService, router, route) {
+	        var _this = this;
+	        this._requestService = _requestService;
+	        this.router = router;
+	        this.route = route;
+	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            var type = params['type'];
+	            _this.typee = type;
+	            var id = params['id'];
+	            _this.identify = id;
+	        });
+	        //get templates from children category
+	        if (this.typee === "subcategory") {
+	            this._requestService.getRequestByKnowledgeId(this.identify).subscribe(function (requests) {
+	                if (requests.length == 0) {
+	                    _this.isExistRecord = true;
+	                }
+	                else {
+	                    _this.isExistRecord = false;
+	                }
+	                for (var i = 0; i < requests.length; i++) {
+	                    requests[i].createdAt = new Date(requests[i].createdAt);
+	                    requests[i].modifiedDate = new Date(requests[i].modifiedDate);
+	                }
+	                _this.requests = requests;
+	            });
+	        }
+	        //get templates from parent category
+	        if (this.typee === "category") {
+	            this._requestService.getKnowledgeByParent(this.identify).subscribe(function (knowledges) {
+	                var a = [];
+	                _this.knowledges = knowledges;
+	                for (var i = 0; i < _this.knowledges.length; i++) {
+	                    _this._requestService.getRequestByKnowledgeId(_this.knowledges[i]._id).subscribe(function (requests) {
+	                        //for each child knowledge get requests
+	                        for (var j = 0; j < requests.length; j++) {
+	                            a.push(requests[j]);
+	                        }
+	                        for (var i = 0; i < a.length; i++) {
+	                            a[i].createdAt = new Date(requests[i].createdAt);
+	                            a[i].modifiedDate = new Date(requests[i].modifiedDate);
+	                            if (requests[i].status === 'pending') {
+	                                requests[i].status = 'Đang chờ';
+	                            }
+	                        }
+	                        if (a.length == 0) {
+	                            _this.isExistRecord = true;
+	                        }
+	                        else {
+	                            _this.isExistRecord = false;
+	                        }
+	                        _this.requests = a;
+	                    });
+	                }
+	            }, function (Error) {
+	                console.log(Error);
+	            });
+	        }
+	    }
+	    RequestCategoryComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-search-cli',
+	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-search.html',
+	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
+	            directives: [router_1.ROUTER_DIRECTIVES]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object])
+	    ], RequestCategoryComponent);
+	    return RequestCategoryComponent;
+	    var _a, _b, _c;
+	}());
+	exports.RequestCategoryComponent = RequestCategoryComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
 /* 285 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -2797,6 +3553,159 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d;
 	}());
 	exports.UserProfileBarComponent = UserProfileBarComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//services
+	var users_1 = __webpack_require__(42);
+	var notification_1 = __webpack_require__(121);
+	var UserProfileBarComponent = (function () {
+	    function UserProfileBarComponent(router, route, _userService, _noti) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this._noti = _noti;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	        });
+	        this.roleToken = localStorage.getItem('role');
+	        this.userToken = localStorage.getItem('username');
+	    }
+	    UserProfileBarComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.linkImg = '';
+	        this._userService.getUserByUserName(this.name).subscribe(function (user) {
+	            _this.userProfile = user;
+	            console.log(_this.userProfile);
+	            _this.linkImg = user.linkImg;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	        //check if current user is staying in his/her profile page
+	        if (this.name === this.userToken) {
+	            this.checkUser = true;
+	        }
+	        this.getFriendList();
+	    };
+	    UserProfileBarComponent.prototype.fileChangeEvent = function (fileInput) {
+	        var _this = this;
+	        this.filesToUpload = fileInput.target.files;
+	        if (this.filesToUpload) {
+	            this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then(function (r) {
+	                _this.linkImg = '/uploads/' + r[0].filename;
+	                _this._userService.updateAvartaLink(_this.userToken, _this.linkImg).subscribe(function (r) {
+	                    console.log("update link profile picture successful");
+	                });
+	            }, function (error) {
+	                console.error(error);
+	            });
+	        }
+	    };
+	    UserProfileBarComponent.prototype.addFriend = function () {
+	        var _this = this;
+	        if (this.isFriend === false) {
+	            this._userService
+	                .addFriend(this.userToken, this.name)
+	                .subscribe(function (r) {
+	                console.log('friendship was created by ' + _this.userToken + ' and ' + _this.name);
+	            });
+	            //create a notification to user who get accepted a friend request
+	            var title = 'Lời mời kết bạn từ ' + this.userToken;
+	            var link = '/user/' + this.name + '/friends';
+	            alert("đã gửi lời mời kết bạn thành công");
+	            //call function using socket io to send notification
+	            this._noti.alertNotification(title, this.name, link);
+	            //save notification to database
+	            this._noti.createNotification(title, this.name, link).subscribe(function (notification) {
+	                console.log(notification);
+	            });
+	        }
+	        else {
+	            alert("Bạn đã gửi kết bạn rồi!");
+	        }
+	        this.getFriendList();
+	    };
+	    UserProfileBarComponent.prototype.deleteFriend = function () {
+	        var r = confirm("Bạn có muốn hủy kết bạn");
+	        if (r == true) {
+	            this._userService
+	                .deleteFriendRequest(this.userToken, this.name)
+	                .subscribe(function () {
+	                console.log('delete successfull');
+	            });
+	            this._userService
+	                .deleteFriendRequest(this.name, this.userToken)
+	                .subscribe(function () {
+	            });
+	            this.getFriendList();
+	            this.isFriend = false;
+	            alert("bạn đã hủy gửi lời  mời kết bạn");
+	        }
+	    };
+	    //get friend list: pending and accepted
+	    UserProfileBarComponent.prototype.getFriendList = function () {
+	        var _this = this;
+	        this.checkSentRequestUser = false;
+	        this._userService
+	            .getFriendList(this.userToken)
+	            .subscribe(function (friendlist) {
+	            _this.friendList = friendlist;
+	            _this.checkIsFriend();
+	            //check sent request
+	            for (var i = 0; i < _this.friendList.length; i++) {
+	                if (friendlist[i].user2 === _this.name && _this.friendList[i].status === "pending") {
+	                    _this.checkSentRequestUser = true;
+	                    break;
+	                }
+	            }
+	            for (var i = 0; i < _this.friendList.length; i++) {
+	                if (friendlist[i].user1 === _this.name && _this.friendList[i].status === "pending") {
+	                    _this.checkIsRecivedRequest = true;
+	                    break;
+	                }
+	            }
+	        });
+	    };
+	    UserProfileBarComponent.prototype.checkIsFriend = function () {
+	        this.isFriend = false;
+	        for (var i = 0; i < this.friendList.length; i++) {
+	            if ((this.name === this.friendList[i].user1 && this.friendList[i].status === "accepted") ||
+	                (this.name === this.friendList[i].user2 && this.friendList[i].status === "accepted")) {
+	                this.isFriend = true;
+	                break;
+	            }
+	        }
+	    };
+	    UserProfileBarComponent = __decorate([
+	        core_1.Component({
+	            selector: 'user-profile-bar',
+	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/user-profile-bar.html',
+	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
+	    ], UserProfileBarComponent);
+	    return UserProfileBarComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.UserProfileBarComponent = UserProfileBarComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
@@ -3659,7 +4568,7 @@ webpackJsonp([2],[
 	function __export(m) {
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
-	__export(__webpack_require__(1014));
+	__export(__webpack_require__(1016));
 
 
 /***/ },
@@ -3852,6 +4761,7 @@ webpackJsonp([2],[
 /* 417 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -3990,6 +4900,146 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d, _e;
 	}());
 	exports.KnowledgeListComponent = KnowledgeListComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var common_1 = __webpack_require__(8);
+	var knowledge_1 = __webpack_require__(643);
+	var knowledge_2 = __webpack_require__(50);
+	var requests_1 = __webpack_require__(59);
+	var knowledge_update_1 = __webpack_require__(282);
+	var sub_knowledge_create_1 = __webpack_require__(621);
+	var ng2_pagination_1 = __webpack_require__(320);
+	var filter_1 = __webpack_require__(184);
+	var KnowledgeListComponent = (function () {
+	    function KnowledgeListComponent(fb, _elRef, _knowledgeService, _requestService) {
+	        this._elRef = _elRef;
+	        this._knowledgeService = _knowledgeService;
+	        this._requestService = _requestService;
+	        this.pageTitle = 'Knowledge List';
+	        this.knowledgeForm = fb.group({
+	            "name": [""],
+	            "description": [""],
+	        });
+	        this.subCategoryForm = fb.group({
+	            "name": [""],
+	            "description": [""],
+	            "parent": [""]
+	        });
+	        this.sort();
+	    }
+	    KnowledgeListComponent.prototype.ngOnInit = function () {
+	        this.sort();
+	    };
+	    KnowledgeListComponent.prototype.deleteKnowledge = function (id) {
+	        var _this = this;
+	        this._knowledgeService
+	            .deleteKnowledge(id)
+	            .subscribe(function () {
+	            _this.knowledges.forEach(function (t, i) {
+	                if (t._id === id)
+	                    return _this.knowledges.splice(i, 1);
+	            });
+	        });
+	    };
+	    KnowledgeListComponent.prototype.addKnowledge = function (knowledge) {
+	        var _this = this;
+	        this._knowledgeService
+	            .addKnowledge(knowledge)
+	            .subscribe(function (m) {
+	            _this.knowledges.push(m);
+	            _this.sort();
+	            _this.knowledgeForm.controls["name"].updateValue("");
+	            _this.knowledgeForm.controls["description"].updateValue("");
+	        });
+	    };
+	    KnowledgeListComponent.prototype.changeKnowledgeStatus = function (knowledge) {
+	        this._knowledgeService
+	            .changeKnowledgeStatus(knowledge)
+	            .subscribe(function (knowledge) {
+	        });
+	        if (knowledge.hasOwnProperty("subCategory")) {
+	            for (var i = 0; i < knowledge["subCategory"].length; i++) {
+	                if (knowledge["subCategory"][i].status == knowledge.status) {
+	                    this._knowledgeService
+	                        .changeKnowledgeStatus(knowledge["subCategory"][i])
+	                        .subscribe(function (knowledge) { });
+	                }
+	            }
+	        }
+	        this.sort();
+	    };
+	    //sắp xếp knowledge dựa vào số lượng request
+	    KnowledgeListComponent.prototype.sort = function () {
+	        var _this = this;
+	        this._requestService.getAllRequests().subscribe(function (requests) {
+	            _this.requests = requests;
+	        });
+	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            for (var i = 0; i < knowledges.length; i++) {
+	                var length = 0;
+	                knowledges[i]["requestLength"] = 0;
+	                for (var j = 0; j < _this.requests.length; j++) {
+	                    if (_this.requests[j].knowledgeId == knowledges[i]._id) {
+	                        length++;
+	                        knowledges[i]["requestLength"] = length;
+	                    }
+	                }
+	            }
+	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+	            for (var i = 0; i < _this.knowledges.length; i++) {
+	                var a = 0;
+	                for (var j = 0; j < _this.knowledges[i]["subCategory"].length; j++) {
+	                    a += _this.knowledges[i]["subCategory"][j]["requestLength"];
+	                    _this.knowledges[i]["requestLength"] = a;
+	                }
+	            }
+	            for (var i = 0; i < _this.knowledges.length - 1; i++) {
+	                for (var j = i + 1; j < _this.knowledges.length; j++) {
+	                    if (_this.knowledges[i]["requestLength"] < _this.knowledges[j]["requestLength"]) {
+	                        _this.knowledge = _this.knowledges[i];
+	                        _this.knowledges[i] = _this.knowledges[j];
+	                        _this.knowledges[j] = _this.knowledge;
+	                    }
+	                }
+	            }
+	        });
+	    };
+	    KnowledgeListComponent.prototype.hide = function () {
+	        $(".collapse").collapse("hide");
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', (typeof (_a = typeof knowledge_1.Knowledge !== 'undefined' && knowledge_1.Knowledge) === 'function' && _a) || Object)
+	    ], KnowledgeListComponent.prototype, "knowledge", void 0);
+	    KnowledgeListComponent = __decorate([
+	        core_1.Component({
+	            selector: 'knowledge-list',
+	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-list.html',
+	            directives: [
+	                knowledge_update_1.UpdateKnowledgeComponent,
+	                sub_knowledge_create_1.CreateSubCategoryComponent,
+	                router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp],
+	            providers: [knowledge_2.KnowledgeService, ng2_pagination_1.PaginationService],
+	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_b = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _b) || Object, (typeof (_c = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_2.KnowledgeService !== 'undefined' && knowledge_2.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _e) || Object])
+	    ], KnowledgeListComponent);
+	    return KnowledgeListComponent;
+	    var _a, _b, _c, _d, _e;
+	}());
+	exports.KnowledgeListComponent = KnowledgeListComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
@@ -4060,6 +5110,7 @@ webpackJsonp([2],[
 /* 419 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -4169,12 +5220,124 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d;
 	}());
 	exports.RequestListComponent = RequestListComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var __param = (this && this.__param) || function (paramIndex, decorator) {
+	    return function (target, key) { decorator(target, key, paramIndex); }
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var common_1 = __webpack_require__(8);
+	var knowledge_1 = __webpack_require__(50);
+	var requests_1 = __webpack_require__(59);
+	var auth_1 = __webpack_require__(41);
+	var request_update_1 = __webpack_require__(183);
+	var ng2_pagination_1 = __webpack_require__(320);
+	var filter_1 = __webpack_require__(184);
+	var RequestListComponent = (function () {
+	    function RequestListComponent(fb, _requestService, _knowledgeService, _authService) {
+	        var _this = this;
+	        this._requestService = _requestService;
+	        this._knowledgeService = _knowledgeService;
+	        this._authService = _authService;
+	        this.pageTitle = 'Request List';
+	        this.filter = '';
+	        this.user = localStorage.getItem('username');
+	        this.roleToken = localStorage.getItem('userrole');
+	        this.requestForm = fb.group({
+	            "knowledgeId": [""],
+	            "title": [""],
+	            "description": [""],
+	            "user": [""]
+	        });
+	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+	        });
+	    }
+	    RequestListComponent.prototype.addRequest = function (request) {
+	        var _this = this;
+	        this._requestService.addRequest(request).subscribe(function (request) {
+	            _this.requests.push(request);
+	            _this.requestForm.controls["title"].updateValue("");
+	            _this.requestForm.controls["description"].updateValue("");
+	            _this.requestForm.controls["knowledgeId"].updateValue("");
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	    };
+	    RequestListComponent.prototype.ngOnInit = function () {
+	        this.getAllRequest();
+	    };
+	    RequestListComponent.prototype.deactivateRequest = function (id) {
+	        var _this = this;
+	        this._requestService
+	            .changeStatusRequest(id)
+	            .subscribe(function (r) {
+	            console.log("deactivate sucess");
+	            _this.getAllRequest();
+	        });
+	    };
+	    RequestListComponent.prototype.activateRequest = function (request) {
+	        var _this = this;
+	        request.status = 'pending';
+	        this._requestService
+	            .updateRequest(request)
+	            .subscribe(function (r) {
+	            _this.getAllRequest();
+	        });
+	    };
+	    RequestListComponent.prototype.getAllRequest = function () {
+	        var _this = this;
+	        this._requestService.getAllRequestAdmin().subscribe(function (requests) {
+	            for (var i = 0; i < requests.length; i++) {
+	                requests[i].createdAt = new Date(requests[i].createdAt);
+	                requests[i].modifiedDate = new Date(requests[i].modifiedDate);
+	                if (requests[i].status === 'active' || requests[i].status === 'pending') {
+	                    requests[i].status = "Đang chờ";
+	                }
+	                else if (requests[i].status === 'deactive') {
+	                    requests[i].status = "Kết thúc";
+	                }
+	                else if (requests[i].status === 'accepted') {
+	                    requests[i].status = "Được chấp nhận";
+	                }
+	            }
+	            _this.requests = requests;
+	        });
+	    };
+	    RequestListComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-list',
+	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
+	            directives: [request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES],
+	            providers: [requests_1.RequestService, ng2_pagination_1.PaginationService],
+	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
+	        }),
+	        __param(0, core_1.Inject(common_1.FormBuilder)),
+	        __param(1, core_1.Inject(requests_1.RequestService)), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
+	    ], RequestListComponent);
+	    return RequestListComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.RequestListComponent = RequestListComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
 /* 420 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -4260,6 +5423,93 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d;
 	}());
 	exports.UserListComponent = UserListComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var __param = (this && this.__param) || function (paramIndex, decorator) {
+	    return function (target, key) { decorator(target, key, paramIndex); }
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var common_1 = __webpack_require__(8);
+	var users_1 = __webpack_require__(42);
+	var auth_1 = __webpack_require__(41);
+	var ng2_pagination_1 = __webpack_require__(320);
+	var filter_1 = __webpack_require__(184);
+	var UserListComponent = (function () {
+	    function UserListComponent(fb, _userService, _auth, router) {
+	        this._userService = _userService;
+	        this._auth = _auth;
+	        this.router = router;
+	        this.pageTitle = 'users';
+	        this.filter = '';
+	        this.numOfUser = 0;
+	        this.userForm = fb.group({
+	            username: ["", common_1.Validators.required],
+	            password: ["", common_1.Validators.required],
+	            email: ["", common_1.Validators.required],
+	            role: ["", common_1.Validators.required]
+	        });
+	    }
+	    UserListComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._userService
+	            .getAllUsers()
+	            .subscribe(function (users) {
+	            console.log(users);
+	            for (var i = 0; i < users.length; i++) {
+	                if (users[i].birthday) {
+	                    users[i].birthday = new Date(users[i].birthday);
+	                }
+	                users[i].createdAt = new Date(users[i].createdAt);
+	                if (users[i].updatedAt) {
+	                    users[i].updatedAt = new Date(users[i].updatedAt);
+	                }
+	            }
+	            _this.users = users;
+	            _this.numOfUser = i;
+	        }, function (error) {
+	            _this.errorMessage = error.message;
+	            console.log(error);
+	        });
+	    };
+	    UserListComponent.prototype.addUser = function (user) {
+	        var _this = this;
+	        this._userService
+	            .addUser(user)
+	            .subscribe(function (response) {
+	            _this.users.push(response);
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	    };
+	    UserListComponent.prototype.banUser = function (userid) {
+	        this._userService.banUser(userid).subscribe(function (response) { console.log(response); }, function (error) { });
+	    };
+	    UserListComponent = __decorate([
+	        core_1.Component({
+	            selector: 'user-list',
+	            templateUrl: 'client/dev/app/components/back-end/users/templates/user-list.html',
+	            directives: [router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES],
+	            providers: [users_1.UserService, ng2_pagination_1.PaginationService],
+	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
+	        }),
+	        __param(0, core_1.Inject(common_1.FormBuilder)), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
+	    ], UserListComponent);
+	    return UserListComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.UserListComponent = UserListComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
@@ -4774,6 +6024,7 @@ webpackJsonp([2],[
 /* 426 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -4824,12 +6075,65 @@ webpackJsonp([2],[
 	    var _a, _b;
 	}());
 	exports.KSpaceListComponent = KSpaceListComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 7/9/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var kspace_1 = __webpack_require__(137);
+	var router_1 = __webpack_require__(5);
+	var KSpaceListComponent = (function () {
+	    function KSpaceListComponent(_kspaceService, router) {
+	        this._kspaceService = _kspaceService;
+	        this.router = router;
+	    }
+	    KSpaceListComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._kspaceService
+	            .getAllKSpace()
+	            .subscribe(function (kspaces) {
+	            for (var i = 0; i < kspaces.length; i++) {
+	                kspaces[i].createdAt = new Date(kspaces[i].createdAt);
+	                kspaces[i].link = '/kspace/info/' + kspaces[i]._id + '/' + kspaces[i].lecturer;
+	            }
+	            _this.kspaces = kspaces;
+	        }, function (error) {
+	            _this.errorMessage = error.message;
+	            console.log(error);
+	        });
+	    };
+	    KSpaceListComponent = __decorate([
+	        core_1.Component({
+	            template: "\n    <div class=\"container mg-top-50\">\n          <!-- list all-->\n          <div class=\"search-container\">\n             <form role=\"search\">\n                     <div class=\"search-component\">\n                        <input #text type=\"text\" class=\"form-control search-input\" placeholder=\"Nh\u1EADp n\u1ED9i dung t\u00ECm ki\u1EBFm\">\n                        <button (click)=\"search(text.value)\" type=\"submit\"\n                        class=\"search-button fa fa-search fa-2x\"\n                        aria-hidden=\"true\"></button>\n                     </div>\n              </form>\n           </div><!-- /.search-component -->\n          <div *ngIf=\"kspaces\" id=\"kspace-list-component\" class=\"col-md-12\">\n            <div class=\"panel panel-default card-rq\" *ngFor=\"let kspace of kspaces\">\n              <div class=\"panel-body\">\n                <a [routerLink]=\"[kspace.link]\" >\n                  <p class=\"lead\">{{kspace.requestTitle}}</p>\n                </a>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Ng\u01B0\u1EDDi y\u00EAu c\u1EA7u : {{kspace.learner}}\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Ng\u01B0\u1EDDi d\u1EA1y : {{kspace.lecturer}}\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Tr\u1EA1ng th\u00E1i : ddddddd\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu\">\n                  Ng\u00E0y t\u1EA1o : {{kspace.createdAt | date:\"dd/MM/yyyy\"}}\n                </div>\n            </div>\n          </div>\n    </div><!-- /.container -->\n    ",
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ],
+	            styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace-list.css']
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
+	    ], KSpaceListComponent);
+	    return KSpaceListComponent;
+	    var _a, _b;
+	}());
+	exports.KSpaceListComponent = KSpaceListComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
 /* 427 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -5032,12 +6336,217 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d;
 	}());
 	exports.KSpaceComponent = KSpaceComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var kspace_1 = __webpack_require__(137);
+	var rtc_services_1 = __webpack_require__(626);
+	var router_1 = __webpack_require__(5);
+	var common_1 = __webpack_require__(8);
+	//import { ChatComponent } from './chat';
+	var chalkboard_1 = __webpack_require__(625);
+	var KSpaceComponent = (function () {
+	    function KSpaceComponent(router, route, _kspaceService, rtcService) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._kspaceService = _kspaceService;
+	        this.rtcService = rtcService;
+	        this.route.params.subscribe(function (params) {
+	            _this.id = params['id'];
+	            _this.lecturer = params['lecturer'];
+	        });
+	        this.username = localStorage.getItem('username');
+	        this.messages = [];
+	        this.socket = io('https://localhost:80');
+	        this.socket.emit('subscribe', this.id);
+	        this.socket.on("chat_message", function (dataReturn) {
+	            var isSender = false;
+	            if (dataReturn.user == _this.username) {
+	                isSender = true;
+	            }
+	            var msgObject = {
+	                user: dataReturn.user,
+	                msg: dataReturn.msg,
+	                url: dataReturn.url,
+	                sender: isSender
+	            };
+	            _this.messages.push(msgObject);
+	        });
+	    }
+	    KSpaceComponent.prototype.send = function (message, img) {
+	        if (img) {
+	            var chalkboard = document.getElementById("chalkboard");
+	            var ctx = chalkboard.getContext("2d");
+	            var dataURL = chalkboard.toDataURL();
+	            var data = {
+	                id: this.id,
+	                createdUser: this.username,
+	                message: message,
+	                dataURL: dataURL
+	            };
+	            this.socket.emit("chat_message", data);
+	            this.mess = "";
+	        }
+	        else {
+	            var data = {
+	                id: this.id,
+	                createdUser: this.username,
+	                message: message
+	            };
+	            this.socket.emit("chat_message", data);
+	            this.mess = "";
+	        }
+	    };
+	    /*
+	    * Init when the component is initiated
+	    *
+	    * */
+	    KSpaceComponent.prototype.ngOnInit = function () {
+	        // DOM elements
+	        var _this = this;
+	        var shareScreenBtn = $('#sharescreen-btn');
+	        var chalkBoardBtn = $('#chalkboard-btn');
+	        var videoCallBtn = $('#videocall-btn');
+	        var localVideo = $('#localVideo');
+	        var remoteVideos = $('#remoteVideos');
+	        var kspacePanel = $('#kspace-panel');
+	        var chatBox = $('#chat-box-panel');
+	        var drawTools = $('#draw-tools-panel');
+	        // initiate setting
+	        var chatToolShow = false;
+	        $('#chat-panel').hide();
+	        //show chat-panel
+	        $('#chat').click(function () {
+	            if (!chatToolShow) {
+	                $('#chat-panel').show();
+	                $('#kspace-panel').css('right', '18%');
+	                $('#draw-option').css('margin-left', '96.8%');
+	                chatToolShow = true;
+	            }
+	            else {
+	                $('#chat-panel').hide();
+	                $('#kspace-panel').css('right', '6%');
+	                $('#draw-option').css('margin-left', '97.15%');
+	                chatToolShow = false;
+	            }
+	        });
+	        this._kspaceService
+	            .getKSpaceById(this.id)
+	            .subscribe(function (kspace) {
+	            var chatlog = kspace.chatlog;
+	            var isSender = false;
+	            for (var _i = 0, chatlog_1 = chatlog; _i < chatlog_1.length; _i++) {
+	                var log = chatlog_1[_i];
+	                var msg = log.createdUser + ': ' + log.message;
+	                if (log.createdUser == _this.username) {
+	                    isSender = true;
+	                }
+	                else {
+	                    isSender = false;
+	                }
+	                var msgObject = {
+	                    user: log.createdUser,
+	                    msg: log.message,
+	                    sender: isSender,
+	                    url: log.dataURL
+	                };
+	                _this.messages.push(msgObject);
+	            }
+	            var room = kspace._id;
+	            var username = _this.username;
+	            var rtc = _this.rtcService;
+	            var isKspaceUser = function () {
+	                if (username === kspace.lecturer || username === kspace.learner) {
+	                    return true;
+	                }
+	                return false;
+	            };
+	            if (isKspaceUser()) {
+	                // initiate webrtc
+	                if (username === kspace.lecturer) {
+	                    var webrtc = new SimpleWebRTC({
+	                        localVideoEl: 'localVideo',
+	                        remoteVideosEl: '',
+	                        autoRequestMedia: true,
+	                        nick: username,
+	                        localVideo: {
+	                            autoplay: true,
+	                            mirror: true,
+	                            muted: true // mute local video stream to prevent echo
+	                        },
+	                        log: true,
+	                        debug: false
+	                    });
+	                }
+	                else if (username === kspace.learner) {
+	                    var webrtc = new SimpleWebRTC({
+	                        localVideoEl: 'localVideo',
+	                        remoteVideosEl: '',
+	                        autoRequestMedia: true,
+	                        nick: username,
+	                        localVideo: {
+	                            autoplay: true,
+	                            mirror: true,
+	                            muted: true // mute local video stream to prevent echo
+	                        },
+	                        log: true,
+	                        debug: false
+	                    });
+	                }
+	                rtc.rtcSetting(webrtc, room, kspace.lecturer);
+	                var sharescreenToken = false;
+	                shareScreenBtn.click(function () {
+	                    sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);
+	                });
+	                chalkBoardBtn.click(function () {
+	                    kspacePanel.find('video').remove();
+	                });
+	            }
+	            else {
+	                _this.router.navigateByUrl('/');
+	            }
+	        }, function (error) {
+	            _this.router.navigateByUrl('/');
+	        });
+	    };
+	    KSpaceComponent = __decorate([
+	        core_1.Component({
+	            selector: 'kspace',
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/kspace.html',
+	            styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES,
+	                common_1.FORM_DIRECTIVES,
+	                chalkboard_1.ChalkBoardComponent
+	            ],
+	            providers: [
+	                rtc_services_1.WebRCTService
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _c) || Object, (typeof (_d = typeof rtc_services_1.WebRCTService !== 'undefined' && rtc_services_1.WebRCTService) === 'function' && _d) || Object])
+	    ], KSpaceComponent);
+	    return KSpaceComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.KSpaceComponent = KSpaceComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
 /* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -5211,6 +6720,181 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d, _e, _f;
 	}());
 	exports.RequestDetailClientComponent = RequestDetailClientComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var requests_1 = __webpack_require__(59);
+	var request_offer_1 = __webpack_require__(287);
+	var knowledge_1 = __webpack_require__(50);
+	var kspace_1 = __webpack_require__(137);
+	var offer_create_1 = __webpack_require__(627);
+	var report_1 = __webpack_require__(628);
+	var RequestDetailClientComponent = (function () {
+	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
+	        var _this = this;
+	        this._requestService = _requestService;
+	        this._offerService = _offerService;
+	        this.router = router;
+	        this._knowledgeService = _knowledgeService;
+	        this._kspaceService = _kspaceService;
+	        this.route = route;
+	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
+	        //check if request is accepted
+	        this.checkIsAcceped = false;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	        });
+	        this.roleToken = localStorage.getItem('userrole');
+	        this.userToken = localStorage.getItem('username');
+	    }
+	    RequestDetailClientComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        //get templates when load the page
+	        this._requestService.getRequestById(this.id)
+	            .subscribe(function (request) {
+	            request.createdAt = new Date(request.createdAt);
+	            if (request.status === 'accepted') {
+	                request.status = 'Đã được chấp nhận';
+	                _this.checkIsAcceped = true;
+	            }
+	            else {
+	                request.status = 'Đang chờ';
+	            }
+	            request.userlink = '/user/' + request.user;
+	            _this._id = request._id;
+	            _this.updateLink = '/requests/' + request._id + '/update';
+	            _this.knowledgeId = request.knowledgeId;
+	            _this.subscribers = request.subcribers;
+	            if (request.status === "deactive") {
+	                _this.checkDeactive = true;
+	            }
+	            if (request.user === _this.userToken) {
+	                _this.checkCreatedUser = true;
+	            }
+	            for (var i = 0; i < _this.subscribers.length; i++) {
+	                if (_this.userToken === _this.subscribers[i]) {
+	                    _this.checkSubcribedUser = true;
+	                    break;
+	                }
+	            }
+	            _this.request = request;
+	            //get back.knowledge name by knowledgeId
+	            _this._knowledgeService.findKnowledgeById(_this.knowledgeId)
+	                .subscribe(function (knowledge) {
+	                _this.knowledge = knowledge;
+	                //this.knowledgeName = this.knowledge.name;
+	            }, function (error) {
+	                console.log(error);
+	            });
+	        }, function (error) { return console.log(error); });
+	        this.getOfferByRequestId();
+	    };
+	    RequestDetailClientComponent.prototype.ngAfterViewChecked = function () {
+	        if (this.request != undefined) {
+	            $('#bodyReq').html(this.request.description);
+	        }
+	    };
+	    RequestDetailClientComponent.prototype.getOfferByRequestId = function () {
+	        var _this = this;
+	        //get front.offer of the templates when load the page
+	        this._offerService.getOfferByRequestId(this.id).subscribe(function (offers) {
+	            for (var i = 0; i < offers.length; i++) {
+	                offers[i].createdAt = new Date(offers[i].createdAt);
+	                if (offers[i].status === 'pending') {
+	                    offers[i].status = 'Đang chờ';
+	                }
+	                else {
+	                    offers[i].status = 'Được chấp nhận';
+	                }
+	            }
+	            _this.offers = offers;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    RequestDetailClientComponent.prototype.deactivateRequest = function (id) {
+	        var _this = this;
+	        var r = confirm("Bạn có muốn kết thúc yêu cầu này?");
+	        if (r == true) {
+	            this._requestService
+	                .changeStatusRequest(this.id)
+	                .subscribe(function (r) {
+	                console.log("deactivate sucess");
+	                _this.router.navigateByUrl('/requests/');
+	            });
+	        }
+	    };
+	    RequestDetailClientComponent.prototype.addKshare = function (learner, lecturer, requestId, requestTitle, offerId) {
+	        var _this = this;
+	        this._kspaceService
+	            .addKSpace(learner, lecturer, requestId, requestTitle, offerId)
+	            .subscribe(function (r) {
+	            console.log('create kspace successfull');
+	            //update offer status
+	            _this._offerService.updateOffer(offerId, 'accepted')
+	                .subscribe(function (c) {
+	                console.log('change status offer successfull');
+	            });
+	            _this.request.status = 'accepted';
+	            //update request status
+	            _this._requestService.updateRequest(_this.request)
+	                .subscribe(function (c) {
+	                console.log(_this.request);
+	                console.log('change status request successfull');
+	            });
+	            _this.checkIsAcceped = true;
+	            //window.location.reload();
+	            _this.router.navigate(['/kspace/info/' + r._id]);
+	        });
+	    };
+	    RequestDetailClientComponent.prototype.addSubcriber = function (id) {
+	        var _this = this;
+	        if (this.checkSubcribedUser == true) {
+	            alert('Bạn đã theo dõi vài viết này');
+	        }
+	        else {
+	            this._requestService
+	                .updateSubcriber(id, this.userToken)
+	                .subscribe(function (r) {
+	                console.log(r);
+	                console.log("add subcriber successfull");
+	                _this.checkSubcribedUser = true;
+	            });
+	            this._requestService.getRequestById(this.id).subscribe(function (request) {
+	                _this.subscribers = request.subcribers;
+	            });
+	        }
+	    };
+	    RequestDetailClientComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-detail-cli',
+	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-detail.html',
+	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES,
+	                offer_create_1.CreateOfferComponent,
+	                report_1.ReportComponent
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object])
+	    ], RequestDetailClientComponent);
+	    return RequestDetailClientComponent;
+	    var _a, _b, _c, _d, _e, _f;
+	}());
+	exports.RequestDetailClientComponent = RequestDetailClientComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
@@ -5433,6 +7117,7 @@ webpackJsonp([2],[
 /* 431 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -5524,12 +7209,106 @@ webpackJsonp([2],[
 	    var _a, _b, _c;
 	}());
 	exports.FriendListComponent = FriendListComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//components
+	var request_friend_record_1 = __webpack_require__(635);
+	var friend_record_1 = __webpack_require__(634);
+	var user_profile_bar_1 = __webpack_require__(285);
+	//services
+	var users_1 = __webpack_require__(42);
+	var FriendListComponent = (function () {
+	    function FriendListComponent(router, route, _userService) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this.roleToken = localStorage.getItem('role');
+	        this.userToken = localStorage.getItem('username');
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	        });
+	    }
+	    FriendListComponent.prototype.ngOnInit = function () {
+	        this.pendingRequests = [];
+	        this.acceptedRequest = [];
+	        this.friendNames = [];
+	        this.getFriendList();
+	        //this.getFriendName();
+	    };
+	    //get friend list: pending and accepted
+	    FriendListComponent.prototype.getFriendList = function () {
+	        var _this = this;
+	        this._userService
+	            .getFriendList(this.name)
+	            .subscribe(function (friendlist) {
+	            _this.friendships = friendlist;
+	            //check sent request
+	            for (var i = 0; i < _this.friendships.length; i++) {
+	                if (_this.friendships[i].user2 === _this.name && _this.friendships[i].status === "pending") {
+	                    _this.pendingRequests.push(_this.friendships[i]);
+	                }
+	                if (_this.friendships[i].user2 === _this.name && _this.friendships[i].status === "accepted") {
+	                    _this.acceptedRequest.push(_this.friendships[i]);
+	                }
+	                if (_this.friendships[i].user1 === _this.name && _this.friendships[i].status === "accepted") {
+	                    _this.acceptedRequest.push(_this.friendships[i]);
+	                }
+	            }
+	            _this.getFriendName();
+	            console.log(_this.acceptedRequest);
+	        });
+	    };
+	    FriendListComponent.prototype.getFriendName = function () {
+	        for (var i = 0; i < this.acceptedRequest.length; i++) {
+	            if (this.acceptedRequest[i].user1 === this.name) {
+	                this.friendNames.push(this.acceptedRequest[i].user2);
+	            }
+	            else {
+	                this.friendNames.push(this.acceptedRequest[i].user1);
+	            }
+	        }
+	    };
+	    FriendListComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-record',
+	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/friend-list.html',
+	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES,
+	                request_friend_record_1.RequestFriendRecordComponent,
+	                friend_record_1.FriendRecordComponent,
+	                user_profile_bar_1.UserProfileBarComponent
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object])
+	    ], FriendListComponent);
+	    return FriendListComponent;
+	    var _a, _b, _c;
+	}());
+	exports.FriendListComponent = FriendListComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
 /* 432 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -5645,6 +7424,123 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d;
 	}());
 	exports.UserProfileComponent = UserProfileComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//Component
+	var request_record_1 = __webpack_require__(636);
+	var user_profile_bar_1 = __webpack_require__(285);
+	//services
+	var users_1 = __webpack_require__(42);
+	var knowledge_1 = __webpack_require__(50);
+	var UserProfileComponent = (function () {
+	    function UserProfileComponent(router, route, _userService, _knowledgeService) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this._knowledgeService = _knowledgeService;
+	        this.notification = {
+	            show: false,
+	            title: 'Demo notification!',
+	            body: 'ng2-notifications',
+	            icon: 'https://goo.gl/3eqeiE',
+	            action: function () {
+	                window.open('https://github.com/alexcastillo/ng2-notifications');
+	            }
+	        };
+	        this.formatDate = function (date) {
+	            if (date) {
+	                var newDate, day, month, year;
+	                year = date.substr(0, 4);
+	                month = date.substr(5, 2);
+	                day = date.substr(8, 2);
+	                return newDate = day + '/' + month + '/' + year;
+	            }
+	        };
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	        });
+	        this.roleToken = localStorage.getItem('role');
+	        this.userToken = localStorage.getItem('username');
+	    }
+	    UserProfileComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._userService.getUserByUserName(this.name).subscribe(function (user) {
+	            _this.userProfile = user;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	        this.checkUserExist();
+	        if (this.isExist = true) {
+	            this.getRequestByUser();
+	        }
+	    };
+	    UserProfileComponent.prototype.getRequestByUser = function () {
+	        var _this = this;
+	        this._userService
+	            .getRequestByUser(this.name)
+	            .subscribe(function (requests) {
+	            for (var i = 0; i < requests.length; i++) {
+	                requests[i].createdAt = _this.formatDate(requests[i].createdAt);
+	                requests[i].modifiedDate = _this.formatDate(requests[i].modifiedDate);
+	            }
+	            _this.requests = requests;
+	        });
+	    };
+	    UserProfileComponent.prototype.getKnowledgeNameOfRequest = function (knowledgeId) {
+	        var _this = this;
+	        //get back.knowledge name by knowledgeId
+	        this._knowledgeService.findKnowledgeById(knowledgeId).subscribe(function (knowledge) {
+	            _this.knowledgeName = knowledge.name;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    UserProfileComponent.prototype.checkUserExist = function () {
+	        var _this = this;
+	        this._userService.checkUserExist(this.name).subscribe(function (isExist) {
+	            if (isExist._body === '0') {
+	                _this.isExist = false;
+	            }
+	            else {
+	                _this.isExist = true;
+	            }
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    UserProfileComponent = __decorate([
+	        core_1.Component({
+	            selector: 'user-profile',
+	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/user-profile.html',
+	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES,
+	                request_record_1.RequestRecordComponent,
+	                user_profile_bar_1.UserProfileBarComponent
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object])
+	    ], UserProfileComponent);
+	    return UserProfileComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.UserProfileComponent = UserProfileComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
@@ -5883,29 +7779,27 @@ webpackJsonp([2],[
 	exports.Observable = Observable_1.Observable;
 	// statics
 	/* tslint:disable:no-use-before-declare */
-	__webpack_require__(649);
-	__webpack_require__(650);
 	__webpack_require__(651);
 	__webpack_require__(652);
 	__webpack_require__(653);
 	__webpack_require__(654);
-	__webpack_require__(437);
-	__webpack_require__(438);
 	__webpack_require__(655);
 	__webpack_require__(656);
-	__webpack_require__(439);
+	__webpack_require__(437);
+	__webpack_require__(438);
 	__webpack_require__(657);
 	__webpack_require__(658);
-	__webpack_require__(661);
+	__webpack_require__(439);
 	__webpack_require__(659);
 	__webpack_require__(660);
-	__webpack_require__(662);
 	__webpack_require__(663);
+	__webpack_require__(661);
+	__webpack_require__(662);
 	__webpack_require__(664);
 	__webpack_require__(665);
+	__webpack_require__(666);
+	__webpack_require__(667);
 	//operators
-	__webpack_require__(668);
-	__webpack_require__(669);
 	__webpack_require__(670);
 	__webpack_require__(671);
 	__webpack_require__(672);
@@ -5918,44 +7812,44 @@ webpackJsonp([2],[
 	__webpack_require__(679);
 	__webpack_require__(680);
 	__webpack_require__(681);
-	__webpack_require__(686);
 	__webpack_require__(682);
-	__webpack_require__(440);
 	__webpack_require__(683);
-	__webpack_require__(684);
-	__webpack_require__(685);
-	__webpack_require__(687);
 	__webpack_require__(688);
+	__webpack_require__(684);
+	__webpack_require__(440);
+	__webpack_require__(685);
+	__webpack_require__(686);
+	__webpack_require__(687);
 	__webpack_require__(689);
 	__webpack_require__(690);
 	__webpack_require__(691);
 	__webpack_require__(692);
 	__webpack_require__(693);
 	__webpack_require__(694);
-	__webpack_require__(666);
-	__webpack_require__(667);
 	__webpack_require__(695);
 	__webpack_require__(696);
-	__webpack_require__(441);
-	__webpack_require__(189);
+	__webpack_require__(668);
+	__webpack_require__(669);
 	__webpack_require__(697);
 	__webpack_require__(698);
+	__webpack_require__(441);
+	__webpack_require__(189);
 	__webpack_require__(699);
-	__webpack_require__(442);
-	__webpack_require__(288);
 	__webpack_require__(700);
 	__webpack_require__(701);
-	__webpack_require__(443);
+	__webpack_require__(442);
+	__webpack_require__(288);
 	__webpack_require__(702);
 	__webpack_require__(703);
-	__webpack_require__(444);
+	__webpack_require__(443);
 	__webpack_require__(704);
-	__webpack_require__(706);
 	__webpack_require__(705);
-	__webpack_require__(707);
-	__webpack_require__(445);
+	__webpack_require__(444);
+	__webpack_require__(706);
 	__webpack_require__(708);
+	__webpack_require__(707);
 	__webpack_require__(709);
+	__webpack_require__(445);
 	__webpack_require__(710);
 	__webpack_require__(711);
 	__webpack_require__(712);
@@ -5970,28 +7864,30 @@ webpackJsonp([2],[
 	__webpack_require__(721);
 	__webpack_require__(722);
 	__webpack_require__(723);
-	__webpack_require__(446);
 	__webpack_require__(724);
 	__webpack_require__(725);
+	__webpack_require__(446);
 	__webpack_require__(726);
 	__webpack_require__(727);
 	__webpack_require__(728);
 	__webpack_require__(729);
 	__webpack_require__(730);
 	__webpack_require__(731);
-	__webpack_require__(447);
 	__webpack_require__(732);
 	__webpack_require__(733);
+	__webpack_require__(447);
 	__webpack_require__(734);
 	__webpack_require__(735);
 	__webpack_require__(736);
 	__webpack_require__(737);
 	__webpack_require__(738);
 	__webpack_require__(739);
+	__webpack_require__(740);
+	__webpack_require__(741);
 	/* tslint:disable:no-unused-variable */
-	var Operator_1 = __webpack_require__(647);
+	var Operator_1 = __webpack_require__(649);
 	exports.Operator = Operator_1.Operator;
-	var Subscription_1 = __webpack_require__(42);
+	var Subscription_1 = __webpack_require__(43);
 	exports.Subscription = Subscription_1.Subscription;
 	var Subscriber_1 = __webpack_require__(7);
 	exports.Subscriber = Subscriber_1.Subscriber;
@@ -6014,7 +7910,7 @@ webpackJsonp([2],[
 	var UnsubscriptionError_1 = __webpack_require__(460);
 	exports.UnsubscriptionError = UnsubscriptionError_1.UnsubscriptionError;
 	var asap_1 = __webpack_require__(458);
-	var async_1 = __webpack_require__(43);
+	var async_1 = __webpack_require__(44);
 	var queue_1 = __webpack_require__(459);
 	var rxSubscriber_1 = __webpack_require__(194);
 	var observable_1 = __webpack_require__(193);
@@ -6608,7 +8504,7 @@ webpackJsonp([2],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var AsapScheduler_1 = __webpack_require__(841);
+	var AsapScheduler_1 = __webpack_require__(843);
 	exports.asap = new AsapScheduler_1.AsapScheduler();
 	//# sourceMappingURL=asap.js.map
 
@@ -16724,7 +18620,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var uitreenode_1 = __webpack_require__(1073);
+	var uitreenode_1 = __webpack_require__(1075);
 	var Tree = (function () {
 	    function Tree() {
 	        this.selectionChange = new core_1.EventEmitter();
@@ -16862,7 +18758,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var uitreerow_1 = __webpack_require__(1074);
+	var uitreerow_1 = __webpack_require__(1076);
 	var column_1 = __webpack_require__(321);
 	var common_1 = __webpack_require__(35);
 	var common_2 = __webpack_require__(35);
@@ -17124,6 +19020,7 @@ webpackJsonp([2],[
 /* 619 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -17185,6 +19082,67 @@ webpackJsonp([2],[
 	    return AppComponent;
 	}());
 	exports.AppComponent = AppComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 5/8/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var http_1 = __webpack_require__(40);
+	__webpack_require__(436); // Load all features
+	var router_1 = __webpack_require__(5);
+	var kshare_component_1 = __webpack_require__(433);
+	//import { UserComponent } from "./user.component";
+	/**
+	 * services
+	 **/
+	var knowledge_1 = __webpack_require__(50);
+	var request_offer_1 = __webpack_require__(287);
+	var requests_1 = __webpack_require__(59);
+	var users_1 = __webpack_require__(42);
+	var auth_1 = __webpack_require__(41);
+	var kspace_1 = __webpack_require__(137);
+	var notification_1 = __webpack_require__(121);
+	var report_1 = __webpack_require__(286);
+	var AppComponent = (function () {
+	    function AppComponent() {
+	        this.pageTitle = 'Knowledge Sharing Network';
+	    }
+	    AppComponent = __decorate([
+	        core_1.Component({
+	            selector: 'kshare-app',
+	            template: '<router-outlet></router-outlet>',
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ],
+	            precompile: [kshare_component_1.KshareComponent],
+	            providers: [
+	                auth_1.AuthService,
+	                users_1.UserService,
+	                http_1.HTTP_PROVIDERS,
+	                requests_1.RequestService,
+	                request_offer_1.OfferService,
+	                knowledge_1.KnowledgeService,
+	                kspace_1.KSpaceService,
+	                notification_1.NotificationService,
+	                report_1.ReportService
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], AppComponent);
+	    return AppComponent;
+	}());
+	exports.AppComponent = AppComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
@@ -17249,6 +19207,7 @@ webpackJsonp([2],[
 /* 621 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -17308,6 +19267,67 @@ webpackJsonp([2],[
 	    var _a, _b;
 	}());
 	exports.CreateSubCategoryComponent = CreateSubCategoryComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var common_1 = __webpack_require__(8);
+	var knowledge_1 = __webpack_require__(50);
+	var CreateSubCategoryComponent = (function () {
+	    function CreateSubCategoryComponent(fb, _knowledgeService) {
+	        this._knowledgeService = _knowledgeService;
+	        this.subCategoryForm = fb.group({
+	            "name": [""],
+	            "description": [""],
+	            "parent": [""]
+	        });
+	    }
+	    CreateSubCategoryComponent.prototype.ngOnInit = function () {
+	    };
+	    CreateSubCategoryComponent.prototype.addKnowledge = function (knowledge) {
+	        var _this = this;
+	        this._knowledgeService.addKnowledge(knowledge).subscribe(function (knowledge) {
+	            _this.subCategoryForm.controls["name"].updateValue("");
+	            _this.subCategoryForm.controls["description"].updateValue("");
+	            for (var i = 0; i < _this.knowledges.length; i++) {
+	                var a = _this.knowledges[i]["subCategory"];
+	                console.log(a);
+	                if (_this.knowledges[i]._id === knowledge.parent) {
+	                    a.push(knowledge);
+	                    _this.knowledges[i]["subCategory"] = a;
+	                }
+	            }
+	        });
+	    };
+	    __decorate([
+	        core_1.Input('kId'), 
+	        __metadata('design:type', String)
+	    ], CreateSubCategoryComponent.prototype, "kId", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Array)
+	    ], CreateSubCategoryComponent.prototype, "knowledges", void 0);
+	    CreateSubCategoryComponent = __decorate([
+	        core_1.Component({
+	            selector: 'sub-create',
+	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/sub-knowledge-create.html',
+	            directives: [common_1.FORM_DIRECTIVES]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object])
+	    ], CreateSubCategoryComponent);
+	    return CreateSubCategoryComponent;
+	    var _a, _b;
+	}());
+	exports.CreateSubCategoryComponent = CreateSubCategoryComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
@@ -18010,6 +20030,7 @@ webpackJsonp([2],[
 /* 627 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -18124,12 +20145,160 @@ webpackJsonp([2],[
 	    var _a, _b, _c;
 	}());
 	exports.NewsFeedComponent = NewsFeedComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var common_1 = __webpack_require__(8);
+	var request_offer_1 = __webpack_require__(287);
+	var auth_1 = __webpack_require__(41);
+	var requests_1 = __webpack_require__(59);
+	var notification_1 = __webpack_require__(121);
+	var CreateOfferComponent = (function () {
+	    function CreateOfferComponent(fb, _offerService, _authService, _noti, _requestService) {
+	        this._offerService = _offerService;
+	        this._authService = _authService;
+	        this._noti = _noti;
+	        this._requestService = _requestService;
+	        this.user = localStorage.getItem('username');
+	        this.offerForm = fb.group({
+	            "price": [""],
+	            "numberOfLecture": [""],
+	            "requestId": [""],
+	            "message": [""],
+	            "user": [""]
+	        });
+	    }
+	    CreateOfferComponent.prototype.addOffer = function (offer) {
+	        var _this = this;
+	        this._offerService.addOffer(offer).subscribe(function (offer) {
+	            console.log('success');
+	            _this._requestService.getRequestById(offer.requestId).subscribe(function (request) {
+	                //call function using socket io to send notification realtime
+	                var title = _this.user + ' đã gửi một offer';
+	                var link = '/requests/' + request._id + '/info';
+	                _this._noti.alertNotification(title, request.user, link);
+	                //save notification to database
+	                _this._noti.createNotification(title, request.user, link).subscribe(function (notification) {
+	                    console.log(notification);
+	                    window.location.reload();
+	                });
+	            });
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	    };
+	    __decorate([
+	        core_1.Input('rid'), 
+	        __metadata('design:type', String)
+	    ], CreateOfferComponent.prototype, "rid", void 0);
+	    CreateOfferComponent = __decorate([
+	        core_1.Component({
+	            selector: 'offer-create',
+	            templateUrl: 'client/dev/app/components/front-end/offer/templates/offer-create.html',
+	            directives: [common_1.FORM_DIRECTIVES]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object, (typeof (_e = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _e) || Object])
+	    ], CreateOfferComponent);
+	    return CreateOfferComponent;
+	    var _a, _b, _c, _d, _e;
+	}());
+	exports.CreateOfferComponent = CreateOfferComponent;
 	
 
 /***/ },
 /* 628 */
 /***/ function(module, exports, __webpack_require__) {
 
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var common_1 = __webpack_require__(8);
+	var report_1 = __webpack_require__(286);
+	var notification_1 = __webpack_require__(121);
+	var users_1 = __webpack_require__(42);
+	var ReportComponent = (function () {
+	    function ReportComponent(fb, _reportService, _noti, _userService) {
+	        this._reportService = _reportService;
+	        this._noti = _noti;
+	        this._userService = _userService;
+	        this.user = localStorage.getItem('username');
+	        this.link = window.location.pathname;
+	        this.reportForm = fb.group({
+	            "title": [""],
+	            "content": [""],
+	            "user": [""],
+	            "reportedUser": [""],
+	            "link": [""]
+	        });
+	    }
+	    ReportComponent.prototype.ngOnInit = function () {
+	    };
+	    ReportComponent.prototype.addReport = function (report) {
+	        var _this = this;
+	        this._reportService.addReport(report).subscribe(function (report) {
+	            //call function send notification for admin realtime
+	            //user === null means sending notification for every user roles admin
+	            var title = "Nhận được một báo cáo vi phạm";
+	            var link = report.link;
+	            _this._userService.getAllUsers().subscribe(function (users) {
+	                for (var i = 0; i < users.length; i++) {
+	                    if (users[i].role === 'admin') {
+	                        _this._noti.alertNotification(title, users[i].username, link);
+	                        //add notification into database
+	                        _this._noti.createNotification(title, users[i].username, link).subscribe(function (r) {
+	                        });
+	                    }
+	                }
+	                window.location.reload();
+	            });
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    __decorate([
+	        core_1.Input('reportedUser'), 
+	        __metadata('design:type', String)
+	    ], ReportComponent.prototype, "reportedUser", void 0);
+	    ReportComponent = __decorate([
+	        core_1.Component({
+	            selector: 'report',
+	            templateUrl: 'client/dev/app/components/front-end/report/templates/report.html',
+	            styleUrls: [],
+	            directives: [
+	                common_1.FORM_DIRECTIVES,
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof report_1.ReportService !== 'undefined' && report_1.ReportService) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object])
+	    ], ReportComponent);
+	    return ReportComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.ReportComponent = ReportComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
+	
+
+/***/ },
+/* 628 */
+/***/ function(module, exports, __webpack_require__) {
+
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -18196,6 +20365,94 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d, _e;
 	}());
 	exports.CreateOfferComponent = CreateOfferComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var __param = (this && this.__param) || function (paramIndex, decorator) {
+	    return function (target, key) { decorator(target, key, paramIndex); }
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var common_1 = __webpack_require__(8);
+	var requests_1 = __webpack_require__(59);
+	var knowledge_1 = __webpack_require__(50);
+	var RequestUpdateClientComponent = (function () {
+	    function RequestUpdateClientComponent(fb, _requestService, router, route, _knowledgeService) {
+	        var _this = this;
+	        this._requestService = _requestService;
+	        this.router = router;
+	        this.route = route;
+	        this._knowledgeService = _knowledgeService;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	        });
+	        this.userToken = localStorage.getItem('username');
+	        this.roleToken = localStorage.getItem('userrole');
+	        this.updateRequestFormCli = fb.group({
+	            "_id": [""],
+	            "title": [""],
+	            "description": [""],
+	            "knowledgeId": [""]
+	        });
+	    }
+	    RequestUpdateClientComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        //get all back.knowledge
+	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+	        });
+	        this._requestService.getRequestById(this.id).subscribe(function (request) {
+	            if (_this.userToken !== request.user) {
+	                _this.isCreatedUser = false;
+	            }
+	            else {
+	                _this.isCreatedUser = true;
+	            }
+	            _this.request = request;
+	            _this.title = request.title;
+	            _this._id = request._id;
+	            _this.description = request.description;
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	    };
+	    RequestUpdateClientComponent.prototype.updateRequest = function (request) {
+	        var _this = this;
+	        this._requestService.updateRequest(request).subscribe(function (request) {
+	            console.log('update successed');
+	            _this.router.navigateByUrl('requests/' + _this._id + '/info');
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	        //window.location.href = '/kshare/requests/'+this.id;
+	    };
+	    RequestUpdateClientComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-update-cli',
+	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-update.html',
+	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
+	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
+	        }),
+	        __param(0, core_1.Inject(common_1.FormBuilder)),
+	        __param(1, core_1.Inject(requests_1.RequestService)),
+	        __param(4, core_1.Inject(knowledge_1.KnowledgeService)), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object, (typeof (_e = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _e) || Object])
+	    ], RequestUpdateClientComponent);
+	    return RequestUpdateClientComponent;
+	    var _a, _b, _c, _d, _e;
+	}());
+	exports.RequestUpdateClientComponent = RequestUpdateClientComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
@@ -18315,6 +20572,7 @@ webpackJsonp([2],[
 /* 631 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -18341,12 +20599,119 @@ webpackJsonp([2],[
 	    return FriendListComponent;
 	}());
 	exports.FriendListComponent = FriendListComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 5/18/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var auth_1 = __webpack_require__(41);
+	var notification_1 = __webpack_require__(121);
+	var users_1 = __webpack_require__(42);
+	var HeaderComponent = (function () {
+	    function HeaderComponent(_auth, router, _noti, _userService) {
+	        this._auth = _auth;
+	        this.router = router;
+	        this._noti = _noti;
+	        this._userService = _userService;
+	        this.count = 2;
+	        this.userToken = localStorage.getItem('username');
+	        this.roleToken = localStorage.getItem('userrole');
+	    }
+	    HeaderComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._auth.isLoggedIn().subscribe(function (res) {
+	            if (res.login) {
+	                _this.loginToken = true;
+	            }
+	            else {
+	                _this._auth.logoutClient();
+	                _this.loginToken = false;
+	            }
+	        }, function (error) {
+	            console.log('Server error');
+	        });
+	        this.link = '';
+	        this.socket = io('https://localhost:80');
+	        this.socket.on('receive notification', function (data) {
+	            if (localStorage.getItem('username') === data.data.user) {
+	                //audio of notification
+	                var audio = new Audio();
+	                audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
+	                audio.load();
+	                audio.play();
+	                _this.getNotificationByUser(data.data.user);
+	                //show noti
+	                _this.notiTitle = data.data.title;
+	                _this.link = data.data.link;
+	                var x = document.getElementById("snackbar");
+	                x.className = "show";
+	                setTimeout(function () { x.className = x.className.replace("show", ""); }, 10000);
+	            }
+	        });
+	        this.getNotificationByUser();
+	    };
+	    HeaderComponent.prototype.logout = function () {
+	        this._auth.logout();
+	        this._auth.logoutClient();
+	        window.location.reload();
+	    };
+	    HeaderComponent.prototype.showNotification = function (title) {
+	        this.notiTitle = title;
+	        var x = document.getElementById("snackbar");
+	        x.className = "show";
+	        setTimeout(function () { x.className = x.className.replace("show", ""); }, 10000);
+	    };
+	    HeaderComponent.prototype.getNotificationByUser = function () {
+	        var _this = this;
+	        this.countUnReadNoti = 0;
+	        this._noti.getNotificationByUser(this.userToken).subscribe(function (notifications) {
+	            _this.notifications = notifications;
+	            for (var i = 0; i < notifications.length; i++) {
+	                if (notifications[i].status === "Chưa đọc") {
+	                    _this.countUnReadNoti++;
+	                }
+	            }
+	        });
+	    };
+	    HeaderComponent.prototype.changeStatusNotification = function () {
+	        this.countUnReadNoti = 0;
+	        this._noti.changeStatusNotification(this.userToken).subscribe(function (notifications) {
+	            console.log('change status notification successful');
+	        });
+	    };
+	    HeaderComponent = __decorate([
+	        core_1.Component({
+	            selector: 'header',
+	            templateUrl: 'client/dev/app/components/front-end/shared/templates/header.html',
+	            styleUrls: ['client/dev/app/components/front-end/shared/styles/header.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object])
+	    ], HeaderComponent);
+	    return HeaderComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.HeaderComponent = HeaderComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
 /* 632 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -18451,12 +20816,67 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d;
 	}());
 	exports.HeaderComponent = HeaderComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var knowledge_1 = __webpack_require__(50);
+	var SideBarComponent = (function () {
+	    function SideBarComponent(_knowledgeService) {
+	        this._knowledgeService = _knowledgeService;
+	    }
+	    SideBarComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            var parent = [];
+	            var subCate = [];
+	            for (var i = 0; i < knowledges.length; i++) {
+	                if (!knowledges[i].hasOwnProperty('parent')) {
+	                    parent.push(knowledges[i]);
+	                }
+	            }
+	            for (var i = 0; i < parent.length; i++) {
+	                for (var j = 0; j < knowledges.length; j++) {
+	                    if ((knowledges[j].hasOwnProperty('parent')) && (knowledges[j].parent === parent[i]._id)) {
+	                        subCate.push(knowledges[j]);
+	                    }
+	                }
+	                parent[i]["subCategory"] = subCate;
+	                subCate = [];
+	            }
+	            _this.knowledges = parent;
+	        });
+	    };
+	    SideBarComponent = __decorate([
+	        core_1.Component({
+	            selector: 'sidebar',
+	            templateUrl: 'client/dev/app/components/front-end/shared/templates/side-bar.html',
+	            styleUrls: ['client/dev/app/components/front-end/shared/styles/side-bar.css'],
+	            directives: [router_1.ROUTER_DIRECTIVES]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _a) || Object])
+	    ], SideBarComponent);
+	    return SideBarComponent;
+	    var _a;
+	}());
+	exports.SideBarComponent = SideBarComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
 /* 633 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -18509,12 +20929,95 @@ webpackJsonp([2],[
 	    var _a;
 	}());
 	exports.SideBarComponent = SideBarComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//services
+	var users_1 = __webpack_require__(42);
+	var auth_1 = __webpack_require__(41);
+	var FriendRecordComponent = (function () {
+	    function FriendRecordComponent(router, route, _userService, _auth) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this._auth = _auth;
+	        this.userToken = localStorage.getItem('username');
+	        this.isFriend = true;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	        });
+	    }
+	    FriendRecordComponent.prototype.ngOnInit = function () {
+	        this.getUserInformation();
+	    };
+	    FriendRecordComponent.prototype.getUserInformation = function () {
+	        var _this = this;
+	        this._userService.getUserByUserName(this.friendName).subscribe(function (userinfo) {
+	            _this.displayname = userinfo.displayName;
+	            _this.email = userinfo.email;
+	            _this.level = userinfo.level;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    FriendRecordComponent.prototype.deleteFriend = function () {
+	        var _this = this;
+	        var r = confirm("Bạn có muốn hủy kết bạn");
+	        if (r == true) {
+	            this._userService
+	                .deleteFriendRequest(this.userToken, this.friendName)
+	                .subscribe(function () {
+	                console.log('delete successfull');
+	            });
+	            this._userService
+	                .deleteFriendRequest(this.friendName, this.userToken)
+	                .subscribe(function () {
+	                _this.isFriend = false;
+	            });
+	            alert("bạn đã hủy gửi lời  mời kết bạn");
+	        }
+	    };
+	    __decorate([
+	        core_1.Input('friendName'), 
+	        __metadata('design:type', String)
+	    ], FriendRecordComponent.prototype, "friendName", void 0);
+	    FriendRecordComponent = __decorate([
+	        core_1.Component({
+	            selector: 'friend-record',
+	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/friend-record.html',
+	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
+	    ], FriendRecordComponent);
+	    return FriendRecordComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.FriendRecordComponent = FriendRecordComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
 /* 634 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -18595,12 +21098,111 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d;
 	}());
 	exports.FriendRecordComponent = FriendRecordComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//services
+	var users_1 = __webpack_require__(42);
+	var notification_1 = __webpack_require__(121);
+	var RequestFriendRecordComponent = (function () {
+	    function RequestFriendRecordComponent(router, route, _userService, _noti) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this._noti = _noti;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	        });
+	    }
+	    RequestFriendRecordComponent.prototype.ngOnInit = function () {
+	        this.isAdded = false;
+	        this.isFriend = true;
+	        this.getUserInformation();
+	    };
+	    RequestFriendRecordComponent.prototype.acceptRequest = function () {
+	        var _this = this;
+	        console.log(this.requestUser + ' ' + this.name);
+	        this._userService.acceptFriendRequest(this.requestUser, this.name).subscribe(function () {
+	            console.log("accepted successful");
+	            alert("Bạn đã là bạn bè với " + _this.requestUser);
+	            _this.isAdded = true;
+	            var title = _this.name + ' chấp nhận kết bạn';
+	            var link = '/user/' + _this.name;
+	            //call function using socket io to send notification
+	            _this._noti.alertNotification(title, _this.requestUser, link);
+	            //save notification to database
+	            _this._noti.createNotification(title, _this.requestUser, link).subscribe(function (notification) {
+	                console.log('create a notification to ' + _this.name);
+	            });
+	        });
+	    };
+	    RequestFriendRecordComponent.prototype.getUserInformation = function () {
+	        var _this = this;
+	        this._userService.getUserByUserName(this.requestUser).subscribe(function (userinfo) {
+	            _this.displayname = userinfo.displayName;
+	            _this.email = userinfo.email;
+	            _this.level = userinfo.level;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    RequestFriendRecordComponent.prototype.deleteFriend = function () {
+	        var r = confirm("Bạn có muốn hủy kết bạn");
+	        if (r == true) {
+	            this._userService
+	                .deleteFriendRequest(this.requestUser, this.name)
+	                .subscribe(function () {
+	                console.log('delete successfull');
+	            });
+	            this.isFriend = false;
+	            alert("bạn đã hủy gửi lời  mời kết bạn");
+	        }
+	    };
+	    __decorate([
+	        core_1.Input('requestUser'), 
+	        __metadata('design:type', String)
+	    ], RequestFriendRecordComponent.prototype, "requestUser", void 0);
+	    __decorate([
+	        core_1.Input('name'), 
+	        __metadata('design:type', String)
+	    ], RequestFriendRecordComponent.prototype, "name", void 0);
+	    RequestFriendRecordComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-friend-record',
+	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/request-friend-record.html',
+	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
+	    ], RequestFriendRecordComponent);
+	    return RequestFriendRecordComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.RequestFriendRecordComponent = RequestFriendRecordComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
 /* 635 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -18697,6 +21299,99 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d;
 	}());
 	exports.RequestFriendRecordComponent = RequestFriendRecordComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//services
+	var users_1 = __webpack_require__(42);
+	var knowledge_1 = __webpack_require__(50);
+	var RequestRecordComponent = (function () {
+	    function RequestRecordComponent(router, route, _userService, _knowledgeService) {
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this._knowledgeService = _knowledgeService;
+	        this.formatDate = function (date) {
+	            if (date) {
+	                var newDate, day, month, year;
+	                year = date.substr(0, 4);
+	                month = date.substr(5, 2);
+	                day = date.substr(8, 2);
+	                return newDate = day + '/' + month + '/' + year;
+	            }
+	        };
+	    }
+	    RequestRecordComponent.prototype.ngOnInit = function () {
+	        //this.createdAt = this.formatDate(createdAt);
+	        this.id = this.knowledgeId;
+	        this.getKnowledgeNameOfRequest();
+	        if (this.status === 'pending') {
+	            this.status = 'Đang chờ';
+	        }
+	        else {
+	            this.status = 'Đã được chấp nhận';
+	        }
+	    };
+	    RequestRecordComponent.prototype.getKnowledgeNameOfRequest = function () {
+	        var _this = this;
+	        //get back.knowledge name by knowledgeId
+	        this._knowledgeService.findKnowledgeById(this.knowledgeId).subscribe(function (knowledge) {
+	            _this.knowledgeName = knowledge.name;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    __decorate([
+	        core_1.Input('title'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "title", void 0);
+	    __decorate([
+	        core_1.Input('description'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "description", void 0);
+	    __decorate([
+	        core_1.Input('createdAt'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "createdAt", void 0);
+	    __decorate([
+	        core_1.Input('knowledgeId'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "knowledgeId", void 0);
+	    __decorate([
+	        core_1.Input('status'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "status", void 0);
+	    __decorate([
+	        core_1.Input('requestId'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "requestId", void 0);
+	    RequestRecordComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-record',
+	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/request-record.html',
+	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object])
+	    ], RequestRecordComponent);
+	    return RequestRecordComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.RequestRecordComponent = RequestRecordComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
@@ -18886,6 +21581,7 @@ webpackJsonp([2],[
 /* 638 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -19004,6 +21700,126 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d, _e;
 	}());
 	exports.RegisterInfoComponent = RegisterInfoComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var common_1 = __webpack_require__(8);
+	var users_1 = __webpack_require__(42);
+	var tag_1 = __webpack_require__(97);
+	var primeng_1 = __webpack_require__(146);
+	var RegisterInfoComponent = (function () {
+	    function RegisterInfoComponent(fb, router, _userService, route, _tagService) {
+	        var _this = this;
+	        this.fb = fb;
+	        this.router = router;
+	        this._userService = _userService;
+	        this.route = route;
+	        this._tagService = _tagService;
+	        this.user = [];
+	        this.userId = '';
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.userId = params['id'];
+	        });
+	        this.updateUserForm = fb.group({
+	            fullName: [""],
+	            displayName: [""],
+	            birthday: [""],
+	            phone: [""]
+	        });
+	    }
+	    RegisterInfoComponent.prototype.ngOnInit = function () {
+	        this.loadAllTags();
+	    };
+	    //tags control
+	    RegisterInfoComponent.prototype.filterONTag = function () {
+	        var oldTag = [];
+	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	            var e = _a[_i];
+	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                var e1 = _c[_b];
+	                //catch old tags
+	                if (e.name == e1) {
+	                    oldTag.push(e._id);
+	                    //find out old tags in data tags user
+	                    var index = this.tags.indexOf(e1);
+	                    if (index > -1) {
+	                        //remove old tags to catch new tags
+	                        this.tags.splice(index, 1);
+	                    }
+	                }
+	            }
+	        }
+	        return [oldTag, this.tags];
+	    };
+	    RegisterInfoComponent.prototype.filterKnw = function (event) {
+	        var query = event.query;
+	        this.filteredKnw = [];
+	        for (var i = 0; i < this.tagsEx.length; i++) {
+	            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
+	                this.filteredKnw.push(this.tagsEx[i].name);
+	            }
+	            if (i == this.tagsEx.length - 1) {
+	                this.filteredKnw.unshift(query.trim());
+	            }
+	        }
+	        if (this.filteredKnw.length == 0) {
+	            this.filteredKnw.push(query.trim());
+	        }
+	    };
+	    RegisterInfoComponent.prototype.loadAllTags = function () {
+	        var _this = this;
+	        this._tagService.getAllTag().subscribe(function (tags) {
+	            _this.tagsEx = tags;
+	            console.log(_this.tagsEx);
+	        });
+	    };
+	    //end control tags
+	    RegisterInfoComponent.prototype.update = function (user) {
+	        var _this = this;
+	        var tags;
+	        tags = this.filterONTag(); //0 -> oldTags , 1 -> newTags
+	        user = {
+	            _id: this.userId,
+	            fullName: user.fullName,
+	            displayName: user.displayName,
+	            birthday: user.birthday,
+	            ownKnowledgeIds: tags[0]
+	        };
+	        this._userService.updateUser(user, tags[1]).subscribe(function (res) {
+	            _this.router.navigateByUrl('/reg/success');
+	        }, function (err) {
+	            console.log(err);
+	        });
+	    };
+	    RegisterInfoComponent.prototype.returnHome = function () {
+	        this.router.navigateByUrl('/');
+	    };
+	    RegisterInfoComponent = __decorate([
+	        core_1.Component({
+	            templateUrl: "client/dev/app/components/front-end/user/register/templates/info.html",
+	            styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
+	            directives: [primeng_1.AutoComplete],
+	            providers: [tag_1.TagService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object, (typeof (_e = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _e) || Object])
+	    ], RegisterInfoComponent);
+	    return RegisterInfoComponent;
+	    var _a, _b, _c, _d, _e;
+	}());
+	exports.RegisterInfoComponent = RegisterInfoComponent;
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
@@ -19131,13 +21947,166 @@ webpackJsonp([2],[
 
 /***/ },
 /* 641 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/8/16.
+	 */
+	/**
+	 * Created by GiangDH on 5/19/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var common_1 = __webpack_require__(8);
+	var router_1 = __webpack_require__(5);
+	var users_1 = __webpack_require__(42);
+	var NewPasswordComponent = (function () {
+	    function NewPasswordComponent(fb, _userService, router, route) {
+	        var _this = this;
+	        this.fb = fb;
+	        this._userService = _userService;
+	        this.router = router;
+	        this.route = route;
+	        this.route.params.subscribe(function (params) {
+	            _this.resetPasswordToken = params['token'];
+	        });
+	        this.resetPassForm = fb.group({
+	            password: [""],
+	            copass: [""],
+	        });
+	    }
+	    NewPasswordComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._userService.getUserByToken(this.resetPasswordToken)
+	            .subscribe(function (res) {
+	            if (res.sendTokenDate) {
+	                var currentDate = new Date();
+	                var tokenDate = new Date(res.sendTokenDate);
+	                var difftime = currentDate.getTime() - tokenDate.getTime();
+	                if (difftime > 0) {
+	                    _this.expired = false;
+	                }
+	                else {
+	                    _this.expired = true;
+	                    _this.errorMessage = 'Rất tiếc đã quá thời hạn để đổi mật khẩu!';
+	                }
+	            }
+	        }, function (err) {
+	            _this.errorMessage = 'Xin lỗi vì làm phiền, server có lỗi';
+	        });
+	    };
+	    NewPasswordComponent.prototype.updatePassword = function (data) {
+	        var _this = this;
+	        var patt = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
+	        var passValid = patt.test(data.password);
+	        if (!passValid) {
+	            this.errorMessage = 'Mật khẩu cần nhiều hơn 8 kí tự bao gồm chữ hoa, chữ thường và kí tự đặc biệt';
+	        }
+	        else if (data.password !== data.copass) {
+	            this.errorMessage = 'Mật khẩu và mật khẩu xác nhận không trùng khớp ';
+	        }
+	        else {
+	            this._userService.updateNewPassword(data.password, this.resetPasswordToken)
+	                .subscribe(function (res) {
+	                var c = confirm('Mật khẩu đã được thay đổi, chuyển đến trang đăng nhập');
+	                if (c) {
+	                    _this.router.navigate(['/login']);
+	                }
+	            }, function (error) {
+	                _this.errorMessage = 'Xin lỗi vì làm phiền, server có lỗi';
+	            });
+	        }
+	    };
+	    NewPasswordComponent = __decorate([
+	        core_1.Component({
+	            template: "\n      <div class=\"container mg-top-50\">\n        <div class=\"row\">\n          <div class=\"col-md-3\"></div>\n          <!-- /.col-md-3 -->\n          <div class=\"col-md-6\">\n            <div *ngIf=\"errorMessage\" class=\"errmess\">{{errorMessage}}\n              <a *ngIf=\"expired\" [routerLink]=\"['/reset-password']\"> click v\u00E0o \u0111\u00E2y \u0111\u1EC3 g\u1EEDi l\u1EA1i email </a>\n            </div>\n\n            <div *ngIf=\"!expired\" class=\"loginPanel\">\n              <div class=\"box-header\">\n                <h2> Thi\u1EBFt l\u1EADp m\u1EADt kh\u1EA9u m\u1EDBi </h2>\n              </div>\n              <form [ngFormModel]=\"resetPassForm\" (ngSubmit)=\"updatePassword(resetPassForm.value)\">\n                 <div class=\"form-group\">\n                    <input class=\"form-control\"\n                          type=\"password\"\n                          required maxlength=\"30\"\n                          placeholder=\"M\u1EADt Kh\u1EA9u\"\n                          name=\"password\"\n                          [ngFormControl]=\"resetPassForm.controls['password']\"\n                    >\n                  </div>\n                  <div class=\"form-group\">\n                    <input #copass class=\"form-control\"\n                          type=\"password\"\n                          required maxlength=\"30\"\n                          placeholder=\"X\u00E1c nh\u1EADn m\u1EADt kh\u1EA9u\"\n                          name=\"copass\"\n                          [ngFormControl]=\"resetPassForm.controls['copass']\"\n                    >\n                  </div>\n                <div class=\"row\">\n                    <button class=\"form-control btn btn-success\" type=\"submit\">C\u1EADp nh\u1EADt m\u1EADt kh\u1EA9u</button>\n                </div>\n                <!-- /.row -->\n\n             </form>\n            </div>\n              <!-- /.loginPanel -->\n            </div>\n          <!-- /.col-md-6 -->\n          <div class=\"col-md-3\"></div>\n          <!-- /.col-md-3 -->\n        </div>\n        <!-- /.row -->\n      </div>",
+	            styleUrls: ['client/dev/app/components/front-end/user/login/styles/login.css'],
+	            directives: [
+	                common_1.FORM_DIRECTIVES,
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
+	    ], NewPasswordComponent);
+	    return NewPasswordComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.NewPasswordComponent = NewPasswordComponent;
+	
+
+/***/ },
+/* 642 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/8/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var common_1 = __webpack_require__(8);
+	var router_1 = __webpack_require__(5);
+	var users_1 = __webpack_require__(42);
+	var ResetPasswordComponent = (function () {
+	    function ResetPasswordComponent(_userService) {
+	        this._userService = _userService;
+	        this.step = 1;
+	    }
+	    ResetPasswordComponent.prototype.sendEmail = function (email) {
+	        var _this = this;
+	        this.email = email;
+	        this._userService.sendEmailResetPassword(email)
+	            .subscribe(function (res) {
+	            if (res.status === 'success') {
+	                _this.step = 2;
+	            }
+	        }, function (error) {
+	            _this.errorMessage = "Có lỗi xảy ra vui lòng kiểm tra lại email";
+	        });
+	    };
+	    ResetPasswordComponent = __decorate([
+	        core_1.Component({
+	            template: "\n      <div class=\"container mg-top-50\">\n        <div class=\"row\">\n          <div class=\"col-md-3\"></div>\n          <!-- /.col-md-3 -->\n          <div class=\"col-md-6\">\n            <div *ngIf=\"errorMessage\" class=\"errmess\">{{errorMessage}}</div>\n\n            <div *ngIf=\"step === 2\">\n              <h3>Ch\u00FAng t\u00F4i \u0111\u00E3 g\u1EEDi m\u1ED9t email kh\u00F4i ph\u1EE5c m\u1EADt  \u0111\u1EBFn \u0111\u1ECBa ch\u1EC9: {{email}} </h3>\n            </div>\n            <div *ngIf=\"step === 1\" class=\"loginPanel\">\n              <div class=\"box-header\">\n                <h2>Ph\u1EE5c h\u1ED3i m\u1EADt kh\u1EA9u </h2>\n              </div>\n              <form  (ngSubmit)=\"sendEmail(email.value)\">\n                <div class=\"form-group\">\n                  <input class=\"form-control form-text\" type=\"email\" required maxlength=\"70\"\n                         placeholder=\"Email ph\u1EE5c h\u1ED3i m\u1EADt kh\u1EA9u \"\n                         name=\"email\"\n                         #email\n                  />\n                </div>\n                <div class=\"row\">\n                  <div class=\"col-sm-6\">\n                    <button class=\"form-control btn btn-success\" type=\"submit\">G\u1EEDi Email </button>\n                  </div>\n                  <!-- /.col-sm-6 -->\n                  <div class=\"col-sm-6\">\n                    <button class=\"form-control btn btn btn-primary\" type=\"reset\" [routerLink]=\"['/reg']\">\u0110\u0103ng k\u00FD</button>\n                  </div>\n                </div>\n                <!-- /.row -->\n\n             </form>\n            </div>\n              <!-- /.loginPanel -->\n            </div>\n          <!-- /.col-md-6 -->\n          <div class=\"col-md-3\"></div>\n          <!-- /.col-md-3 -->\n        </div>\n        <!-- /.row -->\n      </div>",
+	            styleUrls: ['client/dev/app/components/front-end/user/login/styles/login.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES,
+	                common_1.FORM_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object])
+	    ], ResetPasswordComponent);
+	    return ResetPasswordComponent;
+	    var _a;
+	}());
+	exports.ResetPasswordComponent = ResetPasswordComponent;
+	
+
+/***/ },
+/* 643 */
 /***/ function(module, exports) {
 
 	"use strict";
 
 
 /***/ },
-/* 642 */
+/* 644 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19209,9 +22178,10 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 643 */
+/* 645 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	/**
 	 * Created by GiangDH on 7/9/16.
@@ -19224,12 +22194,27 @@ webpackJsonp([2],[
 	    router_1.provideRouter(exports.routes),
 	    kshare_routes_ts_1.authProviders
 	];
+=======
+	"use strict";
+	/**
+	 * Created by GiangDH on 7/9/16.
+	 */
+	var router_1 = __webpack_require__(5);
+	var kshare_routes_ts_1 = __webpack_require__(646);
+	var admin_routes_ts_1 = __webpack_require__(644);
+	exports.routes = kshare_routes_ts_1.KShareRoutes.concat(admin_routes_ts_1.AdminRoutes);
+	exports.APP_ROUTER_PROVIDERS = [
+	    router_1.provideRouter(exports.routes),
+	    kshare_routes_ts_1.authProviders
+	];
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
-/* 644 */
+/* 646 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	//Root Component
 	var kshare_component_1 = __webpack_require__(433);
@@ -19399,12 +22384,193 @@ webpackJsonp([2],[
 	    },
 	];
 	exports.authProviders = [auth_1.AdminAuthGuard, auth_2.AuthService];
+=======
+	"use strict";
+	//Root Component
+	var kshare_component_1 = __webpack_require__(433);
+	//Function Components
+	var home_1 = __webpack_require__(424);
+	var request_list_1 = __webpack_require__(429);
+	var request_detail_1 = __webpack_require__(428);
+	var request_update_1 = __webpack_require__(183);
+	var request_search_1 = __webpack_require__(284);
+	var request_create_1 = __webpack_require__(283);
+	var kspace_1 = __webpack_require__(427);
+	var kspace_list_1 = __webpack_require__(426);
+	var kspace_info_1 = __webpack_require__(425);
+	var friend_list_1 = __webpack_require__(431);
+	var user_profile_1 = __webpack_require__(432);
+	var register_1 = __webpack_require__(639);
+	var info_1 = __webpack_require__(638);
+	var success_1 = __webpack_require__(640);
+	var login_1 = __webpack_require__(637);
+	var reset_pass_1 = __webpack_require__(642);
+	var new_pass_1 = __webpack_require__(641);
+	var create_article_1 = __webpack_require__(421);
+	var detail_article_1 = __webpack_require__(422);
+	var list_article_1 = __webpack_require__(423);
+	var edit_article_1 = __webpack_require__(624);
+	var displayArtByTag_1 = __webpack_require__(430);
+	var auth_1 = __webpack_require__(434);
+	var auth_2 = __webpack_require__(41);
+	exports.KShareRoutes = [
+	    {
+	        path: '',
+	        component: kshare_component_1.KshareComponent,
+	        children: [
+	            {
+	                path: 'reg',
+	                //canActivate: [ AdminAuthGuard ],
+	                children: [
+	                    {
+	                        path: '',
+	                        component: register_1.RegisterComponent
+	                    },
+	                    {
+	                        path: 'info/:id',
+	                        component: info_1.RegisterInfoComponent
+	                    },
+	                    {
+	                        path: 'success',
+	                        component: success_1.RegisterSuccessComponent
+	                    }
+	                ]
+	            },
+	            {
+	                path: 'login',
+	                canActivate: [auth_1.AdminAuthGuard],
+	                component: login_1.LoginComponent
+	            },
+	            {
+	                path: 'reset-password',
+	                children: [
+	                    {
+	                        path: '',
+	                        component: reset_pass_1.ResetPasswordComponent
+	                    },
+	                    {
+	                        path: ':token',
+	                        component: new_pass_1.NewPasswordComponent
+	                    }
+	                ]
+	            },
+	            {
+	                path: 'user',
+	                children: [
+	                    {
+	                        path: ':name',
+	                        children: [
+	                            {
+	                                path: 'friends',
+	                                component: friend_list_1.FriendListComponent
+	                            },
+	                            {
+	                                path: '',
+	                                component: user_profile_1.UserProfileComponent
+	                            }
+	                        ]
+	                    }
+	                ]
+	            },
+	            {
+	                path: 'article',
+	                children: [
+	                    {
+	                        path: 'create',
+	                        component: create_article_1.CreateArticleComponent
+	                    },
+	                    {
+	                        path: '',
+	                        component: list_article_1.listArticleComponent
+	                    },
+	                    {
+	                        path: 'edit/:id',
+	                        component: edit_article_1.EditArticleComponent
+	                    },
+	                    {
+	                        path: ':id',
+	                        component: detail_article_1.detailArticleComponent
+	                    }
+	                ]
+	            },
+	            {
+	                path: 'tag',
+	                children: [
+	                    {
+	                        path: ':id',
+	                        component: displayArtByTag_1.displayArtByTagComponent
+	                    }
+	                ]
+	            },
+	            {
+	                path: 'kspace',
+	                children: [
+	                    {
+	                        path: 'info',
+	                        children: [{
+	                                path: ':id/:lecturer',
+	                                component: kspace_info_1.KSpaceInfoComponent
+	                            }]
+	                    },
+	                    {
+	                        path: '',
+	                        component: kspace_list_1.KSpaceListComponent
+	                    }
+	                ]
+	            },
+	            {
+	                path: 'requests',
+	                children: [
+	                    {
+	                        path: 'create',
+	                        component: request_create_1.CreateRequestComponent
+	                    },
+	                    {
+	                        path: ':id',
+	                        children: [
+	                            {
+	                                path: 'info',
+	                                component: request_detail_1.RequestDetailClientComponent
+	                            },
+	                            {
+	                                path: 'update',
+	                                component: request_update_1.UpdateRequestComponent
+	                            }
+	                        ]
+	                    },
+	                    {
+	                        path: ':type/:id',
+	                        pathMatch: 'full',
+	                        component: request_search_1.RequestCategoryComponent
+	                    },
+	                    {
+	                        path: '',
+	                        component: request_list_1.RequestListClientComponent
+	                    }
+	                ]
+	            },
+	            {
+	                path: '',
+	                component: home_1.HomeComponent
+	            }
+	        ],
+	    },
+	    {
+	        path: 'room',
+	        children: [{
+	                path: ':id/:lecturer',
+	                component: kspace_1.KSpaceComponent
+	            }]
+	    },
+	];
+	exports.authProviders = [auth_1.AdminAuthGuard, auth_2.AuthService];
+>>>>>>> ef13033b1a2f9a7bf5b4706f2d9018dfe5bc4d4b
 	
 
 /***/ },
-/* 645 */,
-/* 646 */,
-/* 647 */
+/* 647 */,
+/* 648 */,
+/* 649 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19421,28 +22587,28 @@ webpackJsonp([2],[
 	//# sourceMappingURL=Operator.js.map
 
 /***/ },
-/* 648 */,
-/* 649 */
+/* 650 */,
+/* 651 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var bindCallback_1 = __webpack_require__(755);
+	var bindCallback_1 = __webpack_require__(757);
 	Observable_1.Observable.bindCallback = bindCallback_1.bindCallback;
 	//# sourceMappingURL=bindCallback.js.map
 
 /***/ },
-/* 650 */
+/* 652 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var bindNodeCallback_1 = __webpack_require__(756);
+	var bindNodeCallback_1 = __webpack_require__(758);
 	Observable_1.Observable.bindNodeCallback = bindNodeCallback_1.bindNodeCallback;
 	//# sourceMappingURL=bindNodeCallback.js.map
 
 /***/ },
-/* 651 */
+/* 653 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19452,34 +22618,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=combineLatest.js.map
 
 /***/ },
-/* 652 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var concat_1 = __webpack_require__(757);
-	Observable_1.Observable.concat = concat_1.concat;
-	//# sourceMappingURL=concat.js.map
-
-/***/ },
-/* 653 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var defer_1 = __webpack_require__(758);
-	Observable_1.Observable.defer = defer_1.defer;
-	//# sourceMappingURL=defer.js.map
-
-/***/ },
 /* 654 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var empty_1 = __webpack_require__(759);
-	Observable_1.Observable.empty = empty_1.empty;
-	//# sourceMappingURL=empty.js.map
+	var concat_1 = __webpack_require__(759);
+	Observable_1.Observable.concat = concat_1.concat;
+	//# sourceMappingURL=concat.js.map
 
 /***/ },
 /* 655 */
@@ -19487,9 +22633,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var fromEvent_1 = __webpack_require__(761);
-	Observable_1.Observable.fromEvent = fromEvent_1.fromEvent;
-	//# sourceMappingURL=fromEvent.js.map
+	var defer_1 = __webpack_require__(760);
+	Observable_1.Observable.defer = defer_1.defer;
+	//# sourceMappingURL=defer.js.map
 
 /***/ },
 /* 656 */
@@ -19497,9 +22643,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var fromEventPattern_1 = __webpack_require__(762);
-	Observable_1.Observable.fromEventPattern = fromEventPattern_1.fromEventPattern;
-	//# sourceMappingURL=fromEventPattern.js.map
+	var empty_1 = __webpack_require__(761);
+	Observable_1.Observable.empty = empty_1.empty;
+	//# sourceMappingURL=empty.js.map
 
 /***/ },
 /* 657 */
@@ -19507,9 +22653,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var interval_1 = __webpack_require__(763);
-	Observable_1.Observable.interval = interval_1.interval;
-	//# sourceMappingURL=interval.js.map
+	var fromEvent_1 = __webpack_require__(763);
+	Observable_1.Observable.fromEvent = fromEvent_1.fromEvent;
+	//# sourceMappingURL=fromEvent.js.map
 
 /***/ },
 /* 658 */
@@ -19517,9 +22663,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var merge_1 = __webpack_require__(764);
-	Observable_1.Observable.merge = merge_1.merge;
-	//# sourceMappingURL=merge.js.map
+	var fromEventPattern_1 = __webpack_require__(764);
+	Observable_1.Observable.fromEventPattern = fromEventPattern_1.fromEventPattern;
+	//# sourceMappingURL=fromEventPattern.js.map
 
 /***/ },
 /* 659 */
@@ -19527,12 +22673,32 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var never_1 = __webpack_require__(765);
+	var interval_1 = __webpack_require__(765);
+	Observable_1.Observable.interval = interval_1.interval;
+	//# sourceMappingURL=interval.js.map
+
+/***/ },
+/* 660 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var merge_1 = __webpack_require__(766);
+	Observable_1.Observable.merge = merge_1.merge;
+	//# sourceMappingURL=merge.js.map
+
+/***/ },
+/* 661 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var never_1 = __webpack_require__(767);
 	Observable_1.Observable.never = never_1.never;
 	//# sourceMappingURL=never.js.map
 
 /***/ },
-/* 660 */
+/* 662 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19542,7 +22708,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=of.js.map
 
 /***/ },
-/* 661 */
+/* 663 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19552,34 +22718,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=race.js.map
 
 /***/ },
-/* 662 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var range_1 = __webpack_require__(766);
-	Observable_1.Observable.range = range_1.range;
-	//# sourceMappingURL=range.js.map
-
-/***/ },
-/* 663 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var throw_1 = __webpack_require__(767);
-	Observable_1.Observable.throw = throw_1._throw;
-	//# sourceMappingURL=throw.js.map
-
-/***/ },
 /* 664 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var timer_1 = __webpack_require__(768);
-	Observable_1.Observable.timer = timer_1.timer;
-	//# sourceMappingURL=timer.js.map
+	var range_1 = __webpack_require__(768);
+	Observable_1.Observable.range = range_1.range;
+	//# sourceMappingURL=range.js.map
 
 /***/ },
 /* 665 */
@@ -19587,9 +22733,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var zip_1 = __webpack_require__(769);
-	Observable_1.Observable.zip = zip_1.zip;
-	//# sourceMappingURL=zip.js.map
+	var throw_1 = __webpack_require__(769);
+	Observable_1.Observable.throw = throw_1._throw;
+	//# sourceMappingURL=throw.js.map
 
 /***/ },
 /* 666 */
@@ -19597,9 +22743,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var audit_1 = __webpack_require__(770);
-	Observable_1.Observable.prototype.audit = audit_1.audit;
-	//# sourceMappingURL=audit.js.map
+	var timer_1 = __webpack_require__(770);
+	Observable_1.Observable.timer = timer_1.timer;
+	//# sourceMappingURL=timer.js.map
 
 /***/ },
 /* 667 */
@@ -19607,9 +22753,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var auditTime_1 = __webpack_require__(771);
-	Observable_1.Observable.prototype.auditTime = auditTime_1.auditTime;
-	//# sourceMappingURL=auditTime.js.map
+	var zip_1 = __webpack_require__(771);
+	Observable_1.Observable.zip = zip_1.zip;
+	//# sourceMappingURL=zip.js.map
 
 /***/ },
 /* 668 */
@@ -19617,9 +22763,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var buffer_1 = __webpack_require__(772);
-	Observable_1.Observable.prototype.buffer = buffer_1.buffer;
-	//# sourceMappingURL=buffer.js.map
+	var audit_1 = __webpack_require__(772);
+	Observable_1.Observable.prototype.audit = audit_1.audit;
+	//# sourceMappingURL=audit.js.map
 
 /***/ },
 /* 669 */
@@ -19627,9 +22773,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var bufferCount_1 = __webpack_require__(773);
-	Observable_1.Observable.prototype.bufferCount = bufferCount_1.bufferCount;
-	//# sourceMappingURL=bufferCount.js.map
+	var auditTime_1 = __webpack_require__(773);
+	Observable_1.Observable.prototype.auditTime = auditTime_1.auditTime;
+	//# sourceMappingURL=auditTime.js.map
 
 /***/ },
 /* 670 */
@@ -19637,9 +22783,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var bufferTime_1 = __webpack_require__(774);
-	Observable_1.Observable.prototype.bufferTime = bufferTime_1.bufferTime;
-	//# sourceMappingURL=bufferTime.js.map
+	var buffer_1 = __webpack_require__(774);
+	Observable_1.Observable.prototype.buffer = buffer_1.buffer;
+	//# sourceMappingURL=buffer.js.map
 
 /***/ },
 /* 671 */
@@ -19647,9 +22793,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var bufferToggle_1 = __webpack_require__(775);
-	Observable_1.Observable.prototype.bufferToggle = bufferToggle_1.bufferToggle;
-	//# sourceMappingURL=bufferToggle.js.map
+	var bufferCount_1 = __webpack_require__(775);
+	Observable_1.Observable.prototype.bufferCount = bufferCount_1.bufferCount;
+	//# sourceMappingURL=bufferCount.js.map
 
 /***/ },
 /* 672 */
@@ -19657,9 +22803,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var bufferWhen_1 = __webpack_require__(776);
-	Observable_1.Observable.prototype.bufferWhen = bufferWhen_1.bufferWhen;
-	//# sourceMappingURL=bufferWhen.js.map
+	var bufferTime_1 = __webpack_require__(776);
+	Observable_1.Observable.prototype.bufferTime = bufferTime_1.bufferTime;
+	//# sourceMappingURL=bufferTime.js.map
 
 /***/ },
 /* 673 */
@@ -19667,9 +22813,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var cache_1 = __webpack_require__(777);
-	Observable_1.Observable.prototype.cache = cache_1.cache;
-	//# sourceMappingURL=cache.js.map
+	var bufferToggle_1 = __webpack_require__(777);
+	Observable_1.Observable.prototype.bufferToggle = bufferToggle_1.bufferToggle;
+	//# sourceMappingURL=bufferToggle.js.map
 
 /***/ },
 /* 674 */
@@ -19677,9 +22823,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var catch_1 = __webpack_require__(778);
-	Observable_1.Observable.prototype.catch = catch_1._catch;
-	//# sourceMappingURL=catch.js.map
+	var bufferWhen_1 = __webpack_require__(778);
+	Observable_1.Observable.prototype.bufferWhen = bufferWhen_1.bufferWhen;
+	//# sourceMappingURL=bufferWhen.js.map
 
 /***/ },
 /* 675 */
@@ -19687,12 +22833,32 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var combineAll_1 = __webpack_require__(779);
+	var cache_1 = __webpack_require__(779);
+	Observable_1.Observable.prototype.cache = cache_1.cache;
+	//# sourceMappingURL=cache.js.map
+
+/***/ },
+/* 676 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var catch_1 = __webpack_require__(780);
+	Observable_1.Observable.prototype.catch = catch_1._catch;
+	//# sourceMappingURL=catch.js.map
+
+/***/ },
+/* 677 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var combineAll_1 = __webpack_require__(781);
 	Observable_1.Observable.prototype.combineAll = combineAll_1.combineAll;
 	//# sourceMappingURL=combineAll.js.map
 
 /***/ },
-/* 676 */
+/* 678 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19702,7 +22868,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=combineLatest.js.map
 
 /***/ },
-/* 677 */
+/* 679 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19712,34 +22878,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=concat.js.map
 
 /***/ },
-/* 678 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var concatAll_1 = __webpack_require__(780);
-	Observable_1.Observable.prototype.concatAll = concatAll_1.concatAll;
-	//# sourceMappingURL=concatAll.js.map
-
-/***/ },
-/* 679 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var concatMap_1 = __webpack_require__(781);
-	Observable_1.Observable.prototype.concatMap = concatMap_1.concatMap;
-	//# sourceMappingURL=concatMap.js.map
-
-/***/ },
 /* 680 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var concatMapTo_1 = __webpack_require__(782);
-	Observable_1.Observable.prototype.concatMapTo = concatMapTo_1.concatMapTo;
-	//# sourceMappingURL=concatMapTo.js.map
+	var concatAll_1 = __webpack_require__(782);
+	Observable_1.Observable.prototype.concatAll = concatAll_1.concatAll;
+	//# sourceMappingURL=concatAll.js.map
 
 /***/ },
 /* 681 */
@@ -19747,9 +22893,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var count_1 = __webpack_require__(783);
-	Observable_1.Observable.prototype.count = count_1.count;
-	//# sourceMappingURL=count.js.map
+	var concatMap_1 = __webpack_require__(783);
+	Observable_1.Observable.prototype.concatMap = concatMap_1.concatMap;
+	//# sourceMappingURL=concatMap.js.map
 
 /***/ },
 /* 682 */
@@ -19757,9 +22903,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var debounce_1 = __webpack_require__(784);
-	Observable_1.Observable.prototype.debounce = debounce_1.debounce;
-	//# sourceMappingURL=debounce.js.map
+	var concatMapTo_1 = __webpack_require__(784);
+	Observable_1.Observable.prototype.concatMapTo = concatMapTo_1.concatMapTo;
+	//# sourceMappingURL=concatMapTo.js.map
 
 /***/ },
 /* 683 */
@@ -19767,9 +22913,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var defaultIfEmpty_1 = __webpack_require__(786);
-	Observable_1.Observable.prototype.defaultIfEmpty = defaultIfEmpty_1.defaultIfEmpty;
-	//# sourceMappingURL=defaultIfEmpty.js.map
+	var count_1 = __webpack_require__(785);
+	Observable_1.Observable.prototype.count = count_1.count;
+	//# sourceMappingURL=count.js.map
 
 /***/ },
 /* 684 */
@@ -19777,9 +22923,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var delay_1 = __webpack_require__(787);
-	Observable_1.Observable.prototype.delay = delay_1.delay;
-	//# sourceMappingURL=delay.js.map
+	var debounce_1 = __webpack_require__(786);
+	Observable_1.Observable.prototype.debounce = debounce_1.debounce;
+	//# sourceMappingURL=debounce.js.map
 
 /***/ },
 /* 685 */
@@ -19787,9 +22933,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var delayWhen_1 = __webpack_require__(788);
-	Observable_1.Observable.prototype.delayWhen = delayWhen_1.delayWhen;
-	//# sourceMappingURL=delayWhen.js.map
+	var defaultIfEmpty_1 = __webpack_require__(788);
+	Observable_1.Observable.prototype.defaultIfEmpty = defaultIfEmpty_1.defaultIfEmpty;
+	//# sourceMappingURL=defaultIfEmpty.js.map
 
 /***/ },
 /* 686 */
@@ -19797,9 +22943,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var dematerialize_1 = __webpack_require__(789);
-	Observable_1.Observable.prototype.dematerialize = dematerialize_1.dematerialize;
-	//# sourceMappingURL=dematerialize.js.map
+	var delay_1 = __webpack_require__(789);
+	Observable_1.Observable.prototype.delay = delay_1.delay;
+	//# sourceMappingURL=delay.js.map
 
 /***/ },
 /* 687 */
@@ -19807,9 +22953,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var distinctUntilChanged_1 = __webpack_require__(790);
-	Observable_1.Observable.prototype.distinctUntilChanged = distinctUntilChanged_1.distinctUntilChanged;
-	//# sourceMappingURL=distinctUntilChanged.js.map
+	var delayWhen_1 = __webpack_require__(790);
+	Observable_1.Observable.prototype.delayWhen = delayWhen_1.delayWhen;
+	//# sourceMappingURL=delayWhen.js.map
 
 /***/ },
 /* 688 */
@@ -19817,9 +22963,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var do_1 = __webpack_require__(791);
-	Observable_1.Observable.prototype.do = do_1._do;
-	//# sourceMappingURL=do.js.map
+	var dematerialize_1 = __webpack_require__(791);
+	Observable_1.Observable.prototype.dematerialize = dematerialize_1.dematerialize;
+	//# sourceMappingURL=dematerialize.js.map
 
 /***/ },
 /* 689 */
@@ -19827,12 +22973,32 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var expand_1 = __webpack_require__(793);
+	var distinctUntilChanged_1 = __webpack_require__(792);
+	Observable_1.Observable.prototype.distinctUntilChanged = distinctUntilChanged_1.distinctUntilChanged;
+	//# sourceMappingURL=distinctUntilChanged.js.map
+
+/***/ },
+/* 690 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var do_1 = __webpack_require__(793);
+	Observable_1.Observable.prototype.do = do_1._do;
+	//# sourceMappingURL=do.js.map
+
+/***/ },
+/* 691 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var expand_1 = __webpack_require__(795);
 	Observable_1.Observable.prototype.expand = expand_1.expand;
 	//# sourceMappingURL=expand.js.map
 
 /***/ },
-/* 690 */
+/* 692 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19842,34 +23008,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=filter.js.map
 
 /***/ },
-/* 691 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var finally_1 = __webpack_require__(794);
-	Observable_1.Observable.prototype.finally = finally_1._finally;
-	//# sourceMappingURL=finally.js.map
-
-/***/ },
-/* 692 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var first_1 = __webpack_require__(795);
-	Observable_1.Observable.prototype.first = first_1.first;
-	//# sourceMappingURL=first.js.map
-
-/***/ },
 /* 693 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var groupBy_1 = __webpack_require__(796);
-	Observable_1.Observable.prototype.groupBy = groupBy_1.groupBy;
-	//# sourceMappingURL=groupBy.js.map
+	var finally_1 = __webpack_require__(796);
+	Observable_1.Observable.prototype.finally = finally_1._finally;
+	//# sourceMappingURL=finally.js.map
 
 /***/ },
 /* 694 */
@@ -19877,9 +23023,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var ignoreElements_1 = __webpack_require__(797);
-	Observable_1.Observable.prototype.ignoreElements = ignoreElements_1.ignoreElements;
-	//# sourceMappingURL=ignoreElements.js.map
+	var first_1 = __webpack_require__(797);
+	Observable_1.Observable.prototype.first = first_1.first;
+	//# sourceMappingURL=first.js.map
 
 /***/ },
 /* 695 */
@@ -19887,9 +23033,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var last_1 = __webpack_require__(798);
-	Observable_1.Observable.prototype.last = last_1.last;
-	//# sourceMappingURL=last.js.map
+	var groupBy_1 = __webpack_require__(798);
+	Observable_1.Observable.prototype.groupBy = groupBy_1.groupBy;
+	//# sourceMappingURL=groupBy.js.map
 
 /***/ },
 /* 696 */
@@ -19897,10 +23043,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var let_1 = __webpack_require__(799);
-	Observable_1.Observable.prototype.let = let_1.letProto;
-	Observable_1.Observable.prototype.letBind = let_1.letProto;
-	//# sourceMappingURL=let.js.map
+	var ignoreElements_1 = __webpack_require__(799);
+	Observable_1.Observable.prototype.ignoreElements = ignoreElements_1.ignoreElements;
+	//# sourceMappingURL=ignoreElements.js.map
 
 /***/ },
 /* 697 */
@@ -19908,9 +23053,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var mapTo_1 = __webpack_require__(800);
-	Observable_1.Observable.prototype.mapTo = mapTo_1.mapTo;
-	//# sourceMappingURL=mapTo.js.map
+	var last_1 = __webpack_require__(800);
+	Observable_1.Observable.prototype.last = last_1.last;
+	//# sourceMappingURL=last.js.map
 
 /***/ },
 /* 698 */
@@ -19918,12 +23063,33 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var materialize_1 = __webpack_require__(801);
+	var let_1 = __webpack_require__(801);
+	Observable_1.Observable.prototype.let = let_1.letProto;
+	Observable_1.Observable.prototype.letBind = let_1.letProto;
+	//# sourceMappingURL=let.js.map
+
+/***/ },
+/* 699 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var mapTo_1 = __webpack_require__(802);
+	Observable_1.Observable.prototype.mapTo = mapTo_1.mapTo;
+	//# sourceMappingURL=mapTo.js.map
+
+/***/ },
+/* 700 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var materialize_1 = __webpack_require__(803);
 	Observable_1.Observable.prototype.materialize = materialize_1.materialize;
 	//# sourceMappingURL=materialize.js.map
 
 /***/ },
-/* 699 */
+/* 701 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19933,7 +23099,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=merge.js.map
 
 /***/ },
-/* 700 */
+/* 702 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19944,7 +23110,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=mergeMapTo.js.map
 
 /***/ },
-/* 701 */
+/* 703 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19954,34 +23120,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=multicast.js.map
 
 /***/ },
-/* 702 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var partition_1 = __webpack_require__(802);
-	Observable_1.Observable.prototype.partition = partition_1.partition;
-	//# sourceMappingURL=partition.js.map
-
-/***/ },
-/* 703 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var pluck_1 = __webpack_require__(803);
-	Observable_1.Observable.prototype.pluck = pluck_1.pluck;
-	//# sourceMappingURL=pluck.js.map
-
-/***/ },
 /* 704 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var publishBehavior_1 = __webpack_require__(805);
-	Observable_1.Observable.prototype.publishBehavior = publishBehavior_1.publishBehavior;
-	//# sourceMappingURL=publishBehavior.js.map
+	var partition_1 = __webpack_require__(804);
+	Observable_1.Observable.prototype.partition = partition_1.partition;
+	//# sourceMappingURL=partition.js.map
 
 /***/ },
 /* 705 */
@@ -19989,12 +23135,32 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var publishLast_1 = __webpack_require__(806);
+	var pluck_1 = __webpack_require__(805);
+	Observable_1.Observable.prototype.pluck = pluck_1.pluck;
+	//# sourceMappingURL=pluck.js.map
+
+/***/ },
+/* 706 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var publishBehavior_1 = __webpack_require__(807);
+	Observable_1.Observable.prototype.publishBehavior = publishBehavior_1.publishBehavior;
+	//# sourceMappingURL=publishBehavior.js.map
+
+/***/ },
+/* 707 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var publishLast_1 = __webpack_require__(808);
 	Observable_1.Observable.prototype.publishLast = publishLast_1.publishLast;
 	//# sourceMappingURL=publishLast.js.map
 
 /***/ },
-/* 706 */
+/* 708 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20004,7 +23170,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=publishReplay.js.map
 
 /***/ },
-/* 707 */
+/* 709 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20014,34 +23180,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=race.js.map
 
 /***/ },
-/* 708 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var repeat_1 = __webpack_require__(808);
-	Observable_1.Observable.prototype.repeat = repeat_1.repeat;
-	//# sourceMappingURL=repeat.js.map
-
-/***/ },
-/* 709 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var retry_1 = __webpack_require__(809);
-	Observable_1.Observable.prototype.retry = retry_1.retry;
-	//# sourceMappingURL=retry.js.map
-
-/***/ },
 /* 710 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var retryWhen_1 = __webpack_require__(810);
-	Observable_1.Observable.prototype.retryWhen = retryWhen_1.retryWhen;
-	//# sourceMappingURL=retryWhen.js.map
+	var repeat_1 = __webpack_require__(810);
+	Observable_1.Observable.prototype.repeat = repeat_1.repeat;
+	//# sourceMappingURL=repeat.js.map
 
 /***/ },
 /* 711 */
@@ -20049,9 +23195,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var sample_1 = __webpack_require__(811);
-	Observable_1.Observable.prototype.sample = sample_1.sample;
-	//# sourceMappingURL=sample.js.map
+	var retry_1 = __webpack_require__(811);
+	Observable_1.Observable.prototype.retry = retry_1.retry;
+	//# sourceMappingURL=retry.js.map
 
 /***/ },
 /* 712 */
@@ -20059,9 +23205,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var sampleTime_1 = __webpack_require__(812);
-	Observable_1.Observable.prototype.sampleTime = sampleTime_1.sampleTime;
-	//# sourceMappingURL=sampleTime.js.map
+	var retryWhen_1 = __webpack_require__(812);
+	Observable_1.Observable.prototype.retryWhen = retryWhen_1.retryWhen;
+	//# sourceMappingURL=retryWhen.js.map
 
 /***/ },
 /* 713 */
@@ -20069,9 +23215,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var scan_1 = __webpack_require__(813);
-	Observable_1.Observable.prototype.scan = scan_1.scan;
-	//# sourceMappingURL=scan.js.map
+	var sample_1 = __webpack_require__(813);
+	Observable_1.Observable.prototype.sample = sample_1.sample;
+	//# sourceMappingURL=sample.js.map
 
 /***/ },
 /* 714 */
@@ -20079,9 +23225,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var share_1 = __webpack_require__(814);
-	Observable_1.Observable.prototype.share = share_1.share;
-	//# sourceMappingURL=share.js.map
+	var sampleTime_1 = __webpack_require__(814);
+	Observable_1.Observable.prototype.sampleTime = sampleTime_1.sampleTime;
+	//# sourceMappingURL=sampleTime.js.map
 
 /***/ },
 /* 715 */
@@ -20089,9 +23235,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var single_1 = __webpack_require__(815);
-	Observable_1.Observable.prototype.single = single_1.single;
-	//# sourceMappingURL=single.js.map
+	var scan_1 = __webpack_require__(815);
+	Observable_1.Observable.prototype.scan = scan_1.scan;
+	//# sourceMappingURL=scan.js.map
 
 /***/ },
 /* 716 */
@@ -20099,9 +23245,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var skip_1 = __webpack_require__(816);
-	Observable_1.Observable.prototype.skip = skip_1.skip;
-	//# sourceMappingURL=skip.js.map
+	var share_1 = __webpack_require__(816);
+	Observable_1.Observable.prototype.share = share_1.share;
+	//# sourceMappingURL=share.js.map
 
 /***/ },
 /* 717 */
@@ -20109,9 +23255,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var skipUntil_1 = __webpack_require__(817);
-	Observable_1.Observable.prototype.skipUntil = skipUntil_1.skipUntil;
-	//# sourceMappingURL=skipUntil.js.map
+	var single_1 = __webpack_require__(817);
+	Observable_1.Observable.prototype.single = single_1.single;
+	//# sourceMappingURL=single.js.map
 
 /***/ },
 /* 718 */
@@ -20119,9 +23265,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var skipWhile_1 = __webpack_require__(818);
-	Observable_1.Observable.prototype.skipWhile = skipWhile_1.skipWhile;
-	//# sourceMappingURL=skipWhile.js.map
+	var skip_1 = __webpack_require__(818);
+	Observable_1.Observable.prototype.skip = skip_1.skip;
+	//# sourceMappingURL=skip.js.map
 
 /***/ },
 /* 719 */
@@ -20129,9 +23275,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var startWith_1 = __webpack_require__(819);
-	Observable_1.Observable.prototype.startWith = startWith_1.startWith;
-	//# sourceMappingURL=startWith.js.map
+	var skipUntil_1 = __webpack_require__(819);
+	Observable_1.Observable.prototype.skipUntil = skipUntil_1.skipUntil;
+	//# sourceMappingURL=skipUntil.js.map
 
 /***/ },
 /* 720 */
@@ -20139,9 +23285,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var subscribeOn_1 = __webpack_require__(820);
-	Observable_1.Observable.prototype.subscribeOn = subscribeOn_1.subscribeOn;
-	//# sourceMappingURL=subscribeOn.js.map
+	var skipWhile_1 = __webpack_require__(820);
+	Observable_1.Observable.prototype.skipWhile = skipWhile_1.skipWhile;
+	//# sourceMappingURL=skipWhile.js.map
 
 /***/ },
 /* 721 */
@@ -20149,9 +23295,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var switch_1 = __webpack_require__(821);
-	Observable_1.Observable.prototype.switch = switch_1._switch;
-	//# sourceMappingURL=switch.js.map
+	var startWith_1 = __webpack_require__(821);
+	Observable_1.Observable.prototype.startWith = startWith_1.startWith;
+	//# sourceMappingURL=startWith.js.map
 
 /***/ },
 /* 722 */
@@ -20159,9 +23305,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var switchMap_1 = __webpack_require__(822);
-	Observable_1.Observable.prototype.switchMap = switchMap_1.switchMap;
-	//# sourceMappingURL=switchMap.js.map
+	var subscribeOn_1 = __webpack_require__(822);
+	Observable_1.Observable.prototype.subscribeOn = subscribeOn_1.subscribeOn;
+	//# sourceMappingURL=subscribeOn.js.map
 
 /***/ },
 /* 723 */
@@ -20169,9 +23315,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var switchMapTo_1 = __webpack_require__(823);
-	Observable_1.Observable.prototype.switchMapTo = switchMapTo_1.switchMapTo;
-	//# sourceMappingURL=switchMapTo.js.map
+	var switch_1 = __webpack_require__(823);
+	Observable_1.Observable.prototype.switch = switch_1._switch;
+	//# sourceMappingURL=switch.js.map
 
 /***/ },
 /* 724 */
@@ -20179,9 +23325,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var takeLast_1 = __webpack_require__(825);
-	Observable_1.Observable.prototype.takeLast = takeLast_1.takeLast;
-	//# sourceMappingURL=takeLast.js.map
+	var switchMap_1 = __webpack_require__(824);
+	Observable_1.Observable.prototype.switchMap = switchMap_1.switchMap;
+	//# sourceMappingURL=switchMap.js.map
 
 /***/ },
 /* 725 */
@@ -20189,9 +23335,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var takeUntil_1 = __webpack_require__(826);
-	Observable_1.Observable.prototype.takeUntil = takeUntil_1.takeUntil;
-	//# sourceMappingURL=takeUntil.js.map
+	var switchMapTo_1 = __webpack_require__(825);
+	Observable_1.Observable.prototype.switchMapTo = switchMapTo_1.switchMapTo;
+	//# sourceMappingURL=switchMapTo.js.map
 
 /***/ },
 /* 726 */
@@ -20199,9 +23345,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var takeWhile_1 = __webpack_require__(827);
-	Observable_1.Observable.prototype.takeWhile = takeWhile_1.takeWhile;
-	//# sourceMappingURL=takeWhile.js.map
+	var takeLast_1 = __webpack_require__(827);
+	Observable_1.Observable.prototype.takeLast = takeLast_1.takeLast;
+	//# sourceMappingURL=takeLast.js.map
 
 /***/ },
 /* 727 */
@@ -20209,9 +23355,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var throttle_1 = __webpack_require__(828);
-	Observable_1.Observable.prototype.throttle = throttle_1.throttle;
-	//# sourceMappingURL=throttle.js.map
+	var takeUntil_1 = __webpack_require__(828);
+	Observable_1.Observable.prototype.takeUntil = takeUntil_1.takeUntil;
+	//# sourceMappingURL=takeUntil.js.map
 
 /***/ },
 /* 728 */
@@ -20219,9 +23365,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var throttleTime_1 = __webpack_require__(829);
-	Observable_1.Observable.prototype.throttleTime = throttleTime_1.throttleTime;
-	//# sourceMappingURL=throttleTime.js.map
+	var takeWhile_1 = __webpack_require__(829);
+	Observable_1.Observable.prototype.takeWhile = takeWhile_1.takeWhile;
+	//# sourceMappingURL=takeWhile.js.map
 
 /***/ },
 /* 729 */
@@ -20229,9 +23375,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var timeout_1 = __webpack_require__(830);
-	Observable_1.Observable.prototype.timeout = timeout_1.timeout;
-	//# sourceMappingURL=timeout.js.map
+	var throttle_1 = __webpack_require__(830);
+	Observable_1.Observable.prototype.throttle = throttle_1.throttle;
+	//# sourceMappingURL=throttle.js.map
 
 /***/ },
 /* 730 */
@@ -20239,9 +23385,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var timeoutWith_1 = __webpack_require__(831);
-	Observable_1.Observable.prototype.timeoutWith = timeoutWith_1.timeoutWith;
-	//# sourceMappingURL=timeoutWith.js.map
+	var throttleTime_1 = __webpack_require__(831);
+	Observable_1.Observable.prototype.throttleTime = throttleTime_1.throttleTime;
+	//# sourceMappingURL=throttleTime.js.map
 
 /***/ },
 /* 731 */
@@ -20249,9 +23395,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var toArray_1 = __webpack_require__(832);
-	Observable_1.Observable.prototype.toArray = toArray_1.toArray;
-	//# sourceMappingURL=toArray.js.map
+	var timeout_1 = __webpack_require__(832);
+	Observable_1.Observable.prototype.timeout = timeout_1.timeout;
+	//# sourceMappingURL=timeout.js.map
 
 /***/ },
 /* 732 */
@@ -20259,9 +23405,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var window_1 = __webpack_require__(833);
-	Observable_1.Observable.prototype.window = window_1.window;
-	//# sourceMappingURL=window.js.map
+	var timeoutWith_1 = __webpack_require__(833);
+	Observable_1.Observable.prototype.timeoutWith = timeoutWith_1.timeoutWith;
+	//# sourceMappingURL=timeoutWith.js.map
 
 /***/ },
 /* 733 */
@@ -20269,9 +23415,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var windowCount_1 = __webpack_require__(834);
-	Observable_1.Observable.prototype.windowCount = windowCount_1.windowCount;
-	//# sourceMappingURL=windowCount.js.map
+	var toArray_1 = __webpack_require__(834);
+	Observable_1.Observable.prototype.toArray = toArray_1.toArray;
+	//# sourceMappingURL=toArray.js.map
 
 /***/ },
 /* 734 */
@@ -20279,9 +23425,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var windowTime_1 = __webpack_require__(835);
-	Observable_1.Observable.prototype.windowTime = windowTime_1.windowTime;
-	//# sourceMappingURL=windowTime.js.map
+	var window_1 = __webpack_require__(835);
+	Observable_1.Observable.prototype.window = window_1.window;
+	//# sourceMappingURL=window.js.map
 
 /***/ },
 /* 735 */
@@ -20289,9 +23435,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var windowToggle_1 = __webpack_require__(836);
-	Observable_1.Observable.prototype.windowToggle = windowToggle_1.windowToggle;
-	//# sourceMappingURL=windowToggle.js.map
+	var windowCount_1 = __webpack_require__(836);
+	Observable_1.Observable.prototype.windowCount = windowCount_1.windowCount;
+	//# sourceMappingURL=windowCount.js.map
 
 /***/ },
 /* 736 */
@@ -20299,9 +23445,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var windowWhen_1 = __webpack_require__(837);
-	Observable_1.Observable.prototype.windowWhen = windowWhen_1.windowWhen;
-	//# sourceMappingURL=windowWhen.js.map
+	var windowTime_1 = __webpack_require__(837);
+	Observable_1.Observable.prototype.windowTime = windowTime_1.windowTime;
+	//# sourceMappingURL=windowTime.js.map
 
 /***/ },
 /* 737 */
@@ -20309,12 +23455,32 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var withLatestFrom_1 = __webpack_require__(838);
+	var windowToggle_1 = __webpack_require__(838);
+	Observable_1.Observable.prototype.windowToggle = windowToggle_1.windowToggle;
+	//# sourceMappingURL=windowToggle.js.map
+
+/***/ },
+/* 738 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var windowWhen_1 = __webpack_require__(839);
+	Observable_1.Observable.prototype.windowWhen = windowWhen_1.windowWhen;
+	//# sourceMappingURL=windowWhen.js.map
+
+/***/ },
+/* 739 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var withLatestFrom_1 = __webpack_require__(840);
 	Observable_1.Observable.prototype.withLatestFrom = withLatestFrom_1.withLatestFrom;
 	//# sourceMappingURL=withLatestFrom.js.map
 
 /***/ },
-/* 738 */
+/* 740 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20324,18 +23490,18 @@ webpackJsonp([2],[
 	//# sourceMappingURL=zip.js.map
 
 /***/ },
-/* 739 */
+/* 741 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var zipAll_1 = __webpack_require__(839);
+	var zipAll_1 = __webpack_require__(841);
 	Observable_1.Observable.prototype.zipAll = zipAll_1.zipAll;
 	//# sourceMappingURL=zipAll.js.map
 
 /***/ },
-/* 740 */,
-/* 741 */
+/* 742 */,
+/* 743 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20345,7 +23511,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var tryCatch_1 = __webpack_require__(44);
+	var tryCatch_1 = __webpack_require__(45);
 	var errorObject_1 = __webpack_require__(37);
 	var AsyncSubject_1 = __webpack_require__(186);
 	/**
@@ -20482,7 +23648,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=BoundCallbackObservable.js.map
 
 /***/ },
-/* 742 */
+/* 744 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20492,7 +23658,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var tryCatch_1 = __webpack_require__(44);
+	var tryCatch_1 = __webpack_require__(45);
 	var errorObject_1 = __webpack_require__(37);
 	var AsyncSubject_1 = __webpack_require__(186);
 	/**
@@ -20633,7 +23799,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=BoundNodeCallbackObservable.js.map
 
 /***/ },
-/* 743 */
+/* 745 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20731,7 +23897,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=DeferObservable.js.map
 
 /***/ },
-/* 744 */
+/* 746 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20818,8 +23984,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=ErrorObservable.js.map
 
 /***/ },
-/* 745 */,
-/* 746 */
+/* 747 */,
+/* 748 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20829,9 +23995,9 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var tryCatch_1 = __webpack_require__(44);
+	var tryCatch_1 = __webpack_require__(45);
 	var errorObject_1 = __webpack_require__(37);
-	var Subscription_1 = __webpack_require__(42);
+	var Subscription_1 = __webpack_require__(43);
 	function isNodeStyleEventEmmitter(sourceObj) {
 	    return !!sourceObj && typeof sourceObj.addListener === 'function' && typeof sourceObj.removeListener === 'function';
 	}
@@ -20918,7 +24084,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=FromEventObservable.js.map
 
 /***/ },
-/* 747 */
+/* 749 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20928,8 +24094,8 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var Subscription_1 = __webpack_require__(42);
-	var tryCatch_1 = __webpack_require__(44);
+	var Subscription_1 = __webpack_require__(43);
+	var tryCatch_1 = __webpack_require__(45);
 	var errorObject_1 = __webpack_require__(37);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
@@ -20984,8 +24150,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=FromEventPatternObservable.js.map
 
 /***/ },
-/* 748 */,
-/* 749 */
+/* 750 */,
+/* 751 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20996,7 +24162,7 @@ webpackJsonp([2],[
 	};
 	var isNumeric_1 = __webpack_require__(297);
 	var Observable_1 = __webpack_require__(2);
-	var async_1 = __webpack_require__(43);
+	var async_1 = __webpack_require__(44);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -21078,8 +24244,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=IntervalObservable.js.map
 
 /***/ },
-/* 750 */,
-/* 751 */
+/* 752 */,
+/* 753 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21143,7 +24309,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=NeverObservable.js.map
 
 /***/ },
-/* 752 */
+/* 754 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21244,7 +24410,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=RangeObservable.js.map
 
 /***/ },
-/* 753 */
+/* 755 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21300,7 +24466,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=SubscribeOnObservable.js.map
 
 /***/ },
-/* 754 */
+/* 756 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21311,7 +24477,7 @@ webpackJsonp([2],[
 	};
 	var isNumeric_1 = __webpack_require__(297);
 	var Observable_1 = __webpack_require__(2);
-	var async_1 = __webpack_require__(43);
+	var async_1 = __webpack_require__(44);
 	var isScheduler_1 = __webpack_require__(99);
 	var isDate_1 = __webpack_require__(196);
 	/**
@@ -21412,25 +24578,25 @@ webpackJsonp([2],[
 	//# sourceMappingURL=TimerObservable.js.map
 
 /***/ },
-/* 755 */
+/* 757 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var BoundCallbackObservable_1 = __webpack_require__(741);
+	var BoundCallbackObservable_1 = __webpack_require__(743);
 	exports.bindCallback = BoundCallbackObservable_1.BoundCallbackObservable.create;
 	//# sourceMappingURL=bindCallback.js.map
 
 /***/ },
-/* 756 */
+/* 758 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var BoundNodeCallbackObservable_1 = __webpack_require__(742);
+	var BoundNodeCallbackObservable_1 = __webpack_require__(744);
 	exports.bindNodeCallback = BoundNodeCallbackObservable_1.BoundNodeCallbackObservable.create;
 	//# sourceMappingURL=bindNodeCallback.js.map
 
 /***/ },
-/* 757 */
+/* 759 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21439,16 +24605,16 @@ webpackJsonp([2],[
 	//# sourceMappingURL=concat.js.map
 
 /***/ },
-/* 758 */
+/* 760 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var DeferObservable_1 = __webpack_require__(743);
+	var DeferObservable_1 = __webpack_require__(745);
 	exports.defer = DeferObservable_1.DeferObservable.create;
 	//# sourceMappingURL=defer.js.map
 
 /***/ },
-/* 759 */
+/* 761 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21457,35 +24623,35 @@ webpackJsonp([2],[
 	//# sourceMappingURL=empty.js.map
 
 /***/ },
-/* 760 */,
-/* 761 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var FromEventObservable_1 = __webpack_require__(746);
-	exports.fromEvent = FromEventObservable_1.FromEventObservable.create;
-	//# sourceMappingURL=fromEvent.js.map
-
-/***/ },
-/* 762 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var FromEventPatternObservable_1 = __webpack_require__(747);
-	exports.fromEventPattern = FromEventPatternObservable_1.FromEventPatternObservable.create;
-	//# sourceMappingURL=fromEventPattern.js.map
-
-/***/ },
+/* 762 */,
 /* 763 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var IntervalObservable_1 = __webpack_require__(749);
+	var FromEventObservable_1 = __webpack_require__(748);
+	exports.fromEvent = FromEventObservable_1.FromEventObservable.create;
+	//# sourceMappingURL=fromEvent.js.map
+
+/***/ },
+/* 764 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var FromEventPatternObservable_1 = __webpack_require__(749);
+	exports.fromEventPattern = FromEventPatternObservable_1.FromEventPatternObservable.create;
+	//# sourceMappingURL=fromEventPattern.js.map
+
+/***/ },
+/* 765 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var IntervalObservable_1 = __webpack_require__(751);
 	exports.interval = IntervalObservable_1.IntervalObservable.create;
 	//# sourceMappingURL=interval.js.map
 
 /***/ },
-/* 764 */
+/* 766 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21494,43 +24660,43 @@ webpackJsonp([2],[
 	//# sourceMappingURL=merge.js.map
 
 /***/ },
-/* 765 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var NeverObservable_1 = __webpack_require__(751);
-	exports.never = NeverObservable_1.NeverObservable.create;
-	//# sourceMappingURL=never.js.map
-
-/***/ },
-/* 766 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var RangeObservable_1 = __webpack_require__(752);
-	exports.range = RangeObservable_1.RangeObservable.create;
-	//# sourceMappingURL=range.js.map
-
-/***/ },
 /* 767 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ErrorObservable_1 = __webpack_require__(744);
-	exports._throw = ErrorObservable_1.ErrorObservable.create;
-	//# sourceMappingURL=throw.js.map
+	var NeverObservable_1 = __webpack_require__(753);
+	exports.never = NeverObservable_1.NeverObservable.create;
+	//# sourceMappingURL=never.js.map
 
 /***/ },
 /* 768 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TimerObservable_1 = __webpack_require__(754);
+	var RangeObservable_1 = __webpack_require__(754);
+	exports.range = RangeObservable_1.RangeObservable.create;
+	//# sourceMappingURL=range.js.map
+
+/***/ },
+/* 769 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var ErrorObservable_1 = __webpack_require__(746);
+	exports._throw = ErrorObservable_1.ErrorObservable.create;
+	//# sourceMappingURL=throw.js.map
+
+/***/ },
+/* 770 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var TimerObservable_1 = __webpack_require__(756);
 	exports.timer = TimerObservable_1.TimerObservable.create;
 	//# sourceMappingURL=timer.js.map
 
 /***/ },
-/* 769 */
+/* 771 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21539,7 +24705,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=zip.js.map
 
 /***/ },
-/* 770 */
+/* 772 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21548,7 +24714,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var tryCatch_1 = __webpack_require__(44);
+	var tryCatch_1 = __webpack_require__(45);
 	var errorObject_1 = __webpack_require__(37);
 	var OuterSubscriber_1 = __webpack_require__(13);
 	var subscribeToResult_1 = __webpack_require__(14);
@@ -21620,7 +24786,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=audit.js.map
 
 /***/ },
-/* 771 */
+/* 773 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21629,7 +24795,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var async_1 = __webpack_require__(43);
+	var async_1 = __webpack_require__(44);
 	var Subscriber_1 = __webpack_require__(7);
 	/**
 	 * @param delay
@@ -21694,7 +24860,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=auditTime.js.map
 
 /***/ },
-/* 772 */
+/* 774 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21775,7 +24941,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=buffer.js.map
 
 /***/ },
-/* 773 */
+/* 775 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21893,7 +25059,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=bufferCount.js.map
 
 /***/ },
-/* 774 */
+/* 776 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21903,7 +25069,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(7);
-	var async_1 = __webpack_require__(43);
+	var async_1 = __webpack_require__(44);
 	/**
 	 * Buffers the source Observable values for a specific time period.
 	 *
@@ -22046,7 +25212,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=bufferTime.js.map
 
 /***/ },
-/* 775 */
+/* 777 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22055,7 +25221,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscription_1 = __webpack_require__(42);
+	var Subscription_1 = __webpack_require__(43);
 	var subscribeToResult_1 = __webpack_require__(14);
 	var OuterSubscriber_1 = __webpack_require__(13);
 	/**
@@ -22203,7 +25369,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=bufferToggle.js.map
 
 /***/ },
-/* 776 */
+/* 778 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22212,8 +25378,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscription_1 = __webpack_require__(42);
-	var tryCatch_1 = __webpack_require__(44);
+	var Subscription_1 = __webpack_require__(43);
+	var tryCatch_1 = __webpack_require__(45);
 	var errorObject_1 = __webpack_require__(37);
 	var OuterSubscriber_1 = __webpack_require__(13);
 	var subscribeToResult_1 = __webpack_require__(14);
@@ -22330,7 +25496,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=bufferWhen.js.map
 
 /***/ },
-/* 777 */
+/* 779 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22352,7 +25518,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=cache.js.map
 
 /***/ },
-/* 778 */
+/* 780 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22424,7 +25590,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=catch.js.map
 
 /***/ },
-/* 779 */
+/* 781 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22476,7 +25642,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=combineAll.js.map
 
 /***/ },
-/* 780 */
+/* 782 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22530,7 +25696,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=concatAll.js.map
 
 /***/ },
-/* 781 */
+/* 783 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22598,7 +25764,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=concatMap.js.map
 
 /***/ },
-/* 782 */
+/* 784 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22660,7 +25826,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=concatMapTo.js.map
 
 /***/ },
-/* 783 */
+/* 785 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22773,7 +25939,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=count.js.map
 
 /***/ },
-/* 784 */
+/* 786 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22875,8 +26041,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=debounce.js.map
 
 /***/ },
-/* 785 */,
-/* 786 */
+/* 787 */,
+/* 788 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22934,7 +26100,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=defaultIfEmpty.js.map
 
 /***/ },
-/* 787 */
+/* 789 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22943,7 +26109,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var async_1 = __webpack_require__(43);
+	var async_1 = __webpack_require__(44);
 	var isDate_1 = __webpack_require__(196);
 	var Subscriber_1 = __webpack_require__(7);
 	var Notification_1 = __webpack_require__(188);
@@ -23074,7 +26240,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=delay.js.map
 
 /***/ },
-/* 788 */
+/* 790 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23233,7 +26399,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=delayWhen.js.map
 
 /***/ },
-/* 789 */
+/* 791 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23282,7 +26448,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=dematerialize.js.map
 
 /***/ },
-/* 790 */
+/* 792 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23292,7 +26458,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(7);
-	var tryCatch_1 = __webpack_require__(44);
+	var tryCatch_1 = __webpack_require__(45);
 	var errorObject_1 = __webpack_require__(37);
 	/**
 	 * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
@@ -23364,7 +26530,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=distinctUntilChanged.js.map
 
 /***/ },
-/* 791 */
+/* 793 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23481,8 +26647,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=do.js.map
 
 /***/ },
-/* 792 */,
-/* 793 */
+/* 794 */,
+/* 795 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23491,7 +26657,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var tryCatch_1 = __webpack_require__(44);
+	var tryCatch_1 = __webpack_require__(45);
 	var errorObject_1 = __webpack_require__(37);
 	var OuterSubscriber_1 = __webpack_require__(13);
 	var subscribeToResult_1 = __webpack_require__(14);
@@ -23602,7 +26768,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=expand.js.map
 
 /***/ },
-/* 794 */
+/* 796 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23612,7 +26778,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(7);
-	var Subscription_1 = __webpack_require__(42);
+	var Subscription_1 = __webpack_require__(43);
 	/**
 	 * Returns an Observable that mirrors the source Observable, but will call a specified function when
 	 * the source terminates on complete or error.
@@ -23650,7 +26816,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=finally.js.map
 
 /***/ },
-/* 795 */
+/* 797 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23803,7 +26969,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=first.js.map
 
 /***/ },
-/* 796 */
+/* 798 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23813,11 +26979,11 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(7);
-	var Subscription_1 = __webpack_require__(42);
+	var Subscription_1 = __webpack_require__(43);
 	var Observable_1 = __webpack_require__(2);
 	var Subject_1 = __webpack_require__(19);
-	var Map_1 = __webpack_require__(846);
-	var FastMap_1 = __webpack_require__(844);
+	var Map_1 = __webpack_require__(848);
+	var FastMap_1 = __webpack_require__(846);
 	/**
 	 * Groups the items emitted by an Observable according to a specified criterion,
 	 * and emits these grouped items as `GroupedObservables`, one
@@ -24058,7 +27224,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=groupBy.js.map
 
 /***/ },
-/* 797 */
+/* 799 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24110,7 +27276,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=ignoreElements.js.map
 
 /***/ },
-/* 798 */
+/* 800 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24233,7 +27399,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=last.js.map
 
 /***/ },
-/* 799 */
+/* 801 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -24250,7 +27416,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=let.js.map
 
 /***/ },
-/* 800 */
+/* 802 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24318,7 +27484,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=mapTo.js.map
 
 /***/ },
-/* 801 */
+/* 803 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24384,11 +27550,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=materialize.js.map
 
 /***/ },
-/* 802 */
+/* 804 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var not_1 = __webpack_require__(848);
+	var not_1 = __webpack_require__(850);
 	var filter_1 = __webpack_require__(451);
 	/**
 	 * @param predicate
@@ -24407,7 +27573,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=partition.js.map
 
 /***/ },
-/* 803 */
+/* 805 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24470,8 +27636,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=pluck.js.map
 
 /***/ },
-/* 804 */,
-/* 805 */
+/* 806 */,
+/* 807 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24490,7 +27656,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=publishBehavior.js.map
 
 /***/ },
-/* 806 */
+/* 808 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24508,8 +27674,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=publishLast.js.map
 
 /***/ },
-/* 807 */,
-/* 808 */
+/* 809 */,
+/* 810 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24589,7 +27755,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=repeat.js.map
 
 /***/ },
-/* 809 */
+/* 811 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24663,7 +27829,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=retry.js.map
 
 /***/ },
-/* 810 */
+/* 812 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24673,7 +27839,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subject_1 = __webpack_require__(19);
-	var tryCatch_1 = __webpack_require__(44);
+	var tryCatch_1 = __webpack_require__(45);
 	var errorObject_1 = __webpack_require__(37);
 	var OuterSubscriber_1 = __webpack_require__(13);
 	var subscribeToResult_1 = __webpack_require__(14);
@@ -24774,7 +27940,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=retryWhen.js.map
 
 /***/ },
-/* 811 */
+/* 813 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24844,7 +28010,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=sample.js.map
 
 /***/ },
-/* 812 */
+/* 814 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24854,7 +28020,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(7);
-	var async_1 = __webpack_require__(43);
+	var async_1 = __webpack_require__(44);
 	/**
 	 * @param delay
 	 * @param scheduler
@@ -24911,7 +28077,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=sampleTime.js.map
 
 /***/ },
-/* 813 */
+/* 815 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25023,7 +28189,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=scan.js.map
 
 /***/ },
-/* 814 */
+/* 816 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25052,7 +28218,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=share.js.map
 
 /***/ },
-/* 815 */
+/* 817 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25152,7 +28318,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=single.js.map
 
 /***/ },
-/* 816 */
+/* 818 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25208,7 +28374,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=skip.js.map
 
 /***/ },
-/* 817 */
+/* 819 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25284,7 +28450,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=skipUntil.js.map
 
 /***/ },
-/* 818 */
+/* 820 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25355,7 +28521,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=skipWhile.js.map
 
 /***/ },
-/* 819 */
+/* 821 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25403,11 +28569,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=startWith.js.map
 
 /***/ },
-/* 820 */
+/* 822 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var SubscribeOnObservable_1 = __webpack_require__(753);
+	var SubscribeOnObservable_1 = __webpack_require__(755);
 	/**
 	 * Asynchronously subscribes Observers to this Observable on the specified Scheduler.
 	 *
@@ -25427,7 +28593,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=subscribeOn.js.map
 
 /***/ },
-/* 821 */
+/* 823 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25540,7 +28706,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=switch.js.map
 
 /***/ },
-/* 822 */
+/* 824 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25684,7 +28850,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=switchMap.js.map
 
 /***/ },
-/* 823 */
+/* 825 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25815,8 +28981,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=switchMapTo.js.map
 
 /***/ },
-/* 824 */,
-/* 825 */
+/* 826 */,
+/* 827 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25900,7 +29066,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=takeLast.js.map
 
 /***/ },
-/* 826 */
+/* 828 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25953,7 +29119,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=takeUntil.js.map
 
 /***/ },
-/* 827 */
+/* 829 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26020,7 +29186,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=takeWhile.js.map
 
 /***/ },
-/* 828 */
+/* 830 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26101,7 +29267,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=throttle.js.map
 
 /***/ },
-/* 829 */
+/* 831 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26111,7 +29277,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(7);
-	var async_1 = __webpack_require__(43);
+	var async_1 = __webpack_require__(44);
 	/**
 	 * @param delay
 	 * @param scheduler
@@ -26169,7 +29335,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=throttleTime.js.map
 
 /***/ },
-/* 830 */
+/* 832 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26178,7 +29344,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var async_1 = __webpack_require__(43);
+	var async_1 = __webpack_require__(44);
 	var isDate_1 = __webpack_require__(196);
 	var Subscriber_1 = __webpack_require__(7);
 	/**
@@ -26276,7 +29442,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=timeout.js.map
 
 /***/ },
-/* 831 */
+/* 833 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26285,7 +29451,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var async_1 = __webpack_require__(43);
+	var async_1 = __webpack_require__(44);
 	var isDate_1 = __webpack_require__(196);
 	var OuterSubscriber_1 = __webpack_require__(13);
 	var subscribeToResult_1 = __webpack_require__(14);
@@ -26391,7 +29557,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=timeoutWith.js.map
 
 /***/ },
-/* 832 */
+/* 834 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26441,7 +29607,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=toArray.js.map
 
 /***/ },
-/* 833 */
+/* 835 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26551,7 +29717,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=window.js.map
 
 /***/ },
-/* 834 */
+/* 836 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26682,7 +29848,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=windowCount.js.map
 
 /***/ },
-/* 835 */
+/* 837 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26693,7 +29859,7 @@ webpackJsonp([2],[
 	};
 	var Subscriber_1 = __webpack_require__(7);
 	var Subject_1 = __webpack_require__(19);
-	var async_1 = __webpack_require__(43);
+	var async_1 = __webpack_require__(44);
 	/**
 	 * Branch out the source Observable values as a nested Observable periodically
 	 * in time.
@@ -26857,7 +30023,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=windowTime.js.map
 
 /***/ },
-/* 836 */
+/* 838 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26867,8 +30033,8 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subject_1 = __webpack_require__(19);
-	var Subscription_1 = __webpack_require__(42);
-	var tryCatch_1 = __webpack_require__(44);
+	var Subscription_1 = __webpack_require__(43);
+	var tryCatch_1 = __webpack_require__(45);
 	var errorObject_1 = __webpack_require__(37);
 	var OuterSubscriber_1 = __webpack_require__(13);
 	var subscribeToResult_1 = __webpack_require__(14);
@@ -27042,7 +30208,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=windowToggle.js.map
 
 /***/ },
-/* 837 */
+/* 839 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27052,7 +30218,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subject_1 = __webpack_require__(19);
-	var tryCatch_1 = __webpack_require__(44);
+	var tryCatch_1 = __webpack_require__(45);
 	var errorObject_1 = __webpack_require__(37);
 	var OuterSubscriber_1 = __webpack_require__(13);
 	var subscribeToResult_1 = __webpack_require__(14);
@@ -27175,7 +30341,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=windowWhen.js.map
 
 /***/ },
-/* 838 */
+/* 840 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27310,7 +30476,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=withLatestFrom.js.map
 
 /***/ },
-/* 839 */
+/* 841 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27328,7 +30494,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=zipAll.js.map
 
 /***/ },
-/* 840 */
+/* 842 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27337,7 +30503,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Immediate_1 = __webpack_require__(845);
+	var Immediate_1 = __webpack_require__(847);
 	var FutureAction_1 = __webpack_require__(192);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
@@ -27384,7 +30550,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=AsapAction.js.map
 
 /***/ },
-/* 841 */
+/* 843 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -27393,7 +30559,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var AsapAction_1 = __webpack_require__(840);
+	var AsapAction_1 = __webpack_require__(842);
 	var QueueScheduler_1 = __webpack_require__(294);
 	var AsapScheduler = (function (_super) {
 	    __extends(AsapScheduler, _super);
@@ -27409,9 +30575,9 @@ webpackJsonp([2],[
 	//# sourceMappingURL=AsapScheduler.js.map
 
 /***/ },
-/* 842 */,
-/* 843 */,
-/* 844 */
+/* 844 */,
+/* 845 */,
+/* 846 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -27447,7 +30613,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=FastMap.js.map
 
 /***/ },
-/* 845 */
+/* 847 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -27661,17 +30827,17 @@ webpackJsonp([2],[
 	//# sourceMappingURL=Immediate.js.map
 
 /***/ },
-/* 846 */
+/* 848 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var root_1 = __webpack_require__(53);
-	var MapPolyfill_1 = __webpack_require__(847);
+	var MapPolyfill_1 = __webpack_require__(849);
 	exports.Map = root_1.root.Map || (function () { return MapPolyfill_1.MapPolyfill; })();
 	//# sourceMappingURL=Map.js.map
 
 /***/ },
-/* 847 */
+/* 849 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -27723,7 +30889,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=MapPolyfill.js.map
 
 /***/ },
-/* 848 */
+/* 850 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -27739,8 +30905,6 @@ webpackJsonp([2],[
 	//# sourceMappingURL=not.js.map
 
 /***/ },
-/* 849 */,
-/* 850 */,
 /* 851 */,
 /* 852 */,
 /* 853 */,
@@ -27904,20 +31068,22 @@ webpackJsonp([2],[
 /* 1011 */,
 /* 1012 */,
 /* 1013 */,
-/* 1014 */
+/* 1014 */,
+/* 1015 */,
+/* 1016 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var paginate_pipe_1 = __webpack_require__(1015);
+	var paginate_pipe_1 = __webpack_require__(1017);
 	exports.PaginatePipe = paginate_pipe_1.PaginatePipe;
 	var pagination_service_1 = __webpack_require__(319);
 	exports.PaginationService = pagination_service_1.PaginationService;
-	var pagination_controls_cmp_1 = __webpack_require__(1016);
+	var pagination_controls_cmp_1 = __webpack_require__(1018);
 	exports.PaginationControlsCmp = pagination_controls_cmp_1.PaginationControlsCmp;
 
 
 /***/ },
-/* 1015 */
+/* 1017 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28050,7 +31216,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 1016 */
+/* 1018 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28065,7 +31231,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var pagination_service_1 = __webpack_require__(319);
-	var template_1 = __webpack_require__(1017);
+	var template_1 = __webpack_require__(1019);
 	var PaginationControlsCmp = (function () {
 	    function PaginationControlsCmp(service, changeDetectorRef) {
 	        var _this = this;
@@ -28298,7 +31464,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 1017 */
+/* 1019 */
 /***/ function(module, exports) {
 
 	/**
@@ -28311,7 +31477,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 1018 */
+/* 1020 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28392,7 +31558,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1019 */
+/* 1021 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28789,7 +31955,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1020 */
+/* 1022 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -28858,7 +32024,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1021 */
+/* 1023 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29181,7 +32347,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1022 */
+/* 1024 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29457,7 +32623,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1023 */
+/* 1025 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29556,7 +32722,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1024 */
+/* 1026 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29678,7 +32844,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1025 */
+/* 1027 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29711,7 +32877,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1026 */
+/* 1028 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -29870,7 +33036,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1027 */
+/* 1029 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30027,7 +33193,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1028 */
+/* 1030 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30179,7 +33345,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1029 */
+/* 1031 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30355,7 +33521,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1030 */
+/* 1032 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -30374,7 +33540,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var column_1 = __webpack_require__(321);
 	var columntemplateloader_1 = __webpack_require__(501);
-	var rowexpansionloader_1 = __webpack_require__(1031);
+	var rowexpansionloader_1 = __webpack_require__(1033);
 	var common_1 = __webpack_require__(35);
 	var common_2 = __webpack_require__(35);
 	var paginator_1 = __webpack_require__(211);
@@ -31409,7 +34575,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1031 */
+/* 1033 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31453,7 +34619,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1032 */
+/* 1034 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31751,7 +34917,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1033 */
+/* 1035 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31874,7 +35040,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1034 */
+/* 1036 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -31993,7 +35159,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1035 */
+/* 1037 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32338,7 +35504,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1036 */
+/* 1038 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32457,7 +35623,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1037 */
+/* 1039 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32544,7 +35710,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1038 */
+/* 1040 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32753,7 +35919,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1039 */
+/* 1041 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -32914,7 +36080,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1040 */
+/* 1042 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33023,7 +36189,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1041 */
+/* 1043 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33177,7 +36343,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1042 */
+/* 1044 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33297,7 +36463,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1043 */
+/* 1045 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33481,7 +36647,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1044 */
+/* 1046 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33701,7 +36867,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1045 */
+/* 1047 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33833,7 +36999,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1046 */
+/* 1048 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -33964,7 +37130,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1047 */
+/* 1049 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34099,7 +37265,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1048 */
+/* 1050 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34148,7 +37314,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1049 */
+/* 1051 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34425,7 +37591,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1050 */
+/* 1052 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34627,7 +37793,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1051 */
+/* 1053 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34771,7 +37937,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1052 */
+/* 1054 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34849,7 +38015,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1053 */
+/* 1055 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -34977,7 +38143,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1054 */
+/* 1056 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35153,7 +38319,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1055 */
+/* 1057 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35381,7 +38547,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1056 */
+/* 1058 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35415,7 +38581,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1057 */
+/* 1059 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35493,7 +38659,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1058 */
+/* 1060 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35593,7 +38759,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1059 */
+/* 1061 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -35966,7 +39132,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1060 */
+/* 1062 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36073,7 +39239,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1061 */
+/* 1063 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36277,7 +39443,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1062 */
+/* 1064 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36407,7 +39573,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1063 */
+/* 1065 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36638,7 +39804,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1064 */
+/* 1066 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36744,7 +39910,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1065 */
+/* 1067 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36838,7 +40004,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1066 */
+/* 1068 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -36960,7 +40126,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1067 */
+/* 1069 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37055,7 +40221,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1068 */
+/* 1070 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37218,7 +40384,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1069 */
+/* 1071 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37316,7 +40482,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1070 */
+/* 1072 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37354,7 +40520,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1071 */
+/* 1073 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37496,7 +40662,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1072 */
+/* 1074 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37540,7 +40706,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1073 */
+/* 1075 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -37558,7 +40724,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var tree_1 = __webpack_require__(504);
-	var treenodetemplateloader_1 = __webpack_require__(1072);
+	var treenodetemplateloader_1 = __webpack_require__(1074);
 	var UITreeNode = (function () {
 	    function UITreeNode(tree) {
 	        this.tree = tree;
@@ -37609,7 +40775,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1074 */
+/* 1076 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";

@@ -16,6 +16,8 @@ var register_1 = require('../components/front-end/user/register/register');
 var info_1 = require('../components/front-end/user/register/info');
 var success_1 = require('../components/front-end/user/register/success');
 var login_1 = require("../components/front-end/user/login/login");
+var reset_pass_1 = require("../components/front-end/user/reset-password/reset-pass");
+var new_pass_1 = require("../components/front-end/user/reset-password/new-pass");
 var create_article_1 = require("../components/front-end/article/create-article");
 var detail_article_1 = require("../components/front-end/article/detail-article");
 var list_article_1 = require("../components/front-end/article/list-article");
@@ -50,6 +52,19 @@ exports.KShareRoutes = [
                 path: 'login',
                 canActivate: [auth_1.AdminAuthGuard],
                 component: login_1.LoginComponent
+            },
+            {
+                path: 'reset-password',
+                children: [
+                    {
+                        path: '',
+                        component: reset_pass_1.ResetPasswordComponent
+                    },
+                    {
+                        path: ':token',
+                        component: new_pass_1.NewPasswordComponent
+                    }
+                ]
             },
             {
                 path: 'user',
