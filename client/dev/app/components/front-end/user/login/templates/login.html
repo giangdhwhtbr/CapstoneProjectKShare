@@ -4,7 +4,7 @@
     <div class="col-md-3"></div>
     <!-- /.col-md-3 -->
     <div class="col-md-6">
-      <div *ngIf="bannedMessage" class="errmess">{{bannedMessage}}</div>
+        <div *ngIf="errorMessage" class="errmess">{{errorMessage}}</div>
       <div class="loginPanel">
         <div class="box-header">
           <h2>Log In</h2>
@@ -16,7 +16,6 @@
                    name="username"
                    [ngFormControl]="loginForm.controls['username']"
             />
-            <div *ngIf="userValid" class="errmess">{{userValid}}</div>
           </div>
 
           <div class="form-group">
@@ -24,7 +23,6 @@
                    name="mật khẩu"
                    [ngFormControl]="loginForm.controls['password']"
             />
-            <div *ngIf="passValid" class="errmess">{{passValid}}</div>
           </div>
           <div class="row">
             <div class="col-sm-6">

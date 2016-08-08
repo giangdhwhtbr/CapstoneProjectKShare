@@ -18732,6 +18732,7 @@ webpackJsonp([2],[
 	        this._authService = _authService;
 	        this.router = router;
 	        this.user = [];
+	        this.errorMessage = '';
 	        this.userValid = "";
 	        this.passValid = "";
 	        this.loginForm = fb.group({
@@ -18756,15 +18757,14 @@ webpackJsonp([2],[
 	            if (error._body) {
 	                error = JSON.parse(error._body);
 	                if (error.invalidUsername) {
-	                    _this.userValid = '*' + error.invalidUsername;
-	                    _this.passValid = null;
+	                    _this.errorMessage = '*' + error.invalidUsername;
+	                    console.log(_this.errorMessage);
 	                }
 	                else if (error.invalidPassword) {
-	                    _this.passValid = '*' + error.invalidPassword;
-	                    _this.userValid = null;
+	                    _this.errorMessage = '*' + error.invalidPassword;
 	                }
 	                else if (error.message) {
-	                    _this.bannedMessage = '*' + error.message;
+	                    _this.errorMessage = '*' + error.message;
 	                }
 	            }
 	        });
@@ -18939,7 +18939,7 @@ webpackJsonp([2],[
 	        this.fb = fb;
 	        this._authService = _authService;
 	        this.router = router;
-	        this.passValid = false;
+	        this.errorMessage = '';
 	        this.regForm = fb.group({
 	            username: ["", common_1.Validators.required],
 	            password: ["", common_1.Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')],
@@ -18949,10 +18949,10 @@ webpackJsonp([2],[
 	    }
 	    RegisterComponent.prototype.register = function (user) {
 	        var _this = this;
-	        if (user.password === user.copass) {
-	            this.coPassValid = true;
+	        if (user.password !== user.copass) {
+	            this.errorMessage = 'Sai mật khẩu xác nhận! ';
 	        }
-	        if (this.coPassValid) {
+	        else {
 	            this._authService
 	                .register(user)
 	                .subscribe(function (response) {
@@ -18970,7 +18970,18 @@ webpackJsonp([2],[
 	                    console.log(error);
 	                });
 	            }, function (error) {
-	                console.log(error);
+	                if (error.errors) {
+	                    var errors = error.errors;
+	                    if (errors.username) {
+	                        _this.errorMessage = errors.username.message;
+	                    }
+	                    else if (errors.password) {
+	                        _this.errorMessage = errors.password.message;
+	                    }
+	                    else if (errors.email) {
+	                        _this.errorMessage = errors.email.message;
+	                    }
+	                }
 	            });
 	        }
 	    };

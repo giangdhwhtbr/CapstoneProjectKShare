@@ -19,7 +19,7 @@ var RegisterComponent = (function () {
         this.fb = fb;
         this._authService = _authService;
         this.router = router;
-        this.passValid = false;
+        this.errorMessage = '';
         this.regForm = fb.group({
             username: ["", common_1.Validators.required],
             password: ["", common_1.Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')],
@@ -29,10 +29,10 @@ var RegisterComponent = (function () {
     }
     RegisterComponent.prototype.register = function (user) {
         var _this = this;
-        if (user.password === user.copass) {
-            this.coPassValid = true;
+        if (user.password !== user.copass) {
+            this.errorMessage = 'Sai mật khẩu xác nhận! ';
         }
-        if (this.coPassValid) {
+        else {
             this._authService
                 .register(user)
                 .subscribe(function (response) {
@@ -50,7 +50,18 @@ var RegisterComponent = (function () {
                     console.log(error);
                 });
             }, function (error) {
-                console.log(error);
+                if (error.errors) {
+                    var errors = error.errors;
+                    if (errors.username) {
+                        _this.errorMessage = errors.username.message;
+                    }
+                    else if (errors.password) {
+                        _this.errorMessage = errors.password.message;
+                    }
+                    else if (errors.email) {
+                        _this.errorMessage = errors.email.message;
+                    }
+                }
             });
         }
     };
