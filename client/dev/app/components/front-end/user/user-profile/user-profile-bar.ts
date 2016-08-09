@@ -14,8 +14,8 @@ import { Notification } from '../../../../interface/notification';
 
 @Component({
   selector: 'user-profile-bar',
-  templateUrl: 'client/dev/app/components/front-end/user-profile/templates/user-profile-bar.html',
-  styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+  templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile-bar.html',
+  styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
   directives: [
     ROUTER_DIRECTIVES
   ]

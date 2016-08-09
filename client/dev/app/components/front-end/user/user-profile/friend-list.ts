@@ -17,8 +17,8 @@ import { Request } from '../../../../interface/request';
 
 @Component({
   selector: 'request-record',
-  templateUrl: 'client/dev/app/components/front-end/user-profile/templates/friend-list.html',
-  styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+  templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/friend-list.html',
+  styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
   directives: [
     ROUTER_DIRECTIVES,
     RequestFriendRecordComponent,

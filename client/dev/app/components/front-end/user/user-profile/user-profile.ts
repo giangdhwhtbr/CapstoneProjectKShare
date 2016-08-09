@@ -19,8 +19,8 @@ import { Knowledge } from '../../../../interface/knowledge';
 
 @Component({
   selector: 'user-profile',
-  templateUrl: 'client/dev/app/components/front-end/user-profile/templates/user-profile.html',
-  styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+  templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile.html',
+  styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
   directives: [
     ROUTER_DIRECTIVES,
     RequestRecordComponent,
