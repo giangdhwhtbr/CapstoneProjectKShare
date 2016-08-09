@@ -18670,9 +18670,15 @@ webpackJsonp([2],[
 	        this.getNotificationByUser();
 	    };
 	    HeaderComponent.prototype.logout = function () {
-	        this._auth.logout();
-	        this._auth.logoutClient();
-	        window.location.reload();
+	        var _this = this;
+	        this._auth.logout()
+	            .subscribe(function (res) {
+	            console.log(res);
+	            if (res.success == true) {
+	                _this._auth.logoutClient();
+	                window.location.reload();
+	            }
+	        });
 	    };
 	    HeaderComponent.prototype.showNotification = function (title) {
 	        this.notiTitle = title;
