@@ -18,8 +18,8 @@
                 <div class="btn-group btn-art">
                     <a *ngIf="roleToken=='admin' || article.ofUser==userToken" class="btn btn-primary "
                        href="/article/edit/{{article._id}} ">Edit</a>
-                    <a id="clsArtBtn" *ngIf="(roleToken=='admin' || article.ofUser==userToken)&& article.status!='deactivate'" class="btn btn-primary"
-                       (click)="deactivateArticle(article._id)">Close Article</a>
+                    <a *ngIf="(roleToken=='admin' || article.ofUser==userToken)&& article.status!='deactivate'" type="button" class="btn btn-danger" data-toggle="modal" data-target="#mdCfClose">Đóng bài
+                        viết</a>
                     <a class="btn btn-primary " data-toggle="modal" id="btnRp" data-target="#myModal">báo cáo</a>
                 </div>
             </div>
@@ -37,8 +37,38 @@
             <div class="dateCreate">
                 {{article.createdAt | date:"dd/MM/yyyy"}}
             </div>
+            <!--modal close-->
+            <div id="mdCfClose" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Modal Header</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Bài viết sẽ bị đóng không thể khôi phục trừ khi có quyển trị viên can thiệp , bạn có muốn
+                                tiếp tục ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="clsArtBtn"
+                                    *ngIf="(roleToken=='admin' || article.ofUser==userToken)&& article.status!='deactivate'"
+                                    (click)="deactivateArticle(article._id)" type="button" class="btn btn-danger"
+                                    data-dismiss="modal">Đóng bài viết
+                            </button>
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <report *ngIf="article" reportedUser="{{article.ofUser}}"></report>
         </div>
     </div>
+
 
     <div *ngIf="!canSee" class="noti-err">
         <div class="row">
@@ -48,4 +78,3 @@
         </div>
     </div>
 </div>
-<report *ngIf="article" reportedUser="{{article.ofUser}}"></report>

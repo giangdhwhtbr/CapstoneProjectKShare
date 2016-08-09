@@ -10,13 +10,14 @@ import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/co
 import {ArticleService} from '../../../services/article';
 import { PaginationControlsCmp, PaginatePipe, PaginationService, IPaginationInstance } from 'ng2-pagination';
 import {StringFilterPipe} from '../shared/filter';
+import {Paginator} from 'primeng/primeng';
 
 declare var $:any;
 
 @Component({
     selector: 'art-list-clt',
     templateUrl: 'client/dev/app/components/back-end/article/templates/article-list.html',
-    directives: [ROUTER_DIRECTIVES, FORM_DIRECTIVES, PaginationControlsCmp],
+    directives: [ROUTER_DIRECTIVES, FORM_DIRECTIVES, PaginationControlsCmp,Paginator],
     providers: [ArticleService, PaginationService],
     pipes: [PaginatePipe, StringFilterPipe]
 })
