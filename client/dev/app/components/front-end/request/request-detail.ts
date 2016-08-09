@@ -185,6 +185,8 @@ export class RequestDetailClientComponent implements AfterViewChecked{
                     });
                 this.request.status = 'accepted';
                 //update request status
+
+                console.log(this.request);
                 this._requestService.updateRequest(this.request)
                     .subscribe((c) => {
                         console.log(this.request);
@@ -194,7 +196,7 @@ export class RequestDetailClientComponent implements AfterViewChecked{
 
                 //window.location.reload();
 
-                this.router.navigate(['/kspace/info/' + r._id]);
+                this.router.navigate(['/kspace/info/' + r._id +'/'+lecturer]);
             })
     }
 

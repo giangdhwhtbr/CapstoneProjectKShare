@@ -5458,6 +5458,7 @@ webpackJsonp([2],[
 	            });
 	            _this.request.status = 'accepted';
 	            //update request status
+	            console.log(_this.request);
 	            _this._requestService.updateRequest(_this.request)
 	                .subscribe(function (c) {
 	                console.log(_this.request);
@@ -5465,7 +5466,7 @@ webpackJsonp([2],[
 	            });
 	            _this.checkIsAcceped = true;
 	            //window.location.reload();
-	            _this.router.navigate(['/kspace/info/' + r._id]);
+	            _this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
 	        });
 	    };
 	    RequestDetailClientComponent.prototype.addSubcriber = function (id) {
@@ -18641,6 +18642,7 @@ webpackJsonp([2],[
 	        this._auth.isLoggedIn().subscribe(function (res) {
 	            if (res.login) {
 	                _this.loginToken = true;
+	                _this.getNotificationByUser();
 	            }
 	            else {
 	                _this._auth.logoutClient();
@@ -18667,7 +18669,6 @@ webpackJsonp([2],[
 	                setTimeout(function () { x.className = x.className.replace("show", ""); }, 10000);
 	            }
 	        });
-	        this.getNotificationByUser();
 	    };
 	    HeaderComponent.prototype.logout = function () {
 	        var _this = this;
