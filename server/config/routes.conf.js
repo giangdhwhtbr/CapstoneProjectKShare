@@ -32,9 +32,6 @@ module.exports = class RouteConfig {
 
         application.use(expressSession({
             secret: 'kshare',
-            cookie: {maxAge: 60000},
-            secure: false,
-            httpOnly: false,
             resave: true,
             saveUninitialized: true
         }));
