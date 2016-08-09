@@ -2,10 +2,9 @@
  * Created by Duc Duong on 7/25/2016.
  */
 
-import { Component, OnInit,Pipe,PipeTransform } from '@angular/core';
+import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../../services/article';
-import {ArticleService} from "../../../services/article";
 import { AuthService } from '../../../services/auth';
 
 @Component ({

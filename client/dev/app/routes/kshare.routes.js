@@ -2,6 +2,7 @@
 var kshare_component_1 = require('../components/kshare.component');
 //Function Components
 var home_1 = require("../components/front-end/home/home");
+var newsfeed_1 = require("../components/front-end/newsfeed/newsfeed");
 var request_list_1 = require("../components/front-end/request/request-list");
 var request_detail_1 = require("../components/front-end/request/request-detail");
 var request_update_1 = require("../components/back-end/request/request-update");
@@ -10,8 +11,8 @@ var request_create_1 = require("../components/back-end/request/request-create");
 var kspace_1 = require("../components/front-end/kspace/kspace");
 var kspace_list_1 = require("../components/front-end/kspace/kspace-list");
 var kspace_info_1 = require("../components/front-end/kspace/kspace-info");
-var friend_list_1 = require("../components/front-end/user-profile/friend-list");
-var user_profile_1 = require("../components/front-end/user-profile/user-profile");
+var friend_list_1 = require("../components/front-end/user/user-profile/friend-list");
+var user_profile_1 = require("../components/front-end/user/user-profile/user-profile");
 var register_1 = require('../components/front-end/user/register/register');
 var info_1 = require('../components/front-end/user/register/info');
 var success_1 = require('../components/front-end/user/register/success');
@@ -30,6 +31,10 @@ exports.KShareRoutes = [
         path: '',
         component: kshare_component_1.KshareComponent,
         children: [
+            {
+                path: 'newsfeed',
+                component: newsfeed_1.NewsFeedComponent
+            },
             {
                 path: 'reg',
                 //canActivate: [ AdminAuthGuard ],

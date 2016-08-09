@@ -22,6 +22,44 @@ articleSchema.statics.getAll = () => {
     });
 }
 
+//get all article by tags dao function
+articleSchema.statics.getArticlesByTagsOfUser = (userTags,x) => {
+    return new Promise((resolve, reject) => {
+        Article
+            .find({
+                $and: [
+                    { status: { $nin: ['deactive', 'private'] } },
+                    { tags: { $in: userTags } }
+                ]
+            })
+            .skip(x-5)
+            .limit(x)
+            .exec((err, articles) => {
+                err ? reject(err)
+                    : resolve(articles);
+            });
+    });
+}
+
+//get all article except tags dao function
+articleSchema.statics.getArticlesExceptTagsOfUser = (userTags,x) => {
+    return new Promise((resolve, reject) => {
+        Article
+            .find({
+                $and: [
+                    { status: { $nin: ['deactive', 'private'] } },
+                    { tags: { $nin: userTags } }
+                ]
+            })
+            .skip(x-5)
+            .limit(x)
+            .exec((err, article) => {
+                err ? reject(err)
+                    : resolve(article);
+            });
+    });
+}
+
 articleSchema.statics.createArticle = (article) => {
     return new Promise((resolve, reject) => {
         if (!_.isObject(article))

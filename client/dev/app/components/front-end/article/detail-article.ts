@@ -6,6 +6,7 @@ import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 import { ArticleService } from '../../../services/article';
 import { AuthService } from '../../../services/auth';
+import { ReportComponent } from '../report/report';
 declare var $:any;
 
 @Component({
@@ -13,7 +14,7 @@ declare var $:any;
     templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
     directives: [
-        ROUTER_DIRECTIVES
+        ROUTER_DIRECTIVES,ReportComponent
     ],
     providers: [ArticleService]
 })
@@ -55,6 +56,7 @@ export class detailArticleComponent implements OnInit,AfterViewChecked {
                 if (art.status == "deactivate") {
                     this.isDeAc = true;
                 }
+
             }else{
                 this.canSee=false;
             }
@@ -77,6 +79,9 @@ export class detailArticleComponent implements OnInit,AfterViewChecked {
         if (this.article != undefined) {
             $('.bodyArt').html(this.article.content);
         }
+        $("#btnRp").click(function(){
+            $("#btnRp").hide();
+        });
     }
 
     editArt(id:string) {

@@ -19,6 +19,44 @@ requestSchema.statics.getAll = () => {
     });
 }
 
+//get all request by tags dao function
+requestSchema.statics.getRequestsByTagsOfUser = (userTags,x) => {
+    return new Promise((resolve, reject) => {
+        Request
+            .find({
+                $and: [
+                    { status: { $nin: ['deactive', 'accepted'] } },
+                    { tags: { $in: userTags } }
+                ]
+            })
+            .skip(x-5)
+            .limit(x)
+            .exec((err, requests) => {
+                err ? reject(err)
+                    : resolve(requests);
+            });
+    });
+}
+
+//get all request except tags dao function
+requestSchema.statics.getRequestsExceptTagsOfUser = (userTags,x) => {
+    return new Promise((resolve, reject) => {
+        Request
+            .find({
+                $and: [
+                    { status: { $nin: ['deactive', 'accepted'] } },
+                    { tags: { $nin: userTags } }
+                ]
+            })
+            .skip(x-5)
+            .limit(x)
+            .exec((err, requests) => {
+                err ? reject(err)
+                    : resolve(requests);
+            });
+    });
+}
+
 //get all back.request dao function
 requestSchema.statics.getAllRequestForAdmin = () => {
     return new Promise((resolve, reject) => {

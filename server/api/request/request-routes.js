@@ -7,7 +7,8 @@ module.exports = class RequestRoutes {
     router
       .route('/api/requests')
       .get(RequestController.getAll)
-      .post(RequestController.createRequest);
+      .post(RequestController.createRequest)
+      .put(RequestController.getRequestsByTagsOfUser);
 
     router
       .route('/api/requests-admin')
@@ -22,7 +23,11 @@ module.exports = class RequestRoutes {
 
     router
       .route('/api/requests-user/:user')
-      .get(RequestController.getRequestByUser);
+      .get(RequestController.getRequestByUser)
+    
+    router 
+      .route('/api/requests-user')
+      .post(RequestController.getRequestsExceptTagsOfUser);
 
     router
       .route('/api/requests-status/:id')

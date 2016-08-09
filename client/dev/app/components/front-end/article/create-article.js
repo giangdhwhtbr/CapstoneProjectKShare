@@ -34,6 +34,10 @@ var CreateArticleComponent = (function () {
         this._tagService = _tagService;
         this.router = router;
         this.route = route;
+        this.contentCk = "";
+        this.titelArticle = "";
+        this.tags = [];
+        this.tagsEx = [];
         this.filesToUpload = [];
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
@@ -84,7 +88,6 @@ var CreateArticleComponent = (function () {
         var _this = this;
         this._tagService.getAllTag().subscribe(function (tags) {
             _this.tagsEx = tags;
-            console.log(_this.tagsEx);
         });
     };
     // ckeditor

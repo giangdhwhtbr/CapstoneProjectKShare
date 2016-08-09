@@ -13,6 +13,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
+var report_1 = require('../report/report');
 var detailArticleComponent = (function () {
     function detailArticleComponent(router, route, _articleService) {
         var _this = this;
@@ -61,6 +62,9 @@ var detailArticleComponent = (function () {
         if (this.article != undefined) {
             $('.bodyArt').html(this.article.content);
         }
+        $("#btnRp").click(function () {
+            $("#btnRp").hide();
+        });
     };
     detailArticleComponent.prototype.editArt = function (id) {
         this.router.navigateByUrl('/article/edit/' + this.id);
@@ -71,7 +75,7 @@ var detailArticleComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
             styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES
+                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent
             ],
             providers: [article_1.ArticleService]
         }), 

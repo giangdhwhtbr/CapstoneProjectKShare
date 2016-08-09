@@ -30,8 +30,7 @@
                 </div>
                 <div class="row" *ngIf="subscribers">
                     Danh sách theo dõi :
-                    <p *ngFor="let subscriber of subscribers"><a
-                            [routerLink]="['/user/' + subscriber]">{{subscriber}}</a></p>
+                    <p *ngFor="let subscriber of subscribers"><a [routerLink]="['/user/' + subscriber]">{{subscriber}}</a></p>
                 </div>
             </div>
         </div>
@@ -49,8 +48,7 @@
             <button class="glyphicon glyphicon-trash btn btn-danger" (click)="deactivateRequest(_id)"></button>
         </a>
         <a *ngIf="!checkCreatedUser || roleToken==='admin' ">
-            <button class="glyphicon glyphicon-send btn btn-primary" data-toggle="modal"
-                    data-target="#modalOfferRequest"></button>
+            <button class="glyphicon glyphicon-send btn btn-primary" data-toggle="modal" data-target="#modalOfferRequest"></button>
         </a>
         <a *ngIf="!checkCreatedUser || roleToken==='admin'">
             <button class="glyphicon glyphicon-eye-open btn btn-info" (click)="addSubcriber(_id)"></button>
@@ -64,8 +62,7 @@
     <div class="col-xs-12 col-sm-9 fixEfMenu" *ngIf="offers">
         <div class="panel panel-default card-rq" *ngFor="let offer of offers">
             <div class="panel-body">
-                <span *ngIf="offer.status==='Được chấp nhận'" class="glyphicon glyphicon-ok"
-                      style="color:green;"></span>
+                <span *ngIf="offer.status==='Được chấp nhận'" class="glyphicon glyphicon-ok" style="color:green;"></span>
 
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
                     Người tạo : <a href="/user/{{offer.user}}">{{offer.user}}</a>
@@ -86,8 +83,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
                     <a *ngIf="checkCreatedUser && !checkIsAcceped">
-                        <button class="btn btn-sm btn-success"
-                                (click)="addKshare(request.user,offer.user,_id,request.title,offer._id)">Chấp thuận
+                        <button class="btn btn-sm btn-success" (click)="addKshare(request.user,offer.user,_id,request.title,offer._id)">Chấp thuận
                         </button>
                     </a>
                     <a *ngIf="checkCreatedUser && checkIsAcceped">

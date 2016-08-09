@@ -14,6 +14,7 @@ import { AuthService } from '../../../services/auth';
 import {AutoComplete,SelectButton,SelectItem} from 'primeng/primeng';
 
 declare var $ :any;
+declare var CKEDITOR: any;
 
 @Component({
     selector: 'ck-editor',
@@ -36,15 +37,15 @@ class CKEditor {
 
 export class CreateArticleComponent implements OnInit {
     filesToUpload:Array<File>;
-    contentCk:string;
-    titelArticle:string;
+    contentCk:string="";
+    titelArticle:string="";
     status:string;
 
 
     filteredKnw:string[];
 
-    tags:any[];
-    tagsEx:Array<any>;
+    tags:any[]=[];
+    tagsEx:Array<any> =[];
 
     userToken: string;
     roleToken: string;
@@ -102,7 +103,6 @@ export class CreateArticleComponent implements OnInit {
     loadAllTags() {
         this._tagService.getAllTag().subscribe((tags) => {
             this.tagsEx = tags;
-            console.log(this.tagsEx);
         });
     }
 

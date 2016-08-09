@@ -20,7 +20,7 @@
                        href="/article/edit/{{article._id}} ">Edit</a>
                     <a id="clsArtBtn" *ngIf="(roleToken=='admin' || article.ofUser==userToken)&& article.status!='deactivate'" class="btn btn-primary"
                        (click)="deactivateArticle(article._id)">Close Article</a>
-                    <a class="btn btn-primary " href="">Report</a>
+                    <a class="btn btn-primary " data-toggle="modal" id="btnRp" data-target="#myModal">báo cáo</a>
                 </div>
             </div>
             <div class="messOff">
@@ -48,3 +48,4 @@
         </div>
     </div>
 </div>
+<report *ngIf="article" reportedUser="{{article.ofUser}}"></report>

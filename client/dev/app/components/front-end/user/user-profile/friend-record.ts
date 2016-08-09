@@ -3,12 +3,12 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 //services
-import { UserService } from '../../../services/users';
-import { AuthService } from '../../../services/auth';
+import { UserService } from '../../../../services/users';
+import { AuthService } from '../../../../services/auth';
 
 //interfaces
-import { User } from '../../../interface/user';
-import { FriendShip } from '../../../interface/friendship';
+import { User } from '../../../../interface/user';
+import { FriendShip } from '../../../../interface/friendship';
 
 @Component({
   selector: 'friend-record',
@@ -28,7 +28,7 @@ export class FriendRecordComponent {
   isFriend:boolean;
   name:string;
 
-  constructor(private router: Router, private route: ActivatedRoute, 
+  constructor(private router: Router, private route: ActivatedRoute,
                 private _userService: UserService, private _auth:AuthService) {
     this.userToken = localStorage.getItem('username');
     this.isFriend = true;
@@ -40,7 +40,7 @@ export class FriendRecordComponent {
   }
 
   ngOnInit(): void {
-    this.getUserInformation();  
+    this.getUserInformation();
   }
 
   getUserInformation():void {
