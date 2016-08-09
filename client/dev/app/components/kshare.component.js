@@ -19,6 +19,7 @@ var header_1 = require("./front-end/shared/header");
 var side_bar_1 = require("./front-end/shared/side-bar");
 var footer_1 = require("./front-end/shared/footer");
 var user_profile_1 = require("./front-end/user-profile/user-profile");
+//import { FriendListComponent } from "./front-end/shared/friend-list";
 /**
  * Page components
  */
@@ -46,12 +47,12 @@ var KshareComponent = (function () {
     KshareComponent = __decorate([
         core_1.Component({
             selector: 'kshare-app',
-            template: "\n    <header></header>\n    <sidebar></sidebar>\n    <router-outlet></router-outlet>\n  ",
+            template: "\n    <header></header>\n    <sidebar></sidebar>\n    <!--<friend-list></friend-list>-->\n    <router-outlet></router-outlet>\n  ",
             directives: [
                 router_1.ROUTER_DIRECTIVES,
                 header_1.HeaderComponent,
                 side_bar_1.SideBarComponent,
-                footer_1.FooterComponent,
+                footer_1.FooterComponent
             ],
             precompile: [
                 home_1.HomeComponent,

@@ -12,6 +12,7 @@ import { HeaderComponent } from "./front-end/shared/header";
 import { SideBarComponent } from "./front-end/shared/side-bar";
 import { FooterComponent } from "./front-end/shared/footer";
 import { UserProfileComponent } from "./front-end/user-profile/user-profile";
+//import { FriendListComponent } from "./front-end/shared/friend-list";
 
 /**
  * Page components
@@ -42,13 +43,15 @@ import { CreateRequestComponent } from "./back-end/request/request-create";
   template:`
     <header></header>
     <sidebar></sidebar>
+    <!--<friend-list></friend-list>-->
     <router-outlet></router-outlet>
   `,
   directives: [
     ROUTER_DIRECTIVES,
     HeaderComponent,
     SideBarComponent,
-    FooterComponent,
+    FooterComponent
+    //FriendListComponent
   ],
   precompile: [
     HomeComponent,

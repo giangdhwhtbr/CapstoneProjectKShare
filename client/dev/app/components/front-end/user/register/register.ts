@@ -71,6 +71,13 @@ export class RegisterComponent {
                           this.errorMessage = errors.email.message;
                         }
                       }
+                      if(error.errmsg) {
+                        if(error.errmsg.includes('email')){
+                          this.errorMessage = 'email đã tồn tại!';
+                        }else if(error.errmsg.includes('username')){
+                          this.errorMessage = 'tên đăng nhập đã tồn tại';
+                        }
+                      }
                     }
             );
         }

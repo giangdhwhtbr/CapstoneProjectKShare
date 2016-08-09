@@ -5648,6 +5648,7 @@ webpackJsonp([2],[
 	var side_bar_1 = __webpack_require__(633);
 	var footer_1 = __webpack_require__(630);
 	var user_profile_1 = __webpack_require__(432);
+	//import { FriendListComponent } from "./front-end/shared/friend-list";
 	/**
 	 * Page components
 	 */
@@ -5675,12 +5676,12 @@ webpackJsonp([2],[
 	    KshareComponent = __decorate([
 	        core_1.Component({
 	            selector: 'kshare-app',
-	            template: "\n    <header></header>\n    <sidebar></sidebar>\n    <router-outlet></router-outlet>\n  ",
+	            template: "\n    <header></header>\n    <sidebar></sidebar>\n    <!--<friend-list></friend-list>-->\n    <router-outlet></router-outlet>\n  ",
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                header_1.HeaderComponent,
 	                side_bar_1.SideBarComponent,
-	                footer_1.FooterComponent,
+	                footer_1.FooterComponent
 	            ],
 	            precompile: [
 	                home_1.HomeComponent,
@@ -18273,19 +18274,62 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
+	var users_1 = __webpack_require__(42);
 	var FriendListComponent = (function () {
-	    function FriendListComponent() {
+	    function FriendListComponent(_userService) {
+	        this._userService = _userService;
 	    }
+	    FriendListComponent.prototype.ngOnInit = function () {
+	        //ẩn hiện danh sách chat
+	        $('.chat_head').click(function () {
+	            $('.chat_body').slideToggle('slow');
+	        });
+	        $('.msg_head').click(function () {
+	            $('.msg_wrap').slideToggle('slow');
+	        });
+	        //đóng phần đang chat
+	        $('.close').click(function () {
+	            $('.msg_box').hide();
+	        });
+	        //hiện phần chat
+	        $('.user').click(function () {
+	            $('.msg_wrap').show();
+	            $('.msg_box').show();
+	        });
+	        //nhấn nút enter
+	        $('textarea').keypress(function (e) {
+	            if (e.keyCode == 13) {
+	                e.preventDefault();
+	                var msg = $(this).val();
+	                $(this).val('');
+	                if (msg != '')
+	                    $('<div class="msg_b">' + msg + '</div>').insertBefore('.msg_push');
+	                $('.msg_body').scrollTop($('.msg_body')[0].scrollHeight);
+	            }
+	        });
+	        //
+	        //this._userService.getFriendList()
+	        //  .subscribe(
+	        //    (friends) => {
+	        //
+	        //    },
+	        //    (error) => {
+	        //
+	        //    }
+	        //  );
+	        //
+	    };
 	    FriendListComponent = __decorate([
 	        core_1.Component({
 	            selector: 'friend-list',
-	            templateUrl: 'client/dev/app/components/front-end/asserts/templates/friend-list.html',
-	            styleUrls: ['client/dev/app/components/front-end/asserts/styles/friend-list.html'],
+	            templateUrl: 'client/dev/app/components/front-end/shared/templates/friend-list.html',
+	            styleUrls: ['client/dev/app/components/front-end/shared/styles/friend-list.css'],
 	            directives: []
 	        }), 
-	        __metadata('design:paramtypes', [])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object])
 	    ], FriendListComponent);
 	    return FriendListComponent;
+	    var _a;
 	}());
 	exports.FriendListComponent = FriendListComponent;
 	
@@ -18914,7 +18958,6 @@ webpackJsonp([2],[
 	        var _this = this;
 	        this._tagService.getAllTag().subscribe(function (tags) {
 	            _this.tagsEx = tags;
-	            console.log(_this.tagsEx);
 	        });
 	    };
 	    //end control tags
@@ -19020,6 +19063,14 @@ webpackJsonp([2],[
 	                    }
 	                    else if (errors.email) {
 	                        _this.errorMessage = errors.email.message;
+	                    }
+	                }
+	                if (error.errmsg) {
+	                    if (error.errmsg.includes('email')) {
+	                        _this.errorMessage = 'email đã tồn tại!';
+	                    }
+	                    else if (error.errmsg.includes('username')) {
+	                        _this.errorMessage = 'tên đăng nhập đã tồn tại';
 	                    }
 	                }
 	            });

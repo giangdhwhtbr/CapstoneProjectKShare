@@ -91,7 +91,6 @@ export class RegisterInfoComponent implements OnInit{
     loadAllTags() {
         this._tagService.getAllTag().subscribe((tags) => {
             this.tagsEx = tags;
-            console.log(this.tagsEx);
         });
     }
 
