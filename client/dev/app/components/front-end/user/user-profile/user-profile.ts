@@ -7,20 +7,20 @@ import { RequestRecordComponent } from './request-record';
 import { UserProfileBarComponent} from './user-profile-bar';
 
 //services
-import { UserService } from '../../../services/users';
-import { AuthService } from '../../../services/auth';
-import { KnowledgeService } from '../../../services/knowledge';
+import { UserService } from '../../../../services/users';
+import { AuthService } from '../../../../services/auth';
+import { KnowledgeService } from '../../../../services/knowledge';
 
 //interfaces
-import { User } from '../../../interface/user';
-import { FriendShip } from '../../../interface/friendship';
-import { Request } from '../../../interface/request';
-import { Knowledge } from '../../../interface/knowledge';
+import { User } from '../../../../interface/user';
+import { FriendShip } from '../../../../interface/friendship';
+import { Request } from '../../../../interface/request';
+import { Knowledge } from '../../../../interface/knowledge';
 
 @Component({
   selector: 'user-profile',
-  templateUrl: 'client/dev/app/components/front-end/user-profile/templates/user-profile.html',
-  styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+  templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile.html',
+  styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
   directives: [
     ROUTER_DIRECTIVES,
     RequestRecordComponent,
@@ -87,7 +87,7 @@ export class UserProfileComponent implements DoCheck {
     if (this.isExist = true) {
       this.getRequestByUser();
     }
-    
+
 
   }
 

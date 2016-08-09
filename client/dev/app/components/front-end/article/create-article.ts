@@ -14,6 +14,7 @@ import { AuthService } from '../../../services/auth';
 import {AutoComplete,SelectButton,SelectItem} from 'primeng/primeng';
 
 declare var $ :any;
+declare var CKEDITOR: any;
 
 @Component({
     selector: 'ck-editor',

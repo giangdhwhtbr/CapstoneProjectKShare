@@ -16,8 +16,8 @@ import { CreateRequestComponent } from "../components/back-end/request/request-c
 import { KSpaceComponent } from "../components/front-end/kspace/kspace";
 import { KSpaceListComponent } from "../components/front-end/kspace/kspace-list";
 import { KSpaceInfoComponent } from "../components/front-end/kspace/kspace-info";
-import { FriendListComponent } from "../components/front-end/user-profile/friend-list";
-import { UserProfileComponent } from "../components/front-end/user-profile/user-profile";
+import { FriendListComponent } from "../components/front-end/user/user-profile/friend-list";
+import { UserProfileComponent } from "../components/front-end/user/user-profile/user-profile";
 import { RegisterComponent } from '../components/front-end/user/register/register';
 import { RegisterInfoComponent } from '../components/front-end/user/register/info';
 import { RegisterSuccessComponent } from '../components/front-end/user/register/success';

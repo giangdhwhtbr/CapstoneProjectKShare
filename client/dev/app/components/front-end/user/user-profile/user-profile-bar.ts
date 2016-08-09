@@ -3,19 +3,19 @@ import { Component, OnInit, DoCheck, Input  } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 //services
-import { UserService } from '../../../services/users';
-import { AuthService } from '../../../services/auth';
-import { NotificationService } from '../../../services/notification';
+import { UserService } from '../../../../services/users';
+import { AuthService } from '../../../../services/auth';
+import { NotificationService } from '../../../../services/notification';
 
 //interfaces
-import { User } from '../../../interface/user';
-import { FriendShip } from '../../../interface/friendship';
-import { Notification } from '../../../interface/notification';
+import { User } from '../../../../interface/user';
+import { FriendShip } from '../../../../interface/friendship';
+import { Notification } from '../../../../interface/notification';
 
 @Component({
   selector: 'user-profile-bar',
-  templateUrl: 'client/dev/app/components/front-end/user-profile/templates/user-profile-bar.html',
-  styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+  templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile-bar.html',
+  styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
   directives: [
     ROUTER_DIRECTIVES
   ]

@@ -3,17 +3,30 @@
 const mongoose = require('mongoose');
 
 const _chatRoomSchema = {
-    name: {
-        type: String
-    },
-    createdAt: { 
-        type: Date, default: Date.now 
-    },
-    kSpaceId: {
-        require: true,
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'KSpace'
-    },
-}
+    chatlogs:[
+      {
+        createdAt:{
+          type: Date
+        },
+        createdUser:{
+          type: String
+        },
+        message: {
+          type: String
+        }
+      }
+    ],
+    users : [{
+      username:{
+        type: String,
+        ref: 'User'
+      }
+    }],
+    createdAt: {
+        type: Date, default: Date.now
+    }
+};
 
 module.exports = mongoose.Schema(_chatRoomSchema);
+
+

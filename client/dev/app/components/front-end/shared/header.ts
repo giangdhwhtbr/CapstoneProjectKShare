@@ -76,9 +76,14 @@ export class HeaderComponent {
   }
 
   logout(): void {
-    this._auth.logout();
-    this._auth.logoutClient();
-    window.location.reload();
+    this._auth.logout()
+      .subscribe(res => {
+        console.log(res);
+        if(res.success == true){
+          this._auth.logoutClient();
+          window.location.reload();
+        }
+      });
   }
 
   showNotification(title: string) {

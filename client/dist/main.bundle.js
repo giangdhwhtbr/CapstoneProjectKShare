@@ -307,52 +307,7 @@ webpackJsonp([2],[
 /* 30 */,
 /* 31 */,
 /* 32 */,
-/* 33 */,
-/* 34 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var Header = (function () {
-	    function Header() {
-	    }
-	    Header = __decorate([
-	        core_1.Component({
-	            selector: 'header',
-	            template: '<ng-content></ng-content>'
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Header);
-	    return Header;
-	}());
-	exports.Header = Header;
-	var Footer = (function () {
-	    function Footer() {
-	    }
-	    Footer = __decorate([
-	        core_1.Component({
-	            selector: 'footer',
-	            template: '<ng-content></ng-content>'
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], Footer);
-	    return Footer;
-	}());
-	exports.Footer = Footer;
-	
-
-/***/ },
-/* 35 */,
-/* 36 */
+/* 33 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
@@ -582,6 +537,51 @@ webpackJsonp([2],[
 	
 
 /***/ },
+/* 34 */,
+/* 35 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var Header = (function () {
+	    function Header() {
+	    }
+	    Header = __decorate([
+	        core_1.Component({
+	            selector: 'header',
+	            template: '<ng-content></ng-content>'
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], Header);
+	    return Header;
+	}());
+	exports.Header = Header;
+	var Footer = (function () {
+	    function Footer() {
+	    }
+	    Footer = __decorate([
+	        core_1.Component({
+	            selector: 'footer',
+	            template: '<ng-content></ng-content>'
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], Footer);
+	    return Footer;
+	}());
+	exports.Footer = Footer;
+	
+
+/***/ },
+/* 36 */,
 /* 37 */,
 /* 38 */,
 /* 39 */,
@@ -1330,7 +1330,7 @@ webpackJsonp([2],[
 	function __export(m) {
 	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
 	}
-	__export(__webpack_require__(34));
+	__export(__webpack_require__(35));
 	__export(__webpack_require__(503));
 	__export(__webpack_require__(1021));
 	__export(__webpack_require__(1022));
@@ -1343,8 +1343,8 @@ webpackJsonp([2],[
 	__export(__webpack_require__(1026));
 	__export(__webpack_require__(1027));
 	__export(__webpack_require__(320));
-	__export(__webpack_require__(34));
-	__export(__webpack_require__(34));
+	__export(__webpack_require__(35));
+	__export(__webpack_require__(35));
 	__export(__webpack_require__(1030));
 	__export(__webpack_require__(1031));
 	__export(__webpack_require__(1032));
@@ -2468,6 +2468,7 @@ webpackJsonp([2],[
 	        this._knowledgeService = _knowledgeService;
 	        this._authService = _authService;
 	        this.router = router;
+	        this.tags = [];
 	        this.user = localStorage.getItem('username');
 	        this.roleToken = localStorage.getItem('userrole');
 	        this.requestForm = fb.group({
@@ -2489,18 +2490,20 @@ webpackJsonp([2],[
 	    };
 	    CreateRequestComponent.prototype.filterONTag = function () {
 	        var oldTag = [];
-	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
-	            var e = _a[_i];
-	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
-	                var e1 = _c[_b];
-	                //catch old tags
-	                if (e.name == e1) {
-	                    oldTag.push(e._id);
-	                    //find out old tags in data tags user
-	                    var index = this.tags.indexOf(e1);
-	                    if (index > -1) {
-	                        //remove old tags to catch new tags
-	                        this.tags.splice(index, 1);
+	        if (this.tags) {
+	            for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	                var e = _a[_i];
+	                for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                    var e1 = _c[_b];
+	                    //catch old tags
+	                    if (e.name == e1) {
+	                        oldTag.push(e._id);
+	                        //find out old tags in data tags user
+	                        var index = this.tags.indexOf(e1);
+	                        if (index > -1) {
+	                            //remove old tags to catch new tags
+	                            this.tags.splice(index, 1);
+	                        }
 	                    }
 	                }
 	            }
@@ -2739,7 +2742,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	//services
-	var users_1 = __webpack_require__(36);
+	var users_1 = __webpack_require__(33);
 	var notification_1 = __webpack_require__(122);
 	var UserProfileBarComponent = (function () {
 	    function UserProfileBarComponent(router, route, _userService, _noti) {
@@ -2864,8 +2867,8 @@ webpackJsonp([2],[
 	    UserProfileBarComponent = __decorate([
 	        core_1.Component({
 	            selector: 'user-profile-bar',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/user-profile-bar.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile-bar.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES
 	            ]
@@ -4400,7 +4403,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	var common_1 = __webpack_require__(8);
-	var users_1 = __webpack_require__(36);
+	var users_1 = __webpack_require__(33);
 	var auth_1 = __webpack_require__(42);
 	var ng2_pagination_1 = __webpack_require__(148);
 	var filter_1 = __webpack_require__(121);
@@ -5262,7 +5265,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(8);
 	var report_1 = __webpack_require__(286);
 	var notification_1 = __webpack_require__(122);
-	var users_1 = __webpack_require__(36);
+	var users_1 = __webpack_require__(33);
 	var ReportComponent = (function () {
 	    function ReportComponent(fb, _reportService, _noti, _userService) {
 	        this._reportService = _reportService;
@@ -5737,11 +5740,11 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	//components
-	var request_friend_record_1 = __webpack_require__(637);
-	var friend_record_1 = __webpack_require__(636);
+	var request_friend_record_1 = __webpack_require__(643);
+	var friend_record_1 = __webpack_require__(642);
 	var user_profile_bar_1 = __webpack_require__(285);
 	//services
-	var users_1 = __webpack_require__(36);
+	var users_1 = __webpack_require__(33);
 	var FriendListComponent = (function () {
 	    function FriendListComponent(router, route, _userService) {
 	        var _this = this;
@@ -5799,8 +5802,8 @@ webpackJsonp([2],[
 	    FriendListComponent = __decorate([
 	        core_1.Component({
 	            selector: 'request-record',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/friend-list.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/friend-list.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                request_friend_record_1.RequestFriendRecordComponent,
@@ -5834,10 +5837,10 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	//Component
-	var request_record_1 = __webpack_require__(638);
+	var request_record_1 = __webpack_require__(644);
 	var user_profile_bar_1 = __webpack_require__(285);
 	//services
-	var users_1 = __webpack_require__(36);
+	var users_1 = __webpack_require__(33);
 	var knowledge_1 = __webpack_require__(52);
 	var UserProfileComponent = (function () {
 	    function UserProfileComponent(router, route, _userService, _knowledgeService) {
@@ -5921,8 +5924,8 @@ webpackJsonp([2],[
 	    UserProfileComponent = __decorate([
 	        core_1.Component({
 	            selector: 'user-profile',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/user-profile.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                request_record_1.RequestRecordComponent,
@@ -5963,6 +5966,7 @@ webpackJsonp([2],[
 	var side_bar_1 = __webpack_require__(635);
 	var footer_1 = __webpack_require__(632);
 	var user_profile_1 = __webpack_require__(434);
+	//import { FriendListComponent } from "./front-end/shared/friend-list";
 	/**
 	 * Page components
 	 */
@@ -5989,12 +5993,12 @@ webpackJsonp([2],[
 	    KshareComponent = __decorate([
 	        core_1.Component({
 	            selector: 'kshare-app',
-	            template: "\n    <header></header>\n    <sidebar></sidebar>\n    <router-outlet></router-outlet>\n  ",
+	            template: "\n    <header></header>\n    <sidebar></sidebar>\n    <!--<friend-list></friend-list>-->\n    <router-outlet></router-outlet>\n  ",
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                header_1.HeaderComponent,
 	                side_bar_1.SideBarComponent,
-	                footer_1.FooterComponent,
+	                footer_1.FooterComponent
 	            ],
 	            precompile: [
 	                home_1.HomeComponent,
@@ -17155,8 +17159,8 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var uitreerow_1 = __webpack_require__(1077);
 	var column_1 = __webpack_require__(320);
-	var common_1 = __webpack_require__(34);
-	var common_2 = __webpack_require__(34);
+	var common_1 = __webpack_require__(35);
+	var common_2 = __webpack_require__(35);
 	var TreeTable = (function () {
 	    function TreeTable() {
 	        this.selectionChange = new core_1.EventEmitter();
@@ -17440,7 +17444,7 @@ webpackJsonp([2],[
 	var knowledge_1 = __webpack_require__(52);
 	var request_offer_1 = __webpack_require__(287);
 	var requests_1 = __webpack_require__(59);
-	var users_1 = __webpack_require__(36);
+	var users_1 = __webpack_require__(33);
 	var auth_1 = __webpack_require__(42);
 	var kspace_1 = __webpack_require__(139);
 	var notification_1 = __webpack_require__(122);
@@ -18321,7 +18325,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	var requests_1 = __webpack_require__(59);
-	var users_1 = __webpack_require__(36);
+	var users_1 = __webpack_require__(33);
 	var article_1 = __webpack_require__(98);
 	var NewsFeedComponent = (function () {
 	    function NewsFeedComponent(_userService, _requestService, _articleService) {
@@ -18542,19 +18546,62 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
+	var users_1 = __webpack_require__(33);
 	var FriendListComponent = (function () {
-	    function FriendListComponent() {
+	    function FriendListComponent(_userService) {
+	        this._userService = _userService;
 	    }
+	    FriendListComponent.prototype.ngOnInit = function () {
+	        //ẩn hiện danh sách chat
+	        $('.chat_head').click(function () {
+	            $('.chat_body').slideToggle('slow');
+	        });
+	        $('.msg_head').click(function () {
+	            $('.msg_wrap').slideToggle('slow');
+	        });
+	        //đóng phần đang chat
+	        $('.close').click(function () {
+	            $('.msg_box').hide();
+	        });
+	        //hiện phần chat
+	        $('.user').click(function () {
+	            $('.msg_wrap').show();
+	            $('.msg_box').show();
+	        });
+	        //nhấn nút enter
+	        $('textarea').keypress(function (e) {
+	            if (e.keyCode == 13) {
+	                e.preventDefault();
+	                var msg = $(this).val();
+	                $(this).val('');
+	                if (msg != '')
+	                    $('<div class="msg_b">' + msg + '</div>').insertBefore('.msg_push');
+	                $('.msg_body').scrollTop($('.msg_body')[0].scrollHeight);
+	            }
+	        });
+	        //
+	        //this._userService.getFriendList()
+	        //  .subscribe(
+	        //    (friends) => {
+	        //
+	        //    },
+	        //    (error) => {
+	        //
+	        //    }
+	        //  );
+	        //
+	    };
 	    FriendListComponent = __decorate([
 	        core_1.Component({
 	            selector: 'friend-list',
-	            templateUrl: 'client/dev/app/components/front-end/asserts/templates/friend-list.html',
-	            styleUrls: ['client/dev/app/components/front-end/asserts/styles/friend-list.html'],
+	            templateUrl: 'client/dev/app/components/front-end/shared/templates/friend-list.html',
+	            styleUrls: ['client/dev/app/components/front-end/shared/styles/friend-list.css'],
 	            directives: []
 	        }), 
-	        __metadata('design:paramtypes', [])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object])
 	    ], FriendListComponent);
 	    return FriendListComponent;
+	    var _a;
 	}());
 	exports.FriendListComponent = FriendListComponent;
 	
@@ -18580,7 +18627,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(5);
 	var auth_1 = __webpack_require__(42);
 	var notification_1 = __webpack_require__(122);
-	var users_1 = __webpack_require__(36);
+	var users_1 = __webpack_require__(33);
 	var HeaderComponent = (function () {
 	    function HeaderComponent(_auth, router, _noti, _userService) {
 	        this._auth = _auth;
@@ -18625,9 +18672,15 @@ webpackJsonp([2],[
 	        this.getNotificationByUser();
 	    };
 	    HeaderComponent.prototype.logout = function () {
-	        this._auth.logout();
-	        this._auth.logoutClient();
-	        window.location.reload();
+	        var _this = this;
+	        this._auth.logout()
+	            .subscribe(function (res) {
+	            console.log(res);
+	            if (res.success == true) {
+	                _this._auth.logoutClient();
+	                window.location.reload();
+	            }
+	        });
 	    };
 	    HeaderComponent.prototype.showNotification = function (title) {
 	        this.notiTitle = title;
@@ -18741,291 +18794,6 @@ webpackJsonp([2],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	//cores
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	//services
-	var users_1 = __webpack_require__(36);
-	var auth_1 = __webpack_require__(42);
-	var FriendRecordComponent = (function () {
-	    function FriendRecordComponent(router, route, _userService, _auth) {
-	        var _this = this;
-	        this.router = router;
-	        this.route = route;
-	        this._userService = _userService;
-	        this._auth = _auth;
-	        this.userToken = localStorage.getItem('username');
-	        this.isFriend = true;
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.name = params['name'];
-	        });
-	    }
-	    FriendRecordComponent.prototype.ngOnInit = function () {
-	        this.getUserInformation();
-	    };
-	    FriendRecordComponent.prototype.getUserInformation = function () {
-	        var _this = this;
-	        this._userService.getUserByUserName(this.friendName).subscribe(function (userinfo) {
-	            _this.displayname = userinfo.displayName;
-	            _this.email = userinfo.email;
-	            _this.level = userinfo.level;
-	        }, function (error) {
-	            console.log(error);
-	        });
-	    };
-	    FriendRecordComponent.prototype.deleteFriend = function () {
-	        var _this = this;
-	        var r = confirm("Bạn có muốn hủy kết bạn");
-	        if (r == true) {
-	            this._userService
-	                .deleteFriendRequest(this.userToken, this.friendName)
-	                .subscribe(function () {
-	                console.log('delete successfull');
-	            });
-	            this._userService
-	                .deleteFriendRequest(this.friendName, this.userToken)
-	                .subscribe(function () {
-	                _this.isFriend = false;
-	            });
-	            alert("bạn đã hủy gửi lời  mời kết bạn");
-	        }
-	    };
-	    __decorate([
-	        core_1.Input('friendName'), 
-	        __metadata('design:type', String)
-	    ], FriendRecordComponent.prototype, "friendName", void 0);
-	    FriendRecordComponent = __decorate([
-	        core_1.Component({
-	            selector: 'friend-record',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/friend-record.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
-	    ], FriendRecordComponent);
-	    return FriendRecordComponent;
-	    var _a, _b, _c, _d;
-	}());
-	exports.FriendRecordComponent = FriendRecordComponent;
-	
-
-/***/ },
-/* 637 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	//cores
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	//services
-	var users_1 = __webpack_require__(36);
-	var notification_1 = __webpack_require__(122);
-	var RequestFriendRecordComponent = (function () {
-	    function RequestFriendRecordComponent(router, route, _userService, _noti) {
-	        var _this = this;
-	        this.router = router;
-	        this.route = route;
-	        this._userService = _userService;
-	        this._noti = _noti;
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.name = params['name'];
-	        });
-	    }
-	    RequestFriendRecordComponent.prototype.ngOnInit = function () {
-	        this.isAdded = false;
-	        this.isFriend = true;
-	        this.getUserInformation();
-	    };
-	    RequestFriendRecordComponent.prototype.acceptRequest = function () {
-	        var _this = this;
-	        console.log(this.requestUser + ' ' + this.name);
-	        this._userService.acceptFriendRequest(this.requestUser, this.name).subscribe(function () {
-	            console.log("accepted successful");
-	            alert("Bạn đã là bạn bè với " + _this.requestUser);
-	            _this.isAdded = true;
-	            var title = _this.name + ' chấp nhận kết bạn';
-	            var link = '/user/' + _this.name;
-	            //call function using socket io to send notification
-	            _this._noti.alertNotification(title, _this.requestUser, link);
-	            //save notification to database
-	            _this._noti.createNotification(title, _this.requestUser, link).subscribe(function (notification) {
-	                console.log('create a notification to ' + _this.name);
-	            });
-	        });
-	    };
-	    RequestFriendRecordComponent.prototype.getUserInformation = function () {
-	        var _this = this;
-	        this._userService.getUserByUserName(this.requestUser).subscribe(function (userinfo) {
-	            _this.displayname = userinfo.displayName;
-	            _this.email = userinfo.email;
-	            _this.level = userinfo.level;
-	        }, function (error) {
-	            console.log(error);
-	        });
-	    };
-	    RequestFriendRecordComponent.prototype.deleteFriend = function () {
-	        var r = confirm("Bạn có muốn hủy kết bạn");
-	        if (r == true) {
-	            this._userService
-	                .deleteFriendRequest(this.requestUser, this.name)
-	                .subscribe(function () {
-	                console.log('delete successfull');
-	            });
-	            this.isFriend = false;
-	            alert("bạn đã hủy gửi lời  mời kết bạn");
-	        }
-	    };
-	    __decorate([
-	        core_1.Input('requestUser'), 
-	        __metadata('design:type', String)
-	    ], RequestFriendRecordComponent.prototype, "requestUser", void 0);
-	    __decorate([
-	        core_1.Input('name'), 
-	        __metadata('design:type', String)
-	    ], RequestFriendRecordComponent.prototype, "name", void 0);
-	    RequestFriendRecordComponent = __decorate([
-	        core_1.Component({
-	            selector: 'request-friend-record',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/request-friend-record.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
-	    ], RequestFriendRecordComponent);
-	    return RequestFriendRecordComponent;
-	    var _a, _b, _c, _d;
-	}());
-	exports.RequestFriendRecordComponent = RequestFriendRecordComponent;
-	
-
-/***/ },
-/* 638 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	//cores
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	//services
-	var users_1 = __webpack_require__(36);
-	var knowledge_1 = __webpack_require__(52);
-	var RequestRecordComponent = (function () {
-	    function RequestRecordComponent(router, route, _userService, _knowledgeService) {
-	        this.router = router;
-	        this.route = route;
-	        this._userService = _userService;
-	        this._knowledgeService = _knowledgeService;
-	        this.formatDate = function (date) {
-	            if (date) {
-	                var newDate, day, month, year;
-	                year = date.substr(0, 4);
-	                month = date.substr(5, 2);
-	                day = date.substr(8, 2);
-	                return newDate = day + '/' + month + '/' + year;
-	            }
-	        };
-	    }
-	    RequestRecordComponent.prototype.ngOnInit = function () {
-	        //this.createdAt = this.formatDate(createdAt);
-	        this.id = this.knowledgeId;
-	        this.getKnowledgeNameOfRequest();
-	        if (this.status === 'pending') {
-	            this.status = 'Đang chờ';
-	        }
-	        else {
-	            this.status = 'Đã được chấp nhận';
-	        }
-	    };
-	    RequestRecordComponent.prototype.getKnowledgeNameOfRequest = function () {
-	        var _this = this;
-	        //get back.knowledge name by knowledgeId
-	        this._knowledgeService.findKnowledgeById(this.knowledgeId).subscribe(function (knowledge) {
-	            _this.knowledgeName = knowledge.name;
-	        }, function (error) {
-	            console.log(error);
-	        });
-	    };
-	    __decorate([
-	        core_1.Input('title'), 
-	        __metadata('design:type', String)
-	    ], RequestRecordComponent.prototype, "title", void 0);
-	    __decorate([
-	        core_1.Input('description'), 
-	        __metadata('design:type', String)
-	    ], RequestRecordComponent.prototype, "description", void 0);
-	    __decorate([
-	        core_1.Input('createdAt'), 
-	        __metadata('design:type', String)
-	    ], RequestRecordComponent.prototype, "createdAt", void 0);
-	    __decorate([
-	        core_1.Input('knowledgeId'), 
-	        __metadata('design:type', String)
-	    ], RequestRecordComponent.prototype, "knowledgeId", void 0);
-	    __decorate([
-	        core_1.Input('status'), 
-	        __metadata('design:type', String)
-	    ], RequestRecordComponent.prototype, "status", void 0);
-	    __decorate([
-	        core_1.Input('requestId'), 
-	        __metadata('design:type', String)
-	    ], RequestRecordComponent.prototype, "requestId", void 0);
-	    RequestRecordComponent = __decorate([
-	        core_1.Component({
-	            selector: 'request-record',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/request-record.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object])
-	    ], RequestRecordComponent);
-	    return RequestRecordComponent;
-	    var _a, _b, _c, _d;
-	}());
-	exports.RequestRecordComponent = RequestRecordComponent;
-	
-
-/***/ },
-/* 639 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
 	var __param = (this && this.__param) || function (paramIndex, decorator) {
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
@@ -19099,7 +18867,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 640 */
+/* 637 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19115,7 +18883,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	var common_1 = __webpack_require__(8);
-	var users_1 = __webpack_require__(36);
+	var users_1 = __webpack_require__(33);
 	var tag_1 = __webpack_require__(82);
 	var primeng_1 = __webpack_require__(126);
 	var RegisterInfoComponent = (function () {
@@ -19183,7 +18951,6 @@ webpackJsonp([2],[
 	        var _this = this;
 	        this._tagService.getAllTag().subscribe(function (tags) {
 	            _this.tagsEx = tags;
-	            console.log(_this.tagsEx);
 	        });
 	    };
 	    //end control tags
@@ -19223,7 +18990,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 641 */
+/* 638 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19291,6 +19058,14 @@ webpackJsonp([2],[
 	                        _this.errorMessage = errors.email.message;
 	                    }
 	                }
+	                if (error.errmsg) {
+	                    if (error.errmsg.includes('email')) {
+	                        _this.errorMessage = 'email đã tồn tại!';
+	                    }
+	                    else if (error.errmsg.includes('username')) {
+	                        _this.errorMessage = 'tên đăng nhập đã tồn tại';
+	                    }
+	                }
 	            });
 	        }
 	    };
@@ -19310,7 +19085,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 642 */
+/* 639 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19346,7 +19121,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 643 */
+/* 640 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19368,7 +19143,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var common_1 = __webpack_require__(8);
 	var router_1 = __webpack_require__(5);
-	var users_1 = __webpack_require__(36);
+	var users_1 = __webpack_require__(33);
 	var NewPasswordComponent = (function () {
 	    function NewPasswordComponent(fb, _userService, router, route) {
 	        var _this = this;
@@ -19444,7 +19219,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 644 */
+/* 641 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19463,7 +19238,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var common_1 = __webpack_require__(8);
 	var router_1 = __webpack_require__(5);
-	var users_1 = __webpack_require__(36);
+	var users_1 = __webpack_require__(33);
 	var ResetPasswordComponent = (function () {
 	    function ResetPasswordComponent(_userService) {
 	        this._userService = _userService;
@@ -19496,6 +19271,291 @@ webpackJsonp([2],[
 	    var _a;
 	}());
 	exports.ResetPasswordComponent = ResetPasswordComponent;
+	
+
+/***/ },
+/* 642 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//services
+	var users_1 = __webpack_require__(33);
+	var auth_1 = __webpack_require__(42);
+	var FriendRecordComponent = (function () {
+	    function FriendRecordComponent(router, route, _userService, _auth) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this._auth = _auth;
+	        this.userToken = localStorage.getItem('username');
+	        this.isFriend = true;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	        });
+	    }
+	    FriendRecordComponent.prototype.ngOnInit = function () {
+	        this.getUserInformation();
+	    };
+	    FriendRecordComponent.prototype.getUserInformation = function () {
+	        var _this = this;
+	        this._userService.getUserByUserName(this.friendName).subscribe(function (userinfo) {
+	            _this.displayname = userinfo.displayName;
+	            _this.email = userinfo.email;
+	            _this.level = userinfo.level;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    FriendRecordComponent.prototype.deleteFriend = function () {
+	        var _this = this;
+	        var r = confirm("Bạn có muốn hủy kết bạn");
+	        if (r == true) {
+	            this._userService
+	                .deleteFriendRequest(this.userToken, this.friendName)
+	                .subscribe(function () {
+	                console.log('delete successfull');
+	            });
+	            this._userService
+	                .deleteFriendRequest(this.friendName, this.userToken)
+	                .subscribe(function () {
+	                _this.isFriend = false;
+	            });
+	            alert("bạn đã hủy gửi lời  mời kết bạn");
+	        }
+	    };
+	    __decorate([
+	        core_1.Input('friendName'), 
+	        __metadata('design:type', String)
+	    ], FriendRecordComponent.prototype, "friendName", void 0);
+	    FriendRecordComponent = __decorate([
+	        core_1.Component({
+	            selector: 'friend-record',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/friend-record.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
+	    ], FriendRecordComponent);
+	    return FriendRecordComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.FriendRecordComponent = FriendRecordComponent;
+	
+
+/***/ },
+/* 643 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//services
+	var users_1 = __webpack_require__(33);
+	var notification_1 = __webpack_require__(122);
+	var RequestFriendRecordComponent = (function () {
+	    function RequestFriendRecordComponent(router, route, _userService, _noti) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this._noti = _noti;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	        });
+	    }
+	    RequestFriendRecordComponent.prototype.ngOnInit = function () {
+	        this.isAdded = false;
+	        this.isFriend = true;
+	        this.getUserInformation();
+	    };
+	    RequestFriendRecordComponent.prototype.acceptRequest = function () {
+	        var _this = this;
+	        console.log(this.requestUser + ' ' + this.name);
+	        this._userService.acceptFriendRequest(this.requestUser, this.name).subscribe(function () {
+	            console.log("accepted successful");
+	            alert("Bạn đã là bạn bè với " + _this.requestUser);
+	            _this.isAdded = true;
+	            var title = _this.name + ' chấp nhận kết bạn';
+	            var link = '/user/' + _this.name;
+	            //call function using socket io to send notification
+	            _this._noti.alertNotification(title, _this.requestUser, link);
+	            //save notification to database
+	            _this._noti.createNotification(title, _this.requestUser, link).subscribe(function (notification) {
+	                console.log('create a notification to ' + _this.name);
+	            });
+	        });
+	    };
+	    RequestFriendRecordComponent.prototype.getUserInformation = function () {
+	        var _this = this;
+	        this._userService.getUserByUserName(this.requestUser).subscribe(function (userinfo) {
+	            _this.displayname = userinfo.displayName;
+	            _this.email = userinfo.email;
+	            _this.level = userinfo.level;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    RequestFriendRecordComponent.prototype.deleteFriend = function () {
+	        var r = confirm("Bạn có muốn hủy kết bạn");
+	        if (r == true) {
+	            this._userService
+	                .deleteFriendRequest(this.requestUser, this.name)
+	                .subscribe(function () {
+	                console.log('delete successfull');
+	            });
+	            this.isFriend = false;
+	            alert("bạn đã hủy gửi lời  mời kết bạn");
+	        }
+	    };
+	    __decorate([
+	        core_1.Input('requestUser'), 
+	        __metadata('design:type', String)
+	    ], RequestFriendRecordComponent.prototype, "requestUser", void 0);
+	    __decorate([
+	        core_1.Input('name'), 
+	        __metadata('design:type', String)
+	    ], RequestFriendRecordComponent.prototype, "name", void 0);
+	    RequestFriendRecordComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-friend-record',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/request-friend-record.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
+	    ], RequestFriendRecordComponent);
+	    return RequestFriendRecordComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.RequestFriendRecordComponent = RequestFriendRecordComponent;
+	
+
+/***/ },
+/* 644 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//services
+	var users_1 = __webpack_require__(33);
+	var knowledge_1 = __webpack_require__(52);
+	var RequestRecordComponent = (function () {
+	    function RequestRecordComponent(router, route, _userService, _knowledgeService) {
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this._knowledgeService = _knowledgeService;
+	        this.formatDate = function (date) {
+	            if (date) {
+	                var newDate, day, month, year;
+	                year = date.substr(0, 4);
+	                month = date.substr(5, 2);
+	                day = date.substr(8, 2);
+	                return newDate = day + '/' + month + '/' + year;
+	            }
+	        };
+	    }
+	    RequestRecordComponent.prototype.ngOnInit = function () {
+	        //this.createdAt = this.formatDate(createdAt);
+	        this.id = this.knowledgeId;
+	        this.getKnowledgeNameOfRequest();
+	        if (this.status === 'pending') {
+	            this.status = 'Đang chờ';
+	        }
+	        else {
+	            this.status = 'Đã được chấp nhận';
+	        }
+	    };
+	    RequestRecordComponent.prototype.getKnowledgeNameOfRequest = function () {
+	        var _this = this;
+	        //get back.knowledge name by knowledgeId
+	        this._knowledgeService.findKnowledgeById(this.knowledgeId).subscribe(function (knowledge) {
+	            _this.knowledgeName = knowledge.name;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    __decorate([
+	        core_1.Input('title'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "title", void 0);
+	    __decorate([
+	        core_1.Input('description'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "description", void 0);
+	    __decorate([
+	        core_1.Input('createdAt'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "createdAt", void 0);
+	    __decorate([
+	        core_1.Input('knowledgeId'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "knowledgeId", void 0);
+	    __decorate([
+	        core_1.Input('status'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "status", void 0);
+	    __decorate([
+	        core_1.Input('requestId'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "requestId", void 0);
+	    RequestRecordComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-record',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/request-record.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object])
+	    ], RequestRecordComponent);
+	    return RequestRecordComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.RequestRecordComponent = RequestRecordComponent;
 	
 
 /***/ },
@@ -19625,12 +19685,12 @@ webpackJsonp([2],[
 	var kspace_info_1 = __webpack_require__(426);
 	var friend_list_1 = __webpack_require__(433);
 	var user_profile_1 = __webpack_require__(434);
-	var register_1 = __webpack_require__(641);
-	var info_1 = __webpack_require__(640);
-	var success_1 = __webpack_require__(642);
-	var login_1 = __webpack_require__(639);
-	var reset_pass_1 = __webpack_require__(644);
-	var new_pass_1 = __webpack_require__(643);
+	var register_1 = __webpack_require__(638);
+	var info_1 = __webpack_require__(637);
+	var success_1 = __webpack_require__(639);
+	var login_1 = __webpack_require__(636);
+	var reset_pass_1 = __webpack_require__(641);
+	var new_pass_1 = __webpack_require__(640);
 	var create_article_1 = __webpack_require__(422);
 	var detail_article_1 = __webpack_require__(423);
 	var list_article_1 = __webpack_require__(424);
@@ -28719,7 +28779,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var accordion_1 = __webpack_require__(503);
-	var common_1 = __webpack_require__(34);
+	var common_1 = __webpack_require__(35);
 	var AccordionTab = (function () {
 	    function AccordionTab(accordion) {
 	        this.accordion = accordion;
@@ -30277,8 +30337,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(34);
-	var common_2 = __webpack_require__(34);
+	var common_1 = __webpack_require__(35);
+	var common_2 = __webpack_require__(35);
 	var paginator_1 = __webpack_require__(211);
 	var DataGrid = (function () {
 	    function DataGrid(el, differs) {
@@ -30434,8 +30494,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(34);
-	var common_2 = __webpack_require__(34);
+	var common_1 = __webpack_require__(35);
+	var common_2 = __webpack_require__(35);
 	var paginator_1 = __webpack_require__(211);
 	var DataList = (function () {
 	    function DataList(el, differs) {
@@ -30586,8 +30646,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(34);
-	var common_2 = __webpack_require__(34);
+	var common_1 = __webpack_require__(35);
+	var common_2 = __webpack_require__(35);
 	var domhandler_1 = __webpack_require__(11);
 	var DataScroller = (function () {
 	    function DataScroller(el, differs, renderer, domHandler) {
@@ -30768,8 +30828,8 @@ webpackJsonp([2],[
 	var column_1 = __webpack_require__(320);
 	var columntemplateloader_1 = __webpack_require__(504);
 	var rowexpansionloader_1 = __webpack_require__(1034);
-	var common_1 = __webpack_require__(34);
-	var common_2 = __webpack_require__(34);
+	var common_1 = __webpack_require__(35);
+	var common_2 = __webpack_require__(35);
 	var paginator_1 = __webpack_require__(211);
 	var inputtext_1 = __webpack_require__(210);
 	var domhandler_1 = __webpack_require__(11);
@@ -32745,7 +32805,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(34);
+	var common_1 = __webpack_require__(35);
 	var domhandler_1 = __webpack_require__(11);
 	var common_2 = __webpack_require__(8);
 	var EDITOR_VALUE_ACCESSOR = new core_1.Provider(common_2.NG_VALUE_ACCESSOR, {

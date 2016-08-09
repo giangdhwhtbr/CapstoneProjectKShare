@@ -16,7 +16,7 @@ chatRoomSchema.statics.getAll = () => {
                   : resolve(chatRooms);
           });
       });
-}
+};
 
 chatRoomSchema.statics.getChatRoomById = (id) => {
 
@@ -32,24 +32,7 @@ chatRoomSchema.statics.getChatRoomById = (id) => {
           : resolve(chatRoom);
       });
   });
-}
-
-chatRoomSchema.statics.getChatRoomByKSpaceId = (id) => {
-
-  return new Promise((resolve, reject) => {
-    if (!_.isString(id)) {
-      return reject(new TypeError('ID is not a String.'));
-    }
-    ChatRoom
-      .find({
-        'kSpaceId': id
-      })
-      .exec((err, messages) => {
-        err ? reject(err)
-          : resolve(messages);
-      });
-  });
-}
+};
 
 chatRoomSchema.statics.createChatRoom = (chatRoom) => {
     return new Promise((resolve, reject) => {
@@ -62,21 +45,8 @@ chatRoomSchema.statics.createChatRoom = (chatRoom) => {
             : resolve(saved);
       });
     });
-}
+};
 
-chatRoomSchema.statics.deleteChatRoom = (id) => {
-    return new Promise((resolve, reject) => {
-        if (!_.isString(id))
-            return reject(new TypeError('Id is not a valid string.'));
-
-        ChatRoom
-          .findByIdAndRemove(id)
-          .exec((err, deleted) => {
-              err ? reject(err)
-                  : resolve();
-          });
-    });
-}
 
 chatRoomSchema.statics.updateChatRoomById = (info) => {
   return new Promise((resolve,reject) => {
@@ -89,7 +59,7 @@ chatRoomSchema.statics.updateChatRoomById = (info) => {
         : resolve(saved);
     });
   });
-}
+};
 
 const ChatRoom  = mongoose.model('ChatRoom', chatRoomSchema);
 

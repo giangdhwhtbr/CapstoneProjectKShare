@@ -3,20 +3,20 @@ import { Component, OnInit, Input } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 //services
-import { UserService } from '../../../services/users';
-import { AuthService } from '../../../services/auth';
-import { KnowledgeService } from '../../../services/knowledge';
+import { UserService } from '../../../../services/users';
+import { AuthService } from '../../../../services/auth';
+import { KnowledgeService } from '../../../../services/knowledge';
 
 //interfaces
-import { User } from '../../../interface/user';
-import { FriendShip } from '../../../interface/friendship';
-import { Request } from '../../../interface/request';
-import { Knowledge } from '../../../interface/knowledge';
+import { User } from '../../../../interface/user';
+import { FriendShip } from '../../../../interface/friendship';
+import { Request } from '../../../../interface/request';
+import { Knowledge } from '../../../../interface/knowledge';
 
 @Component({
   selector: 'request-record',
-  templateUrl: 'client/dev/app/components/front-end/user-profile/templates/request-record.html',
-  styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+  templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/request-record.html',
+  styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
   directives: [
     ROUTER_DIRECTIVES
   ]

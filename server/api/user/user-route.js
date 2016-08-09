@@ -51,6 +51,11 @@ module.exports = class userRoutes {
       .route('/api/logout')
       .get(function(req,res){
         req.logout();
+        if(req.user) {
+          res.status(200).json({success: false});
+        } else {
+          res.status(200).json({success: true});
+        }
       });
 
     router
