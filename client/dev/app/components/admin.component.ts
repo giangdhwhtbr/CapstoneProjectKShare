@@ -16,6 +16,8 @@ import { RequestListComponent } from "./back-end/request/requests-list";
 import { UpdateRequestComponent } from "./back-end/request/request-update";
 import { UserListComponent } from "./back-end/users/user-list";
 import { ReportListComponent } from "./back-end/report/reports-list";
+import { TagListCtlComponent } from "./back-end/tag/tag-list-control";
+import { ArtListCtlComponent } from "./back-end/article/article-list-clt";
 
 @Component({
   selector: 'kshare',
@@ -39,7 +41,9 @@ import { ReportListComponent } from "./back-end/report/reports-list";
     KnowledgeListComponent,
     UpdateKnowledgeComponent,
     UpdateRequestComponent,
-    ReportListComponent
+    ReportListComponent,
+    TagListCtlComponent,
+    ArtListCtlComponent
   ]
 })
 export class AdminComponent {}

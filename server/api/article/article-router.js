@@ -22,5 +22,10 @@ module.exports = class ArticleRoutes {
       .route('/api/articles-user')
       .post(ArticleController.getArticlesByTagsOfUser)
       .put(ArticleController.getArticlesExceptTagsOfUser);
+    router.route('/api/art/de')
+      .get(ArticleController.getDeArticle);
+    router.route('/api/art/de/:id')
+      .get(ArticleController.activeArt);
+
   }
 }

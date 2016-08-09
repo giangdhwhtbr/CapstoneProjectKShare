@@ -21,6 +21,21 @@ module.exports = class TagController {
                 res.status(200).json(tags);
             }).catch(error => res.status(400).json(error));
     }
+    static getAllDeactivatedTags(req, res) {
+        TagDAO
+            .getAll()
+            .then(tags => {
+                for (let i = tags.length - 1; i >= 0; i--) {
+                    if (tags[i].status === true) {
+                        let index = tags.indexOf(tags[i]);
+                        if (index > -1) {
+                            tags.splice(index, 1);
+                        }
+                    }
+                }
+                res.status(200).json(tags);
+            }).catch(error => res.status(400).json(error));
+    }
 
     static getTagById(req, res) {
         if (req.params && req.params.id) {
@@ -39,6 +54,15 @@ module.exports = class TagController {
             .getTagByIds(req.body.ids)
             .then(tags => res.status(200).json(tags))
             .catch(error => res.status(400).json(error));
+    }
+    static activeTag(req, res) {
+        if (req.params && req.params.id) {
+            TagDAO
+                .activeTag(req.params.id)
+                .then(tag => res.status(200).json(tag))
+                .catch(error => res.status(400).json(error));
+        }
+
     }
 
 
@@ -75,6 +99,13 @@ module.exports = class TagController {
             .catch(error => res.status(400).json(error));
     }
 
+    //static createArrayTag(req, res){
+    //    let tagNames= req.body;
+    //    TagDAO.createArrayTag(tagNames.list).then((tags)=>{
+    //        res.status(201).json(tags);
+    //    }).catch(error => res.status(400).json(error));
+    //}
+
     static deleteTag(req, res) {
         let _id = req.params.id;
 
@@ -96,7 +127,7 @@ module.exports = class TagController {
                                 a.save();
                             }
                         }
-                        res.status(200).end();
+                        res.status(200).json({"mess":"Deactivate Successfully !"});
                     })
                     .catch(error => res.status(400).json(error));
             })

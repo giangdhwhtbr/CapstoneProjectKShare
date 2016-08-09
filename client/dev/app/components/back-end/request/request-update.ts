@@ -44,6 +44,19 @@ class CKEditor implements OnInit, AfterViewChecked {
 
     }
 
+    ngAfterViewChecked(){
+        if(!this.req){
+            this._requestService.getRequestById(this.id).subscribe((request) => {
+                this.req=request;
+                CKEDITOR.instances.editor1.setData(this.req.description + '');
+
+                this.CreateUploadImageCkeditor();
+                this.CreateYoutubeBtnCkeditor();
+                this.addCommandBtnCk();
+            });
+        }
+    }
+
     openModalImg() {
         $("#bdOpenModal").trigger("click");
     }
@@ -161,8 +174,7 @@ export class UpdateRequestComponent {
                         this.description = request.description;
                         this._id = request._id;
 
-                        console.log(tags);
-                        let nameArr: string[] = [];
+                        let nameArr:string[] = [];
                         for (let e of tags) {
                             nameArr.push(e.name);
                         }
@@ -177,6 +189,9 @@ export class UpdateRequestComponent {
                 }
             );
         });
+
+
+
 
     }
 
@@ -214,7 +229,6 @@ export class UpdateRequestComponent {
     loadAllTags() {
         this._tagService.getAllTag().subscribe((tags) => {
             this.tagsEx = tags;
-            console.log(this.tagsEx);
         });
     }
 
@@ -262,8 +276,7 @@ export class UpdateRequestComponent {
     updateRequest(request) {
         let tags: any[] = [];
         tags = this.filterONTag();
-        request.description = CKEDITOR.instances.editor1.getData();
-        console.log(request);
+        request.description=CKEDITOR.instances.editor1.getData();
         this._requestService.updateRequest(request, tags[0], tags[1]).subscribe((request) => {
             this.router.navigateByUrl('/requests/' + request._id + '/info');
         },

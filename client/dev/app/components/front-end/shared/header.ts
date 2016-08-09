@@ -26,7 +26,6 @@ export class HeaderComponent {
   roleToken: string;
   countUnReadNoti: number;
   link: string;
-  isDiffirent: boolean;
   socket: any;
   count: number = 2;
 
@@ -43,6 +42,7 @@ export class HeaderComponent {
     this._auth.isLoggedIn().subscribe(res =>{
       if(res.login){
         this.loginToken = true;
+        this.getNotificationByUser();
       }else {
         this._auth.logoutClient();
         this.loginToken = false;
@@ -70,15 +70,18 @@ export class HeaderComponent {
         x.className = "show";
         setTimeout(function () { x.className = x.className.replace("show", ""); }, 10000);
       }
-
     });
-    this.getNotificationByUser();
   }
 
   logout(): void {
-    this._auth.logout();
-    this._auth.logoutClient();
-    window.location.reload();
+    this._auth.logout()
+      .subscribe(res => {
+        console.log(res);
+        if(res.success == true){
+          this._auth.logoutClient();
+          window.location.reload();
+        }
+      });
   }
 
   showNotification(title: string) {

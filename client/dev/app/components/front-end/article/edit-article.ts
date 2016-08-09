@@ -15,6 +15,7 @@ import {AutoComplete} from 'primeng/primeng';
 import { AuthService } from '../../../services/auth';
 
 import * as $ from 'jquery';
+declare var CKEDITOR: any;
 
 @Component({
     selector: 'ck-editor',

@@ -27,6 +27,7 @@ var auth_1 = require("./services/auth");
 var kspace_1 = require("./services/kspace");
 var notification_1 = require("./services/notification");
 var report_1 = require("./services/report");
+var article_1 = require("./services/article");
 var AppComponent = (function () {
     function AppComponent() {
         this.pageTitle = 'Knowledge Sharing Network';
@@ -48,7 +49,8 @@ var AppComponent = (function () {
                 knowledge_1.KnowledgeService,
                 kspace_1.KSpaceService,
                 notification_1.NotificationService,
-                report_1.ReportService
+                report_1.ReportService,
+                article_1.ArticleService
             ]
         }), 
         __metadata('design:paramtypes', [])

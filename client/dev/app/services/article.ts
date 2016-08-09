@@ -9,6 +9,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ArticleService {
     private _requestsUrl = '/api/article/:id';
+    private _requestsGetDeArtUrl = '/api/art/de/:id';
     private _articleUserUrl = '/api/articles-user';
 
     constructor(private _http:Http) {
@@ -16,6 +17,11 @@ export class ArticleService {
 
     getAllArts():Observable<any[]> {
         return this._http.get(this._requestsUrl.replace(':id', ''))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
+    getAllDeArts():Observable<any[]> {
+        return this._http.get(this._requestsGetDeArtUrl.replace(':id', ''))
             .map((r) => r.json())
             .catch(this.handleError);
     }
@@ -78,6 +84,11 @@ export class ArticleService {
             .map((r) => r.json())
             .catch(this.handleError);
     }
+    activeArt(id:string):Observable<any> {
+        return this._http.get(this._requestsGetDeArtUrl.replace(':id', id))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
 
 
     deactivateArticle(id:string):Observable<any> {
@@ -85,6 +96,12 @@ export class ArticleService {
             .delete(this._requestsUrl.replace(':id', id))
             .map((r) => r.json());
     }
+
+    //deleteRequestById(id:string):Observable<any> {
+    //  return this._http
+    //    .delete(this._requestsUrl.replace(':id', id))
+    //    .map((r) => r.json());
+    //}
 
     updateArtById(art:any, newTag:any[], id:string):Observable<any> {
         let header = new Headers;

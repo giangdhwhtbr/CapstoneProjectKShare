@@ -1,0 +1,60 @@
+<div id="page-wrapper">
+    <div class="container-fluid">
+
+        <!-- Page Heading -->
+        <div class="row">
+            <div class="col-lg-12">
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i> <a href="#">Bảng</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-file"></i> Quản lý bài viết
+                    </li>
+                </ol>
+            </div>
+            <br><br>
+        </div>
+
+
+        <!-- /.row -->
+        <div class="col-lg-8">
+            <div class="row">
+                <div class="input-group">
+                    <input type="text" class="form-control" id="filter" placeholder="Tìm kiếm"
+                           [(ngModel)]="filter">
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-12">
+            <div class="messOn">
+
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div>
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Tiêu đề</th>
+                            <th>Chức năng</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let a of deArts| stringFilter: filter">
+                            <td><a [routerLink]="['/article/',a._id]">{{a.title}}</a></td>
+                            <td>
+                                <button type="button" class="btn btn-danger" (click)="activeArt(a._id)">
+                                    Active
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

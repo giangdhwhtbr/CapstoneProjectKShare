@@ -8,17 +8,17 @@ import { FriendRecordComponent } from './friend-record';
 import { UserProfileBarComponent } from './user-profile-bar';
 
 //services
-import { UserService } from '../../../services/users';
+import { UserService } from '../../../../services/users';
 
 //interfaces
-import { User } from '../../../interface/user';
-import { FriendShip } from '../../../interface/friendship';
-import { Request } from '../../../interface/request';
+import { User } from '../../../../interface/user';
+import { FriendShip } from '../../../../interface/friendship';
+import { Request } from '../../../../interface/request';
 
 @Component({
   selector: 'request-record',
-  templateUrl: 'client/dev/app/components/front-end/user-profile/templates/friend-list.html',
-  styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+  templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/friend-list.html',
+  styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
   directives: [
     ROUTER_DIRECTIVES,
     RequestFriendRecordComponent,
@@ -48,11 +48,11 @@ export class FriendListComponent {
   }
 
   ngOnInit(): void {
-    
+
       this.pendingRequests = [];
       this.acceptedRequest = [];
       this.friendNames = [];
-      this.getFriendList(); 
+      this.getFriendList();
       //this.getFriendName();
   }
 

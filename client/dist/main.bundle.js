@@ -1014,9 +1014,16 @@ webpackJsonp([2],[
 	    function TagService(_http) {
 	        this._http = _http;
 	        this._tagUrl = '/api/tags/:id';
+	        this._activeTag = '/api/tags/active/:id';
+	        this._deactiveTag = '/api/tag/deactive/:id';
 	    }
 	    TagService.prototype.getAllTag = function () {
 	        return this._http.get(this._tagUrl.replace(':id', ''))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    TagService.prototype.getAllDeactiveTag = function () {
+	        return this._http.get(this._deactiveTag.replace(':id', ''))
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
 	    };
@@ -1034,6 +1041,19 @@ webpackJsonp([2],[
 	        });
 	        return this._http
 	            .post('/api/tags/TagNames', _data, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    TagService.prototype.activeTag = function (id) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        return this._http.get(this._activeTag.replace(':id', id))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    TagService.prototype.deactivateTag = function (id) {
+	        return this._http
+	            .delete(this._tagUrl.replace(':id', id))
 	            .map(function (r) { return r.json(); });
 	    };
 	    TagService = __decorate([
@@ -1092,10 +1112,16 @@ webpackJsonp([2],[
 	    function ArticleService(_http) {
 	        this._http = _http;
 	        this._requestsUrl = '/api/article/:id';
+	        this._requestsGetDeArtUrl = '/api/art/de/:id';
 	        this._articleUserUrl = '/api/articles-user';
 	    }
 	    ArticleService.prototype.getAllArts = function () {
 	        return this._http.get(this._requestsUrl.replace(':id', ''))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    ArticleService.prototype.getAllDeArts = function () {
+	        return this._http.get(this._requestsGetDeArtUrl.replace(':id', ''))
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
 	    };
@@ -1148,11 +1174,21 @@ webpackJsonp([2],[
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
 	    };
+	    ArticleService.prototype.activeArt = function (id) {
+	        return this._http.get(this._requestsGetDeArtUrl.replace(':id', id))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
 	    ArticleService.prototype.deactivateArticle = function (id) {
 	        return this._http
 	            .delete(this._requestsUrl.replace(':id', id))
 	            .map(function (r) { return r.json(); });
 	    };
+	    //deleteRequestById(id:string):Observable<any> {
+	    //  return this._http
+	    //    .delete(this._requestsUrl.replace(':id', id))
+	    //    .map((r) => r.json());
+	    //}
 	    ArticleService.prototype.updateArtById = function (art, newTag, id) {
 	        var header = new http_1.Headers;
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -1651,6 +1687,18 @@ webpackJsonp([2],[
 	            _this.addCommandBtnCk();
 	        });
 	    };
+	    CKEditor.prototype.ngAfterViewChecked = function () {
+	        var _this = this;
+	        if (!this.req) {
+	            this._requestService.getRequestById(this.id).subscribe(function (request) {
+	                _this.req = request;
+	                CKEDITOR.instances.editor1.setData(_this.req.description + '');
+	                _this.CreateUploadImageCkeditor();
+	                _this.CreateYoutubeBtnCkeditor();
+	                _this.addCommandBtnCk();
+	            });
+	        }
+	    };
 	    CKEditor.prototype.openModalImg = function () {
 	        $("#bdOpenModal").trigger("click");
 	    };
@@ -1732,7 +1780,6 @@ webpackJsonp([2],[
 	                    _this.title = request.title;
 	                    _this.description = request.description;
 	                    _this._id = request._id;
-	                    console.log(tags);
 	                    var nameArr = [];
 	                    for (var _i = 0, tags_1 = tags; _i < tags_1.length; _i++) {
 	                        var e = tags_1[_i];
@@ -1780,7 +1827,6 @@ webpackJsonp([2],[
 	        var _this = this;
 	        this._tagService.getAllTag().subscribe(function (tags) {
 	            _this.tagsEx = tags;
-	            console.log(_this.tagsEx);
 	        });
 	    };
 	    // ckeditor
@@ -1825,7 +1871,6 @@ webpackJsonp([2],[
 	        var tags = [];
 	        tags = this.filterONTag();
 	        request.description = CKEDITOR.instances.editor1.getData();
-	        console.log(request);
 	        this._requestService.updateRequest(request, tags[0], tags[1]).subscribe(function (request) {
 	            _this.router.navigateByUrl('/requests/' + request._id + '/info');
 	        }, function (error) {
@@ -2672,163 +2717,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 285 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	//cores
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	//services
-	var users_1 = __webpack_require__(37);
-	var notification_1 = __webpack_require__(122);
-	var UserProfileBarComponent = (function () {
-	    function UserProfileBarComponent(router, route, _userService, _noti) {
-	        var _this = this;
-	        this.router = router;
-	        this.route = route;
-	        this._userService = _userService;
-	        this._noti = _noti;
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.name = params['name'];
-	        });
-	        this.roleToken = localStorage.getItem('role');
-	        this.userToken = localStorage.getItem('username');
-	    }
-	    UserProfileBarComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this.linkImg = '';
-	        this._userService.getUserByUserName(this.name).subscribe(function (user) {
-	            _this.userProfile = user;
-	            console.log(_this.userProfile);
-	            _this.linkImg = user.linkImg;
-	        }, function (error) {
-	            console.log(error);
-	        });
-	        //check if current user is staying in his/her profile page
-	        if (this.name === this.userToken) {
-	            this.checkUser = true;
-	        }
-	        this.getFriendList();
-	    };
-	    UserProfileBarComponent.prototype.fileChangeEvent = function (fileInput) {
-	        var _this = this;
-	        this.filesToUpload = fileInput.target.files;
-	        if (this.filesToUpload) {
-	            this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then(function (r) {
-	                _this.linkImg = '/uploads/' + r[0].filename;
-	                _this._userService.updateAvartaLink(_this.userToken, _this.linkImg).subscribe(function (r) {
-	                    console.log("update link profile picture successful");
-	                });
-	            }, function (error) {
-	                console.error(error);
-	            });
-	        }
-	    };
-	    UserProfileBarComponent.prototype.addFriend = function () {
-	        var _this = this;
-	        if (this.isFriend === false) {
-	            this._userService
-	                .addFriend(this.userToken, this.name)
-	                .subscribe(function (r) {
-	                console.log('friendship was created by ' + _this.userToken + ' and ' + _this.name);
-	            });
-	            //create a notification to user who get accepted a friend request
-	            var title = 'Lời mời kết bạn từ ' + this.userToken;
-	            var link = '/user/' + this.name + '/friends';
-	            alert("đã gửi lời mời kết bạn thành công");
-	            //call function using socket io to send notification
-	            this._noti.alertNotification(title, this.name, link);
-	            //save notification to database
-	            this._noti.createNotification(title, this.name, link).subscribe(function (notification) {
-	                console.log(notification);
-	            });
-	        }
-	        else {
-	            alert("Bạn đã gửi kết bạn rồi!");
-	        }
-	        this.getFriendList();
-	    };
-	    UserProfileBarComponent.prototype.deleteFriend = function () {
-	        var r = confirm("Bạn có muốn hủy kết bạn");
-	        if (r == true) {
-	            this._userService
-	                .deleteFriendRequest(this.userToken, this.name)
-	                .subscribe(function () {
-	                console.log('delete successfull');
-	            });
-	            this._userService
-	                .deleteFriendRequest(this.name, this.userToken)
-	                .subscribe(function () {
-	            });
-	            this.getFriendList();
-	            this.isFriend = false;
-	            alert("bạn đã hủy gửi lời  mời kết bạn");
-	        }
-	    };
-	    //get friend list: pending and accepted
-	    UserProfileBarComponent.prototype.getFriendList = function () {
-	        var _this = this;
-	        this.checkSentRequestUser = false;
-	        this._userService
-	            .getFriendList(this.userToken)
-	            .subscribe(function (friendlist) {
-	            _this.friendList = friendlist;
-	            _this.checkIsFriend();
-	            //check sent request
-	            for (var i = 0; i < _this.friendList.length; i++) {
-	                if (friendlist[i].user2 === _this.name && _this.friendList[i].status === "pending") {
-	                    _this.checkSentRequestUser = true;
-	                    break;
-	                }
-	            }
-	            for (var i = 0; i < _this.friendList.length; i++) {
-	                if (friendlist[i].user1 === _this.name && _this.friendList[i].status === "pending") {
-	                    _this.checkIsRecivedRequest = true;
-	                    break;
-	                }
-	            }
-	        });
-	    };
-	    UserProfileBarComponent.prototype.checkIsFriend = function () {
-	        this.isFriend = false;
-	        for (var i = 0; i < this.friendList.length; i++) {
-	            if ((this.name === this.friendList[i].user1 && this.friendList[i].status === "accepted") ||
-	                (this.name === this.friendList[i].user2 && this.friendList[i].status === "accepted")) {
-	                this.isFriend = true;
-	                break;
-	            }
-	        }
-	    };
-	    UserProfileBarComponent = __decorate([
-	        core_1.Component({
-	            selector: 'user-profile-bar',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/user-profile-bar.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
-	    ], UserProfileBarComponent);
-	    return UserProfileBarComponent;
-	    var _a, _b, _c, _d;
-	}());
-	exports.UserProfileBarComponent = UserProfileBarComponent;
-	
-
-/***/ },
+/* 285 */,
 /* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -4186,7 +4075,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'request-list',
 	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-	            directives: [request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES],
+	            directives: [request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, common_1.FORM_DIRECTIVES],
 	            providers: [requests_1.RequestService, ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
 	        }),
@@ -4387,7 +4276,6 @@ webpackJsonp([2],[
 	        var _this = this;
 	        this._tagService.getAllTag().subscribe(function (tags) {
 	            _this.tagsEx = tags;
-	            console.log(_this.tagsEx);
 	        });
 	    };
 	    // ckeditor
@@ -4509,6 +4397,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	var article_1 = __webpack_require__(121);
+	var report_1 = __webpack_require__(629);
 	var detailArticleComponent = (function () {
 	    function detailArticleComponent(router, route, _articleService) {
 	        var _this = this;
@@ -4557,6 +4446,9 @@ webpackJsonp([2],[
 	        if (this.article != undefined) {
 	            $('.bodyArt').html(this.article.content);
 	        }
+	        $("#btnRp").click(function () {
+	            $("#btnRp").hide();
+	        });
 	    };
 	    detailArticleComponent.prototype.editArt = function (id) {
 	        this.router.navigateByUrl('/article/edit/' + this.id);
@@ -4567,7 +4459,7 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
 	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES
+	                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent
 	            ],
 	            providers: [article_1.ArticleService]
 	        }), 
@@ -5195,6 +5087,7 @@ webpackJsonp([2],[
 	            });
 	            _this.request.status = 'accepted';
 	            //update request status
+	            console.log(_this.request);
 	            _this._requestService.updateRequest(_this.request)
 	                .subscribe(function (c) {
 	                console.log(_this.request);
@@ -5202,7 +5095,7 @@ webpackJsonp([2],[
 	            });
 	            _this.checkIsAcceped = true;
 	            //window.location.reload();
-	            _this.router.navigate(['/kspace/info/' + r._id]);
+	            _this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
 	        });
 	    };
 	    RequestDetailClientComponent.prototype.addSubcriber = function (id) {
@@ -5459,224 +5352,8 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 431 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	//cores
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	//components
-	var request_friend_record_1 = __webpack_require__(635);
-	var friend_record_1 = __webpack_require__(634);
-	var user_profile_bar_1 = __webpack_require__(285);
-	//services
-	var users_1 = __webpack_require__(37);
-	var FriendListComponent = (function () {
-	    function FriendListComponent(router, route, _userService) {
-	        var _this = this;
-	        this.router = router;
-	        this.route = route;
-	        this._userService = _userService;
-	        this.roleToken = localStorage.getItem('role');
-	        this.userToken = localStorage.getItem('username');
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.name = params['name'];
-	        });
-	    }
-	    FriendListComponent.prototype.ngOnInit = function () {
-	        this.pendingRequests = [];
-	        this.acceptedRequest = [];
-	        this.friendNames = [];
-	        this.getFriendList();
-	        //this.getFriendName();
-	    };
-	    //get friend list: pending and accepted
-	    FriendListComponent.prototype.getFriendList = function () {
-	        var _this = this;
-	        this._userService
-	            .getFriendList(this.name)
-	            .subscribe(function (friendlist) {
-	            _this.friendships = friendlist;
-	            //check sent request
-	            for (var i = 0; i < _this.friendships.length; i++) {
-	                if (_this.friendships[i].user2 === _this.name && _this.friendships[i].status === "pending") {
-	                    _this.pendingRequests.push(_this.friendships[i]);
-	                }
-	                if (_this.friendships[i].user2 === _this.name && _this.friendships[i].status === "accepted") {
-	                    _this.acceptedRequest.push(_this.friendships[i]);
-	                }
-	                if (_this.friendships[i].user1 === _this.name && _this.friendships[i].status === "accepted") {
-	                    _this.acceptedRequest.push(_this.friendships[i]);
-	                }
-	            }
-	            _this.getFriendName();
-	            console.log(_this.acceptedRequest);
-	        });
-	    };
-	    FriendListComponent.prototype.getFriendName = function () {
-	        for (var i = 0; i < this.acceptedRequest.length; i++) {
-	            if (this.acceptedRequest[i].user1 === this.name) {
-	                this.friendNames.push(this.acceptedRequest[i].user2);
-	            }
-	            else {
-	                this.friendNames.push(this.acceptedRequest[i].user1);
-	            }
-	        }
-	    };
-	    FriendListComponent = __decorate([
-	        core_1.Component({
-	            selector: 'request-record',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/friend-list.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES,
-	                request_friend_record_1.RequestFriendRecordComponent,
-	                friend_record_1.FriendRecordComponent,
-	                user_profile_bar_1.UserProfileBarComponent
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object])
-	    ], FriendListComponent);
-	    return FriendListComponent;
-	    var _a, _b, _c;
-	}());
-	exports.FriendListComponent = FriendListComponent;
-	
-
-/***/ },
-/* 432 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	//cores
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	//Component
-	var request_record_1 = __webpack_require__(636);
-	var user_profile_bar_1 = __webpack_require__(285);
-	//services
-	var users_1 = __webpack_require__(37);
-	var knowledge_1 = __webpack_require__(52);
-	var UserProfileComponent = (function () {
-	    function UserProfileComponent(router, route, _userService, _knowledgeService) {
-	        var _this = this;
-	        this.router = router;
-	        this.route = route;
-	        this._userService = _userService;
-	        this._knowledgeService = _knowledgeService;
-	        this.notification = {
-	            show: false,
-	            title: 'Demo notification!',
-	            body: 'ng2-notifications',
-	            icon: 'https://goo.gl/3eqeiE',
-	            action: function () {
-	                window.open('https://github.com/alexcastillo/ng2-notifications');
-	            }
-	        };
-	        this.formatDate = function (date) {
-	            if (date) {
-	                var newDate, day, month, year;
-	                year = date.substr(0, 4);
-	                month = date.substr(5, 2);
-	                day = date.substr(8, 2);
-	                return newDate = day + '/' + month + '/' + year;
-	            }
-	        };
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.name = params['name'];
-	        });
-	        this.roleToken = localStorage.getItem('role');
-	        this.userToken = localStorage.getItem('username');
-	    }
-	    UserProfileComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this._userService.getUserByUserName(this.name).subscribe(function (user) {
-	            _this.userProfile = user;
-	        }, function (error) {
-	            console.log(error);
-	        });
-	        this.checkUserExist();
-	        if (this.isExist = true) {
-	            this.getRequestByUser();
-	        }
-	    };
-	    UserProfileComponent.prototype.getRequestByUser = function () {
-	        var _this = this;
-	        this._userService
-	            .getRequestByUser(this.name)
-	            .subscribe(function (requests) {
-	            for (var i = 0; i < requests.length; i++) {
-	                requests[i].createdAt = _this.formatDate(requests[i].createdAt);
-	                requests[i].modifiedDate = _this.formatDate(requests[i].modifiedDate);
-	            }
-	            _this.requests = requests;
-	        });
-	    };
-	    UserProfileComponent.prototype.getKnowledgeNameOfRequest = function (knowledgeId) {
-	        var _this = this;
-	        //get back.knowledge name by knowledgeId
-	        this._knowledgeService.findKnowledgeById(knowledgeId).subscribe(function (knowledge) {
-	            _this.knowledgeName = knowledge.name;
-	        }, function (error) {
-	            console.log(error);
-	        });
-	    };
-	    UserProfileComponent.prototype.checkUserExist = function () {
-	        var _this = this;
-	        this._userService.checkUserExist(this.name).subscribe(function (isExist) {
-	            if (isExist._body === '0') {
-	                _this.isExist = false;
-	            }
-	            else {
-	                _this.isExist = true;
-	            }
-	        }, function (error) {
-	            console.log(error);
-	        });
-	    };
-	    UserProfileComponent = __decorate([
-	        core_1.Component({
-	            selector: 'user-profile',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/user-profile.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES,
-	                request_record_1.RequestRecordComponent,
-	                user_profile_bar_1.UserProfileBarComponent
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object])
-	    ], UserProfileComponent);
-	    return UserProfileComponent;
-	    var _a, _b, _c, _d;
-	}());
-	exports.UserProfileComponent = UserProfileComponent;
-	
-
-/***/ },
+/* 431 */,
+/* 432 */,
 /* 433 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -5701,7 +5378,8 @@ webpackJsonp([2],[
 	var header_1 = __webpack_require__(632);
 	var side_bar_1 = __webpack_require__(633);
 	var footer_1 = __webpack_require__(630);
-	var user_profile_1 = __webpack_require__(432);
+	var user_profile_1 = __webpack_require__(1085);
+	//import { FriendListComponent } from "./front-end/shared/friend-list";
 	/**
 	 * Page components
 	 */
@@ -5712,8 +5390,8 @@ webpackJsonp([2],[
 	var kspace_1 = __webpack_require__(427);
 	var kspace_list_1 = __webpack_require__(426);
 	var kspace_info_1 = __webpack_require__(425);
-	var friend_list_1 = __webpack_require__(431);
-	var user_profile_bar_1 = __webpack_require__(285);
+	var friend_list_1 = __webpack_require__(1084);
+	var user_profile_bar_1 = __webpack_require__(1081);
 	var create_article_1 = __webpack_require__(421);
 	var detail_article_1 = __webpack_require__(422);
 	var list_article_1 = __webpack_require__(423);
@@ -5728,12 +5406,12 @@ webpackJsonp([2],[
 	    KshareComponent = __decorate([
 	        core_1.Component({
 	            selector: 'kshare-app',
-	            template: "\n    <header></header>\n    <sidebar></sidebar>\n    <router-outlet></router-outlet>\n  ",
+	            template: "\n    <header></header>\n    <sidebar></sidebar>\n    <!--<friend-list></friend-list>-->\n    <router-outlet></router-outlet>\n  ",
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                header_1.HeaderComponent,
 	                side_bar_1.SideBarComponent,
-	                footer_1.FooterComponent,
+	                footer_1.FooterComponent
 	            ],
 	            precompile: [
 	                home_1.HomeComponent,
@@ -17246,6 +16924,8 @@ webpackJsonp([2],[
 	var request_update_1 = __webpack_require__(184);
 	var user_list_1 = __webpack_require__(420);
 	var reports_list_1 = __webpack_require__(418);
+	var tag_list_control_1 = __webpack_require__(1083);
+	var article_list_clt_1 = __webpack_require__(1082);
 	var AdminComponent = (function () {
 	    function AdminComponent() {
 	    }
@@ -17264,7 +16944,9 @@ webpackJsonp([2],[
 	                knowledges_list_1.KnowledgeListComponent,
 	                knowledge_update_1.UpdateKnowledgeComponent,
 	                request_update_1.UpdateRequestComponent,
-	                reports_list_1.ReportListComponent
+	                reports_list_1.ReportListComponent,
+	                tag_list_control_1.TagListCtlComponent,
+	                article_list_clt_1.ArtListCtlComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -18276,10 +17958,11 @@ webpackJsonp([2],[
 	                        _this._noti.alertNotification(title, users[i].username, link);
 	                        //add notification into database
 	                        _this._noti.createNotification(title, users[i].username, link).subscribe(function (r) {
+	                            //$('#mess').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Báo cáo thành công !</strong> </div>');
+	                            $('#btnCl').trigger("click");
 	                        });
 	                    }
 	                }
-	                window.location.reload();
 	            });
 	        }, function (error) {
 	            console.log(error);
@@ -18355,19 +18038,62 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
+	var users_1 = __webpack_require__(37);
 	var FriendListComponent = (function () {
-	    function FriendListComponent() {
+	    function FriendListComponent(_userService) {
+	        this._userService = _userService;
 	    }
+	    FriendListComponent.prototype.ngOnInit = function () {
+	        //ẩn hiện danh sách chat
+	        $('.chat_head').click(function () {
+	            $('.chat_body').slideToggle('slow');
+	        });
+	        $('.msg_head').click(function () {
+	            $('.msg_wrap').slideToggle('slow');
+	        });
+	        //đóng phần đang chat
+	        $('.close').click(function () {
+	            $('.msg_box').hide();
+	        });
+	        //hiện phần chat
+	        $('.user').click(function () {
+	            $('.msg_wrap').show();
+	            $('.msg_box').show();
+	        });
+	        //nhấn nút enter
+	        $('textarea').keypress(function (e) {
+	            if (e.keyCode == 13) {
+	                e.preventDefault();
+	                var msg = $(this).val();
+	                $(this).val('');
+	                if (msg != '')
+	                    $('<div class="msg_b">' + msg + '</div>').insertBefore('.msg_push');
+	                $('.msg_body').scrollTop($('.msg_body')[0].scrollHeight);
+	            }
+	        });
+	        //
+	        //this._userService.getFriendList()
+	        //  .subscribe(
+	        //    (friends) => {
+	        //
+	        //    },
+	        //    (error) => {
+	        //
+	        //    }
+	        //  );
+	        //
+	    };
 	    FriendListComponent = __decorate([
 	        core_1.Component({
 	            selector: 'friend-list',
-	            templateUrl: 'client/dev/app/components/front-end/asserts/templates/friend-list.html',
-	            styleUrls: ['client/dev/app/components/front-end/asserts/styles/friend-list.html'],
+	            templateUrl: 'client/dev/app/components/front-end/shared/templates/friend-list.html',
+	            styleUrls: ['client/dev/app/components/front-end/shared/styles/friend-list.css'],
 	            directives: []
 	        }), 
-	        __metadata('design:paramtypes', [])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object])
 	    ], FriendListComponent);
 	    return FriendListComponent;
+	    var _a;
 	}());
 	exports.FriendListComponent = FriendListComponent;
 	
@@ -18409,6 +18135,7 @@ webpackJsonp([2],[
 	        this._auth.isLoggedIn().subscribe(function (res) {
 	            if (res.login) {
 	                _this.loginToken = true;
+	                _this.getNotificationByUser();
 	            }
 	            else {
 	                _this._auth.logoutClient();
@@ -18435,12 +18162,17 @@ webpackJsonp([2],[
 	                setTimeout(function () { x.className = x.className.replace("show", ""); }, 10000);
 	            }
 	        });
-	        this.getNotificationByUser();
 	    };
 	    HeaderComponent.prototype.logout = function () {
-	        this._auth.logout();
-	        this._auth.logoutClient();
-	        window.location.reload();
+	        var _this = this;
+	        this._auth.logout()
+	            .subscribe(function (res) {
+	            console.log(res);
+	            if (res.success == true) {
+	                _this._auth.logoutClient();
+	                window.location.reload();
+	            }
+	        });
 	    };
 	    HeaderComponent.prototype.showNotification = function (title) {
 	        this.notiTitle = title;
@@ -18541,291 +18273,9 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 634 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	//cores
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	//services
-	var users_1 = __webpack_require__(37);
-	var auth_1 = __webpack_require__(42);
-	var FriendRecordComponent = (function () {
-	    function FriendRecordComponent(router, route, _userService, _auth) {
-	        var _this = this;
-	        this.router = router;
-	        this.route = route;
-	        this._userService = _userService;
-	        this._auth = _auth;
-	        this.userToken = localStorage.getItem('username');
-	        this.isFriend = true;
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.name = params['name'];
-	        });
-	    }
-	    FriendRecordComponent.prototype.ngOnInit = function () {
-	        this.getUserInformation();
-	    };
-	    FriendRecordComponent.prototype.getUserInformation = function () {
-	        var _this = this;
-	        this._userService.getUserByUserName(this.friendName).subscribe(function (userinfo) {
-	            _this.displayname = userinfo.displayName;
-	            _this.email = userinfo.email;
-	            _this.level = userinfo.level;
-	        }, function (error) {
-	            console.log(error);
-	        });
-	    };
-	    FriendRecordComponent.prototype.deleteFriend = function () {
-	        var _this = this;
-	        var r = confirm("Bạn có muốn hủy kết bạn");
-	        if (r == true) {
-	            this._userService
-	                .deleteFriendRequest(this.userToken, this.friendName)
-	                .subscribe(function () {
-	                console.log('delete successfull');
-	            });
-	            this._userService
-	                .deleteFriendRequest(this.friendName, this.userToken)
-	                .subscribe(function () {
-	                _this.isFriend = false;
-	            });
-	            alert("bạn đã hủy gửi lời  mời kết bạn");
-	        }
-	    };
-	    __decorate([
-	        core_1.Input('friendName'), 
-	        __metadata('design:type', String)
-	    ], FriendRecordComponent.prototype, "friendName", void 0);
-	    FriendRecordComponent = __decorate([
-	        core_1.Component({
-	            selector: 'friend-record',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/friend-record.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
-	    ], FriendRecordComponent);
-	    return FriendRecordComponent;
-	    var _a, _b, _c, _d;
-	}());
-	exports.FriendRecordComponent = FriendRecordComponent;
-	
-
-/***/ },
-/* 635 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	//cores
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	//services
-	var users_1 = __webpack_require__(37);
-	var notification_1 = __webpack_require__(122);
-	var RequestFriendRecordComponent = (function () {
-	    function RequestFriendRecordComponent(router, route, _userService, _noti) {
-	        var _this = this;
-	        this.router = router;
-	        this.route = route;
-	        this._userService = _userService;
-	        this._noti = _noti;
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.name = params['name'];
-	        });
-	    }
-	    RequestFriendRecordComponent.prototype.ngOnInit = function () {
-	        this.isAdded = false;
-	        this.isFriend = true;
-	        this.getUserInformation();
-	    };
-	    RequestFriendRecordComponent.prototype.acceptRequest = function () {
-	        var _this = this;
-	        console.log(this.requestUser + ' ' + this.name);
-	        this._userService.acceptFriendRequest(this.requestUser, this.name).subscribe(function () {
-	            console.log("accepted successful");
-	            alert("Bạn đã là bạn bè với " + _this.requestUser);
-	            _this.isAdded = true;
-	            var title = _this.name + ' chấp nhận kết bạn';
-	            var link = '/user/' + _this.name;
-	            //call function using socket io to send notification
-	            _this._noti.alertNotification(title, _this.requestUser, link);
-	            //save notification to database
-	            _this._noti.createNotification(title, _this.requestUser, link).subscribe(function (notification) {
-	                console.log('create a notification to ' + _this.name);
-	            });
-	        });
-	    };
-	    RequestFriendRecordComponent.prototype.getUserInformation = function () {
-	        var _this = this;
-	        this._userService.getUserByUserName(this.requestUser).subscribe(function (userinfo) {
-	            _this.displayname = userinfo.displayName;
-	            _this.email = userinfo.email;
-	            _this.level = userinfo.level;
-	        }, function (error) {
-	            console.log(error);
-	        });
-	    };
-	    RequestFriendRecordComponent.prototype.deleteFriend = function () {
-	        var r = confirm("Bạn có muốn hủy kết bạn");
-	        if (r == true) {
-	            this._userService
-	                .deleteFriendRequest(this.requestUser, this.name)
-	                .subscribe(function () {
-	                console.log('delete successfull');
-	            });
-	            this.isFriend = false;
-	            alert("bạn đã hủy gửi lời  mời kết bạn");
-	        }
-	    };
-	    __decorate([
-	        core_1.Input('requestUser'), 
-	        __metadata('design:type', String)
-	    ], RequestFriendRecordComponent.prototype, "requestUser", void 0);
-	    __decorate([
-	        core_1.Input('name'), 
-	        __metadata('design:type', String)
-	    ], RequestFriendRecordComponent.prototype, "name", void 0);
-	    RequestFriendRecordComponent = __decorate([
-	        core_1.Component({
-	            selector: 'request-friend-record',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/request-friend-record.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
-	    ], RequestFriendRecordComponent);
-	    return RequestFriendRecordComponent;
-	    var _a, _b, _c, _d;
-	}());
-	exports.RequestFriendRecordComponent = RequestFriendRecordComponent;
-	
-
-/***/ },
-/* 636 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	//cores
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	//services
-	var users_1 = __webpack_require__(37);
-	var knowledge_1 = __webpack_require__(52);
-	var RequestRecordComponent = (function () {
-	    function RequestRecordComponent(router, route, _userService, _knowledgeService) {
-	        this.router = router;
-	        this.route = route;
-	        this._userService = _userService;
-	        this._knowledgeService = _knowledgeService;
-	        this.formatDate = function (date) {
-	            if (date) {
-	                var newDate, day, month, year;
-	                year = date.substr(0, 4);
-	                month = date.substr(5, 2);
-	                day = date.substr(8, 2);
-	                return newDate = day + '/' + month + '/' + year;
-	            }
-	        };
-	    }
-	    RequestRecordComponent.prototype.ngOnInit = function () {
-	        //this.createdAt = this.formatDate(createdAt);
-	        this.id = this.knowledgeId;
-	        this.getKnowledgeNameOfRequest();
-	        if (this.status === 'pending') {
-	            this.status = 'Đang chờ';
-	        }
-	        else {
-	            this.status = 'Đã được chấp nhận';
-	        }
-	    };
-	    RequestRecordComponent.prototype.getKnowledgeNameOfRequest = function () {
-	        var _this = this;
-	        //get back.knowledge name by knowledgeId
-	        this._knowledgeService.findKnowledgeById(this.knowledgeId).subscribe(function (knowledge) {
-	            _this.knowledgeName = knowledge.name;
-	        }, function (error) {
-	            console.log(error);
-	        });
-	    };
-	    __decorate([
-	        core_1.Input('title'), 
-	        __metadata('design:type', String)
-	    ], RequestRecordComponent.prototype, "title", void 0);
-	    __decorate([
-	        core_1.Input('description'), 
-	        __metadata('design:type', String)
-	    ], RequestRecordComponent.prototype, "description", void 0);
-	    __decorate([
-	        core_1.Input('createdAt'), 
-	        __metadata('design:type', String)
-	    ], RequestRecordComponent.prototype, "createdAt", void 0);
-	    __decorate([
-	        core_1.Input('knowledgeId'), 
-	        __metadata('design:type', String)
-	    ], RequestRecordComponent.prototype, "knowledgeId", void 0);
-	    __decorate([
-	        core_1.Input('status'), 
-	        __metadata('design:type', String)
-	    ], RequestRecordComponent.prototype, "status", void 0);
-	    __decorate([
-	        core_1.Input('requestId'), 
-	        __metadata('design:type', String)
-	    ], RequestRecordComponent.prototype, "requestId", void 0);
-	    RequestRecordComponent = __decorate([
-	        core_1.Component({
-	            selector: 'request-record',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/request-record.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object])
-	    ], RequestRecordComponent);
-	    return RequestRecordComponent;
-	    var _a, _b, _c, _d;
-	}());
-	exports.RequestRecordComponent = RequestRecordComponent;
-	
-
-/***/ },
+/* 634 */,
+/* 635 */,
+/* 636 */,
 /* 637 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -18996,7 +18446,6 @@ webpackJsonp([2],[
 	        var _this = this;
 	        this._tagService.getAllTag().subscribe(function (tags) {
 	            _this.tagsEx = tags;
-	            console.log(_this.tagsEx);
 	        });
 	    };
 	    //end control tags
@@ -19102,6 +18551,14 @@ webpackJsonp([2],[
 	                    }
 	                    else if (errors.email) {
 	                        _this.errorMessage = errors.email.message;
+	                    }
+	                }
+	                if (error.errmsg) {
+	                    if (error.errmsg.includes('email')) {
+	                        _this.errorMessage = 'email đã tồn tại!';
+	                    }
+	                    else if (error.errmsg.includes('username')) {
+	                        _this.errorMessage = 'tên đăng nhập đã tồn tại';
 	                    }
 	                }
 	            });
@@ -19330,6 +18787,8 @@ webpackJsonp([2],[
 	var request_update_1 = __webpack_require__(184);
 	var user_list_1 = __webpack_require__(420);
 	var reports_list_1 = __webpack_require__(418);
+	var tag_list_control_1 = __webpack_require__(1083);
+	var article_list_clt_1 = __webpack_require__(1082);
 	var auth_1 = __webpack_require__(434);
 	exports.AdminRoutes = [
 	    {
@@ -19345,6 +18804,14 @@ webpackJsonp([2],[
 	                        component: user_list_1.UserListComponent
 	                    }
 	                ]
+	            },
+	            {
+	                path: 'tags',
+	                component: tag_list_control_1.TagListCtlComponent
+	            },
+	            {
+	                path: 'articles',
+	                component: article_list_clt_1.ArtListCtlComponent
 	            },
 	            {
 	                path: 'reports',
@@ -19426,8 +18893,8 @@ webpackJsonp([2],[
 	var kspace_1 = __webpack_require__(427);
 	var kspace_list_1 = __webpack_require__(426);
 	var kspace_info_1 = __webpack_require__(425);
-	var friend_list_1 = __webpack_require__(431);
-	var user_profile_1 = __webpack_require__(432);
+	var friend_list_1 = __webpack_require__(1084);
+	var user_profile_1 = __webpack_require__(1085);
 	var register_1 = __webpack_require__(639);
 	var info_1 = __webpack_require__(638);
 	var success_1 = __webpack_require__(640);
@@ -37867,6 +37334,809 @@ webpackJsonp([2],[
 	    return UITreeRow;
 	}());
 	exports.UITreeRow = UITreeRow;
+	
+
+/***/ },
+/* 1077 */,
+/* 1078 */,
+/* 1079 */,
+/* 1080 */,
+/* 1081 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//services
+	var users_1 = __webpack_require__(37);
+	var notification_1 = __webpack_require__(122);
+	var UserProfileBarComponent = (function () {
+	    function UserProfileBarComponent(router, route, _userService, _noti) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this._noti = _noti;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	        });
+	        this.roleToken = localStorage.getItem('role');
+	        this.userToken = localStorage.getItem('username');
+	    }
+	    UserProfileBarComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.linkImg = '';
+	        this._userService.getUserByUserName(this.name).subscribe(function (user) {
+	            _this.userProfile = user;
+	            console.log(_this.userProfile);
+	            _this.linkImg = user.linkImg;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	        //check if current user is staying in his/her profile page
+	        if (this.name === this.userToken) {
+	            this.checkUser = true;
+	        }
+	        this.getFriendList();
+	    };
+	    UserProfileBarComponent.prototype.fileChangeEvent = function (fileInput) {
+	        var _this = this;
+	        this.filesToUpload = fileInput.target.files;
+	        if (this.filesToUpload) {
+	            this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then(function (r) {
+	                _this.linkImg = '/uploads/' + r[0].filename;
+	                _this._userService.updateAvartaLink(_this.userToken, _this.linkImg).subscribe(function (r) {
+	                    console.log("update link profile picture successful");
+	                });
+	            }, function (error) {
+	                console.error(error);
+	            });
+	        }
+	    };
+	    UserProfileBarComponent.prototype.addFriend = function () {
+	        var _this = this;
+	        if (this.isFriend === false) {
+	            this._userService
+	                .addFriend(this.userToken, this.name)
+	                .subscribe(function (r) {
+	                console.log('friendship was created by ' + _this.userToken + ' and ' + _this.name);
+	            });
+	            //create a notification to user who get accepted a friend request
+	            var title = 'Lời mời kết bạn từ ' + this.userToken;
+	            var link = '/user/' + this.name + '/friends';
+	            alert("đã gửi lời mời kết bạn thành công");
+	            //call function using socket io to send notification
+	            this._noti.alertNotification(title, this.name, link);
+	            //save notification to database
+	            this._noti.createNotification(title, this.name, link).subscribe(function (notification) {
+	                console.log(notification);
+	            });
+	        }
+	        else {
+	            alert("Bạn đã gửi kết bạn rồi!");
+	        }
+	        this.getFriendList();
+	    };
+	    UserProfileBarComponent.prototype.deleteFriend = function () {
+	        var r = confirm("Bạn có muốn hủy kết bạn");
+	        if (r == true) {
+	            this._userService
+	                .deleteFriendRequest(this.userToken, this.name)
+	                .subscribe(function () {
+	                console.log('delete successfull');
+	            });
+	            this._userService
+	                .deleteFriendRequest(this.name, this.userToken)
+	                .subscribe(function () {
+	            });
+	            this.getFriendList();
+	            this.isFriend = false;
+	            alert("bạn đã hủy gửi lời  mời kết bạn");
+	        }
+	    };
+	    //get friend list: pending and accepted
+	    UserProfileBarComponent.prototype.getFriendList = function () {
+	        var _this = this;
+	        this.checkSentRequestUser = false;
+	        this._userService
+	            .getFriendList(this.userToken)
+	            .subscribe(function (friendlist) {
+	            _this.friendList = friendlist;
+	            _this.checkIsFriend();
+	            //check sent request
+	            for (var i = 0; i < _this.friendList.length; i++) {
+	                if (friendlist[i].user2 === _this.name && _this.friendList[i].status === "pending") {
+	                    _this.checkSentRequestUser = true;
+	                    break;
+	                }
+	            }
+	            for (var i = 0; i < _this.friendList.length; i++) {
+	                if (friendlist[i].user1 === _this.name && _this.friendList[i].status === "pending") {
+	                    _this.checkIsRecivedRequest = true;
+	                    break;
+	                }
+	            }
+	        });
+	    };
+	    UserProfileBarComponent.prototype.checkIsFriend = function () {
+	        this.isFriend = false;
+	        for (var i = 0; i < this.friendList.length; i++) {
+	            if ((this.name === this.friendList[i].user1 && this.friendList[i].status === "accepted") ||
+	                (this.name === this.friendList[i].user2 && this.friendList[i].status === "accepted")) {
+	                this.isFriend = true;
+	                break;
+	            }
+	        }
+	    };
+	    UserProfileBarComponent = __decorate([
+	        core_1.Component({
+	            selector: 'user-profile-bar',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile-bar.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
+	    ], UserProfileBarComponent);
+	    return UserProfileBarComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.UserProfileBarComponent = UserProfileBarComponent;
+	
+
+/***/ },
+/* 1082 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 8/8/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var common_1 = __webpack_require__(8);
+	var article_1 = __webpack_require__(121);
+	var ng2_pagination_1 = __webpack_require__(320);
+	var filter_1 = __webpack_require__(185);
+	var ArtListCtlComponent = (function () {
+	    function ArtListCtlComponent(_articleService, router) {
+	        this._articleService = _articleService;
+	        this.router = router;
+	        this.deArts = [];
+	        this.filter = '';
+	    }
+	    ArtListCtlComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._articleService.getAllDeArts().subscribe(function (deArts) {
+	            _this.deArts = deArts;
+	        });
+	    };
+	    ArtListCtlComponent.prototype.activeArt = function (id) {
+	        var _this = this;
+	        this._articleService.activeArt(id).subscribe(function (art) {
+	            _this._articleService.getAllDeArts().subscribe(function (deArts) {
+	                _this.deArts = deArts;
+	                $('.messOn').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> ' + art.title + ' đã được mở lại và ở trạng thái riêng tư</div>');
+	            });
+	        });
+	    };
+	    ArtListCtlComponent = __decorate([
+	        core_1.Component({
+	            selector: 'art-list-clt',
+	            templateUrl: 'client/dev/app/components/back-end/article/templates/article-list.html',
+	            directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp],
+	            providers: [article_1.ArticleService, ng2_pagination_1.PaginationService],
+	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
+	    ], ArtListCtlComponent);
+	    return ArtListCtlComponent;
+	    var _a, _b;
+	}());
+	exports.ArtListCtlComponent = ArtListCtlComponent;
+	
+
+/***/ },
+/* 1083 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 8/8/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var common_1 = __webpack_require__(8);
+	var tag_1 = __webpack_require__(97);
+	var ng2_pagination_1 = __webpack_require__(320);
+	var filter_1 = __webpack_require__(185);
+	var TagListCtlComponent = (function () {
+	    function TagListCtlComponent(_tagService, router) {
+	        this._tagService = _tagService;
+	        this.router = router;
+	        this.tags = [];
+	        this.deTags = [];
+	        this.filter = '';
+	    }
+	    TagListCtlComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._tagService.getAllTag().subscribe(function (tags) {
+	            _this._tagService.getAllDeactiveTag().subscribe(function (deTags) {
+	                _this.tags = tags;
+	                _this.deTags = deTags;
+	            });
+	        });
+	    };
+	    TagListCtlComponent.prototype.deactiveTag = function (id) {
+	        var _this = this;
+	        this._tagService.deactivateTag(id).subscribe(function (mess) {
+	            _this._tagService.getAllTag().subscribe(function (tags) {
+	                _this._tagService.getAllDeactiveTag().subscribe(function (deTags) {
+	                    _this.tags = tags;
+	                    _this.deTags = deTags;
+	                });
+	            });
+	        });
+	    };
+	    TagListCtlComponent.prototype.activeTag = function (id) {
+	        var _this = this;
+	        this._tagService.activeTag(id).subscribe(function (tag) {
+	            _this._tagService.getAllTag().subscribe(function (tags) {
+	                _this._tagService.getAllDeactiveTag().subscribe(function (deTags) {
+	                    _this.tags = tags;
+	                    _this.deTags = deTags;
+	                });
+	            });
+	        });
+	    };
+	    TagListCtlComponent = __decorate([
+	        core_1.Component({
+	            selector: 'tag-list-clt',
+	            templateUrl: 'client/dev/app/components/back-end/tag/templates/tag.html',
+	            directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp],
+	            providers: [tag_1.TagService, ng2_pagination_1.PaginationService],
+	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
+	    ], TagListCtlComponent);
+	    return TagListCtlComponent;
+	    var _a, _b;
+	}());
+	exports.TagListCtlComponent = TagListCtlComponent;
+	
+
+/***/ },
+/* 1084 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//components
+	var request_friend_record_1 = __webpack_require__(1087);
+	var friend_record_1 = __webpack_require__(1086);
+	var user_profile_bar_1 = __webpack_require__(1081);
+	//services
+	var users_1 = __webpack_require__(37);
+	var FriendListComponent = (function () {
+	    function FriendListComponent(router, route, _userService) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this.roleToken = localStorage.getItem('role');
+	        this.userToken = localStorage.getItem('username');
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	        });
+	    }
+	    FriendListComponent.prototype.ngOnInit = function () {
+	        this.pendingRequests = [];
+	        this.acceptedRequest = [];
+	        this.friendNames = [];
+	        this.getFriendList();
+	        //this.getFriendName();
+	    };
+	    //get friend list: pending and accepted
+	    FriendListComponent.prototype.getFriendList = function () {
+	        var _this = this;
+	        this._userService
+	            .getFriendList(this.name)
+	            .subscribe(function (friendlist) {
+	            _this.friendships = friendlist;
+	            //check sent request
+	            for (var i = 0; i < _this.friendships.length; i++) {
+	                if (_this.friendships[i].user2 === _this.name && _this.friendships[i].status === "pending") {
+	                    _this.pendingRequests.push(_this.friendships[i]);
+	                }
+	                if (_this.friendships[i].user2 === _this.name && _this.friendships[i].status === "accepted") {
+	                    _this.acceptedRequest.push(_this.friendships[i]);
+	                }
+	                if (_this.friendships[i].user1 === _this.name && _this.friendships[i].status === "accepted") {
+	                    _this.acceptedRequest.push(_this.friendships[i]);
+	                }
+	            }
+	            _this.getFriendName();
+	            console.log(_this.acceptedRequest);
+	        });
+	    };
+	    FriendListComponent.prototype.getFriendName = function () {
+	        for (var i = 0; i < this.acceptedRequest.length; i++) {
+	            if (this.acceptedRequest[i].user1 === this.name) {
+	                this.friendNames.push(this.acceptedRequest[i].user2);
+	            }
+	            else {
+	                this.friendNames.push(this.acceptedRequest[i].user1);
+	            }
+	        }
+	    };
+	    FriendListComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-record',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/friend-list.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES,
+	                request_friend_record_1.RequestFriendRecordComponent,
+	                friend_record_1.FriendRecordComponent,
+	                user_profile_bar_1.UserProfileBarComponent
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object])
+	    ], FriendListComponent);
+	    return FriendListComponent;
+	    var _a, _b, _c;
+	}());
+	exports.FriendListComponent = FriendListComponent;
+	
+
+/***/ },
+/* 1085 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//Component
+	var request_record_1 = __webpack_require__(1088);
+	var user_profile_bar_1 = __webpack_require__(1081);
+	//services
+	var users_1 = __webpack_require__(37);
+	var knowledge_1 = __webpack_require__(52);
+	var UserProfileComponent = (function () {
+	    function UserProfileComponent(router, route, _userService, _knowledgeService) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this._knowledgeService = _knowledgeService;
+	        this.notification = {
+	            show: false,
+	            title: 'Demo notification!',
+	            body: 'ng2-notifications',
+	            icon: 'https://goo.gl/3eqeiE',
+	            action: function () {
+	                window.open('https://github.com/alexcastillo/ng2-notifications');
+	            }
+	        };
+	        this.formatDate = function (date) {
+	            if (date) {
+	                var newDate, day, month, year;
+	                year = date.substr(0, 4);
+	                month = date.substr(5, 2);
+	                day = date.substr(8, 2);
+	                return newDate = day + '/' + month + '/' + year;
+	            }
+	        };
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	        });
+	        this.roleToken = localStorage.getItem('role');
+	        this.userToken = localStorage.getItem('username');
+	    }
+	    UserProfileComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._userService.getUserByUserName(this.name).subscribe(function (user) {
+	            _this.userProfile = user;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	        this.checkUserExist();
+	        if (this.isExist = true) {
+	            this.getRequestByUser();
+	        }
+	    };
+	    UserProfileComponent.prototype.getRequestByUser = function () {
+	        var _this = this;
+	        this._userService
+	            .getRequestByUser(this.name)
+	            .subscribe(function (requests) {
+	            for (var i = 0; i < requests.length; i++) {
+	                requests[i].createdAt = _this.formatDate(requests[i].createdAt);
+	                requests[i].modifiedDate = _this.formatDate(requests[i].modifiedDate);
+	            }
+	            _this.requests = requests;
+	        });
+	    };
+	    UserProfileComponent.prototype.getKnowledgeNameOfRequest = function (knowledgeId) {
+	        var _this = this;
+	        //get back.knowledge name by knowledgeId
+	        this._knowledgeService.findKnowledgeById(knowledgeId).subscribe(function (knowledge) {
+	            _this.knowledgeName = knowledge.name;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    UserProfileComponent.prototype.checkUserExist = function () {
+	        var _this = this;
+	        this._userService.checkUserExist(this.name).subscribe(function (isExist) {
+	            if (isExist._body === '0') {
+	                _this.isExist = false;
+	            }
+	            else {
+	                _this.isExist = true;
+	            }
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    UserProfileComponent = __decorate([
+	        core_1.Component({
+	            selector: 'user-profile',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES,
+	                request_record_1.RequestRecordComponent,
+	                user_profile_bar_1.UserProfileBarComponent
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object])
+	    ], UserProfileComponent);
+	    return UserProfileComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.UserProfileComponent = UserProfileComponent;
+	
+
+/***/ },
+/* 1086 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//services
+	var users_1 = __webpack_require__(37);
+	var auth_1 = __webpack_require__(42);
+	var FriendRecordComponent = (function () {
+	    function FriendRecordComponent(router, route, _userService, _auth) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this._auth = _auth;
+	        this.userToken = localStorage.getItem('username');
+	        this.isFriend = true;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	        });
+	    }
+	    FriendRecordComponent.prototype.ngOnInit = function () {
+	        this.getUserInformation();
+	    };
+	    FriendRecordComponent.prototype.getUserInformation = function () {
+	        var _this = this;
+	        this._userService.getUserByUserName(this.friendName).subscribe(function (userinfo) {
+	            _this.displayname = userinfo.displayName;
+	            _this.email = userinfo.email;
+	            _this.level = userinfo.level;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    FriendRecordComponent.prototype.deleteFriend = function () {
+	        var _this = this;
+	        var r = confirm("Bạn có muốn hủy kết bạn");
+	        if (r == true) {
+	            this._userService
+	                .deleteFriendRequest(this.userToken, this.friendName)
+	                .subscribe(function () {
+	                console.log('delete successfull');
+	            });
+	            this._userService
+	                .deleteFriendRequest(this.friendName, this.userToken)
+	                .subscribe(function () {
+	                _this.isFriend = false;
+	            });
+	            alert("bạn đã hủy gửi lời  mời kết bạn");
+	        }
+	    };
+	    __decorate([
+	        core_1.Input('friendName'), 
+	        __metadata('design:type', String)
+	    ], FriendRecordComponent.prototype, "friendName", void 0);
+	    FriendRecordComponent = __decorate([
+	        core_1.Component({
+	            selector: 'friend-record',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/friend-record.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
+	    ], FriendRecordComponent);
+	    return FriendRecordComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.FriendRecordComponent = FriendRecordComponent;
+	
+
+/***/ },
+/* 1087 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//services
+	var users_1 = __webpack_require__(37);
+	var notification_1 = __webpack_require__(122);
+	var RequestFriendRecordComponent = (function () {
+	    function RequestFriendRecordComponent(router, route, _userService, _noti) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this._noti = _noti;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	        });
+	    }
+	    RequestFriendRecordComponent.prototype.ngOnInit = function () {
+	        this.isAdded = false;
+	        this.isFriend = true;
+	        this.getUserInformation();
+	    };
+	    RequestFriendRecordComponent.prototype.acceptRequest = function () {
+	        var _this = this;
+	        console.log(this.requestUser + ' ' + this.name);
+	        this._userService.acceptFriendRequest(this.requestUser, this.name).subscribe(function () {
+	            console.log("accepted successful");
+	            alert("Bạn đã là bạn bè với " + _this.requestUser);
+	            _this.isAdded = true;
+	            var title = _this.name + ' chấp nhận kết bạn';
+	            var link = '/user/' + _this.name;
+	            //call function using socket io to send notification
+	            _this._noti.alertNotification(title, _this.requestUser, link);
+	            //save notification to database
+	            _this._noti.createNotification(title, _this.requestUser, link).subscribe(function (notification) {
+	                console.log('create a notification to ' + _this.name);
+	            });
+	        });
+	    };
+	    RequestFriendRecordComponent.prototype.getUserInformation = function () {
+	        var _this = this;
+	        this._userService.getUserByUserName(this.requestUser).subscribe(function (userinfo) {
+	            _this.displayname = userinfo.displayName;
+	            _this.email = userinfo.email;
+	            _this.level = userinfo.level;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    RequestFriendRecordComponent.prototype.deleteFriend = function () {
+	        var r = confirm("Bạn có muốn hủy kết bạn");
+	        if (r == true) {
+	            this._userService
+	                .deleteFriendRequest(this.requestUser, this.name)
+	                .subscribe(function () {
+	                console.log('delete successfull');
+	            });
+	            this.isFriend = false;
+	            alert("bạn đã hủy gửi lời  mời kết bạn");
+	        }
+	    };
+	    __decorate([
+	        core_1.Input('requestUser'), 
+	        __metadata('design:type', String)
+	    ], RequestFriendRecordComponent.prototype, "requestUser", void 0);
+	    __decorate([
+	        core_1.Input('name'), 
+	        __metadata('design:type', String)
+	    ], RequestFriendRecordComponent.prototype, "name", void 0);
+	    RequestFriendRecordComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-friend-record',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/request-friend-record.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
+	    ], RequestFriendRecordComponent);
+	    return RequestFriendRecordComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.RequestFriendRecordComponent = RequestFriendRecordComponent;
+	
+
+/***/ },
+/* 1088 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	//services
+	var users_1 = __webpack_require__(37);
+	var knowledge_1 = __webpack_require__(52);
+	var RequestRecordComponent = (function () {
+	    function RequestRecordComponent(router, route, _userService, _knowledgeService) {
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	        this._knowledgeService = _knowledgeService;
+	        this.formatDate = function (date) {
+	            if (date) {
+	                var newDate, day, month, year;
+	                year = date.substr(0, 4);
+	                month = date.substr(5, 2);
+	                day = date.substr(8, 2);
+	                return newDate = day + '/' + month + '/' + year;
+	            }
+	        };
+	    }
+	    RequestRecordComponent.prototype.ngOnInit = function () {
+	        //this.createdAt = this.formatDate(createdAt);
+	        this.id = this.knowledgeId;
+	        this.getKnowledgeNameOfRequest();
+	        if (this.status === 'pending') {
+	            this.status = 'Đang chờ';
+	        }
+	        else {
+	            this.status = 'Đã được chấp nhận';
+	        }
+	    };
+	    RequestRecordComponent.prototype.getKnowledgeNameOfRequest = function () {
+	        var _this = this;
+	        //get back.knowledge name by knowledgeId
+	        this._knowledgeService.findKnowledgeById(this.knowledgeId).subscribe(function (knowledge) {
+	            _this.knowledgeName = knowledge.name;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    __decorate([
+	        core_1.Input('title'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "title", void 0);
+	    __decorate([
+	        core_1.Input('description'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "description", void 0);
+	    __decorate([
+	        core_1.Input('createdAt'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "createdAt", void 0);
+	    __decorate([
+	        core_1.Input('knowledgeId'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "knowledgeId", void 0);
+	    __decorate([
+	        core_1.Input('status'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "status", void 0);
+	    __decorate([
+	        core_1.Input('requestId'), 
+	        __metadata('design:type', String)
+	    ], RequestRecordComponent.prototype, "requestId", void 0);
+	    RequestRecordComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-record',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/request-record.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object])
+	    ], RequestRecordComponent);
+	    return RequestRecordComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.RequestRecordComponent = RequestRecordComponent;
 	
 
 /***/ }

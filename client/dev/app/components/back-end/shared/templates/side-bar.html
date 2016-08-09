@@ -4,15 +4,21 @@
             <a href="index.html"><i class="fa fa-fw fa-dashboard"></i> Bảng</a>
         </li>
         <li routerLinkActive="active">
-          <a [routerLink]="['/admin/users']">
-            <span class="glyphicon glyphicon-user"></span>
-            Người dùng </a>
+            <a [routerLink]="['/admin/users']">
+                <span class="glyphicon glyphicon-user"></span>
+                Người dùng </a>
         </li>
         <li routerLinkActive="active">
             <a [routerLink]="['/admin/knowledges']"><i class="glyphicon glyphicon-book"></i> Tri thức</a>
         </li>
         <li routerLinkActive="active">
             <a [routerLink]="['/admin/requests']"><i class="glyphicon glyphicon-flag"></i> Yêu cầu</a>
+        </li>
+        <li>
+            <a [routerLink]="['/admin/tags']"><i class="glyphicon glyphicon-flag"></i>quản lý Tag</a>
+        </li>
+        <li>
+            <a [routerLink]="['/admin/articles']"><i class="glyphicon glyphicon-flag"></i>Những bài viết bị đóng</a>
         </li>
         <!--<li>
             <a href="ksspaces.html"><i class="fa fa-fw fa-desktop"></i> Kspace</a>

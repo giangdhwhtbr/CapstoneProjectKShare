@@ -67,13 +67,12 @@ module.exports = class userController {
             password: req.body.password,
             email: req.body.email,
             role: req.body.role,
-            level: 1,
-            rateAve: 0,
-            status: true
+            rateAve: 0
         };
         if (!req.body.role) {
             user.role = "normal";
         }
+      console.log(user);
         userDAO
             .createNew(user)
             .then((user) => {
