@@ -13,7 +13,7 @@ var requests_1 = require('../../../services/requests');
 var tag_1 = require('../../../services/tag');
 var friend_list_1 = require('../shared/friend-list');
 var request_create_1 = require('../../back-end/request/request-create');
-var request_search_1 = require('./request-search');
+var request_category_1 = require('./request-category');
 var auth_1 = require('../../../services/auth');
 var router_2 = require("@angular/router");
 var RequestListClientComponent = (function () {
@@ -141,7 +141,7 @@ var RequestListClientComponent = (function () {
                 router_1.ROUTER_DIRECTIVES,
                 friend_list_1.FriendListComponent,
                 request_create_1.CreateRequestComponent,
-                request_search_1.RequestCategoryComponent
+                request_category_1.RequestCategoryComponent
             ],
             providers: [tag_1.TagService]
         }), 
