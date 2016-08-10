@@ -1814,7 +1814,8 @@ webpackJsonp([2],[
 	            "_id": [""],
 	            "title": [""],
 	            "description": [""],
-	            "knowledgeId": [""]
+	            "knowledgeId": [""],
+	            "status": [""]
 	        });
 	    }
 	    UpdateRequestComponent.prototype.ngOnInit = function () {
@@ -1823,6 +1824,10 @@ webpackJsonp([2],[
 	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
 	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
 	            _this._requestService.getRequestById(_this.id).subscribe(function (request) {
+	                _this._knowledgeService.findKnowledgeById(request.knowledgeId).subscribe(function (knowledge) {
+	                    _this.kname = knowledge.name;
+	                    _this.knowledgeId = knowledge._id;
+	                });
 	                var ids = [];
 	                ids = request.tags;
 	                _this._tagService.getTagsByIds(ids).subscribe(function (tags) {
@@ -1830,6 +1835,7 @@ webpackJsonp([2],[
 	                    _this.title = request.title;
 	                    _this.description = request.description;
 	                    _this._id = request._id;
+	                    _this.status = request.status;
 	                    var nameArr = [];
 	                    for (var _i = 0, tags_1 = tags; _i < tags_1.length; _i++) {
 	                        var e = tags_1[_i];
@@ -2628,101 +2634,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 285 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	var requests_1 = __webpack_require__(59);
-	var RequestCategoryComponent = (function () {
-	    function RequestCategoryComponent(_requestService, router, route) {
-	        var _this = this;
-	        this._requestService = _requestService;
-	        this.router = router;
-	        this.route = route;
-	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            var type = params['type'];
-	            _this.typee = type;
-	            var id = params['id'];
-	            _this.identify = id;
-	        });
-	        //get templates from children category
-	        if (this.typee === "subcategory") {
-	            this._requestService.getRequestByKnowledgeId(this.identify).subscribe(function (requests) {
-	                if (requests.length == 0) {
-	                    _this.isExistRecord = true;
-	                }
-	                else {
-	                    _this.isExistRecord = false;
-	                }
-	                for (var i = 0; i < requests.length; i++) {
-	                    requests[i].createdAt = new Date(requests[i].createdAt);
-	                    requests[i].modifiedDate = new Date(requests[i].modifiedDate);
-	                }
-	                _this.requests = requests;
-	            });
-	        }
-	        //get templates from parent category
-	        if (this.typee === "category") {
-	            this._requestService.getKnowledgeByParent(this.identify).subscribe(function (knowledges) {
-	                var a = [];
-	                _this.knowledges = knowledges;
-	                for (var i = 0; i < _this.knowledges.length; i++) {
-	                    _this._requestService.getRequestByKnowledgeId(_this.knowledges[i]._id).subscribe(function (requests) {
-	                        //for each child knowledge get requests
-	                        for (var j = 0; j < requests.length; j++) {
-	                            a.push(requests[j]);
-	                        }
-	                        for (var i = 0; i < a.length; i++) {
-	                            a[i].createdAt = new Date(requests[i].createdAt);
-	                            a[i].modifiedDate = new Date(requests[i].modifiedDate);
-	                            if (requests[i].status === 'pending') {
-	                                requests[i].status = 'Đang chờ';
-	                            }
-	                        }
-	                        if (a.length == 0) {
-	                            _this.isExistRecord = true;
-	                        }
-	                        else {
-	                            _this.isExistRecord = false;
-	                        }
-	                        _this.requests = a;
-	                    });
-	                }
-	            }, function (Error) {
-	                console.log(Error);
-	            });
-	        }
-	    }
-	    RequestCategoryComponent = __decorate([
-	        core_1.Component({
-	            selector: 'request-search-cli',
-	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-search.html',
-	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
-	            directives: [router_1.ROUTER_DIRECTIVES]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object])
-	    ], RequestCategoryComponent);
-	    return RequestCategoryComponent;
-	    var _a, _b, _c;
-	}());
-	exports.RequestCategoryComponent = RequestCategoryComponent;
-	
-
-/***/ },
+/* 285 */,
 /* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -5373,10 +5285,16 @@ webpackJsonp([2],[
 	        //get templates when load the page
 	        this._requestService.getRequestById(this.id)
 	            .subscribe(function (request) {
+	            console.log(request.status);
 	            request.createdAt = new Date(request.createdAt);
+	            //translate status
 	            if (request.status === 'accepted') {
 	                request.status = 'Đã được chấp nhận';
 	                _this.checkIsAcceped = true;
+	            }
+	            else if (request.status === 'deactive' || request.status === undefined) {
+	                request.status = 'Đã kết thúc';
+	                _this.checkDeactive = true;
 	            }
 	            else {
 	                request.status = 'Đang chờ';
@@ -5386,12 +5304,11 @@ webpackJsonp([2],[
 	            _this.updateLink = '/requests/' + request._id + '/update';
 	            _this.knowledgeId = request.knowledgeId;
 	            _this.subscribers = request.subcribers;
-	            if (request.status === "deactive") {
-	                _this.checkDeactive = true;
-	            }
+	            //check if user is created user
 	            if (request.user === _this.userToken) {
 	                _this.checkCreatedUser = true;
 	            }
+	            //check if user already subcribed
 	            for (var i = 0; i < _this.subscribers.length; i++) {
 	                if (_this.userToken === _this.subscribers[i]) {
 	                    _this.checkSubcribedUser = true;
@@ -5441,7 +5358,7 @@ webpackJsonp([2],[
 	                .changeStatusRequest(this.id)
 	                .subscribe(function (r) {
 	                console.log("deactivate sucess");
-	                _this.router.navigateByUrl('/requests/');
+	                _this.router.navigateByUrl('/requests');
 	            });
 	        }
 	    };
@@ -5459,13 +5376,11 @@ webpackJsonp([2],[
 	            _this.request.status = 'accepted';
 	            //update request status
 	            console.log(_this.request);
-	            _this._requestService.updateRequest(_this.request)
+	            _this._requestService.updateRequest(_this.request, _this.request.tags, [])
 	                .subscribe(function (c) {
-	                console.log(_this.request);
 	                console.log('change status request successfull');
 	            });
 	            _this.checkIsAcceped = true;
-	            //window.location.reload();
 	            _this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
 	        });
 	    };
@@ -5478,12 +5393,11 @@ webpackJsonp([2],[
 	            this._requestService
 	                .updateSubcriber(id, this.userToken)
 	                .subscribe(function (r) {
-	                console.log(r);
 	                console.log("add subcriber successfull");
 	                _this.checkSubcribedUser = true;
-	            });
-	            this._requestService.getRequestById(this.id).subscribe(function (request) {
-	                _this.subscribers = request.subcribers;
+	                _this._requestService.getRequestById(_this.id).subscribe(function (request) {
+	                    _this.subscribers = request.subcribers;
+	                });
 	            });
 	        }
 	    };
@@ -5526,7 +5440,7 @@ webpackJsonp([2],[
 	var tag_1 = __webpack_require__(82);
 	var friend_list_1 = __webpack_require__(633);
 	var request_create_1 = __webpack_require__(284);
-	var request_search_1 = __webpack_require__(285);
+	var request_category_1 = __webpack_require__(1083);
 	var auth_1 = __webpack_require__(42);
 	var router_2 = __webpack_require__(5);
 	var RequestListClientComponent = (function () {
@@ -5654,7 +5568,7 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES,
 	                friend_list_1.FriendListComponent,
 	                request_create_1.CreateRequestComponent,
-	                request_search_1.RequestCategoryComponent
+	                request_category_1.RequestCategoryComponent
 	            ],
 	            providers: [tag_1.TagService]
 	        }), 
@@ -5973,7 +5887,7 @@ webpackJsonp([2],[
 	var home_1 = __webpack_require__(426);
 	var request_list_1 = __webpack_require__(432);
 	var request_detail_1 = __webpack_require__(431);
-	var request_search_1 = __webpack_require__(285);
+	var request_category_1 = __webpack_require__(1083);
 	var kspace_1 = __webpack_require__(429);
 	var kspace_list_1 = __webpack_require__(428);
 	var kspace_info_1 = __webpack_require__(427);
@@ -6004,7 +5918,7 @@ webpackJsonp([2],[
 	                home_1.HomeComponent,
 	                request_list_1.RequestListClientComponent,
 	                request_detail_1.RequestDetailClientComponent,
-	                request_search_1.RequestCategoryComponent,
+	                request_category_1.RequestCategoryComponent,
 	                kspace_1.KSpaceComponent,
 	                kspace_list_1.KSpaceListComponent,
 	                kspace_info_1.KSpaceInfoComponent,
@@ -18992,6 +18906,7 @@ webpackJsonp([2],[
 /* 638 */
 /***/ function(module, exports, __webpack_require__) {
 
+<<<<<<< HEAD
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -19102,6 +19017,97 @@ webpackJsonp([2],[
 	    var _a, _b, _c;
 	}());
 	exports.RegisterComponent = RegisterComponent;
+=======
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 5/19/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var common_1 = __webpack_require__(8);
+	var router_1 = __webpack_require__(5);
+	var auth_1 = __webpack_require__(42);
+	var RegisterComponent = (function () {
+	    function RegisterComponent(fb, _authService, router) {
+	        this.fb = fb;
+	        this._authService = _authService;
+	        this.router = router;
+	        this.errorMessage = '';
+	        this.regForm = fb.group({
+	            username: ["", common_1.Validators.required],
+	            password: ["", common_1.Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')],
+	            copass: [""],
+	            email: ["", common_1.Validators.pattern('^(([a-zA-Z]|[0-9])|([-]|[_]|[.]))+[@](([a-zA-Z0-9])|([-])){2,63}[.](([a-zA-Z0-9]){2,63})+$')]
+	        });
+	    }
+	    RegisterComponent.prototype.register = function (user) {
+	        var _this = this;
+	        if (user.password !== user.copass) {
+	            this.errorMessage = 'Sai mật khẩu xác nhận! ';
+	        }
+	        else {
+	            this._authService
+	                .register(user)
+	                .subscribe(function (response) {
+	                user = {
+	                    username: user.username,
+	                    password: user.password
+	                };
+	                _this._authService
+	                    .login(user)
+	                    .subscribe(function (res) {
+	                    localStorage.setItem('username', res.username);
+	                    localStorage.setItem('userrole', 'normal');
+	                    _this.router.navigateByUrl('/reg/info/' + response._id);
+	                }, function (error) {
+	                    console.log(error);
+	                });
+	            }, function (error) {
+	                if (error.errors) {
+	                    var errors = error.errors;
+	                    if (errors.username) {
+	                        _this.errorMessage = errors.username.message;
+	                    }
+	                    else if (errors.password) {
+	                        _this.errorMessage = errors.password.message;
+	                    }
+	                    else if (errors.email) {
+	                        _this.errorMessage = errors.email.message;
+	                    }
+	                }
+	                if (error.errmsg) {
+	                    if (error.errmsg.includes('email')) {
+	                        _this.errorMessage = 'email đã tồn tại!';
+	                    }
+	                    else if (error.errmsg.includes('username')) {
+	                        _this.errorMessage = 'tên đăng nhập đã tồn tại';
+	                    }
+	                }
+	            });
+	        }
+	    };
+	    RegisterComponent = __decorate([
+	        core_1.Component({
+	            selector: 'register',
+	            templateUrl: 'client/dev/app/components/front-end/user/register/templates/register.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
+	            directives: [common_1.FORM_DIRECTIVES]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
+	    ], RegisterComponent);
+	    return RegisterComponent;
+	    var _a, _b, _c;
+	}());
+	exports.RegisterComponent = RegisterComponent;
+>>>>>>> 30e2669ffc9bed2d630355ba76e64aa4cf53042f
 	
 
 /***/ },
@@ -19698,7 +19704,7 @@ webpackJsonp([2],[
 	var request_list_1 = __webpack_require__(432);
 	var request_detail_1 = __webpack_require__(431);
 	var request_update_1 = __webpack_require__(186);
-	var request_search_1 = __webpack_require__(285);
+	var request_category_1 = __webpack_require__(1083);
 	var request_create_1 = __webpack_require__(284);
 	var kspace_1 = __webpack_require__(429);
 	var kspace_list_1 = __webpack_require__(428);
@@ -19850,7 +19856,7 @@ webpackJsonp([2],[
 	                    {
 	                        path: ':type/:id',
 	                        pathMatch: 'full',
-	                        component: request_search_1.RequestCategoryComponent
+	                        component: request_category_1.RequestCategoryComponent
 	                    },
 	                    {
 	                        path: '',
@@ -28503,8 +28509,7 @@ webpackJsonp([2],[
 	        if (!state) {
 	            return false;
 	        }
-	        var isMetaDataIdentical = state.collection === collection &&
-	            state.size === collection.length &&
+	        var isMetaDataIdentical = state.size === collection.length &&
 	            state.start === start &&
 	            state.end === end;
 	        if (!isMetaDataIdentical) {
@@ -28542,9 +28547,10 @@ webpackJsonp([2],[
 	var pagination_service_1 = __webpack_require__(320);
 	var template_1 = __webpack_require__(1021);
 	var PaginationControlsCmp = (function () {
-	    function PaginationControlsCmp(service) {
+	    function PaginationControlsCmp(service, changeDetectorRef) {
 	        var _this = this;
 	        this.service = service;
+	        this.changeDetectorRef = changeDetectorRef;
 	        this.maxSize = 7;
 	        this.pageChange = new core_1.EventEmitter();
 	        this.pages = [];
@@ -28555,6 +28561,7 @@ webpackJsonp([2],[
 	            .subscribe(function (id) {
 	            if (_this.id === id) {
 	                _this.updatePageLinks();
+	                _this.changeDetectorRef.markForCheck();
 	            }
 	        });
 	    }
@@ -28582,14 +28589,16 @@ webpackJsonp([2],[
 	        if (this.id === undefined) {
 	            this.id = this.service.defaultId;
 	        }
+	        this.updatePageLinks();
 	    };
 	    PaginationControlsCmp.prototype.ngOnChanges = function () {
 	        this.updatePageLinks();
 	    };
 	    PaginationControlsCmp.prototype.ngAfterViewInit = function () {
 	        var _this = this;
-	        if ((this.template) && 0 < this.template.nativeElement.children.length) {
-	            setTimeout(function () { return _this.hasTemplate = true; });
+	        if (this.template && 0 < this.template.nativeElement.children.length) {
+	            this.hasTemplate = true;
+	            setTimeout(function () { return _this.changeDetectorRef.markForCheck(); });
 	        }
 	    };
 	    PaginationControlsCmp.prototype.ngOnDestroy = function () {
@@ -28636,6 +28645,11 @@ webpackJsonp([2],[
 	     */
 	    PaginationControlsCmp.prototype.getLastPage = function () {
 	        var inst = this.service.getInstance(this.id);
+	        if (inst.totalItems < 1) {
+	            // when there are 0 or fewer (an error case) items, there are no "pages" as such,
+	            // but it makes sense to consider a single, empty page as the last page.
+	            return 1;
+	        }
 	        return Math.ceil(inst.totalItems / inst.itemsPerPage);
 	    };
 	    /**
@@ -28753,9 +28767,10 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'pagination-controls',
 	            template: template_1.DEFAULT_TEMPLATE,
-	            styles: [template_1.DEFAULT_STYLES]
+	            styles: [template_1.DEFAULT_STYLES],
+	            changeDetection: core_1.ChangeDetectionStrategy.OnPush
 	        }), 
-	        __metadata('design:paramtypes', [pagination_service_1.PaginationService])
+	        __metadata('design:paramtypes', [pagination_service_1.PaginationService, core_1.ChangeDetectorRef])
 	    ], PaginationControlsCmp);
 	    return PaginationControlsCmp;
 	}());
@@ -28771,7 +28786,7 @@ webpackJsonp([2],[
 	 * from Zurb Foundation 6: http://foundation.zurb.com/sites/docs/pagination.html
 	 */
 	"use strict";
-	exports.DEFAULT_TEMPLATE = "\n    <div #template>\n        <ng-content></ng-content>\n    </div>\n    <ul class=\"ng2-pagination\" \n        role=\"navigation\" \n        aria-label=\"Pagination\" \n        *ngIf=\"!hasTemplate && !(autoHide && pages.length === 1)\">\n\n        <li class=\"pagination-previous\" [class.disabled]=\"isFirstPage()\" *ngIf=\"directionLinks\"> \n            <a *ngIf=\"1 < getCurrent()\" (click)=\"previous()\" aria-label=\"Next page\">\n                Previous <span class=\"show-for-sr\">page</span>\n            </a>\n            <span *ngIf=\"isFirstPage()\">Previous <span class=\"show-for-sr\">page</span></span>\n        </li>\n\n        <li [class.current]=\"getCurrent() === page.value\" *ngFor=\"let page of pages\">\n            <a (click)=\"setCurrent(page.value)\" *ngIf=\"getCurrent() !== page.value\">\n                <span class=\"show-for-sr\">Page</span>\n                <span>{{ page.label }}</span>\n            </a>\n            <div *ngIf=\"getCurrent() === page.value\">\n                <span class=\"show-for-sr\">You're on page</span>\n                <span>{{ page.label }}</span> \n            </div>\n        </li>\n\n        <li class=\"pagination-next\" [class.disabled]=\"isLastPage()\" *ngIf=\"directionLinks\">\n            <a *ngIf=\"!isLastPage()\" (click)=\"next()\" aria-label=\"Next page\">\n                Next <span class=\"show-for-sr\">page</span>\n            </a>\n            <span *ngIf=\"isLastPage()\">Next <span class=\"show-for-sr\">page</span></span>\n        </li>\n\n    </ul>\n    ";
+	exports.DEFAULT_TEMPLATE = "\n    <div #template>\n        <ng-content></ng-content>\n    </div>\n    <ul class=\"ng2-pagination\" \n        role=\"navigation\" \n        aria-label=\"Pagination\" \n        *ngIf=\"!hasTemplate && !(autoHide && pages.length <= 1)\">\n\n        <li class=\"pagination-previous\" [class.disabled]=\"isFirstPage()\" *ngIf=\"directionLinks\"> \n            <a *ngIf=\"1 < getCurrent()\" (click)=\"previous()\" aria-label=\"Next page\">\n                Previous <span class=\"show-for-sr\">page</span>\n            </a>\n            <span *ngIf=\"isFirstPage()\">Previous <span class=\"show-for-sr\">page</span></span>\n        </li>\n\n        <li [class.current]=\"getCurrent() === page.value\" *ngFor=\"let page of pages\">\n            <a (click)=\"setCurrent(page.value)\" *ngIf=\"getCurrent() !== page.value\">\n                <span class=\"show-for-sr\">Page</span>\n                <span>{{ page.label }}</span>\n            </a>\n            <div *ngIf=\"getCurrent() === page.value\">\n                <span class=\"show-for-sr\">You're on page</span>\n                <span>{{ page.label }}</span> \n            </div>\n        </li>\n\n        <li class=\"pagination-next\" [class.disabled]=\"isLastPage()\" *ngIf=\"directionLinks\">\n            <a *ngIf=\"!isLastPage()\" (click)=\"next()\" aria-label=\"Next page\">\n                Next <span class=\"show-for-sr\">page</span>\n            </a>\n            <span *ngIf=\"isLastPage()\">Next <span class=\"show-for-sr\">page</span></span>\n        </li>\n\n    </ul>\n    ";
 	exports.DEFAULT_STYLES = "\n.ng2-pagination {\n  margin-left: 0;\n  margin-bottom: 1rem; }\n  .ng2-pagination::before, .ng2-pagination::after {\n    content: ' ';\n    display: table; }\n  .ng2-pagination::after {\n    clear: both; }\n  .ng2-pagination li {\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    -ms-user-select: none;\n    font-size: 0.875rem;\n    margin-right: 0.0625rem;\n    border-radius: 0; }\n  .ng2-pagination li {\n    display: inline-block; }\n  .ng2-pagination a,\n  .ng2-pagination button {\n    color: #0a0a0a; \n    display: block;\n    padding: 0.1875rem 0.625rem;\n    border-radius: 0; }\n    .ng2-pagination a:hover,\n    .ng2-pagination button:hover {\n      background: #e6e6e6; }\n  .ng2-pagination .current {\n    padding: 0.1875rem 0.625rem;\n    background: #2199e8;\n    color: #fefefe;\n    cursor: default; }\n  .ng2-pagination .disabled {\n    padding: 0.1875rem 0.625rem;\n    color: #cacaca;\n    cursor: default; } \n    .ng2-pagination .disabled:hover {\n      background: transparent; }\n  .ng2-pagination .ellipsis::after {\n    content: '\u2026';\n    padding: 0.1875rem 0.625rem;\n    color: #0a0a0a; }\n\n.ng2-pagination .pagination-previous a::before,\n.ng2-pagination .pagination-previous.disabled::before { \n  content: '\u00AB';\n  display: inline-block;\n  margin-right: 0.5rem; }\n\n.ng2-pagination .pagination-next a::after,\n.ng2-pagination .pagination-next.disabled::after {\n  content: '\u00BB';\n  display: inline-block;\n  margin-left: 0.5rem; }\n\n.ng2-pagination .show-for-sr {\n  position: absolute !important;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0); }";
 
 
@@ -38135,6 +38150,105 @@ webpackJsonp([2],[
 	    return UITreeRow;
 	}());
 	exports.UITreeRow = UITreeRow;
+	
+
+/***/ },
+/* 1079 */,
+/* 1080 */,
+/* 1081 */,
+/* 1082 */,
+/* 1083 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var requests_1 = __webpack_require__(59);
+	var RequestCategoryComponent = (function () {
+	    function RequestCategoryComponent(_requestService, router, route) {
+	        this._requestService = _requestService;
+	        this.router = router;
+	        this.route = route;
+	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            var type = params['type'];
+	            var id = params['id'];
+	        });
+	    }
+	    RequestCategoryComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        //get templates from children category
+	        if (this.type === "subcategory") {
+	            this._requestService.getRequestByKnowledgeId(this.id).subscribe(function (requests) {
+	                if (requests.length == 0) {
+	                    _this.isExistRecord = true;
+	                }
+	                else {
+	                    _this.isExistRecord = false;
+	                }
+	                for (var i = 0; i < requests.length; i++) {
+	                    requests[i].createdAt = new Date(requests[i].createdAt);
+	                    requests[i].modifiedDate = new Date(requests[i].modifiedDate);
+	                }
+	                _this.requests = requests;
+	            });
+	        }
+	        //get templates from parent category
+	        if (this.type === "category") {
+	            this._requestService.getKnowledgeByParent(this.id).subscribe(function (knowledges) {
+	                var a = [];
+	                _this.knowledges = knowledges;
+	                for (var i = 0; i < _this.knowledges.length; i++) {
+	                    _this._requestService.getRequestByKnowledgeId(_this.knowledges[i]._id).subscribe(function (requests) {
+	                        //for each child knowledge get requests
+	                        for (var j = 0; j < requests.length; j++) {
+	                            a.push(requests[j]);
+	                        }
+	                        for (var i = 0; i < a.length; i++) {
+	                            a[i].createdAt = new Date(requests[i].createdAt);
+	                            a[i].modifiedDate = new Date(requests[i].modifiedDate);
+	                            if (requests[i].status === 'pending') {
+	                                requests[i].status = 'Đang chờ';
+	                            }
+	                        }
+	                        if (a.length == 0) {
+	                            _this.isExistRecord = true;
+	                        }
+	                        else {
+	                            _this.isExistRecord = false;
+	                        }
+	                        _this.requests = a;
+	                    });
+	                }
+	            }, function (Error) {
+	                console.log(Error);
+	            });
+	        }
+	    };
+	    RequestCategoryComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-category-cli',
+	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-category.html',
+	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
+	            directives: [router_1.ROUTER_DIRECTIVES]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object])
+	    ], RequestCategoryComponent);
+	    return RequestCategoryComponent;
+	    var _a, _b, _c;
+	}());
+	exports.RequestCategoryComponent = RequestCategoryComponent;
 	
 
 /***/ }

@@ -6,6 +6,7 @@
             <input class="form-control" id="title" type="text" [ngModel]="title" [ngFormControl]="updateRequestFormCli.controls['title']"
             />
             <input class="form-control" id="id" type="hidden" [ngModel]="id" [ngFormControl]="updateRequestFormCli.controls['_id']" />
+            <input class="form-control" id="status" type="hidden" [ngModel]="status" [ngFormControl]="updateRequestFormCli.controls['status']" />
             <label for="knowledge">Lĩnh vực</label>
             <select class="form-control" id="knowledge" [ngFormControl]="updateRequestFormCli.controls['knowledgeId']" [ngModel]="knowledgeId"
                 required>

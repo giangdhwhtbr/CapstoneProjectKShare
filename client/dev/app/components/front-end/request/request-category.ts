@@ -12,8 +12,8 @@ import { Knowledge } from '../../../interface/knowledge';
 import { RequestService } from '../../../services/requests';
 
 @Component({
-  selector: 'request-search-cli',
-  templateUrl: 'client/dev/app/components/front-end/request/templates/request-search.html',
+  selector: 'request-category-cli',
+  templateUrl: 'client/dev/app/components/front-end/request/templates/request-category.html',
   styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
   directives: [ROUTER_DIRECTIVES]
 })
@@ -21,23 +21,26 @@ import { RequestService } from '../../../services/requests';
 export class RequestCategoryComponent {
   pageTitle: string = 'Welcome to Knowledge Sharing Network';
 
-  identify: string;
+  id: string;
   isExistRecord: boolean;
-  typee: string;
+  type: string;
+  requests: Request[];
+  knowledges: Knowledge[];
   constructor(private _requestService: RequestService, public router: Router,
     private route: ActivatedRoute) {
     this.route
       .params
       .subscribe(params => {
         let type = params['type'];
-        this.typee = type;
         let id = params['id'];
-        this.identify = id;
       });
 
+  }
+
+  ngOnInit(): void {
     //get templates from children category
-    if (this.typee === "subcategory") {
-      this._requestService.getRequestByKnowledgeId(this.identify).subscribe(
+    if (this.type === "subcategory") {
+      this._requestService.getRequestByKnowledgeId(this.id).subscribe(
         (requests) => {
           if (requests.length == 0) {
             this.isExistRecord = true;
@@ -54,8 +57,8 @@ export class RequestCategoryComponent {
     }
 
     //get templates from parent category
-    if (this.typee === "category") {
-      this._requestService.getKnowledgeByParent(this.identify).subscribe(
+    if (this.type === "category") {
+      this._requestService.getKnowledgeByParent(this.id).subscribe(
         (knowledges) => {
 
           var a = [];
@@ -91,6 +94,10 @@ export class RequestCategoryComponent {
     }
 
   }
+<<<<<<< HEAD:client/dev/app/components/front-end/request/request-search.ts
   requests: Request[];
   knowledges: Knowledge[];
+=======
+
+>>>>>>> 30e2669ffc9bed2d630355ba76e64aa4cf53042f:client/dev/app/components/front-end/request/request-category.ts
 }

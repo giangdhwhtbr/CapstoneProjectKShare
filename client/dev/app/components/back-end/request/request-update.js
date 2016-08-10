@@ -114,7 +114,8 @@ var UpdateRequestComponent = (function () {
             "_id": [""],
             "title": [""],
             "description": [""],
-            "knowledgeId": [""]
+            "knowledgeId": [""],
+            "status": [""]
         });
     }
     UpdateRequestComponent.prototype.ngOnInit = function () {
@@ -123,6 +124,10 @@ var UpdateRequestComponent = (function () {
         this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
             _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
             _this._requestService.getRequestById(_this.id).subscribe(function (request) {
+                _this._knowledgeService.findKnowledgeById(request.knowledgeId).subscribe(function (knowledge) {
+                    _this.kname = knowledge.name;
+                    _this.knowledgeId = knowledge._id;
+                });
                 var ids = [];
                 ids = request.tags;
                 _this._tagService.getTagsByIds(ids).subscribe(function (tags) {
@@ -130,6 +135,7 @@ var UpdateRequestComponent = (function () {
                     _this.title = request.title;
                     _this.description = request.description;
                     _this._id = request._id;
+                    _this.status = request.status;
                     var nameArr = [];
                     for (var _i = 0; _i < tags.length; _i++) {
                         var e = tags[_i];
