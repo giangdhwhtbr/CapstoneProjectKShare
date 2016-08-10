@@ -34,13 +34,13 @@ export class CreateRequestComponent {
     user: string;
     roleToken: string;
     requestForm: ControlGroup;
-
+    check: boolean = true;
     knowledges: Knowledge[];
 
     filteredKnw: string[];
 
-    tags:any[]=[];
-    tagsEx:Array<any>;
+    tags: any[] = [];
+    tagsEx: Array<any>;
 
     contentCk: string;
     filesToUpload: Array<File>;
@@ -72,8 +72,8 @@ export class CreateRequestComponent {
     }
 
     filterONTag() {
-        let oldTag:any[] = [];
-        if(this.tags.length>0){
+        let oldTag: any[] = [];
+        if (this.tags.length > 0) {
             for (let e of this.tagsEx) {
                 for (let e1 of this.tags) {
                     //catch old tags
@@ -118,15 +118,16 @@ export class CreateRequestComponent {
         tags = this.filterONTag();
 
         this.contentCk = CKEDITOR.instances.editor1.getData();
-
-        this._requestService.addRequest(request, this.contentCk, tags[0], tags[1]).subscribe((request) => {
-
-            this.router.navigateByUrl('/requests/' + request._id + '/info');
-        },
-            (error) => {
-                console.log(error.text());
-            }
-        );
+        if (this.check == true) {
+            this._requestService.addRequest(request, this.contentCk, tags[0], tags[1]).subscribe((request) => {
+                this.check = false;
+                this.router.navigateByUrl('/requests/' + request._id + '/info');
+            },
+                (error) => {
+                    console.log(error.text());
+                }
+            );
+        }
     }
 
     // ckeditor
