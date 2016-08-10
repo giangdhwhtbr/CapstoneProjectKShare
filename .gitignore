@@ -6,6 +6,6 @@ client/**/*.js.map
 npm-debug.log
 tests
 .vscode
-client/dist
+client/dist/*
 uploads/*
 
