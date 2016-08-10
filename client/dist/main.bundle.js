@@ -5378,6 +5378,7 @@ webpackJsonp([2],[
 	        this._requestService.getRequestById(this.id)
 	            .subscribe(function (request) {
 	            request.createdAt = new Date(request.createdAt);
+	            //translate status
 	            if (request.status === 'accepted') {
 	                request.status = 'Đã được chấp nhận';
 	                _this.checkIsAcceped = true;
@@ -5394,9 +5395,11 @@ webpackJsonp([2],[
 	            _this.updateLink = '/requests/' + request._id + '/update';
 	            _this.knowledgeId = request.knowledgeId;
 	            _this.subscribers = request.subcribers;
+	            //check if user is created user
 	            if (request.user === _this.userToken) {
 	                _this.checkCreatedUser = true;
 	            }
+	            //check if user already subcribed
 	            for (var i = 0; i < _this.subscribers.length; i++) {
 	                if (_this.userToken === _this.subscribers[i]) {
 	                    _this.checkSubcribedUser = true;
@@ -5464,13 +5467,11 @@ webpackJsonp([2],[
 	            _this.request.status = 'accepted';
 	            //update request status
 	            console.log(_this.request);
-	            _this._requestService.updateRequest(_this.request)
+	            _this._requestService.updateRequest(_this.request, _this.request.tags, [])
 	                .subscribe(function (c) {
-	                console.log(_this.request);
 	                console.log('change status request successfull');
 	            });
 	            _this.checkIsAcceped = true;
-	            //window.location.reload();
 	            _this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
 	        });
 	    };
@@ -5483,12 +5484,11 @@ webpackJsonp([2],[
 	            this._requestService
 	                .updateSubcriber(id, this.userToken)
 	                .subscribe(function (r) {
-	                console.log(r);
 	                console.log("add subcriber successfull");
 	                _this.checkSubcribedUser = true;
-	            });
-	            this._requestService.getRequestById(this.id).subscribe(function (request) {
-	                _this.subscribers = request.subcribers;
+	                _this._requestService.getRequestById(_this.id).subscribe(function (request) {
+	                    _this.subscribers = request.subcribers;
+	                });
 	            });
 	        }
 	    };
