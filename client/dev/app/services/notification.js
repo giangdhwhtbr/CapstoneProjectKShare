@@ -43,6 +43,16 @@ var NotificationService = (function () {
         return this._http.post(this._notificationUrl, _info, options)
             .map(function (r) { return r.json(); });
     };
+    NotificationService.prototype.createNotificationAdmin = function (title, link) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _info = JSON.stringify({
+            title: title,
+            link: link
+        });
+        return this._http.put(this._notificationUrl, _info, options)
+            .map(function (r) { return r.json(); });
+    };
     NotificationService.prototype.changeStatusNotification = function (user) {
         return this._http.get(this._statusNotificationUrl.replace(':user', user))
             .map(function (r) { return r.json(); });

@@ -112,7 +112,8 @@ var UpdateRequestComponent = (function () {
             "_id": [""],
             "title": [""],
             "description": [""],
-            "knowledgeId": [""]
+            "knowledgeId": [""],
+            "status": [""]
         });
     }
     UpdateRequestComponent.prototype.ngOnInit = function () {
@@ -132,6 +133,7 @@ var UpdateRequestComponent = (function () {
                     _this.title = request.title;
                     _this.description = request.description;
                     _this._id = request._id;
+                    _this.status = request.status;
                     var nameArr = [];
                     for (var _i = 0; _i < tags.length; _i++) {
                         var e = tags[_i];

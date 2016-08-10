@@ -27,7 +27,6 @@ export class UserProfileBarComponent {
   name: string;
   filesToUpload: Array<File>;
   linkImg: string;
-
   isFriend: boolean;
 
   roleToken: string;
@@ -79,14 +78,16 @@ export class UserProfileBarComponent {
     if (this.filesToUpload) {
       this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then((r) => {
         this.linkImg = '/uploads/' + r[0].filename;
-        this._userService.updateAvartaLink(this.userToken, this.linkImg).subscribe(r => {
+        this.userProfile.linkImg = this.linkImg;
+        console.log(this.linkImg);
+        this._userService.updateUser(this.userProfile, []).subscribe(r => {
           console.log("update link profile picture successful");
+          console.log(this.userProfile.linkImg);
         });
       }, (error) => {
         console.error(error);
       });
     }
-
   }
 
   addFriend(): void {
@@ -128,7 +129,6 @@ export class UserProfileBarComponent {
       this._userService
         .deleteFriendRequest(this.name, this.userToken)
         .subscribe(() => {
-
         });
       this.getFriendList();
       this.isFriend = false;

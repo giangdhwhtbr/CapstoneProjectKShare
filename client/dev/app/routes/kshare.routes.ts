@@ -11,7 +11,7 @@ import { NewsFeedComponent } from "../components/front-end/newsfeed/newsfeed";
 import { RequestListClientComponent } from "../components/front-end/request/request-list";
 import { RequestDetailClientComponent } from "../components/front-end/request/request-detail";
 import { UpdateRequestComponent } from "../components/back-end/request/request-update";
-import { RequestCategoryComponent } from "../components/front-end/request/request-search";
+import { RequestCategoryComponent } from "../components/front-end/request/request-category";
 import { CreateRequestComponent } from "../components/back-end/request/request-create";
 import { KSpaceComponent } from "../components/front-end/kspace/kspace";
 import { KSpaceListComponent } from "../components/front-end/kspace/kspace-list";

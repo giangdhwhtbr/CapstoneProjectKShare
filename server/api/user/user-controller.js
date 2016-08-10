@@ -48,19 +48,6 @@ module.exports = class userController {
 
     }
 
-    static updateUserPicture(req, res) {
-        userDAO
-            .getUserByUserName(req.body.username)
-            .then(user => {
-                user.linkImg = req.body.linkImg;
-                console.log(user);
-                userDAO.updateUser(user)
-                    .then(user => res.status(200).json(user))
-                    .catch(error => res.status(400).json(error));
-            })
-            .catch(error => res.status(400).json(error));
-    }
-
     static createNew(req, res) {
         var user = {
             username: req.body.username,
@@ -97,6 +84,7 @@ module.exports = class userController {
                     user.status = _data.user.status;
                     user.updatedAt = currentDate;
                     user.ownKnowledgeIds= _data.user.ownKnowledgeIds;
+                    user.linkImg = _data.user.linkImg;
 
                     userDAO.updateUserById(user)
                         .then((user) => {

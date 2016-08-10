@@ -6,7 +6,7 @@ var newsfeed_1 = require("../components/front-end/newsfeed/newsfeed");
 var request_list_1 = require("../components/front-end/request/request-list");
 var request_detail_1 = require("../components/front-end/request/request-detail");
 var request_update_1 = require("../components/back-end/request/request-update");
-var request_search_1 = require("../components/front-end/request/request-search");
+var request_category_1 = require("../components/front-end/request/request-category");
 var request_create_1 = require("../components/back-end/request/request-create");
 var kspace_1 = require("../components/front-end/kspace/kspace");
 var kspace_list_1 = require("../components/front-end/kspace/kspace-list");
@@ -158,7 +158,7 @@ exports.KShareRoutes = [
                     {
                         path: ':type/:id',
                         pathMatch: 'full',
-                        component: request_search_1.RequestCategoryComponent
+                        component: request_category_1.RequestCategoryComponent
                     },
                     {
                         path: '',

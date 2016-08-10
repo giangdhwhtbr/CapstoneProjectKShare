@@ -34,14 +34,19 @@ import {StringFilterPipe} from '../shared/filter';
 export class RequestListComponent implements AfterViewChecked{
   pageTitle: string = 'Request List';
   errorMessage: string;
-  requests: Request[];
   user: string;
   roleToken: string;
   requestForm: ControlGroup;
   public filter: string = '';
-  knowledges: Knowledge[];
 
-  constructor( @Inject(FormBuilder) fb: FormBuilder, @Inject(RequestService) private _requestService: RequestService, private _knowledgeService: KnowledgeService,
+  knowledges: Knowledge[];
+  deactiveRequests: Request[];
+  activeRequests: Request[];
+  acceptepRequests: Request[];
+
+  constructor( @Inject(FormBuilder) fb: FormBuilder, 
+               @Inject(RequestService) private _requestService: RequestService, 
+               private _knowledgeService: KnowledgeService,
     private _authService: AuthService) {
     this.user = localStorage.getItem('username');
     this.roleToken = localStorage.getItem('userrole');
@@ -57,24 +62,9 @@ export class RequestListComponent implements AfterViewChecked{
     });
   }
 
-  addRequest(request) {
-    this._requestService.addRequest(request).subscribe((request) => {
-      this.requests.push(request);
-      (<Control>this.requestForm.controls["title"]).updateValue("");
-      (<Control>this.requestForm.controls["description"]).updateValue("");
-      (<Control>this.requestForm.controls["knowledgeId"]).updateValue("");
-    },
-      (error) => {
-        console.log(error.text());
-      }
-    );
-  }
-
   ngOnInit(): void {
     this.getAllRequest();
   }
-
-
 
   deactivateRequest(id: string) {
     this._requestService
@@ -88,28 +78,32 @@ export class RequestListComponent implements AfterViewChecked{
   activateRequest(request: Request) {
     request.status = 'pending';
     this._requestService
-      .updateRequest(request)
+      .updateRequest(request,request.tags, [])
       .subscribe((r) => {
         this.getAllRequest();
       })
   }
 
   getAllRequest() {
+    this.activeRequests = [];
+    this.deactiveRequests = [];
+    this.acceptepRequests = [];
     this._requestService.getAllRequestAdmin().subscribe((requests) => {
-
+      console.log(requests);
       for (var i = 0; i < requests.length; i++) {
-        requests[i].createdAt = new Date(requests[i].createdAt);
-        requests[i].modifiedDate = new Date(requests[i].modifiedDate);
         if(requests[i].status === 'active' || requests[i].status === 'pending'){
+          this.activeRequests.push(requests[i]);
           requests[i].status = "Đang chờ";
         } else if (requests[i].status === 'deactive'){
+          this.deactiveRequests.push(requests[i]);
           requests[i].status = "Kết thúc";
         } else if (requests[i].status === 'accepted') {
+          this.acceptepRequests.push(requests[i]);
           requests[i].status = "Được chấp nhận";
         }
       }
-      this.requests = requests;
     });
+    console.log(this.activeRequests);
   }
 
 }

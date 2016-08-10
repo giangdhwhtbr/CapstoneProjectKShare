@@ -120,6 +120,7 @@ export class UpdateRequestComponent {
     title: string;
     description: string;
     knowledgeId: string;
+    status: string;
     kname: string
 
     filteredKnw: string[];
@@ -148,7 +149,8 @@ export class UpdateRequestComponent {
             "_id": [""],
             "title": [""],
             "description": [""],
-            "knowledgeId": [""]
+            "knowledgeId": [""],
+            "status": [""]
         });
     }
 
@@ -173,6 +175,7 @@ export class UpdateRequestComponent {
                         this.title = request.title;
                         this.description = request.description;
                         this._id = request._id;
+                        this.status = request.status;
 
                         let nameArr:string[] = [];
                         for (let e of tags) {

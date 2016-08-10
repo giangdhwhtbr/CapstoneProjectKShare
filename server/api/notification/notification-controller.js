@@ -1,6 +1,7 @@
 "use strict";
 
 const NotificationDAO = require('./notification-dao');
+const UserDAO = require('../user/user-dao');
 
 module.exports = class NotificationController {
   static getAll(req, res) {
@@ -35,6 +36,21 @@ module.exports = class NotificationController {
       .getNotificationByUser(_user)
       .then(notifications => res.status(200).json(notifications))
       .catch(error => res.status(400).json(error));
+  }
+
+  static createNotificationAdmin(req, res) {
+    UserDAO.getAll().then(user => {
+      for (var i = 0; i < user.length; i++) {
+        if (user[i].role === 'admin') {
+          let _notification = req.body;
+          _notification.user = user[i].username;
+          NotificationDAO
+            .createNotification(_notification)
+            .then(notification => res.status(201).json(notification))
+            .catch(error => res.status(400).json(error));
+        }
+      }
+    })
   }
 
   static changeStatusNotification(req, res) {

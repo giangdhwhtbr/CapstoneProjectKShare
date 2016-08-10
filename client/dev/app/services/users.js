@@ -125,18 +125,6 @@ var UserService = (function () {
         return this._http
             .put(this._banUrl.replace(':id', userId), data, options);
     };
-    UserService.prototype.updateAvartaLink = function (user, link) {
-        var header = new http_1.Headers;
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ headers: headers });
-        var _info = JSON.stringify({
-            username: user,
-            linkImg: link
-        });
-        console.log(_info);
-        return this._http
-            .post(this._profilePictureUrl, _info, options);
-    };
     //add friend service
     UserService.prototype.addFriend = function (requestUser, acceptUser) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });

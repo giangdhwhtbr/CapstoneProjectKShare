@@ -45,6 +45,17 @@ export class NotificationService {
             .map((r) => r.json());
     }
 
+    createNotificationAdmin(title: string, link: string): Observable<any> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        let _info = JSON.stringify({
+            title: title,
+            link: link
+        });
+        return this._http.put(this._notificationUrl, _info, options)
+            .map((r) => r.json());
+    }
+
     changeStatusNotification(user: string): Observable<any> {
         return this._http.get(this._statusNotificationUrl.replace(':user', user))
             .map((r) => r.json());

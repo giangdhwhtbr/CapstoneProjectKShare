@@ -41,17 +41,17 @@
     </div>
 
     <div [hidden]="checkDeactive" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-        <button class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">Báo cáo</button>
+        <button *ngIf="userToken !== null" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">Báo cáo</button>
         <a href="{{updateLink}}" *ngIf="checkCreatedUser || roleToken==='admin'"><span
                 class="btn btn-warning glyphicon glyphicon-pencil"></span></a>
         <a *ngIf="checkCreatedUser || roleToken==='admin'">
             <button class="glyphicon glyphicon-trash btn btn-danger" (click)="deactivateRequest(_id)"></button>
         </a>
-        <a *ngIf="!checkCreatedUser || roleToken==='admin' ">
-            <button class="glyphicon glyphicon-send btn btn-primary" data-toggle="modal" data-target="#modalOfferRequest"></button>
-        </a>
         <a *ngIf="!checkCreatedUser || roleToken==='admin'">
-            <button class="glyphicon glyphicon-eye-open btn btn-info" (click)="addSubcriber(_id)"></button>
+            <button *ngIf="userToken !== null"  class="glyphicon glyphicon-send btn btn-primary" data-toggle="modal" data-target="#modalOfferRequest"></button>
+        </a>
+        <a *ngIf="!checkCreatedUser || roleToken==='admin' || userToken !== null">
+            <button *ngIf="userToken !== null" class="glyphicon glyphicon-eye-open btn btn-info" (click)="addSubcriber(_id)"></button>
         </a>
     </div>
 </div>

@@ -148,21 +148,6 @@ export class UserService {
             .put(this._banUrl.replace(':id', userId), data, options);
     }
 
-
-    updateAvartaLink(user:string, link:string):Observable<any> {
-        let header = new Headers;
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
-
-        let _info = JSON.stringify({
-            username: user,
-            linkImg: link
-        });
-        console.log(_info);
-        return this._http
-            .post(this._profilePictureUrl, _info, options);
-    }
-
     //add friend service
     addFriend(requestUser:string, acceptUser:string):Observable<any> {
         let headers = new Headers({'Content-Type': 'application/json'});

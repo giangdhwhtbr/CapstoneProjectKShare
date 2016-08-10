@@ -35,14 +35,14 @@ var ReportComponent = (function () {
             _this._userService.getAllUsers().subscribe(function (users) {
                 for (var i = 0; i < users.length; i++) {
                     if (users[i].role === 'admin') {
+                        console.log(users[i]);
                         _this._noti.alertNotification(title, users[i].username, link);
-                        //add notification into database
-                        _this._noti.createNotification(title, users[i].username, link).subscribe(function (r) {
-                            //$('#mess').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Báo cáo thành công !</strong> </div>');
-                            $('#btnCl').trigger("click");
-                        });
                     }
                 }
+                _this._noti.createNotificationAdmin(title, link).subscribe(function (r) {
+                    //$('#mess').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Báo cáo thành công !</strong> </div>');
+                    $('#btnCl').trigger("click");
+                });
             });
         }, function (error) {
             console.log(error);

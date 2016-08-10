@@ -2,7 +2,7 @@
  * Created by GiangDH on 5/18/16.
  */
 import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { RequestService } from '../../../services/requests';
 import { UserService } from '../../../services/users';
 import { ArticleService } from '../../../services/article';
@@ -33,13 +33,17 @@ export class NewsFeedComponent implements OnInit {
   height: number = 400;
   constructor(private _userService: UserService,
     private _requestService: RequestService,
-    private _articleService: ArticleService) {
+    private _articleService: ArticleService,
+    private router: Router) {
     this.roleToken = localStorage.getItem('role');
     this.userToken = localStorage.getItem('username');
+    if (this.userToken === null) {
+      this.router.navigateByUrl('/');
+    }
 
   }
   ngOnInit(): void {
-    this.countA1 = this.countR1 = this.countA2 = this.countR2 = 5;
+    this.countA1 = 5; this.countR1 = 5; this.countA2 = 5; this.countR2 = 5;
     this.records = [];
     this.getRequests();
 
@@ -53,14 +57,13 @@ export class NewsFeedComponent implements OnInit {
         this.height += 30;
       }
     });
-
   }
 
   seeMore(): void {
-    //this.records = [];
     this.countR1 = this.countR1 + 5;
     this.countA1 = this.countA1 + 5;
     this.getRequests();
+    this.getArticles();
   }
 
   getRequests() {
@@ -76,14 +79,12 @@ export class NewsFeedComponent implements OnInit {
             }
             this.countR2 = this.countR2 + 5;
           });
-
         } else {
           for (var i = 0; i < requests.length; i++) {
             // push each records to records array
             this.records.push(requests[i]);
           }
         }
-        this.getArticles();
       });
     });
   }
@@ -95,11 +96,13 @@ export class NewsFeedComponent implements OnInit {
         //if there is no articles which has tagid same as onwknowledgeId
         if (articles.length === 0 || user.ownKnowledgeIds.length === 0) {
           this._articleService.getArticleExceptUserTags(user.ownKnowledgeIds, this.countA2).subscribe((articles) => {
-            for (var i = 0; i < articles.length; i++) {
-              // push each records to records array 
-              this.records.push(articles[i]);
-            }
-            this.countA2 = this.countA2 + 5;
+            if (articles.length > 0) {
+              for (var i = 0; i < articles.length; i++) {
+                // push each records to records array 
+                this.records.push(articles[i]);
+              }
+              this.countA2 = this.countA2 + 5;
+            };
           });
         } else {
           for (var i = 0; i < articles.length; i++) {
@@ -107,7 +110,6 @@ export class NewsFeedComponent implements OnInit {
             this.records.push(articles[i]);
           }
         }
-        console.log(this.records);
       });
     });
 
