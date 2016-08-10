@@ -1177,74 +1177,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 99 */,
-/* 100 */,
-/* 101 */,
-/* 102 */,
-/* 103 */,
-/* 104 */,
-/* 105 */,
-/* 106 */,
-/* 107 */,
-/* 108 */,
-/* 109 */,
-/* 110 */,
-/* 111 */,
-/* 112 */,
-/* 113 */,
-/* 114 */,
-/* 115 */,
-/* 116 */,
-/* 117 */,
-/* 118 */,
-/* 119 */,
-/* 120 */,
-/* 121 */,
-/* 122 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var StringFilterPipe = (function () {
-	    function StringFilterPipe() {
-	    }
-	    StringFilterPipe.prototype.transform = function (value, args) {
-	        if (!args) {
-	            return value;
-	        }
-	        else if (args) {
-	            return value.filter(function (item) {
-	                for (var key in item) {
-	                    if ((typeof item[key] === 'string' || item[key] instanceof String) &&
-	                        (item[key].indexOf(args) > -1) && (key !== "_id")) {
-	                        return true;
-	                    }
-	                }
-	            });
-	        }
-	    };
-	    StringFilterPipe = __decorate([
-	        core_1.Pipe({
-	            name: 'stringFilter'
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], StringFilterPipe);
-	    return StringFilterPipe;
-	}());
-	exports.StringFilterPipe = StringFilterPipe;
-	
-
-/***/ },
-/* 123 */
+/* 99 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1316,6 +1249,73 @@ webpackJsonp([2],[
 	    var _a;
 	}());
 	exports.NotificationService = NotificationService;
+	
+
+/***/ },
+/* 100 */,
+/* 101 */,
+/* 102 */,
+/* 103 */,
+/* 104 */,
+/* 105 */,
+/* 106 */,
+/* 107 */,
+/* 108 */,
+/* 109 */,
+/* 110 */,
+/* 111 */,
+/* 112 */,
+/* 113 */,
+/* 114 */,
+/* 115 */,
+/* 116 */,
+/* 117 */,
+/* 118 */,
+/* 119 */,
+/* 120 */,
+/* 121 */,
+/* 122 */,
+/* 123 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var StringFilterPipe = (function () {
+	    function StringFilterPipe() {
+	    }
+	    StringFilterPipe.prototype.transform = function (value, args) {
+	        if (!args) {
+	            return value;
+	        }
+	        else if (args) {
+	            return value.filter(function (item) {
+	                for (var key in item) {
+	                    if ((typeof item[key] === 'string' || item[key] instanceof String) &&
+	                        (item[key].indexOf(args) > -1) && (key !== "_id")) {
+	                        return true;
+	                    }
+	                }
+	            });
+	        }
+	    };
+	    StringFilterPipe = __decorate([
+	        core_1.Pipe({
+	            name: 'stringFilter'
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], StringFilterPipe);
+	    return StringFilterPipe;
+	}());
+	exports.StringFilterPipe = StringFilterPipe;
 	
 
 /***/ },
@@ -2663,62 +2663,65 @@ webpackJsonp([2],[
 	        this.router = router;
 	        this.route = route;
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
-	        this.route
+	    }
+	    RequestCategoryComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.sub = this.route
 	            .params
 	            .subscribe(function (params) {
 	            var type = params['type'];
 	            var id = params['id'];
-	        });
-	    }
-	    RequestCategoryComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        //get templates from children category
-	        if (this.type === "subcategory") {
-	            this._requestService.getRequestByKnowledgeId(this.id).subscribe(function (requests) {
-	                if (requests.length == 0) {
-	                    _this.isExistRecord = true;
-	                }
-	                else {
-	                    _this.isExistRecord = false;
-	                }
-	                for (var i = 0; i < requests.length; i++) {
-	                    requests[i].createdAt = new Date(requests[i].createdAt);
-	                    requests[i].modifiedDate = new Date(requests[i].modifiedDate);
-	                }
-	                _this.requests = requests;
-	            });
-	        }
-	        //get templates from parent category
-	        if (this.type === "category") {
-	            this._requestService.getKnowledgeByParent(this.id).subscribe(function (knowledges) {
-	                var a = [];
-	                _this.knowledges = knowledges;
-	                for (var i = 0; i < _this.knowledges.length; i++) {
-	                    _this._requestService.getRequestByKnowledgeId(_this.knowledges[i]._id).subscribe(function (requests) {
-	                        //for each child knowledge get requests
-	                        for (var j = 0; j < requests.length; j++) {
-	                            a.push(requests[j]);
-	                        }
-	                        for (var i = 0; i < a.length; i++) {
-	                            a[i].createdAt = new Date(requests[i].createdAt);
-	                            a[i].modifiedDate = new Date(requests[i].modifiedDate);
-	                            if (requests[i].status === 'pending') {
-	                                requests[i].status = 'Đang chờ';
+	            //get templates from children category
+	            if (type === "subcategory") {
+	                _this._requestService.getRequestByKnowledgeId(id).subscribe(function (requests) {
+	                    if (requests.length == 0) {
+	                        _this.isExistRecord = true;
+	                    }
+	                    else {
+	                        _this.isExistRecord = false;
+	                    }
+	                    for (var i = 0; i < requests.length; i++) {
+	                        requests[i].createdAt = new Date(requests[i].createdAt);
+	                        requests[i].modifiedDate = new Date(requests[i].modifiedDate);
+	                    }
+	                    _this.requests = requests;
+	                });
+	            }
+	            //get templates from parent category
+	            if (type === "category") {
+	                _this._requestService.getKnowledgeByParent(id).subscribe(function (knowledges) {
+	                    var a = [];
+	                    _this.knowledges = knowledges;
+	                    for (var i = 0; i < _this.knowledges.length; i++) {
+	                        _this._requestService.getRequestByKnowledgeId(_this.knowledges[i]._id).subscribe(function (requests) {
+	                            //for each child knowledge get requests
+	                            for (var j = 0; j < requests.length; j++) {
+	                                a.push(requests[j]);
 	                            }
-	                        }
-	                        if (a.length == 0) {
-	                            _this.isExistRecord = true;
-	                        }
-	                        else {
-	                            _this.isExistRecord = false;
-	                        }
-	                        _this.requests = a;
-	                    });
-	                }
-	            }, function (Error) {
-	                console.log(Error);
-	            });
-	        }
+	                            for (var i = 0; i < a.length; i++) {
+	                                a[i].createdAt = new Date(requests[i].createdAt);
+	                                a[i].modifiedDate = new Date(requests[i].modifiedDate);
+	                                if (requests[i].status === 'pending') {
+	                                    requests[i].status = 'Đang chờ';
+	                                }
+	                            }
+	                            if (a.length == 0) {
+	                                _this.isExistRecord = true;
+	                            }
+	                            else {
+	                                _this.isExistRecord = false;
+	                            }
+	                            _this.requests = a;
+	                        });
+	                    }
+	                }, function (Error) {
+	                    console.log(Error);
+	                });
+	            }
+	        });
+	    };
+	    RequestCategoryComponent.prototype.ngOnDestroy = function () {
+	        this.sub.unsubscribe();
 	    };
 	    RequestCategoryComponent = __decorate([
 	        core_1.Component({
@@ -2754,7 +2757,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(5);
 	//services
 	var users_1 = __webpack_require__(33);
-	var notification_1 = __webpack_require__(123);
+	var notification_1 = __webpack_require__(99);
 	var UserProfileBarComponent = (function () {
 	    function UserProfileBarComponent(router, route, _userService, _noti) {
 	        var _this = this;
@@ -3043,7 +3046,7 @@ webpackJsonp([2],[
 	};
 	var ArrayObservable_1 = __webpack_require__(83);
 	var isArray_1 = __webpack_require__(86);
-	var isScheduler_1 = __webpack_require__(100);
+	var isScheduler_1 = __webpack_require__(101);
 	var OuterSubscriber_1 = __webpack_require__(13);
 	var subscribeToResult_1 = __webpack_require__(14);
 	/**
@@ -3226,7 +3229,7 @@ webpackJsonp([2],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var isScheduler_1 = __webpack_require__(100);
+	var isScheduler_1 = __webpack_require__(101);
 	var ArrayObservable_1 = __webpack_require__(83);
 	var mergeAll_1 = __webpack_require__(192);
 	/**
@@ -3956,7 +3959,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(8);
 	var article_1 = __webpack_require__(98);
 	var ng2_pagination_1 = __webpack_require__(148);
-	var filter_1 = __webpack_require__(122);
+	var filter_1 = __webpack_require__(123);
 	var primeng_1 = __webpack_require__(127);
 	var ArtListCtlComponent = (function () {
 	    function ArtListCtlComponent(_articleService, router) {
@@ -4019,7 +4022,7 @@ webpackJsonp([2],[
 	var knowledge_update_1 = __webpack_require__(283);
 	var sub_knowledge_create_1 = __webpack_require__(624);
 	var ng2_pagination_1 = __webpack_require__(148);
-	var filter_1 = __webpack_require__(122);
+	var filter_1 = __webpack_require__(123);
 	var KnowledgeListComponent = (function () {
 	    function KnowledgeListComponent(fb, _elRef, _knowledgeService, _requestService) {
 	        this._elRef = _elRef;
@@ -4158,7 +4161,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(5);
 	var common_1 = __webpack_require__(8);
 	var report_1 = __webpack_require__(287);
-	var filter_1 = __webpack_require__(122);
+	var filter_1 = __webpack_require__(123);
 	var ReportListComponent = (function () {
 	    function ReportListComponent(fb, _reportService, router) {
 	        this._reportService = _reportService;
@@ -4229,7 +4232,7 @@ webpackJsonp([2],[
 	var auth_1 = __webpack_require__(42);
 	var request_update_1 = __webpack_require__(186);
 	var ng2_pagination_1 = __webpack_require__(148);
-	var filter_1 = __webpack_require__(122);
+	var filter_1 = __webpack_require__(123);
 	var RequestListComponent = (function () {
 	    function RequestListComponent(fb, _requestService, _knowledgeService, _authService) {
 	        var _this = this;
@@ -4335,7 +4338,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(8);
 	var tag_1 = __webpack_require__(82);
 	var ng2_pagination_1 = __webpack_require__(148);
-	var filter_1 = __webpack_require__(122);
+	var filter_1 = __webpack_require__(123);
 	var TagListCtlComponent = (function () {
 	    function TagListCtlComponent(_tagService, router) {
 	        this._tagService = _tagService;
@@ -4414,7 +4417,7 @@ webpackJsonp([2],[
 	var users_1 = __webpack_require__(33);
 	var auth_1 = __webpack_require__(42);
 	var ng2_pagination_1 = __webpack_require__(148);
-	var filter_1 = __webpack_require__(122);
+	var filter_1 = __webpack_require__(123);
 	var UserListComponent = (function () {
 	    function UserListComponent(fb, _userService, _auth, router) {
 	        this._userService = _userService;
@@ -4701,7 +4704,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	var article_1 = __webpack_require__(98);
-	var notification_1 = __webpack_require__(123);
+	var notification_1 = __webpack_require__(99);
 	var report_1 = __webpack_require__(430);
 	var detailArticleComponent = (function () {
 	    function detailArticleComponent(router, route, _articleService, _noti) {
@@ -5284,7 +5287,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var common_1 = __webpack_require__(8);
 	var report_1 = __webpack_require__(287);
-	var notification_1 = __webpack_require__(123);
+	var notification_1 = __webpack_require__(99);
 	var users_1 = __webpack_require__(33);
 	var ReportComponent = (function () {
 	    function ReportComponent(fb, _reportService, _noti, _userService) {
@@ -6490,7 +6493,7 @@ webpackJsonp([2],[
 	"use strict";
 	var ArrayObservable_1 = __webpack_require__(83);
 	var mergeAll_1 = __webpack_require__(192);
-	var isScheduler_1 = __webpack_require__(100);
+	var isScheduler_1 = __webpack_require__(101);
 	/**
 	 * Creates an output Observable which concurrently emits all values from every
 	 * given input Observable.
@@ -17464,7 +17467,7 @@ webpackJsonp([2],[
 	var users_1 = __webpack_require__(33);
 	var auth_1 = __webpack_require__(42);
 	var kspace_1 = __webpack_require__(140);
-	var notification_1 = __webpack_require__(123);
+	var notification_1 = __webpack_require__(99);
 	var report_1 = __webpack_require__(287);
 	var article_1 = __webpack_require__(98);
 	var AppComponent = (function () {
@@ -18471,7 +18474,7 @@ webpackJsonp([2],[
 	var request_offer_1 = __webpack_require__(288);
 	var auth_1 = __webpack_require__(42);
 	var requests_1 = __webpack_require__(59);
-	var notification_1 = __webpack_require__(123);
+	var notification_1 = __webpack_require__(99);
 	var CreateOfferComponent = (function () {
 	    function CreateOfferComponent(fb, _offerService, _authService, _noti, _requestService) {
 	        this._offerService = _offerService;
@@ -18653,7 +18656,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	var auth_1 = __webpack_require__(42);
-	var notification_1 = __webpack_require__(123);
+	var notification_1 = __webpack_require__(99);
 	var users_1 = __webpack_require__(33);
 	var HeaderComponent = (function () {
 	    function HeaderComponent(_auth, router, _noti, _userService) {
@@ -19426,7 +19429,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(5);
 	//services
 	var users_1 = __webpack_require__(33);
-	var notification_1 = __webpack_require__(123);
+	var notification_1 = __webpack_require__(99);
 	var RequestFriendRecordComponent = (function () {
 	    function RequestFriendRecordComponent(router, route, _userService, _noti) {
 	        var _this = this;
@@ -21814,7 +21817,7 @@ webpackJsonp([2],[
 	var isNumeric_1 = __webpack_require__(298);
 	var Observable_1 = __webpack_require__(2);
 	var async_1 = __webpack_require__(44);
-	var isScheduler_1 = __webpack_require__(100);
+	var isScheduler_1 = __webpack_require__(101);
 	var isDate_1 = __webpack_require__(197);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
@@ -25865,7 +25868,7 @@ webpackJsonp([2],[
 	var ScalarObservable_1 = __webpack_require__(290);
 	var EmptyObservable_1 = __webpack_require__(84);
 	var concat_1 = __webpack_require__(292);
-	var isScheduler_1 = __webpack_require__(100);
+	var isScheduler_1 = __webpack_require__(101);
 	/**
 	 * Returns an Observable that emits the items in a specified Iterable before it begins to emit items emitted by the
 	 * source Observable.
