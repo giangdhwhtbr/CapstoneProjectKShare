@@ -88,6 +88,37 @@ articleSchema.statics.getArticleByTagId = (idTag) => {
             });
     });
 }
+articleSchema.statics.getAPage = (start,stt) => {
+
+    return new Promise((resolve, reject) => {
+        if (!_.isString(start)) {
+            return reject(new TypeError('start page is not a String.'));
+        }
+        Article
+            .find({"status":stt})
+            .skip(start)
+            .limit(10)
+            .exec((err, arts) => {
+                err ? reject(err)
+                    : resolve(arts);
+            });
+    });
+}
+articleSchema.statics.getTot = (stt) => {
+
+    return new Promise((resolve, reject) => {
+        if (!_.isString(stt)) {
+            return reject(new TypeError('status page is not a String.'));
+        }
+        Article
+            .find({"status":stt})
+            .exec((err, arts) => {
+                console.log(arts.length);
+                err ? reject(err)
+                    : resolve(arts.length);
+            });
+    });
+}
 
 articleSchema.statics.getArticleByKnwId = (id)=> {
     return new Promise((resolve, reject)=> {

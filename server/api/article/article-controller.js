@@ -25,6 +25,23 @@ module.exports = class ArticleController {
             .catch(error => res.status(400).json(error));
     }
 
+    static getAPage(req,res){
+
+        if (req.params && req.params.start) {
+            ArticleDAO.getAPage(req.params.start,req.params.stt).then((arts)=>{
+                res.status(200).json(arts);
+            }).catch(err=> res.status(400).json(error));
+        }
+    }
+    static getTot(req,res){
+
+        if (req.params && req.params.stt) {
+            ArticleDAO.getTot(req.params.stt).then((num)=>{
+                res.status(200).json(num);
+            }).catch(err=> res.status(400).json(error));
+        }
+    }
+
     static getDeArticle(req, res) {
         ArticleDAO
             .getAll()
