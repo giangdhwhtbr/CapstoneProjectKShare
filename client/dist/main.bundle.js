@@ -439,18 +439,6 @@ webpackJsonp([2],[
 	        return this._http
 	            .put(this._banUrl.replace(':id', userId), data, options);
 	    };
-	    UserService.prototype.updateAvartaLink = function (user, link) {
-	        var header = new http_1.Headers;
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _info = JSON.stringify({
-	            username: user,
-	            linkImg: link
-	        });
-	        console.log(_info);
-	        return this._http
-	            .post(this._profilePictureUrl, _info, options);
-	    };
 	    //add friend service
 	    UserService.prototype.addFriend = function (requestUser, acceptUser) {
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -1304,6 +1292,16 @@ webpackJsonp([2],[
 	            link: link
 	        });
 	        return this._http.post(this._notificationUrl, _info, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    NotificationService.prototype.createNotificationAdmin = function (title, link) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _info = JSON.stringify({
+	            title: title,
+	            link: link
+	        });
+	        return this._http.put(this._notificationUrl, _info, options)
 	            .map(function (r) { return r.json(); });
 	    };
 	    NotificationService.prototype.changeStatusNotification = function (user) {
@@ -2785,8 +2783,11 @@ webpackJsonp([2],[
 	        if (this.filesToUpload) {
 	            this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then(function (r) {
 	                _this.linkImg = '/uploads/' + r[0].filename;
-	                _this._userService.updateAvartaLink(_this.userToken, _this.linkImg).subscribe(function (r) {
+	                _this.userProfile.linkImg = _this.linkImg;
+	                console.log(_this.linkImg);
+	                _this._userService.updateUser(_this.userProfile, []).subscribe(function (r) {
 	                    console.log("update link profile picture successful");
+	                    console.log(_this.userProfile.linkImg);
 	                });
 	            }, function (error) {
 	                console.error(error);
@@ -5292,14 +5293,14 @@ webpackJsonp([2],[
 	            _this._userService.getAllUsers().subscribe(function (users) {
 	                for (var i = 0; i < users.length; i++) {
 	                    if (users[i].role === 'admin') {
+	                        console.log(users[i]);
 	                        _this._noti.alertNotification(title, users[i].username, link);
-	                        //add notification into database
-	                        _this._noti.createNotification(title, users[i].username, link).subscribe(function (r) {
-	                            //$('#mess').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Báo cáo thành công !</strong> </div>');
-	                            $('#btnCl').trigger("click");
-	                        });
 	                    }
 	                }
+	                _this._noti.createNotificationAdmin(title, link).subscribe(function (r) {
+	                    //$('#mess').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Báo cáo thành công !</strong> </div>');
+	                    $('#btnCl').trigger("click");
+	                });
 	            });
 	        }, function (error) {
 	            console.log(error);
@@ -18324,18 +18325,25 @@ webpackJsonp([2],[
 	var users_1 = __webpack_require__(33);
 	var article_1 = __webpack_require__(98);
 	var NewsFeedComponent = (function () {
-	    function NewsFeedComponent(_userService, _requestService, _articleService) {
+	    function NewsFeedComponent(_userService, _requestService, _articleService, router) {
 	        this._userService = _userService;
 	        this._requestService = _requestService;
 	        this._articleService = _articleService;
+	        this.router = router;
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
 	        this.height = 400;
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
+	        if (this.userToken === null) {
+	            this.router.navigateByUrl('/');
+	        }
 	    }
 	    NewsFeedComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        this.countA1 = this.countR1 = this.countA2 = this.countR2 = 5;
+	        this.countA1 = 5;
+	        this.countR1 = 5;
+	        this.countA2 = 5;
+	        this.countR2 = 5;
 	        this.records = [];
 	        this.getRequests();
 	        $(window).on("scroll", function () {
@@ -18350,10 +18358,10 @@ webpackJsonp([2],[
 	        });
 	    };
 	    NewsFeedComponent.prototype.seeMore = function () {
-	        //this.records = [];
 	        this.countR1 = this.countR1 + 5;
 	        this.countA1 = this.countA1 + 5;
 	        this.getRequests();
+	        this.getArticles();
 	    };
 	    NewsFeedComponent.prototype.getRequests = function () {
 	        var _this = this;
@@ -18376,7 +18384,6 @@ webpackJsonp([2],[
 	                        _this.records.push(requests[i]);
 	                    }
 	                }
-	                _this.getArticles();
 	            });
 	        });
 	    };
@@ -18388,11 +18395,14 @@ webpackJsonp([2],[
 	                //if there is no articles which has tagid same as onwknowledgeId
 	                if (articles.length === 0 || user.ownKnowledgeIds.length === 0) {
 	                    _this._articleService.getArticleExceptUserTags(user.ownKnowledgeIds, _this.countA2).subscribe(function (articles) {
-	                        for (var i = 0; i < articles.length; i++) {
-	                            // push each records to records array 
-	                            _this.records.push(articles[i]);
+	                        if (articles.length > 0) {
+	                            for (var i = 0; i < articles.length; i++) {
+	                                // push each records to records array 
+	                                _this.records.push(articles[i]);
+	                            }
+	                            _this.countA2 = _this.countA2 + 5;
 	                        }
-	                        _this.countA2 = _this.countA2 + 5;
+	                        ;
 	                    });
 	                }
 	                else {
@@ -18401,7 +18411,6 @@ webpackJsonp([2],[
 	                        _this.records.push(articles[i]);
 	                    }
 	                }
-	                console.log(_this.records);
 	            });
 	        });
 	    };
@@ -18413,10 +18422,10 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES
 	            ]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
 	    ], NewsFeedComponent);
 	    return NewsFeedComponent;
-	    var _a, _b, _c;
+	    var _a, _b, _c, _d;
 	}());
 	exports.NewsFeedComponent = NewsFeedComponent;
 	

@@ -38,13 +38,15 @@ export class RequestListComponent implements AfterViewChecked{
   roleToken: string;
   requestForm: ControlGroup;
   public filter: string = '';
-  
+
   knowledges: Knowledge[];
   deactiveRequests: Request[];
   activeRequests: Request[];
   acceptepRequests: Request[];
 
-  constructor( @Inject(FormBuilder) fb: FormBuilder, @Inject(RequestService) private _requestService: RequestService, private _knowledgeService: KnowledgeService,
+  constructor( @Inject(FormBuilder) fb: FormBuilder, 
+               @Inject(RequestService) private _requestService: RequestService, 
+               private _knowledgeService: KnowledgeService,
     private _authService: AuthService) {
     this.user = localStorage.getItem('username');
     this.roleToken = localStorage.getItem('userrole');
