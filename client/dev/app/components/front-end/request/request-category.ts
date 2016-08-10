@@ -94,10 +94,4 @@ export class RequestCategoryComponent {
     }
 
   }
-<<<<<<< HEAD:client/dev/app/components/front-end/request/request-search.ts
-  requests: Request[];
-  knowledges: Knowledge[];
-=======
-
->>>>>>> 30e2669ffc9bed2d630355ba76e64aa4cf53042f:client/dev/app/components/front-end/request/request-category.ts
 }

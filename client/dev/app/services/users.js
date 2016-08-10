@@ -2,13 +2,12 @@
  * Created by GiangDH on 5/8/16.
  */
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
@@ -109,7 +108,7 @@ var UserService = (function () {
                 email: user.email,
                 role: user.role,
                 linkImg: user.linkImg,
-                ownKnowledgeIds: user.ownKnowledgeIds,
+                ownKnowledgeIds: user.ownKnowledgeIds
             },
             newTag: _newTag
         });
@@ -125,18 +124,6 @@ var UserService = (function () {
         });
         return this._http
             .put(this._banUrl.replace(':id', userId), data, options);
-    };
-    UserService.prototype.updateAvartaLink = function (user, link) {
-        var header = new http_1.Headers;
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ headers: headers });
-        var _info = JSON.stringify({
-            username: user,
-            linkImg: link
-        });
-        console.log(_info);
-        return this._http
-            .post(this._profilePictureUrl, _info, options);
     };
     //add friend service
     UserService.prototype.addFriend = function (requestUser, acceptUser) {
@@ -214,8 +201,7 @@ var UserService = (function () {
         return Observable_1.Observable.throw(error);
     };
     UserService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        core_1.Injectable()
     ], UserService);
     return UserService;
 })();

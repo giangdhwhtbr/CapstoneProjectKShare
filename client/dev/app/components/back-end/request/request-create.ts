@@ -10,6 +10,7 @@ import {TagService} from '../../../services/tag';
 import {AutoComplete, SelectButton, SelectItem} from 'primeng/primeng';
 
 declare var $: any;
+declare var CKEDITOR: any;
 
 @Component({
     selector: 'ck-editor',
@@ -38,8 +39,8 @@ export class CreateRequestComponent {
 
     filteredKnw: string[];
 
-    tags: any[];
-    tagsEx: Array<any>;
+    tags:any[]=[];
+    tagsEx:Array<any>;
 
     contentCk: string;
     filesToUpload: Array<File>;
@@ -71,21 +72,24 @@ export class CreateRequestComponent {
     }
 
     filterONTag() {
-        let oldTag: any[] = [];
-        for (let e of this.tagsEx) {
-            for (let e1 of this.tags) {
-                //catch old tags
-                if (e.name == e1) {
-                    oldTag.push(e._id);
-                    //find out old tags in data tags user
-                    let index = this.tags.indexOf(e1);
-                    if (index > -1) {
-                        //remove old tags to catch new tags
-                        this.tags.splice(index, 1);
+        let oldTag:any[] = [];
+        if(this.tags.length>0){
+            for (let e of this.tagsEx) {
+                for (let e1 of this.tags) {
+                    //catch old tags
+                    if (e.name == e1) {
+                        oldTag.push(e._id);
+                        //find out old tags in data tags user
+                        let index = this.tags.indexOf(e1);
+                        if (index > -1) {
+                            //remove old tags to catch new tags
+                            this.tags.splice(index, 1);
+                        }
                     }
                 }
             }
         }
+
         return [oldTag, this.tags];
     }
 

@@ -1322,7 +1322,81 @@ webpackJsonp([2],[
 /* 124 */,
 /* 125 */,
 /* 126 */,
-/* 127 */,
+/* 127 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	__export(__webpack_require__(36));
+	__export(__webpack_require__(503));
+	__export(__webpack_require__(1022));
+	__export(__webpack_require__(1023));
+	__export(__webpack_require__(1024));
+	__export(__webpack_require__(149));
+	__export(__webpack_require__(1025));
+	__export(__webpack_require__(1026));
+	__export(__webpack_require__(1029));
+	__export(__webpack_require__(1030));
+	__export(__webpack_require__(1027));
+	__export(__webpack_require__(1028));
+	__export(__webpack_require__(321));
+	__export(__webpack_require__(36));
+	__export(__webpack_require__(36));
+	__export(__webpack_require__(1031));
+	__export(__webpack_require__(1032));
+	__export(__webpack_require__(1033));
+	__export(__webpack_require__(1034));
+	__export(__webpack_require__(1036));
+	__export(__webpack_require__(1037));
+	__export(__webpack_require__(1038));
+	__export(__webpack_require__(1039));
+	__export(__webpack_require__(1040));
+	__export(__webpack_require__(1041));
+	__export(__webpack_require__(1042));
+	__export(__webpack_require__(1043));
+	__export(__webpack_require__(1044));
+	__export(__webpack_require__(1045));
+	__export(__webpack_require__(211));
+	__export(__webpack_require__(1046));
+	__export(__webpack_require__(1047));
+	__export(__webpack_require__(1048));
+	__export(__webpack_require__(1049));
+	__export(__webpack_require__(1050));
+	__export(__webpack_require__(1051));
+	__export(__webpack_require__(1052));
+	__export(__webpack_require__(1053));
+	__export(__webpack_require__(1054));
+	__export(__webpack_require__(1055));
+	__export(__webpack_require__(212));
+	__export(__webpack_require__(1056));
+	__export(__webpack_require__(1057));
+	__export(__webpack_require__(1058));
+	__export(__webpack_require__(1059));
+	__export(__webpack_require__(1060));
+	__export(__webpack_require__(1061));
+	__export(__webpack_require__(1062));
+	__export(__webpack_require__(1063));
+	__export(__webpack_require__(1064));
+	__export(__webpack_require__(1065));
+	__export(__webpack_require__(1066));
+	__export(__webpack_require__(1067));
+	__export(__webpack_require__(1068));
+	__export(__webpack_require__(505));
+	__export(__webpack_require__(1070));
+	__export(__webpack_require__(506));
+	__export(__webpack_require__(1069));
+	__export(__webpack_require__(1071));
+	__export(__webpack_require__(1072));
+	__export(__webpack_require__(1073));
+	__export(__webpack_require__(1074));
+	__export(__webpack_require__(1075));
+	__export(__webpack_require__(507));
+	__export(__webpack_require__(508));
+	
+
+/***/ },
 /* 128 */,
 /* 129 */,
 /* 130 */,
@@ -1334,7 +1408,8 @@ webpackJsonp([2],[
 /* 136 */,
 /* 137 */,
 /* 138 */,
-/* 139 */
+/* 139 */,
+/* 140 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1402,14 +1477,14 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 140 */,
 /* 141 */,
 /* 142 */,
 /* 143 */,
 /* 144 */,
 /* 145 */,
 /* 146 */,
-/* 147 */
+/* 147 */,
+/* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
 	function __export(m) {
@@ -1419,7 +1494,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 148 */
+/* 149 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1580,81 +1655,6 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 149 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	__export(__webpack_require__(36));
-	__export(__webpack_require__(503));
-	__export(__webpack_require__(1022));
-	__export(__webpack_require__(1023));
-	__export(__webpack_require__(1024));
-	__export(__webpack_require__(148));
-	__export(__webpack_require__(1025));
-	__export(__webpack_require__(1026));
-	__export(__webpack_require__(1029));
-	__export(__webpack_require__(1030));
-	__export(__webpack_require__(1027));
-	__export(__webpack_require__(1028));
-	__export(__webpack_require__(321));
-	__export(__webpack_require__(36));
-	__export(__webpack_require__(36));
-	__export(__webpack_require__(1031));
-	__export(__webpack_require__(1032));
-	__export(__webpack_require__(1033));
-	__export(__webpack_require__(1034));
-	__export(__webpack_require__(1036));
-	__export(__webpack_require__(1037));
-	__export(__webpack_require__(1038));
-	__export(__webpack_require__(1039));
-	__export(__webpack_require__(1040));
-	__export(__webpack_require__(1041));
-	__export(__webpack_require__(1042));
-	__export(__webpack_require__(1043));
-	__export(__webpack_require__(1044));
-	__export(__webpack_require__(1045));
-	__export(__webpack_require__(211));
-	__export(__webpack_require__(1046));
-	__export(__webpack_require__(1047));
-	__export(__webpack_require__(1048));
-	__export(__webpack_require__(1049));
-	__export(__webpack_require__(1050));
-	__export(__webpack_require__(1051));
-	__export(__webpack_require__(1052));
-	__export(__webpack_require__(1053));
-	__export(__webpack_require__(1054));
-	__export(__webpack_require__(1055));
-	__export(__webpack_require__(212));
-	__export(__webpack_require__(1056));
-	__export(__webpack_require__(1057));
-	__export(__webpack_require__(1058));
-	__export(__webpack_require__(1059));
-	__export(__webpack_require__(1060));
-	__export(__webpack_require__(1061));
-	__export(__webpack_require__(1062));
-	__export(__webpack_require__(1063));
-	__export(__webpack_require__(1064));
-	__export(__webpack_require__(1065));
-	__export(__webpack_require__(1066));
-	__export(__webpack_require__(1067));
-	__export(__webpack_require__(1068));
-	__export(__webpack_require__(505));
-	__export(__webpack_require__(1070));
-	__export(__webpack_require__(506));
-	__export(__webpack_require__(1069));
-	__export(__webpack_require__(1071));
-	__export(__webpack_require__(1072));
-	__export(__webpack_require__(1073));
-	__export(__webpack_require__(1074));
-	__export(__webpack_require__(1075));
-	__export(__webpack_require__(507));
-	__export(__webpack_require__(508));
-	
-
-/***/ },
 /* 150 */,
 /* 151 */,
 /* 152 */,
@@ -1711,7 +1711,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(59);
 	var knowledge_1 = __webpack_require__(52);
 	var tag_1 = __webpack_require__(82);
-	var primeng_1 = __webpack_require__(149);
+	var primeng_1 = __webpack_require__(127);
 	var router_1 = __webpack_require__(5);
 	var common_1 = __webpack_require__(8);
 	var $ = __webpack_require__(502);
@@ -1849,15 +1849,17 @@ webpackJsonp([2],[
 	    };
 	    UpdateRequestComponent.prototype.filterONTag = function () {
 	        var oldTag = [];
-	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
-	            var e = _a[_i];
-	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
-	                var e1 = _c[_b];
-	                if (e.name == e1) {
-	                    oldTag.push(e._id);
-	                    var index = this.tags.indexOf(e1);
-	                    if (index > -1) {
-	                        this.tags.splice(index, 1);
+	        if (this.tags.length > 0) {
+	            for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	                var e = _a[_i];
+	                for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                    var e1 = _c[_b];
+	                    if (e.name == e1) {
+	                        oldTag.push(e._id);
+	                        var index = this.tags.indexOf(e1);
+	                        if (index > -1) {
+	                            this.tags.splice(index, 1);
+	                        }
 	                    }
 	                }
 	            }
@@ -2451,7 +2453,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(59);
 	var auth_1 = __webpack_require__(42);
 	var tag_1 = __webpack_require__(82);
-	var primeng_1 = __webpack_require__(149);
+	var primeng_1 = __webpack_require__(127);
 	var CKEditor = (function () {
 	    function CKEditor(_elm) {
 	        CKEDITOR.replace(_elm.nativeElement);
@@ -2473,6 +2475,7 @@ webpackJsonp([2],[
 	        this._knowledgeService = _knowledgeService;
 	        this._authService = _authService;
 	        this.router = router;
+	        this.tags = [];
 	        this.user = localStorage.getItem('username');
 	        this.roleToken = localStorage.getItem('userrole');
 	        this.requestForm = fb.group({
@@ -2494,18 +2497,20 @@ webpackJsonp([2],[
 	    };
 	    CreateRequestComponent.prototype.filterONTag = function () {
 	        var oldTag = [];
-	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
-	            var e = _a[_i];
-	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
-	                var e1 = _c[_b];
-	                //catch old tags
-	                if (e.name == e1) {
-	                    oldTag.push(e._id);
-	                    //find out old tags in data tags user
-	                    var index = this.tags.indexOf(e1);
-	                    if (index > -1) {
-	                        //remove old tags to catch new tags
-	                        this.tags.splice(index, 1);
+	        if (this.tags.length > 0) {
+	            for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	                var e = _a[_i];
+	                for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                    var e1 = _c[_b];
+	                    //catch old tags
+	                    if (e.name == e1) {
+	                        oldTag.push(e._id);
+	                        //find out old tags in data tags user
+	                        var index = this.tags.indexOf(e1);
+	                        if (index > -1) {
+	                            //remove old tags to catch new tags
+	                            this.tags.splice(index, 1);
+	                        }
 	                    }
 	                }
 	            }
@@ -3341,7 +3346,7 @@ webpackJsonp([2],[
 	var Subscriber_1 = __webpack_require__(7);
 	var OuterSubscriber_1 = __webpack_require__(13);
 	var subscribeToResult_1 = __webpack_require__(14);
-	var iterator_1 = __webpack_require__(140);
+	var iterator_1 = __webpack_require__(141);
 	/**
 	 * @param observables
 	 * @return {Observable<R>}
@@ -3946,8 +3951,9 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(5);
 	var common_1 = __webpack_require__(8);
 	var article_1 = __webpack_require__(98);
-	var ng2_pagination_1 = __webpack_require__(147);
+	var ng2_pagination_1 = __webpack_require__(148);
 	var filter_1 = __webpack_require__(122);
+	var primeng_1 = __webpack_require__(127);
 	var ArtListCtlComponent = (function () {
 	    function ArtListCtlComponent(_articleService, router) {
 	        this._articleService = _articleService;
@@ -3974,7 +3980,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'art-list-clt',
 	            templateUrl: 'client/dev/app/components/back-end/article/templates/article-list.html',
-	            directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp],
+	            directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.Paginator],
 	            providers: [article_1.ArticleService, ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
 	        }), 
@@ -4008,7 +4014,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(59);
 	var knowledge_update_1 = __webpack_require__(283);
 	var sub_knowledge_create_1 = __webpack_require__(624);
-	var ng2_pagination_1 = __webpack_require__(147);
+	var ng2_pagination_1 = __webpack_require__(148);
 	var filter_1 = __webpack_require__(122);
 	var KnowledgeListComponent = (function () {
 	    function KnowledgeListComponent(fb, _elRef, _knowledgeService, _requestService) {
@@ -4218,7 +4224,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(59);
 	var auth_1 = __webpack_require__(42);
 	var request_update_1 = __webpack_require__(186);
-	var ng2_pagination_1 = __webpack_require__(147);
+	var ng2_pagination_1 = __webpack_require__(148);
 	var filter_1 = __webpack_require__(122);
 	var RequestListComponent = (function () {
 	    function RequestListComponent(fb, _requestService, _knowledgeService, _authService) {
@@ -4324,7 +4330,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(5);
 	var common_1 = __webpack_require__(8);
 	var tag_1 = __webpack_require__(82);
-	var ng2_pagination_1 = __webpack_require__(147);
+	var ng2_pagination_1 = __webpack_require__(148);
 	var filter_1 = __webpack_require__(122);
 	var TagListCtlComponent = (function () {
 	    function TagListCtlComponent(_tagService, router) {
@@ -4403,7 +4409,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(8);
 	var users_1 = __webpack_require__(33);
 	var auth_1 = __webpack_require__(42);
-	var ng2_pagination_1 = __webpack_require__(147);
+	var ng2_pagination_1 = __webpack_require__(148);
 	var filter_1 = __webpack_require__(122);
 	var UserListComponent = (function () {
 	    function UserListComponent(fb, _userService, _auth, router) {
@@ -4493,7 +4499,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(5);
 	var article_1 = __webpack_require__(98);
 	var tag_1 = __webpack_require__(82);
-	var primeng_1 = __webpack_require__(149);
+	var primeng_1 = __webpack_require__(127);
 	var CKEditor = (function () {
 	    function CKEditor(_elm) {
 	        CKEDITOR.replace(_elm.nativeElement);
@@ -4533,18 +4539,20 @@ webpackJsonp([2],[
 	    };
 	    CreateArticleComponent.prototype.filterONTag = function () {
 	        var oldTag = [];
-	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
-	            var e = _a[_i];
-	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
-	                var e1 = _c[_b];
-	                //catch old tags
-	                if (e.name == e1) {
-	                    oldTag.push(e._id);
-	                    //find out old tags in data tags user
-	                    var index = this.tags.indexOf(e1);
-	                    if (index > -1) {
-	                        //remove old tags to catch new tags
-	                        this.tags.splice(index, 1);
+	        if (this.tags.length > 0) {
+	            for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	                var e = _a[_i];
+	                for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                    var e1 = _c[_b];
+	                    //catch old tags
+	                    if (e.name == e1) {
+	                        oldTag.push(e._id);
+	                        //find out old tags in data tags user
+	                        var index = this.tags.indexOf(e1);
+	                        if (index > -1) {
+	                            //remove old tags to catch new tags
+	                            this.tags.splice(index, 1);
+	                        }
 	                    }
 	                }
 	            }
@@ -4794,10 +4802,8 @@ webpackJsonp([2],[
 	    listArticleComponent.prototype.ngOnInit = function () {
 	        var _this = this;
 	        this._artService.getAllArts().subscribe(function (arts) {
-	            console.log(arts.length);
 	            for (var i = 0; i < arts.length; i++) {
 	                if (arts[i].status == "private" && arts[i].ofUser != _this.userToken) {
-	                    console.log(arts[i].status);
 	                    arts.splice(i, 1);
 	                }
 	            }
@@ -4881,7 +4887,7 @@ webpackJsonp([2],[
 	 */
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
-	var kspace_1 = __webpack_require__(139);
+	var kspace_1 = __webpack_require__(140);
 	// import { SEMANTIC_COMPONENTS, SEMANTIC_DIRECTIVES } from "ng-semantic";
 	var KSpaceInfoComponent = (function () {
 	    function KSpaceInfoComponent(router, route, _kspaceService) {
@@ -5001,7 +5007,7 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 7/9/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(139);
+	var kspace_1 = __webpack_require__(140);
 	var router_1 = __webpack_require__(5);
 	var KSpaceListComponent = (function () {
 	    function KSpaceListComponent(_kspaceService, router) {
@@ -5054,7 +5060,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(139);
+	var kspace_1 = __webpack_require__(140);
 	var rtc_services_1 = __webpack_require__(629);
 	var router_1 = __webpack_require__(5);
 	var common_1 = __webpack_require__(8);
@@ -5346,7 +5352,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(59);
 	var request_offer_1 = __webpack_require__(288);
 	var knowledge_1 = __webpack_require__(52);
-	var kspace_1 = __webpack_require__(139);
+	var kspace_1 = __webpack_require__(140);
 	var offer_create_1 = __webpack_require__(631);
 	var report_1 = __webpack_require__(430);
 	var RequestDetailClientComponent = (function () {
@@ -6310,7 +6316,7 @@ webpackJsonp([2],[
 	var queue_1 = __webpack_require__(462);
 	var rxSubscriber_1 = __webpack_require__(195);
 	var observable_1 = __webpack_require__(194);
-	var iterator_1 = __webpack_require__(140);
+	var iterator_1 = __webpack_require__(141);
 	/* tslint:enable:no-unused-variable */
 	/**
 	 * @typedef {Object} Rx.Scheduler
@@ -17443,7 +17449,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(59);
 	var users_1 = __webpack_require__(33);
 	var auth_1 = __webpack_require__(42);
-	var kspace_1 = __webpack_require__(139);
+	var kspace_1 = __webpack_require__(140);
 	var notification_1 = __webpack_require__(123);
 	var report_1 = __webpack_require__(287);
 	var article_1 = __webpack_require__(98);
@@ -17709,7 +17715,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(5);
 	var article_1 = __webpack_require__(98);
 	var tag_1 = __webpack_require__(82);
-	var primeng_1 = __webpack_require__(149);
+	var primeng_1 = __webpack_require__(127);
 	var $ = __webpack_require__(502);
 	var CKEditor = (function () {
 	    function CKEditor(_elm, _articleService, router, route) {
@@ -17786,15 +17792,17 @@ webpackJsonp([2],[
 	    };
 	    EditArticleComponent.prototype.filterONTag = function () {
 	        var oldTag = [];
-	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
-	            var e = _a[_i];
-	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
-	                var e1 = _c[_b];
-	                if (e.name == e1) {
-	                    oldTag.push(e._id);
-	                    var index = this.tags.indexOf(e1);
-	                    if (index > -1) {
-	                        this.tags.splice(index, 1);
+	        if (this.tags.length > 0) {
+	            for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	                var e = _a[_i];
+	                for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                    var e1 = _c[_b];
+	                    if (e.name == e1) {
+	                        oldTag.push(e._id);
+	                        var index = this.tags.indexOf(e1);
+	                        if (index > -1) {
+	                            this.tags.splice(index, 1);
+	                        }
 	                    }
 	                }
 	            }
@@ -18890,7 +18898,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(8);
 	var users_1 = __webpack_require__(33);
 	var tag_1 = __webpack_require__(82);
-	var primeng_1 = __webpack_require__(149);
+	var primeng_1 = __webpack_require__(127);
 	var RegisterInfoComponent = (function () {
 	    function RegisterInfoComponent(fb, router, _userService, route, _tagService) {
 	        var _this = this;
@@ -28887,7 +28895,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var inputtext_1 = __webpack_require__(211);
-	var button_1 = __webpack_require__(148);
+	var button_1 = __webpack_require__(149);
 	var domhandler_1 = __webpack_require__(11);
 	var common_1 = __webpack_require__(8);
 	var AUTOCOMPLETE_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
@@ -29352,7 +29360,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var button_1 = __webpack_require__(148);
+	var button_1 = __webpack_require__(149);
 	var common_1 = __webpack_require__(8);
 	var CALENDAR_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Calendar; }),
@@ -34919,7 +34927,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var button_1 = __webpack_require__(148);
+	var button_1 = __webpack_require__(149);
 	var domhandler_1 = __webpack_require__(11);
 	var OrderList = (function () {
 	    function OrderList(el, domHandler) {
@@ -35647,7 +35655,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var button_1 = __webpack_require__(148);
+	var button_1 = __webpack_require__(149);
 	var domhandler_1 = __webpack_require__(11);
 	var PickList = (function () {
 	    function PickList(el, domHandler) {
