@@ -26,6 +26,7 @@ var HeaderComponent = (function () {
         this._auth.isLoggedIn().subscribe(function (res) {
             if (res.login) {
                 _this.loginToken = true;
+                _this.getNotificationByUser();
             }
             else {
                 _this._auth.logoutClient();
@@ -52,7 +53,6 @@ var HeaderComponent = (function () {
                 setTimeout(function () { x.className = x.className.replace("show", ""); }, 10000);
             }
         });
-        this.getNotificationByUser();
     };
     HeaderComponent.prototype.logout = function () {
         var _this = this;

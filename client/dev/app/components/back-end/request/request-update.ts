@@ -160,7 +160,10 @@ export class UpdateRequestComponent {
             this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
             this._requestService.getRequestById(this.id).subscribe(
                 (request) => {
-
+                    this._knowledgeService.findKnowledgeById(request.knowledgeId).subscribe((knowledge)=>{
+                        this.kname = knowledge.name;
+                        this.knowledgeId = knowledge._id;
+                    });
                     let ids: string[] = [];
                     ids = request.tags;
 
@@ -194,13 +197,15 @@ export class UpdateRequestComponent {
 
     filterONTag() {
         let oldTag: any[] = [];
-        for (let e of this.tagsEx) {
-            for (let e1 of this.tags) {
-                if (e.name == e1) {
-                    oldTag.push(e._id);
-                    let index = this.tags.indexOf(e1);
-                    if (index > -1) {
-                        this.tags.splice(index, 1);
+        if(this.tags.length>0){
+            for (let e of this.tagsEx) {
+                for (let e1 of this.tags) {
+                    if (e.name == e1) {
+                        oldTag.push(e._id);
+                        let index = this.tags.indexOf(e1);
+                        if (index > -1) {
+                            this.tags.splice(index, 1);
+                        }
                     }
                 }
             }

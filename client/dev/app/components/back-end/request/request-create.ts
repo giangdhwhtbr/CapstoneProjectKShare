@@ -70,7 +70,7 @@ export class CreateRequestComponent {
 
     filterONTag() {
         let oldTag:any[] = [];
-        if(this.tags){
+        if(this.tags.length>0){
             for (let e of this.tagsEx) {
                 for (let e1 of this.tags) {
                     //catch old tags

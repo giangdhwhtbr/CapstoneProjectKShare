@@ -55,7 +55,7 @@ var CreateRequestComponent = (function () {
     };
     CreateRequestComponent.prototype.filterONTag = function () {
         var oldTag = [];
-        if (this.tags) {
+        if (this.tags.length > 0) {
             for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
                 var e = _a[_i];
                 for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {

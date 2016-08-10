@@ -47,35 +47,38 @@ tagSchema.statics.createTag = (tag) => {
 tagSchema.statics.createArrayTag = (arrTagName) => {
     return new Promise((resolve, reject) => {
         var arr = [];
-        Tag.find({
-            'name': {$in: arrTagName}
-        }).exec((err, tagFound) => {
-            if (err) reject(err);
+        if(arrTagName.length>0){
+            Tag.find({
+                'name': {$in: arrTagName}
+            }).exec((err, tagFound) => {
+                if (err) reject(err);
 
-            for (let i = arrTagName.length - 1; i >= 0; i--) {
-                for (let e of tagFound) {
-                    if (e.name == arrTagName[i] && e.status == false) {
-                        arrTagName.splice(i, 1);
-                        break;
+                for (let i = arrTagName.length - 1; i >= 0; i--) {
+                    for (let e of tagFound) {
+                        if (e.name == arrTagName[i] && e.status == false) {
+                            arrTagName.splice(i, 1);
+                            break;
+                        }
                     }
                 }
-            }
 
-            arrTagName.map((e, i)=> {
-                let tag = new Tag({"name": e});
-                arr.push(tag);
-            });
-            var arrId = [];
-            arr.map((e, i)=> {
-                e.save((err, saved)=> {
-                    if (err) reject(err);
+                arrTagName.map((e, i)=> {
+                    let tag = new Tag({"name": e});
+                    arr.push(tag);
                 });
-                arrId.push(e._id);
+                var arrId = [];
+                arr.map((e, i)=> {
+                    e.save((err, saved)=> {
+                        if (err) reject(err);
+                    });
+                    arrId.push(e._id);
+                });
+
+
+
             });
-            resolve(arr);
-
-
-        });
+        }
+        resolve(arr);
 
     });
 }

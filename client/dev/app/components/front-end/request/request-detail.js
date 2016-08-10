@@ -120,6 +120,7 @@ var RequestDetailClientComponent = (function () {
             });
             _this.request.status = 'accepted';
             //update request status
+            console.log(_this.request);
             _this._requestService.updateRequest(_this.request)
                 .subscribe(function (c) {
                 console.log(_this.request);
@@ -127,7 +128,7 @@ var RequestDetailClientComponent = (function () {
             });
             _this.checkIsAcceped = true;
             //window.location.reload();
-            _this.router.navigate(['/kspace/info/' + r._id]);
+            _this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
         });
     };
     RequestDetailClientComponent.prototype.addSubcriber = function (id) {

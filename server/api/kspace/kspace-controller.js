@@ -39,7 +39,6 @@ module.exports = class KSpaceController {
       offerId: req.body.offerId,
       createdAt: currentDate
     };
-    console.log(kspace);
     KSpaceDAO
       .createNew(kspace)
       .then(KSpace => res.status(200).json(KSpace))

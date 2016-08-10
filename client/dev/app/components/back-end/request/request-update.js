@@ -121,6 +121,10 @@ var UpdateRequestComponent = (function () {
         this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
             _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
             _this._requestService.getRequestById(_this.id).subscribe(function (request) {
+                _this._knowledgeService.findKnowledgeById(request.knowledgeId).subscribe(function (knowledge) {
+                    _this.kname = knowledge.name;
+                    _this.knowledgeId = knowledge._id;
+                });
                 var ids = [];
                 ids = request.tags;
                 _this._tagService.getTagsByIds(ids).subscribe(function (tags) {
@@ -143,15 +147,17 @@ var UpdateRequestComponent = (function () {
     };
     UpdateRequestComponent.prototype.filterONTag = function () {
         var oldTag = [];
-        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
-            var e = _a[_i];
-            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
-                var e1 = _c[_b];
-                if (e.name == e1) {
-                    oldTag.push(e._id);
-                    var index = this.tags.indexOf(e1);
-                    if (index > -1) {
-                        this.tags.splice(index, 1);
+        if (this.tags.length > 0) {
+            for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+                var e = _a[_i];
+                for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+                    var e1 = _c[_b];
+                    if (e.name == e1) {
+                        oldTag.push(e._id);
+                        var index = this.tags.indexOf(e1);
+                        if (index > -1) {
+                            this.tags.splice(index, 1);
+                        }
                     }
                 }
             }

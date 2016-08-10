@@ -45,7 +45,6 @@ module.exports = class RequestController {
                     for (let e of tags) {
                         request.tags.push(e);
                     }
-                    console.log(request);
                     request.save();
                     res.status(201).json(request);
                 }).catch(error => res.status(400).json(error));
@@ -66,18 +65,20 @@ module.exports = class RequestController {
                     request.status = _data.rq.status;
                     request.tags = _data.rq.tags;
                     request.status = _data.rq.status;
-
+                    console.log("go 0");
                     TagDAO.createArrayTag(_data.newTag).then((tags)=> {
+                        console.log("go 1");
 
                         RequestDAO.updateRequestById(request).then(request => {
-                            tags.map((e, i)=> {
-                                request.tags.push(e);
-                            });
-                            request.save();
-
+                            if (tags.length > 0) {
+                                tags.map((e, i)=> {
+                                    request.tags.push(e);
+                                });
+                                request.save();
+                            }
+                            console.log("go 2");
                             res.status(200).json(request);
                         }).catch(error => res.status(400).json(error));
-
                     }).catch((error)=>res.status(400).json(error));
                 }).catch(error => res.status(400).json(error));
         } else {
