@@ -1814,7 +1814,8 @@ webpackJsonp([2],[
 	            "_id": [""],
 	            "title": [""],
 	            "description": [""],
-	            "knowledgeId": [""]
+	            "knowledgeId": [""],
+	            "status": [""]
 	        });
 	    }
 	    UpdateRequestComponent.prototype.ngOnInit = function () {
@@ -1834,6 +1835,7 @@ webpackJsonp([2],[
 	                    _this.title = request.title;
 	                    _this.description = request.description;
 	                    _this._id = request._id;
+	                    _this.status = request.status;
 	                    var nameArr = [];
 	                    for (var _i = 0, tags_1 = tags; _i < tags_1.length; _i++) {
 	                        var e = tags_1[_i];
@@ -2632,101 +2634,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 285 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	var requests_1 = __webpack_require__(59);
-	var RequestCategoryComponent = (function () {
-	    function RequestCategoryComponent(_requestService, router, route) {
-	        var _this = this;
-	        this._requestService = _requestService;
-	        this.router = router;
-	        this.route = route;
-	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            var type = params['type'];
-	            _this.typee = type;
-	            var id = params['id'];
-	            _this.identify = id;
-	        });
-	        //get templates from children category
-	        if (this.typee === "subcategory") {
-	            this._requestService.getRequestByKnowledgeId(this.identify).subscribe(function (requests) {
-	                if (requests.length == 0) {
-	                    _this.isExistRecord = true;
-	                }
-	                else {
-	                    _this.isExistRecord = false;
-	                }
-	                for (var i = 0; i < requests.length; i++) {
-	                    requests[i].createdAt = new Date(requests[i].createdAt);
-	                    requests[i].modifiedDate = new Date(requests[i].modifiedDate);
-	                }
-	                _this.requests = requests;
-	            });
-	        }
-	        //get templates from parent category
-	        if (this.typee === "category") {
-	            this._requestService.getKnowledgeByParent(this.identify).subscribe(function (knowledges) {
-	                var a = [];
-	                _this.knowledges = knowledges;
-	                for (var i = 0; i < _this.knowledges.length; i++) {
-	                    _this._requestService.getRequestByKnowledgeId(_this.knowledges[i]._id).subscribe(function (requests) {
-	                        //for each child knowledge get requests
-	                        for (var j = 0; j < requests.length; j++) {
-	                            a.push(requests[j]);
-	                        }
-	                        for (var i = 0; i < a.length; i++) {
-	                            a[i].createdAt = new Date(requests[i].createdAt);
-	                            a[i].modifiedDate = new Date(requests[i].modifiedDate);
-	                            if (requests[i].status === 'pending') {
-	                                requests[i].status = 'Đang chờ';
-	                            }
-	                        }
-	                        if (a.length == 0) {
-	                            _this.isExistRecord = true;
-	                        }
-	                        else {
-	                            _this.isExistRecord = false;
-	                        }
-	                        _this.requests = a;
-	                    });
-	                }
-	            }, function (Error) {
-	                console.log(Error);
-	            });
-	        }
-	    }
-	    RequestCategoryComponent = __decorate([
-	        core_1.Component({
-	            selector: 'request-search-cli',
-	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-search.html',
-	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
-	            directives: [router_1.ROUTER_DIRECTIVES]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object])
-	    ], RequestCategoryComponent);
-	    return RequestCategoryComponent;
-	    var _a, _b, _c;
-	}());
-	exports.RequestCategoryComponent = RequestCategoryComponent;
-	
-
-/***/ },
+/* 285 */,
 /* 286 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -5377,13 +5285,14 @@ webpackJsonp([2],[
 	        //get templates when load the page
 	        this._requestService.getRequestById(this.id)
 	            .subscribe(function (request) {
+	            console.log(request.status);
 	            request.createdAt = new Date(request.createdAt);
 	            //translate status
 	            if (request.status === 'accepted') {
 	                request.status = 'Đã được chấp nhận';
 	                _this.checkIsAcceped = true;
 	            }
-	            else if (request.status === 'deactive') {
+	            else if (request.status === 'deactive' || request.status === undefined) {
 	                request.status = 'Đã kết thúc';
 	                _this.checkDeactive = true;
 	            }
@@ -5531,7 +5440,7 @@ webpackJsonp([2],[
 	var tag_1 = __webpack_require__(82);
 	var friend_list_1 = __webpack_require__(633);
 	var request_create_1 = __webpack_require__(284);
-	var request_search_1 = __webpack_require__(285);
+	var request_category_1 = __webpack_require__(1083);
 	var auth_1 = __webpack_require__(42);
 	var router_2 = __webpack_require__(5);
 	var RequestListClientComponent = (function () {
@@ -5659,7 +5568,7 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES,
 	                friend_list_1.FriendListComponent,
 	                request_create_1.CreateRequestComponent,
-	                request_search_1.RequestCategoryComponent
+	                request_category_1.RequestCategoryComponent
 	            ],
 	            providers: [tag_1.TagService]
 	        }), 
@@ -5978,7 +5887,7 @@ webpackJsonp([2],[
 	var home_1 = __webpack_require__(426);
 	var request_list_1 = __webpack_require__(432);
 	var request_detail_1 = __webpack_require__(431);
-	var request_search_1 = __webpack_require__(285);
+	var request_category_1 = __webpack_require__(1083);
 	var kspace_1 = __webpack_require__(429);
 	var kspace_list_1 = __webpack_require__(428);
 	var kspace_info_1 = __webpack_require__(427);
@@ -6009,7 +5918,7 @@ webpackJsonp([2],[
 	                home_1.HomeComponent,
 	                request_list_1.RequestListClientComponent,
 	                request_detail_1.RequestDetailClientComponent,
-	                request_search_1.RequestCategoryComponent,
+	                request_category_1.RequestCategoryComponent,
 	                kspace_1.KSpaceComponent,
 	                kspace_list_1.KSpaceListComponent,
 	                kspace_info_1.KSpaceInfoComponent,
@@ -19682,7 +19591,7 @@ webpackJsonp([2],[
 	var request_list_1 = __webpack_require__(432);
 	var request_detail_1 = __webpack_require__(431);
 	var request_update_1 = __webpack_require__(186);
-	var request_search_1 = __webpack_require__(285);
+	var request_category_1 = __webpack_require__(1083);
 	var request_create_1 = __webpack_require__(284);
 	var kspace_1 = __webpack_require__(429);
 	var kspace_list_1 = __webpack_require__(428);
@@ -19834,7 +19743,7 @@ webpackJsonp([2],[
 	                    {
 	                        path: ':type/:id',
 	                        pathMatch: 'full',
-	                        component: request_search_1.RequestCategoryComponent
+	                        component: request_category_1.RequestCategoryComponent
 	                    },
 	                    {
 	                        path: '',
@@ -38128,6 +38037,105 @@ webpackJsonp([2],[
 	    return UITreeRow;
 	}());
 	exports.UITreeRow = UITreeRow;
+	
+
+/***/ },
+/* 1079 */,
+/* 1080 */,
+/* 1081 */,
+/* 1082 */,
+/* 1083 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var requests_1 = __webpack_require__(59);
+	var RequestCategoryComponent = (function () {
+	    function RequestCategoryComponent(_requestService, router, route) {
+	        this._requestService = _requestService;
+	        this.router = router;
+	        this.route = route;
+	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            var type = params['type'];
+	            var id = params['id'];
+	        });
+	    }
+	    RequestCategoryComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        //get templates from children category
+	        if (this.type === "subcategory") {
+	            this._requestService.getRequestByKnowledgeId(this.id).subscribe(function (requests) {
+	                if (requests.length == 0) {
+	                    _this.isExistRecord = true;
+	                }
+	                else {
+	                    _this.isExistRecord = false;
+	                }
+	                for (var i = 0; i < requests.length; i++) {
+	                    requests[i].createdAt = new Date(requests[i].createdAt);
+	                    requests[i].modifiedDate = new Date(requests[i].modifiedDate);
+	                }
+	                _this.requests = requests;
+	            });
+	        }
+	        //get templates from parent category
+	        if (this.type === "category") {
+	            this._requestService.getKnowledgeByParent(this.id).subscribe(function (knowledges) {
+	                var a = [];
+	                _this.knowledges = knowledges;
+	                for (var i = 0; i < _this.knowledges.length; i++) {
+	                    _this._requestService.getRequestByKnowledgeId(_this.knowledges[i]._id).subscribe(function (requests) {
+	                        //for each child knowledge get requests
+	                        for (var j = 0; j < requests.length; j++) {
+	                            a.push(requests[j]);
+	                        }
+	                        for (var i = 0; i < a.length; i++) {
+	                            a[i].createdAt = new Date(requests[i].createdAt);
+	                            a[i].modifiedDate = new Date(requests[i].modifiedDate);
+	                            if (requests[i].status === 'pending') {
+	                                requests[i].status = 'Đang chờ';
+	                            }
+	                        }
+	                        if (a.length == 0) {
+	                            _this.isExistRecord = true;
+	                        }
+	                        else {
+	                            _this.isExistRecord = false;
+	                        }
+	                        _this.requests = a;
+	                    });
+	                }
+	            }, function (Error) {
+	                console.log(Error);
+	            });
+	        }
+	    };
+	    RequestCategoryComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-category-cli',
+	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-category.html',
+	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
+	            directives: [router_1.ROUTER_DIRECTIVES]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object])
+	    ], RequestCategoryComponent);
+	    return RequestCategoryComponent;
+	    var _a, _b, _c;
+	}());
+	exports.RequestCategoryComponent = RequestCategoryComponent;
 	
 
 /***/ }

@@ -12,7 +12,7 @@ import { RequestService } from '../../../services/requests';
 import { TagService } from '../../../services/tag';
 import { FriendListComponent} from '../shared/friend-list';
 import { CreateRequestComponent } from '../../back-end/request/request-create';
-import { RequestCategoryComponent} from './request-search';
+import { RequestCategoryComponent} from './request-category';
 import { AuthService } from '../../../services/auth';
 import { Router } from "@angular/router";
 

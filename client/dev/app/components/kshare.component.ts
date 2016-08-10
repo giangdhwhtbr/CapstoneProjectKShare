@@ -20,7 +20,7 @@ import { UserProfileComponent } from "./front-end/user/user-profile/user-profile
 import { HomeComponent} from "./front-end/home/home";
 import { RequestListClientComponent } from "./front-end/request/request-list";
 import { RequestDetailClientComponent } from "./front-end/request/request-detail";
-import { RequestCategoryComponent } from "./front-end/request/request-search";
+import { RequestCategoryComponent } from "./front-end/request/request-category";
 import { KSpaceComponent } from "./front-end/kspace/kspace";
 import { KSpaceListComponent } from "./front-end/kspace/kspace-list";
 import { KSpaceInfoComponent } from "./front-end/kspace/kspace-info";

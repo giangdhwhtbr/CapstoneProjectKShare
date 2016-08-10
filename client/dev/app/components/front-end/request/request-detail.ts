@@ -1,6 +1,7 @@
 import {
     Component,
     OnInit,
+    OnDestroy,
     Pipe,
     PipeTransform,
     Inject,
@@ -81,12 +82,13 @@ export class RequestDetailClientComponent implements AfterViewChecked {
         //get templates when load the page
         this._requestService.getRequestById(this.id)
             .subscribe(request => {
+                console.log(request.status);
                 request.createdAt = new Date(request.createdAt);
                 //translate status
                 if (request.status === 'accepted') {
                     request.status = 'Đã được chấp nhận';
                     this.checkIsAcceped = true;
-                } else if (request.status === 'deactive') {
+                } else if (request.status === 'deactive' || request.status === undefined) {
                     request.status = 'Đã kết thúc';
                     this.checkDeactive = true;
                 } else {
@@ -127,6 +129,8 @@ export class RequestDetailClientComponent implements AfterViewChecked {
             }, error => console.log(error));
         this.getOfferByRequestId();
     }
+
+
 
     ngAfterViewChecked() {
         if (this.request != undefined) {
