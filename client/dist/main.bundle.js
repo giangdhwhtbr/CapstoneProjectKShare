@@ -19015,16 +19015,37 @@ webpackJsonp([2],[
 	        this._authService = _authService;
 	        this.router = router;
 	        this.errorMessage = '';
-	        this.regForm = fb.group({
-	            username: ["", common_1.Validators.required],
+	    }
+	    RegisterComponent.prototype.ngOnInit = function () {
+	        this.regForm = this.fb.group({
+	            username: ["", common_1.Validators.pattern('^[a-zA-Z0-9_.-]*$')],
 	            password: ["", common_1.Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')],
 	            copass: [""],
 	            email: ["", common_1.Validators.pattern('^(([a-zA-Z]|[0-9])|([-]|[_]|[.]))+[@](([a-zA-Z0-9])|([-])){2,63}[.](([a-zA-Z0-9]){2,63})+$')]
 	        });
-	    }
+	    };
 	    RegisterComponent.prototype.register = function (user) {
 	        var _this = this;
-	        if (user.password !== user.copass) {
+	        var validateUsername = function (username) {
+	            var pattern = new RegExp('^[a-zA-Z0-9_.-]*$');
+	            return pattern.test(username);
+	        };
+	        var validatePass = function (password) {
+	            var pattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
+	            return pattern.test(password);
+	        };
+	        if (!validateUsername(user.username)) {
+	            this.errorMessage = 'Vui lòng nhập tên đăng nhập trong khoảng từ 8-30 kí tự, không dấu và không' +
+	                ' chứa kí' +
+	                ' tự' +
+	                ' đặc' +
+	                ' biệt! ';
+	        }
+	        else if (!validatePass(user.password)) {
+	            this.errorMessage = 'Mât khẩu phải có ít nhất 8 kí tự, bao gồm 1 kí tự viết hoa, 1 kí tự viết thường, 1 kí' +
+	                ' tự đặc biệt và 1 số';
+	        }
+	        else if (user.password !== user.copass) {
 	            this.errorMessage = 'Sai mật khẩu xác nhận! ';
 	        }
 	        else {
@@ -19058,11 +19079,11 @@ webpackJsonp([2],[
 	                    }
 	                }
 	                if (error.errmsg) {
-	                    if (error.errmsg.includes('email')) {
-	                        _this.errorMessage = 'email đã tồn tại!';
-	                    }
-	                    else if (error.errmsg.includes('username')) {
+	                    if (error.errmsg.includes('username')) {
 	                        _this.errorMessage = 'tên đăng nhập đã tồn tại';
+	                    }
+	                    else if (error.errmsg.includes('email')) {
+	                        _this.errorMessage = 'email đã tồn tại!';
 	                    }
 	                }
 	            });

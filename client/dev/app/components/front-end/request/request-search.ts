@@ -93,6 +93,4 @@ export class RequestCategoryComponent {
   }
   requests: Request[];
   knowledges: Knowledge[];
-
-
 }

@@ -20,7 +20,7 @@ var validateRole = function (role) {
 var validateUsername = function(username) {
   var pattern = new RegExp('^[a-zA-Z0-9_.-]*$');
   return pattern.test(username);
-}
+};
 
 var validatePass = function (password) {
     var pattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
