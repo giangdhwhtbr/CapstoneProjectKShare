@@ -1,4 +1,4 @@
-import { Component, Inject, OnInit,ElementRef } from '@angular/core';
+import { Component, Inject, OnInit, ElementRef } from '@angular/core';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
@@ -7,16 +7,17 @@ import { RequestService} from '../../../services/requests';
 import { Knowledge } from '../../../interface/knowledge';
 import { AuthService} from '../../../services/auth';
 import {TagService} from '../../../services/tag';
-import {AutoComplete,SelectButton,SelectItem} from 'primeng/primeng';
+import {AutoComplete, SelectButton, SelectItem} from 'primeng/primeng';
 
-declare var $ :any;
+declare var $: any;
+declare var CKEDITOR: any;
 
 @Component({
     selector: 'ck-editor',
     template: ``
 })
 class CKEditor {
-    constructor(_elm:ElementRef) {
+    constructor(_elm: ElementRef) {
         CKEDITOR.replace(_elm.nativeElement);
     }
 }
@@ -30,22 +31,24 @@ class CKEditor {
 })
 export class CreateRequestComponent {
 
-    user:string;
-    roleToken:string;
-    requestForm:ControlGroup;
+    user: string;
+    roleToken: string;
+    requestForm: ControlGroup;
+    check: boolean = true;
+    knowledges: Knowledge[];
 
-    knowledges:Knowledge[];
+    filteredKnw: string[];
 
-    filteredKnw:string[];
+    tags: any[] = [];
+    tagsEx: Array<any>;
 
-    tags:any[]=[];
-    tagsEx:Array<any>;
+    contentCk: string;
+    filesToUpload: Array<File>;
 
-    contentCk:string;
-    filesToUpload:Array<File>;
-
-    constructor(private _tagService:TagService, @Inject(FormBuilder) fb:FormBuilder, @Inject(RequestService) private _requestService:RequestService, private _knowledgeService:KnowledgeService,
-                private _authService:AuthService, public router:Router) {
+    constructor(private _tagService: TagService, @Inject(FormBuilder) fb: FormBuilder,
+        @Inject(RequestService) private _requestService: RequestService,
+        private _knowledgeService: KnowledgeService,
+        private _authService: AuthService, public router: Router) {
         this.user = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
 
@@ -57,7 +60,7 @@ export class CreateRequestComponent {
         });
     }
 
-    ngOnInit():void {
+    ngOnInit(): void {
         this.CreateUploadImageCkeditor();
         this.CreateYoutubeBtnCkeditor();
         this.addCommandBtnCk();
@@ -69,8 +72,8 @@ export class CreateRequestComponent {
     }
 
     filterONTag() {
-        let oldTag:any[] = [];
-        if(this.tags.length>0){
+        let oldTag: any[] = [];
+        if (this.tags.length > 0) {
             for (let e of this.tagsEx) {
                 for (let e1 of this.tags) {
                     //catch old tags
@@ -97,7 +100,7 @@ export class CreateRequestComponent {
             if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
                 this.filteredKnw.push(this.tagsEx[i].name);
             }
-            if(this.filteredKnw.indexOf(query.trim())<0){
+            if (this.filteredKnw.indexOf(query.trim()) < 0) {
                 this.filteredKnw.unshift(query.trim());
             }
         }
@@ -111,28 +114,29 @@ export class CreateRequestComponent {
     }
 
     addRequest(request) {
-        let tags:any[] = [];
+        let tags: any[] = [];
         tags = this.filterONTag();
 
         this.contentCk = CKEDITOR.instances.editor1.getData();
-
-        this._requestService.addRequest(request, this.contentCk, tags[0], tags[1]).subscribe((request)=> {
-
+        if (this.check == true) {
+            this._requestService.addRequest(request, this.contentCk, tags[0], tags[1]).subscribe((request) => {
+                this.check = false;
                 this.router.navigateByUrl('/requests/' + request._id + '/info');
             },
-            (error) => {
-                console.log(error.text());
-            }
-        );
+                (error) => {
+                    console.log(error.text());
+                }
+            );
+        }
     }
 
     // ckeditor
 
-    insertLinkToBox(link:string) {
+    insertLinkToBox(link: string) {
         CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
     }
 
-    insertYoutubeToBox(link:string) {
+    insertYoutubeToBox(link: string) {
         //https://www.youtube.com/watch?v=mraul5-1TBE
         let i = link.indexOf("=");
         link = link.substring(i + 1, link.length);
@@ -141,8 +145,8 @@ export class CreateRequestComponent {
     }
 
     addCommandBtnCk() {
-        CKEDITOR.instances.editor1.addCommand('uploadImage', {exec: this.openModalImg});
-        CKEDITOR.instances.editor1.addCommand('youtube', {exec: this.openModalYoutube});
+        CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
+        CKEDITOR.instances.editor1.addCommand('youtube', { exec: this.openModalYoutube });
     }
 
     openModalImg() {
@@ -171,9 +175,9 @@ export class CreateRequestComponent {
             });
     }
 
-    makeFileRequest(url:string, params:Array<string>, files:Array<File>) {
+    makeFileRequest(url: string, params: Array<string>, files: Array<File>) {
         return new Promise((resolve, reject) => {
-            var formData:any = new FormData();
+            var formData: any = new FormData();
             var xhr = new XMLHttpRequest();
             for (var i = 0; i < files.length; i++) {
                 formData.append("uploads[]", files[i], files[i].name);
@@ -205,8 +209,8 @@ export class CreateRequestComponent {
     }
 
     //action button upload
-    fileChangeEvent(fileInput:any) {
-        this.filesToUpload = <Array<File>> fileInput.target.files;
+    fileChangeEvent(fileInput: any) {
+        this.filesToUpload = <Array<File>>fileInput.target.files;
     }
 
     //finish control Ckeditor

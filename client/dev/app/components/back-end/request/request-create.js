@@ -33,6 +33,7 @@ var CreateRequestComponent = (function () {
         this._knowledgeService = _knowledgeService;
         this._authService = _authService;
         this.router = router;
+        this.check = true;
         this.tags = [];
         this.user = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
@@ -99,11 +100,14 @@ var CreateRequestComponent = (function () {
         var tags = [];
         tags = this.filterONTag();
         this.contentCk = CKEDITOR.instances.editor1.getData();
-        this._requestService.addRequest(request, this.contentCk, tags[0], tags[1]).subscribe(function (request) {
-            _this.router.navigateByUrl('/requests/' + request._id + '/info');
-        }, function (error) {
-            console.log(error.text());
-        });
+        if (this.check == true) {
+            this._requestService.addRequest(request, this.contentCk, tags[0], tags[1]).subscribe(function (request) {
+                _this.check = false;
+                _this.router.navigateByUrl('/requests/' + request._id + '/info');
+            }, function (error) {
+                console.log(error.text());
+            });
+        }
     };
     // ckeditor
     CreateRequestComponent.prototype.insertLinkToBox = function (link) {

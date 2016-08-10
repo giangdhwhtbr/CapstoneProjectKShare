@@ -170,7 +170,7 @@ exports.KShareRoutes = [
                 path: '',
                 component: home_1.HomeComponent
             }
-        ]
+        ],
     },
     {
         path: 'room',

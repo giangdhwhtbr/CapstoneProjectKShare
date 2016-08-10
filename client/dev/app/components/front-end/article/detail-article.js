@@ -14,11 +14,12 @@ var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
 var report_1 = require('../report/report');
 var detailArticleComponent = (function () {
-    function detailArticleComponent(router, route, _articleService) {
+    function detailArticleComponent(router, route, _articleService, _noti) {
         var _this = this;
         this.router = router;
         this.route = route;
         this._articleService = _articleService;
+        this._noti = _noti;
         this.canSee = true;
         this.isDeAc = false;
         this.route
@@ -51,6 +52,14 @@ var detailArticleComponent = (function () {
         var _this = this;
         if (id) {
             this._articleService.deactivateArticle(id).subscribe(function (mes) {
+                var title = 'Một bài viết của bạn đã bị đóng';
+                var link = '/article/' + _this.article._id;
+                //call function using socket io to send notification
+                _this._noti.alertNotification(title, _this.article.ofUser, link);
+                //save notification to database
+                _this._noti.createNotification(title, _this.article.ofUser, link).subscribe(function (notification) {
+                    console.log('create a notification to ' + _this.article.ofUser);
+                });
                 $('.messOff').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Success!</strong> ' + mes.mes + ' </div>');
                 _this.isDeAc = true;
                 $('#clsArtBtn').hide();

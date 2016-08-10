@@ -42,18 +42,14 @@
               <table class="table table-striped table-responsive">
                 <thead class="thead-inverse">
                   <tr>
-                    <th>STT</th>
                     <th>Yêu cầu</th>
-                    <th>Nội dung</th>
                     <th>Trạng thái</th>
                     <th>Chức năng</th>
                   </tr>
                 </thead>
                 <tbody class="searchable" *ngFor="let request of activeRequests | stringFilter: filter| paginate: { itemsPerPage: 10, currentPage: page }">
                   <tr>
-                    <td></td>
                     <td><a [routerLink]="['/requests/' + request._id + '/info']">{{request.title}}</a></td>
-                    <td>{{request.description}}</td>
                     <td>{{request.status}}</td>
                     <td class="center">
                       <a class="btn btn-info" [routerLink]="['/admin/requests/'+ request._id]">
@@ -87,18 +83,14 @@
               <table class="table table-striped table-responsive">
                 <thead class="thead-inverse">
                   <tr>
-                    <th>STT</th>
                     <th>Yêu cầu</th>
-                    <th>Nội dung</th>
                     <th>Trạng thái</th>
                     <th>Chức năng</th>
                   </tr>
                 </thead>
                 <tbody class="searchable" *ngFor="let request of deactiveRequests | stringFilter: filter| paginate: { itemsPerPage: 10, currentPage: page }">
                   <tr>
-                    <td></td>
                     <td><a [routerLink]="['/requests/' + request._id + '/info']">{{request.title}}</a></td>
-                    <td>{{request.description}}</td>
                     <td>{{request.status}}</td>
                     <td class="center">
                       <a class="btn btn-info" [routerLink]="['/admin/requests/'+ request._id]">
@@ -132,18 +124,14 @@
               <table class="table table-striped table-responsive">
                 <thead class="thead-inverse">
                   <tr>
-                    <th>STT</th>
                     <th>Yêu cầu</th>
-                    <th>Nội dung</th>
                     <th>Trạng thái</th>
                     <th>Chức năng</th>
                   </tr>
                 </thead>
                 <tbody class="searchable" *ngFor="let request of acceptepRequests | stringFilter: filter| paginate: { itemsPerPage: 10, currentPage: page }">
                   <tr>
-                    <td></td>
                     <td><a [routerLink]="['/requests/' + request._id + '/info']">{{request.title}}</a></td>
-                    <td>{{request.description}}</td>
                     <td>{{request.status}}</td>
                     <td class="center">
                       <a class="btn btn-info" [routerLink]="['/admin/requests/'+ request._id]">
