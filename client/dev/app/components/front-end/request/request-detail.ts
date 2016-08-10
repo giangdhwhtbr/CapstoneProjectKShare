@@ -91,6 +91,9 @@ export class RequestDetailClientComponent implements AfterViewChecked{
                 if (request.status === 'accepted') {
                     request.status = 'Đã được chấp nhận';
                     this.checkIsAcceped = true;
+                } else if(request.status === 'deactive' ){
+                    request.status = 'Đã kết thúc';
+                    this.checkDeactive = true;
                 } else {
                     request.status = 'Đang chờ';
                 }
@@ -101,10 +104,6 @@ export class RequestDetailClientComponent implements AfterViewChecked{
 
                 this.knowledgeId = request.knowledgeId;
                 this.subscribers = request.subcribers;
-
-                if (request.status === "deactive") {
-                    this.checkDeactive = true;
-                }
 
                 if (request.user === this.userToken) {
                     this.checkCreatedUser = true;
@@ -168,7 +167,7 @@ export class RequestDetailClientComponent implements AfterViewChecked{
                 .changeStatusRequest(this.id)
                 .subscribe((r) => {
                     console.log("deactivate sucess");
-                    this.router.navigateByUrl('/requests/');
+                    this.router.navigateByUrl('/requests');
                 })
         }
     }

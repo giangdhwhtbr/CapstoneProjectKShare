@@ -98,46 +98,6 @@
 /* 0 */
 /***/ function(module, exports, __webpack_require__) {
 
-<<<<<<< HEAD
-	/**
-	 * Created by GiangDH on 6/8/16.
-	 */
-	// Polyfills
-	"use strict";
-	// import 'ie-shim'; // Internet Explorer 9 support
-	// import 'core-js/es6';
-	// Added parts of es6 which are necessary for your project or your browser support requirements.
-	__webpack_require__(868);
-	__webpack_require__(861);
-	__webpack_require__(857);
-	__webpack_require__(863);
-	__webpack_require__(862);
-	__webpack_require__(860);
-	__webpack_require__(859);
-	__webpack_require__(867);
-	__webpack_require__(856);
-	__webpack_require__(855);
-	__webpack_require__(865);
-	__webpack_require__(858);
-	__webpack_require__(866);
-	__webpack_require__(870);
-	__webpack_require__(871);
-	__webpack_require__(869);
-	__webpack_require__(864);
-	// see issue https://github.com/AngularClass/angular2-webpack-starter/issues/709
-	// import 'core-js/es6/promise';
-	__webpack_require__(872);
-	__webpack_require__(1080);
-	// Typescript emit helpers polyfill
-	__webpack_require__(1077);
-	if (false) {
-	}
-	else {
-	    // Development
-	    Error.stackTraceLimit = Infinity;
-	    __webpack_require__(1079);
-	}
-=======
 	/**
 	 * Created by GiangDH on 6/8/16.
 	 */
@@ -176,7 +136,6 @@
 	    Error.stackTraceLimit = Infinity;
 	    __webpack_require__(1081);
 	}
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 	
 
 /***/ },
@@ -499,19 +458,11 @@
 	// 4 -> Array#every
 	// 5 -> Array#find
 	// 6 -> Array#findIndex
-<<<<<<< HEAD
-	var ctx      = __webpack_require__(101)
-	  , IObject  = __webpack_require__(141)
-	  , toObject = __webpack_require__(50)
-	  , toLength = __webpack_require__(34)
-	  , asc      = __webpack_require__(875);
-=======
 	var ctx      = __webpack_require__(102)
 	  , IObject  = __webpack_require__(142)
 	  , toObject = __webpack_require__(50)
 	  , toLength = __webpack_require__(35)
 	  , asc      = __webpack_require__(877);
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 	module.exports = function(TYPE, $create){
 	  var IS_MAP        = TYPE == 1
 	    , IS_FILTER     = TYPE == 2
@@ -550,15 +501,9 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	// 19.1.2.9 / 15.2.3.2 Object.getPrototypeOf(O)
-<<<<<<< HEAD
-	var has         = __webpack_require__(33)
-	  , toObject    = __webpack_require__(50)
-	  , IE_PROTO    = __webpack_require__(313)('IE_PROTO')
-=======
 	var has         = __webpack_require__(34)
 	  , toObject    = __webpack_require__(50)
 	  , IE_PROTO    = __webpack_require__(314)('IE_PROTO')
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 	  , ObjectProto = Object.prototype;
 
 	module.exports = Object.getPrototypeOf || function(O){
@@ -686,27 +631,6 @@
 	    , global              = __webpack_require__(25)
 	    , fails               = __webpack_require__(15)
 	    , $export             = __webpack_require__(3)
-<<<<<<< HEAD
-	    , $typed              = __webpack_require__(207)
-	    , $buffer             = __webpack_require__(316)
-	    , ctx                 = __webpack_require__(101)
-	    , anInstance          = __webpack_require__(124)
-	    , propertyDesc        = __webpack_require__(88)
-	    , hide                = __webpack_require__(46)
-	    , redefineAll         = __webpack_require__(143)
-	    , isInteger           = __webpack_require__(306)
-	    , toInteger           = __webpack_require__(89)
-	    , toLength            = __webpack_require__(34)
-	    , toIndex             = __webpack_require__(105)
-	    , toPrimitive         = __webpack_require__(90)
-	    , has                 = __webpack_require__(33)
-	    , same                = __webpack_require__(485)
-	    , classof             = __webpack_require__(199)
-	    , isObject            = __webpack_require__(20)
-	    , toObject            = __webpack_require__(50)
-	    , isArrayIter         = __webpack_require__(304)
-	    , create              = __webpack_require__(103)
-=======
 	    , $typed              = __webpack_require__(208)
 	    , $buffer             = __webpack_require__(317)
 	    , ctx                 = __webpack_require__(102)
@@ -726,7 +650,6 @@
 	    , toObject            = __webpack_require__(50)
 	    , isArrayIter         = __webpack_require__(305)
 	    , create              = __webpack_require__(104)
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 	    , getPrototypeOf      = __webpack_require__(61)
 	    , gOPN                = __webpack_require__(105).f
 	    , isIterable          = __webpack_require__(884)
@@ -1660,17 +1583,10 @@
 	var global            = __webpack_require__(25)
 	  , $export           = __webpack_require__(3)
 	  , redefine          = __webpack_require__(47)
-<<<<<<< HEAD
-	  , redefineAll       = __webpack_require__(143)
-	  , meta              = __webpack_require__(87)
-	  , forOf             = __webpack_require__(202)
-	  , anInstance        = __webpack_require__(124)
-=======
 	  , redefineAll       = __webpack_require__(144)
 	  , meta              = __webpack_require__(88)
 	  , forOf             = __webpack_require__(203)
 	  , anInstance        = __webpack_require__(125)
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 	  , isObject          = __webpack_require__(20)
 	  , fails             = __webpack_require__(15)
 	  , $iterDetect       = __webpack_require__(310)
@@ -2057,13 +1973,8 @@
 	// 22.1.3.6 Array.prototype.fill(value, start = 0, end = this.length)
 	'use strict';
 	var toObject = __webpack_require__(50)
-<<<<<<< HEAD
-	  , toIndex  = __webpack_require__(105)
-	  , toLength = __webpack_require__(34);
-=======
 	  , toIndex  = __webpack_require__(106)
 	  , toLength = __webpack_require__(35);
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 	module.exports = function fill(value /*, start = 0, end = @length */){
 	  var O      = toObject(this)
 	    , length = toLength(O.length)
@@ -2397,17 +2308,10 @@
 	'use strict';
 	var global         = __webpack_require__(25)
 	  , DESCRIPTORS    = __webpack_require__(30)
-<<<<<<< HEAD
-	  , LIBRARY        = __webpack_require__(142)
-	  , $typed         = __webpack_require__(207)
-	  , hide           = __webpack_require__(46)
-	  , redefineAll    = __webpack_require__(143)
-=======
 	  , LIBRARY        = __webpack_require__(143)
 	  , $typed         = __webpack_require__(208)
 	  , hide           = __webpack_require__(46)
 	  , redefineAll    = __webpack_require__(144)
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 	  , fails          = __webpack_require__(15)
 	  , anInstance     = __webpack_require__(125)
 	  , toInteger      = __webpack_require__(90)
@@ -2882,13 +2786,8 @@
 	// 22.1.3.3 Array.prototype.copyWithin(target, start, end = this.length)
 	'use strict';
 	var toObject = __webpack_require__(50)
-<<<<<<< HEAD
-	  , toIndex  = __webpack_require__(105)
-	  , toLength = __webpack_require__(34);
-=======
 	  , toIndex  = __webpack_require__(106)
 	  , toLength = __webpack_require__(35);
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 
 	module.exports = [].copyWithin || function copyWithin(target/*= 0*/, start/*= 0, end = @length*/){
 	  var O     = toObject(this)
@@ -2915,17 +2814,10 @@
 /* 470 */
 /***/ function(module, exports, __webpack_require__) {
 
-<<<<<<< HEAD
-	var aFunction = __webpack_require__(86)
-	  , toObject  = __webpack_require__(50)
-	  , IObject   = __webpack_require__(141)
-	  , toLength  = __webpack_require__(34);
-=======
 	var aFunction = __webpack_require__(87)
 	  , toObject  = __webpack_require__(50)
 	  , IObject   = __webpack_require__(142)
 	  , toLength  = __webpack_require__(35);
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 
 	module.exports = function(that, callbackfn, aLen, memo, isRight){
 	  aFunction(callbackfn);
@@ -2986,19 +2878,11 @@
 
 	'use strict';
 	var dP          = __webpack_require__(28).f
-<<<<<<< HEAD
-	  , create      = __webpack_require__(103)
-	  , hide        = __webpack_require__(46)
-	  , redefineAll = __webpack_require__(143)
-	  , ctx         = __webpack_require__(101)
-	  , anInstance  = __webpack_require__(124)
-=======
 	  , create      = __webpack_require__(104)
 	  , hide        = __webpack_require__(46)
 	  , redefineAll = __webpack_require__(144)
 	  , ctx         = __webpack_require__(102)
 	  , anInstance  = __webpack_require__(125)
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 	  , defined     = __webpack_require__(68)
 	  , forOf       = __webpack_require__(203)
 	  , $iterDefine = __webpack_require__(309)
@@ -3321,19 +3205,11 @@
 
 	'use strict';
 	// 19.1.2.1 Object.assign(target, source, ...)
-<<<<<<< HEAD
-	var getKeys  = __webpack_require__(125)
-	  , gOPS     = __webpack_require__(203)
-	  , pIE      = __webpack_require__(204)
-	  , toObject = __webpack_require__(50)
-	  , IObject  = __webpack_require__(141)
-=======
 	var getKeys  = __webpack_require__(126)
 	  , gOPS     = __webpack_require__(204)
 	  , pIE      = __webpack_require__(205)
 	  , toObject = __webpack_require__(50)
 	  , IObject  = __webpack_require__(142)
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 	  , $assign  = Object.assign;
 
 	// should work with symbols and should have deterministic property order (V8 bug)
@@ -4992,15 +4868,6 @@
 	var ctx            = __webpack_require__(102)
 	  , $export        = __webpack_require__(3)
 	  , toObject       = __webpack_require__(50)
-<<<<<<< HEAD
-	  , call           = __webpack_require__(475)
-	  , isArrayIter    = __webpack_require__(304)
-	  , toLength       = __webpack_require__(34)
-	  , createProperty = __webpack_require__(471)
-	  , getIterFn      = __webpack_require__(317);
-
-	$export($export.S + $export.F * !__webpack_require__(309)(function(iter){ Array.from(iter); }), 'Array', {
-=======
 	  , call           = __webpack_require__(478)
 	  , isArrayIter    = __webpack_require__(305)
 	  , toLength       = __webpack_require__(35)
@@ -5008,7 +4875,6 @@
 	  , getIterFn      = __webpack_require__(318);
 
 	$export($export.S + $export.F * !__webpack_require__(310)(function(iter){ Array.from(iter); }), 'Array', {
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 	  // 22.1.2.1 Array.from(arrayLike, mapfn = undefined, thisArg = undefined)
 	  from: function from(arrayLike/*, mapfn = undefined, thisArg = undefined*/){
 	    var O       = toObject(arrayLike)
@@ -5233,11 +5099,7 @@
 
 	'use strict';
 	var $export   = __webpack_require__(3)
-<<<<<<< HEAD
-	  , aFunction = __webpack_require__(86)
-=======
 	  , aFunction = __webpack_require__(87)
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 	  , toObject  = __webpack_require__(50)
 	  , fails     = __webpack_require__(15)
 	  , $sort     = [].sort
@@ -5314,11 +5176,7 @@
 	'use strict';
 	var $export     = __webpack_require__(3)
 	  , toObject    = __webpack_require__(50)
-<<<<<<< HEAD
-	  , toPrimitive = __webpack_require__(90);
-=======
 	  , toPrimitive = __webpack_require__(91);
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 
 	$export($export.P + $export.F * __webpack_require__(15)(function(){
 	  return new Date(NaN).toJSON() !== null || Date.prototype.toJSON.call({toISOString: function(){ return 1; }}) !== 1;
@@ -6142,11 +6000,7 @@
 
 	// 19.1.2.14 Object.keys(O)
 	var toObject = __webpack_require__(50)
-<<<<<<< HEAD
-	  , $keys    = __webpack_require__(125);
-=======
 	  , $keys    = __webpack_require__(126);
->>>>>>> 4226d241b144a32266f90ff68a628da34dc778e8
 
 	__webpack_require__(62)('keys', function(){
 	  return function keys(it){
