@@ -1,37 +1,42 @@
 /**
  * Created by Duc Duong on 7/24/2016.
  */
-import { Component, OnInit,AfterViewChecked ,Pipe,PipeTransform } from '@angular/core';
+import { Component, OnInit, AfterViewChecked, Pipe, PipeTransform } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 import { ArticleService } from '../../../services/article';
 import { AuthService } from '../../../services/auth';
+import { NotificationService } from '../../../services/notification';
 import { ReportComponent } from '../report/report';
-declare var $:any;
+
+declare var $: any;
+declare var io: any;
 
 @Component({
     selector: 'detail-article',
     templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
     directives: [
-        ROUTER_DIRECTIVES,ReportComponent
+        ROUTER_DIRECTIVES, ReportComponent
     ],
     providers: [ArticleService]
 })
 
-export class detailArticleComponent implements OnInit,AfterViewChecked {
+export class detailArticleComponent implements OnInit, AfterViewChecked {
 
-    article:any;
-    id:string;
-    tags:Array<any>;
+    article: any;
+    id: string;
+    tags: Array<any>;
 
-    roleToken:string;
-    userToken:string;
+    roleToken: string;
+    userToken: string;
 
-    canSee:boolean = true;
-    isDeAc:boolean = false;
+    canSee: boolean = true;
+    isDeAc: boolean = false;
 
-    constructor(public router:Router, private route:ActivatedRoute, private _articleService:ArticleService) {
+    constructor(public router: Router, private route: ActivatedRoute,
+        private _articleService: ArticleService,
+        private _noti: NotificationService) {
         this.route
             .params
             .subscribe(params => {
@@ -42,7 +47,7 @@ export class detailArticleComponent implements OnInit,AfterViewChecked {
     }
 
     ngOnInit() {
-        this._articleService.getArtById(this.id).subscribe((art)=> {
+        this._articleService.getArtById(this.id).subscribe((art) => {
 
             if ((art.ofUser == this.userToken && art.status == 'private')
                 || (this.roleToken == 'admin')
@@ -57,17 +62,26 @@ export class detailArticleComponent implements OnInit,AfterViewChecked {
                     this.isDeAc = true;
                 }
 
-            }else{
-                this.canSee=false;
+            } else {
+                this.canSee = false;
             }
 
 
         });
     }
 
-    deactivateArticle(id:string) {
+    deactivateArticle(id: string) {
         if (id) {
-            this._articleService.deactivateArticle(id).subscribe((mes)=> {
+            this._articleService.deactivateArticle(id).subscribe((mes) => {
+                var title = 'Một bài viết của bạn đã bị đóng';
+                var link = '/article/' + this.article._id;
+                //call function using socket io to send notification
+                this._noti.alertNotification(title, this.article.ofUser, link);
+                //save notification to database
+                this._noti.createNotification(title, this.article.ofUser, link).subscribe(
+                    (notification) => {
+                        console.log('create a notification to ' + this.article.ofUser);
+                    });
                 $('.messOff').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Success!</strong> ' + mes.mes + ' </div>');
                 this.isDeAc = true;
                 $('#clsArtBtn').hide();
@@ -79,12 +93,12 @@ export class detailArticleComponent implements OnInit,AfterViewChecked {
         if (this.article != undefined) {
             $('.bodyArt').html(this.article.content);
         }
-        $("#btnRp").click(function(){
+        $("#btnRp").click(function () {
             $("#btnRp").hide();
         });
     }
 
-    editArt(id:string) {
+    editArt(id: string) {
         this.router.navigateByUrl('/article/edit/' + this.id);
     }
 

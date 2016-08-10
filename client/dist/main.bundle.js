@@ -4701,13 +4701,15 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	var article_1 = __webpack_require__(98);
+	var notification_1 = __webpack_require__(123);
 	var report_1 = __webpack_require__(430);
 	var detailArticleComponent = (function () {
-	    function detailArticleComponent(router, route, _articleService) {
+	    function detailArticleComponent(router, route, _articleService, _noti) {
 	        var _this = this;
 	        this.router = router;
 	        this.route = route;
 	        this._articleService = _articleService;
+	        this._noti = _noti;
 	        this.canSee = true;
 	        this.isDeAc = false;
 	        this.route
@@ -4740,6 +4742,14 @@ webpackJsonp([2],[
 	        var _this = this;
 	        if (id) {
 	            this._articleService.deactivateArticle(id).subscribe(function (mes) {
+	                var title = 'Một bài viết của bạn đã bị đóng';
+	                var link = '/article/' + _this.article._id;
+	                //call function using socket io to send notification
+	                _this._noti.alertNotification(title, _this.article.ofUser, link);
+	                //save notification to database
+	                _this._noti.createNotification(title, _this.article.ofUser, link).subscribe(function (notification) {
+	                    console.log('create a notification to ' + _this.article.ofUser);
+	                });
 	                $('.messOff').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Success!</strong> ' + mes.mes + ' </div>');
 	                _this.isDeAc = true;
 	                $('#clsArtBtn').hide();
@@ -4767,10 +4777,10 @@ webpackJsonp([2],[
 	            ],
 	            providers: [article_1.ArticleService]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
 	    ], detailArticleComponent);
 	    return detailArticleComponent;
-	    var _a, _b, _c;
+	    var _a, _b, _c, _d;
 	}());
 	exports.detailArticleComponent = detailArticleComponent;
 	
