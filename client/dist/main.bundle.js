@@ -4266,7 +4266,7 @@ webpackJsonp([2],[
 	        var _this = this;
 	        request.status = 'pending';
 	        this._requestService
-	            .updateRequest(request)
+	            .updateRequest(request, request.tags, [])
 	            .subscribe(function (r) {
 	            _this.getAllRequest();
 	        });
@@ -5379,8 +5379,6 @@ webpackJsonp([2],[
 	        //get templates when load the page
 	        this._requestService.getRequestById(this.id)
 	            .subscribe(function (request) {
-	            console.log(request.status);
-	            request.createdAt = new Date(request.createdAt);
 	            //translate status
 	            if (request.status === 'accepted') {
 	                request.status = 'Đã được chấp nhận';
@@ -5579,8 +5577,6 @@ webpackJsonp([2],[
 	                        tags: [],
 	                        sum: ''
 	                    });
-	                    requests[i].createdAt = new Date(requests[i].createdAt);
-	                    requests[i].modifiedDate = new Date(requests[i].modifiedDate);
 	                    requests[i].link = requests[i]._id + '/info';
 	                    if (requests[i].status === 'pending') {
 	                        requests[i].status = 'Đang chờ';
@@ -5598,7 +5594,6 @@ webpackJsonp([2],[
 	                        }
 	                    }
 	                }
-	                console.log(_this._data);
 	                _this.requests = requests;
 	            });
 	        });

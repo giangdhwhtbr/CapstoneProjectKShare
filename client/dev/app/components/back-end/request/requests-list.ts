@@ -88,7 +88,7 @@ export class RequestListComponent implements AfterViewChecked{
   activateRequest(request: Request) {
     request.status = 'pending';
     this._requestService
-      .updateRequest(request)
+      .updateRequest(request,request.tags, [])
       .subscribe((r) => {
         this.getAllRequest();
       })
