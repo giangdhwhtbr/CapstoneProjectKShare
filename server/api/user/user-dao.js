@@ -133,22 +133,6 @@ userSchema.statics.updateUserById = (userinfo) => {
     });
 }
 
-userSchema.statics.updateUser = (userinfo) => {
-    return new Promise((resolve, reject) => {
-        if (!_.isObject(userinfo)) {
-            return reject(new TypeError('User is not a valid object.'));
-        }
-        User
-            .update(
-                {'username': userinfo.username},
-                {'linkImg': userinfo.linkImg})
-            .exec((err, deleted) => {
-                err ? reject(err)
-                    : resolve();
-            });
-    });
-}
-
 userSchema.plugin(relationship, {relationshipPathName: 'ownKnowledgeIds'});
 const User = mongoose.model('User', userSchema);
 module.exports = User;

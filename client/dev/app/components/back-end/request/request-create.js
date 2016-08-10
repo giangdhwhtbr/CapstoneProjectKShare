@@ -38,6 +38,8 @@ var CreateRequestComponent = (function () {
         this._knowledgeService = _knowledgeService;
         this._authService = _authService;
         this.router = router;
+        this.check = true;
+        this.tags = [];
         this.user = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
         this.requestForm = fb.group({
@@ -59,18 +61,20 @@ var CreateRequestComponent = (function () {
     };
     CreateRequestComponent.prototype.filterONTag = function () {
         var oldTag = [];
-        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
-            var e = _a[_i];
-            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
-                var e1 = _c[_b];
-                //catch old tags
-                if (e.name == e1) {
-                    oldTag.push(e._id);
-                    //find out old tags in data tags user
-                    var index = this.tags.indexOf(e1);
-                    if (index > -1) {
-                        //remove old tags to catch new tags
-                        this.tags.splice(index, 1);
+        if (this.tags.length > 0) {
+            for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+                var e = _a[_i];
+                for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+                    var e1 = _c[_b];
+                    //catch old tags
+                    if (e.name == e1) {
+                        oldTag.push(e._id);
+                        //find out old tags in data tags user
+                        var index = this.tags.indexOf(e1);
+                        if (index > -1) {
+                            //remove old tags to catch new tags
+                            this.tags.splice(index, 1);
+                        }
                     }
                 }
             }
@@ -101,11 +105,14 @@ var CreateRequestComponent = (function () {
         var tags = [];
         tags = this.filterONTag();
         this.contentCk = CKEDITOR.instances.editor1.getData();
-        this._requestService.addRequest(request, this.contentCk, tags[0], tags[1]).subscribe(function (request) {
-            _this.router.navigateByUrl('/requests/' + request._id + '/info');
-        }, function (error) {
-            console.log(error.text());
-        });
+        if (this.check == true) {
+            this._requestService.addRequest(request, this.contentCk, tags[0], tags[1]).subscribe(function (request) {
+                _this.check = false;
+                _this.router.navigateByUrl('/requests/' + request._id + '/info');
+            }, function (error) {
+                console.log(error.text());
+            });
+        }
     };
     // ckeditor
     CreateRequestComponent.prototype.insertLinkToBox = function (link) {

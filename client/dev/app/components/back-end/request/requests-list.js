@@ -39,17 +39,6 @@ var RequestListComponent = (function () {
             _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
         });
     }
-    RequestListComponent.prototype.addRequest = function (request) {
-        var _this = this;
-        this._requestService.addRequest(request).subscribe(function (request) {
-            _this.requests.push(request);
-            _this.requestForm.controls["title"].updateValue("");
-            _this.requestForm.controls["description"].updateValue("");
-            _this.requestForm.controls["knowledgeId"].updateValue("");
-        }, function (error) {
-            console.log(error.text());
-        });
-    };
     RequestListComponent.prototype.ngOnInit = function () {
         this.getAllRequest();
     };
@@ -66,29 +55,34 @@ var RequestListComponent = (function () {
         var _this = this;
         request.status = 'pending';
         this._requestService
-            .updateRequest(request)
+            .updateRequest(request, request.tags, [])
             .subscribe(function (r) {
             _this.getAllRequest();
         });
     };
     RequestListComponent.prototype.getAllRequest = function () {
         var _this = this;
+        this.activeRequests = [];
+        this.deactiveRequests = [];
+        this.acceptepRequests = [];
         this._requestService.getAllRequestAdmin().subscribe(function (requests) {
+            console.log(requests);
             for (var i = 0; i < requests.length; i++) {
-                requests[i].createdAt = new Date(requests[i].createdAt);
-                requests[i].modifiedDate = new Date(requests[i].modifiedDate);
                 if (requests[i].status === 'active' || requests[i].status === 'pending') {
+                    _this.activeRequests.push(requests[i]);
                     requests[i].status = "Đang chờ";
                 }
                 else if (requests[i].status === 'deactive') {
+                    _this.deactiveRequests.push(requests[i]);
                     requests[i].status = "Kết thúc";
                 }
                 else if (requests[i].status === 'accepted') {
+                    _this.acceptepRequests.push(requests[i]);
                     requests[i].status = "Được chấp nhận";
                 }
             }
-            _this.requests = requests;
         });
+        console.log(this.activeRequests);
     };
     RequestListComponent = __decorate([
         core_1.Component({

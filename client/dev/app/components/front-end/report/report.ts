@@ -6,7 +6,7 @@ import { NotificationService } from '../../../services/notification';
 import { UserService } from '../../../services/users';
 import { Report } from '../../../interface/report';
 
-declare var $:any;
+declare var $: any;
 
 @Component({
   selector: 'report',
@@ -41,7 +41,7 @@ export class ReportComponent {
   ngOnInit(): void {
 
   }
-  addReport(report:Report) {
+  addReport(report: Report) {
     this._reportService.addReport(report).subscribe((report) => {
 
       //call function send notification for admin realtime
@@ -52,14 +52,15 @@ export class ReportComponent {
       this._userService.getAllUsers().subscribe((users) => {
         for (var i = 0; i < users.length; i++) {
           if (users[i].role === 'admin') {
+            console.log(users[i]);
             this._noti.alertNotification(title, users[i].username, link);
             //add notification into database
-            this._noti.createNotification(title, users[i].username, link).subscribe((r) => {
-              //$('#mess').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Báo cáo thành công !</strong> </div>');
-              $('#btnCl').trigger( "click" );
-            });
           }
         }
+        this._noti.createNotificationAdmin(title, link).subscribe((r) => {
+          //$('#mess').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Báo cáo thành công !</strong> </div>');
+          $('#btnCl').trigger("click");
+        });
       })
 
     },

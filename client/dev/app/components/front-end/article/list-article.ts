@@ -30,10 +30,8 @@ export class listArticleComponent implements OnInit {
 
     ngOnInit() {
         this._artService.getAllArts().subscribe((arts)=> {
-            console.log(arts.length);
             for(let i =0;i < arts.length;i++){
                 if(arts[i].status=="private" && arts[i].ofUser!=this.userToken){
-                    console.log(arts[i].status);
                     arts.splice(i,1);
                 }
 

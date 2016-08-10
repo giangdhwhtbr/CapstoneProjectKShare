@@ -151,15 +151,17 @@ var UpdateRequestComponent = (function () {
     };
     UpdateRequestComponent.prototype.filterONTag = function () {
         var oldTag = [];
-        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
-            var e = _a[_i];
-            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
-                var e1 = _c[_b];
-                if (e.name == e1) {
-                    oldTag.push(e._id);
-                    var index = this.tags.indexOf(e1);
-                    if (index > -1) {
-                        this.tags.splice(index, 1);
+        if (this.tags.length > 0) {
+            for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+                var e = _a[_i];
+                for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+                    var e1 = _c[_b];
+                    if (e.name == e1) {
+                        oldTag.push(e._id);
+                        var index = this.tags.indexOf(e1);
+                        if (index > -1) {
+                            this.tags.splice(index, 1);
+                        }
                     }
                 }
             }

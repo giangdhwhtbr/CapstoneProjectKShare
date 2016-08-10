@@ -24,10 +24,8 @@ var listArticleComponent = (function () {
     listArticleComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._artService.getAllArts().subscribe(function (arts) {
-            console.log(arts.length);
             for (var i = 0; i < arts.length; i++) {
                 if (arts[i].status == "private" && arts[i].ofUser != _this.userToken) {
-                    console.log(arts[i].status);
                     arts.splice(i, 1);
                 }
             }

@@ -68,16 +68,18 @@ export class CreateArticleComponent implements OnInit {
 
     filterONTag() {
         let oldTag: any[]=[];
-        for (let e of this.tagsEx) {
-            for (let e1 of this.tags) {
-                //catch old tags
-                if (e.name == e1) {
-                    oldTag.push(e._id);
-                    //find out old tags in data tags user
-                    let index = this.tags.indexOf(e1);
-                    if(index>-1){
-                        //remove old tags to catch new tags
-                        this.tags.splice(index,1);
+        if(this.tags.length>0){
+            for (let e of this.tagsEx) {
+                for (let e1 of this.tags) {
+                    //catch old tags
+                    if (e.name == e1) {
+                        oldTag.push(e._id);
+                        //find out old tags in data tags user
+                        let index = this.tags.indexOf(e1);
+                        if(index>-1){
+                            //remove old tags to catch new tags
+                            this.tags.splice(index,1);
+                        }
                     }
                 }
             }

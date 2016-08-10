@@ -16,6 +16,7 @@ var common_1 = require('@angular/common');
 var article_1 = require('../../../services/article');
 var ng2_pagination_1 = require('ng2-pagination');
 var filter_1 = require('../shared/filter');
+var primeng_1 = require('primeng/primeng');
 var ArtListCtlComponent = (function () {
     function ArtListCtlComponent(_articleService, router) {
         this._articleService = _articleService;
@@ -42,7 +43,7 @@ var ArtListCtlComponent = (function () {
         core_1.Component({
             selector: 'art-list-clt',
             templateUrl: 'client/dev/app/components/back-end/article/templates/article-list.html',
-            directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp],
+            directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.Paginator],
             providers: [article_1.ArticleService, ng2_pagination_1.PaginationService],
             pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
         }), 

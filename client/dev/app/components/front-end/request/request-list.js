@@ -58,8 +58,6 @@ var RequestListClientComponent = (function () {
                         tags: [],
                         sum: ''
                     });
-                    requests[i].createdAt = new Date(requests[i].createdAt);
-                    requests[i].modifiedDate = new Date(requests[i].modifiedDate);
                     requests[i].link = requests[i]._id + '/info';
                     if (requests[i].status === 'pending') {
                         requests[i].status = 'Đang chờ';
@@ -77,7 +75,6 @@ var RequestListClientComponent = (function () {
                         }
                     }
                 }
-                console.log(_this._data);
                 _this.requests = requests;
             });
         });

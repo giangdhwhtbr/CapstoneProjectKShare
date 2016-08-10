@@ -40,8 +40,6 @@ var RequestDetailClientComponent = (function () {
         //get templates when load the page
         this._requestService.getRequestById(this.id)
             .subscribe(function (request) {
-            console.log(request.status);
-            request.createdAt = new Date(request.createdAt);
             //translate status
             if (request.status === 'accepted') {
                 request.status = 'Đã được chấp nhận';

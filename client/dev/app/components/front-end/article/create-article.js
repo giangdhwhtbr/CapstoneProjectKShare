@@ -53,18 +53,20 @@ var CreateArticleComponent = (function () {
     };
     CreateArticleComponent.prototype.filterONTag = function () {
         var oldTag = [];
-        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
-            var e = _a[_i];
-            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
-                var e1 = _c[_b];
-                //catch old tags
-                if (e.name == e1) {
-                    oldTag.push(e._id);
-                    //find out old tags in data tags user
-                    var index = this.tags.indexOf(e1);
-                    if (index > -1) {
-                        //remove old tags to catch new tags
-                        this.tags.splice(index, 1);
+        if (this.tags.length > 0) {
+            for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+                var e = _a[_i];
+                for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+                    var e1 = _c[_b];
+                    //catch old tags
+                    if (e.name == e1) {
+                        oldTag.push(e._id);
+                        //find out old tags in data tags user
+                        var index = this.tags.indexOf(e1);
+                        if (index > -1) {
+                            //remove old tags to catch new tags
+                            this.tags.splice(index, 1);
+                        }
                     }
                 }
             }

@@ -83,10 +83,6 @@ module.exports = class userRoutes {
       .route('/api/is-user-exist/:username')
       .get(userController.checkUserExist);
 
-  router
-      .route('/api/user-picture')
-      .post(userController.updateUserPicture);
-
   }
 
 }
