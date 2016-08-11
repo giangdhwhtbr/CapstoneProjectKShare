@@ -2721,7 +2721,6 @@ webpackJsonp([2],[
 	        });
 	    };
 	    RequestCategoryComponent.prototype.ngOnDestroy = function () {
-	        console.log(this.sub);
 	        this.sub.unsubscribe();
 	    };
 	    RequestCategoryComponent = __decorate([
@@ -5600,11 +5599,12 @@ webpackJsonp([2],[
 	var auth_1 = __webpack_require__(42);
 	var router_2 = __webpack_require__(5);
 	var RequestListClientComponent = (function () {
-	    function RequestListClientComponent(_requestService, _tagService, _auth, router) {
+	    function RequestListClientComponent(_requestService, _tagService, _auth, router, route) {
 	        this._requestService = _requestService;
 	        this._tagService = _tagService;
 	        this._auth = _auth;
 	        this.router = router;
+	        this.route = route;
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
 	        this.isExistRecord = false;
 	        this.arrIds = [];
@@ -5613,8 +5613,12 @@ webpackJsonp([2],[
 	        this.userToken = localStorage.getItem('username');
 	    }
 	    RequestListClientComponent.prototype.ngOnInit = function () {
-	        // this.hide = false;
-	        this.getAllRequests();
+	        var _this = this;
+	        this.sub = this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.getAllRequests();
+	        });
 	    };
 	    RequestListClientComponent.prototype.ngAfterViewChecked = function () {
 	    };
@@ -5718,6 +5722,9 @@ webpackJsonp([2],[
 	            });
 	        }
 	    };
+	    RequestListClientComponent.prototype.ngOnDestroy = function () {
+	        this.sub.unsubscribe();
+	    };
 	    RequestListClientComponent = __decorate([
 	        core_1.Component({
 	            selector: 'request-list-cli',
@@ -5731,10 +5738,10 @@ webpackJsonp([2],[
 	            ],
 	            providers: [tag_1.TagService]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object, (typeof (_d = typeof router_2.Router !== 'undefined' && router_2.Router) === 'function' && _d) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object, (typeof (_d = typeof router_2.Router !== 'undefined' && router_2.Router) === 'function' && _d) || Object, (typeof (_e = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _e) || Object])
 	    ], RequestListClientComponent);
 	    return RequestListClientComponent;
-	    var _a, _b, _c, _d;
+	    var _a, _b, _c, _d, _e;
 	}());
 	exports.RequestListClientComponent = RequestListClientComponent;
 	

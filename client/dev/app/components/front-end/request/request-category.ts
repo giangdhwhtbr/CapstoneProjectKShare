@@ -99,7 +99,6 @@ export class RequestCategoryComponent {
       });
   }
   ngOnDestroy(): void {
-    console.log(this.sub);
     this.sub.unsubscribe();
   }
 }
