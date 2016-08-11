@@ -2721,6 +2721,7 @@ webpackJsonp([2],[
 	        });
 	    };
 	    RequestCategoryComponent.prototype.ngOnDestroy = function () {
+	        console.log(this.sub);
 	        this.sub.unsubscribe();
 	    };
 	    RequestCategoryComponent = __decorate([
@@ -2760,34 +2761,32 @@ webpackJsonp([2],[
 	var notification_1 = __webpack_require__(99);
 	var UserProfileBarComponent = (function () {
 	    function UserProfileBarComponent(router, route, _userService, _noti) {
-	        var _this = this;
 	        this.router = router;
 	        this.route = route;
 	        this._userService = _userService;
 	        this._noti = _noti;
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.name = params['name'];
-	        });
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
 	    UserProfileBarComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        this.linkImg = '';
-	        this._userService.getUserByUserName(this.name).subscribe(function (user) {
-	            _this.userProfile = user;
-	            console.log(_this.userProfile);
-	            _this.linkImg = user.linkImg;
-	        }, function (error) {
-	            console.log(error);
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	            _this.linkImg = '';
+	            _this._userService.getUserByUserName(_this.name).subscribe(function (user) {
+	                _this.userProfile = user;
+	                _this.linkImg = user.linkImg;
+	            }, function (error) {
+	                console.log(error);
+	            });
+	            //check if current user is staying in his/her profile page
+	            if (_this.name === _this.userToken) {
+	                _this.checkUser = true;
+	            }
+	            _this.getFriendList();
 	        });
-	        //check if current user is staying in his/her profile page
-	        if (this.name === this.userToken) {
-	            this.checkUser = true;
-	        }
-	        this.getFriendList();
 	    };
 	    UserProfileBarComponent.prototype.fileChangeEvent = function (fileInput) {
 	        var _this = this;
@@ -5918,58 +5917,39 @@ webpackJsonp([2],[
 	var knowledge_1 = __webpack_require__(52);
 	var UserProfileComponent = (function () {
 	    function UserProfileComponent(router, route, _userService, _knowledgeService) {
-	        var _this = this;
 	        this.router = router;
 	        this.route = route;
 	        this._userService = _userService;
 	        this._knowledgeService = _knowledgeService;
-	        this.notification = {
-	            show: false,
-	            title: 'Demo notification!',
-	            body: 'ng2-notifications',
-	            icon: 'https://goo.gl/3eqeiE',
-	            action: function () {
-	                window.open('https://github.com/alexcastillo/ng2-notifications');
-	            }
-	        };
-	        this.formatDate = function (date) {
-	            if (date) {
-	                var newDate, day, month, year;
-	                year = date.substr(0, 4);
-	                month = date.substr(5, 2);
-	                day = date.substr(8, 2);
-	                return newDate = day + '/' + month + '/' + year;
-	            }
-	        };
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.name = params['name'];
-	        });
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
 	    UserProfileComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        this._userService.getUserByUserName(this.name).subscribe(function (user) {
-	            _this.userProfile = user;
-	        }, function (error) {
-	            console.log(error);
+	        this.sub = this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	            _this._userService.getUserByUserName(_this.name).subscribe(function (user) {
+	                _this.userProfile = user;
+	            }, function (error) {
+	                console.log(error);
+	            });
+	            _this.checkUserExist();
+	            if (_this.isExist = true) {
+	                _this.getRequestByUser();
+	            }
 	        });
-	        this.checkUserExist();
-	        if (this.isExist = true) {
-	            this.getRequestByUser();
-	        }
+	    };
+	    UserProfileComponent.prototype.ngOnDestroy = function () {
+	        console.log(this.sub);
+	        this.sub.unsubscribe();
 	    };
 	    UserProfileComponent.prototype.getRequestByUser = function () {
 	        var _this = this;
 	        this._userService
 	            .getRequestByUser(this.name)
 	            .subscribe(function (requests) {
-	            for (var i = 0; i < requests.length; i++) {
-	                requests[i].createdAt = _this.formatDate(requests[i].createdAt);
-	                requests[i].modifiedDate = _this.formatDate(requests[i].modifiedDate);
-	            }
 	            _this.requests = requests;
 	        });
 	    };
@@ -19636,15 +19616,6 @@ webpackJsonp([2],[
 	        this.route = route;
 	        this._userService = _userService;
 	        this._knowledgeService = _knowledgeService;
-	        this.formatDate = function (date) {
-	            if (date) {
-	                var newDate, day, month, year;
-	                year = date.substr(0, 4);
-	                month = date.substr(5, 2);
-	                day = date.substr(8, 2);
-	                return newDate = day + '/' + month + '/' + year;
-	            }
-	        };
 	    }
 	    RequestRecordComponent.prototype.ngOnInit = function () {
 	        //this.createdAt = this.formatDate(createdAt);

@@ -1,6 +1,13 @@
 //cores
-import { Component, OnInit, DoCheck, Input  } from '@angular/core';
-import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
+import {
+  Component,
+  OnInit,
+  Pipe,
+  PipeTransform,
+  Inject,
+  OnDestroy
+} from '@angular/core'; import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
+import { Subscription }       from 'rxjs/Subscription';
 
 //services
 import { UserService } from '../../../../services/users';
@@ -31,6 +38,7 @@ export class UserProfileBarComponent {
 
   roleToken: string;
   userToken: string;
+  private sub: Subscription;
 
   //check if profile page of current user, hide "addFriend" button
   checkUser: boolean;
@@ -44,33 +52,31 @@ export class UserProfileBarComponent {
 
   constructor(public router: Router, private route: ActivatedRoute, public _userService: UserService,
     public _noti: NotificationService) {
-    this.route
-      .params
-      .subscribe(params => {
-        this.name = params['name'];
-      });
     this.roleToken = localStorage.getItem('role');
     this.userToken = localStorage.getItem('username');
   }
 
   ngOnInit(): void {
+    this.route
+      .params
+      .subscribe(params => {
+        this.name = params['name'];
+        this.linkImg = '';
+        this._userService.getUserByUserName(this.name).subscribe(
+          (user) => {
+            this.userProfile = user;
+            this.linkImg = user.linkImg;
+          }, (error) => {
+            console.log(error);
+          }
+        );
 
-    this.linkImg = '';
-    this._userService.getUserByUserName(this.name).subscribe(
-      (user) => {
-        this.userProfile = user;
-        console.log(this.userProfile);
-        this.linkImg = user.linkImg;
-      }, (error) => {
-        console.log(error);
-      }
-    );
-
-    //check if current user is staying in his/her profile page
-    if (this.name === this.userToken) {
-      this.checkUser = true;
-    }
-    this.getFriendList();
+        //check if current user is staying in his/her profile page
+        if (this.name === this.userToken) {
+          this.checkUser = true;
+        }
+        this.getFriendList();
+      });
   }
 
   fileChangeEvent(fileInput: any) {
