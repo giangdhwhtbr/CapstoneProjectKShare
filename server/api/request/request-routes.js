@@ -40,6 +40,12 @@ module.exports = class RequestRoutes {
     router
       .route('/api/requests-subcriber/:id')
       .post(RequestController.addSubcriber);
+
+    router.route('/api/page/request/:start/:stt')
+        .get(RequestController.getAPage);
+
+    router.route('/api/page/requesttot/:stt')
+        .get(RequestController.getTot);
   }
 
 }
