@@ -10,8 +10,7 @@
             </a>
             <ul *ngIf="knowledge.subCategory.length > 0">
               <li *ngFor="let subCate of knowledge.subCategory">
-                <a [routerLink]="['/requests/subcategory/'+ subCate._id]" routerLinkActive="active"
-                   routerLinkActive="active"><span>{{subCate.name}}
+                <a [routerLink]="['/requests/subcategory/'+ subCate._id]" routerLinkActive="active"><span>{{subCate.name}}
                 </span>
                 </a>
               </li>

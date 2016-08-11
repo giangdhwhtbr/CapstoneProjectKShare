@@ -4,9 +4,10 @@ import {
     Pipe,
     PipeTransform,
     AfterViewChecked,
-    Inject
+    Inject,
+    OnDestroy
 } from '@angular/core';
-import { ROUTER_DIRECTIVES } from '@angular/router';
+import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Request } from '../../../interface/request';
 import { RequestService } from '../../../services/requests';
 import { TagService } from '../../../services/tag';
@@ -15,8 +16,9 @@ import { CreateRequestComponent } from '../../back-end/request/request-create';
 import { RequestCategoryComponent} from './request-category';
 import { AuthService } from '../../../services/auth';
 import { Router } from "@angular/router";
+import { Subscription }       from 'rxjs/Subscription';
 
-declare var $:any;
+declare var $: any;
 
 @Component({
     selector: 'request-list-cli',
@@ -32,27 +34,26 @@ declare var $:any;
 })
 
 export class RequestListClientComponent implements AfterViewChecked {
-    pageTitle:string = 'Welcome to Knowledge Sharing Network';
-    text:string;
-    isExistRecord:boolean = false;
-    roleToken:string;
-    userToken:string;
-    link:string;
-    arrIds:any[] = [];
-    _data:any[] = [];
+    pageTitle: string = 'Welcome to Knowledge Sharing Network';
+    text: string;
+    isExistRecord: boolean = false;
+    roleToken: string;
+    userToken: string;
+    link: string;
+    arrIds: any[] = [];
+    _data: any[] = [];
 
-    constructor(private _requestService:RequestService, private _tagService:TagService, private _auth:AuthService, private router:Router) {
+    constructor(private _requestService: RequestService, private _tagService: TagService, private _auth: AuthService, private router: Router) {
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
     }
 
-    requests:Request[];
+    requests: Request[];
 
-    ngOnInit():void {
+    ngOnInit(): void {
         // this.hide = false;
         this.getAllRequests();
     }
-
     ngAfterViewChecked() {
 
     }
@@ -104,7 +105,7 @@ export class RequestListClientComponent implements AfterViewChecked {
         });
     }
 
-    search(search:string) {
+    search(search: string) {
         if (search === '') {
             this.isExistRecord = false;
             this.getAllRequests();

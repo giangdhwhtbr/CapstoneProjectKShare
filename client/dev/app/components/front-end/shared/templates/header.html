@@ -42,13 +42,13 @@
                     </li>
                     <!--end notification-->
                     <li>
-                        <a href="/requests" class="pd-bot-0"><i class="fa fa-comments-o"
+                        <a [routerLink]="['/requests']" routerLinkActive="active" class="pd-bot-0"><i class="fa fa-comments-o"
                                                                 aria-hidden="true"></i></a>
                     </li>
                     <li>
                         <div class="btn-group" style="padding-top:8%;padding-right:8%;">
                             <button type="button" style="border:none;" class="btn btn-default" aria-haspopup="true"
-                                    aria-expanded="false" [routerLink]="['/user/' + userToken]" routerLinkActive="active">
+                                    aria-expanded="false" [routerLink]="['/user/' + userToken]">
                                 {{userToken}}
                             </button>
                         </div>
