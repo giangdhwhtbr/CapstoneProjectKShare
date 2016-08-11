@@ -21,16 +21,15 @@ import { OfferService } from '../../../services/request-offer';
 import { CreateRequestComponent } from './request-create';
 import { CreateOfferComponent  } from '../../front-end/offer/offer-create';
 import { UpdateRequestComponent } from './request-update';
-import { PaginationControlsCmp, PaginatePipe, PaginationService, IPaginationInstance } from 'ng2-pagination';
 import { StringFilterPipe } from '../shared/filter';
 import { Paginator } from 'primeng/primeng';
 
 @Component({
   selector: 'request-list',
   templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-  directives: [UpdateRequestComponent, ROUTER_DIRECTIVES, PaginationControlsCmp, FORM_DIRECTIVES, Paginator],
-  providers: [RequestService, PaginationService, PagerService],
-  pipes: [PaginatePipe, StringFilterPipe]
+  directives: [UpdateRequestComponent, ROUTER_DIRECTIVES, FORM_DIRECTIVES, Paginator],
+  providers: [RequestService, PagerService],
+  pipes: [ StringFilterPipe]
 })
 
 export class RequestListComponent implements AfterViewChecked {

@@ -4247,7 +4247,6 @@ webpackJsonp([2],[
 	var auth_1 = __webpack_require__(42);
 	var pager_1 = __webpack_require__(438);
 	var request_update_1 = __webpack_require__(186);
-	var ng2_pagination_1 = __webpack_require__(148);
 	var filter_1 = __webpack_require__(124);
 	var primeng_1 = __webpack_require__(110);
 	var RequestListComponent = (function () {
@@ -4352,9 +4351,9 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'request-list',
 	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-	            directives: [request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, common_1.FORM_DIRECTIVES, primeng_1.Paginator],
-	            providers: [requests_1.RequestService, ng2_pagination_1.PaginationService, pager_1.PagerService],
-	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
+	            directives: [request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_1.Paginator],
+	            providers: [requests_1.RequestService, pager_1.PagerService],
+	            pipes: [filter_1.StringFilterPipe]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object, (typeof (_c = typeof pager_1.PagerService !== 'undefined' && pager_1.PagerService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
 	    ], RequestListComponent);
