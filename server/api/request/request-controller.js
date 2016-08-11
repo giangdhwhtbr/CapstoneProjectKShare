@@ -187,4 +187,23 @@ module.exports = class RequestController {
         }
     }
 
+    //paging on server
+
+    static getAPage(req,res){
+
+        if (req.params && req.params.start) {
+            RequestDAO.getAPage(req.params.start,req.params.stt).then((reqs)=>{
+                res.status(200).json(reqs);
+            }).catch(err=> res.status(400).json(error));
+        }
+    }
+    static getTot(req,res){
+
+        if (req.params && req.params.stt) {
+            RequestDAO.getTot(req.params.stt).then((num)=>{
+                res.status(200).json(num);
+            }).catch(err=> res.status(400).json(error));
+        }
+    }
+
 }

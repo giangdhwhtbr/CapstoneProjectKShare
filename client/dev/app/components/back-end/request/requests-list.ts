@@ -1,9 +1,9 @@
 import {
-  Component,
-  OnInit,
-  Pipe,
-  PipeTransform,
-  Inject,
+    Component,
+    OnInit,
+    Pipe,
+    PipeTransform,
+    Inject,
     AfterViewChecked
 } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
@@ -15,6 +15,7 @@ import { KnowledgeService } from '../../../services/knowledge';
 import { RequestService} from '../../../services/requests';
 import { Knowledge } from '../../../interface/knowledge';
 import { AuthService} from '../../../services/auth';
+import { PagerService} from '../../../services/pager';
 
 import { OfferService } from '../../../services/request-offer';
 
@@ -23,87 +24,159 @@ import { CreateOfferComponent  } from '../../front-end/offer/offer-create';
 import { UpdateRequestComponent } from './request-update';
 import { PaginationControlsCmp, PaginatePipe, PaginationService, IPaginationInstance } from 'ng2-pagination';
 import {StringFilterPipe} from '../shared/filter';
+import {Paginator} from 'primeng/primeng';
+
 @Component({
-  selector: 'request-list',
-  templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-  directives: [UpdateRequestComponent, ROUTER_DIRECTIVES, PaginationControlsCmp, FORM_DIRECTIVES],
-  providers: [RequestService, PaginationService],
-  pipes: [PaginatePipe, StringFilterPipe]
+    selector: 'request-list',
+    templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
+    directives: [UpdateRequestComponent, ROUTER_DIRECTIVES, PaginationControlsCmp, FORM_DIRECTIVES,Paginator],
+    providers: [RequestService, PaginationService, PagerService],
+    pipes: [PaginatePipe, StringFilterPipe]
 })
 
-export class RequestListComponent implements AfterViewChecked{
-  pageTitle: string = 'Request List';
-  errorMessage: string;
-  user: string;
-  roleToken: string;
-  requestForm: ControlGroup;
-  public filter: string = '';
+export class RequestListComponent implements AfterViewChecked {
+    pageTitle:string = 'Request List';
+    errorMessage:string;
+    user:string;
+    roleToken:string;
+    requestForm:ControlGroup;
+    public filter:string = '';
 
-  knowledges: Knowledge[];
-  deactiveRequests: Request[];
-  activeRequests: Request[];
-  acceptepRequests: Request[];
+    knowledges:Knowledge[];
 
-  constructor( @Inject(FormBuilder) fb: FormBuilder, 
-               @Inject(RequestService) private _requestService: RequestService, 
-               private _knowledgeService: KnowledgeService,
-    private _authService: AuthService) {
-    this.user = localStorage.getItem('username');
-    this.roleToken = localStorage.getItem('userrole');
+    deactiveRequests:Request[];
+    activeRequests:Request[];
+    acceptepRequests:Request[];
 
-    this.requestForm = fb.group({
-      "knowledgeId": [""],
-      "title": [""],
-      "description": [""],
-      "user": [""]
-    });
-    this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
-      this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
-    });
-  }
+    totalActive:number=0;
+    totalDeac:number=0;
+    totalAccepted:number=0;
 
-  ngOnInit(): void {
-    this.getAllRequest();
-  }
+    constructor(@Inject(FormBuilder) fb:FormBuilder,
+                @Inject(RequestService) private _requestService:RequestService,
+                private _knowledgeService:KnowledgeService,
+                private _pagerService:PagerService,
+                private _authService:AuthService) {
+        this.user = localStorage.getItem('username');
+        this.roleToken = localStorage.getItem('userrole');
 
-  deactivateRequest(id: string) {
-    this._requestService
-      .changeStatusRequest(id)
-      .subscribe((r) => {
-        console.log("deactivate sucess");
+        this.requestForm = fb.group({
+            "knowledgeId": [""],
+            "title": [""],
+            "description": [""],
+            "user": [""]
+        });
+        this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
+            this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
+        });
+    }
+
+    ngOnInit():void {
         this.getAllRequest();
-      })
-  }
+    }
 
-  activateRequest(request: Request) {
-    request.status = 'pending';
-    this._requestService
-      .updateRequest(request,request.tags, [])
-      .subscribe((r) => {
-        this.getAllRequest();
-      })
-  }
+    deactivateRequest(id:string) {
+        this._requestService
+            .changeStatusRequest(id)
+            .subscribe((r) => {
+                console.log("deactivate sucess");
+                this.getAllRequest();
+            })
+    }
 
-  getAllRequest() {
-    this.activeRequests = [];
-    this.deactiveRequests = [];
-    this.acceptepRequests = [];
-    this._requestService.getAllRequestAdmin().subscribe((requests) => {
-      console.log(requests);
-      for (var i = 0; i < requests.length; i++) {
-        if(requests[i].status === 'active' || requests[i].status === 'pending'){
-          this.activeRequests.push(requests[i]);
-          requests[i].status = "Đang chờ";
-        } else if (requests[i].status === 'deactive'){
-          this.deactiveRequests.push(requests[i]);
-          requests[i].status = "Kết thúc";
-        } else if (requests[i].status === 'accepted') {
-          this.acceptepRequests.push(requests[i]);
-          requests[i].status = "Được chấp nhận";
-        }
-      }
-    });
-    console.log(this.activeRequests);
-  }
+    activateRequest(request:Request) {
+        request.status = 'pending';
+        this._requestService
+            .updateRequest(request, request.tags, [])
+            .subscribe((r) => {
+                this.getAllRequest();
+            })
+    }
+
+    getAllRequest() {
+
+
+        this.activeRequests = [];
+        this.deactiveRequests = [];
+        this.acceptepRequests = [];
+
+        this._pagerService.getAPage("request",0,"pending").subscribe((reqs)=> {
+            this._pagerService.getTotalNum("requesttot","pending").subscribe((num)=>{
+                console.log(reqs);
+                for (var i = 0; i < reqs.length; i++) {
+                    if (reqs[i].status === 'active' || reqs[i].status === 'pending') {
+                        reqs[i].status = "Đang chờ";
+                    }
+                }
+                this.activeRequests=reqs;
+                this.totalActive=num;
+            });
+        });
+        this._pagerService.getAPage("request",0,"deactive").subscribe((reqs)=> {
+            this._pagerService.getTotalNum("requesttot","deactive").subscribe((num)=>{
+                for (var i = 0; i < reqs.length; i++) {
+                    if (reqs[i].status === 'deactive' ) {
+                        reqs[i].status = "Kết thúc";
+                    }
+                }
+                this.deactiveRequests=reqs;
+                this.totalDeac=num;
+            });
+        });
+        this._pagerService.getAPage("request",0,"accepted").subscribe((reqs)=> {
+            this._pagerService.getTotalNum("requesttot","accepted").subscribe((num)=>{
+                for (var i = 0; i < reqs.length; i++) {
+                    if (reqs[i].status === 'accepted' ) {
+                        reqs[i].status = "Được chấp thuận";
+                    }
+                }
+                this.acceptepRequests=reqs;
+                this.totalAccepted=num;
+            });
+        });
+    }
+
+    paginate1(event:any) {
+        //event.first = Index of the first record
+        //event.rows = Number of rows to display in new page
+        //event.page = Index of the new page
+        //event.pageCount = Total number of pages
+        //this._pagerService.getAPage("article",event.first,"public").subscribe((deArts)=> {
+        //    this.arts=deArts;
+        //});
+
+        this._pagerService.getAPage("request",event.first,"pending").subscribe((reqs)=> {
+            this.activeRequests=reqs;
+        });
+
+    }
+    paginate2(event:any) {
+        //event.first = Index of the first record
+        //event.rows = Number of rows to display in new page
+        //event.page = Index of the new page
+        //event.pageCount = Total number of pages
+        //this._pagerService.getAPage("article",event.first,"public").subscribe((deArts)=> {
+        //    this.arts=deArts;
+        //});
+
+        this._pagerService.getAPage("request",event.first,"deactive").subscribe((reqs)=> {
+            this.deactiveRequests=reqs;
+        });
+
+    }
+    paginate3(event:any) {
+        //event.first = Index of the first record
+        //event.rows = Number of rows to display in new page
+        //event.page = Index of the new page
+        //event.pageCount = Total number of pages
+        //this._pagerService.getAPage("article",event.first,"public").subscribe((deArts)=> {
+        //    this.arts=deArts;
+        //});
+
+        this._pagerService.getAPage("request",event.first,"accepted").subscribe((reqs)=> {
+            this.acceptepRequests=reqs;
+        });
+
+    }
 
 }

@@ -187,6 +187,37 @@ requestSchema.statics.updateRequestById = (requestinfo) => {
     });
 }
 
+requestSchema.statics.getAPage = (start,stt) => {
+
+    return new Promise((resolve, reject) => {
+        if (!_.isString(start)) {
+            return reject(new TypeError('start page is not a String.'));
+        }
+        Request
+            .find({"status":stt})
+            .skip(start)
+            .limit(10)
+            .exec((err, reqs) => {
+                err ? reject(err)
+                    : resolve(reqs);
+            });
+    });
+}
+requestSchema.statics.getTot = (stt) => {
+
+    return new Promise((resolve, reject) => {
+        if (!_.isString(stt)) {
+            return reject(new TypeError('status page is not a String.'));
+        }
+        Request
+            .find({"status":stt})
+            .exec((err, reqs) => {
+                err ? reject(err)
+                    : resolve(reqs.length);
+            });
+    });
+}
+
 requestSchema.plugin(relationship, { relationshipPathName: 'tags' });
 
 const Request = mongoose.model('Request', requestSchema);
