@@ -31,7 +31,7 @@
 						<span *ngIf="countUnReadNoti>0" class="badge">{{countUnReadNoti}}</span>
 						<ul class="dropdown-menu" role="menu">
 							<li *ngFor="let notification of notifications">
-								<a [routerLink]="[notification.link]">
+								<a [routerLink]="[notification.link]" routerLinkActive="active">
 									<span *ngIf="notification.status === 'Đã đọc'">{{notification.title}}</span>
 									<span *ngIf="notification.status === 'Chưa đọc'" style="color:red;">{{notification.title}}</span>
 								</a>

@@ -1,11 +1,10 @@
 import {
   Component,
   OnInit,
-  OnDestroy,
   Pipe,
   PipeTransform,
   Inject,
-  AfterViewChecked
+  OnDestroy
 } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
@@ -26,6 +25,7 @@ import { FriendListComponent} from '../shared/friend-list';
 import { CreateOfferComponent } from '../offer/offer-create';
 import { ReportComponent } from '../report/report';
 
+import { Subscription } from 'rxjs/Subscription';
 declare var $: any;
 
 @Component({
@@ -57,6 +57,7 @@ export class RequestDetailClientComponent implements AfterViewChecked {
   subscribers: string[];
   offerinfo: Offer;
   num: any = 5;
+  private sub: Subscription;
   height: number = 400;
   //varialbe check to hide button when the status is deactive
   checkDeactive: boolean;
@@ -70,75 +71,75 @@ export class RequestDetailClientComponent implements AfterViewChecked {
 
   constructor(private _requestService: RequestService, private _offerService: OfferService, public router: Router,
     private _knowledgeService: KnowledgeService, private _kspaceService: KSpaceService, private route: ActivatedRoute) {
-    this.route
-      .params
-      .subscribe(params => {
-        this.id = params['id'];
-      });
     this.roleToken = localStorage.getItem('userrole');
     this.userToken = localStorage.getItem('username');
   }
 
   ngOnInit(): void {
-    //get templates when load the page
-    this._requestService.getRequestById(this.id)
-      .subscribe(request => {
-        //translate status
-        if (request.status === 'accepted') {
-          request.status = 'Đã được chấp nhận';
-          this.checkIsAcceped = true;
-        } else if (request.status === 'deactive' || request.status === undefined) {
-          request.status = 'Đã kết thúc';
-          this.checkDeactive = true;
-        } else {
-          request.status = 'Đang chờ';
-        }
+    this.route
+      .params
+      .subscribe(params => {
+        this.id = params['id'];
+        //get templates when load the page
+        this._requestService.getRequestById(this.id)
+          .subscribe(request => {
+            //translate status
+            if (request.status === 'accepted') {
+              request.status = 'Đã được chấp nhận';
+              this.checkIsAcceped = true;
+            } else if (request.status === 'deactive' || request.status === undefined) {
+              request.status = 'Đã kết thúc';
+              this.checkDeactive = true;
+            } else {
+              request.status = 'Đang chờ';
+            }
 
-        request.userlink = '/user/' + request.user;
-        this._id = request._id;
-        this.updateLink = '/requests/' + request._id + '/update';
-        this.knowledgeId = request.knowledgeId;
-        this.subscribers = request.subcribers;
+            request.userlink = '/user/' + request.user;
+            this._id = request._id;
+            this.updateLink = '/requests/' + request._id + '/update';
+            this.knowledgeId = request.knowledgeId;
+            this.subscribers = request.subcribers;
 
-        //check if user is created user
-        if (request.user === this.userToken) {
-          this.checkCreatedUser = true;
-        }
+            //check if user is created user
+            if (request.user === this.userToken) {
+              this.checkCreatedUser = true;
+            }
 
-        //check if user already subcribed
-        for (var i = 0; i < this.subscribers.length; i++) {
-          if (this.userToken === this.subscribers[i]) {
-            this.checkSubcribedUser = true;
-            break;
+            //check if user already subcribed
+            for (var i = 0; i < this.subscribers.length; i++) {
+              if (this.userToken === this.subscribers[i]) {
+                this.checkSubcribedUser = true;
+                break;
+              }
+            }
+            this.request = request;
+
+            //get back.knowledge name by knowledgeId
+            this._knowledgeService.findKnowledgeById(this.knowledgeId)
+              .subscribe(
+              knowledge => {
+                this.knowledge = knowledge;
+                //this.knowledgeName = this.knowledge.name;
+              },
+              error => {
+                console.log(error);
+              }
+              );
+          }, error => console.log(error));
+
+        this.getOfferByRequestId();
+
+        $(window).on("scroll", () => {
+          var scrollHeight = $(document).height();
+          var scrollPosition = $(window).height() + $(window).scrollTop();
+          if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+            setTimeout(() => {
+              this.seeMore();
+            }, 1000);
+            this.height += 30;
           }
-        }
-        this.request = request;
-
-        //get back.knowledge name by knowledgeId
-        this._knowledgeService.findKnowledgeById(this.knowledgeId)
-          .subscribe(
-          knowledge => {
-            this.knowledge = knowledge;
-            //this.knowledgeName = this.knowledge.name;
-          },
-          error => {
-            console.log(error);
-          }
-          );
-      }, error => console.log(error));
-
-    this.getOfferByRequestId();
-
-    $(window).on("scroll", () => {
-      var scrollHeight = $(document).height();
-      var scrollPosition = $(window).height() + $(window).scrollTop();
-      if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-        setTimeout(() => {
-          this.seeMore();
-        }, 1000);
-        this.height += 30;
-      }
-    });
+        });
+      });
   }
 
   seeMore() {

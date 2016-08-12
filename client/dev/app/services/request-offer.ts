@@ -9,6 +9,19 @@ export class OfferService {
   private _OfferUrl = '/api/offers/:id/:num';
   constructor(private _http: Http) { }
 
+  updateOffer(id: string, newstatus:string) {
+    let header = new Headers;
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+
+    let _offer = JSON.stringify({
+      status: newstatus
+    });
+
+    return this._http
+      .put(this._Url.replace(':id', id), _offer, options)
+      .map((r) => r.json());
+  }
 
   addOffer(offer: Offer): Observable<any> {
     let header = new Headers;
