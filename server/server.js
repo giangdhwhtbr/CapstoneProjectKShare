@@ -19,6 +19,7 @@ const Routes = require('./routes/index');
 const socket = require('socket.io');
 
 const KSpaceCtrl = require('./api/kspace/kspace-controller');
+const ChatRoomCtrl = require('./api/chatRoom/chatRoom-controller');
 
 RoutesConfig.init(app);
 PoliciesConfig.init();
@@ -109,4 +110,34 @@ io.on('connection',  (socket) => {
 
     socket.in(data.room).broadcast.emit('changeBoard',dataReturn);
   });
+
+  /**
+   * Socket.io configuration for private chatting feature
+   * */
+
+  //Listening for private chat message
+
+  socket.on('private-message', (data) => {
+    if(data.room){
+      // Update chatLogs of the room
+      ChatRoomCtrl.updateChatRoom(data)
+        .then(chatRoom => {
+          io.in(data.room).emit('private-message-return',data);
+        }).catch(error => {
+         console.log(error);
+         socket.in(data.room).broadcast.emit('chat-error',{message: 'Có lỗi hệ thống xảy ra, mong bạn thông cảm!'});
+      });
+    } else {
+      // Create new chat room
+      ChatRoomCtrl.createChatRoom(data)
+      .then(chatRoom => {
+        socket.broadcast.emit('room-created', chatRoom);
+      }).catch(err => {
+        console.log(err);
+        socket.broadcast.emit('chat-error',{message: 'Có lỗi hệ thống xảy ra, mong bạn thông cảm!'});
+      });
+    }
+  });
+
+
 });

@@ -3,12 +3,12 @@
 const mongoose = require('mongoose');
 
 const _chatRoomSchema = {
-    chatlogs:[
+    chatLogs:[
       {
-        createdAt:{
+        sentAt:{
           type: Date
         },
-        createdUser:{
+        sender:{
           type: String
         },
         message: {
@@ -17,10 +17,8 @@ const _chatRoomSchema = {
       }
     ],
     users : [{
-      username:{
         type: String,
         ref: 'User'
-      }
     }],
     createdAt: {
         type: Date, default: Date.now
