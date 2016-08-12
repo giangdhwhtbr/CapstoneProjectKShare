@@ -14,28 +14,8 @@ var OfferService = (function () {
     function OfferService(_http) {
         this._http = _http;
         this._Url = '/api/offers/:id';
+        this._OfferUrl = '/api/offers/:id/:num';
     }
-    OfferService.prototype.addOffer = function (offer) {
-        var header = new http_1.Headers;
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ headers: headers });
-        var _offer = JSON.stringify({
-            price: offer.price,
-            requestId: offer.requestId,
-            numberOfLecture: offer.numOfLecture,
-            message: offer.message,
-            user: offer.user
-        });
-        //console.log(_offer);
-        return this._http
-            .post(this._Url.replace(':id', ''), _offer, options)
-            .map(function (r) { return r.json(); });
-    };
-    OfferService.prototype.getOfferByRequestId = function (id) {
-        return this._http.post(this._Url.replace(':id', id), '')
-            .map(function (r) { return r.json(); })
-            .catch(this.handleError);
-    };
     OfferService.prototype.updateOffer = function (id, newstatus) {
         var header = new http_1.Headers;
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -46,6 +26,33 @@ var OfferService = (function () {
         return this._http
             .put(this._Url.replace(':id', id), _offer, options)
             .map(function (r) { return r.json(); });
+    };
+    OfferService.prototype.addOffer = function (offer) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _offer = JSON.stringify({
+            requestId: offer.requestId,
+            message: offer.message,
+            user: offer.user
+        });
+        //console.log(_offer);
+        return this._http
+            .post(this._Url.replace(':id', ''), _offer, options)
+            .map(function (r) { return r.json(); });
+    };
+    OfferService.prototype.getOfferByRequestId = function (id, num) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _data = JSON.stringify({
+            id: id,
+            num: num
+        });
+        console.log(_data);
+        return this._http.put(this._Url.replace(':id', ''), _data, options)
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
     };
     OfferService.prototype.handleError = function (error) {
         console.error(error);

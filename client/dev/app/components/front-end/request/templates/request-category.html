@@ -15,7 +15,7 @@
           <p class="lead"> {{request.title}}</p>
         </a>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-          Người tạo : {{request.user}}
+          Người tạo : <a [routerLink]="['/user/' + request.user]">{{request.user}}</a>
         </div>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
           Trạng thái : {{request.status}}

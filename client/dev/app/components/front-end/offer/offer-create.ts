@@ -23,8 +23,6 @@ export class CreateOfferComponent {
     this.user = localStorage.getItem('username');
 
     this.offerForm = fb.group({
-      "price": [""],
-      "numberOfLecture": [""],
       "requestId": [""],
       "message": [""],
       "user": [""]

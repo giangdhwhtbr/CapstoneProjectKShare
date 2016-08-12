@@ -7,11 +7,13 @@ const _ = require('lodash');
 var relationship = require("mongoose-relationship");
 
 //get all back.request dao function
-requestSchema.statics.getAll = () => {
+requestSchema.statics.getAll = (x) => {
     return new Promise((resolve, reject) => {
 
         Request
             .find({ status: { $nin: ['deactive', 'accepted'] } })
+            .skip(x - 5)
+            .limit(5)
             .exec((err, requests) => {
                 err ? reject(err)
                     : resolve(requests);
@@ -20,7 +22,7 @@ requestSchema.statics.getAll = () => {
 }
 
 //get all request by tags dao function
-requestSchema.statics.getRequestsByTagsOfUser = (userTags,x) => {
+requestSchema.statics.getRequestsByTagsOfUser = (userTags, x) => {
     return new Promise((resolve, reject) => {
         Request
             .find({
@@ -29,8 +31,8 @@ requestSchema.statics.getRequestsByTagsOfUser = (userTags,x) => {
                     { tags: { $in: userTags } }
                 ]
             })
-            .skip(x-5)
-            .limit(x)
+            .skip(x - 5)
+            .limit(5)
             .exec((err, requests) => {
                 err ? reject(err)
                     : resolve(requests);
@@ -39,7 +41,7 @@ requestSchema.statics.getRequestsByTagsOfUser = (userTags,x) => {
 }
 
 //get all request except tags dao function
-requestSchema.statics.getRequestsExceptTagsOfUser = (userTags,x) => {
+requestSchema.statics.getRequestsExceptTagsOfUser = (userTags, x) => {
     return new Promise((resolve, reject) => {
         Request
             .find({
@@ -48,8 +50,8 @@ requestSchema.statics.getRequestsExceptTagsOfUser = (userTags,x) => {
                     { tags: { $nin: userTags } }
                 ]
             })
-            .skip(x-5)
-            .limit(x)
+            .skip(x - 5)
+            .limit(5)
             .exec((err, requests) => {
                 err ? reject(err)
                     : resolve(requests);
@@ -126,7 +128,7 @@ requestSchema.statics.getRequestByKnowledgeId = (id) => {
 }
 
 //get requets by user dao function
-requestSchema.statics.getRequestByUser = (user) => {
+requestSchema.statics.getRequestByUser = (user, x) => {
 
     return new Promise((resolve, reject) => {
         Request
@@ -136,6 +138,8 @@ requestSchema.statics.getRequestByUser = (user) => {
                     $ne: "deactive"
                 }
             })
+            .skip(x-5)
+            .limit(5)
             .exec((err, requests) => {
                 err ? reject(err)
                     : resolve(requests);
@@ -184,6 +188,37 @@ requestSchema.statics.updateRequestById = (requestinfo) => {
             err ? reject(err)
                 : resolve(saved);
         });
+    });
+}
+
+requestSchema.statics.getAPage = (start, stt) => {
+
+    return new Promise((resolve, reject) => {
+        if (!_.isString(start)) {
+            return reject(new TypeError('start page is not a String.'));
+        }
+        Request
+            .find({ "status": stt })
+            .skip(start)
+            .limit(10)
+            .exec((err, reqs) => {
+                err ? reject(err)
+                    : resolve(reqs);
+            });
+    });
+}
+requestSchema.statics.getTot = (stt) => {
+
+    return new Promise((resolve, reject) => {
+        if (!_.isString(stt)) {
+            return reject(new TypeError('status page is not a String.'));
+        }
+        Request
+            .find({ "status": stt })
+            .exec((err, reqs) => {
+                err ? reject(err)
+                    : resolve(reqs.length);
+            });
     });
 }
 

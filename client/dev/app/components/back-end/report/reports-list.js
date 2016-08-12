@@ -17,18 +17,28 @@ var ReportListComponent = (function () {
         this._reportService = _reportService;
         this.router = router;
         this.pageTitle = 'Report List';
+        this.pendingReports = [];
+        this.handlingReports = [];
         this.filter = '';
     }
     ReportListComponent.prototype.ngOnInit = function () {
-        this.getAll();
+        this.getAllPending();
+        this.getAllHandling();
     };
-    ReportListComponent.prototype.getAll = function () {
+    ReportListComponent.prototype.getAllPending = function () {
         var _this = this;
         this._reportService
-            .getAllReports()
+            .getAllReports('pending')
             .subscribe(function (reports) {
-            _this.reports = reports;
-            console.log(_this.reports);
+            _this.pendingReports = reports;
+        });
+    };
+    ReportListComponent.prototype.getAllHandling = function () {
+        var _this = this;
+        this._reportService
+            .getAllReports('handling')
+            .subscribe(function (reports) {
+            _this.handlingReports = reports;
         });
     };
     ReportListComponent.prototype.deactivateReport = function (id) {
@@ -37,7 +47,19 @@ var ReportListComponent = (function () {
         if (r == true) {
             this._reportService.deactivateReport(id).subscribe(function (r) {
                 console.log('deactivate successfully');
-                _this.getAll();
+                _this.getAllPending();
+                _this.getAllHandling();
+            });
+        }
+    };
+    ReportListComponent.prototype.changeStatusHandling = function (id) {
+        var _this = this;
+        var r = confirm("Bạn có muốn thay đổi trạng thái?");
+        if (r == true) {
+            this._reportService.changeStatusHandling(id).subscribe(function (r) {
+                console.log('change status successfully');
+                _this.getAllPending();
+                _this.getAllHandling();
             });
         }
     };

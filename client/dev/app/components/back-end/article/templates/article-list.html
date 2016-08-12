@@ -43,7 +43,7 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let a of deArts| stringFilter: filter">
+                        <tr *ngFor="let a of arts| stringFilter: filter">
                             <td><a [routerLink]="['/article/',a._id]">{{a.title}}</a></td>
                             <td>
                                 <button type="button" class="btn btn-danger" (click)="activeArt(a._id)">
@@ -56,7 +56,7 @@
                 </div>
             </div>
             <div class="col-lg-12">
-                <p-paginator rows="10" totalRecords="100" pageLinkSize="6"></p-paginator>
+                <p-paginator rows="10" totalRecords="{{total}}" pageLinkSize="10" (onPageChange)="paginate($event)"></p-paginator>
             </div>
         </div>
     </div>

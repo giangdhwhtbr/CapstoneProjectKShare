@@ -28,6 +28,7 @@ export class HeaderComponent {
   link: string;
   socket: any;
   count: number = 2;
+  num:number = 10;
 
   notifications: Notification[];
 
@@ -61,7 +62,7 @@ export class HeaderComponent {
         audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
         audio.load();
         audio.play();
-        this.getNotificationByUser(data.data.user);
+        this.getNotificationByUser();
 
         //show noti
         this.notiTitle = data.data.title;
@@ -76,7 +77,6 @@ export class HeaderComponent {
   logout(): void {
     this._auth.logout()
       .subscribe(res => {
-        console.log(res);
         if(res.success == true){
           this._auth.logoutClient();
           window.location.reload();
@@ -93,7 +93,7 @@ export class HeaderComponent {
 
   getNotificationByUser(): void {
     this.countUnReadNoti = 0;
-    this._noti.getNotificationByUser(this.userToken).subscribe(
+    this._noti.getNotificationByUser(this.userToken, this.num).subscribe(
       (notifications) => {
         this.notifications = notifications;
 
@@ -113,6 +113,11 @@ export class HeaderComponent {
         console.log('change status notification successful');
       }
     )
+  }
+
+  seeMore(){
+    this.num = this.num + 10;
+    this.getNotificationByUser();
   }
 
 }

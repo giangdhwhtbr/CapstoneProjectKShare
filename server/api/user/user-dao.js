@@ -74,7 +74,7 @@ userSchema.statics.getUserByToken = (token) => {
 userSchema.statics.getUserByUserName = (username) => {
     return new Promise((resolve, reject) => {
         User.findOne({'username': username})
-            .select("-username -password -email -role -salt")
+            .select("-username -password -role -salt")
             .exec((err, user) => {
                 err ? reject(err) : resolve(user);
             });

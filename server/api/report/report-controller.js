@@ -5,7 +5,7 @@ const ReportDAO = require('./report-dao');
 module.exports = class ReportController {
   static getAll(req, res) {
       ReportDAO
-        .getAll()
+        .getAll(req.params.status)
         .then(reports => res.status(200).json(reports))
         .catch(error => res.status(400).json(error));
   }

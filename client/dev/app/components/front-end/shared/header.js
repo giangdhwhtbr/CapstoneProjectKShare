@@ -22,6 +22,7 @@ var HeaderComponent = (function () {
         this._noti = _noti;
         this._userService = _userService;
         this.count = 2;
+        this.num = 10;
         this.userToken = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
     }
@@ -48,7 +49,7 @@ var HeaderComponent = (function () {
                 audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
                 audio.load();
                 audio.play();
-                _this.getNotificationByUser(data.data.user);
+                _this.getNotificationByUser();
                 //show noti
                 _this.notiTitle = data.data.title;
                 _this.link = data.data.link;
@@ -62,7 +63,6 @@ var HeaderComponent = (function () {
         var _this = this;
         this._auth.logout()
             .subscribe(function (res) {
-            console.log(res);
             if (res.success == true) {
                 _this._auth.logoutClient();
                 window.location.reload();
@@ -78,7 +78,7 @@ var HeaderComponent = (function () {
     HeaderComponent.prototype.getNotificationByUser = function () {
         var _this = this;
         this.countUnReadNoti = 0;
-        this._noti.getNotificationByUser(this.userToken).subscribe(function (notifications) {
+        this._noti.getNotificationByUser(this.userToken, this.num).subscribe(function (notifications) {
             _this.notifications = notifications;
             for (var i = 0; i < notifications.length; i++) {
                 if (notifications[i].status === "Chưa đọc") {
@@ -92,6 +92,10 @@ var HeaderComponent = (function () {
         this._noti.changeStatusNotification(this.userToken).subscribe(function (notifications) {
             console.log('change status notification successful');
         });
+    };
+    HeaderComponent.prototype.seeMore = function () {
+        this.num = this.num + 10;
+        this.getNotificationByUser();
     };
     HeaderComponent = __decorate([
         core_1.Component({

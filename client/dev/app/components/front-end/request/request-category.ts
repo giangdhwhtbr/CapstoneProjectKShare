@@ -12,7 +12,7 @@ import { Knowledge } from '../../../interface/knowledge';
 
 import { RequestService } from '../../../services/requests';
 
-import { Subscription }       from 'rxjs/Subscription';
+import { Subscription } from 'rxjs/Subscription';
 
 @Component({
   selector: 'request-category-cli',

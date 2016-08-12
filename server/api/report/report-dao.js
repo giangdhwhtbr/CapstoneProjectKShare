@@ -5,14 +5,12 @@ const Promise = require('bluebird');
 const reportSchema = require('./report-model');
 const _ = require('lodash');
 
-reportSchema.statics.getAll = () => {
+reportSchema.statics.getAll = (status) => {
   return new Promise((resolve, reject) => {
 
     Report
       .find({
-        'status': {
-          $ne: "deactive"
-        }
+        'status': status
       })
       .exec((err, reports) => {
         err ? reject(err)

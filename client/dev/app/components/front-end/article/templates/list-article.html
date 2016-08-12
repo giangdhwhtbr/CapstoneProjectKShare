@@ -1,4 +1,4 @@
-<div *ngIf="listArt" class="container article">
+<div *ngIf="listArt" class="container article"  [style.height.px]="height+'px'">
     <div *ngFor="let a of listArt" class="panel panel-default">
         <div class="panel-body">
             <p><span class="title">

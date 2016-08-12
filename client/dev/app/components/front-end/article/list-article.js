@@ -18,18 +18,40 @@ var listArticleComponent = (function () {
         this.router = router;
         this.route = route;
         this._artService = _artService;
+        this.listArt = [];
+        this.num = 5;
+        this.articles = [];
+        this.height = 400;
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
     }
     listArticleComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._artService.getAllArts().subscribe(function (arts) {
+        $(window).on("scroll", function () {
+            var scrollHeight = $(document).height();
+            var scrollPosition = $(window).height() + $(window).scrollTop();
+            if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+                setTimeout(function () {
+                    _this.seeMore();
+                }, 1000);
+                _this.height += 30;
+            }
+        });
+        this.getAllArticles();
+    };
+    listArticleComponent.prototype.seeMore = function () {
+        this.num = this.num + 5;
+        this.getAllArticles();
+    };
+    listArticleComponent.prototype.getAllArticles = function () {
+        var _this = this;
+        this._artService.getAllArts(this.num).subscribe(function (arts) {
             for (var i = 0; i < arts.length; i++) {
                 if (arts[i].status == "private" && arts[i].ofUser != _this.userToken) {
                     arts.splice(i, 1);
                 }
+                _this.listArt.push(arts[i]);
             }
-            _this.listArt = arts;
         });
     };
     listArticleComponent = __decorate([

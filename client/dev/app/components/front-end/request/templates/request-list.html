@@ -6,12 +6,12 @@
     </div>
     <button (click)="search(text.value)" type="submit" class="btn btn-small">Tìm kiếm</button>
     <button *ngIf="userToken != null" type="button" class="btn btn-primary btn-small" [routerLink]="['/requests/create']">
-      Create
+      Tạo yêu cầu
     </button>
   </form>
   <br>
   <br>
-  <div class="container" style="min-height:437px">
+  <div class="container"  [style.height.px]="height+'px'">
 
     <br>
     <!-- list all-->

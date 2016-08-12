@@ -31,6 +31,7 @@ export class NewsFeedComponent implements OnInit {
   countA1: number;
   countA2: number;
   height: number = 400;
+  
   constructor(private _userService: UserService,
     private _requestService: RequestService,
     private _articleService: ArticleService,

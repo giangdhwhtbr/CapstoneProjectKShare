@@ -12,11 +12,12 @@ export class NotificationService {
     private _statusNotificationUrl = '/api/change-status-notification/:user';
     constructor(private _http: Http) { }
 
-    getNotificationByUser(username: string): Observable<any> {
+    getNotificationByUser(username: string, num: number): Observable<any> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
         let _info = JSON.stringify({
-            user: username
+            user: username,
+            num: num
         });
 
         return this._http.post(this._getNotificationUrl.replace(':id', ''), _info, options)

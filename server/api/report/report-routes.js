@@ -6,12 +6,15 @@ module.exports = class OfferRoutes {
     static init(router) {
       router
         .route('/api/reports')
-        .get(ReportController.getAll)
         .post(ReportController.createReport);
 
       router
         .route('/api/reports/:id')
         .get(ReportController.getReportById)
         .put(ReportController.updateReport);
+
+    router
+      .route('/api/reports-status/:status')
+      .get(ReportController.getAll);
     }
 }

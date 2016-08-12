@@ -9,12 +9,13 @@ const articleSchema = require('./article-model');
 const _ = require('lodash');
 var relationship = require("mongoose-relationship");
 
-articleSchema.statics.getAll = () => {
+articleSchema.statics.getAll = (x) => {
     return new Promise((resolve, reject) => {
-        let _query = {};
 
         Article
-            .find(_query)
+            .find({})
+            .skip(x-5)
+            .limit(5)
             .exec((err, articles) => {
                 err ? reject(err)
                     : resolve(articles);
@@ -33,7 +34,7 @@ articleSchema.statics.getArticlesByTagsOfUser = (userTags,x) => {
                 ]
             })
             .skip(x-5)
-            .limit(x)
+            .limit(5)
             .exec((err, articles) => {
                 err ? reject(err)
                     : resolve(articles);
@@ -52,7 +53,7 @@ articleSchema.statics.getArticlesExceptTagsOfUser = (userTags,x) => {
                 ]
             })
             .skip(x-5)
-            .limit(x)
+            .limit(5)
             .exec((err, article) => {
                 err ? reject(err)
                     : resolve(article);
@@ -85,6 +86,39 @@ articleSchema.statics.getArticleByTagId = (idTag) => {
             .exec((err, article) => {
                 err ? reject(err)
                     : resolve(article);
+            });
+    });
+}
+
+articleSchema.statics.getAPage = (start,stt) => {
+
+    return new Promise((resolve, reject) => {
+        if (!_.isString(start)) {
+            return reject(new TypeError('start page is not a String.'));
+        }
+        Article
+            .find({"status":stt})
+            .skip(start)
+            .limit(10)
+            .exec((err, arts) => {
+                err ? reject(err)
+                    : resolve(arts);
+            });
+    });
+}
+
+articleSchema.statics.getTot = (stt) => {
+
+    return new Promise((resolve, reject) => {
+        if (!_.isString(stt)) {
+            return reject(new TypeError('status page is not a String.'));
+        }
+        Article
+            .find({"status":stt})
+            .exec((err, arts) => {
+                console.log(arts.length);
+                err ? reject(err)
+                    : resolve(arts.length);
             });
     });
 }

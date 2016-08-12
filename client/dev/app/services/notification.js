@@ -16,11 +16,12 @@ var NotificationService = (function () {
         this._notificationUrl = '/api/notification';
         this._statusNotificationUrl = '/api/change-status-notification/:user';
     }
-    NotificationService.prototype.getNotificationByUser = function (username) {
+    NotificationService.prototype.getNotificationByUser = function (username, num) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var _info = JSON.stringify({
-            user: username
+            user: username,
+            num: num
         });
         return this._http.post(this._getNotificationUrl.replace(':id', ''), _info, options)
             .map(function (r) { return r.json(); });
