@@ -51,6 +51,13 @@
                             </button>
 						</div>
 					</li>
+					<li *ngIf="roleToken === 'admin'">
+						<div class="btn-group" style="padding-top:8%;padding-right:8%;">
+							<button type="button" style="border:none;" class="btn btn-default" aria-haspopup="true" aria-expanded="false" [routerLink]="['/admin/']">
+                                Bảng điều khiển
+                            </button>
+						</div>
+					</li>
 					<li>
 						<button class="btn btn-success btLogin" (click)="logout()">Logout</button>
 					</li>

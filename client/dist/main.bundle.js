@@ -18942,7 +18942,6 @@ webpackJsonp([2],[
 	        var _this = this;
 	        this._auth.logout()
 	            .subscribe(function (res) {
-	            console.log(res);
 	            if (res.success == true) {
 	                _this._auth.logoutClient();
 	                window.location.reload();
