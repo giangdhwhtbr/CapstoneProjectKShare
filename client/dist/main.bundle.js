@@ -4272,6 +4272,9 @@ webpackJsonp([2],[
 	        this.totalActive = 0;
 	        this.totalDeac = 0;
 	        this.totalAccepted = 0;
+	        this.firstPage1 = 0;
+	        this.firstPage2 = 0;
+	        this.firstPage3 = 0;
 	        this.user = localStorage.getItem('username');
 	        this.roleToken = localStorage.getItem('userrole');
 	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
@@ -4287,7 +4290,8 @@ webpackJsonp([2],[
 	            .changeStatusRequest(id)
 	            .subscribe(function (r) {
 	            console.log("deactivate sucess");
-	            _this.getAllRequest();
+	            _this.getActiveList();
+	            _this.getDeactiveList();
 	        });
 	    };
 	    RequestListComponent.prototype.activateRequest = function (request) {
@@ -4296,15 +4300,13 @@ webpackJsonp([2],[
 	        this._requestService
 	            .updateRequest(request, request.tags, [])
 	            .subscribe(function (r) {
-	            _this.getAllRequest();
+	            _this.getActiveList();
+	            _this.getDeactiveList();
 	        });
 	    };
-	    RequestListComponent.prototype.getAllRequest = function () {
+	    RequestListComponent.prototype.getActiveList = function () {
 	        var _this = this;
-	        this.activeRequests = [];
-	        this.deactiveRequests = [];
-	        this.acceptepRequests = [];
-	        this._pagerService.getAPage("request", 0, "pending").subscribe(function (reqs) {
+	        this._pagerService.getAPage("request", this.firstPage1, "pending").subscribe(function (reqs) {
 	            console.log(reqs);
 	            _this._pagerService.getTotalNum("requesttot", "pending").subscribe(function (num) {
 	                for (var i = 0; i < reqs.length; i++) {
@@ -4316,7 +4318,10 @@ webpackJsonp([2],[
 	                _this.totalActive = num;
 	            });
 	        });
-	        this._pagerService.getAPage("request", 0, "deactive").subscribe(function (reqs) {
+	    };
+	    RequestListComponent.prototype.getDeactiveList = function () {
+	        var _this = this;
+	        this._pagerService.getAPage("request", this.firstPage2, "deactive").subscribe(function (reqs) {
 	            console.log(reqs);
 	            _this._pagerService.getTotalNum("requesttot", "deactive").subscribe(function (num) {
 	                for (var i = 0; i < reqs.length; i++) {
@@ -4328,7 +4333,10 @@ webpackJsonp([2],[
 	                _this.totalDeac = num;
 	            });
 	        });
-	        this._pagerService.getAPage("request", 0, "accepted").subscribe(function (reqs) {
+	    };
+	    RequestListComponent.prototype.getAcceptedList = function () {
+	        var _this = this;
+	        this._pagerService.getAPage("request", this.firstPage3, "accepted").subscribe(function (reqs) {
 	            _this._pagerService.getTotalNum("requesttot", "accepted").subscribe(function (num) {
 	                for (var i = 0; i < reqs.length; i++) {
 	                    if (reqs[i].status === 'accepted') {
@@ -4340,6 +4348,14 @@ webpackJsonp([2],[
 	            });
 	        });
 	    };
+	    RequestListComponent.prototype.getAllRequest = function () {
+	        this.activeRequests = [];
+	        this.deactiveRequests = [];
+	        this.acceptepRequests = [];
+	        this.getAcceptedList();
+	        this.getActiveList();
+	        this.getDeactiveList();
+	    };
 	    RequestListComponent.prototype.paginate1 = function (event) {
 	        var _this = this;
 	        this._pagerService.getAPage("request", event.first, "pending").subscribe(function (reqs) {
@@ -4349,6 +4365,7 @@ webpackJsonp([2],[
 	                }
 	            }
 	            _this.activeRequests = reqs;
+	            _this.firstPage1 = event.first;
 	        });
 	    };
 	    RequestListComponent.prototype.paginate2 = function (event) {
@@ -4360,6 +4377,7 @@ webpackJsonp([2],[
 	                }
 	            }
 	            _this.deactiveRequests = reqs;
+	            _this.firstPage2 = event.first;
 	        });
 	    };
 	    RequestListComponent.prototype.paginate3 = function (event) {
@@ -4371,6 +4389,7 @@ webpackJsonp([2],[
 	                }
 	            }
 	            _this.acceptepRequests = reqs;
+	            _this.firstPage3 = event.first;
 	        });
 	    };
 	    RequestListComponent = __decorate([

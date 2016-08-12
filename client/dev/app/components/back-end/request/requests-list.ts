@@ -50,6 +50,10 @@ export class RequestListComponent implements AfterViewChecked {
   totalDeac: any = 0;
   totalAccepted: any = 0;
 
+  firstPage1:any=0;
+  firstPage2:any=0;
+  firstPage3:any=0;
+
   constructor(private _requestService: RequestService,
     private _knowledgeService: KnowledgeService,
     private _pagerService: PagerService,
@@ -71,7 +75,8 @@ export class RequestListComponent implements AfterViewChecked {
       .changeStatusRequest(id)
       .subscribe((r) => {
         console.log("deactivate sucess");
-        this.getAllRequest();
+        this.getActiveList();
+        this.getDeactiveList();
       })
   }
 
@@ -80,16 +85,13 @@ export class RequestListComponent implements AfterViewChecked {
     this._requestService
       .updateRequest(request, request.tags, [])
       .subscribe((r) => {
-        this.getAllRequest();
+        this.getActiveList();
+        this.getDeactiveList();
       })
   }
 
-  getAllRequest() {
-    this.activeRequests = [];
-    this.deactiveRequests = [];
-    this.acceptepRequests = [];
-
-    this._pagerService.getAPage("request", 0, "pending").subscribe((reqs) => {
+  getActiveList(){
+    this._pagerService.getAPage("request", this.firstPage1, "pending").subscribe((reqs) => {
       console.log(reqs);
       this._pagerService.getTotalNum("requesttot", "pending").subscribe((num) => {
 
@@ -102,7 +104,10 @@ export class RequestListComponent implements AfterViewChecked {
         this.totalActive = num;
       });
     });
-    this._pagerService.getAPage("request", 0, "deactive").subscribe((reqs) => {
+  }
+
+  getDeactiveList(){
+    this._pagerService.getAPage("request", this.firstPage2, "deactive").subscribe((reqs) => {
       console.log(reqs);
       this._pagerService.getTotalNum("requesttot", "deactive").subscribe((num) => {
         for (var i = 0; i < reqs.length; i++) {
@@ -114,7 +119,10 @@ export class RequestListComponent implements AfterViewChecked {
         this.totalDeac = num;
       });
     });
-    this._pagerService.getAPage("request", 0, "accepted").subscribe((reqs) => {
+  }
+
+  getAcceptedList(){
+    this._pagerService.getAPage("request", this.firstPage3, "accepted").subscribe((reqs) => {
       this._pagerService.getTotalNum("requesttot", "accepted").subscribe((num) => {
         for (var i = 0; i < reqs.length; i++) {
           if (reqs[i].status === 'accepted') {
@@ -127,6 +135,16 @@ export class RequestListComponent implements AfterViewChecked {
     });
   }
 
+  getAllRequest() {
+    this.activeRequests = [];
+    this.deactiveRequests = [];
+    this.acceptepRequests = [];
+
+    this.getAcceptedList();
+    this.getActiveList();
+    this.getDeactiveList();
+  }
+
   paginate1(event: any) {
 
     this._pagerService.getAPage("request", event.first, "pending").subscribe((reqs) => {
@@ -136,9 +154,11 @@ export class RequestListComponent implements AfterViewChecked {
         }
       }
       this.activeRequests = reqs;
+      this.firstPage1=event.first;
     });
 
   }
+
   paginate2(event: any) {
 
     this._pagerService.getAPage("request", event.first, "deactive").subscribe((reqs) => {
@@ -148,9 +168,11 @@ export class RequestListComponent implements AfterViewChecked {
         }
       }
       this.deactiveRequests = reqs;
+      this.firstPage2=event.first;
     });
 
   }
+  
   paginate3(event: any) {
 
     this._pagerService.getAPage("request", event.first, "accepted").subscribe((reqs) => {
@@ -160,6 +182,7 @@ export class RequestListComponent implements AfterViewChecked {
         }
       }
       this.acceptepRequests = reqs;
+      this.firstPage3=event.first;
     });
 
   }
