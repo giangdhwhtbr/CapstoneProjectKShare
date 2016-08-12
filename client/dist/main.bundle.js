@@ -801,8 +801,14 @@ webpackJsonp([2],[
 	        this._statusSubcriberUrl = '/api/requests-subcriber/:id';
 	        this._requestStatusUrl = '/api/requests-status/:id';
 	    }
-	    RequestService.prototype.getAllRequests = function () {
-	        return this._http.get(this._requestsUrl.replace(':id', ''))
+	    RequestService.prototype.getAllRequests = function (num) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            num: num
+	        });
+	        return this._http.put(this._requestUserUrl.replace(':id', ''), _data, options)
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
 	    };
@@ -1080,8 +1086,14 @@ webpackJsonp([2],[
 	        this._requestsGetDeArtUrl = '/api/art/de/:id';
 	        this._articleUserUrl = '/api/articles-user';
 	    }
-	    ArticleService.prototype.getAllArts = function () {
-	        return this._http.get(this._requestsUrl.replace(':id', ''))
+	    ArticleService.prototype.getAllArts = function (num) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            num: num
+	        });
+	        return this._http.put(this._requestsUrl.replace(':id', ''), _data, options)
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
 	    };
@@ -1199,11 +1211,12 @@ webpackJsonp([2],[
 	        this._notificationUrl = '/api/notification';
 	        this._statusNotificationUrl = '/api/change-status-notification/:user';
 	    }
-	    NotificationService.prototype.getNotificationByUser = function (username) {
+	    NotificationService.prototype.getNotificationByUser = function (username, num) {
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
 	        var _info = JSON.stringify({
-	            user: username
+	            user: username,
+	            num: num
 	        });
 	        return this._http.post(this._getNotificationUrl.replace(':id', ''), _info, options)
 	            .map(function (r) { return r.json(); });
@@ -1274,7 +1287,7 @@ webpackJsonp([2],[
 	__export(__webpack_require__(1023));
 	__export(__webpack_require__(1024));
 	__export(__webpack_require__(1025));
-	__export(__webpack_require__(149));
+	__export(__webpack_require__(148));
 	__export(__webpack_require__(1026));
 	__export(__webpack_require__(1027));
 	__export(__webpack_require__(1030));
@@ -1487,16 +1500,6 @@ webpackJsonp([2],[
 /* 148 */
 /***/ function(module, exports, __webpack_require__) {
 
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	__export(__webpack_require__(1019));
-
-
-/***/ },
-/* 149 */
-/***/ function(module, exports, __webpack_require__) {
-
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -1655,6 +1658,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
+/* 149 */,
 /* 150 */,
 /* 151 */,
 /* 152 */,
@@ -1690,8 +1694,7 @@ webpackJsonp([2],[
 /* 182 */,
 /* 183 */,
 /* 184 */,
-/* 185 */,
-/* 186 */
+/* 185 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1952,7 +1955,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 187 */
+/* 186 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2010,6 +2013,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=AsyncSubject.js.map
 
 /***/ },
+/* 187 */,
 /* 188 */,
 /* 189 */,
 /* 190 */,
@@ -2017,8 +2021,7 @@ webpackJsonp([2],[
 /* 192 */,
 /* 193 */,
 /* 194 */,
-/* 195 */,
-/* 196 */
+/* 195 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2049,7 +2052,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=EmptyError.js.map
 
 /***/ },
-/* 197 */
+/* 196 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -2060,6 +2063,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=isDate.js.map
 
 /***/ },
+/* 197 */,
 /* 198 */,
 /* 199 */,
 /* 200 */,
@@ -2072,7 +2076,16 @@ webpackJsonp([2],[
 /* 207 */,
 /* 208 */,
 /* 209 */,
-/* 210 */,
+/* 210 */
+/***/ function(module, exports, __webpack_require__) {
+
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	__export(__webpack_require__(1019));
+
+
+/***/ },
 /* 211 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -3229,7 +3242,7 @@ webpackJsonp([2],[
 	"use strict";
 	var isScheduler_1 = __webpack_require__(101);
 	var ArrayObservable_1 = __webpack_require__(83);
-	var mergeAll_1 = __webpack_require__(192);
+	var mergeAll_1 = __webpack_require__(191);
 	/**
 	 * Creates an output Observable which sequentially emits all values from every
 	 * given input Observable after the current Observable.
@@ -3957,7 +3970,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(8);
 	var article_1 = __webpack_require__(98);
 	var pager_1 = __webpack_require__(438);
-	var ng2_pagination_1 = __webpack_require__(148);
+	var ng2_pagination_1 = __webpack_require__(210);
 	var filter_1 = __webpack_require__(124);
 	var primeng_1 = __webpack_require__(110);
 	var ArtListCtlComponent = (function () {
@@ -4037,7 +4050,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(59);
 	var knowledge_update_1 = __webpack_require__(283);
 	var sub_knowledge_create_1 = __webpack_require__(625);
-	var ng2_pagination_1 = __webpack_require__(148);
+	var ng2_pagination_1 = __webpack_require__(210);
 	var filter_1 = __webpack_require__(124);
 	var KnowledgeListComponent = (function () {
 	    function KnowledgeListComponent(fb, _elRef, _knowledgeService, _requestService) {
@@ -4244,7 +4257,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(59);
 	var auth_1 = __webpack_require__(42);
 	var pager_1 = __webpack_require__(438);
-	var request_update_1 = __webpack_require__(186);
+	var request_update_1 = __webpack_require__(185);
 	var filter_1 = __webpack_require__(124);
 	var primeng_1 = __webpack_require__(110);
 	var RequestListComponent = (function () {
@@ -4330,18 +4343,33 @@ webpackJsonp([2],[
 	    RequestListComponent.prototype.paginate1 = function (event) {
 	        var _this = this;
 	        this._pagerService.getAPage("request", event.first, "pending").subscribe(function (reqs) {
+	            for (var i = 0; i < reqs.length; i++) {
+	                if (reqs[i].status === 'active' || reqs[i].status === 'pending') {
+	                    reqs[i].status = "Đang chờ";
+	                }
+	            }
 	            _this.activeRequests = reqs;
 	        });
 	    };
 	    RequestListComponent.prototype.paginate2 = function (event) {
 	        var _this = this;
 	        this._pagerService.getAPage("request", event.first, "deactive").subscribe(function (reqs) {
+	            for (var i = 0; i < reqs.length; i++) {
+	                if (reqs[i].status === 'deactive') {
+	                    reqs[i].status = "Kết thúc";
+	                }
+	            }
 	            _this.deactiveRequests = reqs;
 	        });
 	    };
 	    RequestListComponent.prototype.paginate3 = function (event) {
 	        var _this = this;
 	        this._pagerService.getAPage("request", event.first, "accepted").subscribe(function (reqs) {
+	            for (var i = 0; i < reqs.length; i++) {
+	                if (reqs[i].status === 'accepted') {
+	                    reqs[i].status = "Được chấp thuận";
+	                }
+	            }
 	            _this.acceptepRequests = reqs;
 	        });
 	    };
@@ -4382,7 +4410,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(5);
 	var common_1 = __webpack_require__(8);
 	var tag_1 = __webpack_require__(82);
-	var ng2_pagination_1 = __webpack_require__(148);
+	var ng2_pagination_1 = __webpack_require__(210);
 	var filter_1 = __webpack_require__(124);
 	var TagListCtlComponent = (function () {
 	    function TagListCtlComponent(_tagService, router) {
@@ -4461,7 +4489,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(8);
 	var users_1 = __webpack_require__(33);
 	var auth_1 = __webpack_require__(42);
-	var ng2_pagination_1 = __webpack_require__(148);
+	var ng2_pagination_1 = __webpack_require__(210);
 	var filter_1 = __webpack_require__(124);
 	var UserListComponent = (function () {
 	    function UserListComponent(fb, _userService, _auth, router) {
@@ -4858,18 +4886,40 @@ webpackJsonp([2],[
 	        this.router = router;
 	        this.route = route;
 	        this._artService = _artService;
+	        this.listArt = [];
+	        this.num = 5;
+	        this.articles = [];
+	        this.height = 400;
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
 	    listArticleComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        this._artService.getAllArts().subscribe(function (arts) {
+	        $(window).on("scroll", function () {
+	            var scrollHeight = $(document).height();
+	            var scrollPosition = $(window).height() + $(window).scrollTop();
+	            if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+	                setTimeout(function () {
+	                    _this.seeMore();
+	                }, 1000);
+	                _this.height += 30;
+	            }
+	        });
+	        this.getAllArticles();
+	    };
+	    listArticleComponent.prototype.seeMore = function () {
+	        this.num = this.num + 5;
+	        this.getAllArticles();
+	    };
+	    listArticleComponent.prototype.getAllArticles = function () {
+	        var _this = this;
+	        this._artService.getAllArts(this.num).subscribe(function (arts) {
 	            for (var i = 0; i < arts.length; i++) {
 	                if (arts[i].status == "private" && arts[i].ofUser != _this.userToken) {
 	                    arts.splice(i, 1);
 	                }
+	                _this.listArt.push(arts[i]);
 	            }
-	            _this.listArt = arts;
 	        });
 	    };
 	    listArticleComponent = __decorate([
@@ -5609,6 +5659,9 @@ webpackJsonp([2],[
 	        this.isExistRecord = false;
 	        this.arrIds = [];
 	        this._data = [];
+	        this.num = 5;
+	        this.height = 400;
+	        this.requests = [];
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
@@ -5619,13 +5672,25 @@ webpackJsonp([2],[
 	            .subscribe(function (params) {
 	            _this.getAllRequests();
 	        });
+	        $(window).on("scroll", function () {
+	            var scrollHeight = $(document).height();
+	            var scrollPosition = $(window).height() + $(window).scrollTop();
+	            if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+	                setTimeout(function () {
+	                    _this.seeMore();
+	                }, 1000);
+	                _this.height += 30;
+	            }
+	        });
 	    };
-	    RequestListClientComponent.prototype.ngAfterViewChecked = function () {
+	    RequestListClientComponent.prototype.seeMore = function () {
+	        this.num = this.num + 5;
+	        this.getAllRequests();
+	        console.log(this.num);
 	    };
 	    RequestListClientComponent.prototype.getAllRequests = function () {
 	        var _this = this;
-	        this._data = [];
-	        this._requestService.getAllRequests().subscribe(function (requests) {
+	        this._requestService.getAllRequests(this.num).subscribe(function (requests) {
 	            //get all tag's ids of list request
 	            for (var _i = 0, requests_2 = requests; _i < requests_2.length; _i++) {
 	                var e = requests_2[_i];
@@ -5655,6 +5720,7 @@ webpackJsonp([2],[
 	                    div.innerHTML = html;
 	                    var text = div.textContent || div.innerText || "";
 	                    _this._data[i].sum = text.substr(0, 100) + " ......";
+	                    //get tags
 	                    for (var _i = 0, tags_1 = tags; _i < tags_1.length; _i++) {
 	                        var t = tags_1[_i];
 	                        if (requests[i].tags.indexOf(t._id) > -1) {
@@ -5662,14 +5728,17 @@ webpackJsonp([2],[
 	                        }
 	                    }
 	                }
-	                _this.requests = requests;
 	            });
+	            // for(var i = 0; i < requests.length; i++){
+	            //     this.requests.push(requests[i]);
+	            //   }
 	        });
 	    };
 	    RequestListClientComponent.prototype.search = function (search) {
 	        var _this = this;
 	        if (search === '') {
 	            this.isExistRecord = false;
+	            this.num = 5;
 	            this.getAllRequests();
 	        }
 	        else {
@@ -6337,7 +6406,7 @@ webpackJsonp([2],[
 	__webpack_require__(700);
 	__webpack_require__(701);
 	__webpack_require__(445);
-	__webpack_require__(190);
+	__webpack_require__(189);
 	__webpack_require__(702);
 	__webpack_require__(703);
 	__webpack_require__(704);
@@ -6395,17 +6464,17 @@ webpackJsonp([2],[
 	exports.Subscription = Subscription_1.Subscription;
 	var Subscriber_1 = __webpack_require__(7);
 	exports.Subscriber = Subscriber_1.Subscriber;
-	var AsyncSubject_1 = __webpack_require__(187);
+	var AsyncSubject_1 = __webpack_require__(186);
 	exports.AsyncSubject = AsyncSubject_1.AsyncSubject;
 	var ReplaySubject_1 = __webpack_require__(439);
 	exports.ReplaySubject = ReplaySubject_1.ReplaySubject;
-	var BehaviorSubject_1 = __webpack_require__(188);
+	var BehaviorSubject_1 = __webpack_require__(187);
 	exports.BehaviorSubject = BehaviorSubject_1.BehaviorSubject;
 	var ConnectableObservable_1 = __webpack_require__(452);
 	exports.ConnectableObservable = ConnectableObservable_1.ConnectableObservable;
-	var Notification_1 = __webpack_require__(189);
+	var Notification_1 = __webpack_require__(188);
 	exports.Notification = Notification_1.Notification;
-	var EmptyError_1 = __webpack_require__(196);
+	var EmptyError_1 = __webpack_require__(195);
 	exports.EmptyError = EmptyError_1.EmptyError;
 	var ArgumentOutOfRangeError_1 = __webpack_require__(296);
 	exports.ArgumentOutOfRangeError = ArgumentOutOfRangeError_1.ArgumentOutOfRangeError;
@@ -6416,8 +6485,8 @@ webpackJsonp([2],[
 	var asap_1 = __webpack_require__(462);
 	var async_1 = __webpack_require__(44);
 	var queue_1 = __webpack_require__(463);
-	var rxSubscriber_1 = __webpack_require__(195);
-	var observable_1 = __webpack_require__(194);
+	var rxSubscriber_1 = __webpack_require__(194);
+	var observable_1 = __webpack_require__(193);
 	var iterator_1 = __webpack_require__(141);
 	/* tslint:enable:no-unused-variable */
 	/**
@@ -6577,7 +6646,7 @@ webpackJsonp([2],[
 
 	"use strict";
 	var ArrayObservable_1 = __webpack_require__(83);
-	var mergeAll_1 = __webpack_require__(192);
+	var mergeAll_1 = __webpack_require__(191);
 	var isScheduler_1 = __webpack_require__(101);
 	/**
 	 * Creates an output Observable which concurrently emits all values from every
@@ -17614,7 +17683,7 @@ webpackJsonp([2],[
 	var knowledge_update_1 = __webpack_require__(283);
 	var knowledges_list_1 = __webpack_require__(418);
 	var requests_list_1 = __webpack_require__(420);
-	var request_update_1 = __webpack_require__(186);
+	var request_update_1 = __webpack_require__(185);
 	var user_list_1 = __webpack_require__(422);
 	var reports_list_1 = __webpack_require__(419);
 	var tag_list_control_1 = __webpack_require__(421);
@@ -18750,6 +18819,7 @@ webpackJsonp([2],[
 	        this._noti = _noti;
 	        this._userService = _userService;
 	        this.count = 2;
+	        this.num = 10;
 	        this.userToken = localStorage.getItem('username');
 	        this.roleToken = localStorage.getItem('userrole');
 	    }
@@ -18776,7 +18846,7 @@ webpackJsonp([2],[
 	                audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
 	                audio.load();
 	                audio.play();
-	                _this.getNotificationByUser(data.data.user);
+	                _this.getNotificationByUser();
 	                //show noti
 	                _this.notiTitle = data.data.title;
 	                _this.link = data.data.link;
@@ -18806,7 +18876,7 @@ webpackJsonp([2],[
 	    HeaderComponent.prototype.getNotificationByUser = function () {
 	        var _this = this;
 	        this.countUnReadNoti = 0;
-	        this._noti.getNotificationByUser(this.userToken).subscribe(function (notifications) {
+	        this._noti.getNotificationByUser(this.userToken, this.num).subscribe(function (notifications) {
 	            _this.notifications = notifications;
 	            for (var i = 0; i < notifications.length; i++) {
 	                if (notifications[i].status === "Chưa đọc") {
@@ -18820,6 +18890,10 @@ webpackJsonp([2],[
 	        this._noti.changeStatusNotification(this.userToken).subscribe(function (notifications) {
 	            console.log('change status notification successful');
 	        });
+	    };
+	    HeaderComponent.prototype.seeMore = function () {
+	        this.num = this.num + 10;
+	        this.getNotificationByUser();
 	    };
 	    HeaderComponent = __decorate([
 	        core_1.Component({
@@ -19701,7 +19775,7 @@ webpackJsonp([2],[
 	var knowledge_update_1 = __webpack_require__(283);
 	var knowledges_list_1 = __webpack_require__(418);
 	var requests_list_1 = __webpack_require__(420);
-	var request_update_1 = __webpack_require__(186);
+	var request_update_1 = __webpack_require__(185);
 	var user_list_1 = __webpack_require__(422);
 	var reports_list_1 = __webpack_require__(419);
 	var tag_list_control_1 = __webpack_require__(421);
@@ -19804,7 +19878,7 @@ webpackJsonp([2],[
 	var newsfeed_1 = __webpack_require__(631);
 	var request_list_1 = __webpack_require__(432);
 	var request_detail_1 = __webpack_require__(431);
-	var request_update_1 = __webpack_require__(186);
+	var request_update_1 = __webpack_require__(185);
 	var request_category_1 = __webpack_require__(285);
 	var request_create_1 = __webpack_require__(284);
 	var kspace_1 = __webpack_require__(429);
@@ -20118,7 +20192,7 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var of_1 = __webpack_require__(191);
+	var of_1 = __webpack_require__(190);
 	Observable_1.Observable.of = of_1.of;
 	//# sourceMappingURL=of.js.map
 
@@ -20928,7 +21002,7 @@ webpackJsonp([2],[
 	var Observable_1 = __webpack_require__(2);
 	var tryCatch_1 = __webpack_require__(45);
 	var errorObject_1 = __webpack_require__(39);
-	var AsyncSubject_1 = __webpack_require__(187);
+	var AsyncSubject_1 = __webpack_require__(186);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -21075,7 +21149,7 @@ webpackJsonp([2],[
 	var Observable_1 = __webpack_require__(2);
 	var tryCatch_1 = __webpack_require__(45);
 	var errorObject_1 = __webpack_require__(39);
-	var AsyncSubject_1 = __webpack_require__(187);
+	var AsyncSubject_1 = __webpack_require__(186);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -21894,7 +21968,7 @@ webpackJsonp([2],[
 	var Observable_1 = __webpack_require__(2);
 	var async_1 = __webpack_require__(44);
 	var isScheduler_1 = __webpack_require__(101);
-	var isDate_1 = __webpack_require__(197);
+	var isDate_1 = __webpack_require__(196);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -23061,7 +23135,7 @@ webpackJsonp([2],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeAll_1 = __webpack_require__(192);
+	var mergeAll_1 = __webpack_require__(191);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable by
 	 * concatenating the inner Observables in order.
@@ -23525,9 +23599,9 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var async_1 = __webpack_require__(44);
-	var isDate_1 = __webpack_require__(197);
+	var isDate_1 = __webpack_require__(196);
 	var Subscriber_1 = __webpack_require__(7);
-	var Notification_1 = __webpack_require__(189);
+	var Notification_1 = __webpack_require__(188);
 	/**
 	 * Delays the emission of items from the source Observable by a given timeout or
 	 * until a given Date.
@@ -24241,7 +24315,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(7);
-	var EmptyError_1 = __webpack_require__(196);
+	var EmptyError_1 = __webpack_require__(195);
 	/**
 	 * Emits only the first value (or the first value that meets some condition)
 	 * emitted by the source Observable.
@@ -24701,7 +24775,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(7);
-	var EmptyError_1 = __webpack_require__(196);
+	var EmptyError_1 = __webpack_require__(195);
 	/**
 	 * Returns an Observable that emits only the last item emitted by the source Observable.
 	 * It optionally takes a predicate function as a parameter, in which case, rather than emitting
@@ -24909,7 +24983,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(7);
-	var Notification_1 = __webpack_require__(189);
+	var Notification_1 = __webpack_require__(188);
 	/**
 	 * Returns an Observable that represents all of the emissions and notifications
 	 * from the source Observable into emissions marked with their original types
@@ -25056,7 +25130,7 @@ webpackJsonp([2],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var BehaviorSubject_1 = __webpack_require__(188);
+	var BehaviorSubject_1 = __webpack_require__(187);
 	var multicast_1 = __webpack_require__(125);
 	/**
 	 * @param value
@@ -25075,7 +25149,7 @@ webpackJsonp([2],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var AsyncSubject_1 = __webpack_require__(187);
+	var AsyncSubject_1 = __webpack_require__(186);
 	var multicast_1 = __webpack_require__(125);
 	/**
 	 * @return {ConnectableObservable<T>}
@@ -25643,7 +25717,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(7);
-	var EmptyError_1 = __webpack_require__(196);
+	var EmptyError_1 = __webpack_require__(195);
 	/**
 	 * Returns an Observable that emits the single item emitted by the source Observable that matches a specified
 	 * predicate, if that Observable emits one such item. If the source Observable emits more than one such item or no
@@ -26760,7 +26834,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var async_1 = __webpack_require__(44);
-	var isDate_1 = __webpack_require__(197);
+	var isDate_1 = __webpack_require__(196);
 	var Subscriber_1 = __webpack_require__(7);
 	/**
 	 * @param due
@@ -26867,7 +26941,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var async_1 = __webpack_require__(44);
-	var isDate_1 = __webpack_require__(197);
+	var isDate_1 = __webpack_require__(196);
 	var OuterSubscriber_1 = __webpack_require__(13);
 	var subscribeToResult_1 = __webpack_require__(14);
 	/**
@@ -27919,7 +27993,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Immediate_1 = __webpack_require__(850);
-	var FutureAction_1 = __webpack_require__(193);
+	var FutureAction_1 = __webpack_require__(192);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @ignore
@@ -28988,7 +29062,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var inputtext_1 = __webpack_require__(211);
-	var button_1 = __webpack_require__(149);
+	var button_1 = __webpack_require__(148);
 	var domhandler_1 = __webpack_require__(11);
 	var common_1 = __webpack_require__(8);
 	var AUTOCOMPLETE_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
@@ -29453,7 +29527,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var button_1 = __webpack_require__(149);
+	var button_1 = __webpack_require__(148);
 	var common_1 = __webpack_require__(8);
 	var CALENDAR_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Calendar; }),
@@ -35020,7 +35094,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var button_1 = __webpack_require__(149);
+	var button_1 = __webpack_require__(148);
 	var domhandler_1 = __webpack_require__(11);
 	var OrderList = (function () {
 	    function OrderList(el, domHandler) {
@@ -35748,7 +35822,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var button_1 = __webpack_require__(149);
+	var button_1 = __webpack_require__(148);
 	var domhandler_1 = __webpack_require__(11);
 	var PickList = (function () {
 	    function PickList(el, domHandler) {

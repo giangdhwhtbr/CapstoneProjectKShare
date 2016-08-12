@@ -16,8 +16,15 @@ export class RequestService {
     constructor(private _http: Http) {
     }
 
-    getAllRequests(): Observable<Request[]> {
-        return this._http.get(this._requestsUrl.replace(':id', ''))
+    getAllRequests(num: number): Observable<Request[]> {
+        let header = new Headers;
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+
+        let _data = JSON.stringify({
+            num: num
+        });
+        return this._http.put(this._requestUserUrl.replace(':id', ''), _data, options)
             .map((r) => r.json())
             .catch(this.handleError);
     }

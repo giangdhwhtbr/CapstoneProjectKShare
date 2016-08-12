@@ -6,7 +6,6 @@ module.exports = class RequestRoutes {
   static init(router) {
     router
       .route('/api/requests')
-      .get(RequestController.getAll)
       .post(RequestController.createRequest)
       .put(RequestController.getRequestsByTagsOfUser);
 
@@ -27,6 +26,7 @@ module.exports = class RequestRoutes {
     
     router 
       .route('/api/requests-user')
+      .put(RequestController.getAll)
       .post(RequestController.getRequestsExceptTagsOfUser);
 
     router

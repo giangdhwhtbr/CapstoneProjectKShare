@@ -29,7 +29,7 @@ import { Paginator } from 'primeng/primeng';
   templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
   directives: [UpdateRequestComponent, ROUTER_DIRECTIVES, FORM_DIRECTIVES, Paginator],
   providers: [RequestService, PagerService],
-  pipes: [ StringFilterPipe]
+  pipes: [StringFilterPipe]
 })
 
 export class RequestListComponent implements AfterViewChecked {
@@ -92,7 +92,7 @@ export class RequestListComponent implements AfterViewChecked {
     this._pagerService.getAPage("request", 0, "pending").subscribe((reqs) => {
       console.log(reqs);
       this._pagerService.getTotalNum("requesttot", "pending").subscribe((num) => {
-        
+
         for (var i = 0; i < reqs.length; i++) {
           if (reqs[i].status === 'active' || reqs[i].status === 'pending') {
             reqs[i].status = "Đang chờ";
@@ -130,6 +130,11 @@ export class RequestListComponent implements AfterViewChecked {
   paginate1(event: any) {
 
     this._pagerService.getAPage("request", event.first, "pending").subscribe((reqs) => {
+      for (var i = 0; i < reqs.length; i++) {
+        if (reqs[i].status === 'active' || reqs[i].status === 'pending') {
+          reqs[i].status = "Đang chờ";
+        }
+      }
       this.activeRequests = reqs;
     });
 
@@ -137,6 +142,11 @@ export class RequestListComponent implements AfterViewChecked {
   paginate2(event: any) {
 
     this._pagerService.getAPage("request", event.first, "deactive").subscribe((reqs) => {
+      for (var i = 0; i < reqs.length; i++) {
+        if (reqs[i].status === 'deactive') {
+          reqs[i].status = "Kết thúc";
+        }
+      }
       this.deactiveRequests = reqs;
     });
 
@@ -144,6 +154,11 @@ export class RequestListComponent implements AfterViewChecked {
   paginate3(event: any) {
 
     this._pagerService.getAPage("request", event.first, "accepted").subscribe((reqs) => {
+      for (var i = 0; i < reqs.length; i++) {
+        if (reqs[i].status === 'accepted') {
+          reqs[i].status = "Được chấp thuận";
+        }
+      }
       this.acceptepRequests = reqs;
     });
 
