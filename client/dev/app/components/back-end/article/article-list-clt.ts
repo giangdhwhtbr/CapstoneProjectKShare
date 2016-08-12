@@ -13,7 +13,6 @@ import { PaginationControlsCmp, PaginatePipe, PaginationService, IPaginationInst
 import {StringFilterPipe} from '../shared/filter';
 import {Paginator} from 'primeng/primeng';
 
-declare var $:any;
 
 @Component({
     selector: 'art-list-clt',
@@ -25,9 +24,21 @@ declare var $:any;
 
 export class ArtListCtlComponent implements OnInit {
 
-    arts:any[] = [];
+    artsAt:any[] = [];
+    artsDa:any[] = [];
+    artsPr:any[] = [];
     filter:string = '';
-    total:number=0;
+    filter1:string = '';
+    filter2:string = '';
+    total:any=0;
+    total1:any=0;
+    total2:any=0;
+
+    status:string="public";
+
+    firstESave:any=0;
+    firstESave1:any=0;
+    firstESave2:any=0;
 
 
     constructor(private _articleService:ArticleService,private _pagerService:PagerService, private router:Router) {
@@ -35,21 +46,72 @@ export class ArtListCtlComponent implements OnInit {
     }
 
     ngOnInit() {
+        this.getAtArts();
+        this.getdaArts();
+        this.getPrArts();
+    }
+
+    getAtArts(){
         this._pagerService.getAPage("article",0,"public").subscribe((Arts)=> {
             this._pagerService.getTotalNum("articletot","public").subscribe((num)=>{
-                this.arts=Arts;
+                this.artsAt=Arts;
                 this.total=num;
             });
         });
     }
 
+    getdaArts(){
+        this._pagerService.getAPage("article",0,"deactivate").subscribe((Arts)=> {
+            this._pagerService.getTotalNum("articletot","deactivate").subscribe((num)=>{
+                this.artsDa=Arts;
+                this.total1=num;
+            });
+        });
+    }
+
+    getPrArts(){
+        this._pagerService.getAPage("article",0,"private").subscribe((Arts)=> {
+            this._pagerService.getTotalNum("articletot","private").subscribe((num)=>{
+                this.artsPr=Arts;
+                this.total2=num;
+            });
+        });
+    }
+
     activeArt(id:string){
-        //this._articleService.activeArt(id).subscribe((art)=>{
-        //    this._articleService.getAllDeArts().subscribe((arts)=> {
-        //        this.arts=arts;
-        //        $('.messOn').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> ' + art.title + ' đã được mở lại và ở trạng thái riêng tư</div>');
-        //    });
-        //});
+        this._articleService.activeArt(id).subscribe((art)=>{
+
+            this._pagerService.getAPage("article",this.firstESave1,"deactivate").subscribe((Arts)=> {
+                this._pagerService.getTotalNum("articletot","deactivate").subscribe((num)=>{
+                    this.artsDa=Arts;
+                    this.total1=num;
+                    this.getPrArts();
+                });
+            });
+
+        });
+    }
+
+    deActiveArt(id:string,stt:string){
+        this._articleService.deactivateArticle(id).subscribe((art)=>{
+            if(stt=="private"){
+                this._pagerService.getAPage("article",this.firstESave2,"private").subscribe((Arts)=> {
+                    this._pagerService.getTotalNum("articletot","private").subscribe((num)=>{
+                        this.artsPr=Arts;
+                        this.total2=num;
+                        this.getdaArts();
+                    });
+                });
+            }else{
+                this._pagerService.getAPage("article",this.firstESave,"public").subscribe((Arts)=> {
+                    this._pagerService.getTotalNum("articletot","public").subscribe((num)=>{
+                        this.artsAt=Arts;
+                        this.total=num;
+                        this.getdaArts();
+                    });
+                });
+            }
+        });
     }
 
     paginate(event:any) {
@@ -57,13 +119,31 @@ export class ArtListCtlComponent implements OnInit {
         //event.rows = Number of rows to display in new page
         //event.page = Index of the new page
         //event.pageCount = Total number of pages
-        //this._pagerService.getAPage("article",event.first,"public").subscribe((deArts)=> {
-        //    this.arts=deArts;
-        //});
-
         this._pagerService.getAPage("article",event.first,"public").subscribe((Arts)=> {
-            this.arts=Arts;
+            this.artsAt=Arts;
         });
+        this.firstESave=event.first;
+    }
+    paginate1(event:any) {
+        //event.first = Index of the first record
+        //event.rows = Number of rows to display in new page
+        //event.page = Index of the new page
+        //event.pageCount = Total number of pages
 
+        this._pagerService.getAPage("article",event.first,"deactivate").subscribe((Arts)=> {
+            this.artsDa=Arts;
+        });
+        this.firstESave1=event.first;
+    }
+    paginate2(event:any) {
+        //event.first = Index of the first record
+        //event.rows = Number of rows to display in new page
+        //event.page = Index of the new page
+        //event.pageCount = Total number of pages
+
+        this._pagerService.getAPage("article",event.first,"private").subscribe((Arts)=> {
+            this.artsPr=Arts;
+        });
+        this.firstESave2=event.first;
     }
 }

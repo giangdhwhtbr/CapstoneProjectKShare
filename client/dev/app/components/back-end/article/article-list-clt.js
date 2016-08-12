@@ -22,39 +22,119 @@ var ArtListCtlComponent = (function () {
         this._articleService = _articleService;
         this._pagerService = _pagerService;
         this.router = router;
-        this.arts = [];
+        this.artsAt = [];
+        this.artsDa = [];
+        this.artsPr = [];
         this.filter = '';
+        this.filter1 = '';
+        this.filter2 = '';
         this.total = 0;
+        this.total1 = 0;
+        this.total2 = 0;
+        this.status = "public";
+        this.firstESave = 0;
+        this.firstESave1 = 0;
+        this.firstESave2 = 0;
     }
     ArtListCtlComponent.prototype.ngOnInit = function () {
+        this.getAtArts();
+        this.getdaArts();
+        this.getPrArts();
+    };
+    ArtListCtlComponent.prototype.getAtArts = function () {
         var _this = this;
         this._pagerService.getAPage("article", 0, "public").subscribe(function (Arts) {
             _this._pagerService.getTotalNum("articletot", "public").subscribe(function (num) {
-                _this.arts = Arts;
+                _this.artsAt = Arts;
                 _this.total = num;
             });
         });
     };
+    ArtListCtlComponent.prototype.getdaArts = function () {
+        var _this = this;
+        this._pagerService.getAPage("article", 0, "deactivate").subscribe(function (Arts) {
+            _this._pagerService.getTotalNum("articletot", "deactivate").subscribe(function (num) {
+                _this.artsDa = Arts;
+                _this.total1 = num;
+            });
+        });
+    };
+    ArtListCtlComponent.prototype.getPrArts = function () {
+        var _this = this;
+        this._pagerService.getAPage("article", 0, "private").subscribe(function (Arts) {
+            _this._pagerService.getTotalNum("articletot", "private").subscribe(function (num) {
+                _this.artsPr = Arts;
+                _this.total2 = num;
+            });
+        });
+    };
     ArtListCtlComponent.prototype.activeArt = function (id) {
-        //this._articleService.activeArt(id).subscribe((art)=>{
-        //    this._articleService.getAllDeArts().subscribe((arts)=> {
-        //        this.arts=arts;
-        //        $('.messOn').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> ' + art.title + ' đã được mở lại và ở trạng thái riêng tư</div>');
-        //    });
-        //});
+        var _this = this;
+        this._articleService.activeArt(id).subscribe(function (art) {
+            _this._pagerService.getAPage("article", _this.firstESave1, "deactivate").subscribe(function (Arts) {
+                _this._pagerService.getTotalNum("articletot", "deactivate").subscribe(function (num) {
+                    _this.artsDa = Arts;
+                    _this.total1 = num;
+                    _this.getPrArts();
+                });
+            });
+        });
+    };
+    ArtListCtlComponent.prototype.deActiveArt = function (id, stt) {
+        var _this = this;
+        this._articleService.deactivateArticle(id).subscribe(function (art) {
+            if (stt == "private") {
+                _this._pagerService.getAPage("article", _this.firstESave2, "private").subscribe(function (Arts) {
+                    _this._pagerService.getTotalNum("articletot", "private").subscribe(function (num) {
+                        _this.artsPr = Arts;
+                        _this.total2 = num;
+                        _this.getdaArts();
+                    });
+                });
+            }
+            else {
+                _this._pagerService.getAPage("article", _this.firstESave, "public").subscribe(function (Arts) {
+                    _this._pagerService.getTotalNum("articletot", "public").subscribe(function (num) {
+                        _this.artsAt = Arts;
+                        _this.total = num;
+                        _this.getdaArts();
+                    });
+                });
+            }
+        });
     };
     ArtListCtlComponent.prototype.paginate = function (event) {
+        var _this = this;
         //event.first = Index of the first record
         //event.rows = Number of rows to display in new page
         //event.page = Index of the new page
         //event.pageCount = Total number of pages
-        //this._pagerService.getAPage("article",event.first,"public").subscribe((deArts)=> {
-        //    this.arts=deArts;
-        //});
-        var _this = this;
         this._pagerService.getAPage("article", event.first, "public").subscribe(function (Arts) {
-            _this.arts = Arts;
+            _this.artsAt = Arts;
         });
+        this.firstESave = event.first;
+    };
+    ArtListCtlComponent.prototype.paginate1 = function (event) {
+        //event.first = Index of the first record
+        //event.rows = Number of rows to display in new page
+        //event.page = Index of the new page
+        //event.pageCount = Total number of pages
+        var _this = this;
+        this._pagerService.getAPage("article", event.first, "deactivate").subscribe(function (Arts) {
+            _this.artsDa = Arts;
+        });
+        this.firstESave1 = event.first;
+    };
+    ArtListCtlComponent.prototype.paginate2 = function (event) {
+        //event.first = Index of the first record
+        //event.rows = Number of rows to display in new page
+        //event.page = Index of the new page
+        //event.pageCount = Total number of pages
+        var _this = this;
+        this._pagerService.getAPage("article", event.first, "private").subscribe(function (Arts) {
+            _this.artsPr = Arts;
+        });
+        this.firstESave2 = event.first;
     };
     ArtListCtlComponent = __decorate([
         core_1.Component({

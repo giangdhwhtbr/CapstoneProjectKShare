@@ -2,9 +2,11 @@
  * Created by Duc Duong on 7/25/2016.
  */
 
-import { Component, OnInit,Pipe,PipeTransform } from '@angular/core';
+import { Component, OnInit,Pipe,PipeTransform, OnDestroy } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { TagService } from '../../../services/tag';
+
+import { Subscription }       from 'rxjs/Subscription';
 
 @Component ({
     selector: 'list-article-by-tag',
@@ -20,19 +22,25 @@ export class displayArtByTagComponent implements OnInit{
 
     listArt:Array<any>;
     id:string;
+    private sub :Subscription;
 
     constructor(public router:Router, private route:ActivatedRoute, private _tagService:TagService){
-        this.route
-            .params
-            .subscribe(params => {
-                this.id = params['id'];
-            });
+
     }
 
     ngOnInit(){
-        this._tagService.getArtByTag(this.id).subscribe((arts)=>{
-            this.listArt =arts;
-        });
+        this.sub = this.route
+            .params
+            .subscribe(params => {
+                this.id = params['id'];
+
+                this._tagService.getArtByTag(this.id).subscribe((arts)=>{
+                    this.listArt =arts;
+                });
+            });
+    }
+    ngOnDestroy() {
+        this.sub.unsubscribe();
     }
 
 }

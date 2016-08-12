@@ -134,4 +134,28 @@ module.exports = class TagController {
             .catch(error => res.status(400).json(error));
     }
 
+    static getAPage(req,res){
+        let start = req.params.start;
+        if (req.params && req.params.start) {
+            TagDAO.getAPage(start,req.params.stt).then((tags)=>{
+                if(tags.length==0 && start!=0){
+                    TagDAO.getAPage(start-10,req.params.stt).then((tagsBU)=>{
+                        res.status(200).json(tagsBU);
+                    }).catch(err=> res.status(400).json(err));
+                }else{
+                    res.status(200).json(tags);
+                }
+
+            }).catch(err=> res.status(400).json(err));
+        }
+    }
+    static getTot(req,res){
+
+        if (req.params && req.params.stt) {
+            TagDAO.getTot(req.params.stt).then((num)=>{
+                res.status(200).json(num);
+            }).catch(err=> res.status(400).json(err));
+        }
+    }
+
 }

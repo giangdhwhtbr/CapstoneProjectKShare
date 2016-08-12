@@ -14,21 +14,23 @@ var router_1 = require('@angular/router');
 var tag_1 = require('../../../services/tag');
 var displayArtByTagComponent = (function () {
     function displayArtByTagComponent(router, route, _tagService) {
-        var _this = this;
         this.router = router;
         this.route = route;
         this._tagService = _tagService;
-        this.route
-            .params
-            .subscribe(function (params) {
-            _this.id = params['id'];
-        });
     }
     displayArtByTagComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._tagService.getArtByTag(this.id).subscribe(function (arts) {
-            _this.listArt = arts;
+        this.sub = this.route
+            .params
+            .subscribe(function (params) {
+            _this.id = params['id'];
+            _this._tagService.getArtByTag(_this.id).subscribe(function (arts) {
+                _this.listArt = arts;
+            });
         });
+    };
+    displayArtByTagComponent.prototype.ngOnDestroy = function () {
+        this.sub.unsubscribe();
     };
     displayArtByTagComponent = __decorate([
         core_1.Component({
