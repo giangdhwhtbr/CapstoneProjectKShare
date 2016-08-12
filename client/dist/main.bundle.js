@@ -2996,6 +2996,7 @@ webpackJsonp([2],[
 	    function OfferService(_http) {
 	        this._http = _http;
 	        this._Url = '/api/offers/:id';
+	        this._OfferUrl = '/api/offers/:id/:num';
 	    }
 	    OfferService.prototype.addOffer = function (offer) {
 	        var header = new http_1.Headers;
@@ -3013,21 +3014,18 @@ webpackJsonp([2],[
 	            .post(this._Url.replace(':id', ''), _offer, options)
 	            .map(function (r) { return r.json(); });
 	    };
-	    OfferService.prototype.getOfferByRequestId = function (id) {
-	        return this._http.post(this._Url.replace(':id', id), '')
-	            .map(function (r) { return r.json(); })
-	            .catch(this.handleError);
-	    };
-	    OfferService.prototype.updateOffer = function (id, newstatus) {
+	    OfferService.prototype.getOfferByRequestId = function (id, num) {
 	        var header = new http_1.Headers;
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _offer = JSON.stringify({
-	            status: newstatus
+	        var _data = JSON.stringify({
+	            id: id,
+	            num: num
 	        });
-	        return this._http
-	            .put(this._Url.replace(':id', id), _offer, options)
-	            .map(function (r) { return r.json(); });
+	        console.log(_data);
+	        return this._http.put(this._Url.replace(':id', ''), _data, options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
 	    };
 	    OfferService.prototype.handleError = function (error) {
 	        console.error(error);
@@ -5496,8 +5494,11 @@ webpackJsonp([2],[
 	        this._kspaceService = _kspaceService;
 	        this.route = route;
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
+	        this.num = 5;
+	        this.height = 400;
 	        //check if request is accepted
 	        this.checkIsAcceped = false;
+	        this.offers = [];
 	        this.route
 	            .params
 	            .subscribe(function (params) {
@@ -5550,6 +5551,20 @@ webpackJsonp([2],[
 	            });
 	        }, function (error) { return console.log(error); });
 	        this.getOfferByRequestId();
+	        $(window).on("scroll", function () {
+	            var scrollHeight = $(document).height();
+	            var scrollPosition = $(window).height() + $(window).scrollTop();
+	            if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+	                setTimeout(function () {
+	                    _this.seeMore();
+	                }, 1000);
+	                _this.height += 30;
+	            }
+	        });
+	    };
+	    RequestDetailClientComponent.prototype.seeMore = function () {
+	        this.num = this.num + 5;
+	        this.getOfferByRequestId();
 	    };
 	    RequestDetailClientComponent.prototype.ngAfterViewChecked = function () {
 	        if (this.request != undefined) {
@@ -5559,17 +5574,16 @@ webpackJsonp([2],[
 	    RequestDetailClientComponent.prototype.getOfferByRequestId = function () {
 	        var _this = this;
 	        //get front.offer of the templates when load the page
-	        this._offerService.getOfferByRequestId(this.id).subscribe(function (offers) {
+	        this._offerService.getOfferByRequestId(this.id, this.num).subscribe(function (offers) {
 	            for (var i = 0; i < offers.length; i++) {
-	                offers[i].createdAt = new Date(offers[i].createdAt);
 	                if (offers[i].status === 'pending') {
 	                    offers[i].status = 'Đang chờ';
 	                }
 	                else {
 	                    offers[i].status = 'Được chấp nhận';
 	                }
+	                _this.offers.push(offers[i]);
 	            }
-	            _this.offers = offers;
 	        }, function (error) {
 	            console.log(error);
 	        });
