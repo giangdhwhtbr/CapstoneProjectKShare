@@ -15,9 +15,7 @@ export class OfferService {
     let headers = new Headers({ 'Content-Type': 'application/json' });
     let options = new RequestOptions({ headers: headers });
     let _offer = JSON.stringify({
-      price: offer.price,
       requestId: offer.requestId,
-      numberOfLecture: offer.numOfLecture,
       message: offer.message,
       user: offer.user
     });

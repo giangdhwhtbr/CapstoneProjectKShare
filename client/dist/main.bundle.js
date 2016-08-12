@@ -3003,9 +3003,7 @@ webpackJsonp([2],[
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
 	        var _offer = JSON.stringify({
-	            price: offer.price,
 	            requestId: offer.requestId,
-	            numberOfLecture: offer.numOfLecture,
 	            message: offer.message,
 	            user: offer.user
 	        });
@@ -18690,8 +18688,6 @@ webpackJsonp([2],[
 	        this._requestService = _requestService;
 	        this.user = localStorage.getItem('username');
 	        this.offerForm = fb.group({
-	            "price": [""],
-	            "numberOfLecture": [""],
 	            "requestId": [""],
 	            "message": [""],
 	            "user": [""]
