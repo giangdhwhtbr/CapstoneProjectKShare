@@ -127,7 +127,7 @@ module.exports = class RequestController {
   static getRequestByUser(req, res) {
     if (req.params) {
       RequestDAO
-        .getRequestByUser(req.params.user)
+        .getRequestByUser(req.params.user, req.params.num)
         .then(requests => res.status(200).json(requests))
         .catch(error => res.status(400).json(error));
     } else {

@@ -17,6 +17,7 @@ import { User } from '../../../../interface/user';
 import { FriendShip } from '../../../../interface/friendship';
 import { Request } from '../../../../interface/request';
 import { Knowledge } from '../../../../interface/knowledge';
+declare var $: any;
 
 @Component({
   selector: 'user-profile',
@@ -52,8 +53,10 @@ export class UserProfileComponent {
   userProfile: User;
   buttonTitle: string;
   friendList: FriendShip[];
-  requests: Request[];
+  requests: Request[] = [];
   knowledgeName: string;
+  num: any = 5;
+  height: number = 400;
 
   constructor(public router: Router, private route: ActivatedRoute, public _userService: UserService,
     public _knowledgeService: KnowledgeService) {
@@ -80,7 +83,23 @@ export class UserProfileComponent {
         if (this.isExist = true) {
           this.getRequestByUser();
         }
+
+        $(window).on("scroll", () => {
+          var scrollHeight = $(document).height();
+          var scrollPosition = $(window).height() + $(window).scrollTop();
+          if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+            setTimeout(() => {
+              this.seeMore();
+            }, 1000);
+            this.height += 30;
+          }
+        });
       });
+  }
+
+  seeMore(){
+    this.num = this.num + 5;
+    this.getRequestByUser();
   }
 
   ngOnDestroy(): void {
@@ -90,9 +109,12 @@ export class UserProfileComponent {
 
   getRequestByUser(): void {
     this._userService
-      .getRequestByUser(this.name)
+      .getRequestByUser(this.name, this.num)
       .subscribe((requests) => {
-        this.requests = requests;
+        for(var i = 0; i < requests.length; i++){
+          this.requests.push(requests[i]);
+        }
+        console.log(this.requests);
       })
   }
 

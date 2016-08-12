@@ -333,7 +333,7 @@ webpackJsonp([2],[
 	        this._profilePictureUrl = '/api/user-picture';
 	        this._friendUrl = '/api/friendship/:id';
 	        this._getFriendUrl = '/api/getFriendship';
-	        this._getRequestByUserUrl = '/api/requests-user/:user';
+	        this._getRequestByUserUrl = '/api/requests-user/:user/:num';
 	        this._isUserExistUrl = '/api/is-user-exist/:username';
 	        this._friendshipStatusUrl = '/api/friendship-status/:user1/:user2';
 	        this._banUrl = '/api/ban/:id';
@@ -463,9 +463,9 @@ webpackJsonp([2],[
 	            .map(function (r) { return r.json(); });
 	    };
 	    //get request of an user
-	    UserService.prototype.getRequestByUser = function (user) {
+	    UserService.prototype.getRequestByUser = function (user, num) {
 	        return this._http
-	            .get(this._getRequestByUserUrl.replace(':user', user))
+	            .get(this._getRequestByUserUrl.replace(':user', user).replace(':num', num))
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
 	    };
@@ -6016,6 +6016,9 @@ webpackJsonp([2],[
 	        this.route = route;
 	        this._userService = _userService;
 	        this._knowledgeService = _knowledgeService;
+	        this.requests = [];
+	        this.num = 5;
+	        this.height = 400;
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
@@ -6034,7 +6037,21 @@ webpackJsonp([2],[
 	            if (_this.isExist = true) {
 	                _this.getRequestByUser();
 	            }
+	            $(window).on("scroll", function () {
+	                var scrollHeight = $(document).height();
+	                var scrollPosition = $(window).height() + $(window).scrollTop();
+	                if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+	                    setTimeout(function () {
+	                        _this.seeMore();
+	                    }, 1000);
+	                    _this.height += 30;
+	                }
+	            });
 	        });
+	    };
+	    UserProfileComponent.prototype.seeMore = function () {
+	        this.num = this.num + 5;
+	        this.getRequestByUser();
 	    };
 	    UserProfileComponent.prototype.ngOnDestroy = function () {
 	        console.log(this.sub);
@@ -6043,9 +6060,12 @@ webpackJsonp([2],[
 	    UserProfileComponent.prototype.getRequestByUser = function () {
 	        var _this = this;
 	        this._userService
-	            .getRequestByUser(this.name)
+	            .getRequestByUser(this.name, this.num)
 	            .subscribe(function (requests) {
-	            _this.requests = requests;
+	            for (var i = 0; i < requests.length; i++) {
+	                _this.requests.push(requests[i]);
+	            }
+	            console.log(_this.requests);
 	        });
 	    };
 	    UserProfileComponent.prototype.getKnowledgeNameOfRequest = function (knowledgeId) {

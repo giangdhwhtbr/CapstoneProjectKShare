@@ -128,7 +128,7 @@ requestSchema.statics.getRequestByKnowledgeId = (id) => {
 }
 
 //get requets by user dao function
-requestSchema.statics.getRequestByUser = (user) => {
+requestSchema.statics.getRequestByUser = (user, x) => {
 
     return new Promise((resolve, reject) => {
         Request
@@ -138,6 +138,8 @@ requestSchema.statics.getRequestByUser = (user) => {
                     $ne: "deactive"
                 }
             })
+            .skip(x-5)
+            .limit(5)
             .exec((err, requests) => {
                 err ? reject(err)
                     : resolve(requests);
