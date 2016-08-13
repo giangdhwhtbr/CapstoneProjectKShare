@@ -31,7 +31,6 @@ module.exports = class ArticleController {
             let start = req.params.start;
             ArticleDAO.getAPage(start,req.params.stt).then((arts)=>{
                 if(arts.length==0 && start!=0){
-                    console.log(start);
                     ArticleDAO.getAPage(start-10,req.params.stt).then((artsBU)=>{
                         res.status(200).json(artsBU);
                     }).catch(err=> res.status(400).json(err));
@@ -39,7 +38,7 @@ module.exports = class ArticleController {
                     res.status(200).json(arts);
                 }
 
-            }).catch(err=> res.status(400).json(err));
+            }).catch(err=> {});
         }
     }
 

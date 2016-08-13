@@ -4048,7 +4048,7 @@ webpackJsonp([2],[
 	    AdminComponent = __decorate([
 	        core_1.Component({
 	            selector: 'kshare',
-	            template: "\n  <div id=\"wrapper\">\n    <nav class=\"navbar navbar-inverse navbar-fixed-top\" role=\"navigation\">\n      <nav-bar></nav-bar>\n      <sidebar></sidebar>\n    </nav>\n    <router-outlet></router-outlet>\n  </div>\n  ",
+	            template: "\n  <div id=\"wrapper\">\n    \n      <header></header>\n      <sidebar></sidebar>\n    \n    <router-outlet></router-outlet>\n  </div>\n  ",
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                nav_bar_1.NavbarComponent,
@@ -5994,7 +5994,6 @@ webpackJsonp([2],[
 	    RequestListClientComponent.prototype.seeMore = function () {
 	        this.num = this.num + 5;
 	        this.getAllRequests();
-	        console.log(this.num);
 	    };
 	    RequestListClientComponent.prototype.getAllRequests = function () {
 	        var _this = this;
@@ -6199,8 +6198,8 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	//components
-	var request_friend_record_1 = __webpack_require__(645);
-	var friend_record_1 = __webpack_require__(644);
+	var request_friend_record_1 = __webpack_require__(644);
+	var friend_record_1 = __webpack_require__(643);
 	var user_profile_bar_1 = __webpack_require__(286);
 	//services
 	var users_1 = __webpack_require__(31);
@@ -6295,7 +6294,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	//Component
-	var request_record_1 = __webpack_require__(646);
+	var request_record_1 = __webpack_require__(645);
 	var user_profile_bar_1 = __webpack_require__(286);
 	//services
 	var users_1 = __webpack_require__(31);
@@ -6419,10 +6418,10 @@ webpackJsonp([2],[
 	/**
 	 * Shared components
 	 */
-	var header_1 = __webpack_require__(636);
-	var side_bar_1 = __webpack_require__(637);
+	var side_bar_1 = __webpack_require__(636);
 	var footer_1 = __webpack_require__(634);
 	var user_profile_1 = __webpack_require__(437);
+	var header_1 = __webpack_require__(439);
 	//import { FriendListComponent } from "./front-end/shared/friend-list";
 	/**
 	 * Page components
@@ -6450,7 +6449,7 @@ webpackJsonp([2],[
 	    KshareComponent = __decorate([
 	        core_1.Component({
 	            selector: 'kshare-app',
-	            template: "\n    <header></header>\n    <sidebar></sidebar>\n    <!--<friend-list></friend-list>-->\n    <router-outlet></router-outlet>\n  ",
+	            template: "\n    <sidebar></sidebar>\n    <!--<friend-list></friend-list>-->\n    <router-outlet></router-outlet>\n  ",
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                header_1.HeaderComponent,
@@ -6497,121 +6496,117 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	/**
-	 * Created by GiangDH on 8/12/16.
+	 * Created by GiangDH on 5/18/16.
 	 */
 	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(5);
+	var auth_1 = __webpack_require__(42);
+	var notification_1 = __webpack_require__(100);
 	var users_1 = __webpack_require__(31);
-	var PrivateChatComponent = (function () {
-	    function PrivateChatComponent(_userService) {
+	var private_chat_1 = __webpack_require__(646);
+	var HeaderComponent = (function () {
+	    function HeaderComponent(_auth, router, _noti, _userService) {
+	        this._auth = _auth;
+	        this.router = router;
+	        this._noti = _noti;
 	        this._userService = _userService;
-	        this.friendlist = [];
-	        this.friendNames = [];
-	        this.username = localStorage.getItem('username');
-	        this.socket = io('https://localhost:80');
-	        this.messages = [];
+	        this.count = 2;
+	        this.num = 10;
+	        this.userToken = localStorage.getItem('username');
+	        this.roleToken = localStorage.getItem('userrole');
 	    }
-	    PrivateChatComponent.prototype.ngOnInit = function () {
+	    HeaderComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        //list all friends
-	        this.socket.on('private-message-return', function (data) {
-	            console.log(data);
-	            _this.messages.push(data);
-	        });
-	        this._userService.getFriendList(this.username).subscribe(function (listFriend) {
-	            for (var i = 0; i < listFriend.length; i++) {
-	                if (listFriend[i].user2 === _this.username && listFriend[i].status === "accepted") {
-	                    _this.friendlist.push(listFriend[i]);
-	                }
-	                if (listFriend[i].user1 === _this.username && listFriend[i].status === "accepted") {
-	                    _this.friendlist.push(listFriend[i]);
-	                }
+	        this._auth.isLoggedIn().subscribe(function (res) {
+	            if (res.login) {
+	                _this.loginToken = true;
+	                _this.getNotificationByUser();
 	            }
-	            _this.getFriendName();
+	            else {
+	                _this._auth.logoutClient();
+	                _this.loginToken = false;
+	            }
+	        }, function (error) {
+	            console.log('Server error');
 	        });
-	        this.socket.on('room-created', function (chatRoom) {
-	            //check if logged in user is belong to the chatRoom
-	            if (chatRoom) {
-	                var isOwner = function (users, username) {
-	                    for (var k in users) {
-	                        if (users[k] == username) {
-	                            return true;
-	                        }
-	                    }
-	                    return false;
-	                };
-	                if (isOwner(chatRoom.users, _this.username)) {
-	                    var data = {
-	                        room: chatRoom._id
-	                    };
-	                    //join room
-	                    _this.socket.emit('subscribe', data);
-	                    _this.messages.push(chatRoom.chatLogs[0]);
-	                    _this.room = chatRoom._id;
-	                }
+	        this.link = '';
+	        this.socket = io('https://localhost:80');
+	        this.socket.on('receive notification', function (data) {
+	            if (localStorage.getItem('username') === data.data.user) {
+	                //audio of notification
+	                var audio = new Audio();
+	                audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
+	                audio.load();
+	                audio.play();
+	                _this.getNotificationByUser();
+	                //show noti
+	                _this.notiTitle = data.data.title;
+	                _this.link = data.data.link;
+	                var x = document.getElementById("snackbar");
+	                x.className = "show";
+	                setTimeout(function () {
+	                    x.className = x.className.replace("show", "");
+	                }, 10000);
 	            }
 	        });
-	        this.socket.on('room-returned', function (chatRoom) {
-	            if (chatRoom) {
-	                var isOwner = function (users, username) {
-	                    for (var k in users) {
-	                        if (users[k] == username) {
-	                            return true;
-	                        }
-	                    }
-	                    return false;
-	                };
-	                if (isOwner(chatRoom.users, _this.username)) {
-	                    var data = {
-	                        room: chatRoom._id
-	                    };
-	                    //join room
-	                    _this.socket.emit('subscribe', data);
-	                    _this.messages.push(chatRoom.chatLogs[0]);
-	                    _this.room = chatRoom._id;
+	    };
+	    HeaderComponent.prototype.openChat = function () {
+	        //$('#chatboxWhole').openModal();
+	    };
+	    HeaderComponent.prototype.logout = function () {
+	        var _this = this;
+	        this._auth.logout()
+	            .subscribe(function (res) {
+	            if (res.success == true) {
+	                _this._auth.logoutClient();
+	                window.location.reload();
+	            }
+	        });
+	    };
+	    HeaderComponent.prototype.showNotification = function (title) {
+	        this.notiTitle = title;
+	        var x = document.getElementById("snackbar");
+	        x.className = "show";
+	        setTimeout(function () {
+	            x.className = x.className.replace("show", "");
+	        }, 10000);
+	    };
+	    HeaderComponent.prototype.getNotificationByUser = function () {
+	        var _this = this;
+	        this.countUnReadNoti = 0;
+	        this._noti.getNotificationByUser(this.userToken, this.num).subscribe(function (notifications) {
+	            _this.notifications = notifications;
+	            for (var i = 0; i < notifications.length; i++) {
+	                if (notifications[i].status === "Chưa đọc") {
+	                    _this.countUnReadNoti++;
 	                }
 	            }
 	        });
 	    };
-	    PrivateChatComponent.prototype.getReceiver = function (receiver) {
-	        this.messages = [];
-	        this.receiver = receiver;
-	        var data = {
-	            user1: this.username,
-	            user2: this.receiver
-	        };
-	        this.socket.emit('get-chatroom', data);
+	    HeaderComponent.prototype.changeStatusNotification = function () {
+	        this.countUnReadNoti = 0;
+	        this._noti.changeStatusNotification(this.userToken).subscribe(function (notifications) {
+	            console.log('change status notification successful');
+	        });
 	    };
-	    PrivateChatComponent.prototype.getFriendName = function () {
-	        for (var i = 0; i < this.friendlist.length; i++) {
-	            if (this.friendlist[i].user1 === this.username) {
-	                this.friendNames.push(this.friendlist[i].user2);
-	            }
-	            else if (this.friendlist[i].user2 === this.username) {
-	                this.friendNames.push(this.friendlist[i].user1);
-	            }
-	        }
+	    HeaderComponent.prototype.seeMore = function () {
+	        this.num = this.num + 10;
+	        this.getNotificationByUser();
 	    };
-	    PrivateChatComponent.prototype.sendMessage = function (message) {
-	        var data = {
-	            room: this.room,
-	            sender: this.username,
-	            message: message,
-	            receiver: this.receiver
-	        };
-	        this.socket.emit('private-message', data);
-	    };
-	    PrivateChatComponent = __decorate([
+	    HeaderComponent = __decorate([
 	        core_1.Component({
-	            selector: 'private-chat',
-	            templateUrl: 'client/dev/app/components/shared/templates/chatbox.html',
-	            styleUrls: ['client/dev/app/components/shared/styles/chatbox.css']
+	            selector: 'header',
+	            templateUrl: 'client/dev/app/components/shared/templates/header.html',
+	            styleUrls: ['client/dev/app/components/shared/styles/header.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object])
-	    ], PrivateChatComponent);
-	    return PrivateChatComponent;
-	    var _a;
+	        __metadata('design:paramtypes', [(typeof (_a = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object])
+	    ], HeaderComponent);
+	    return HeaderComponent;
+	    var _a, _b, _c, _d;
 	}());
-	exports.PrivateChatComponent = PrivateChatComponent;
+	exports.HeaderComponent = HeaderComponent;
 	
 
 /***/ },
@@ -18029,8 +18024,7 @@ webpackJsonp([2],[
 	 * */
 	var admin_component_1 = __webpack_require__(418);
 	var kshare_component_1 = __webpack_require__(438);
-	// Shared component
-	var private_chat_1 = __webpack_require__(439);
+	var header_1 = __webpack_require__(439);
 	/**
 	 * services
 	 **/
@@ -18050,10 +18044,10 @@ webpackJsonp([2],[
 	    AppComponent = __decorate([
 	        core_1.Component({
 	            selector: 'kshare-app',
-	            template: "\n  <router-outlet></router-outlet>\n  ",
+	            template: "\n  <header></header>\n  <router-outlet></router-outlet>\n  ",
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
-	                private_chat_1.PrivateChatComponent
+	                header_1.HeaderComponent
 	            ],
 	            precompile: [kshare_component_1.KshareComponent, admin_component_1.AdminComponent],
 	            providers: [
@@ -19160,144 +19154,6 @@ webpackJsonp([2],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	/**
-	 * Created by GiangDH on 5/18/16.
-	 */
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(5);
-	var auth_1 = __webpack_require__(42);
-	var notification_1 = __webpack_require__(100);
-	var users_1 = __webpack_require__(31);
-	var private_chat_1 = __webpack_require__(439);
-	var HeaderComponent = (function () {
-	    function HeaderComponent(_auth, router, _noti, _userService) {
-	        this._auth = _auth;
-	        this.router = router;
-	        this._noti = _noti;
-	        this._userService = _userService;
-	        this.count = 2;
-	        this.num = 10;
-	        this.userToken = localStorage.getItem('username');
-	        this.roleToken = localStorage.getItem('userrole');
-	    }
-	    HeaderComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this._auth.isLoggedIn().subscribe(function (res) {
-	            if (res.login) {
-	                _this.loginToken = true;
-	                _this.getNotificationByUser();
-	            }
-	            else {
-	                _this._auth.logoutClient();
-	                _this.loginToken = false;
-	            }
-	        }, function (error) {
-	            console.log('Server error');
-	        });
-	        this.link = '';
-	        this.socket = io('https://localhost:80');
-	        this.socket.on('receive notification', function (data) {
-	            if (localStorage.getItem('username') === data.data.user) {
-	                //audio of notification
-	                var audio = new Audio();
-	                audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
-	                audio.load();
-	                audio.play();
-	                _this.getNotificationByUser();
-	                //show noti
-	                _this.notiTitle = data.data.title;
-	                _this.link = data.data.link;
-	                var x = document.getElementById("snackbar");
-	                x.className = "show";
-	                setTimeout(function () {
-	                    x.className = x.className.replace("show", "");
-	                }, 10000);
-	            }
-	        });
-	        $('.modal-trigger').leanModal({
-	            dismissible: true,
-	            opacity: .5,
-	            in_duration: 300,
-	            out_duration: 200,
-	            starting_top: '4%',
-	            ending_top: '10%',
-	            ready: function () { alert('Ready'); },
-	            complete: function () { alert('Closed'); } // Callback for Modal close
-	        });
-	    };
-	    HeaderComponent.prototype.openChat = function () {
-	        $('#chatboxWhole').openModal();
-	    };
-	    HeaderComponent.prototype.logout = function () {
-	        var _this = this;
-	        this._auth.logout()
-	            .subscribe(function (res) {
-	            if (res.success == true) {
-	                _this._auth.logoutClient();
-	                window.location.reload();
-	            }
-	        });
-	    };
-	    HeaderComponent.prototype.showNotification = function (title) {
-	        this.notiTitle = title;
-	        var x = document.getElementById("snackbar");
-	        x.className = "show";
-	        setTimeout(function () {
-	            x.className = x.className.replace("show", "");
-	        }, 10000);
-	    };
-	    HeaderComponent.prototype.getNotificationByUser = function () {
-	        var _this = this;
-	        this.countUnReadNoti = 0;
-	        this._noti.getNotificationByUser(this.userToken, this.num).subscribe(function (notifications) {
-	            _this.notifications = notifications;
-	            for (var i = 0; i < notifications.length; i++) {
-	                if (notifications[i].status === "Chưa đọc") {
-	                    _this.countUnReadNoti++;
-	                }
-	            }
-	        });
-	    };
-	    HeaderComponent.prototype.changeStatusNotification = function () {
-	        this.countUnReadNoti = 0;
-	        this._noti.changeStatusNotification(this.userToken).subscribe(function (notifications) {
-	            console.log('change status notification successful');
-	        });
-	    };
-	    HeaderComponent.prototype.seeMore = function () {
-	        this.num = this.num + 10;
-	        this.getNotificationByUser();
-	    };
-	    HeaderComponent = __decorate([
-	        core_1.Component({
-	            selector: 'header',
-	            templateUrl: 'client/dev/app/components/front-end/shared/templates/header.html',
-	            styleUrls: ['client/dev/app/components/front-end/shared/styles/header.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object])
-	    ], HeaderComponent);
-	    return HeaderComponent;
-	    var _a, _b, _c, _d;
-	}());
-	exports.HeaderComponent = HeaderComponent;
-	
-
-/***/ },
-/* 637 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(5);
 	var knowledge_1 = __webpack_require__(52);
@@ -19343,7 +19199,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 638 */
+/* 637 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19429,7 +19285,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 639 */
+/* 638 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19552,7 +19408,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 640 */
+/* 639 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19668,7 +19524,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 641 */
+/* 640 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19704,7 +19560,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 642 */
+/* 641 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19802,7 +19658,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 643 */
+/* 642 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19857,7 +19713,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 644 */
+/* 643 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19943,7 +19799,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 645 */
+/* 644 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20045,7 +19901,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 646 */
+/* 645 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20130,6 +19986,138 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d;
 	}());
 	exports.RequestRecordComponent = RequestRecordComponent;
+	
+
+/***/ },
+/* 646 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/12/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var users_1 = __webpack_require__(31);
+	var PrivateChatComponent = (function () {
+	    function PrivateChatComponent(_userService) {
+	        this._userService = _userService;
+	        this.friendlist = [];
+	        this.friendNames = [];
+	        this.username = localStorage.getItem('username');
+	        this.socket = io('https://localhost:80');
+	        this.messages = [];
+	    }
+	    PrivateChatComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        //list all friends
+	        this.socket.on('private-message-return', function (data) {
+	            console.log(data);
+	            _this.messages.push(data);
+	        });
+	        this._userService.getFriendList(this.username).subscribe(function (listFriend) {
+	            for (var i = 0; i < listFriend.length; i++) {
+	                if (listFriend[i].user2 === _this.username && listFriend[i].status === "accepted") {
+	                    _this.friendlist.push(listFriend[i]);
+	                }
+	                if (listFriend[i].user1 === _this.username && listFriend[i].status === "accepted") {
+	                    _this.friendlist.push(listFriend[i]);
+	                }
+	            }
+	            _this.getFriendName();
+	        });
+	        this.socket.on('room-created', function (chatRoom) {
+	            //check if logged in user is belong to the chatRoom
+	            if (chatRoom) {
+	                var isOwner = function (users, username) {
+	                    for (var k in users) {
+	                        if (users[k] == username) {
+	                            return true;
+	                        }
+	                    }
+	                    return false;
+	                };
+	                if (isOwner(chatRoom.users, _this.username)) {
+	                    var data = {
+	                        room: chatRoom._id
+	                    };
+	                    //join room
+	                    _this.socket.emit('subscribe', data);
+	                    _this.messages.push(chatRoom.chatLogs[0]);
+	                    _this.room = chatRoom._id;
+	                }
+	            }
+	        });
+	        this.socket.on('room-returned', function (chatRoom) {
+	            if (chatRoom) {
+	                var isOwner = function (users, username) {
+	                    for (var k in users) {
+	                        if (users[k] == username) {
+	                            return true;
+	                        }
+	                    }
+	                    return false;
+	                };
+	                if (isOwner(chatRoom.users, _this.username)) {
+	                    var data = {
+	                        room: chatRoom._id
+	                    };
+	                    //join room
+	                    _this.socket.emit('subscribe', data);
+	                    _this.messages.push(chatRoom.chatLogs[0]);
+	                    _this.room = chatRoom._id;
+	                }
+	            }
+	        });
+	    };
+	    PrivateChatComponent.prototype.getReceiver = function (receiver) {
+	        this.messages = [];
+	        this.receiver = receiver;
+	        var data = {
+	            user1: this.username,
+	            user2: this.receiver
+	        };
+	        this.socket.emit('get-chatroom', data);
+	    };
+	    PrivateChatComponent.prototype.getFriendName = function () {
+	        for (var i = 0; i < this.friendlist.length; i++) {
+	            if (this.friendlist[i].user1 === this.username) {
+	                this.friendNames.push(this.friendlist[i].user2);
+	            }
+	            else if (this.friendlist[i].user2 === this.username) {
+	                this.friendNames.push(this.friendlist[i].user1);
+	            }
+	        }
+	    };
+	    PrivateChatComponent.prototype.sendMessage = function (message) {
+	        var data = {
+	            room: this.room,
+	            sender: this.username,
+	            message: message,
+	            receiver: this.receiver
+	        };
+	        this.socket.emit('private-message', data);
+	    };
+	    PrivateChatComponent = __decorate([
+	        core_1.Component({
+	            selector: 'private-chat',
+	            templateUrl: 'client/dev/app/components/shared/templates/chatbox.html',
+	            styleUrls: ['client/dev/app/components/shared/styles/chatbox.css']
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object])
+	    ], PrivateChatComponent);
+	    return PrivateChatComponent;
+	    var _a;
+	}());
+	exports.PrivateChatComponent = PrivateChatComponent;
 	
 
 /***/ },
@@ -20259,12 +20247,12 @@ webpackJsonp([2],[
 	var kspace_info_1 = __webpack_require__(429);
 	var friend_list_1 = __webpack_require__(436);
 	var user_profile_1 = __webpack_require__(437);
-	var register_1 = __webpack_require__(640);
-	var info_1 = __webpack_require__(639);
-	var success_1 = __webpack_require__(641);
-	var login_1 = __webpack_require__(638);
-	var reset_pass_1 = __webpack_require__(643);
-	var new_pass_1 = __webpack_require__(642);
+	var register_1 = __webpack_require__(639);
+	var info_1 = __webpack_require__(638);
+	var success_1 = __webpack_require__(640);
+	var login_1 = __webpack_require__(637);
+	var reset_pass_1 = __webpack_require__(642);
+	var new_pass_1 = __webpack_require__(641);
 	var create_article_1 = __webpack_require__(425);
 	var detail_article_1 = __webpack_require__(426);
 	var list_article_1 = __webpack_require__(427);

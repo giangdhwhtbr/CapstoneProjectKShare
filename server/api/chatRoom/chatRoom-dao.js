@@ -32,7 +32,6 @@ chatRoomSchema.statics.getChatRoomByUsers = (data) => {
     });
 }
 
-
 chatRoomSchema.statics.getChatRoomById = (id) => {
 
   return new Promise((resolve, reject) => {
@@ -57,7 +56,6 @@ chatRoomSchema.statics.createChatRoom = (chatRoom) => {
       });
     });
 };
-
 
 chatRoomSchema.statics.updateChatRoomById = (info) => {
   return new Promise((resolve,reject) => {

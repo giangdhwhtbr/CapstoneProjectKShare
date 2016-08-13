@@ -24,8 +24,6 @@ export class UserService {
     private _emailResetPass = '/api/email-reset-pass/:email';
     private _changePass = '/api/new-pass/:token';
 
-
-
     constructor(private _http:Http) {
     }
 

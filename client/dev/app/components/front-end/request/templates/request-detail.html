@@ -65,7 +65,7 @@
                 <span *ngIf="offer.status==='Được chấp nhận'" class="glyphicon glyphicon-ok" style="color:green;"></span>
 
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-                    Người tạo : <a href="/user/{{offer.user}}">{{offer.user}}</a>
+                    Người tạo : <a [routerLink]="['/user/' + offer.user]">{{offer.user}}</a>
                 </div>
                 <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
                     Trạng thái : {{offer.status}}

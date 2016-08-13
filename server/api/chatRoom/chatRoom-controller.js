@@ -32,8 +32,6 @@ module.exports = class ChatRoomController {
         .createChatRoom(chatRoom)
         .then(chatRoom => {return chatRoom})
         .catch(error => {return error});
-
-      //result.then(chatRoom => {console.log(chatRoom)});
   }
 
  static updateChatRoom(data){

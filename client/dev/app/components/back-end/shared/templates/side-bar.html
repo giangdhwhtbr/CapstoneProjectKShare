@@ -1,27 +1,58 @@
-<div class="collapse navbar-collapse navbar-ex1-collapse">
-    <ul class="nav navbar-nav side-nav">
-        <li routerLinkActive="active">
-            <a [routerLink]="['/admin/users']">
-                <span class="glyphicon glyphicon-user"></span>
-                Người dùng </a>
-        </li>
-        <li routerLinkActive="active">
-            <a [routerLink]="['/admin/knowledges']"><i class="glyphicon glyphicon-book"></i> Tri thức</a>
-        </li>
-        <li routerLinkActive="active">
-            <a [routerLink]="['/admin/requests']"><i class="glyphicon glyphicon-flag"></i> Yêu cầu</a>
-        </li>
-        <li>
-            <a [routerLink]="['/admin/tags']"><i class="glyphicon glyphicon-flag"></i>quản lý Tag</a>
-        </li>
-        <li>
-            <a [routerLink]="['/admin/articles']"><i class="glyphicon glyphicon-flag"></i>Bài viết</a>
-        </li>
-        <!--<li>
-            <a href="ksspaces.html"><i class="fa fa-fw fa-desktop"></i> Kspace</a>
-        </li>-->
-        <li>
-            <a [routerLink]="['/admin/reports']"><i class="fa fa-fw fa-desktop"></i> Báo cáo vi phạm</a>
-        </li>
-    </ul>
-</div>
+<!--<div class="collapse navbar-collapse navbar-ex1-collapse">-->
+    <!--<ul class="nav navbar-nav side-nav">-->
+        <!--<li routerLinkActive="active">-->
+            <!--<a [routerLink]="['/admin/users']">-->
+                <!--<span class="glyphicon glyphicon-user"></span>-->
+                <!--Người dùng </a>-->
+        <!--</li>-->
+        <!--<li routerLinkActive="active">-->
+            <!--<a [routerLink]="['/admin/knowledges']"><i class="glyphicon glyphicon-book"></i> Tri thức</a>-->
+        <!--</li>-->
+        <!--<li routerLinkActive="active">-->
+            <!--<a [routerLink]="['/admin/requests']"><i class="glyphicon glyphicon-flag"></i> Yêu cầu</a>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a [routerLink]="['/admin/tags']"><i class="glyphicon glyphicon-flag"></i>quản lý Tag</a>-->
+        <!--</li>-->
+        <!--<li>-->
+            <!--<a [routerLink]="['/admin/articles']"><i class="glyphicon glyphicon-flag"></i>Bài viết</a>-->
+        <!--</li>-->
+        <!--&lt;!&ndash;<li>-->
+            <!--<a href="ksspaces.html"><i class="fa fa-fw fa-desktop"></i> Kspace</a>-->
+        <!--</li>&ndash;&gt;-->
+        <!--<li>-->
+            <!--<a [routerLink]="['/admin/reports']"><i class="fa fa-fw fa-desktop"></i> Báo cáo vi phạm</a>-->
+        <!--</li>-->
+    <!--</ul>-->
+<!--</div>-->
+<ul id="slide-out" class="side-nav fixed z-depth-2">
+    <li class="center no-padding">
+        <div class="indigo darken-2 white-text" style="height: 64px;">
+            <div class="row">
+                <h3 class="logo">K</h3>
+            </div>
+        </div>
+    </li>
+    <li routerLinkActive="active">
+        <a [routerLink]="['/admin/users']" class="waves-effect">
+            Người dùng </a>
+    </li>
+    <li routerLinkActive="active">
+        <a [routerLink]="['/admin/knowledges']" class="waves-effect"> Tri thức</a>
+    </li>
+    <li routerLinkActive="active">
+        <a [routerLink]="['/admin/requests']" class="waves-effect"> Yêu cầu</a>
+    </li>
+    <li>
+        <a [routerLink]="['/admin/tags']" class="waves-effect"> Quản lý Tag</a>
+    </li>
+    <li>
+        <a [routerLink]="['/admin/articles']" class="waves-effect">Quản lý bài viết</a>
+    </li>
+    <!--<li>
+        <a href="ksspaces.html"><i class="fa fa-fw fa-desktop"></i> Kspace</a>
+    </li>-->
+    <li>
+        <a [routerLink]="['/admin/reports']" class="waves-effect"> Báo cáo vi phạm</a>
+    </li>
+</ul>
