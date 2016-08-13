@@ -1,5 +1,13 @@
 //cores
-import { Component, OnInit, Input } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Pipe,
+  Input,
+  PipeTransform,
+  Inject,
+  OnDestroy
+} from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 //services
@@ -49,16 +57,6 @@ export class RequestRecordComponent {
       this.status = 'Đã được chấp nhận';
     }
   }
-
-   public formatDate = function (date) {
-     if (date) {
-       var newDate, day, month, year;
-       year = date.substr(0, 4);
-       month = date.substr(5, 2);
-       day = date.substr(8, 2);
-       return newDate = day + '/' + month + '/' + year;
-     }
-   }
 
    public getKnowledgeNameOfRequest() {
      //get back.knowledge name by knowledgeId

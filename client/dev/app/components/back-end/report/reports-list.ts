@@ -18,22 +18,31 @@ export class ReportListComponent {
     pageTitle: string = 'Report List';
     errorMessage: string;
     badwordForm: ControlGroup;
-    reports: Report[];
+    pendingReports: Report[] = [];
+    handlingReports: Report[] = [];
     public filter: string = '';
-    
+
     constructor(fb: FormBuilder, private _reportService: ReportService, private router: Router) {
 
     }
     ngOnInit() {
-        this.getAll();
+        this.getAllPending();
+        this.getAllHandling();
     }
 
-    getAll(): void {
+    getAllPending(): void {
         this._reportService
-            .getAllReports()
+            .getAllReports('pending')
             .subscribe((reports) => {
-                this.reports = reports;
-                console.log(this.reports);
+                this.pendingReports = reports;
+            });
+    }
+
+    getAllHandling(): void {
+        this._reportService
+            .getAllReports('handling')
+            .subscribe((reports) => {
+                this.handlingReports = reports;
             });
     }
 
@@ -42,7 +51,19 @@ export class ReportListComponent {
         if (r == true) {
             this._reportService.deactivateReport(id).subscribe((r) => {
                 console.log('deactivate successfully');
-                this.getAll();
+                this.getAllPending();
+                this.getAllHandling();
+            });
+        }
+    }
+
+    changeStatusHandling(id: string) {
+        var r = confirm("Bạn có muốn thay đổi trạng thái?");
+        if (r == true) {
+            this._reportService.changeStatusHandling(id).subscribe((r) => {
+                console.log('change status successfully');
+                this.getAllPending();
+                this.getAllHandling();
             });
         }
     }

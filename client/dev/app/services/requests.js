@@ -20,8 +20,14 @@ var RequestService = (function () {
         this._statusSubcriberUrl = '/api/requests-subcriber/:id';
         this._requestStatusUrl = '/api/requests-status/:id';
     }
-    RequestService.prototype.getAllRequests = function () {
-        return this._http.get(this._requestsUrl.replace(':id', ''))
+    RequestService.prototype.getAllRequests = function (num) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _data = JSON.stringify({
+            num: num
+        });
+        return this._http.put(this._requestUserUrl.replace(':id', ''), _data, options)
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };

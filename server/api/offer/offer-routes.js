@@ -7,12 +7,12 @@ module.exports = class OfferRoutes {
       router
         .route('/api/offers')
         .get(OfferController.getAll)
-        .post(OfferController.createOffer);
+        .post(OfferController.createOffer)
+        .put(OfferController.getOfferByRequestId);
 
       router
         .route('/api/offers/:id')
-        .delete(OfferController.deleteOffer)
-        .put(OfferController.updateOffer)
-        .post(OfferController.getOfferByRequestId);
+        .put(OfferController.updateOffer);
+
     }
 }

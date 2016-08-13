@@ -12,7 +12,9 @@ import { ROUTER_DIRECTIVES} from '@angular/router';
 
 import { AdminComponent } from "./components/admin.component";
 import { KshareComponent } from "./components/kshare.component";
-//import { UserComponent } from "./user.component";
+
+// Shared component
+import { PrivateChatComponent } from "./components/shared/private-chat";
 
 /**
  * services
@@ -30,11 +32,14 @@ import {ArticleService} from "./services/article";
 
 @Component({
   selector: 'kshare-app',
-  template:'<router-outlet></router-outlet>',
+  template:`
+  <router-outlet></router-outlet>
+  `,
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    PrivateChatComponent
   ],
-  precompile: [KshareComponent],
+  precompile: [KshareComponent,AdminComponent],
   providers: [
     AuthService,
     UserService,

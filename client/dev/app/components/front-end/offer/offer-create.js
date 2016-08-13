@@ -16,8 +16,6 @@ var CreateOfferComponent = (function () {
         this._requestService = _requestService;
         this.user = localStorage.getItem('username');
         this.offerForm = fb.group({
-            "price": [""],
-            "numberOfLecture": [""],
             "requestId": [""],
             "message": [""],
             "user": [""]

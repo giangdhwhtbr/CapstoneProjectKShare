@@ -21,16 +21,10 @@ module.exports = class OfferController {
 
 //get front.offer by templates Id
   static getOfferByRequestId(req,res) {
-    if(req.params && req.params.id) {
       OfferDAO
-        .getOfferByRequestId(req.params.id)
+        .getOfferByRequestId(req.body.id, req.body.num)
         .then(offers => res.status(200).json(offers))
         .catch(error => res.status(400).json(error));
-    }else{
-      res.status(404).json({
-        "message"    :   "No Offer Id in templates"
-      });
-    }
   }
 
 static updateOffer(req, res){

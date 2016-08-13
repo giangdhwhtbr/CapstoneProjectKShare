@@ -9,110 +9,136 @@ import { Notification } from '../../../interface/notification';
 import { AuthService } from '../../../services/auth';
 import { NotificationService } from '../../../services/notification';
 import { UserService } from '../../../services/users';
-declare var io: any;
+import { PrivateChatComponent } from '../../../components/shared/private-chat';
+declare var io:any;
 
 @Component({
-  selector: 'header',
-  templateUrl: 'client/dev/app/components/front-end/shared/templates/header.html',
-  styleUrls: ['client/dev/app/components/front-end/shared/styles/header.css'],
-  directives: [
-    ROUTER_DIRECTIVES]
+    selector: 'header',
+    templateUrl: 'client/dev/app/components/front-end/shared/templates/header.html',
+    styleUrls: ['client/dev/app/components/front-end/shared/styles/header.css'],
+    directives: [
+        ROUTER_DIRECTIVES, PrivateChatComponent]
 })
 
 export class HeaderComponent {
-  notiTitle: string;
-  loginToken: boolean;
-  userToken: string;
-  roleToken: string;
-  countUnReadNoti: number;
-  link: string;
-  socket: any;
-  count: number = 2;
+    notiTitle:string;
+    loginToken:boolean;
+    userToken:string;
+    roleToken:string;
+    countUnReadNoti:number;
+    link:string;
+    socket:any;
+    count:number = 2;
+    num:number = 10;
 
-  notifications: Notification[];
+    notifications:Notification[];
 
-  constructor(private _auth: AuthService, public router: Router, public _noti: NotificationService,
-            private _userService: UserService) {
-    this.userToken = localStorage.getItem('username');
-    this.roleToken = localStorage.getItem('userrole');
-  }
+    constructor(private _auth:AuthService, public router:Router, public _noti:NotificationService,
+                private _userService:UserService) {
+        this.userToken = localStorage.getItem('username');
+        this.roleToken = localStorage.getItem('userrole');
+    }
 
-  ngOnInit(): void {
+    ngOnInit():void {
 
-    this._auth.isLoggedIn().subscribe(res =>{
-      if(res.login){
-        this.loginToken = true;
-        this.getNotificationByUser();
-      }else {
-        this._auth.logoutClient();
-        this.loginToken = false;
-      }
-    },
-    error => {
-      console.log('Server error');
-    });
+        this._auth.isLoggedIn().subscribe(res => {
+                if (res.login) {
+                    this.loginToken = true;
+                    this.getNotificationByUser();
+                } else {
+                    this._auth.logoutClient();
+                    this.loginToken = false;
+                }
+            },
+            error => {
+                console.log('Server error');
+            });
 
-    this.link = '';
-    this.socket = io('https://localhost:80');
-    this.socket.on('receive notification', (data) => {
-      if (localStorage.getItem('username') === data.data.user) {
-        //audio of notification
-        var audio = new Audio();
-        audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
-        audio.load();
-        audio.play();
-        this.getNotificationByUser(data.data.user);
+        this.link = '';
+        this.socket = io('https://localhost:80');
+        this.socket.on('receive notification', (data) => {
+            if (localStorage.getItem('username') === data.data.user) {
+                //audio of notification
+                var audio = new Audio();
+                audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
+                audio.load();
+                audio.play();
+                this.getNotificationByUser();
 
-        //show noti
-        this.notiTitle = data.data.title;
-        this.link = data.data.link;
+                //show noti
+                this.notiTitle = data.data.title;
+                this.link = data.data.link;
+                var x = document.getElementById("snackbar")
+                x.className = "show";
+                setTimeout(function () {
+                    x.className = x.className.replace("show", "");
+                }, 10000);
+            }
+        });
+
+        $('.modal-trigger').leanModal({
+                dismissible: true, // Modal can be dismissed by clicking outside of the modal
+                opacity: .5, // Opacity of modal background
+                in_duration: 300, // Transition in duration
+                out_duration: 200, // Transition out duration
+                starting_top: '4%', // Starting top style attribute
+                ending_top: '10%', // Ending top style attribute
+                ready: function() { alert('Ready'); }, // Callback for Modal open
+                complete: function() { alert('Closed'); } // Callback for Modal close
+            }
+        );
+    }
+
+    openChat(){
+        $('#chatboxWhole').openModal();
+    }
+
+    logout():void {
+        this._auth.logout()
+            .subscribe(res => {
+                if (res.success == true) {
+                    this._auth.logoutClient();
+                    window.location.reload();
+                }
+            });
+    }
+
+    showNotification(title:string) {
+        this.notiTitle = title;
         var x = document.getElementById("snackbar")
         x.className = "show";
-        setTimeout(function () { x.className = x.className.replace("show", ""); }, 10000);
-      }
-    });
-  }
+        setTimeout(function () {
+            x.className = x.className.replace("show", "");
+        }, 10000);
+    }
 
-  logout(): void {
-    this._auth.logout()
-      .subscribe(res => {
-        console.log(res);
-        if(res.success == true){
-          this._auth.logoutClient();
-          window.location.reload();
-        }
-      });
-  }
+    getNotificationByUser():void {
+        this.countUnReadNoti = 0;
+        this._noti.getNotificationByUser(this.userToken, this.num).subscribe(
+            (notifications) => {
+                this.notifications = notifications;
 
-  showNotification(title: string) {
-    this.notiTitle = title;
-    var x = document.getElementById("snackbar")
-    x.className = "show";
-    setTimeout(function () { x.className = x.className.replace("show", ""); }, 10000);
-  }
+                for (var i = 0; i < notifications.length; i++) {
+                    if (notifications[i].status === "Chưa đọc") {
+                        this.countUnReadNoti++;
+                    }
+                }
+            }
+        );
+    }
 
-  getNotificationByUser(): void {
-    this.countUnReadNoti = 0;
-    this._noti.getNotificationByUser(this.userToken).subscribe(
-      (notifications) => {
-        this.notifications = notifications;
+    changeStatusNotification():void {
+        this.countUnReadNoti = 0;
+        this._noti.changeStatusNotification(this.userToken).subscribe(
+            (notifications) => {
+                console.log('change status notification successful');
+            }
+        )
+    }
 
-        for (var i = 0; i < notifications.length; i++) {
-          if (notifications[i].status === "Chưa đọc") {
-            this.countUnReadNoti++;
-          }
-        }
-      }
-    );
-  }
-
-  changeStatusNotification(): void {
-    this.countUnReadNoti = 0;
-    this._noti.changeStatusNotification(this.userToken).subscribe(
-      (notifications) => {
-        console.log('change status notification successful');
-      }
-    )
-  }
+    seeMore() {
+        this.num = this.num + 10;
+        this.getNotificationByUser();
+    }
 
 }

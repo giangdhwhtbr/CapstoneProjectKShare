@@ -1,6 +1,7 @@
 //cores
-import { Component, OnInit, DoCheck  } from '@angular/core';
+import { Component, OnInit, OnDestroy  } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
+import { Subscription } from 'rxjs/Subscription';
 
 //Component
 import { RequestRecordComponent } from './request-record';
@@ -16,6 +17,7 @@ import { User } from '../../../../interface/user';
 import { FriendShip } from '../../../../interface/friendship';
 import { Request } from '../../../../interface/request';
 import { Knowledge } from '../../../../interface/knowledge';
+declare var $: any;
 
 @Component({
   selector: 'user-profile',
@@ -28,7 +30,7 @@ import { Knowledge } from '../../../../interface/knowledge';
   ]
 })
 
-export class UserProfileComponent implements DoCheck {
+export class UserProfileComponent {
 
   //name of user in current profile page
   name: string;
@@ -38,90 +40,82 @@ export class UserProfileComponent implements DoCheck {
 
   roleToken: string;
   userToken: string;
+  private sub: Subscription;
 
   //check if profile page of current user, hide "addFriend" button
   checkUser: boolean;
-
   //check if a user was sent friend request by current user
   checkSentRequestUser: boolean;
-
   //check if a current user is received a request of a user
-  checkIsRecivedRequest:boolean;
+  checkIsRecivedRequest: boolean;
 
   differ: any;
-
   userProfile: User;
-
   buttonTitle: string;
-
   friendList: FriendShip[];
-
-  requests: Request[];
-
+  requests: Request[] = [];
   knowledgeName: string;
+  num: any = 5;
+  height: number = 400;
 
   constructor(public router: Router, private route: ActivatedRoute, public _userService: UserService,
     public _knowledgeService: KnowledgeService) {
-    this.route
-      .params
-      .subscribe(params => {
-        this.name = params['name'];
-      });
     this.roleToken = localStorage.getItem('role');
     this.userToken = localStorage.getItem('username');
 
   }
 
   ngOnInit(): void {
-    this._userService.getUserByUserName(this.name).subscribe(
-      (user) => {
-        this.userProfile = user;
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
+    this.sub = this.route
+      .params
+      .subscribe(params => {
+        this.name = params['name'];
 
-    this.checkUserExist();
+        this._userService.getUserByUserName(this.name).subscribe(
+          (user) => {
+            this.userProfile = user;
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+        this.checkUserExist();
+        if (this.isExist = true) {
+          this.getRequestByUser();
+        }
 
-    if (this.isExist = true) {
-      this.getRequestByUser();
-    }
-
-
+        $(window).on("scroll", () => {
+          var scrollHeight = $(document).height();
+          var scrollPosition = $(window).height() + $(window).scrollTop();
+          if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+            setTimeout(() => {
+              this.seeMore();
+            }, 1000);
+            this.height += 30;
+          }
+        });
+      });
   }
 
+  seeMore(){
+    this.num = this.num + 5;
+    this.getRequestByUser();
+  }
+
+  ngOnDestroy(): void {
+    console.log(this.sub);
+    this.sub.unsubscribe();
+  }
 
   getRequestByUser(): void {
     this._userService
-      .getRequestByUser(this.name)
+      .getRequestByUser(this.name, this.num)
       .subscribe((requests) => {
-        for (var i = 0; i < requests.length; i++) {
-          requests[i].createdAt = this.formatDate(requests[i].createdAt);
-          requests[i].modifiedDate = this.formatDate(requests[i].modifiedDate);
+        for(var i = 0; i < requests.length; i++){
+          this.requests.push(requests[i]);
         }
-        this.requests = requests;
+        console.log(this.requests);
       })
-  }
-
-  public notification: any = {
-    show: false,
-    title: 'Demo notification!',
-    body: 'ng2-notifications',
-    icon: 'https://goo.gl/3eqeiE',
-    action: function () {
-      window.open('https://github.com/alexcastillo/ng2-notifications');
-    }
-  };
-
-  public formatDate = function (date) {
-    if (date) {
-      var newDate, day, month, year;
-      year = date.substr(0, 4);
-      month = date.substr(5, 2);
-      day = date.substr(8, 2);
-      return newDate = day + '/' + month + '/' + year;
-    }
   }
 
   public getKnowledgeNameOfRequest(knowledgeId) {

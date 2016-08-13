@@ -11,9 +11,7 @@ module.exports = class ChatRoomRoutes {
 
       router
         .route('/api/chat-rooms/:id')
-        .delete(ChatRoomController.deleteChatRoom)
         .put(ChatRoomController.updateChatRoom)
-        .get(ChatRoomController.getChatRoomById)
-        .post(ChatRoomController.getChatRoomByKSpaceId);
+        .get(ChatRoomController.getChatRoomById);
     }
 }

@@ -10,7 +10,7 @@ const KnwDAO = require('../knowledge/knowledge-dao');
 module.exports = class ArticleController {
     static getAllArticles(req, res) {
         ArticleDAO
-            .getAll()
+            .getAll(req.body.num)
             .then(articles => {
                 for (let i = articles.length - 1; i >= 0; i--) {
                     if (articles[i].status === "deactivate") {
@@ -42,6 +42,7 @@ module.exports = class ArticleController {
             }).catch(err=> res.status(400).json(err));
         }
     }
+
     static getTot(req,res){
 
         if (req.params && req.params.stt) {
@@ -154,7 +155,6 @@ module.exports = class ArticleController {
         }).catch((error)=>res.status(400).json(error));
     }
 
-
     static updateArticleById(req, res) {
         if (req.params && req.params.id) {
             let _data = req.body;
@@ -213,7 +213,6 @@ module.exports = class ArticleController {
                 }).catch(error => res.status(400).json(error));
         }
     }
-
 
     static deactivateArticle(req, res) {
         let _id = req.params.id;

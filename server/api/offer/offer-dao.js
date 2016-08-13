@@ -21,9 +21,7 @@ offerSchema.statics.getAll = () => {
 offerSchema.statics.getOfferById = (id) => {
 
   return new Promise((resolve, reject) => {
-    if(!_.isString(id)){
-      return reject(new TypeError('ID is not a String.'));
-    }
+
     Offer
       .findById(id)
       .exec((err, offer) => {
@@ -33,16 +31,15 @@ offerSchema.statics.getOfferById = (id) => {
   });
 }
 
-offerSchema.statics.getOfferByRequestId = (id) => {
-
+offerSchema.statics.getOfferByRequestId = (id, x) => {
   return new Promise((resolve, reject) => {
-    if(!_.isString(id)){
-      return reject(new TypeError('ID is not a String.'));
-    }
+
     Offer
       .find({
         'requestId': id
       })
+      .skip(x-5)
+      .limit(5)
       .exec((err, offer) => {
         err ? reject(err)
           : resolve(offer);

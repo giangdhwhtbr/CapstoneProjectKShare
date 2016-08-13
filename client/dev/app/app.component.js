@@ -13,8 +13,13 @@ var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/Rx'); // Load all features
 var router_1 = require('@angular/router');
+/**
+ * Page components
+ * */
+var admin_component_1 = require("./components/admin.component");
 var kshare_component_1 = require("./components/kshare.component");
-//import { UserComponent } from "./user.component";
+// Shared component
+var private_chat_1 = require("./components/shared/private-chat");
 /**
  * services
  **/
@@ -34,11 +39,12 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'kshare-app',
-            template: '<router-outlet></router-outlet>',
+            template: "\n  <router-outlet></router-outlet>\n  ",
             directives: [
-                router_1.ROUTER_DIRECTIVES
+                router_1.ROUTER_DIRECTIVES,
+                private_chat_1.PrivateChatComponent
             ],
-            precompile: [kshare_component_1.KshareComponent],
+            precompile: [kshare_component_1.KshareComponent, admin_component_1.AdminComponent],
             providers: [
                 auth_1.AuthService,
                 users_1.UserService,

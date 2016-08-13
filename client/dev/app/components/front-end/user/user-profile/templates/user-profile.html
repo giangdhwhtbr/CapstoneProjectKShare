@@ -21,7 +21,7 @@
             <user-profile-bar></user-profile-bar>
         </div>
         <div class="col-md-9">
-            <div class="profile-content">
+            <div class="profile-content"  [style.height.px]="height+'px'">
                 <!--content of user's wall-->
                 <h3>Danh sách yêu cầu đã tạo</h3>
                 <div *ngFor="let request of requests">

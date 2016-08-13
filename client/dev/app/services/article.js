@@ -18,8 +18,14 @@ var ArticleService = (function () {
         this._requestsGetDeArtUrl = '/api/art/de/:id';
         this._articleUserUrl = '/api/articles-user';
     }
-    ArticleService.prototype.getAllArts = function () {
-        return this._http.get(this._requestsUrl.replace(':id', ''))
+    ArticleService.prototype.getAllArts = function (num) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _data = JSON.stringify({
+            num: num
+        });
+        return this._http.put(this._requestsUrl.replace(':id', ''), _data, options)
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };

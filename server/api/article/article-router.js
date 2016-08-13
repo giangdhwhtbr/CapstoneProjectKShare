@@ -9,7 +9,7 @@ module.exports = class ArticleRoutes {
     static init(router) {
         router
             .route('/api/article')
-            .get(ArticleController.getAllArticles)
+            .put(ArticleController.getAllArticles)
             .post(ArticleController.createArticle);
 
         router

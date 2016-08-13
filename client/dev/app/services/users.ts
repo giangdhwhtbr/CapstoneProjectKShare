@@ -17,7 +17,7 @@ export class UserService {
     private _profilePictureUrl = '/api/user-picture';
     private _friendUrl = '/api/friendship/:id';
     private _getFriendUrl = '/api/getFriendship';
-    private _getRequestByUserUrl = '/api/requests-user/:user';
+    private _getRequestByUserUrl = '/api/requests-user/:user/:num';
     private _isUserExistUrl = '/api/is-user-exist/:username';
     private _friendshipStatusUrl = '/api/friendship-status/:user1/:user2';
     private _banUrl = '/api/ban/:id';
@@ -178,10 +178,10 @@ export class UserService {
     }
 
     //get request of an user
-    getRequestByUser(user:string):Observable<any> {
+    getRequestByUser(user:string, num:string):Observable<any> {
 
         return this._http
-            .get(this._getRequestByUserUrl.replace(':user', user))
+            .get(this._getRequestByUserUrl.replace(':user', user).replace(':num',num))
             .map((r) => r.json())
             .catch(this.handleError);
     }

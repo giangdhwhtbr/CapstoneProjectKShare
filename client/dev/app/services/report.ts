@@ -6,6 +6,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class ReportService {
   private _Url = '/api/reports/:id';
+  private _StatusUrl = '/api/reports-status/:status';
   constructor(private _http: Http) { }
 
 
@@ -26,9 +27,9 @@ export class ReportService {
       .map((r) => r.json());
   }
 
-  getAllReports(): Observable<any> {
+  getAllReports(status: string): Observable<any> {
     return this._http
-      .get(this._Url.replace(':id', ''))
+      .get(this._StatusUrl.replace(':status', status))
       .map((r) => r.json());
   }
 
@@ -39,6 +40,18 @@ export class ReportService {
     
     let _report = JSON.stringify({
       status: 'deactive'
+    });
+    return this._http
+      .put(this._Url.replace(':id', id), _report, options);
+  }
+
+  changeStatusHandling(id: string): Observable<any> {
+    let header = new Headers;
+    let headers = new Headers({ 'Content-Type': 'application/json' });
+    let options = new RequestOptions({ headers: headers });
+    
+    let _report = JSON.stringify({
+      status: 'handling'
     });
     return this._http
       .put(this._Url.replace(':id', id), _report, options);

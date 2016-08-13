@@ -13,6 +13,7 @@ var ReportService = (function () {
     function ReportService(_http) {
         this._http = _http;
         this._Url = '/api/reports/:id';
+        this._StatusUrl = '/api/reports-status/:status';
     }
     ReportService.prototype.addReport = function (report) {
         var header = new http_1.Headers;
@@ -29,9 +30,9 @@ var ReportService = (function () {
             .post(this._Url.replace(':id', ''), _report, options)
             .map(function (r) { return r.json(); });
     };
-    ReportService.prototype.getAllReports = function () {
+    ReportService.prototype.getAllReports = function (status) {
         return this._http
-            .get(this._Url.replace(':id', ''))
+            .get(this._StatusUrl.replace(':status', status))
             .map(function (r) { return r.json(); });
     };
     ReportService.prototype.deactivateReport = function (id) {
@@ -40,6 +41,16 @@ var ReportService = (function () {
         var options = new http_1.RequestOptions({ headers: headers });
         var _report = JSON.stringify({
             status: 'deactive'
+        });
+        return this._http
+            .put(this._Url.replace(':id', id), _report, options);
+    };
+    ReportService.prototype.changeStatusHandling = function (id) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _report = JSON.stringify({
+            status: 'handling'
         });
         return this._http
             .put(this._Url.replace(':id', id), _report, options);

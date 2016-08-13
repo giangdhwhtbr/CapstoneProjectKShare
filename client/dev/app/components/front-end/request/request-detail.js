@@ -12,7 +12,6 @@ var offer_create_1 = require('../offer/offer-create');
 var report_1 = require('../report/report');
 var RequestDetailClientComponent = (function () {
     function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
-        var _this = this;
         this._requestService = _requestService;
         this._offerService = _offerService;
         this.router = router;
@@ -20,59 +19,76 @@ var RequestDetailClientComponent = (function () {
         this._kspaceService = _kspaceService;
         this.route = route;
         this.pageTitle = 'Welcome to Knowledge Sharing Network';
+        this.num = 5;
+        this.height = 400;
         //check if request is accepted
         this.checkIsAcceped = false;
-        this.route
-            .params
-            .subscribe(function (params) {
-            _this.id = params['id'];
-        });
+        this.offers = [];
         this.roleToken = localStorage.getItem('userrole');
         this.userToken = localStorage.getItem('username');
     }
     RequestDetailClientComponent.prototype.ngOnInit = function () {
         var _this = this;
-        //get templates when load the page
-        this._requestService.getRequestById(this.id)
-            .subscribe(function (request) {
-            //translate status
-            if (request.status === 'accepted') {
-                request.status = 'Đã được chấp nhận';
-                _this.checkIsAcceped = true;
-            }
-            else if (request.status === 'deactive' || request.status === undefined) {
-                request.status = 'Đã kết thúc';
-                _this.checkDeactive = true;
-            }
-            else {
-                request.status = 'Đang chờ';
-            }
-            request.userlink = '/user/' + request.user;
-            _this._id = request._id;
-            _this.updateLink = '/requests/' + request._id + '/update';
-            _this.knowledgeId = request.knowledgeId;
-            _this.subscribers = request.subcribers;
-            //check if user is created user
-            if (request.user === _this.userToken) {
-                _this.checkCreatedUser = true;
-            }
-            //check if user already subcribed
-            for (var i = 0; i < _this.subscribers.length; i++) {
-                if (_this.userToken === _this.subscribers[i]) {
-                    _this.checkSubcribedUser = true;
-                    break;
+        this.route
+            .params
+            .subscribe(function (params) {
+            _this.id = params['id'];
+            //get templates when load the page
+            _this._requestService.getRequestById(_this.id)
+                .subscribe(function (request) {
+                //translate status
+                if (request.status === 'accepted') {
+                    request.status = 'Đã được chấp nhận';
+                    _this.checkIsAcceped = true;
                 }
-            }
-            _this.request = request;
-            //get back.knowledge name by knowledgeId
-            _this._knowledgeService.findKnowledgeById(_this.knowledgeId)
-                .subscribe(function (knowledge) {
-                _this.knowledge = knowledge;
-                //this.knowledgeName = this.knowledge.name;
-            }, function (error) {
-                console.log(error);
+                else if (request.status === 'deactive' || request.status === undefined) {
+                    request.status = 'Đã kết thúc';
+                    _this.checkDeactive = true;
+                }
+                else {
+                    request.status = 'Đang chờ';
+                }
+                request.userlink = '/user/' + request.user;
+                _this._id = request._id;
+                _this.updateLink = '/requests/' + request._id + '/update';
+                _this.knowledgeId = request.knowledgeId;
+                _this.subscribers = request.subcribers;
+                //check if user is created user
+                if (request.user === _this.userToken) {
+                    _this.checkCreatedUser = true;
+                }
+                //check if user already subcribed
+                for (var i = 0; i < _this.subscribers.length; i++) {
+                    if (_this.userToken === _this.subscribers[i]) {
+                        _this.checkSubcribedUser = true;
+                        break;
+                    }
+                }
+                _this.request = request;
+                //get back.knowledge name by knowledgeId
+                _this._knowledgeService.findKnowledgeById(_this.knowledgeId)
+                    .subscribe(function (knowledge) {
+                    _this.knowledge = knowledge;
+                    //this.knowledgeName = this.knowledge.name;
+                }, function (error) {
+                    console.log(error);
+                });
+            }, function (error) { return console.log(error); });
+            _this.getOfferByRequestId();
+            $(window).on("scroll", function () {
+                var scrollHeight = $(document).height();
+                var scrollPosition = $(window).height() + $(window).scrollTop();
+                if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+                    setTimeout(function () {
+                        _this.seeMore();
+                    }, 1000);
+                    _this.height += 30;
+                }
             });
-        }, function (error) { return console.log(error); });
+        });
+    };
+    RequestDetailClientComponent.prototype.seeMore = function () {
+        this.num = this.num + 5;
         this.getOfferByRequestId();
     };
     RequestDetailClientComponent.prototype.ngAfterViewChecked = function () {
@@ -83,17 +99,16 @@ var RequestDetailClientComponent = (function () {
     RequestDetailClientComponent.prototype.getOfferByRequestId = function () {
         var _this = this;
         //get front.offer of the templates when load the page
-        this._offerService.getOfferByRequestId(this.id).subscribe(function (offers) {
+        this._offerService.getOfferByRequestId(this.id, this.num).subscribe(function (offers) {
             for (var i = 0; i < offers.length; i++) {
-                offers[i].createdAt = new Date(offers[i].createdAt);
                 if (offers[i].status === 'pending') {
                     offers[i].status = 'Đang chờ';
                 }
                 else {
                     offers[i].status = 'Được chấp nhận';
                 }
+                _this.offers.push(offers[i]);
             }
-            _this.offers = offers;
         }, function (error) {
             console.log(error);
         });

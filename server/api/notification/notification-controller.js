@@ -31,9 +31,9 @@ module.exports = class NotificationController {
 
   static getNotificationByUser(req, res) {
     let _user = req.body.user;
-
+    let _num = req.body.num;
     NotificationDAO
-      .getNotificationByUser(_user)
+      .getNotificationByUser(_user, _num)
       .then(notifications => res.status(200).json(notifications))
       .catch(error => res.status(400).json(error));
   }

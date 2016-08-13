@@ -15,8 +15,14 @@ export class ArticleService {
     constructor(private _http:Http) {
     }
 
-    getAllArts():Observable<any[]> {
-        return this._http.get(this._requestsUrl.replace(':id', ''))
+    getAllArts(num: number):Observable<any[]> {
+        let header = new Headers;
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        let _data = JSON.stringify({
+            num: num
+        });
+        return this._http.put(this._requestsUrl.replace(':id', ''), _data, options)
             .map((r) => r.json())
             .catch(this.handleError);
     }
