@@ -1,0 +1,84 @@
+<div id="chatboxWhole" class="modal">
+    <div class="modal-content">
+        <div class="row">
+            <div class="col m4 bg-white box-list-fr">
+
+                <!-- =============================================================== -->
+                <!-- member list -->
+                <ul class="friend-list">
+                    <li *ngFor="let f of friendNames" class="fr-e">
+                        <a href="#" class="clearfix" (click)="getReceiver(f)">
+                            <img src="http://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
+
+                            <div class="friend-name">
+                                <strong>{{f}}</strong>
+                            </div>
+                            <div class="last-message text-muted">Hello, Are you there?</div>
+                            <small class="time text-muted">Just now</small>
+                            <!--<small class="chat-alert label label-danger">1</small>-->
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!--=========================================================-->
+            <!-- selected chat -->
+            <div class="col m8 bg-white ">
+                <div class="chat-message">
+                    <ul class="chat">
+                        <div *ngFor="let mes of messages">
+                            <li *ngIf="mes.sender!=username" class="left clearfix">
+                                <span class="chat-img pull-left">
+                                    <img src="http://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">
+                                </span>
+
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+                                        <strong class="primary-font">{{mes.sender}}</strong>
+                                        <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago
+                                        </small>
+                                    </div>
+                                    <p>
+                                        {{mes.message}}
+                                    </p>
+                                </div>
+                            </li>
+                            <li *ngIf="mes.sender==username" class="right clearfix">
+                            <span class="chat-img pull-right">
+                                <img src="http://bootdey.com/img/Content/user_1.jpg" alt="User Avatar">
+                            </span>
+
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+                                        <strong class="primary-font">{{mes.sender}}</strong>
+                                        <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago
+                                        </small>
+                                    </div>
+                                    <p>
+                                        {{mes.message}}
+                                    </p>
+                                </div>
+                            </li>
+                        </div>
+
+
+                    </ul>
+                </div>
+                <div class="chat-box bg-white">
+                    <div class="input-group">
+                        <input #mess class="form-control border no-shadow no-rounded"
+                               placeholder="Type your message here">
+            		<span class="input-group-btn">
+            			<button class="btn btn-success no-rounded" (click)="sendMessage(mess.value)" type="button">
+                            Send
+                        </button>
+            		</span>
+                    </div><!-- /input-group -->
+                </div>
+            </div>
+        </div>
+    </div>
+    <!--<div class="modal-footer">-->
+    <!--<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>-->
+    <!--</div>-->
+</div>

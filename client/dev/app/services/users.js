@@ -19,7 +19,7 @@ var UserService = (function () {
         this._profilePictureUrl = '/api/user-picture';
         this._friendUrl = '/api/friendship/:id';
         this._getFriendUrl = '/api/getFriendship';
-        this._getRequestByUserUrl = '/api/requests-user/:user';
+        this._getRequestByUserUrl = '/api/requests-user/:user/:num';
         this._isUserExistUrl = '/api/is-user-exist/:username';
         this._friendshipStatusUrl = '/api/friendship-status/:user1/:user2';
         this._banUrl = '/api/ban/:id';
@@ -149,9 +149,9 @@ var UserService = (function () {
             .map(function (r) { return r.json(); });
     };
     //get request of an user
-    UserService.prototype.getRequestByUser = function (user) {
+    UserService.prototype.getRequestByUser = function (user, num) {
         return this._http
-            .get(this._getRequestByUserUrl.replace(':user', user))
+            .get(this._getRequestByUserUrl.replace(':user', user).replace(':num', num))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };

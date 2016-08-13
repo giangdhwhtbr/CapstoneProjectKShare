@@ -18,13 +18,24 @@ chatRoomSchema.statics.getAll = () => {
       });
 };
 
+chatRoomSchema.statics.getChatRoomByUsers = (data) => {
+    return new Promise((resolve, reject) => {
+        ChatRoom
+            .findOne({$or: [
+                {"users.0":data.user1, "users.1":data.user2},
+                {"users.1":data.user2, "users.0":data.user1},
+            ]})
+            .exec((err, chatRoom) => {
+                err ? reject(err)
+                    : resolve(chatRoom);
+            });
+    });
+}
+
+
 chatRoomSchema.statics.getChatRoomById = (id) => {
 
   return new Promise((resolve, reject) => {
-    if(!_.isString(id)){
-      return reject(new TypeError('ID is not a String.'));
-    }
-
     ChatRoom
       .findById(id)
       .exec((err, chatRoom) => {

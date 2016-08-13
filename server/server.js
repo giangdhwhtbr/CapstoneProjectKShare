@@ -19,6 +19,7 @@ const Routes = require('./routes/index');
 const socket = require('socket.io');
 
 const KSpaceCtrl = require('./api/kspace/kspace-controller');
+const ChatRoomCtrl = require('./api/chatRoom/chatRoom-controller');
 
 RoutesConfig.init(app);
 PoliciesConfig.init();
@@ -109,4 +110,51 @@ io.on('connection',  (socket) => {
 
     socket.in(data.room).broadcast.emit('changeBoard',dataReturn);
   });
+
+  /**
+   * Socket.io configuration for private chatting feature
+   * */
+
+  //Listening for private chat message
+
+  socket.on('private-message', (data) => {
+    var users = {
+      user1: data.sender,
+      user2: data.receiver
+    };
+    ChatRoomCtrl.getChatRoomByUser(users)
+    .then(chatRoom => {
+      if(chatRoom){
+        var updateData = {
+          room: chatRoom._id,
+          sender: data.sender,
+          message: data.message,
+          sentAt: new Date()
+        };
+        ChatRoomCtrl.updateChatRoom(updateData)
+            .then(chatRoom => {
+              io.in(chatRoom._id).emit('private-message-return',data);
+            }).catch(error => {
+              console.log(error);
+            });
+      } else {
+        ChatRoomCtrl.createChatRoom(data)
+            .then(chatRoom => {
+              io.emit('room-created', chatRoom);
+            }).catch(err => {
+          console.log(err);
+        });
+      }
+    });
+  });
+
+  //Listening for get chatroom
+  socket.on('get-chatroom',data => {
+    ChatRoomCtrl.getChatRoomByUser(data)
+    .then(chatRoom =>{
+      io.emit('room-returned', chatRoom);
+    })
+    .catch(error => {console.log(error)});
+  });
+
 });

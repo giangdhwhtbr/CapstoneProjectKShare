@@ -93,9 +93,6 @@ articleSchema.statics.getArticleByTagId = (idTag) => {
 articleSchema.statics.getAPage = (start,stt) => {
 
     return new Promise((resolve, reject) => {
-        if (!_.isString(start)) {
-            return reject(new TypeError('start page is not a String.'));
-        }
         Article
             .find({"status":stt})
             .skip(start)
@@ -116,7 +113,6 @@ articleSchema.statics.getTot = (stt) => {
         Article
             .find({"status":stt})
             .exec((err, arts) => {
-                console.log(arts.length);
                 err ? reject(err)
                     : resolve(arts.length);
             });

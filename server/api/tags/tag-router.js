@@ -24,5 +24,12 @@ module.exports = class TagRoutes {
 
         router.route('/api/tag/deactive/')
             .get(TagController.getAllDeactivatedTags);
+
+
+        router.route('/api/page/tag/:start/:stt')
+            .get(TagController.getAPage);
+
+        router.route('/api/page/tagtot/:stt')
+            .get(TagController.getTot);
     }
 }

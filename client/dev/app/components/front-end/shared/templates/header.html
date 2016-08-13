@@ -45,6 +45,9 @@
                                                                 aria-hidden="true"></i></a>
 					</li>
 					<li>
+						<button (click)="openChat()" class="btn modal-trigger">chat</button>
+					</li>
+					<li>
 						<div class="btn-group" style="padding-top:8%;padding-right:8%;">
 							<button type="button" style="border:none;" class="btn btn-default" aria-haspopup="true" aria-expanded="false" [routerLink]="['/user/' + userToken]">
                                 {{userToken}}
@@ -80,3 +83,4 @@
 		<!-- /.container -->
 	</nav>
 </div>
+<private-chat></private-chat>

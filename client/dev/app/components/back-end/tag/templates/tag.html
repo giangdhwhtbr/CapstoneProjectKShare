@@ -2,14 +2,13 @@
     <div class="container-fluid">
 
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#at">Active Tags</a></li>
-            <li><a data-toggle="tab" href="#dt">Deactivated Tags</a></li>
+            <li class="active"><a data-toggle="tab" href="#tagAt">Đang hoạt động</a></li>
+            <li><a data-toggle="tab" href="#tagDa">Bị đóng</a></li>
         </ul>
 
         <div class="tab-content">
-            <div id="at" class="tab-pane fade in active">
-                <!-- /.row -->
-                <div class="col-lg-8">
+            <div id="tagAt" class="tab-pane fade in active">
+                <div class="col-lg-12">
                     <div class="row">
                         <div class="input-group">
                             <input type="text" class="form-control" id="filter" placeholder="Tìm kiếm"
@@ -28,11 +27,12 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr *ngFor="let t of tags| stringFilter: filter">
+                                <tr *ngFor="let t of tagsAt| stringFilter: filter">
                                     <td>{{t.name}}</td>
                                     <td>
-                                        <button type="button" class="btn btn-danger" (click)="deactiveTag(t._id)">
-                                            Deactive
+                                        <button type="button" class="btn btn-danger"
+                                                (click)="deactiveTag(t._id)">
+                                            deactivate
                                         </button>
                                     </td>
                                 </tr>
@@ -40,15 +40,18 @@
                             </table>
                         </div>
                     </div>
+                </div>
+                <div class="col-lg-12">
+                    <p-paginator rows="10" totalRecords="{{total}}" pageLinkSize="10"
+                                 (onPageChange)="paginate($event)"></p-paginator>
                 </div>
             </div>
-            <div id="dt" class="tab-pane fade">
-                <!-- /.row -->
-                <div class="col-lg-8">
+            <div id="tagDa" class="tab-pane fade">
+                <div class="col-lg-12">
                     <div class="row">
                         <div class="input-group">
-                            <input type="text" class="form-control" id="filter" placeholder="Tìm kiếm"
-                                   [(ngModel)]="filter">
+                            <input type="text" class="form-control" id="filter1" placeholder="Tìm kiếm"
+                                   [(ngModel)]="filter1">
                         </div>
                     </div>
                 </div>
@@ -63,11 +66,12 @@
                                 </tr>
                                 </thead>
                                 <tbody>
-                                <tr *ngFor="let t of deTags| stringFilter: filter">
+                                <tr *ngFor="let t of tagsDa| stringFilter: filter1">
                                     <td>{{t.name}}</td>
                                     <td>
-                                        <button type="button" class="btn btn-success" (click)="activeTag(t._id)">
-                                            Active
+                                        <button type="button" class="btn btn-success"
+                                                (click)="activeTag(t._id)">
+                                            active
                                         </button>
                                     </td>
                                 </tr>
@@ -75,8 +79,14 @@
                             </table>
                         </div>
                     </div>
+                </div>
+                <div class="col-lg-12">
+                    <p-paginator rows="10" totalRecords="{{total1}}" pageLinkSize="10"
+                                 (onPageChange)="paginate1($event)"></p-paginator>
                 </div>
             </div>
         </div>
+
+
     </div>
 </div>

@@ -1,24 +1,40 @@
 <div id="page-wrapper">
     <div class="container-fluid">
 
-        <!-- /.row -->
-        <div class="col-lg-8">
-            <div class="row">
-                <div class="input-group">
-                    <input type="text" class="form-control" id="filter" placeholder="Tìm kiếm"
-                           [(ngModel)]="filter">
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-12">
-            <div class="messOn">
-
-            </div>
-        </div>
-
+        <!-- Page Heading -->
         <div class="row">
             <div class="col-lg-12">
-                <div>
+                <ol class="breadcrumb">
+                    <li>
+                        <i class="fa fa-dashboard"></i> <a href="#">Bảng</a>
+                    </li>
+                    <li class="active">
+                        <i class="fa fa-file"></i> Quản lý bài viết
+                    </li>
+                </ol>
+            </div>
+            <br><br>
+        </div>
+
+
+
+        <ul class="nav nav-tabs">
+            <li class="active"><a data-toggle="tab" href="#tabAt">Hoạt động</a></li>
+            <li><a data-toggle="tab" href="#tabDa">Bị đóng</a></li>
+            <li><a data-toggle="tab" href="#tabPr">Riêng tư</a></li>
+        </ul>
+
+        <div class="tab-content">
+            <div id="tabAt" class="tab-pane fade in active">
+
+                <!-- /.row -->
+                <div class="col-lg-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="filter" placeholder="Tìm kiếm"
+                               [(ngModel)]="filter">
+                    </div>
+                </div>
+                <div class="col-lg-12" >
                     <table class="table">
                         <thead>
                         <tr>
@@ -27,10 +43,46 @@
                         </tr>
                         </thead>
                         <tbody>
-                        <tr *ngFor="let a of arts| stringFilter: filter">
+                        <tr *ngFor="let a of artsAt| stringFilter: filter">
                             <td><a [routerLink]="['/article/',a._id]">{{a.title}}</a></td>
                             <td>
-                                <button type="button" class="btn btn-danger" (click)="activeArt(a._id)">
+                                <button *ngIf="a.status=='public'" type="button" class="btn btn-danger"
+                                        (click)="deActiveArt(a._id,a.status)">
+                                    deactivate
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-lg-12">
+                    <p-paginator rows="10" totalRecords="{{total}}" pageLinkSize="10"
+                                 (onPageChange)="paginate($event)"></p-paginator>
+                </div>
+            </div>
+            <div id="tabDa" class="tab-pane fade">
+                <!-- /.row -->
+                <div class="col-lg-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="filter1" placeholder="Tìm kiếm"
+                               [(ngModel)]="filter1">
+                    </div>
+                </div>
+                <div class="col-lg-12" >
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Tiêu đề</th>
+                            <th>Chức năng</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let a of artsDa| stringFilter: filter1">
+                            <td><a [routerLink]="['/article/',a._id]">{{a.title}}</a></td>
+                            <td>
+                                <button *ngIf="a.status=='deactivate'" type="button" class="btn btn-success"
+                                        (click)="activeArt(a._id)">
                                     Active
                                 </button>
                             </td>
@@ -38,10 +90,50 @@
                         </tbody>
                     </table>
                 </div>
+
+                <div class="col-lg-12">
+                    <p-paginator rows="10" totalRecords="{{total1}}" pageLinkSize="10"
+                                 (onPageChange)="paginate1($event)"></p-paginator>
+                </div>
             </div>
-            <div class="col-lg-12">
-                <p-paginator rows="10" totalRecords="{{total}}" pageLinkSize="10" (onPageChange)="paginate($event)"></p-paginator>
+            <div id="tabPr" class="tab-pane fade">
+
+                <!-- /.row -->
+                <div class="col-lg-12">
+                    <div class="input-group">
+                        <input type="text" class="form-control" id="filter2" placeholder="Tìm kiếm"
+                               [(ngModel)]="filter2">
+                    </div>
+                </div>
+                <div class="col-lg-12" >
+                    <table class="table">
+                        <thead>
+                        <tr>
+                            <th>Tiêu đề</th>
+                            <th>Chức năng</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr *ngFor="let a of artsPr| stringFilter: filter2">
+                            <td><a [routerLink]="['/article/',a._id]">{{a.title}}</a></td>
+                            <td>
+                                <button  type="button" class="btn btn-danger"
+                                        (click)="deActiveArt(a._id,a.status)">
+                                    deactivate
+                                </button>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="col-lg-12">
+                    <p-paginator rows="10" totalRecords="{{total2}}" pageLinkSize="10"
+                                 (onPageChange)="paginate2($event)"></p-paginator>
+                </div>
             </div>
+
         </div>
+
     </div>
 </div>

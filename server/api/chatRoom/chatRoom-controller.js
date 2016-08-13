@@ -10,41 +10,49 @@ module.exports = class ChatRoomController {
         .catch(error => res.status(400).json(error));
   }
 
-  static createChatRoom(req, res) {
-      let _info = req.body;
-
-      ChatRoomDAO
-        .createChatRoom(_info)
-        .then(chatRoom => res.status(201).json(chatRoom))
-        .catch(error => res.status(400).json(error));
+  static getChatRoomByUser(data) {
+      return ChatRoomDAO.getChatRoomByUsers(data)
+      .then(chatRoom => {return chatRoom})
+      .catch(error => {return error});
   }
 
-static updateChatRoom(req, res){
-    if(req.params && req.params.id) {
-        ChatRoomDAO.getChatRoomById(req.params.id)
-          .then(chatRoom => {
-            chatRoom.name = req.body.name
+  static createChatRoom(data) {
+      var chatRoom = {
+        chatLogs: [],
+        users: [data.sender, data.receiver],
+        createdAt: new Date()
+      };
+      var chatLog = {
+        sender: data.sender,
+        message: data.message,
+        sentAt: new Date()
+      };
+      chatRoom.chatLogs.push(chatLog);
+      return ChatRoomDAO
+        .createChatRoom(chatRoom)
+        .then(chatRoom => {return chatRoom})
+        .catch(error => {return error});
 
-            ChatRoomDAO.updateChatRoomById(chatRoom)
-              .then(chatRoom => res.status(200).json(chatRoom))
-              .catch(error => res.status(400).json(error));
-          })
-          .catch(error => res.status(400).json(error));
-    }else{
-      res.status(404).json({
-        "message"    :   "No Chat Room id in front.offer"
-      });
-    }
+      //result.then(chatRoom => {console.log(chatRoom)});
   }
 
-  static deleteChatRoom(req, res) {
-    let _id = req.params.id;
+ static updateChatRoom(data){
+   var chatLog = {
+       sender: data.sender,
+       message: data.message,
+       sentAt: new Date()
+   };
 
-    ChatRoomDAO
-      .deleteChatRoom(_id)
-      .then(() => res.status(200).end())
-      .catch(error => res.status(400).json(error));
-  }
+  return ChatRoomDAO.getChatRoomById(data.room)
+    .then(chatRoom => {
+      chatRoom.chatLogs.push(chatLog);
+      return ChatRoomDAO.updateChatRoomById(chatRoom)
+        .then(chatRoom => {return chatRoom})
+        .catch(error => {return error});
+    })
+    .catch(error => {return error});
+
+  };
 
   static getChatRoomById(req,res) {
     if(req.params && req.params.id) {
@@ -59,17 +67,4 @@ static updateChatRoom(req, res){
     }
   }
 
-  static getChatRoomByKSpaceId(req,res) {
-    if(req.params && req.params.id) {
-      ChatRoomDAO
-        .getChatRoomByKSpaceId(req.params.id)
-        .then(chatRoom => res.status(200).json(chatRoom))
-        .catch(error => res.status(400).json(error));
-    }else{
-      res.status(404).json({
-        "message"    :   "No ChatRoom Id in templates"
-      });
-    }
-  }
-
-}
+};

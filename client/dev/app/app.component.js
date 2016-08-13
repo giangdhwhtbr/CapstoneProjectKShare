@@ -1,10 +1,11 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 /**
  * Created by GiangDH on 5/8/16.
@@ -13,8 +14,13 @@ var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
 require('rxjs/Rx'); // Load all features
 var router_1 = require('@angular/router');
+/**
+ * Page components
+ * */
+var admin_component_1 = require("./components/admin.component");
 var kshare_component_1 = require("./components/kshare.component");
-//import { UserComponent } from "./user.component";
+// Shared component
+var private_chat_1 = require("./components/shared/private-chat");
 /**
  * services
  **/
@@ -34,11 +40,12 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'kshare-app',
-            template: '<router-outlet></router-outlet>',
+            template: "\n  <router-outlet></router-outlet>\n  ",
             directives: [
-                router_1.ROUTER_DIRECTIVES
+                router_1.ROUTER_DIRECTIVES,
+                private_chat_1.PrivateChatComponent
             ],
-            precompile: [kshare_component_1.KshareComponent],
+            precompile: [kshare_component_1.KshareComponent, admin_component_1.AdminComponent],
             providers: [
                 auth_1.AuthService,
                 users_1.UserService,
@@ -51,7 +58,8 @@ var AppComponent = (function () {
                 report_1.ReportService,
                 article_1.ArticleService
             ]
-        })
+        }), 
+        __metadata('design:paramtypes', [])
     ], AppComponent);
     return AppComponent;
 })();

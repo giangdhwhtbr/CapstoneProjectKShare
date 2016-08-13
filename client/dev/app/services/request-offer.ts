@@ -17,7 +17,6 @@ export class OfferService {
     let _offer = JSON.stringify({
       status: newstatus
     });
-
     return this._http
       .put(this._Url.replace(':id', id), _offer, options)
       .map((r) => r.json());

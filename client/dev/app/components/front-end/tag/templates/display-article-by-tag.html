@@ -1,6 +1,6 @@
 <div *ngIf="listArt" class="container tag">
     <div *ngFor="let a of listArt" class="panel panel-default">
-        <div class="panel-body">
+        <div class="panel-body clearfix">
             <p><span class="title">
                 <a [routerLink]="['/article',a._id]">{{a.title}}</a>
             </span></p>
@@ -12,7 +12,7 @@
             <p>
                 tags :
                 <span *ngFor="let t of a.tagsFD">
-                    <a href="/tag/{{t._id}}">{{t.name}}</a>,
+                    <a [routerLink]="['/tag',t._id]" routerLinkActive="active">{{t.name}}</a>,
                 </span>
             </p>
             <p>

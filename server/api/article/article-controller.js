@@ -28,9 +28,18 @@ module.exports = class ArticleController {
     static getAPage(req,res){
 
         if (req.params && req.params.start) {
-            ArticleDAO.getAPage(req.params.start,req.params.stt).then((arts)=>{
-                res.status(200).json(arts);
-            }).catch(err=> res.status(400).json(error));
+            let start = req.params.start;
+            ArticleDAO.getAPage(start,req.params.stt).then((arts)=>{
+                if(arts.length==0 && start!=0){
+                    console.log(start);
+                    ArticleDAO.getAPage(start-10,req.params.stt).then((artsBU)=>{
+                        res.status(200).json(artsBU);
+                    }).catch(err=> res.status(400).json(err));
+                }else{
+                    res.status(200).json(arts);
+                }
+
+            }).catch(err=> res.status(400).json(err));
         }
     }
 
@@ -39,7 +48,7 @@ module.exports = class ArticleController {
         if (req.params && req.params.stt) {
             ArticleDAO.getTot(req.params.stt).then((num)=>{
                 res.status(200).json(num);
-            }).catch(err=> res.status(400).json(error));
+            }).catch(err=> res.status(400).json(err));
         }
     }
 

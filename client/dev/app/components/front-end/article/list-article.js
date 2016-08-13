@@ -2,12 +2,13 @@
  * Created by Duc Duong on 7/25/2016.
  */
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
@@ -17,18 +18,40 @@ var listArticleComponent = (function () {
         this.router = router;
         this.route = route;
         this._artService = _artService;
+        this.listArt = [];
+        this.num = 5;
+        this.articles = [];
+        this.height = 400;
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
     }
     listArticleComponent.prototype.ngOnInit = function () {
         var _this = this;
-        this._artService.getAllArts().subscribe(function (arts) {
+        $(window).on("scroll", function () {
+            var scrollHeight = $(document).height();
+            var scrollPosition = $(window).height() + $(window).scrollTop();
+            if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+                setTimeout(function () {
+                    _this.seeMore();
+                }, 1000);
+                _this.height += 30;
+            }
+        });
+        this.getAllArticles();
+    };
+    listArticleComponent.prototype.seeMore = function () {
+        this.num = this.num + 5;
+        this.getAllArticles();
+    };
+    listArticleComponent.prototype.getAllArticles = function () {
+        var _this = this;
+        this._artService.getAllArts(this.num).subscribe(function (arts) {
             for (var i = 0; i < arts.length; i++) {
                 if (arts[i].status == "private" && arts[i].ofUser != _this.userToken) {
                     arts.splice(i, 1);
                 }
+                _this.listArt.push(arts[i]);
             }
-            _this.listArt = arts;
         });
     };
     listArticleComponent = __decorate([
@@ -40,7 +63,8 @@ var listArticleComponent = (function () {
                 router_1.ROUTER_DIRECTIVES
             ],
             providers: [article_1.ArticleService]
-        })
+        }), 
+        __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, article_1.ArticleService])
     ], listArticleComponent);
     return listArticleComponent;
 })();

@@ -173,6 +173,33 @@ tagSchema.statics.deactivateTagById = (id) => {
     });
 }
 
+tagSchema.statics.getAPage = (start,stt) => {
+
+    return new Promise((resolve, reject) => {
+        let sttTag = Boolean(stt=="true");
+        Tag
+            .find({"status":sttTag})
+            .skip(start)
+            .limit(10)
+            .exec((err, tags) => {
+                err ? reject(err)
+                    : resolve(tags);
+            });
+    });
+}
+tagSchema.statics.getTot = (stt) => {
+
+    return new Promise((resolve, reject) => {
+        let sttTag = Boolean(stt=="true");
+        Tag
+            .find({"status":sttTag})
+            .exec((err, tags) => {
+                err ? reject(err)
+                    : resolve(tags.length);
+            });
+    });
+}
+
 
 const Tag = mongoose.model('Tag', tagSchema);
 

@@ -187,23 +187,29 @@ module.exports = class RequestController {
     }
   }
 
-  //paging on server
+    //paging on server
 
-  static getAPage(req, res) {
-
-    if (req.params && req.params.start) {
-      RequestDAO.getAPage(req.params.start, req.params.stt).then((reqs) => {
-        res.status(200).json(reqs);
-      }).catch(err => res.status(400).json(error));
+    static getAPage(req,res){
+        if (req.params && req.params.start) {
+            let start = req.params.start;
+            RequestDAO.getAPage(start,req.params.stt).then((reqs)=>{
+                if(reqs.length==0){
+                    RequestDAO.getAPage(start-10,req.params.stt).then((reqsBU)=>{
+                        res.status(200).json(reqsBU);
+                    }).catch(err=> res.status(400).json(err));
+                }else{
+                    res.status(200).json(reqs);
+                }
+            }).catch(err=> res.status(400).json(err));
+        }
     }
-  }
-  static getTot(req, res) {
+    static getTot(req,res){
 
-    if (req.params && req.params.stt) {
-      RequestDAO.getTot(req.params.stt).then((num) => {
-        res.status(200).json(num);
-      }).catch(err => res.status(400).json(error));
+        if (req.params && req.params.stt) {
+            RequestDAO.getTot(req.params.stt).then((num)=>{
+                res.status(200).json(num);
+            }).catch(err=> res.status(400).json(err));
+        }
     }
-  }
 
 }
