@@ -19222,19 +19222,9 @@ webpackJsonp([2],[
 	                }, 10000);
 	            }
 	        });
-	        $('.modal-trigger').leanModal({
-	            dismissible: true,
-	            opacity: .5,
-	            in_duration: 300,
-	            out_duration: 200,
-	            starting_top: '4%',
-	            ending_top: '10%',
-	            ready: function () { alert('Ready'); },
-	            complete: function () { alert('Closed'); } // Callback for Modal close
-	        });
 	    };
 	    HeaderComponent.prototype.openChat = function () {
-	        $('#chatboxWhole').openModal();
+	        //$('#chatboxWhole').openModal();
 	    };
 	    HeaderComponent.prototype.logout = function () {
 	        var _this = this;
