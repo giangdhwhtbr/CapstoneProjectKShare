@@ -33,7 +33,6 @@ export class PrivateChatComponent {
     ngOnInit():void {
         //list all friends
         this.socket.on('private-message-return', data => {
-          console.log(data);
           this.messages.push(data);
         });
         this._userService.getFriendList(this.username).subscribe((listFriend)=>{
@@ -75,6 +74,7 @@ export class PrivateChatComponent {
         });
 
         this.socket.on('room-returned',chatRoom => {
+          console.log(chatRoom);
           if(chatRoom) {
             var isOwner = function (users, username) {
               for (var k in users) {

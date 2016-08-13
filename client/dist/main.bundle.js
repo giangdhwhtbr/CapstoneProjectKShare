@@ -6518,7 +6518,6 @@ webpackJsonp([2],[
 	        var _this = this;
 	        //list all friends
 	        this.socket.on('private-message-return', function (data) {
-	            console.log(data);
 	            _this.messages.push(data);
 	        });
 	        this._userService.getFriendList(this.username).subscribe(function (listFriend) {
@@ -6555,6 +6554,7 @@ webpackJsonp([2],[
 	            }
 	        });
 	        this.socket.on('room-returned', function (chatRoom) {
+	            console.log(chatRoom);
 	            if (chatRoom) {
 	                var isOwner = function (users, username) {
 	                    for (var k in users) {
