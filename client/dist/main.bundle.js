@@ -119,17 +119,25 @@ webpackJsonp([2],[
 	        element.style.left = left + 'px';
 	    };
 	    DomHandler.prototype.absolutePosition = function (element, target) {
-	        var elementOuterHeight = element.offsetParent ? element.offsetHeight : this.getHiddenElementOuterHeight(element);
+	        var elementDimensions = element.offsetParent ? { width: element.offsetWidth, height: element.offsetHeight } : this.getHiddenElementDimensions(element);
+	        var elementOuterHeight = elementDimensions.height;
+	        var elementOuterWidth = elementDimensions.width;
 	        var targetOuterHeight = target.offsetHeight;
+	        var targetOuterWidth = target.offsetWidth;
 	        var targetOffset = target.getBoundingClientRect();
 	        var windowScrollTop = this.getWindowScrollTop();
-	        var top;
+	        var windowScrollLeft = this.getWindowScrollLeft();
+	        var top, left;
 	        if (targetOffset.top + targetOuterHeight + elementOuterHeight > window.innerHeight)
 	            top = targetOffset.top + windowScrollTop - elementOuterHeight;
 	        else
 	            top = targetOuterHeight + targetOffset.top + windowScrollTop;
+	        if (targetOffset.left + targetOuterWidth + elementOuterWidth > window.innerWidth)
+	            left = targetOffset.left + windowScrollLeft + targetOuterWidth - elementOuterWidth;
+	        else
+	            left = targetOffset.left + windowScrollLeft;
 	        element.style.top = top + 'px';
-	        element.style.left = targetOffset.left + 'px';
+	        element.style.left = left + 'px';
 	    };
 	    DomHandler.prototype.getHiddenElementOuterHeight = function (element) {
 	        element.style.visibility = 'hidden';
@@ -201,6 +209,10 @@ webpackJsonp([2],[
 	        var doc = document.documentElement;
 	        return (window.pageYOffset || doc.scrollTop) - (doc.clientTop || 0);
 	    };
+	    DomHandler.prototype.getWindowScrollLeft = function () {
+	        var doc = document.documentElement;
+	        return (window.pageXOffset || doc.scrollLeft) - (doc.clientLeft || 0);
+	    };
 	    DomHandler.prototype.matches = function (element, selector) {
 	        var p = Element.prototype;
 	        var f = p['matches'] || p.webkitMatchesSelector || p['mozMatchesSelector'] || p.msMatchesSelector || function (s) {
@@ -251,29 +263,39 @@ webpackJsonp([2],[
 	        return { width: w, height: h };
 	    };
 	    DomHandler.prototype.equals = function (obj1, obj2) {
-	        for (var p in obj1) {
-	            if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) {
-	                return false;
-	            }
-	            switch (typeof (obj1[p])) {
-	                case 'object':
-	                    if (!this.equals(obj1[p], obj2[p]))
-	                        return false;
-	                    break;
-	                case 'function':
-	                    if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString()))
-	                        return false;
-	                    break;
-	                default:
-	                    if (obj1[p] != obj2[p])
-	                        return false;
-	            }
+	        if (obj1 == null || obj2 == null) {
+	            return false;
 	        }
-	        for (var p in obj2) {
-	            if (typeof (obj1[p]) == 'undefined')
-	                return false;
+	        if (obj1 == obj2) {
+	            return true;
 	        }
-	        return true;
+	        if (typeof obj1 == 'object' && typeof obj2 == 'object') {
+	            for (var p in obj1) {
+	                if (obj1.hasOwnProperty(p) !== obj2.hasOwnProperty(p)) {
+	                    return false;
+	                }
+	                switch (typeof (obj1[p])) {
+	                    case 'object':
+	                        if (!this.equals(obj1[p], obj2[p]))
+	                            return false;
+	                        break;
+	                    case 'function':
+	                        if (typeof (obj2[p]) == 'undefined' || (p != 'compare' && obj1[p].toString() != obj2[p].toString()))
+	                            return false;
+	                        break;
+	                    default:
+	                        if (obj1[p] != obj2[p])
+	                            return false;
+	                        break;
+	                }
+	            }
+	            for (var p in obj2) {
+	                if (typeof (obj1[p]) == 'undefined')
+	                    return false;
+	            }
+	            return true;
+	        }
+	        return false;
 	    };
 	    DomHandler.zindex = 1000;
 	    DomHandler = __decorate([
@@ -541,11 +563,12 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
+	var core_2 = __webpack_require__(1);
 	var Header = (function () {
 	    function Header() {
 	    }
 	    Header = __decorate([
-	        core_1.Component({
+	        core_2.Component({
 	            selector: 'header',
 	            template: '<ng-content></ng-content>'
 	        }), 
@@ -558,7 +581,7 @@ webpackJsonp([2],[
 	    function Footer() {
 	    }
 	    Footer = __decorate([
-	        core_1.Component({
+	        core_2.Component({
 	            selector: 'footer',
 	            template: '<ng-content></ng-content>'
 	        }), 
@@ -567,6 +590,32 @@ webpackJsonp([2],[
 	    return Footer;
 	}());
 	exports.Footer = Footer;
+	var TemplateWrapper = (function () {
+	    function TemplateWrapper(viewContainer) {
+	        this.viewContainer = viewContainer;
+	    }
+	    TemplateWrapper.prototype.ngOnInit = function () {
+	        var view = this.viewContainer.createEmbeddedView(this.templateRef, {
+	            '\$implicit': this.item
+	        });
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], TemplateWrapper.prototype, "item", void 0);
+	    __decorate([
+	        core_1.Input('pTemplateWrapper'), 
+	        __metadata('design:type', core_1.TemplateRef)
+	    ], TemplateWrapper.prototype, "templateRef", void 0);
+	    TemplateWrapper = __decorate([
+	        core_1.Directive({
+	            selector: '[pTemplateWrapper]'
+	        }), 
+	        __metadata('design:paramtypes', [core_1.ViewContainerRef])
+	    ], TemplateWrapper);
+	    return TemplateWrapper;
+	}());
+	exports.TemplateWrapper = TemplateWrapper;
 	
 
 /***/ },
@@ -1090,6 +1139,7 @@ webpackJsonp([2],[
 	__export(__webpack_require__(1044));
 	__export(__webpack_require__(1045));
 	__export(__webpack_require__(1046));
+	__export(__webpack_require__(1085));
 	__export(__webpack_require__(1047));
 	__export(__webpack_require__(211));
 	__export(__webpack_require__(1048));
@@ -2181,10 +2231,10 @@ webpackJsonp([2],[
 	var Paginator = (function () {
 	    function Paginator() {
 	        this.rows = 0;
-	        this.first = 0;
 	        this.pageLinkSize = 5;
 	        this.onPageChange = new core_1.EventEmitter();
 	        this._totalRecords = 0;
+	        this._first = 0;
 	    }
 	    Object.defineProperty(Paginator.prototype, "totalRecords", {
 	        get: function () {
@@ -2192,6 +2242,17 @@ webpackJsonp([2],[
 	        },
 	        set: function (val) {
 	            this._totalRecords = val;
+	            this.updatePageLinks();
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    Object.defineProperty(Paginator.prototype, "first", {
+	        get: function () {
+	            return this._first;
+	        },
+	        set: function (val) {
+	            this._first = val;
 	            this.updatePageLinks();
 	        },
 	        enumerable: true,
@@ -2227,6 +2288,7 @@ webpackJsonp([2],[
 	        if (p >= 0 && p < pc) {
 	            this.first = this.rows * p;
 	            var state = {
+	                page: p,
 	                first: this.first,
 	                rows: this.rows,
 	                pageCount: pc
@@ -2261,10 +2323,6 @@ webpackJsonp([2],[
 	    __decorate([
 	        core_1.Input(), 
 	        __metadata('design:type', Number)
-	    ], Paginator.prototype, "first", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
 	    ], Paginator.prototype, "pageLinkSize", void 0);
 	    __decorate([
 	        core_1.Output(), 
@@ -2286,6 +2344,10 @@ webpackJsonp([2],[
 	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Paginator.prototype, "totalRecords", null);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Number)
+	    ], Paginator.prototype, "first", null);
 	    Paginator = __decorate([
 	        core_1.Component({
 	            selector: 'p-paginator',
@@ -3896,6 +3958,10 @@ webpackJsonp([2],[
 	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Column.prototype, "expander", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], Column.prototype, "selectionMode", void 0);
 	    __decorate([
 	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
@@ -6570,7 +6636,9 @@ webpackJsonp([2],[
 	                    };
 	                    //join room
 	                    _this.socket.emit('subscribe', data);
-	                    _this.messages.push(chatRoom.chatLogs[0]);
+	                    for (var k in chatRoom.chatLogs) {
+	                        _this.messages.push(chatRoom.chatLogs[k]);
+	                    }
 	                    _this.room = chatRoom._id;
 	                }
 	            }
@@ -6587,10 +6655,10 @@ webpackJsonp([2],[
 	    };
 	    PrivateChatComponent.prototype.getFriendName = function () {
 	        for (var i = 0; i < this.friendlist.length; i++) {
-	            if (this.friendlist[i].user1 === this.name) {
+	            if (this.friendlist[i].user1 === this.username) {
 	                this.friendNames.push(this.friendlist[i].user2);
 	            }
-	            else if (this.friendlist[i].user2 === this.name) {
+	            else if (this.friendlist[i].user2 === this.username) {
 	                this.friendNames.push(this.friendlist[i].user1);
 	            }
 	        }
@@ -17619,6 +17687,7 @@ webpackJsonp([2],[
 	        this.onNodeUnselect = new core_1.EventEmitter();
 	        this.onNodeExpand = new core_1.EventEmitter();
 	        this.onNodeCollapse = new core_1.EventEmitter();
+	        this.onNodeContextMenuSelect = new core_1.EventEmitter();
 	    }
 	    Tree.prototype.onNodeClick = function (event, node) {
 	        if (event.target.className && event.target.className.indexOf('ui-tree-toggler') === 0) {
@@ -17648,6 +17717,25 @@ webpackJsonp([2],[
 	                    this.selectionChange.emit(this.selection);
 	                }
 	                this.onNodeSelect.emit({ originalEvent: event, node: node });
+	            }
+	        }
+	    };
+	    Tree.prototype.onNodeRightClick = function (event, node) {
+	        if (this.contextMenu) {
+	            if (event.target.className && event.target.className.indexOf('ui-tree-toggler') === 0) {
+	                return;
+	            }
+	            else {
+	                var index = this.findIndexInSelection(node);
+	                var selected = (index >= 0);
+	                if (!selected) {
+	                    if (this.isSingleSelectionMode())
+	                        this.selectionChange.emit(node);
+	                    else
+	                        this.selectionChange.emit([node]);
+	                }
+	                this.contextMenu.show(event);
+	                this.onNodeContextMenuSelect.emit({ originalEvent: event, node: node });
 	            }
 	        }
 	    };
@@ -17710,6 +17798,10 @@ webpackJsonp([2],[
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Tree.prototype, "onNodeCollapse", void 0);
 	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', core_1.EventEmitter)
+	    ], Tree.prototype, "onNodeContextMenuSelect", void 0);
+	    __decorate([
 	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Tree.prototype, "style", void 0);
@@ -17717,6 +17809,10 @@ webpackJsonp([2],[
 	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Tree.prototype, "styleClass", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], Tree.prototype, "contextMenu", void 0);
 	    __decorate([
 	        core_1.ContentChild(core_1.TemplateRef), 
 	        __metadata('design:type', core_1.TemplateRef)
@@ -29432,8 +29528,9 @@ webpackJsonp([2],[
 	var inputtext_1 = __webpack_require__(211);
 	var button_1 = __webpack_require__(148);
 	var domhandler_1 = __webpack_require__(11);
-	var common_1 = __webpack_require__(8);
-	var AUTOCOMPLETE_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
+	var common_1 = __webpack_require__(36);
+	var forms_1 = __webpack_require__(579);
+	var AUTOCOMPLETE_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return AutoComplete; }),
 	    multi: true
 	});
@@ -29482,6 +29579,13 @@ webpackJsonp([2],[
 	            this.align();
 	            this.suggestionsUpdated = false;
 	        }
+	        if (this.highlightOptionChanged) {
+	            var listItem = this.domHandler.findSingle(this.panel, 'li.ui-state-highlight');
+	            if (listItem) {
+	                this.domHandler.scrollInView(this.panel, listItem);
+	            }
+	            this.highlightOptionChanged = false;
+	        }
 	    };
 	    AutoComplete.prototype.writeValue = function (value) {
 	        this.value = value;
@@ -29525,63 +29629,22 @@ webpackJsonp([2],[
 	            query: query
 	        });
 	    };
-	    AutoComplete.prototype.onItemMouseover = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.addClass(item, 'ui-state-highlight');
-	        }
-	    };
-	    AutoComplete.prototype.onItemMouseout = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.removeClass(item, 'ui-state-highlight');
-	        }
-	    };
-	    AutoComplete.prototype.onItemClick = function (event) {
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.selectItem(item);
-	        }
-	    };
-	    AutoComplete.prototype.selectItem = function (item) {
-	        var itemIndex = this.domHandler.index(item);
-	        var selectedValue = this.suggestions[itemIndex];
+	    AutoComplete.prototype.selectItem = function (option) {
 	        if (this.multiple) {
 	            this.input.value = '';
 	            this.value = this.value || [];
-	            if (!this.isSelected(selectedValue)) {
-	                this.value.push(selectedValue);
+	            if (!this.isSelected(option)) {
+	                this.value.push(option);
 	                this.onModelChange(this.value);
 	            }
 	        }
 	        else {
-	            this.input.value = this.field ? this.resolveFieldData(selectedValue) : selectedValue;
-	            this.value = selectedValue;
+	            this.input.value = this.field ? this.resolveFieldData(option) : option;
+	            this.value = option;
 	            this.onModelChange(this.value);
 	        }
-	        this.onSelect.emit(selectedValue);
+	        this.onSelect.emit(option);
 	        this.input.focus();
-	    };
-	    AutoComplete.prototype.findListItem = function (element) {
-	        if (element.nodeName == 'LI') {
-	            return element;
-	        }
-	        else {
-	            var parent_1 = element.parentElement;
-	            while (parent_1.nodeName != 'LI') {
-	                parent_1 = parent_1.parentElement;
-	            }
-	            return parent_1;
-	        }
 	    };
 	    AutoComplete.prototype.show = function () {
 	        if (!this.panelVisible) {
@@ -29631,40 +29694,35 @@ webpackJsonp([2],[
 	    };
 	    AutoComplete.prototype.onKeydown = function (event) {
 	        if (this.panelVisible) {
-	            var highlightedItem = this.domHandler.findSingle(this.panel, 'li.ui-state-highlight');
+	            var highlightItemIndex = this.findOptionIndex(this.highlightOption);
 	            switch (event.which) {
 	                //down
 	                case 40:
-	                    if (highlightedItem) {
-	                        var nextItem = highlightedItem.nextElementSibling;
-	                        if (nextItem) {
-	                            this.domHandler.removeClass(highlightedItem, 'ui-state-highlight');
-	                            this.domHandler.addClass(nextItem, 'ui-state-highlight');
-	                            this.domHandler.scrollInView(this.panel, nextItem);
+	                    if (highlightItemIndex != -1) {
+	                        var nextItemIndex = highlightItemIndex + 1;
+	                        if (nextItemIndex != (this.suggestions.length)) {
+	                            this.highlightOption = this.suggestions[nextItemIndex];
+	                            this.highlightOptionChanged = true;
 	                        }
 	                    }
 	                    else {
-	                        var firstItem = this.domHandler.findSingle(this.panel, 'li:first-child');
-	                        this.domHandler.addClass(firstItem, 'ui-state-highlight');
+	                        this.highlightOption = this.suggestions[0];
 	                    }
 	                    event.preventDefault();
 	                    break;
 	                //up
 	                case 38:
-	                    if (highlightedItem) {
-	                        var prevItem = highlightedItem.previousElementSibling;
-	                        if (prevItem) {
-	                            this.domHandler.removeClass(highlightedItem, 'ui-state-highlight');
-	                            this.domHandler.addClass(prevItem, 'ui-state-highlight');
-	                            this.domHandler.scrollInView(this.panel, prevItem);
-	                        }
+	                    if (highlightItemIndex > 0) {
+	                        var prevItemIndex = highlightItemIndex - 1;
+	                        this.highlightOption = this.suggestions[prevItemIndex];
+	                        this.highlightOptionChanged = true;
 	                    }
 	                    event.preventDefault();
 	                    break;
 	                //enter
 	                case 13:
-	                    if (highlightedItem) {
-	                        this.selectItem(highlightedItem);
+	                    if (this.highlightOption) {
+	                        this.selectItem(this.highlightOption);
 	                        this.hide();
 	                    }
 	                    event.preventDefault();
@@ -29676,8 +29734,8 @@ webpackJsonp([2],[
 	                    break;
 	                //tab
 	                case 9:
-	                    if (highlightedItem) {
-	                        this.selectItem(highlightedItem);
+	                    if (this.highlightOption) {
+	                        this.selectItem(this.highlightOption);
 	                    }
 	                    this.hide();
 	                    break;
@@ -29707,6 +29765,18 @@ webpackJsonp([2],[
 	            }
 	        }
 	        return selected;
+	    };
+	    AutoComplete.prototype.findOptionIndex = function (option) {
+	        var index = -1;
+	        if (this.suggestions) {
+	            for (var i = 0; i < this.suggestions.length; i++) {
+	                if (this.domHandler.equals(option, this.suggestions[i])) {
+	                    index = i;
+	                    break;
+	                }
+	            }
+	        }
+	        return index;
 	    };
 	    AutoComplete.prototype.ngOnDestroy = function () {
 	        if (this.documentClickListener) {
@@ -29800,8 +29870,8 @@ webpackJsonp([2],[
 	    AutoComplete = __decorate([
 	        core_1.Component({
 	            selector: 'p-autoComplete',
-	            template: "\n        <span [ngClass]=\"{'ui-autocomplete ui-widget':true,'ui-autocomplete-dd':dropdown}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <input *ngIf=\"!multiple\" #in pInputText type=\"text\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" \n            [value]=\"value ? (field ? resolveFieldData(value)||value : value) : null\" (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (blur)=\"onModelTouched()\"\n            [attr.placeholder]=\"placeholder\" [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.readonly]=\"readonly\" [disabled]=\"disabled\" \n            ><ul *ngIf=\"multiple\" class=\"ui-autocomplete-multiple ui-widget ui-inputtext ui-state-default ui-corner-all\" (click)=\"multiIn.focus()\">\n                <li #token *ngFor=\"let val of value\" class=\"ui-autocomplete-token ui-state-highlight ui-corner-all\">\n                    <span class=\"ui-autocomplete-token-icon fa fa-fw fa-close\" (click)=\"removeItem(token)\"></span>\n                    <span class=\"ui-autocomplete-token-label\">{{field ? val[field] : val}}</span>\n                </li>\n                <li class=\"ui-autocomplete-input-token\">\n                    <input #multiIn type=\"text\" pInputText (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (blur)=\"onModelTouched()\">\n                </li>\n            </ul\n            ><button type=\"button\" pButton icon=\"fa-fw fa-caret-down\" class=\"ui-autocomplete-dropdown\" [disabled]=\"disabled\"\n                (click)=\"handleDropdownClick($event)\" *ngIf=\"dropdown\"></button>\n            <div class=\"ui-autocomplete-panel ui-widget-content ui-corner-all ui-shadow\" [style.display]=\"panelVisible ? 'block' : 'none'\" [style.width]=\"'100%'\" [style.max-height]=\"scrollHeight\">\n                <ul class=\"ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" \n                    (mouseover)=\"onItemMouseover($event)\" (mouseout)=\"onItemMouseout($event)\" (click)=\"onItemClick($event)\" *ngIf=\"!itemTemplate\">\n                    <li class=\"ui-autocomplete-list-item ui-corner-all\" *ngFor=\"let item of suggestions\">{{field ? item[field] : item}}</li>\n                </ul>\n                <ul class=\"ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" \n                    (mouseover)=\"onItemMouseover($event)\" (mouseout)=\"onItemMouseout($event)\" (click)=\"onItemClick($event)\"*ngIf=\"itemTemplate\">\n                    <template ngFor [ngForOf]=\"suggestions\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n        </span>\n    ",
-	            directives: [inputtext_1.InputText, button_1.Button],
+	            template: "\n        <span [ngClass]=\"{'ui-autocomplete ui-widget':true,'ui-autocomplete-dd':dropdown}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <input *ngIf=\"!multiple\" #in pInputText type=\"text\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" \n            [value]=\"value ? (field ? resolveFieldData(value)||value : value) : null\" (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (blur)=\"onModelTouched()\"\n            [attr.placeholder]=\"placeholder\" [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.readonly]=\"readonly\" [disabled]=\"disabled\" \n            ><ul *ngIf=\"multiple\" class=\"ui-autocomplete-multiple ui-widget ui-inputtext ui-state-default ui-corner-all\" (click)=\"multiIn.focus()\">\n                <li #token *ngFor=\"let val of value\" class=\"ui-autocomplete-token ui-state-highlight ui-corner-all\">\n                    <span class=\"ui-autocomplete-token-icon fa fa-fw fa-close\" (click)=\"removeItem(token)\"></span>\n                    <span class=\"ui-autocomplete-token-label\">{{field ? val[field] : val}}</span>\n                </li>\n                <li class=\"ui-autocomplete-input-token\">\n                    <input #multiIn type=\"text\" pInputText (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (blur)=\"onModelTouched()\">\n                </li>\n            </ul\n            ><button type=\"button\" pButton icon=\"fa-fw fa-caret-down\" class=\"ui-autocomplete-dropdown\" [disabled]=\"disabled\"\n                (click)=\"handleDropdownClick($event)\" *ngIf=\"dropdown\"></button>\n            <div class=\"ui-autocomplete-panel ui-widget-content ui-corner-all ui-shadow\" [style.display]=\"panelVisible ? 'block' : 'none'\" [style.width]=\"'100%'\" [style.max-height]=\"scrollHeight\">\n                <ul class=\"ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\">\n                    <li *ngFor=\"let option of suggestions\" [ngClass]=\"{'ui-autocomplete-list-item ui-corner-all':true,'ui-state-highlight':(highlightOption==option)}\"\n                        (mouseenter)=\"highlightOption=option\" (mouseleave)=\"highlightOption=null\" (click)=\"selectItem(option)\">\n                        <span *ngIf=\"!itemTemplate\">{{field ? option[field] : option}}</span>\n                        <template *ngIf=\"itemTemplate\" [pTemplateWrapper]=\"itemTemplate\" [item]=\"option\"></template>\n                    </li>\n                </ul>\n            </div>\n        </span>\n    ",
+	            directives: [inputtext_1.InputText, button_1.Button, common_1.TemplateWrapper],
 	            providers: [domhandler_1.DomHandler, AUTOCOMPLETE_VALUE_ACCESSOR]
 	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers, core_1.Renderer])
@@ -29896,8 +29966,8 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var button_1 = __webpack_require__(148);
-	var common_1 = __webpack_require__(8);
-	var CALENDAR_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
+	var forms_1 = __webpack_require__(579);
+	var CALENDAR_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Calendar; }),
 	    multi: true
 	});
@@ -29941,6 +30011,7 @@ webpackJsonp([2],[
 	            defaultDate: this.defaultDate,
 	            minDate: this.minDate,
 	            maxDate: this.maxDate,
+	            yearRange: this.yearRange,
 	            onSelect: function (dateText) {
 	                _this.zone.run(function () {
 	                    _this.value = dateText;
@@ -30182,6 +30253,10 @@ webpackJsonp([2],[
 	        __metadata('design:type', String)
 	    ], Calendar.prototype, "icon", void 0);
 	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], Calendar.prototype, "yearRange", void 0);
+	    __decorate([
 	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Calendar.prototype, "onBlur", void 0);
@@ -30219,6 +30294,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var domhandler_1 = __webpack_require__(11);
+	var common_1 = __webpack_require__(36);
 	var Carousel = (function () {
 	    function Carousel(el, domHandler, differs, renderer) {
 	        this.el = el;
@@ -30336,6 +30412,10 @@ webpackJsonp([2],[
 	            this.setPage(this.page - 1);
 	        else if (this.circular)
 	            this.setPage(this.totalPages - 1);
+	    };
+	    Carousel.prototype.setPageWithLink = function (event, p) {
+	        this.setPage(p);
+	        event.preventDefault();
 	    };
 	    Carousel.prototype.setPage = function (p, enforce) {
 	        if (p !== this.page || enforce) {
@@ -30469,8 +30549,9 @@ webpackJsonp([2],[
 	    Carousel = __decorate([
 	        core_1.Component({
 	            selector: 'p-carousel',
-	            template: "\n        <div [ngClass]=\"{'ui-carousel ui-widget ui-widget-content ui-corner-all':true}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-carousel-header ui-widget-header\">\n                <div class=\"ui-carousel-header-title\">{{headerText}}</div>\n                <span class=\"ui-carousel-button ui-carousel-next-button fa fa-arrow-circle-right\" (click)=\"onNextNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === (totalPages-1)) && !circular}\"></span>\n                <span class=\"ui-carousel-button ui-carousel-prev-button fa fa-arrow-circle-left\" (click)=\"onPrevNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === 0 && !circular)}\"></span>\n                <div *ngIf=\"displayPageLinks\" class=\"ui-carousel-page-links\">\n                    <a href=\"#\" class=\"ui-carousel-page-link fa fa-circle-o\" *ngFor=\"let links of anchorPageLinks;let i=index\" [ngClass]=\"{'fa-dot-circle-o':page===i}\"></a>\n                </div>\n                <select *ngIf=\"displayPageDropdown\" class=\"ui-carousel-dropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\">\n                    <option *ngFor=\"let option of selectDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n                <select *ngIf=\"responsive\" class=\"ui-carousel-mobiledropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\"\n                    [style.display]=\"shrinked ? 'block' : 'none'\">\n                    <option *ngFor=\"let option of mobileDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n            </div>\n            <div class=\"ui-carousel-viewport\">\n                <ul class=\"ui-carousel-items\" [style.left.px]=\"left\" [style.transitionProperty]=\"'left'\" \n                            [style.transitionDuration]=\"effectDuration\" [style.transitionTimingFunction]=\"easing\">\n                    <template ngFor [ngForOf]=\"value\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler]
+	            template: "\n        <div [ngClass]=\"{'ui-carousel ui-widget ui-widget-content ui-corner-all':true}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-carousel-header ui-widget-header\">\n                <div class=\"ui-carousel-header-title\">{{headerText}}</div>\n                <span class=\"ui-carousel-button ui-carousel-next-button fa fa-arrow-circle-right\" (click)=\"onNextNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === (totalPages-1)) && !circular}\"></span>\n                <span class=\"ui-carousel-button ui-carousel-prev-button fa fa-arrow-circle-left\" (click)=\"onPrevNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === 0 && !circular)}\"></span>\n                <div *ngIf=\"displayPageLinks\" class=\"ui-carousel-page-links\">\n                    <a href=\"#\" (click)=\"setPageWithLink($event,i)\" class=\"ui-carousel-page-link fa fa-circle-o\" *ngFor=\"let links of anchorPageLinks;let i=index\" [ngClass]=\"{'fa-dot-circle-o':page===i}\"></a>\n                </div>\n                <select *ngIf=\"displayPageDropdown\" class=\"ui-carousel-dropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\">\n                    <option *ngFor=\"let option of selectDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n                <select *ngIf=\"responsive\" class=\"ui-carousel-mobiledropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\"\n                    [style.display]=\"shrinked ? 'block' : 'none'\">\n                    <option *ngFor=\"let option of mobileDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n            </div>\n            <div class=\"ui-carousel-viewport\">\n                <ul class=\"ui-carousel-items\" [style.left.px]=\"left\" [style.transitionProperty]=\"'left'\" \n                            [style.transitionDuration]=\"effectDuration\" [style.transitionTimingFunction]=\"easing\">\n                    <li *ngFor=\"let item of value\" class=\"ui-carousel-item ui-widget-content ui-corner-all\">\n                        <template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></template>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    ",
+	            providers: [domhandler_1.DomHandler],
+	            directives: [common_1.TemplateWrapper]
 	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers, core_1.Renderer])
 	    ], Carousel);
@@ -30593,8 +30674,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var CHECKBOX_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
+	var forms_1 = __webpack_require__(579);
+	var CHECKBOX_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Checkbox; }),
 	    multi: true
 	});
@@ -30612,7 +30693,7 @@ webpackJsonp([2],[
 	            return;
 	        }
 	        this.checked = !this.checked;
-	        if (this.name) {
+	        if (!this.binary) {
 	            if (this.checked)
 	                this.addValue(this.value);
 	            else
@@ -30628,7 +30709,7 @@ webpackJsonp([2],[
 	        }
 	    };
 	    Checkbox.prototype.isChecked = function () {
-	        if (this.name)
+	        if (!this.binary)
 	            return this.findValueIndex(this.value) !== -1;
 	        else
 	            return this.model;
@@ -30684,13 +30765,21 @@ webpackJsonp([2],[
 	        __metadata('design:type', Boolean)
 	    ], Checkbox.prototype, "disabled", void 0);
 	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], Checkbox.prototype, "binary", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], Checkbox.prototype, "label", void 0);
+	    __decorate([
 	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Checkbox.prototype, "onChange", void 0);
 	    Checkbox = __decorate([
 	        core_1.Component({
 	            selector: 'p-checkbox',
-	            template: "\n        <div class=\"ui-chkbox ui-widget\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #cb type=\"checkbox\" name=\"{{name}}\" value=\"{{value}}\" [checked]=\"checked\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\"\n                [ngClass]=\"{'ui-state-focus':focused}\" (keydown.space)=\"onClick($event,cb,false)\">\n            </div>\n            <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" (click)=\"onClick($event,cb,true)\"\n                        (mouseover)=\"hover=true\" (mouseout)=\"hover=false\" \n                        [ngClass]=\"{'ui-state-hover':hover&&!disabled,'ui-state-active':checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-chkbox-icon ui-c\" [ngClass]=\"{'fa fa-fw fa-check':checked}\"></span>\n            </div>\n        </div>\n    ",
+	            template: "\n        <div class=\"ui-chkbox ui-widget\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #cb type=\"checkbox\" name=\"{{name}}\" value=\"{{value}}\" [checked]=\"checked\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\"\n                [ngClass]=\"{'ui-state-focus':focused}\" (keydown.space)=\"onClick($event,cb,false)\">\n            </div>\n            <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" (click)=\"onClick($event,cb,true)\"\n                        (mouseover)=\"hover=true\" (mouseout)=\"hover=false\" \n                        [ngClass]=\"{'ui-state-hover':hover&&!disabled,'ui-state-active':checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-chkbox-icon ui-c\" [ngClass]=\"{'fa fa-fw fa-check':checked}\"></span>\n            </div>\n        </div>\n        <label class=\"ui-chkbox-label\" (click)=\"onClick($event,cb,true)\" *ngIf=\"label\">{{label}}</label>\n    ",
 	            providers: [CHECKBOX_VALUE_ACCESSOR]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -30821,10 +30910,12 @@ webpackJsonp([2],[
 	        this.documentClickListener = this.renderer.listenGlobal('body', 'click', function () {
 	            _this.hide();
 	        });
-	        this.documentRightClickListener = this.renderer.listenGlobal('body', 'contextmenu', function (event) {
-	            _this.show(event);
-	            event.preventDefault();
-	        });
+	        if (this.global) {
+	            this.documentRightClickListener = this.renderer.listenGlobal('body', 'contextmenu', function (event) {
+	                _this.show(event);
+	                event.preventDefault();
+	            });
+	        }
 	    };
 	    ContextMenu.prototype.toggle = function (event) {
 	        if (this.container.offsetParent)
@@ -30837,6 +30928,7 @@ webpackJsonp([2],[
 	        this.top = event.pageY;
 	        this.visible = true;
 	        this.domHandler.fadeIn(this.container, 250);
+	        event.preventDefault();
 	    };
 	    ContextMenu.prototype.hide = function () {
 	        this.visible = false;
@@ -30854,7 +30946,9 @@ webpackJsonp([2],[
 	    };
 	    ContextMenu.prototype.ngOnDestroy = function () {
 	        this.documentClickListener();
-	        this.documentRightClickListener();
+	        if (this.global) {
+	            this.documentRightClickListener();
+	        }
 	        if (this.model) {
 	            for (var _i = 0, _a = this.model; _i < _a.length; _i++) {
 	                var item = _a[_i];
@@ -30916,6 +31010,7 @@ webpackJsonp([2],[
 	        this.columns = 3;
 	        this.pageLinks = 5;
 	        this.onLazyLoad = new core_1.EventEmitter();
+	        this.paginatorPosition = 'bottom';
 	        this.first = 0;
 	        this.page = 0;
 	        this.differ = differs.find([]).create(null);
@@ -31025,6 +31120,10 @@ webpackJsonp([2],[
 	        __metadata('design:type', String)
 	    ], DataGrid.prototype, "styleClass", void 0);
 	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], DataGrid.prototype, "paginatorPosition", void 0);
+	    __decorate([
 	        core_1.ContentChild(common_1.Header), 
 	        __metadata('design:type', Object)
 	    ], DataGrid.prototype, "header", void 0);
@@ -31039,7 +31138,7 @@ webpackJsonp([2],[
 	    DataGrid = __decorate([
 	        core_1.Component({
 	            selector: 'p-dataGrid',
-	            template: "\n        <div [ngClass]=\"'ui-datagrid ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-datagrid-header ui-widget-header ui-corner-top\" *ngIf=\"header\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <div class=\"ui-datagrid-content ui-widget-content\" [ngClass]=\"'ui-datagrid-col-' + columns\">\n                <template ngFor [ngForOf]=\"dataToRender\" [ngForTemplate]=\"itemTemplate\"></template>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" \n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator\"></p-paginator>\n            <div class=\"ui-datagrid-footer ui-widget-header ui-corner-top\" *ngIf=\"footer\">\n                <ng-content select=\"footer\"></ng-content>\n            </div>\n        </div>\n    ",
+	            template: "\n        <div [ngClass]=\"'ui-datagrid ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-datagrid-header ui-widget-header ui-corner-top\" *ngIf=\"header\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" \n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && paginatorPosition!='bottom' || paginatorPosition =='both'\"></p-paginator>\n            <div class=\"ui-datagrid-content ui-widget-content\" [ngClass]=\"'ui-datagrid-col-' + columns\">\n                <template ngFor [ngForOf]=\"dataToRender\" [ngForTemplate]=\"itemTemplate\"></template>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" \n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && paginatorPosition!='top' || paginatorPosition =='both'\"></p-paginator>\n            <div class=\"ui-datagrid-footer ui-widget-header ui-corner-top\" *ngIf=\"footer\">\n                <ng-content select=\"footer\"></ng-content>\n            </div>\n        </div>\n    ",
 	            directives: [paginator_1.Paginator]
 	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers])
@@ -31067,11 +31166,13 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(36);
 	var common_2 = __webpack_require__(36);
 	var paginator_1 = __webpack_require__(212);
+	var common_3 = __webpack_require__(36);
 	var DataList = (function () {
 	    function DataList(el, differs) {
 	        this.el = el;
 	        this.pageLinks = 5;
 	        this.onLazyLoad = new core_1.EventEmitter();
+	        this.paginatorPosition = 'bottom';
 	        this.first = 0;
 	        this.page = 0;
 	        this.differ = differs.find([]).create(null);
@@ -31177,6 +31278,10 @@ webpackJsonp([2],[
 	        __metadata('design:type', String)
 	    ], DataList.prototype, "styleClass", void 0);
 	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], DataList.prototype, "paginatorPosition", void 0);
+	    __decorate([
 	        core_1.ContentChild(common_1.Header), 
 	        __metadata('design:type', Object)
 	    ], DataList.prototype, "header", void 0);
@@ -31191,8 +31296,8 @@ webpackJsonp([2],[
 	    DataList = __decorate([
 	        core_1.Component({
 	            selector: 'p-dataList',
-	            template: "\n        <div [ngClass]=\"'ui-datalist ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-datalist-header ui-widget-header ui-corner-top\" *ngIf=\"header\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <div class=\"ui-datalist-content ui-widget-content\">\n                <ul class=\"ui-datalist-data\">\n                    <template ngFor [ngForOf]=\"dataToRender\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" \n            (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator\"></p-paginator>\n            <div class=\"ui-datalist-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n                <ng-content select=\"footer\"></ng-content>\n            </div>\n        </div>\n    ",
-	            directives: [paginator_1.Paginator]
+	            template: "\n        <div [ngClass]=\"'ui-datalist ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-datalist-header ui-widget-header ui-corner-top\" *ngIf=\"header\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" \n            (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator  && paginatorPosition!='bottom' || paginatorPosition =='both'\"></p-paginator>\n            <div class=\"ui-datalist-content ui-widget-content\">\n                <ul class=\"ui-datalist-data\">\n                    <li *ngFor=\"let item of dataToRender\">\n                        <template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></template>\n                    </li>\n                </ul>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" \n            (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator  && paginatorPosition!='top' || paginatorPosition =='both'\"></p-paginator>\n            <div class=\"ui-datalist-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n                <ng-content select=\"footer\"></ng-content>\n            </div>\n        </div>\n    ",
+	            directives: [paginator_1.Paginator, common_3.TemplateWrapper]
 	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers])
 	    ], DataList);
@@ -31219,6 +31324,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(36);
 	var common_2 = __webpack_require__(36);
 	var domhandler_1 = __webpack_require__(11);
+	var common_3 = __webpack_require__(36);
 	var DataScroller = (function () {
 	    function DataScroller(el, differs, renderer, domHandler) {
 	        this.el = el;
@@ -31367,8 +31473,9 @@ webpackJsonp([2],[
 	    DataScroller = __decorate([
 	        core_1.Component({
 	            selector: 'p-dataScroller',
-	            template: "\n    <div [ngClass]=\"{'ui-datascroller ui-widget': true, 'ui-datascroller-inline': inline}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n        <div class=\"ui-datascroller-header ui-widget-header ui-corner-top\" *ngIf=\"header\">\n            <ng-content select=\"header\"></ng-content>\n        </div>\n        <div class=\"ui-datascroller-content ui-widget-content\" [ngStyle]=\"{'max-height': scrollHeight}\">\n            <ul class=\"ui-datascroller-list\">\n                <template ngFor [ngForOf]=\"dataToRender\" [ngForTemplate]=\"itemTemplate\"></template>\n            </ul>\n        </div>\n        <div class=\"ui-datascroller-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n            <ng-content select=\"footer\"></ng-content>\n        </div>\n    </div>\n    ",
-	            providers: [domhandler_1.DomHandler]
+	            template: "\n    <div [ngClass]=\"{'ui-datascroller ui-widget': true, 'ui-datascroller-inline': inline}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n        <div class=\"ui-datascroller-header ui-widget-header ui-corner-top\" *ngIf=\"header\">\n            <ng-content select=\"header\"></ng-content>\n        </div>\n        <div class=\"ui-datascroller-content ui-widget-content\" [ngStyle]=\"{'max-height': scrollHeight}\">\n            <ul class=\"ui-datascroller-list\">\n                <li *ngFor=\"let item of dataToRender\">\n                    <template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></template>\n                </li>\n            </ul>\n        </div>\n        <div class=\"ui-datascroller-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n            <ng-content select=\"footer\"></ng-content>\n        </div>\n    </div>\n    ",
+	            providers: [domhandler_1.DomHandler],
+	            directives: [common_3.TemplateWrapper]
 	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers, core_1.Renderer, domhandler_1.DomHandler])
 	    ], DataScroller);
@@ -31403,6 +31510,62 @@ webpackJsonp([2],[
 	var paginator_1 = __webpack_require__(212);
 	var inputtext_1 = __webpack_require__(211);
 	var domhandler_1 = __webpack_require__(11);
+	var DTRadioButton = (function () {
+	    function DTRadioButton() {
+	        this.onClick = new core_1.EventEmitter();
+	    }
+	    DTRadioButton.prototype.handleClick = function (event) {
+	        this.onClick.emit(event);
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Boolean)
+	    ], DTRadioButton.prototype, "checked", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', core_1.EventEmitter)
+	    ], DTRadioButton.prototype, "onClick", void 0);
+	    DTRadioButton = __decorate([
+	        core_1.Component({
+	            selector: 'p-dtRadioButton',
+	            template: "\n        <div class=\"ui-radiobutton ui-widget\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input type=\"radio\" [checked]=\"checked\">\n            </div>\n            <div class=\"ui-radiobutton-box ui-widget ui-radiobutton-relative ui-state-default\" (click)=\"handleClick($event)\"\n                        (mouseenter)=\"hover=true\" (mouseleave)=\"hover=false\"\n                        [ngClass]=\"{'ui-state-hover':hover,'ui-state-active':checked}\">\n                <span class=\"ui-radiobutton-icon\" [ngClass]=\"{'fa fa-fw fa-circle':checked}\"></span>\n            </div>\n        </div>\n    "
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], DTRadioButton);
+	    return DTRadioButton;
+	}());
+	exports.DTRadioButton = DTRadioButton;
+	var DTCheckbox = (function () {
+	    function DTCheckbox() {
+	        this.onChange = new core_1.EventEmitter();
+	    }
+	    DTCheckbox.prototype.handleClick = function (event) {
+	        if (!this.disabled) {
+	            this.onChange.emit({ originalEvent: event, checked: !this.checked });
+	        }
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Boolean)
+	    ], DTCheckbox.prototype, "checked", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Boolean)
+	    ], DTCheckbox.prototype, "disabled", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', core_1.EventEmitter)
+	    ], DTCheckbox.prototype, "onChange", void 0);
+	    DTCheckbox = __decorate([
+	        core_1.Component({
+	            selector: 'p-dtCheckbox',
+	            template: "\n        <div class=\"ui-chkbox ui-widget\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input type=\"checkbox\" [checked]=\"checked\">\n            </div>\n            <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" (click)=\"handleClick($event)\"\n                        (mouseover)=\"hover=true\" (mouseout)=\"hover=false\" \n                        [ngClass]=\"{'ui-state-hover':hover&&!disabled,'ui-state-active':checked&&!disabled,'ui-state-disabled':disabled}\">\n                <span class=\"ui-chkbox-icon ui-c\" [ngClass]=\"{'fa fa-fw fa-check':checked}\"></span>\n            </div>\n        </div>\n    "
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], DTCheckbox);
+	    return DTCheckbox;
+	}());
+	exports.DTCheckbox = DTCheckbox;
 	var DataTable = (function () {
 	    function DataTable(el, domHandler, differs, cols, renderer, changeDetector) {
 	        var _this = this;
@@ -31415,6 +31578,7 @@ webpackJsonp([2],[
 	        this.onRowSelect = new core_1.EventEmitter();
 	        this.onRowUnselect = new core_1.EventEmitter();
 	        this.onRowDblclick = new core_1.EventEmitter();
+	        this.onHeaderCheckboxToggle = new core_1.EventEmitter();
 	        this.onContextMenuSelect = new core_1.EventEmitter();
 	        this.filterDelay = 300;
 	        this.onLazyLoad = new core_1.EventEmitter();
@@ -31424,6 +31588,8 @@ webpackJsonp([2],[
 	        this.sortMode = 'single';
 	        this.sortOrder = 1;
 	        this.csvSeparator = ',';
+	        this.emptyMessage = 'No records found';
+	        this.paginatorPosition = 'bottom';
 	        this.onEditInit = new core_1.EventEmitter();
 	        this.onEditComplete = new core_1.EventEmitter();
 	        this.onEdit = new core_1.EventEmitter();
@@ -31469,7 +31635,7 @@ webpackJsonp([2],[
 	            }
 	        };
 	        this.differ = differs.find([]).create(null);
-	        cols.changes.subscribe(function (_) {
+	        this.columnsSubscription = cols.changes.subscribe(function (_) {
 	            _this.columns = cols.toArray();
 	            _this.columnsUpdated = true;
 	            changeDetector.markForCheck();
@@ -31518,14 +31684,16 @@ webpackJsonp([2],[
 	            if (this.paginator) {
 	                this.updatePaginator();
 	            }
-	            if (!this.lazy && !this.stopSortPropagation && (this.sortField || this.multiSortMeta)) {
+	            if (this.stopSortPropagation) {
+	                this.stopSortPropagation = false;
+	            }
+	            else if (!this.lazy && (this.sortField || this.multiSortMeta)) {
 	                if (this.sortMode == 'single')
 	                    this.sortSingle();
 	                else if (this.sortMode == 'multiple')
 	                    this.sortMultiple();
 	            }
 	            this.updateDataToRender(this.filteredValue || this.value);
-	            this.stopSortPropagation = false;
 	        }
 	    };
 	    DataTable.prototype.resolveFieldData = function (data, field) {
@@ -31731,8 +31899,7 @@ webpackJsonp([2],[
 	        }
 	        var selectionIndex = this.findIndexInSelection(rowData);
 	        var selected = selectionIndex != -1;
-	        var metaKey = (event.metaKey || event.ctrlKey);
-	        if (selected && metaKey) {
+	        if (selected) {
 	            if (this.isSingleSelectionMode()) {
 	                this.selection = null;
 	                this.selectionChange.emit(null);
@@ -31741,7 +31908,7 @@ webpackJsonp([2],[
 	                this.selection.splice(selectionIndex, 1);
 	                this.selectionChange.emit(this.selection);
 	            }
-	            this.onRowUnselect.emit({ originalEvent: event, data: rowData });
+	            this.onRowUnselect.emit({ originalEvent: event, data: rowData, type: 'row' });
 	        }
 	        else {
 	            if (this.isSingleSelectionMode()) {
@@ -31749,12 +31916,40 @@ webpackJsonp([2],[
 	                this.selectionChange.emit(rowData);
 	            }
 	            else if (this.isMultipleSelectionMode()) {
-	                this.selection = (!metaKey) ? [] : this.selection || [];
+	                this.selection = this.selection || [];
 	                this.selection.push(rowData);
 	                this.selectionChange.emit(this.selection);
 	            }
-	            this.onRowSelect.emit({ originalEvent: event, data: rowData });
+	            this.onRowSelect.emit({ originalEvent: event, data: rowData, type: 'row' });
 	        }
+	    };
+	    DataTable.prototype.selectRowWithRadio = function (rowData) {
+	        if (this.selection != rowData) {
+	            this.selection = rowData;
+	            this.selectionChange.emit(this.selection);
+	            this.onRowSelect.emit({ originalEvent: event, data: rowData, type: 'radiobutton' });
+	        }
+	    };
+	    DataTable.prototype.toggleRowWithCheckbox = function (event, rowData) {
+	        var selectionIndex = this.findIndexInSelection(rowData);
+	        this.selection = this.selection || [];
+	        if (selectionIndex != -1) {
+	            this.selection.splice(selectionIndex, 1);
+	            this.onRowUnselect.emit({ originalEvent: event, data: rowData, type: 'checkbox' });
+	        }
+	        else {
+	            this.selection.push(rowData);
+	            this.onRowSelect.emit({ originalEvent: event, data: rowData, type: 'checkbox' });
+	        }
+	        this.selectionChange.emit(this.selection);
+	    };
+	    DataTable.prototype.toggleRowsWithCheckbox = function (event) {
+	        if (event.checked)
+	            this.selection = this.dataToRender.slice(0);
+	        else
+	            this.selection = [];
+	        this.selectionChange.emit(this.selection);
+	        this.onHeaderCheckboxToggle.emit({ originalEvent: event, checked: event.checked });
 	    };
 	    DataTable.prototype.onRowRightClick = function (event, rowData) {
 	        if (this.contextMenu) {
@@ -31786,24 +31981,39 @@ webpackJsonp([2],[
 	    };
 	    DataTable.prototype.findIndexInSelection = function (rowData) {
 	        var index = -1;
-	        if (this.selectionMode && this.selection) {
-	            if (this.isSingleSelectionMode()) {
-	                index = (this.selection == rowData) ? 0 : -1;
-	            }
-	            else if (this.isMultipleSelectionMode()) {
-	                for (var i = 0; i < this.selection.length; i++) {
-	                    if (this.selection[i] == rowData) {
-	                        index = i;
-	                        break;
-	                    }
+	        if (this.selection) {
+	            for (var i = 0; i < this.selection.length; i++) {
+	                if (this.selection[i] == rowData) {
+	                    index = i;
+	                    break;
 	                }
 	            }
 	        }
 	        return index;
 	    };
 	    DataTable.prototype.isSelected = function (rowData) {
-	        return this.findIndexInSelection(rowData) != -1;
+	        return ((rowData && rowData == this.selection) || this.findIndexInSelection(rowData) != -1);
 	    };
+	    Object.defineProperty(DataTable.prototype, "allSelected", {
+	        get: function () {
+	            var val = true;
+	            if (this.dataToRender && this.selection && (this.dataToRender.length == this.selection.length)) {
+	                for (var _i = 0, _a = this.dataToRender; _i < _a.length; _i++) {
+	                    var data = _a[_i];
+	                    if (!this.isSelected(data)) {
+	                        val = false;
+	                        break;
+	                    }
+	                }
+	            }
+	            else {
+	                val = false;
+	            }
+	            return val;
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
 	    DataTable.prototype.onFilterKeyup = function (value, field, matchMode) {
 	        var _this = this;
 	        if (this.filterTimeout) {
@@ -31988,8 +32198,13 @@ webpackJsonp([2],[
 	    };
 	    DataTable.prototype.fixColumnWidths = function () {
 	        var columns = this.domHandler.find(this.el.nativeElement, 'th.ui-resizable-column');
-	        for (var i = 0; i < columns.length; i++) {
-	            columns[i].style.width = columns[i].offsetWidth + 'px';
+	        for (var _i = 0, columns_1 = columns; _i < columns_1.length; _i++) {
+	            var col = columns_1[_i];
+	            col.style.width = 'auto';
+	        }
+	        for (var _a = 0, columns_2 = columns; _a < columns_2.length; _a++) {
+	            var col = columns_2[_a];
+	            col.style.width = col.offsetWidth + 'px';
 	        }
 	    };
 	    DataTable.prototype.onColumnDragStart = function (event) {
@@ -32207,6 +32422,9 @@ webpackJsonp([2],[
 	            this.documentColumnResizeListener();
 	            this.documentColumnResizeEndListener();
 	        }
+	        if (this.columnsSubscription) {
+	            this.columnsSubscription.unsubscribe();
+	        }
 	    };
 	    __decorate([
 	        core_1.Input(), 
@@ -32272,6 +32490,10 @@ webpackJsonp([2],[
 	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onRowDblclick", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', core_1.EventEmitter)
+	    ], DataTable.prototype, "onHeaderCheckboxToggle", void 0);
 	    __decorate([
 	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
@@ -32365,6 +32587,18 @@ webpackJsonp([2],[
 	        __metadata('design:type', String)
 	    ], DataTable.prototype, "csvSeparator", void 0);
 	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], DataTable.prototype, "emptyMessage", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], DataTable.prototype, "paginatorPosition", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Array)
+	    ], DataTable.prototype, "expandedRows", void 0);
+	    __decorate([
 	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onEditInit", void 0);
@@ -32419,8 +32653,8 @@ webpackJsonp([2],[
 	    DataTable = __decorate([
 	        core_1.Component({
 	            selector: 'p-dataTable',
-	            template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\" \n            [ngClass]=\"{'ui-datatable ui-widget': true, 'ui-datatable-reflow':responsive, 'ui-datatable-stacked': stacked, 'ui-datatable-resizable': resizableColumns}\">\n            <div class=\"ui-datatable-header ui-widget-header\" *ngIf=\"header\" [ngStyle]=\"{'width': scrollWidth}\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <div class=\"ui-datatable-tablewrapper\" *ngIf=\"!scrollable\">\n                <table>\n                    <thead>\n                        <tr *ngIf=\"!headerRows\" class=\"ui-state-default\">\n                            <th #headerCell *ngFor=\"let col of columns;let lastCol = last\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                (click)=\"sort($event,col)\" (mouseenter)=\"hoveredHeader = $event.target\" (mouseleave)=\"hoveredHeader = null\"\n                                [ngClass]=\"{'ui-state-default ui-unselectable-text':true, 'ui-state-hover': headerCell === hoveredHeader && col.sortable,\n                                'ui-sortable-column': col.sortable,'ui-state-active': isSorted(col), 'ui-resizable-column': resizableColumns}\" \n                                [draggable]=\"reorderableColumns\" (dragstart)=\"onColumnDragStart($event)\" (dragover)=\"onColumnDragover($event)\" (dragleave)=\"onColumnDragleave($event)\" (drop)=\"onColumnDrop($event)\">\n                                <span class=\"ui-column-resizer\" *ngIf=\"resizableColumns && ((columnResizeMode == 'fit' && !lastCol) || columnResizeMode == 'expand')\" (mousedown)=\"initColumnResize($event)\">&nbsp;</span>\n                                <span class=\"ui-column-title\">{{col.header}}</span>\n                                <span class=\"ui-sortable-column-icon fa fa-fw fa-sort\" *ngIf=\"col.sortable\"\n                                     [ngClass]=\"{'fa-sort-desc': (getSortOrder(col) == -1),'fa-sort-asc': (getSortOrder(col) == 1)}\"></span>\n                                <input type=\"text\" pInputText class=\"ui-column-filter\" *ngIf=\"col.filter\" [value]=\"filters[col.field] ? filters[col.field].value : ''\" (click)=\"onFilterInputClick($event)\" (keyup)=\"onFilterKeyup($event.target.value, col.field, col.filterMatchMode)\"/>\n                            </th>\n                        </tr>\n                        <tr *ngFor=\"let headerRow of headerRows\" class=\"ui-state-default\">\n                            <th #headerCell *ngFor=\"let col of headerRow.columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [attr.colspan]=\"col.colspan\" [attr.rowspan]=\"col.rowspan\"\n                                (click)=\"sort($event,col)\" (mouseenter)=\"hoveredHeader = $event.target\" (mouseleave)=\"hoveredHeader = null\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                [ngClass]=\"{'ui-state-default ui-unselectable-text':true, 'ui-state-hover': headerCell === hoveredHeader && col.sortable,\n                                'ui-sortable-column': col.sortable,'ui-state-active': isSorted(col), 'ui-resizable-column': resizableColumns}\">\n                                <span class=\"ui-column-resizer\" *ngIf=\"resizableColumns && ((columnResizeMode == 'fit' && !lastCol) || columnResizeMode == 'expand')\" (mousedown)=\"initColumnResize($event)\">&nbsp;</span>\n                                <span class=\"ui-column-title\">{{col.header}}</span>\n                                <span class=\"ui-sortable-column-icon fa fa-fw fa-sort\" *ngIf=\"col.sortable\"\n                                     [ngClass]=\"{'fa-sort-desc': (getSortOrder(col) == -1),'fa-sort-asc': (getSortOrder(col) == 1)}\"></span>\n                                <input type=\"text\" pInputText class=\"ui-column-filter\" *ngIf=\"col.filter\" [value]=\"filters[col.field] ? filters[col.field].value : ''\" (click)=\"onFilterInputClick($event)\" (keyup)=\"onFilterKeyup($event.target.value, col.field, col.filterMatchMode)\"/>\n                            </th>\n                        </tr>\n                    </thead>\n                    <tfoot *ngIf=\"hasFooter()\">\n                        <tr *ngIf=\"!footerRows\">\n                            <th *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [ngClass]=\"{'ui-state-default':true}\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\">{{col.footer}}</th>\n                        </tr>\n                        <tr *ngFor=\"let footerRow of footerRows\">\n                            <th *ngFor=\"let col of footerRow.columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\"\n                                [attr.colspan]=\"col.colspan\" [attr.rowspan]=\"col.rowspan\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                [ngClass]=\"{'ui-state-default':true}\">{{col.footer}}</th>\n                        </tr>\n                    </tfoot>\n                    <tbody class=\"ui-datatable-data ui-widget-content\">\n                        <template ngFor let-rowData [ngForOf]=\"dataToRender\" let-even=\"even\" let-odd=\"odd\" let-rowIndex=\"index\">\n                            <tr #rowElement class=\"ui-widget-content\" (mouseenter)=\"hoveredRow = $event.target\" (mouseleave)=\"hoveredRow = null\"\n                                    (click)=\"handleRowClick($event, rowData)\" (dblclick)=\"rowDblclick($event,rowData)\" (contextmenu)=\"onRowRightClick($event,rowData)\"\n                                    [ngClass]=\"{'ui-datatable-even':even,'ui-datatable-odd':odd,'ui-state-hover': (selectionMode && rowElement == hoveredRow), 'ui-state-highlight': isSelected(rowData)}\">\n                                <td *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                    [ngClass]=\"{'ui-editable-column':col.editable}\" (click)=\"switchCellToEditMode($event.target,col,rowData)\">\n                                    <span class=\"ui-column-title\" *ngIf=\"responsive\">{{col.header}}</span>\n                                    <span class=\"ui-cell-data\" *ngIf=\"!col.template\">{{resolveFieldData(rowData,col.field)}}</span>\n                                    <span class=\"ui-cell-data\" *ngIf=\"col.template\">\n                                        <p-columnTemplateLoader [column]=\"col\" [rowData]=\"rowData\" [rowIndex]=\"rowIndex + first\"></p-columnTemplateLoader>\n                                    </span>\n                                    <input type=\"text\" class=\"ui-cell-editor ui-state-highlight\" *ngIf=\"col.editable\" [(ngModel)]=\"rowData[col.field]\"\n                                            (blur)=\"switchCellToViewMode($event.target,col,rowData,true)\" (keydown)=\"onCellEditorKeydown($event, col, rowData)\"/>\n                                    <div class=\"ui-row-toggler fa fa-fw ui-c\" [ngClass]=\"{'fa-chevron-circle-down':isRowExpanded(rowData), 'fa-chevron-circle-right': !isRowExpanded(rowData)}\"\n                                        *ngIf=\"col.expander\" (click)=\"toggleRow(rowData)\"></div>\n                                </td>\n                            </tr>\n                            <tr *ngIf=\"expandableRows && isRowExpanded(rowData)\">\n                                <td [attr.colspan]=\"visibleColumns().length\">\n                                    <p-rowExpansionLoader [rowData]=\"rowData\" [template]=\"rowExpansionTemplate\"></p-rowExpansionLoader>\n                                </td>\n                            </tr>\n                        </template>\n                    </tbody>\n                </table>\n                <div class=\"ui-column-resizer-helper ui-state-highlight\" style=\"display:none\"></div>\n                <span class=\"fa fa-arrow-down ui-datatable-reorder-indicator-up\" style=\"position: absolute; display: none;\"></span>\n                <span class=\"fa fa-arrow-up ui-datatable-reorder-indicator-down\" style=\"position: absolute; display: none;\"></span>\n            </div>\n            <div class=\"ui-widget-header ui-datatable-scrollable-header\" *ngIf=\"scrollable\" [ngStyle]=\"{'width': scrollWidth}\">\n                <div class=\"ui-datatable-scrollable-header-box\">\n                    <table>\n                        <thead>\n                            <tr>\n                                <th #headerCell *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                    (click)=\"sort($event,col)\" (mouseenter)=\"hoveredHeader = $event.target\" (mouseleave)=\"hoveredHeader = null\"\n                                    [ngClass]=\"{'ui-state-default ui-unselectable-text':true, 'ui-state-hover': headerCell === hoveredHeader && col.sortable,\n                                    'ui-sortable-column': col.sortable,'ui-state-active': isSorted(col), 'ui-resizable-column': resizableColumns}\">\n                                    <span class=\"ui-column-resizer\" *ngIf=\"resizableColumns && ((columnResizeMode == 'fit' && !lastCol) || columnResizeMode == 'expand')\">&nbsp;</span>\n                                    <span class=\"ui-column-title\">{{col.header}}</span>\n                                    <span class=\"ui-sortable-column-icon fa fa-fw fa-sort\" *ngIf=\"col.sortable\"\n                                         [ngClass]=\"{'fa-sort-desc': (col.field === sortField) && (sortOrder == -1),'fa-sort-asc': (col.field === sortField) && (sortOrder == 1)}\"></span>\n                                    <input type=\"text\" pInputText class=\"ui-column-filter\" *ngIf=\"col.filter\" (click)=\"onFilterInputClick($event)\" (keyup)=\"onFilterKeyup($event.target.value, col.field, col.filterMatchMode)\"/>\n                                </th>\n                            </tr>\n                        </thead>\n                    </table>\n                </div>\n            </div>\n            <div class=\"ui-datatable-scrollable-body\" *ngIf=\"scrollable\" [ngStyle]=\"{'width': scrollWidth}\">\n                <table>\n                    <tbody class=\"ui-datatable-data ui-widget-content\">\n                    <template ngFor let-rowData [ngForOf]=\"dataToRender\" let-even=\"even\" let-odd=\"odd\" let-rowIndex=\"index\">\n                        <tr #rowElement class=\"ui-widget-content\" (mouseenter)=\"hoveredRow = $event.target\" (mouseleave)=\"hoveredRow = null\"\n                                (click)=\"handleRowClick($event, rowData)\" (dblclick)=\"rowDblclick($event,rowData)\" (contextmenu)=\"onRowRightClick($event,rowData)\"\n                                [ngClass]=\"{'ui-datatable-even':even,'ui-datatable-odd':odd,'ui-state-hover': (selectionMode && rowElement == hoveredRow), 'ui-state-highlight': isSelected(rowData)}\">\n                            <td *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                [ngClass]=\"{'ui-editable-column':col.editable}\" (click)=\"switchCellToEditMode($event.target,col,rowData)\">\n                                <span class=\"ui-column-title\" *ngIf=\"responsive\">{{col.header}}</span>\n                                <span class=\"ui-cell-data\" *ngIf=\"!col.template\">{{resolveFieldData(rowData,col.field)}}</span>\n                                <span class=\"ui-cell-data\" *ngIf=\"col.template\">\n                                    <p-columnTemplateLoader [column]=\"col\" [rowData]=\"rowData\" [rowIndex]=\"rowIndex + first\"></p-columnTemplateLoader>\n                                </span>\n                                <input type=\"text\" class=\"ui-cell-editor ui-state-highlight\" *ngIf=\"col.editable\" [(ngModel)]=\"rowData[col.field]\"\n                                        (blur)=\"switchCellToViewMode($event.target,col,rowData,true)\" (keydown)=\"onCellEditorKeydown($event, col, rowData)\"/>\n                                <div class=\"ui-row-toggler fa fa-fw ui-c\" [ngClass]=\"{'fa-chevron-circle-down':isRowExpanded(rowData), 'fa-chevron-circle-right': !isRowExpanded(rowData)}\"\n                                    *ngIf=\"col.expander\" (click)=\"toggleRow(rowData)\"></div>\n                            </td>\n                        </tr>\n                        <tr *ngIf=\"expandableRows && isRowExpanded(rowData)\">\n                            <td [attr.colspan]=\"visibleColumns().length\">\n                                <p-rowExpansionLoader [rowData]=\"rowData\" [template]=\"rowExpansionTemplate\"></p-rowExpansionLoader>\n                            </td>\n                        </tr>\n                    </template>\n                    </tbody>\n                </table>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-bottom\"\n                (onPageChange)=\"paginate($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator\"></p-paginator>\n            <div class=\"ui-datatable-footer ui-widget-header\" *ngIf=\"footer\">\n                <ng-content select=\"footer\"></ng-content>\n            </div>\n        </div>\n    ",
-	            directives: [paginator_1.Paginator, inputtext_1.InputText, columntemplateloader_1.ColumnTemplateLoader, rowexpansionloader_1.RowExpansionLoader],
+	            template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\" \n            [ngClass]=\"{'ui-datatable ui-widget': true, 'ui-datatable-reflow':responsive, 'ui-datatable-stacked': stacked, 'ui-datatable-resizable': resizableColumns}\">\n            <div class=\"ui-datatable-header ui-widget-header\" *ngIf=\"header\" [ngStyle]=\"{'width': scrollWidth}\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-bottom\"\n                (onPageChange)=\"paginate($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && paginatorPosition!='bottom' || paginatorPosition =='both'\"></p-paginator>\n            <div class=\"ui-datatable-tablewrapper\" *ngIf=\"!scrollable\">\n                <table>\n                    <thead>\n                        <tr *ngIf=\"!headerRows\" class=\"ui-state-default\">\n                            <th #headerCell *ngFor=\"let col of columns;let lastCol = last\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                (click)=\"sort($event,col)\" (mouseenter)=\"hoveredHeader = $event.target\" (mouseleave)=\"hoveredHeader = null\"\n                                [ngClass]=\"{'ui-state-default ui-unselectable-text':true, 'ui-state-hover': headerCell === hoveredHeader && col.sortable,\n                                'ui-sortable-column': col.sortable,'ui-state-active': isSorted(col), 'ui-resizable-column': resizableColumns,'ui-selection-column':col.selectionMode}\" \n                                [draggable]=\"reorderableColumns\" (dragstart)=\"onColumnDragStart($event)\" (dragover)=\"onColumnDragover($event)\" (dragleave)=\"onColumnDragleave($event)\" (drop)=\"onColumnDrop($event)\">\n                                <span class=\"ui-column-resizer\" *ngIf=\"resizableColumns && ((columnResizeMode == 'fit' && !lastCol) || columnResizeMode == 'expand')\" (mousedown)=\"initColumnResize($event)\">&nbsp;</span>\n                                <span class=\"ui-column-title\" *ngIf=\"!col.selectionMode\">{{col.header}}</span>\n                                <span class=\"ui-sortable-column-icon fa fa-fw fa-sort\" *ngIf=\"col.sortable\"\n                                     [ngClass]=\"{'fa-sort-desc': (getSortOrder(col) == -1),'fa-sort-asc': (getSortOrder(col) == 1)}\"></span>\n                                <input type=\"text\" pInputText class=\"ui-column-filter\" *ngIf=\"col.filter\" [value]=\"filters[col.field] ? filters[col.field].value : ''\" (click)=\"onFilterInputClick($event)\" (keyup)=\"onFilterKeyup($event.target.value, col.field, col.filterMatchMode)\"/>\n                                <p-dtCheckbox *ngIf=\"col.selectionMode=='multiple'\" (onChange)=\"toggleRowsWithCheckbox($event)\" [checked]=\"allSelected\" [disabled]=\"isEmpty()\"></p-dtCheckbox>\n                            </th>\n                        </tr>\n                        <tr *ngFor=\"let headerRow of headerRows\" class=\"ui-state-default\">\n                            <th #headerCell *ngFor=\"let col of headerRow.columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [attr.colspan]=\"col.colspan\" [attr.rowspan]=\"col.rowspan\"\n                                (click)=\"sort($event,col)\" (mouseenter)=\"hoveredHeader = $event.target\" (mouseleave)=\"hoveredHeader = null\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                [ngClass]=\"{'ui-state-default ui-unselectable-text':true, 'ui-state-hover': headerCell === hoveredHeader && col.sortable,\n                                'ui-sortable-column': col.sortable,'ui-state-active': isSorted(col), 'ui-resizable-column': resizableColumns}\">\n                                <span class=\"ui-column-resizer\" *ngIf=\"resizableColumns && ((columnResizeMode == 'fit' && !lastCol) || columnResizeMode == 'expand')\" (mousedown)=\"initColumnResize($event)\">&nbsp;</span>\n                                <span class=\"ui-column-title\">{{col.header}}</span>\n                                <span class=\"ui-sortable-column-icon fa fa-fw fa-sort\" *ngIf=\"col.sortable\"\n                                     [ngClass]=\"{'fa-sort-desc': (getSortOrder(col) == -1),'fa-sort-asc': (getSortOrder(col) == 1)}\"></span>\n                                <input type=\"text\" pInputText class=\"ui-column-filter\" *ngIf=\"col.filter\" [value]=\"filters[col.field] ? filters[col.field].value : ''\" (click)=\"onFilterInputClick($event)\" (keyup)=\"onFilterKeyup($event.target.value, col.field, col.filterMatchMode)\"/>\n                            </th>\n                        </tr>\n                    </thead>\n                    <tfoot *ngIf=\"hasFooter()\">\n                        <tr *ngIf=\"!footerRows\">\n                            <th *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [ngClass]=\"{'ui-state-default':true}\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\">{{col.footer}}</th>\n                        </tr>\n                        <tr *ngFor=\"let footerRow of footerRows\">\n                            <th *ngFor=\"let col of footerRow.columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\"\n                                [attr.colspan]=\"col.colspan\" [attr.rowspan]=\"col.rowspan\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                [ngClass]=\"{'ui-state-default':true}\">{{col.footer}}</th>\n                        </tr>\n                    </tfoot>\n                    <tbody class=\"ui-datatable-data ui-widget-content\">\n                        <template ngFor let-rowData [ngForOf]=\"dataToRender\" let-even=\"even\" let-odd=\"odd\" let-rowIndex=\"index\">\n                            <tr #rowElement class=\"ui-widget-content\" (mouseenter)=\"hoveredRow = $event.target\" (mouseleave)=\"hoveredRow = null\"\n                                    (click)=\"handleRowClick($event, rowData)\" (dblclick)=\"rowDblclick($event,rowData)\" (contextmenu)=\"onRowRightClick($event,rowData)\"\n                                    [ngClass]=\"{'ui-datatable-even':even,'ui-datatable-odd':odd,'ui-state-hover': (selectionMode && rowElement == hoveredRow), 'ui-state-highlight': isSelected(rowData)}\">\n                                <td *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                    [ngClass]=\"{'ui-editable-column':col.editable,'ui-selection-column':col.selectionMode}\" (click)=\"switchCellToEditMode($event.target,col,rowData)\">\n                                    <span class=\"ui-column-title\" *ngIf=\"responsive\">{{col.header}}</span>\n                                    <span class=\"ui-cell-data\" *ngIf=\"!col.template && !col.expander && !col.selectionMode\">{{resolveFieldData(rowData,col.field)}}</span>\n                                    <span class=\"ui-cell-data\" *ngIf=\"col.template\">\n                                        <p-columnTemplateLoader [column]=\"col\" [rowData]=\"rowData\" [rowIndex]=\"rowIndex + first\"></p-columnTemplateLoader>\n                                    </span>\n                                    <input type=\"text\" class=\"ui-cell-editor ui-state-highlight\" *ngIf=\"col.editable\" [(ngModel)]=\"rowData[col.field]\"\n                                            (blur)=\"switchCellToViewMode($event.target,col,rowData,true)\" (keydown)=\"onCellEditorKeydown($event, col, rowData)\"/>\n                                    <div class=\"ui-row-toggler fa fa-fw ui-c\" [ngClass]=\"{'fa-chevron-circle-down':isRowExpanded(rowData), 'fa-chevron-circle-right': !isRowExpanded(rowData)}\"\n                                        *ngIf=\"col.expander\" (click)=\"toggleRow(rowData)\"></div>\n                                    <p-dtRadioButton *ngIf=\"col.selectionMode=='single'\" (onClick)=\"selectRowWithRadio(rowData)\" [checked]=\"isSelected(rowData)\"></p-dtRadioButton>\n                                    <p-dtCheckbox *ngIf=\"col.selectionMode=='multiple'\" (onChange)=\"toggleRowWithCheckbox($event,rowData)\" [checked]=\"isSelected(rowData)\"></p-dtCheckbox>\n                                </td>\n                            </tr>\n                            <tr *ngIf=\"expandableRows && isRowExpanded(rowData)\">\n                                <td [attr.colspan]=\"visibleColumns().length\">\n                                    <p-rowExpansionLoader [rowData]=\"rowData\" [template]=\"rowExpansionTemplate\"></p-rowExpansionLoader>\n                                </td>\n                            </tr>\n                        </template>\n                        \n                        <tr *ngIf=\"isEmpty()\" class=\"ui-widget-content\">\n                            <td [attr.colspan]=\"visibleColumns().length\">{{emptyMessage}}</td>\n                        </tr>\n                    </tbody>\n                </table>\n                <div class=\"ui-column-resizer-helper ui-state-highlight\" style=\"display:none\"></div>\n                <span class=\"fa fa-arrow-down ui-datatable-reorder-indicator-up\" style=\"position: absolute; display: none;\"></span>\n                <span class=\"fa fa-arrow-up ui-datatable-reorder-indicator-down\" style=\"position: absolute; display: none;\"></span>\n            </div>\n            <div class=\"ui-widget-header ui-datatable-scrollable-header\" *ngIf=\"scrollable\" [ngStyle]=\"{'width': scrollWidth}\">\n                <div class=\"ui-datatable-scrollable-header-box\">\n                    <table>\n                        <thead>\n                            <tr>\n                                <th #headerCell *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                    (click)=\"sort($event,col)\" (mouseenter)=\"hoveredHeader = $event.target\" (mouseleave)=\"hoveredHeader = null\"\n                                    [ngClass]=\"{'ui-state-default ui-unselectable-text':true, 'ui-state-hover': headerCell === hoveredHeader && col.sortable,\n                                    'ui-sortable-column': col.sortable,'ui-state-active': isSorted(col), 'ui-resizable-column': resizableColumns}\">\n                                    <span class=\"ui-column-resizer\" *ngIf=\"resizableColumns && ((columnResizeMode == 'fit' && !lastCol) || columnResizeMode == 'expand')\">&nbsp;</span>\n                                    <span class=\"ui-column-title\">{{col.header}}</span>\n                                    <span class=\"ui-sortable-column-icon fa fa-fw fa-sort\" *ngIf=\"col.sortable\"\n                                         [ngClass]=\"{'fa-sort-desc': (col.field === sortField) && (sortOrder == -1),'fa-sort-asc': (col.field === sortField) && (sortOrder == 1)}\"></span>\n                                    <input type=\"text\" pInputText class=\"ui-column-filter\" *ngIf=\"col.filter\" (click)=\"onFilterInputClick($event)\" (keyup)=\"onFilterKeyup($event.target.value, col.field, col.filterMatchMode)\"/>\n                                </th>\n                            </tr>\n                        </thead>\n                    </table>\n                </div>\n            </div>\n            <div class=\"ui-datatable-scrollable-body\" *ngIf=\"scrollable\" [ngStyle]=\"{'width': scrollWidth}\">\n                <table>\n                    <tbody class=\"ui-datatable-data ui-widget-content\">\n                    <template ngFor let-rowData [ngForOf]=\"dataToRender\" let-even=\"even\" let-odd=\"odd\" let-rowIndex=\"index\">\n                        <tr #rowElement class=\"ui-widget-content\" (mouseenter)=\"hoveredRow = $event.target\" (mouseleave)=\"hoveredRow = null\"\n                                (click)=\"handleRowClick($event, rowData)\" (dblclick)=\"rowDblclick($event,rowData)\" (contextmenu)=\"onRowRightClick($event,rowData)\"\n                                [ngClass]=\"{'ui-datatable-even':even,'ui-datatable-odd':odd,'ui-state-hover': (selectionMode && rowElement == hoveredRow), 'ui-state-highlight': isSelected(rowData)}\">\n                            <td *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [style.display]=\"col.hidden ? 'none' : 'table-cell'\"\n                                [ngClass]=\"{'ui-editable-column':col.editable}\" (click)=\"switchCellToEditMode($event.target,col,rowData)\">\n                                <span class=\"ui-column-title\" *ngIf=\"responsive\">{{col.header}}</span>\n                                <span class=\"ui-cell-data\" *ngIf=\"!col.template\">{{resolveFieldData(rowData,col.field)}}</span>\n                                <span class=\"ui-cell-data\" *ngIf=\"col.template\">\n                                    <p-columnTemplateLoader [column]=\"col\" [rowData]=\"rowData\" [rowIndex]=\"rowIndex + first\"></p-columnTemplateLoader>\n                                </span>\n                                <input type=\"text\" class=\"ui-cell-editor ui-state-highlight\" *ngIf=\"col.editable\" [(ngModel)]=\"rowData[col.field]\"\n                                        (blur)=\"switchCellToViewMode($event.target,col,rowData,true)\" (keydown)=\"onCellEditorKeydown($event, col, rowData)\"/>\n                                <div class=\"ui-row-toggler fa fa-fw ui-c\" [ngClass]=\"{'fa-chevron-circle-down':isRowExpanded(rowData), 'fa-chevron-circle-right': !isRowExpanded(rowData)}\"\n                                    *ngIf=\"col.expander\" (click)=\"toggleRow(rowData)\"></div>\n                            </td>\n                        </tr>\n                        <tr *ngIf=\"expandableRows && isRowExpanded(rowData)\">\n                            <td [attr.colspan]=\"visibleColumns().length\">\n                                <p-rowExpansionLoader [rowData]=\"rowData\" [template]=\"rowExpansionTemplate\"></p-rowExpansionLoader>\n                            </td>\n                        </tr>\n                    </template>\n                    </tbody>\n                </table>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" styleClass=\"ui-paginator-bottom\"\n                (onPageChange)=\"paginate($event)\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator && paginatorPosition!='top' || paginatorPosition =='both'\"></p-paginator>\n            <div class=\"ui-datatable-footer ui-widget-header\" *ngIf=\"footer\">\n                <ng-content select=\"footer\"></ng-content>\n            </div>\n        </div>\n    ",
+	            directives: [paginator_1.Paginator, inputtext_1.InputText, columntemplateloader_1.ColumnTemplateLoader, rowexpansionloader_1.RowExpansionLoader, DTRadioButton, DTCheckbox],
 	            providers: [domhandler_1.DomHandler]
 	        }),
 	        __param(3, core_1.Query(column_1.Column)), 
@@ -32491,6 +32725,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var domhandler_1 = __webpack_require__(11);
+	var common_1 = __webpack_require__(36);
 	var Dialog = (function () {
 	    function Dialog(el, domHandler, renderer) {
 	        this.el = el;
@@ -32566,6 +32801,12 @@ webpackJsonp([2],[
 	                    }
 	                }
 	            });
+	        }
+	        if (this.appendTo) {
+	            if (this.appendTo === 'body')
+	                document.body.appendChild(this.el.nativeElement);
+	            else
+	                this.appendTo.appendChild(this.el.nativeElement);
 	        }
 	    };
 	    Dialog.prototype.ngAfterViewChecked = function () {
@@ -32679,6 +32920,9 @@ webpackJsonp([2],[
 	        if (this.closeOnEscape && this.closable) {
 	            this.documentEscapeListener();
 	        }
+	        if (this.appendTo && this.appendTo === 'body') {
+	            document.body.removeChild(this.el.nativeElement);
+	        }
 	    };
 	    __decorate([
 	        core_1.Input(), 
@@ -32737,6 +32981,14 @@ webpackJsonp([2],[
 	        __metadata('design:type', Boolean)
 	    ], Dialog.prototype, "responsive", void 0);
 	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], Dialog.prototype, "appendTo", void 0);
+	    __decorate([
+	        core_1.ContentChild(common_1.Header), 
+	        __metadata('design:type', Object)
+	    ], Dialog.prototype, "headerFacet", void 0);
+	    __decorate([
 	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Dialog.prototype, "onBeforeShow", void 0);
@@ -32763,7 +33015,8 @@ webpackJsonp([2],[
 	    Dialog = __decorate([
 	        core_1.Component({
 	            selector: 'p-dialog',
-	            template: "\n        <div [ngClass]=\"{'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl,'ui-dialog-draggable':draggable}\" \n            [style.display]=\"visible ? 'block' : 'none'\" [style.width.px]=\"width\" [style.height.px]=\"height\" (mousedown)=\"moveOnTop()\">\n            <div class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\"\n                (mousedown)=\"initDrag($event)\" (mouseup)=\"endDrag($event)\">\n                <span class=\"ui-dialog-title\">{{header}}</span>\n                <a [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true,'ui-state-hover':hoverCloseIcon}\" href=\"#\" role=\"button\" *ngIf=\"closable\" \n                    (click)=\"hide($event)\" (mouseenter)=\"hoverCloseIcon=true\" (mouseleave)=\"hoverCloseIcon=false\">\n                    <span class=\"fa fa-fw fa-close\"></span>\n                </a>\n            </div>\n            <div class=\"ui-dialog-content ui-widget-content\" [style.height.px]=\"contentHeight\">\n                <ng-content></ng-content>\n            </div>\n            <ng-content select=\"footer\"></ng-content>\n            <div *ngIf=\"resizable\" class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"\n                (mousedown)=\"initResize($event)\"></div>\n        </div>\n    ",
+	            template: "\n        <div [ngClass]=\"{'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl,'ui-dialog-draggable':draggable}\" \n            [style.display]=\"visible ? 'block' : 'none'\" [style.width.px]=\"width\" [style.height.px]=\"height\" (mousedown)=\"moveOnTop()\">\n            <div class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\"\n                (mousedown)=\"initDrag($event)\" (mouseup)=\"endDrag($event)\">\n                <span class=\"ui-dialog-title\" *ngIf=\"header\">{{header}}</span>\n                <span class=\"ui-dialog-title\" *ngIf=\"headerFacet\">\n                    <ng-content select=\"header\"></ng-content>\n                </span>\n                <a [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true,'ui-state-hover':hoverCloseIcon}\" href=\"#\" role=\"button\" *ngIf=\"closable\" \n                    (click)=\"hide($event)\" (mouseenter)=\"hoverCloseIcon=true\" (mouseleave)=\"hoverCloseIcon=false\">\n                    <span class=\"fa fa-fw fa-close\"></span>\n                </a>\n            </div>\n            <div class=\"ui-dialog-content ui-widget-content\" [style.height.px]=\"contentHeight\">\n                <ng-content></ng-content>\n            </div>\n            <ng-content select=\"footer\"></ng-content>\n            <div *ngIf=\"resizable\" class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"\n                (mousedown)=\"initResize($event)\"></div>\n        </div>\n    ",
+	            directives: [common_1.Header],
 	            providers: [domhandler_1.DomHandler]
 	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
@@ -33030,9 +33283,10 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
+	var common_1 = __webpack_require__(36);
 	var domhandler_1 = __webpack_require__(11);
-	var common_1 = __webpack_require__(8);
-	var DROPDOWN_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
+	var forms_1 = __webpack_require__(579);
+	var DROPDOWN_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Dropdown; }),
 	    multi: true
 	});
@@ -33059,12 +33313,12 @@ webpackJsonp([2],[
 	            _this.selfClick = false;
 	            _this.itemClick = false;
 	        });
-	        this.updateLabel();
 	    };
 	    Dropdown.prototype.ngDoCheck = function () {
 	        var changes = this.differ.diff(this.options);
 	        if (changes && this.initialized) {
 	            this.optionsToDisplay = this.options;
+	            this.updateSelectedOption(this.value);
 	            this.optionsChanged = true;
 	        }
 	    };
@@ -33072,57 +33326,59 @@ webpackJsonp([2],[
 	        this.container = this.el.nativeElement.children[0];
 	        this.panel = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-dropdown-panel');
 	        this.itemsWrapper = this.domHandler.findSingle(this.el.nativeElement, 'div.ui-dropdown-items-wrapper');
-	        this.highlightValue(true);
 	        this.updateDimensions();
 	        this.initialized = true;
 	    };
+	    Object.defineProperty(Dropdown.prototype, "label", {
+	        get: function () {
+	            return this.selectedOption ? this.selectedOption.label : null;
+	        },
+	        enumerable: true,
+	        configurable: true
+	    });
+	    Dropdown.prototype.onItemClick = function (event, option) {
+	        this.itemClick = true;
+	        this.selectItem(event, option);
+	        this.hide();
+	    };
+	    Dropdown.prototype.selectItem = function (event, option) {
+	        this.selectedOption = option;
+	        this.value = option.value;
+	        this.onModelChange(this.value);
+	        this.onChange.emit({
+	            originalEvent: event,
+	            value: this.value
+	        });
+	    };
 	    Dropdown.prototype.ngAfterViewChecked = function () {
 	        if (this.optionsChanged) {
-	            this.highlightValue();
 	            this.domHandler.relativePosition(this.panel, this.container);
 	            this.optionsChanged = false;
+	        }
+	        if (this.selectedOptionUpdated && this.itemsWrapper) {
+	            var selectedItem = this.domHandler.findSingle(this.panel, 'li.ui-state-highlight');
+	            if (selectedItem) {
+	                this.domHandler.scrollInView(this.itemsWrapper, this.domHandler.findSingle(this.panel, 'li.ui-state-highlight'));
+	            }
+	            this.selectedOptionUpdated = false;
 	        }
 	    };
 	    Dropdown.prototype.writeValue = function (value) {
 	        this.value = value;
-	        this.updateLabel();
-	        if (this.initialized && !this.optionsChanged) {
-	            this.highlightValue();
+	        this.updateSelectedOption(value);
+	    };
+	    Dropdown.prototype.updateSelectedOption = function (val) {
+	        this.selectedOption = this.findOption(val, this.optionsToDisplay);
+	        if (!this.selectedOption && this.optionsToDisplay && this.optionsToDisplay.length && !this.editable) {
+	            this.selectedOption = this.optionsToDisplay[0];
 	        }
+	        this.selectedOptionUpdated = true;
 	    };
 	    Dropdown.prototype.registerOnChange = function (fn) {
 	        this.onModelChange = fn;
 	    };
 	    Dropdown.prototype.registerOnTouched = function (fn) {
 	        this.onModelTouched = fn;
-	    };
-	    Dropdown.prototype.updateLabel = function () {
-	        if (this.optionsToDisplay && this.optionsToDisplay.length) {
-	            var selectedIndex = this.findItemIndex(this.value, this.optionsToDisplay);
-	            if (selectedIndex == -1)
-	                this.label = this.optionsToDisplay[0].label;
-	            else
-	                this.label = this.optionsToDisplay[selectedIndex].label;
-	        }
-	        else {
-	            this.label = '&nbsp;';
-	        }
-	    };
-	    Dropdown.prototype.highlightValue = function (fallbackToFirst) {
-	        var items = this.domHandler.find(this.el.nativeElement, '.ui-dropdown-items > li');
-	        var currentSelectedItem = this.domHandler.findSingle(this.panel, 'li.ui-state-highlight');
-	        if (currentSelectedItem) {
-	            this.domHandler.removeClass(currentSelectedItem, 'ui-state-highlight');
-	        }
-	        if (this.optionsToDisplay && this.optionsToDisplay.length) {
-	            var selectedIndex = this.findItemIndex(this.value, this.optionsToDisplay);
-	            if (selectedIndex == -1 && fallbackToFirst) {
-	                selectedIndex = 0;
-	            }
-	            if (selectedIndex != -1) {
-	                this.domHandler.addClass(items[selectedIndex], 'ui-state-highlight');
-	            }
-	        }
 	    };
 	    Dropdown.prototype.updateDimensions = function () {
 	        if (this.autoWidth) {
@@ -33147,12 +33403,25 @@ webpackJsonp([2],[
 	            input.focus();
 	            if (this.panelVisible)
 	                this.hide();
-	            else
+	            else {
 	                this.show(this.panel, this.container);
+	            }
 	        }
 	    };
+	    Dropdown.prototype.onInputClick = function (event) {
+	        this.itemClick = true;
+	    };
+	    Dropdown.prototype.onInputChange = function (event) {
+	        this.value = event.target.value;
+	        this.updateSelectedOption(this.value);
+	        this.onModelChange(this.value);
+	        this.onChange.emit({
+	            originalEvent: event,
+	            value: this.value
+	        });
+	    };
 	    Dropdown.prototype.show = function (panel, container) {
-	        if (this.optionsToDisplay && this.optionsToDisplay.length) {
+	        if (this.options && this.options.length) {
 	            this.panelVisible = true;
 	            panel.style.zIndex = ++domhandler_1.DomHandler.zindex;
 	            this.domHandler.relativePosition(panel, container);
@@ -33170,7 +33439,7 @@ webpackJsonp([2],[
 	        this.onModelTouched();
 	    };
 	    Dropdown.prototype.onKeydown = function (event) {
-	        var highlightedItem = this.domHandler.findSingle(this.panel, 'li.ui-state-highlight');
+	        var selectedItemIndex = this.findOptionIndex(this.selectedOption.value, this.optionsToDisplay);
 	        switch (event.which) {
 	            //down
 	            case 40:
@@ -33178,34 +33447,33 @@ webpackJsonp([2],[
 	                    this.show(this.panel, this.container);
 	                }
 	                else {
-	                    if (highlightedItem) {
-	                        var nextItem = highlightedItem.nextElementSibling;
-	                        if (nextItem) {
-	                            this.selectItem(event, nextItem);
-	                            this.domHandler.scrollInView(this.itemsWrapper, nextItem);
+	                    if (selectedItemIndex != -1) {
+	                        var nextItemIndex = selectedItemIndex + 1;
+	                        if (nextItemIndex != (this.optionsToDisplay.length)) {
+	                            this.selectedOption = this.optionsToDisplay[nextItemIndex];
+	                            this.selectedOptionUpdated = true;
+	                            this.selectItem(event, this.selectedOption);
 	                        }
 	                    }
 	                    else {
-	                        var firstItem = this.domHandler.findSingle(this.panel, 'li:first-child');
-	                        this.selectItem(event, firstItem);
+	                        this.selectedOption = this.optionsToDisplay[0];
 	                    }
 	                }
 	                event.preventDefault();
 	                break;
 	            //up
 	            case 38:
-	                if (highlightedItem) {
-	                    var prevItem = highlightedItem.previousElementSibling;
-	                    if (prevItem) {
-	                        this.selectItem(event, prevItem);
-	                        this.domHandler.scrollInView(this.itemsWrapper, prevItem);
-	                    }
+	                if (selectedItemIndex > 0) {
+	                    var prevItemIndex = selectedItemIndex - 1;
+	                    this.selectedOption = this.optionsToDisplay[prevItemIndex];
+	                    this.selectedOptionUpdated = true;
+	                    this.selectItem(event, this.selectedOption);
 	                }
 	                event.preventDefault();
 	                break;
 	            //enter
 	            case 13:
-	                this.panelVisible = false;
+	                this.hide();
 	                event.preventDefault();
 	                break;
 	            //escape and tab
@@ -33227,68 +33495,21 @@ webpackJsonp([2],[
 	            return parent_1;
 	        }
 	    };
-	    Dropdown.prototype.onListMouseover = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.addClass(item, 'ui-state-hover');
-	        }
-	    };
-	    Dropdown.prototype.onListMouseout = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.removeClass(item, 'ui-state-hover');
-	        }
-	    };
-	    Dropdown.prototype.onListClick = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        this.itemClick = true;
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.selectItem(event, item);
-	        }
-	        this.hide();
-	    };
-	    Dropdown.prototype.selectItem = function (event, item) {
-	        var currentSelectedItem = this.domHandler.findSingle(item.parentNode, 'li.ui-state-highlight');
-	        if (currentSelectedItem != item) {
-	            if (currentSelectedItem) {
-	                this.domHandler.removeClass(currentSelectedItem, 'ui-state-highlight');
-	            }
-	            this.domHandler.addClass(item, 'ui-state-highlight');
-	            var selectedOption = this.options[this.findItemIndex(item.dataset.value, this.options)];
-	            this.label = selectedOption.label;
-	            this.value = selectedOption.value;
-	            this.onModelChange(this.value);
-	            this.onChange.emit({
-	                originalEvent: event,
-	                value: this.value
-	            });
-	        }
-	    };
-	    Dropdown.prototype.findItemIndex = function (val, opts) {
+	    Dropdown.prototype.findOptionIndex = function (val, opts) {
 	        var index = -1;
 	        if (opts) {
-	            if (val !== null && val !== undefined) {
-	                for (var i = 0; i < opts.length; i++) {
-	                    if (opts[i].value == val) {
-	                        index = i;
-	                        break;
-	                    }
+	            for (var i = 0; i < opts.length; i++) {
+	                if ((val == null && opts[i].value == null) || this.domHandler.equals(val, opts[i].value)) {
+	                    index = i;
+	                    break;
 	                }
 	            }
 	        }
 	        return index;
+	    };
+	    Dropdown.prototype.findOption = function (val, opts) {
+	        var index = this.findOptionIndex(val, opts);
+	        return (index != -1) ? opts[index] : null;
 	    };
 	    Dropdown.prototype.onFilter = function (event) {
 	        if (this.options && this.options.length) {
@@ -33344,14 +33565,19 @@ webpackJsonp([2],[
 	        __metadata('design:type', Boolean)
 	    ], Dropdown.prototype, "required", void 0);
 	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Boolean)
+	    ], Dropdown.prototype, "editable", void 0);
+	    __decorate([
 	        core_1.ContentChild(core_1.TemplateRef), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], Dropdown.prototype, "itemTemplate", void 0);
 	    Dropdown = __decorate([
 	        core_1.Component({
 	            selector: 'p-dropdown',
-	            template: "\n        <div [ngClass]=\"{'ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix':true,'ui-state-hover':hover&&!disabled,'ui-state-focus':focus,'ui-state-disabled':disabled}\" \n            (mouseenter)=\"onMouseenter($event)\" (mouseleave)=\"onMouseleave($event)\" (click)=\"onMouseclick($event,in)\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <select [required]=\"required\" tabindex=\"-1\">\n                    <option *ngFor=\"let option of options\" [value]=\"option.value\" [selected]=\"value == option.value\">{{option.label}}</option>\n                </select>\n            </div>\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in type=\"text\" readonly (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" (keydown)=\"onKeydown($event)\">\n            </div>\n            <label class=\"ui-dropdown-label ui-inputtext ui-corner-all\" [innerHTML]=\"label\"></label>\n            <div class=\"ui-dropdown-trigger ui-state-default ui-corner-right\" [ngClass]=\"{'ui-state-hover':hover&&!disabled,'ui-state-focus':focus}\">\n                <span class=\"fa fa-fw fa-caret-down\"></span>\n            </div>\n            <div class=\"ui-dropdown-panel ui-widget-content ui-corner-all ui-helper-hidden ui-shadow\" \n                [style.display]=\"panelVisible ? 'block' : 'none'\">\n                <div *ngIf=\"filter\" class=\"ui-dropdown-filter-container\" (input)=\"onFilter($event)\" (click)=\"$event.stopPropagation()\">\n                    <input type=\"text\" autocomplete=\"off\" class=\"ui-dropdown-filter ui-inputtext ui-widget ui-state-default ui-corner-all\">\n                    <span class=\"fa fa-search\"></span>\n                </div>\n                <div class=\"ui-dropdown-items-wrapper\" [style.max-height]=\"scrollHeight||'auto'\">\n                    <ul *ngIf=\"!itemTemplate\" class=\"ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\"\n                        (mouseover)=\"onListMouseover($event)\" (mouseout)=\"onListMouseout($event)\">\n                        <li *ngFor=\"let option of optionsToDisplay;let i=index\" [attr.data-label]=\"option.label\" [attr.data-value]=\"option.value\" (click)=\"onListClick($event)\"\n                            class=\"ui-dropdown-item ui-corner-all\">{{option.label}}</li>\n                    </ul>\n                    <ul *ngIf=\"itemTemplate\" class=\"ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\"\n                        (mouseover)=\"onListMouseover($event)\" (mouseout)=\"onListMouseout($event)\" (click)=\"onListClick($event)\">\n                        <template ngFor [ngForOf]=\"optionsToDisplay\" [ngForTemplate]=\"itemTemplate\"></template>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler, DROPDOWN_VALUE_ACCESSOR]
+	            template: "\n         <div [ngClass]=\"{'ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix':true,\n            'ui-state-hover':hover&&!disabled,'ui-state-focus':focus,'ui-state-disabled':disabled,'ui-dropdown-open':panelVisible}\" \n            (mouseenter)=\"onMouseenter($event)\" (mouseleave)=\"onMouseleave($event)\" (click)=\"onMouseclick($event,in)\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <select [required]=\"required\" tabindex=\"-1\">\n                    <option *ngFor=\"let option of options\" [value]=\"option.value\" [selected]=\"selectedOption == option\">{{option.label}}</option>\n                </select>\n            </div>\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in type=\"text\" readonly (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" (keydown)=\"onKeydown($event)\">\n            </div>\n            <label class=\"ui-dropdown-label ui-inputtext ui-corner-all\" *ngIf=\"!editable\">{{label ? label : '&nbsp;'}}</label>\n            <input type=\"text\" class=\"ui-dropdown-label ui-inputtext ui-corner-all\" *ngIf=\"editable\" \n                        (click)=\"onInputClick($event)\" (input)=\"onInputChange($event)\" (focus)=\"hide()\">\n            <div class=\"ui-dropdown-trigger ui-state-default ui-corner-right\" [ngClass]=\"{'ui-state-hover':hover&&!disabled,'ui-state-focus':focus}\">\n                <span class=\"fa fa-fw fa-caret-down\"></span>\n            </div>\n            <div class=\"ui-dropdown-panel ui-widget-content ui-corner-all ui-helper-hidden ui-shadow\" \n                [style.display]=\"panelVisible ? 'block' : 'none'\">\n                <div *ngIf=\"filter\" class=\"ui-dropdown-filter-container\" (input)=\"onFilter($event)\" (click)=\"$event.stopPropagation()\">\n                    <input type=\"text\" autocomplete=\"off\" class=\"ui-dropdown-filter ui-inputtext ui-widget ui-state-default ui-corner-all\">\n                    <span class=\"fa fa-search\"></span>\n                </div>\n                <div class=\"ui-dropdown-items-wrapper\" [style.max-height]=\"scrollHeight||'auto'\">\n                    <ul class=\"ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\">\n                        <li #item *ngFor=\"let option of optionsToDisplay;let i=index\" \n                            [ngClass]=\"{'ui-dropdown-item ui-corner-all':true, 'ui-state-hover':hoveredItem == item,'ui-state-highlight':(selectedOption == option)}\"\n                            (click)=\"onItemClick($event, option)\" (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\">\n                            <span *ngIf=\"!itemTemplate\">{{option.label}}</span>\n                            <template [pTemplateWrapper]=\"itemTemplate\" [item]=\"option\" *ngIf=\"itemTemplate\"></template>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
+	            providers: [domhandler_1.DomHandler, DROPDOWN_VALUE_ACCESSOR],
+	            directives: [common_1.TemplateWrapper]
 	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer, core_1.IterableDiffers])
 	    ], Dropdown);
@@ -33377,8 +33603,8 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var common_1 = __webpack_require__(36);
 	var domhandler_1 = __webpack_require__(11);
-	var common_2 = __webpack_require__(8);
-	var EDITOR_VALUE_ACCESSOR = new core_1.Provider(common_2.NG_VALUE_ACCESSOR, {
+	var forms_1 = __webpack_require__(579);
+	var EDITOR_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Editor; }),
 	    multi: true
 	});
@@ -33387,6 +33613,7 @@ webpackJsonp([2],[
 	        this.el = el;
 	        this.domHandler = domHandler;
 	        this.onTextChange = new core_1.EventEmitter();
+	        this.onSelectionChange = new core_1.EventEmitter();
 	        this.onModelChange = function () { };
 	        this.onModelTouched = function () { };
 	    }
@@ -33406,7 +33633,6 @@ webpackJsonp([2],[
 	            this.quill.pasteHTML(this.value);
 	        }
 	        this.quill.on('text-change', function (delta, source) {
-	            _this.selfChange = true;
 	            var html = editorElement.children[0].innerHTML;
 	            var text = _this.quill.getText();
 	            if (html == '<p><br></p>') {
@@ -33420,19 +33646,21 @@ webpackJsonp([2],[
 	            });
 	            _this.onModelChange(html);
 	        });
+	        this.quill.on('selection-change', function (range, oldRange, source) {
+	            _this.onSelectionChange.emit({
+	                range: range,
+	                oldRange: oldRange,
+	                source: source
+	            });
+	        });
 	    };
 	    Editor.prototype.writeValue = function (value) {
 	        this.value = value;
 	        if (this.quill) {
-	            if (this.selfChange) {
-	                this.selfChange = false;
-	            }
-	            else {
-	                if (value)
-	                    this.quill.pasteHTML(value);
-	                else
-	                    this.quill.setText('');
-	            }
+	            if (value)
+	                this.quill.pasteHTML(value);
+	            else
+	                this.quill.setText('');
 	        }
 	    };
 	    Editor.prototype.registerOnChange = function (fn) {
@@ -33445,6 +33673,10 @@ webpackJsonp([2],[
 	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Editor.prototype, "onTextChange", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', core_1.EventEmitter)
+	    ], Editor.prototype, "onSelectionChange", void 0);
 	    __decorate([
 	        core_1.ContentChild(common_1.Header), 
 	        __metadata('design:type', Object)
@@ -34060,9 +34292,9 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
+	var forms_1 = __webpack_require__(579);
 	var domhandler_1 = __webpack_require__(11);
-	var INPUTSWITCH_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
+	var INPUTSWITCH_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return InputSwitch; }),
 	    multi: true
 	});
@@ -34518,26 +34750,23 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
+	var common_1 = __webpack_require__(36);
 	var domhandler_1 = __webpack_require__(11);
-	var common_1 = __webpack_require__(8);
-	var LISTBOX_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
+	var forms_1 = __webpack_require__(579);
+	var LISTBOX_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Listbox; }),
 	    multi: true
 	});
 	var Listbox = (function () {
-	    function Listbox(el, domHandler, differs) {
+	    function Listbox(el, domHandler) {
 	        this.el = el;
 	        this.domHandler = domHandler;
 	        this.onChange = new core_1.EventEmitter();
 	        this.onModelChange = function () { };
 	        this.onModelTouched = function () { };
-	        this.differ = differs.find([]).create(null);
 	    }
 	    Listbox.prototype.writeValue = function (value) {
 	        this.value = value;
-	        if (!this.multiple) {
-	            this.valueChanged = true;
-	        }
 	    };
 	    Listbox.prototype.registerOnChange = function (fn) {
 	        this.onModelChange = fn;
@@ -34545,142 +34774,85 @@ webpackJsonp([2],[
 	    Listbox.prototype.registerOnTouched = function (fn) {
 	        this.onModelTouched = fn;
 	    };
-	    Listbox.prototype.ngDoCheck = function () {
-	        if (this.multiple) {
-	            var changes = this.differ.diff(this.value);
-	            if (changes) {
-	                this.valueChanged = true;
-	            }
-	        }
-	    };
-	    Listbox.prototype.ngAfterViewChecked = function () {
-	        if (this.valueChanged) {
-	            this.preselect();
-	            this.valueChanged = false;
-	        }
-	    };
-	    Listbox.prototype.preselect = function () {
-	        var items = this.domHandler.find(this.el.nativeElement, 'li.ui-listbox-item');
-	        if (items && items.length) {
-	            this.unselectAll(items);
-	            if (this.value) {
-	                if (this.multiple) {
-	                    for (var i = 0; i < this.value.length; i++) {
-	                        for (var j = 0; i < this.options.length; j++) {
-	                            if (this.options[j].value == this.value[i]) {
-	                                this.domHandler.addClass(items[j], 'ui-state-highlight');
-	                                break;
-	                            }
-	                        }
-	                    }
-	                }
-	                else {
-	                    for (var i = 0; i < this.options.length; i++) {
-	                        if (this.options[i].value == this.value) {
-	                            this.domHandler.addClass(items[i], 'ui-state-highlight');
-	                            break;
-	                        }
-	                    }
-	                }
-	            }
-	        }
-	    };
-	    Listbox.prototype.unselectAll = function (items) {
-	        var listItems = items || this.domHandler.find(this.el.nativeElement, 'li.ui-listbox-item');
-	        for (var i = 0; i < listItems.length; i++) {
-	            this.domHandler.removeClass(listItems[i], 'ui-state-highlight');
-	        }
-	    };
-	    Listbox.prototype.onMouseover = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.addClass(item, 'ui-state-hover');
-	        }
-	    };
-	    Listbox.prototype.onMouseout = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.removeClass(item, 'ui-state-hover');
-	        }
-	    };
-	    Listbox.prototype.onClick = function (event) {
-	        if (this.disabled) {
-	            return;
-	        }
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.onItemClick(event, item);
-	        }
-	    };
-	    Listbox.prototype.onItemClick = function (event, item) {
+	    Listbox.prototype.onOptionClick = function (event, option) {
 	        var metaKey = (event.metaKey || event.ctrlKey);
-	        if (this.domHandler.hasClass(item, 'ui-state-highlight')) {
-	            if (metaKey)
-	                this.domHandler.removeClass(item, 'ui-state-highlight');
-	            else
-	                this.unselectSiblings(item);
+	        var selected = this.isSelected(option);
+	        if (this.multiple)
+	            this.onOptionClickMultiple(event, option);
+	        else
+	            this.onOptionClickSingle(event, option);
+	    };
+	    Listbox.prototype.onOptionClickSingle = function (event, option) {
+	        var metaKey = (event.metaKey || event.ctrlKey);
+	        var selected = this.isSelected(option);
+	        var valueChanged = false;
+	        if (selected) {
+	            if (metaKey) {
+	                this.value = null;
+	                valueChanged = true;
+	            }
 	        }
 	        else {
-	            if (!metaKey || !this.multiple) {
-	                this.unselectSiblings(item);
-	            }
-	            this.domHandler.removeClass(item, 'ui-state-hover');
-	            this.domHandler.addClass(item, 'ui-state-highlight');
+	            this.value = option.value;
+	            valueChanged = true;
 	        }
-	        //update value
-	        if (this.multiple) {
-	            var selectedItems = this.domHandler.find(item.parentNode, 'li.ui-state-highlight');
-	            var valueArr = [];
-	            if (selectedItems && selectedItems.length) {
-	                for (var i = 0; i < selectedItems.length; i++) {
-	                    var itemIndex = this.domHandler.index(selectedItems[i]);
-	                    valueArr.push(this.options[itemIndex].value);
-	                }
-	            }
-	            this.value = valueArr;
+	        if (valueChanged) {
+	            this.onModelChange(this.value);
+	            this.onChange.emit(event);
 	        }
-	        else {
-	            var selectedItem = this.domHandler.findSingle(item.parentNode, 'li.ui-state-highlight');
-	            if (selectedItem) {
-	                var selectedIndex = this.domHandler.index(selectedItem);
-	                this.value = this.options[selectedIndex].value;
+	    };
+	    Listbox.prototype.onOptionClickMultiple = function (event, option) {
+	        var metaKey = (event.metaKey || event.ctrlKey);
+	        var selected = this.isSelected(option);
+	        var valueChanged = false;
+	        if (selected) {
+	            if (metaKey) {
+	                this.value.splice(this.findIndex(option), 1);
 	            }
 	            else {
-	                this.value = null;
+	                this.value = [];
+	                this.value.push(option.value);
 	            }
-	        }
-	        this.onModelChange(this.value);
-	        this.onChange.emit(event);
-	    };
-	    Listbox.prototype.unselectSiblings = function (item) {
-	        var siblings = this.domHandler.siblings(item);
-	        for (var i = 0; i < siblings.length; i++) {
-	            var sibling = siblings[i];
-	            if (this.domHandler.hasClass(sibling, 'ui-state-highlight')) {
-	                this.domHandler.removeClass(sibling, 'ui-state-highlight');
-	            }
-	        }
-	    };
-	    Listbox.prototype.findListItem = function (element) {
-	        if (element.nodeName == 'LI') {
-	            return element;
+	            valueChanged = true;
 	        }
 	        else {
-	            var parent_1 = element.parentElement;
-	            while (parent_1.nodeName != 'LI') {
-	                parent_1 = parent_1.parentElement;
-	            }
-	            return parent_1;
+	            this.value = (metaKey) ? this.value || [] : [];
+	            this.value.push(option.value);
+	            valueChanged = true;
 	        }
+	        if (valueChanged) {
+	            this.onModelChange(this.value);
+	            this.onChange.emit(event);
+	        }
+	    };
+	    Listbox.prototype.isSelected = function (option) {
+	        var selected = false;
+	        if (this.multiple) {
+	            if (this.value) {
+	                for (var i = 0; i < this.value.length; i++) {
+	                    if (this.value[i] === option.value) {
+	                        selected = true;
+	                        break;
+	                    }
+	                }
+	            }
+	        }
+	        else {
+	            selected = this.value == option.value;
+	        }
+	        return selected;
+	    };
+	    Listbox.prototype.findIndex = function (option) {
+	        var index = -1;
+	        if (this.value) {
+	            for (var i = 0; i < this.value.length; i++) {
+	                if (this.domHandler.equals(option.value, this.value[i])) {
+	                    index = i;
+	                    break;
+	                }
+	            }
+	        }
+	        return index;
 	    };
 	    __decorate([
 	        core_1.Input(), 
@@ -34713,10 +34885,11 @@ webpackJsonp([2],[
 	    Listbox = __decorate([
 	        core_1.Component({
 	            selector: 'p-listbox',
-	            template: "\n        <div [ngClass]=\"{'ui-listbox ui-inputtext ui-widget ui-widget-content ui-corner-all':true,'ui-state-disabled':disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul class=\"ui-listbox-list\" *ngIf=\"!itemTemplate\" (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                <li *ngFor=\"let option of options\" class=\"ui-listbox-item ui-corner-all\">\n                    {{option.label}}\n                </li>\n            </ul>\n            <ul class=\"ui-listbox-list\" *ngIf=\"itemTemplate\" (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                <template ngFor [ngForOf]=\"options\" [ngForTemplate]=\"itemTemplate\"></template>\n            </ul>\n        </div>\n    ",
-	            providers: [domhandler_1.DomHandler, LISTBOX_VALUE_ACCESSOR]
+	            template: "\n        <div [ngClass]=\"{'ui-listbox ui-inputtext ui-widget ui-widget-content ui-corner-all':true,'ui-state-disabled':disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul class=\"ui-listbox-list\">\n                <li #item *ngFor=\"let option of options\"\n                    [ngClass]=\"{'ui-listbox-item ui-corner-all':true,'ui-state-hover':(hoveredItem==item),'ui-state-highlight':isSelected(option)}\"\n                    (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\" (click)=\"onOptionClick($event,option)\">\n                    <span *ngIf=\"!itemTemplate\">{{option.label}}</span>\n                    <template *ngIf=\"itemTemplate\" [pTemplateWrapper]=\"itemTemplate\" [item]=\"option\"></template>\n                </li>\n            </ul>\n        </div>\n    ",
+	            providers: [domhandler_1.DomHandler, LISTBOX_VALUE_ACCESSOR],
+	            directives: [common_1.TemplateWrapper]
 	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers])
+	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
 	    ], Listbox);
 	    return Listbox;
 	}());
@@ -34883,6 +35056,12 @@ webpackJsonp([2],[
 	        var _this = this;
 	        this.container = this.el.nativeElement.children[0];
 	        if (this.popup) {
+	            if (this.appendTo) {
+	                if (this.appendTo === 'body')
+	                    document.body.appendChild(this.el.nativeElement);
+	                else
+	                    this.appendTo.appendChild(this.el.nativeElement);
+	            }
 	            this.documentClickListener = this.renderer.listenGlobal('body', 'click', function () {
 	                if (!_this.preventDocumentDefault) {
 	                    _this.hide();
@@ -34927,6 +35106,9 @@ webpackJsonp([2],[
 	    Menu.prototype.ngOnDestroy = function () {
 	        if (this.popup) {
 	            this.documentClickListener();
+	            if (this.appendTo && this.appendTo === 'body') {
+	                document.body.removeChild(this.el.nativeElement);
+	            }
 	        }
 	        if (this.model) {
 	            for (var _i = 0, _a = this.model; _i < _a.length; _i++) {
@@ -34973,6 +35155,10 @@ webpackJsonp([2],[
 	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Menu.prototype, "styleClass", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], Menu.prototype, "appendTo", void 0);
 	    Menu = __decorate([
 	        core_1.Component({
 	            selector: 'p-menu',
@@ -35186,8 +35372,8 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var domhandler_1 = __webpack_require__(11);
-	var common_1 = __webpack_require__(8);
-	var MULTISELECT_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
+	var forms_1 = __webpack_require__(579);
+	var MULTISELECT_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return MultiSelect; }),
 	    multi: true
 	});
@@ -35464,94 +35650,82 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var button_1 = __webpack_require__(148);
 	var domhandler_1 = __webpack_require__(11);
+	var common_1 = __webpack_require__(36);
 	var OrderList = (function () {
 	    function OrderList(el, domHandler) {
 	        this.el = el;
 	        this.domHandler = domHandler;
 	        this.onReorder = new core_1.EventEmitter();
 	    }
-	    OrderList.prototype.onMouseover = function (event) {
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.addClass(item, 'ui-state-hover');
-	        }
+	    OrderList.prototype.ngAfterViewInit = function () {
+	        this.listContainer = this.domHandler.findSingle(this.el.nativeElement, 'ul.ui-orderlist-list');
 	    };
-	    OrderList.prototype.onMouseout = function (event) {
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.removeClass(item, 'ui-state-hover');
-	        }
-	    };
-	    OrderList.prototype.onClick = function (event) {
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.onItemClick(event, item);
-	        }
-	    };
-	    OrderList.prototype.findListItem = function (element) {
-	        if (element.nodeName == 'LI') {
-	            return element;
-	        }
-	        else {
-	            var parent_1 = element.parentElement;
-	            while (parent_1.nodeName != 'LI') {
-	                parent_1 = parent_1.parentElement;
-	            }
-	            return parent_1;
+	    OrderList.prototype.ngAfterViewChecked = function () {
+	        if (this.movedUp || this.movedDown) {
+	            var listItems = this.domHandler.find(this.listContainer, 'li.ui-state-highlight');
+	            var listItem = void 0;
+	            if (this.movedUp)
+	                listItem = listItems[0];
+	            else
+	                listItem = listItems[listItems.length - 1];
+	            this.domHandler.scrollInView(this.listContainer, listItem);
+	            this.movedUp = false;
+	            this.movedDown = false;
 	        }
 	    };
 	    OrderList.prototype.onItemClick = function (event, item) {
 	        var metaKey = (event.metaKey || event.ctrlKey);
-	        if (this.domHandler.hasClass(item, 'ui-state-highlight')) {
-	            if (metaKey) {
-	                this.domHandler.removeClass(item, 'ui-state-highlight');
-	            }
+	        var index = this.findIndexInList(item, this.selectedItems);
+	        var selected = (index != -1);
+	        if (selected && metaKey) {
+	            this.selectedItems.splice(index, 1);
 	        }
 	        else {
-	            if (!metaKey) {
-	                var siblings = this.domHandler.siblings(item);
-	                for (var i = 0; i < siblings.length; i++) {
-	                    var sibling = siblings[i];
-	                    if (this.domHandler.hasClass(sibling, 'ui-state-highlight')) {
-	                        this.domHandler.removeClass(sibling, 'ui-state-highlight');
-	                    }
-	                }
-	            }
-	            this.domHandler.removeClass(item, 'ui-state-hover');
-	            this.domHandler.addClass(item, 'ui-state-highlight');
+	            this.selectedItems = (metaKey) ? this.selectedItems || [] : [];
+	            this.selectedItems.push(item);
 	        }
 	    };
+	    OrderList.prototype.isSelected = function (item) {
+	        return this.findIndexInList(item, this.selectedItems) != -1;
+	    };
+	    OrderList.prototype.findIndexInList = function (item, list) {
+	        var index = -1;
+	        if (list) {
+	            for (var i = 0; i < list.length; i++) {
+	                if (list[i] == item) {
+	                    index = i;
+	                    break;
+	                }
+	            }
+	        }
+	        return index;
+	    };
 	    OrderList.prototype.moveUp = function (event, listElement) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        if (selectedElements.length) {
-	            for (var i = 0; i < selectedElements.length; i++) {
-	                var selectedElement = selectedElements[i];
-	                var selectedElementIndex = this.domHandler.index(selectedElement);
-	                if (selectedElementIndex != 0) {
-	                    var movedItem = this.value[selectedElementIndex];
-	                    var temp = this.value[selectedElementIndex - 1];
-	                    this.value[selectedElementIndex - 1] = movedItem;
-	                    this.value[selectedElementIndex] = temp;
-	                    this.domHandler.scrollInView(listElement, listElement.children[selectedElementIndex - 1]);
+	        if (this.selectedItems) {
+	            for (var i = 0; i < this.selectedItems.length; i++) {
+	                var selectedItem = this.selectedItems[i];
+	                var selectedItemIndex = this.findIndexInList(selectedItem, this.value);
+	                if (selectedItemIndex != 0) {
+	                    var movedItem = this.value[selectedItemIndex];
+	                    var temp = this.value[selectedItemIndex - 1];
+	                    this.value[selectedItemIndex - 1] = movedItem;
+	                    this.value[selectedItemIndex] = temp;
 	                }
 	                else {
 	                    break;
 	                }
 	            }
+	            this.movedUp = true;
 	            this.onReorder.emit(event);
 	        }
 	    };
 	    OrderList.prototype.moveTop = function (event, listElement) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        if (selectedElements.length) {
-	            for (var i = 0; i < selectedElements.length; i++) {
-	                var selectedElement = selectedElements[i];
-	                var selectedElementIndex = this.domHandler.index(selectedElement);
-	                if (selectedElementIndex != 0) {
-	                    var movedItem = this.value.splice(selectedElementIndex, 1)[0];
+	        if (this.selectedItems) {
+	            for (var i = 0; i < this.selectedItems.length; i++) {
+	                var selectedItem = this.selectedItems[i];
+	                var selectedItemIndex = this.findIndexInList(selectedItem, this.value);
+	                if (selectedItemIndex != 0) {
+	                    var movedItem = this.value.splice(selectedItemIndex, 1)[0];
 	                    this.value.unshift(movedItem);
 	                    listElement.scrollTop = 0;
 	                }
@@ -35560,48 +35734,44 @@ webpackJsonp([2],[
 	                }
 	            }
 	            this.onReorder.emit(event);
+	            listElement.scrollTop = 0;
 	        }
 	    };
 	    OrderList.prototype.moveDown = function (event, listElement) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        if (selectedElements.length) {
-	            for (var i = selectedElements.length - 1; i >= 0; i--) {
-	                var selectedElement = selectedElements[i];
-	                var selectedElementIndex = this.domHandler.index(selectedElement);
-	                if (selectedElementIndex != (this.value.length - 1)) {
-	                    var movedItem = this.value[selectedElementIndex];
-	                    var temp = this.value[selectedElementIndex + 1];
-	                    this.value[selectedElementIndex + 1] = movedItem;
-	                    this.value[selectedElementIndex] = temp;
-	                    this.domHandler.scrollInView(listElement, listElement.children[selectedElementIndex + 1]);
+	        if (this.selectedItems) {
+	            for (var i = this.selectedItems.length - 1; i >= 0; i--) {
+	                var selectedItem = this.selectedItems[i];
+	                var selectedItemIndex = this.findIndexInList(selectedItem, this.value);
+	                if (selectedItemIndex != (this.value.length - 1)) {
+	                    var movedItem = this.value[selectedItemIndex];
+	                    var temp = this.value[selectedItemIndex + 1];
+	                    this.value[selectedItemIndex + 1] = movedItem;
+	                    this.value[selectedItemIndex] = temp;
 	                }
 	                else {
 	                    break;
 	                }
 	            }
+	            this.movedDown = true;
 	            this.onReorder.emit(event);
 	        }
 	    };
 	    OrderList.prototype.moveBottom = function (event, listElement) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        if (selectedElements.length) {
-	            for (var i = selectedElements.length - 1; i >= 0; i--) {
-	                var selectedElement = selectedElements[i];
-	                var selectedElementIndex = this.domHandler.index(selectedElement);
-	                if (selectedElementIndex != (this.value.length - 1)) {
-	                    var movedItem = this.value.splice(selectedElementIndex, 1)[0];
+	        if (this.selectedItems) {
+	            for (var i = this.selectedItems.length - 1; i >= 0; i--) {
+	                var selectedItem = this.selectedItems[i];
+	                var selectedItemIndex = this.findIndexInList(selectedItem, this.value);
+	                if (selectedItemIndex != (this.value.length - 1)) {
+	                    var movedItem = this.value.splice(selectedItemIndex, 1)[0];
 	                    this.value.push(movedItem);
-	                    listElement.scrollTop = listElement.scrollHeight;
 	                }
 	                else {
 	                    break;
 	                }
 	            }
 	            this.onReorder.emit(event);
+	            listElement.scrollTop = listElement.scrollHeight;
 	        }
-	    };
-	    OrderList.prototype.getSelectedListElements = function (listElement) {
-	        return this.domHandler.find(listElement, 'li.ui-state-highlight');
 	    };
 	    __decorate([
 	        core_1.Input(), 
@@ -35638,8 +35808,8 @@ webpackJsonp([2],[
 	    OrderList = __decorate([
 	        core_1.Component({
 	            selector: 'p-orderList',
-	            template: "\n        <div [ngClass]=\"{'ui-orderlist ui-grid ui-widget':true,'ui-grid-responsive':responsive}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-grid-row\">\n                <div class=\"ui-orderlist-controls ui-grid-col-2\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom($event,listelement)\"></button>\n                </div>\n                <div class=\"ui-grid-col-10\">\n                    <div class=\"ui-orderlist-caption ui-widget-header ui-corner-top\" *ngIf=\"header\">{{header}}</div>\n                    <ul #listelement class=\"ui-widget-content ui-orderlist-list ui-corner-bottom\" [ngStyle]=\"listStyle\" \n                        (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                        <template ngFor [ngForOf]=\"value\" [ngForTemplate]=\"itemTemplate\"></template>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
-	            directives: [button_1.Button],
+	            template: "\n        <div [ngClass]=\"{'ui-orderlist ui-grid ui-widget':true,'ui-grid-responsive':responsive}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-grid-row\">\n                <div class=\"ui-orderlist-controls ui-grid-col-2\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom($event,listelement)\"></button>\n                </div>\n                <div class=\"ui-grid-col-10\">\n                    <div class=\"ui-orderlist-caption ui-widget-header ui-corner-top\" *ngIf=\"header\">{{header}}</div>\n                    <ul #listelement class=\"ui-widget-content ui-orderlist-list ui-corner-bottom\" [ngStyle]=\"listStyle\">\n                        <li *ngFor=\"let item of value\" \n                            [ngClass]=\"{'ui-orderlist-item':true,'ui-state-hover':(hoveredItem==item),'ui-state-highlight':isSelected(item)}\"\n                            (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\" (click)=\"onItemClick($event,item)\">\n                            <template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></template>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
+	            directives: [button_1.Button, common_1.TemplateWrapper],
 	            providers: [domhandler_1.DomHandler]
 	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
@@ -35689,6 +35859,15 @@ webpackJsonp([2],[
 	            });
 	        }
 	    };
+	    OverlayPanel.prototype.ngAfterViewInit = function () {
+	        this.container = this.el.nativeElement.children[0];
+	        if (this.appendTo) {
+	            if (this.appendTo === 'body')
+	                document.body.appendChild(this.container);
+	            else
+	                this.appendTo.appendChild(this.container);
+	        }
+	    };
 	    OverlayPanel.prototype.toggle = function (event, target) {
 	        var currentTarget = (target || event.currentTarget || event.target);
 	        if (!this.target || this.target == currentTarget) {
@@ -35711,15 +35890,14 @@ webpackJsonp([2],[
 	        }
 	        this.onBeforeShow.emit(null);
 	        var elementTarget = target || event.currentTarget || event.target;
-	        var container = this.el.nativeElement.children[0];
-	        container.style.zIndex = ++domhandler_1.DomHandler.zindex;
+	        this.container.style.zIndex = ++domhandler_1.DomHandler.zindex;
 	        if (this.visible) {
-	            this.domHandler.absolutePosition(container, elementTarget);
+	            this.domHandler.absolutePosition(this.container, elementTarget);
 	        }
 	        else {
 	            this.visible = true;
-	            this.domHandler.absolutePosition(container, elementTarget);
-	            this.domHandler.fadeIn(container, 250);
+	            this.domHandler.absolutePosition(this.container, elementTarget);
+	            this.domHandler.fadeIn(this.container, 250);
 	        }
 	        this.onAfterShow.emit(null);
 	    };
@@ -35746,6 +35924,9 @@ webpackJsonp([2],[
 	        if (this.documentClickListener) {
 	            this.documentClickListener();
 	        }
+	        if (this.appendTo) {
+	            this.el.nativeElement.appendChild(this.container);
+	        }
 	        this.target = null;
 	    };
 	    __decorate([
@@ -35764,6 +35945,10 @@ webpackJsonp([2],[
 	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], OverlayPanel.prototype, "styleClass", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], OverlayPanel.prototype, "appendTo", void 0);
 	    __decorate([
 	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
@@ -35931,7 +36116,7 @@ webpackJsonp([2],[
 	    PanelMenuSub = __decorate([
 	        core_1.Component({
 	            selector: 'p-panelMenuSub',
-	            template: "\n        <ul class=\"ui-menu-list ui-helper-reset\" [style.display]=\"expanded ? 'block' : 'none'\">\n            <li *ngFor=\"let child of item.items\" class=\"ui-menuitem ui-corner-all\" [ngClass]=\"{'ui-menu-parent':child.items}\">\n                <a #link [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" \n                    [ngClass]=\"{'ui-menuitem-link-hasicon':child.icon&&child.items,'ui-state-hover':(hoveredLink==link)}\" (click)=\"onClick($event,child)\"\n                    (mouseenter)=\"hoveredLink=link\" (mouseleave)=\"hoveredLink=null\">\n                    <span class=\"ui-panelmenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-right':!isActive(child),'fa-caret-down':isActive(child)}\" *ngIf=\"child.items\"></span>\n                    <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"child.icon\" *ngIf=\"child.icon\"></span>\n                    <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                </a>\n                <p-panelMenuSub [item]=\"child\" [expanded]=\"isActive(child)\" *ngIf=\"child.items\"></p-panelMenuSub>\n            </li>\n        </ul>\n    ",
+	            template: "\n        <ul class=\"ui-menu-list ui-helper-reset\" [style.display]=\"expanded ? 'block' : 'none'\">\n            <li *ngFor=\"let child of item.items\" class=\"ui-menuitem ui-corner-all\" [ngClass]=\"{'ui-menu-parent':child.items}\">\n                <a #link [href]=\"child.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" \n                    [ngClass]=\"{'ui-menuitem-link-hasicon':child.icon&&child.items,'ui-state-hover':(hoveredLink==link)}\" (click)=\"onClick($event,child)\"\n                    (mouseenter)=\"hoveredLink=link\" (mouseleave)=\"hoveredLink=null\">\n                    <span class=\"ui-panelmenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-right':!isActive(child),'fa-caret-down':isActive(child)}\" *ngIf=\"child.items\"></span>\n                    <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"child.icon\" *ngIf=\"child.icon\"></span>\n                    <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                </a>\n                <p-panelMenuSub [item]=\"child\" [expanded]=\"isActive(child)\" *ngIf=\"child.items\"></p-panelMenuSub>\n            </li>\n        </ul>\n    ",
 	            directives: [PanelMenuSub]
 	        }), 
 	        __metadata('design:paramtypes', [router_1.Router])
@@ -35989,7 +36174,7 @@ webpackJsonp([2],[
 	    PanelMenu = __decorate([
 	        core_1.Component({
 	            selector: 'p-panelMenu',
-	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"'ui-panelmenu ui-widget'\">\n            <div *ngFor=\"let item of model\" class=\"ui-menuitem-panel\">\n                <div tabindex=\"0\" [ngClass]=\"{'ui-widget ui-panelmenu-header ui-state-default':true,'ui-corner-all':!isActive(item),\n                    'ui-state-active ui-corner-top':isActive(item),'ui-state-hover':(item == hoveredItem)}\">\n                    <span class=\"ui-panelmenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-right':!isActive(item),'fa-caret-down':isActive(item)}\"></span>\n                    <a [href]=\"item.url||'#'\" [ngClass]=\"{'ui-panelmenu-headerlink-hasicon':item.icon}\" (click)=\"headerClick($event,item)\"\n                        (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\">\n                        <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"item.icon\" *ngIf=\"item.icon\"></span>\n                        <span>{{item.label}}</span>\n                    </a>\n                </div>\n                <div class=\"ui-panelmenu-content ui-widget-content\" [style.display]=\"isActive(item) ? 'block' : 'none'\">\n                    <p-panelMenuSub [item]=\"item\" [expanded]=\"true\"></p-panelMenuSub>\n                </div>\n            </div>\n        </div>\n    ",
+	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"'ui-panelmenu ui-widget'\">\n            <div *ngFor=\"let item of model\" class=\"ui-panelmenu-panel\">\n                <div tabindex=\"0\" [ngClass]=\"{'ui-widget ui-panelmenu-header ui-state-default':true,'ui-corner-all':!isActive(item),\n                    'ui-state-active ui-corner-top':isActive(item),'ui-state-hover':(item == hoveredItem)}\" (click)=\"headerClick($event,item)\">\n                    <span class=\"ui-panelmenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-right':!isActive(item),'fa-caret-down':isActive(item)}\"></span>\n                    <a [href]=\"item.url||'#'\" [ngClass]=\"{'ui-panelmenu-headerlink-hasicon':item.icon}\"\n                        (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\">\n                        <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"item.icon\" *ngIf=\"item.icon\"></span>\n                        <span>{{item.label}}</span>\n                    </a>\n                </div>\n                <div class=\"ui-panelmenu-content ui-widget-content\" [style.display]=\"isActive(item) ? 'block' : 'none'\">\n                    <p-panelMenuSub [item]=\"item\" [expanded]=\"true\"></p-panelMenuSub>\n                </div>\n            </div>\n        </div>\n    ",
 	            directives: [PanelMenuSub]
 	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef])
@@ -36192,160 +36377,165 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var button_1 = __webpack_require__(148);
 	var domhandler_1 = __webpack_require__(11);
+	var common_1 = __webpack_require__(36);
 	var PickList = (function () {
 	    function PickList(el, domHandler) {
 	        this.el = el;
 	        this.domHandler = domHandler;
 	    }
-	    PickList.prototype.onMouseover = function (event) {
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.addClass(item, 'ui-state-hover');
+	    PickList.prototype.ngAfterViewChecked = function () {
+	        if (this.movedUp || this.movedDown) {
+	            var listItems = this.domHandler.find(this.reorderedListElement, 'li.ui-state-highlight');
+	            var listItem = void 0;
+	            if (this.movedUp)
+	                listItem = listItems[0];
+	            else
+	                listItem = listItems[listItems.length - 1];
+	            this.domHandler.scrollInView(this.reorderedListElement, listItem);
+	            this.movedUp = false;
+	            this.movedDown = false;
+	            this.reorderedListElement = null;
 	        }
 	    };
-	    PickList.prototype.onMouseout = function (event) {
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.domHandler.removeClass(item, 'ui-state-hover');
-	        }
-	    };
-	    PickList.prototype.onClick = function (event) {
-	        var element = event.target;
-	        if (element.nodeName != 'UL') {
-	            var item = this.findListItem(element);
-	            this.onItemClick(event, item);
-	        }
-	    };
-	    PickList.prototype.findListItem = function (element) {
-	        if (element.nodeName == 'LI') {
-	            return element;
-	        }
-	        else {
-	            var parent_1 = element.parentElement;
-	            while (parent_1.nodeName != 'LI') {
-	                parent_1 = parent_1.parentElement;
-	            }
-	            return parent_1;
-	        }
-	    };
-	    PickList.prototype.onItemClick = function (event, item) {
+	    PickList.prototype.selectItem = function (event, item) {
 	        var metaKey = (event.metaKey || event.ctrlKey);
-	        if (this.domHandler.hasClass(item, 'ui-state-highlight')) {
-	            if (metaKey) {
-	                this.domHandler.removeClass(item, 'ui-state-highlight');
-	            }
+	        var index = this.findIndexInSelection(item);
+	        var selected = (index != -1);
+	        if (selected && metaKey) {
+	            this.selectedItems.splice(index, 1);
 	        }
 	        else {
-	            if (!metaKey) {
-	                var siblings = this.domHandler.siblings(item);
-	                for (var i = 0; i < siblings.length; i++) {
-	                    var sibling = siblings[i];
-	                    if (this.domHandler.hasClass(sibling, 'ui-state-highlight')) {
-	                        this.domHandler.removeClass(sibling, 'ui-state-highlight');
-	                    }
-	                }
-	            }
-	            this.domHandler.removeClass(item, 'ui-state-hover');
-	            this.domHandler.addClass(item, 'ui-state-highlight');
+	            this.selectedItems = (metaKey) ? this.selectedItems || [] : [];
+	            this.selectedItems.push(item);
 	        }
 	    };
 	    PickList.prototype.moveUp = function (listElement, list) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        for (var i = 0; i < selectedElements.length; i++) {
-	            var selectedElement = selectedElements[i];
-	            var selectedElementIndex = this.domHandler.index(selectedElement);
-	            if (selectedElementIndex != 0) {
-	                var movedItem = list[selectedElementIndex];
-	                var temp = list[selectedElementIndex - 1];
-	                list[selectedElementIndex - 1] = movedItem;
-	                list[selectedElementIndex] = temp;
-	                this.domHandler.scrollInView(listElement, this.getListElements(listElement)[selectedElementIndex - 1]);
+	        if (this.selectedItems) {
+	            for (var i = 0; i < this.selectedItems.length; i++) {
+	                var selectedItem = this.selectedItems[i];
+	                var selectedItemIndex = this.findIndexInList(selectedItem, list);
+	                if (selectedItemIndex != 0) {
+	                    var movedItem = list[selectedItemIndex];
+	                    var temp = list[selectedItemIndex - 1];
+	                    list[selectedItemIndex - 1] = movedItem;
+	                    list[selectedItemIndex] = temp;
+	                }
+	                else {
+	                    break;
+	                }
 	            }
-	            else {
-	                break;
-	            }
+	            this.movedUp = true;
+	            this.reorderedListElement = listElement;
 	        }
 	    };
 	    PickList.prototype.moveTop = function (listElement, list) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        for (var i = 0; i < selectedElements.length; i++) {
-	            var selectedElement = selectedElements[i];
-	            var selectedElementIndex = this.domHandler.index(selectedElement);
-	            if (selectedElementIndex != 0) {
-	                var movedItem = list.splice(selectedElementIndex, 1)[0];
-	                list.unshift(movedItem);
-	                listElement.scrollTop = 0;
+	        if (this.selectedItems) {
+	            for (var i = 0; i < this.selectedItems.length; i++) {
+	                var selectedItem = this.selectedItems[i];
+	                var selectedItemIndex = this.findIndexInList(selectedItem, list);
+	                if (selectedItemIndex != 0) {
+	                    var movedItem = list.splice(selectedItemIndex, 1)[0];
+	                    list.unshift(movedItem);
+	                }
+	                else {
+	                    break;
+	                }
 	            }
-	            else {
-	                break;
-	            }
+	            listElement.scrollTop = 0;
 	        }
 	    };
 	    PickList.prototype.moveDown = function (listElement, list) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        for (var i = selectedElements.length - 1; i >= 0; i--) {
-	            var selectedElement = selectedElements[i];
-	            var selectedElementIndex = this.domHandler.index(selectedElement);
-	            if (selectedElementIndex != (list.length - 1)) {
-	                var movedItem = list[selectedElementIndex];
-	                var temp = list[selectedElementIndex + 1];
-	                list[selectedElementIndex + 1] = movedItem;
-	                list[selectedElementIndex] = temp;
-	                this.domHandler.scrollInView(listElement, this.getListElements(listElement)[selectedElementIndex + 1]);
+	        if (this.selectedItems) {
+	            for (var i = this.selectedItems.length - 1; i >= 0; i--) {
+	                var selectedItem = this.selectedItems[i];
+	                var selectedItemIndex = this.findIndexInList(selectedItem, list);
+	                if (selectedItemIndex != (list.length - 1)) {
+	                    var movedItem = list[selectedItemIndex];
+	                    var temp = list[selectedItemIndex + 1];
+	                    list[selectedItemIndex + 1] = movedItem;
+	                    list[selectedItemIndex] = temp;
+	                }
+	                else {
+	                    break;
+	                }
 	            }
-	            else {
-	                break;
-	            }
+	            this.movedDown = true;
+	            this.reorderedListElement = listElement;
 	        }
 	    };
 	    PickList.prototype.moveBottom = function (listElement, list) {
-	        var selectedElements = this.getSelectedListElements(listElement);
-	        for (var i = selectedElements.length - 1; i >= 0; i--) {
-	            var selectedElement = selectedElements[i];
-	            var selectedElementIndex = this.domHandler.index(selectedElement);
-	            if (selectedElementIndex != (list.length - 1)) {
-	                var movedItem = list.splice(selectedElementIndex, 1)[0];
-	                list.push(movedItem);
-	                listElement.scrollTop = listElement.scrollHeight;
+	        if (this.selectedItems) {
+	            for (var i = this.selectedItems.length - 1; i >= 0; i--) {
+	                var selectedItem = this.selectedItems[i];
+	                var selectedItemIndex = this.findIndexInList(selectedItem, list);
+	                if (selectedItemIndex != (list.length - 1)) {
+	                    var movedItem = list.splice(selectedItemIndex, 1)[0];
+	                    list.push(movedItem);
+	                }
+	                else {
+	                    break;
+	                }
 	            }
-	            else {
-	                break;
-	            }
+	            listElement.scrollTop = listElement.scrollHeight;
 	        }
 	    };
-	    PickList.prototype.moveRight = function (sourceListElement) {
-	        var selectedElements = this.getSelectedListElements(sourceListElement);
-	        var i = selectedElements.length;
-	        while (i--) {
-	            this.target.push(this.source.splice(this.domHandler.index(selectedElements[i]), 1)[0]);
+	    PickList.prototype.moveRight = function (targetListElement) {
+	        if (this.selectedItems) {
+	            for (var i = 0; i < this.selectedItems.length; i++) {
+	                var selectedItem = this.selectedItems[i];
+	                if (this.findIndexInList(selectedItem, this.target) == -1) {
+	                    this.target.push(this.source.splice(this.findIndexInList(selectedItem, this.source), 1)[0]);
+	                }
+	            }
+	            this.selectedItems = [];
 	        }
 	    };
 	    PickList.prototype.moveAllRight = function () {
-	        for (var i = 0; i < this.source.length; i++) {
-	            this.target.push(this.source[i]);
+	        if (this.selectedItems) {
+	            for (var i = 0; i < this.source.length; i++) {
+	                this.target.push(this.source[i]);
+	            }
+	            this.source.splice(0, this.source.length);
+	            this.selectedItems = [];
 	        }
-	        this.source.splice(0, this.source.length);
 	    };
-	    PickList.prototype.moveLeft = function (targetListElement) {
-	        var selectedElements = this.getSelectedListElements(targetListElement);
-	        var i = selectedElements.length;
-	        while (i--) {
-	            this.source.push(this.target.splice(this.domHandler.index(selectedElements[i]), 1)[0]);
+	    PickList.prototype.moveLeft = function (sourceListElement) {
+	        if (this.selectedItems) {
+	            for (var i = 0; i < this.selectedItems.length; i++) {
+	                var selectedItem = this.selectedItems[i];
+	                if (this.findIndexInList(selectedItem, this.source) == -1) {
+	                    this.source.push(this.target.splice(this.findIndexInList(selectedItem, this.target), 1)[0]);
+	                }
+	            }
+	            this.selectedItems = [];
 	        }
 	    };
 	    PickList.prototype.moveAllLeft = function () {
-	        for (var i = 0; i < this.target.length; i++) {
-	            this.source.push(this.target[i]);
+	        if (this.selectedItems) {
+	            for (var i = 0; i < this.target.length; i++) {
+	                this.source.push(this.target[i]);
+	            }
+	            this.target.splice(0, this.target.length);
+	            this.selectedItems = [];
 	        }
-	        this.target.splice(0, this.target.length);
 	    };
-	    PickList.prototype.getListElements = function (listElement) {
-	        return listElement.children;
+	    PickList.prototype.isSelected = function (item) {
+	        return this.findIndexInSelection(item) != -1;
 	    };
-	    PickList.prototype.getSelectedListElements = function (listElement) {
-	        return this.domHandler.find(listElement, 'li.ui-state-highlight');
+	    PickList.prototype.findIndexInSelection = function (item) {
+	        return this.findIndexInList(item, this.selectedItems);
+	    };
+	    PickList.prototype.findIndexInList = function (item, list) {
+	        var index = -1;
+	        if (list) {
+	            for (var i = 0; i < list.length; i++) {
+	                if (list[i] == item) {
+	                    index = i;
+	                    break;
+	                }
+	            }
+	        }
+	        return index;
 	    };
 	    PickList.prototype.ngOnDestroy = function () {
 	    };
@@ -36392,8 +36582,8 @@ webpackJsonp([2],[
 	    PickList = __decorate([
 	        core_1.Component({
 	            selector: 'p-pickList',
-	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"{'ui-picklist ui-widget ui-helper-clearfix': true, 'ui-picklist-responsive': responsive}\">\n            <div class=\"ui-picklist-source-controls ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp(sourcelist,source)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop(sourcelist,source)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown(sourcelist,source)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom(sourcelist,source)\"></button>\n                </div>\n            </div>\n            <div class=\"ui-picklist-listwrapper ui-picklist-source-wrapper\">\n                <div class=\"ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr\" *ngIf=\"sourceHeader\">{{sourceHeader}}</div>\n                <ul #sourcelist class=\"ui-widget-content ui-picklist-list ui-picklist-source ui-corner-bottom\" [ngStyle]=\"sourceStyle\"\n                    (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                    <template ngFor [ngForOf]=\"source\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n            <div class=\"ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-right\" (click)=\"moveRight(sourcelist)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-right\" (click)=\"moveAllRight(sourcelist)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-left\" (click)=\"moveLeft(targetlist)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-left\" (click)=\"moveAllLeft(targetlist)\"></button>\n                </div>\n            </div>\n            <div class=\"ui-picklist-listwrapper ui-picklist-target-wrapper\">\n                <div class=\"ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr\" *ngIf=\"targetHeader\">{{targetHeader}}</div>\n                <ul #targetlist class=\"ui-widget-content ui-picklist-list ui-picklist-source ui-corner-bottom\" [ngStyle]=\"targetStyle\"\n                    (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                    <template ngFor [ngForOf]=\"target\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n            <div class=\"ui-picklist-target-controls ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp(targetlist,target)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop(targetlist,target)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown(targetlist,target)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom(targetlist,target)\"></button>\n                </div>\n            </div>\n        </div>\n    ",
-	            directives: [button_1.Button],
+	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"{'ui-picklist ui-widget ui-helper-clearfix': true, 'ui-picklist-responsive': responsive}\">\n            <div class=\"ui-picklist-source-controls ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp(sourcelist,source)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop(sourcelist,source)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown(sourcelist,source)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom(sourcelist,source)\"></button>\n                </div>\n            </div>\n            <div class=\"ui-picklist-listwrapper ui-picklist-source-wrapper\">\n                <div class=\"ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr\" *ngIf=\"sourceHeader\">{{sourceHeader}}</div>\n                <ul #sourcelist class=\"ui-widget-content ui-picklist-list ui-picklist-source ui-corner-bottom\" [ngStyle]=\"sourceStyle\">\n                    <li *ngFor=\"let item of source\" [ngClass]=\"{'ui-picklist-item':true,'ui-state-hover':(hoveredItem==item),'ui-state-highlight':isSelected(item)}\"\n                        (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\" (click)=\"selectItem($event,item)\">\n                        <template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></template>\n                    </li>\n                </ul>\n            </div>\n            <div class=\"ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-right\" (click)=\"moveRight(targetlist)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-right\" (click)=\"moveAllRight()\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-left\" (click)=\"moveLeft(sourcelist)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-left\" (click)=\"moveAllLeft()\"></button>\n                </div>\n            </div>\n            <div class=\"ui-picklist-listwrapper ui-picklist-target-wrapper\">\n                <div class=\"ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr\" *ngIf=\"targetHeader\">{{targetHeader}}</div>\n                <ul #targetlist class=\"ui-widget-content ui-picklist-list ui-picklist-target ui-corner-bottom\" [ngStyle]=\"targetStyle\">\n                    <li *ngFor=\"let item of target\" [ngClass]=\"{'ui-picklist-item':true,'ui-state-hover':(hoveredItem==item),'ui-state-highlight':isSelected(item)}\"\n                        (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\" (click)=\"selectItem($event,item)\">\n                        <template [pTemplateWrapper]=\"itemTemplate\" [item]=\"item\"></template>\n                    </li>\n                </ul>\n            </div>\n            <div class=\"ui-picklist-target-controls ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp(targetlist,target)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop(targetlist,target)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown(targetlist,target)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom(targetlist,target)\"></button>\n                </div>\n            </div>\n        </div>\n    ",
+	            directives: [button_1.Button, common_1.TemplateWrapper],
 	            providers: [domhandler_1.DomHandler]
 	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
@@ -36452,8 +36642,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var RADIO_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
+	var forms_1 = __webpack_require__(579);
+	var RADIO_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return RadioButton; }),
 	    multi: true
 	});
@@ -36499,13 +36689,17 @@ webpackJsonp([2],[
 	        __metadata('design:type', Boolean)
 	    ], RadioButton.prototype, "disabled", void 0);
 	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], RadioButton.prototype, "label", void 0);
+	    __decorate([
 	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], RadioButton.prototype, "click", void 0);
 	    RadioButton = __decorate([
 	        core_1.Component({
 	            selector: 'p-radioButton',
-	            template: "\n        <div class=\"ui-radiobutton ui-widget\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input type=\"radio\" [attr.name]=\"name\" [attr.value]=\"value\" [checked]=\"checked\" (blur)=\"onModelTouched()\">\n            </div>\n            <div class=\"ui-radiobutton-box ui-widget ui-radiobutton-relative ui-state-default\" (click)=\"onclick()\"\n                        (mouseenter)=\"onMouseEnter()\" (mouseleave)=\"onMouseLeave()\" [ngClass]=\"{'ui-state-hover':hover&&!disabled,'ui-state-active':checked,'ui-state-disabled':disabled}\">\n                <span class=\"ui-radiobutton-icon\" [ngClass]=\"{'fa fa-fw fa-circle':checked}\"></span>\n            </div>\n        </div>\n    ",
+	            template: "\n        <div class=\"ui-radiobutton ui-widget\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input type=\"radio\" [attr.name]=\"name\" [attr.value]=\"value\" [checked]=\"checked\" (blur)=\"onModelTouched()\">\n            </div>\n            <div class=\"ui-radiobutton-box ui-widget ui-radiobutton-relative ui-state-default\" (click)=\"onclick()\"\n                        (mouseenter)=\"onMouseEnter()\" (mouseleave)=\"onMouseLeave()\" [ngClass]=\"{'ui-state-hover':hover&&!disabled,'ui-state-active':checked,'ui-state-disabled':disabled}\">\n                <span class=\"ui-radiobutton-icon\" [ngClass]=\"{'fa fa-fw fa-circle':checked}\"></span>\n            </div>\n        </div>\n        <label class=\"ui-radiobutton-label\" (click)=\"onclick()\" *ngIf=\"label\">{{label}}</label>\n    ",
 	            providers: [RADIO_VALUE_ACCESSOR]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -36530,8 +36724,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var RATING_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
+	var forms_1 = __webpack_require__(579);
+	var RATING_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Rating; }),
 	    multi: true
 	});
@@ -36796,6 +36990,30 @@ webpackJsonp([2],[
 	        this.initialized = false;
 	        this.schedule = null;
 	    };
+	    Schedule.prototype.gotoDate = function (date) {
+	        this.schedule.fullCalendar('gotoDate', date);
+	    };
+	    Schedule.prototype.prev = function () {
+	        this.schedule.fullCalendar('prev');
+	    };
+	    Schedule.prototype.next = function () {
+	        this.schedule.fullCalendar('next');
+	    };
+	    Schedule.prototype.prevYear = function () {
+	        this.schedule.fullCalendar('prevYear');
+	    };
+	    Schedule.prototype.nextYear = function () {
+	        this.schedule.fullCalendar('nextYear');
+	    };
+	    Schedule.prototype.today = function () {
+	        this.schedule.fullCalendar('today');
+	    };
+	    Schedule.prototype.incrementDate = function (duration) {
+	        this.schedule.fullCalendar('incrementDate', duration);
+	    };
+	    Schedule.prototype.getDate = function () {
+	        return this.schedule.fullCalendar('getDate');
+	    };
 	    __decorate([
 	        core_1.Input(), 
 	        __metadata('design:type', Array)
@@ -37003,8 +37221,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var SELECTBUTTON_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
+	var forms_1 = __webpack_require__(579);
+	var SELECTBUTTON_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return SelectButton; }),
 	    multi: true
 	});
@@ -37314,8 +37532,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var SLIDER_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
+	var forms_1 = __webpack_require__(579);
+	var SLIDER_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Slider; }),
 	    multi: true
 	});
@@ -37323,6 +37541,7 @@ webpackJsonp([2],[
 	    function Slider(el) {
 	        this.el = el;
 	        this.onChange = new core_1.EventEmitter();
+	        this.onSlideEnd = new core_1.EventEmitter();
 	        this.onModelChange = function () { };
 	        this.onModelTouched = function () { };
 	        this.initialized = false;
@@ -37348,6 +37567,9 @@ webpackJsonp([2],[
 	                    _this.onModelChange(ui.value);
 	                    _this.onChange.emit({ originalEvent: event, value: ui.value });
 	                }
+	            },
+	            stop: function (event, ui) {
+	                _this.onSlideEnd.emit({ originalEvent: event, value: ui.value });
 	            }
 	        });
 	        this.initialized = true;
@@ -37416,6 +37638,10 @@ webpackJsonp([2],[
 	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Slider.prototype, "onChange", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', core_1.EventEmitter)
+	    ], Slider.prototype, "onSlideEnd", void 0);
 	    Slider = __decorate([
 	        core_1.Component({
 	            selector: 'p-slider',
@@ -37446,8 +37672,8 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var inputtext_1 = __webpack_require__(211);
 	var domhandler_1 = __webpack_require__(11);
-	var common_1 = __webpack_require__(8);
-	var SPINNER_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
+	var forms_1 = __webpack_require__(579);
+	var SPINNER_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Spinner; }),
 	    multi: true
 	});
@@ -38255,8 +38481,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(8);
-	var TOGGLEBUTTON_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
+	var forms_1 = __webpack_require__(579);
+	var TOGGLEBUTTON_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return ToggleButton; }),
 	    multi: true
 	});
@@ -38452,7 +38678,8 @@ webpackJsonp([2],[
 	    };
 	    Tooltip.prototype.hide = function () {
 	        this.container.style.display = 'none';
-	        this.destroy();
+	        document.body.removeChild(this.container);
+	        this.container = null;
 	    };
 	    Tooltip.prototype.create = function () {
 	        this.container = document.createElement('div');
@@ -38466,8 +38693,11 @@ webpackJsonp([2],[
 	        this.container.appendChild(tooltipText);
 	        document.body.appendChild(this.container);
 	    };
-	    Tooltip.prototype.destroy = function () {
-	        document.body.removeChild(this.container);
+	    Tooltip.prototype.ngOnDestroy = function () {
+	        if (this.container && this.container.parentElement) {
+	            document.body.removeChild(this.container);
+	        }
+	        this.container = null;
 	    };
 	    __decorate([
 	        core_1.Input('pTooltip'), 
@@ -38488,7 +38718,7 @@ webpackJsonp([2],[
 	        __metadata('design:returntype', void 0)
 	    ], Tooltip.prototype, "onMouseEnter", null);
 	    __decorate([
-	        core_1.HostListener('mouseout', ['$event']), 
+	        core_1.HostListener('mouseleave', ['$event']), 
 	        __metadata('design:type', Function), 
 	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
@@ -38609,6 +38839,9 @@ webpackJsonp([2],[
 	    UITreeNode.prototype.onNodeClick = function (event) {
 	        this.tree.onNodeClick(event, this.node);
 	    };
+	    UITreeNode.prototype.onNodeRightClick = function (event) {
+	        this.tree.onNodeRightClick(event, this.node);
+	    };
 	    UITreeNode.prototype.isSelected = function () {
 	        return this.tree.isSelected(this.node);
 	    };
@@ -38620,7 +38853,7 @@ webpackJsonp([2],[
 	    UITreeNode = __decorate([
 	        core_1.Component({
 	            selector: 'p-treeNode',
-	            template: "\n        <li class=\"ui-treenode\" *ngIf=\"node\">\n            <div class=\"ui-treenode-content\" [ngClass]=\"{'ui-treenode-selectable': tree.selectionMode}\" \n                (mouseenter)=\"hover=true\" (mouseleave)=\"hover=false\" (click)=\"onNodeClick($event)\">\n                <span class=\"ui-tree-toggler fa fa-fw\" [ngClass]=\"{'fa-caret-right':!expanded,'fa-caret-down':expanded}\" *ngIf=\"!isLeaf()\"\n                        (click)=\"toggle($event)\"></span\n                ><span class=\"ui-treenode-leaf-icon\" *ngIf=\"isLeaf()\"></span\n                ><span [class]=\"getIcon()\" *ngIf=\"node.icon||node.expandedIcon||node.collapsedIcon\"></span\n                ><span class=\"ui-treenode-label ui-corner-all\" \n                    [ngClass]=\"{'ui-state-hover':hover&&tree.selectionMode,'ui-state-highlight':isSelected()}\">\n                        <span *ngIf=\"!tree.template\">{{node.label}}</span>\n                        <p-treeNodeTemplateLoader [node]=\"node\" [template]=\"tree.template\" *ngIf=\"tree.template\"></p-treeNodeTemplateLoader>\n                    </span>\n            </div>\n            <ul class=\"ui-treenode-children\" style=\"display: none;\" *ngIf=\"node.children\" [style.display]=\"expanded ? 'block' : 'none'\">\n                <p-treeNode *ngFor=\"let childNode of node.children\" [node]=\"childNode\"></p-treeNode>\n            </ul>\n        </li>\n    ",
+	            template: "\n        <li class=\"ui-treenode\" *ngIf=\"node\">\n            <div class=\"ui-treenode-content\" [ngClass]=\"{'ui-treenode-selectable': tree.selectionMode}\" \n                (mouseenter)=\"hover=true\" (mouseleave)=\"hover=false\" (click)=\"onNodeClick($event)\" (contextmenu)=\"onNodeRightClick($event)\">\n                <span class=\"ui-tree-toggler fa fa-fw\" [ngClass]=\"{'fa-caret-right':!expanded,'fa-caret-down':expanded}\" *ngIf=\"!isLeaf()\"\n                        (click)=\"toggle($event)\"></span\n                ><span class=\"ui-treenode-leaf-icon\" *ngIf=\"isLeaf()\"></span\n                ><span [class]=\"getIcon()\" *ngIf=\"node.icon||node.expandedIcon||node.collapsedIcon\"></span\n                ><span class=\"ui-treenode-label ui-corner-all\" \n                    [ngClass]=\"{'ui-state-hover':hover&&tree.selectionMode,'ui-state-highlight':isSelected()}\">\n                        <span *ngIf=\"!tree.template\">{{node.label}}</span>\n                        <p-treeNodeTemplateLoader [node]=\"node\" [template]=\"tree.template\" *ngIf=\"tree.template\"></p-treeNodeTemplateLoader>\n                    </span>\n            </div>\n            <ul class=\"ui-treenode-children\" style=\"display: none;\" *ngIf=\"node.children\" [style.display]=\"expanded ? 'block' : 'none'\">\n                <p-treeNode *ngFor=\"let childNode of node.children\" [node]=\"childNode\"></p-treeNode>\n            </ul>\n        </li>\n    ",
 	            directives: [UITreeNode, treenodetemplateloader_1.TreeNodeTemplateLoader]
 	        }),
 	        __param(0, core_1.Inject(core_1.forwardRef(function () { return tree_1.Tree; }))), 
@@ -38693,6 +38926,175 @@ webpackJsonp([2],[
 	    return UITreeRow;
 	}());
 	exports.UITreeRow = UITreeRow;
+	
+
+/***/ },
+/* 1081 */,
+/* 1082 */,
+/* 1083 */,
+/* 1084 */,
+/* 1085 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var inputtext_1 = __webpack_require__(211);
+	var forms_1 = __webpack_require__(579);
+	var INPUTMASK_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	    useExisting: core_1.forwardRef(function () { return InputMask; }),
+	    multi: true
+	});
+	var InputMask = (function () {
+	    function InputMask(el) {
+	        this.el = el;
+	        this.clearMaskOnLostFocus = true;
+	        this.clearIncomplete = true;
+	        this.onComplete = new core_1.EventEmitter();
+	        this.onInComplete = new core_1.EventEmitter();
+	        this.onModelChange = function () { };
+	        this.onModelTouched = function () { };
+	    }
+	    InputMask.prototype.ngAfterViewInit = function () {
+	        var _this = this;
+	        var cfg = {
+	            mask: this.mask,
+	            alias: this.alias,
+	            placeholder: this.slotChar,
+	            clearIncomplete: this.clearIncomplete,
+	            clearMaskOnLostFocus: this.clearMaskOnLostFocus,
+	            onKeyDown: function (event, buffer, caretPos, opts) {
+	                var val = _this.unmask ? jQuery(_this.el.nativeElement.children[0])['inputmask']('unmaskedvalue') : event.target.value;
+	                _this.onModelChange(val);
+	            },
+	            onBeforeWrite: function (event, buffer, caretPos, opts) {
+	                if (event.target != null) {
+	                    var val = _this.unmask ? jQuery(_this.el.nativeElement.children[0])['inputmask']('unmaskedvalue') : event.target.value;
+	                    _this.onModelChange(val);
+	                }
+	            },
+	            oncomplete: function (event) {
+	                _this.onComplete.emit(event);
+	            },
+	            onincomplete: function (event) {
+	                _this.onInComplete.emit(event);
+	            }
+	        };
+	        if (this.options) {
+	            for (var prop in this.options) {
+	                if (this.options.hasOwnProperty(prop)) {
+	                    cfg[prop] = this.options[prop];
+	                }
+	            }
+	        }
+	        if (this.alias === 'regex')
+	            jQuery(this.el.nativeElement.children[0])['inputmask']('Regex', cfg);
+	        else
+	            jQuery(this.el.nativeElement.children[0])['inputmask'](cfg);
+	    };
+	    InputMask.prototype.writeValue = function (value) {
+	        this.value = value;
+	    };
+	    InputMask.prototype.registerOnChange = function (fn) {
+	        this.onModelChange = fn;
+	    };
+	    InputMask.prototype.registerOnTouched = function (fn) {
+	        this.onModelTouched = fn;
+	    };
+	    InputMask.prototype.onBlur = function () {
+	        this.onModelTouched();
+	    };
+	    InputMask.prototype.ngOnDestroy = function () {
+	        jQuery(this.el.nativeElement.children[0])['inputmask']('remove');
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], InputMask.prototype, "mask", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], InputMask.prototype, "style", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], InputMask.prototype, "styleClass", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], InputMask.prototype, "placeholder", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], InputMask.prototype, "slotChar", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], InputMask.prototype, "alias", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], InputMask.prototype, "options", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Boolean)
+	    ], InputMask.prototype, "unmask", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Boolean)
+	    ], InputMask.prototype, "clearMaskOnLostFocus", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Boolean)
+	    ], InputMask.prototype, "clearIncomplete", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Number)
+	    ], InputMask.prototype, "size", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Number)
+	    ], InputMask.prototype, "maxlength", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], InputMask.prototype, "tabindex", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Boolean)
+	    ], InputMask.prototype, "disabled", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Boolean)
+	    ], InputMask.prototype, "readonly", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', core_1.EventEmitter)
+	    ], InputMask.prototype, "onComplete", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', core_1.EventEmitter)
+	    ], InputMask.prototype, "onInComplete", void 0);
+	    InputMask = __decorate([
+	        core_1.Component({
+	            selector: 'p-inputMask',
+	            template: "<input pInputText type=\"text\" [value]=\"value||''\" (blur)=\"onBlur($event)\" [ngStyle]=\"style\" [ngClass]=\"styleClass\" [placeholder]=\"placeholder\"\n        [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [disabled]=\"disabled\" [readonly]=\"readonly\">",
+	            providers: [INPUTMASK_VALUE_ACCESSOR],
+	            directives: [inputtext_1.InputText]
+	        }), 
+	        __metadata('design:paramtypes', [core_1.ElementRef])
+	    ], InputMask);
+	    return InputMask;
+	}());
+	exports.InputMask = InputMask;
 	
 
 /***/ }

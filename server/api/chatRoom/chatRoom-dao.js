@@ -23,7 +23,7 @@ chatRoomSchema.statics.getChatRoomByUsers = (data) => {
         ChatRoom
             .findOne({$or: [
                 {"users.0":data.user1, "users.1":data.user2},
-                {"users.1":data.user2, "users.0":data.user1},
+                {"users.0":data.user2, "users.1":data.user1}
             ]})
             .exec((err, chatRoom) => {
                 err ? reject(err)

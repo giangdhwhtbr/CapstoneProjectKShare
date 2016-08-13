@@ -23,6 +23,7 @@ export class PrivateChatComponent {
     friendNames:any[]=[];
     receiver:string;
     room: string;
+    currentMsg: string;
 
     constructor(private _userService:UserService) {
         this.username = localStorage.getItem('username');
@@ -90,7 +91,9 @@ export class PrivateChatComponent {
               };
               //join room
               this.socket.emit('subscribe', data);
-              this.messages.push(chatRoom.chatLogs[0]);
+              for( var k in chatRoom.chatLogs){
+                this.messages.push(chatRoom.chatLogs[k]);
+              }
               this.room = chatRoom._id;
             }
           }
@@ -103,21 +106,21 @@ export class PrivateChatComponent {
         var data = {
             user1 : this.username,
             user2 : this.receiver
-        }
+        };
         this.socket.emit('get-chatroom',data);
     }
 
     getFriendName():void {
-        for(var i = 0; i < this.friendlist.length; i++){
+      for(var i = 0; i < this.friendlist.length; i++){
 
-            if(this.friendlist[i].user1 === this.name){
-                this.friendNames.push(this.friendlist[i].user2);
-            }
-           else if(this.friendlist[i].user2 === this.name){
-            this.friendNames.push(this.friendlist[i].user1);
-          }
-
+        if(this.friendlist[i].user1 === this.username){
+          this.friendNames.push(this.friendlist[i].user2);
         }
+        else if(this.friendlist[i].user2 === this.username){
+          this.friendNames.push(this.friendlist[i].user1);
+        }
+
+      }
     }
 
 

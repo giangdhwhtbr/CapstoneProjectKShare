@@ -11,6 +11,7 @@ module.exports = class ChatRoomController {
   }
 
   static getChatRoomByUser(data) {
+
       return ChatRoomDAO.getChatRoomByUsers(data)
       .then(chatRoom => {return chatRoom})
       .catch(error => {return error});

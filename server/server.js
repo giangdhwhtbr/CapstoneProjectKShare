@@ -124,6 +124,7 @@ io.on('connection',  (socket) => {
     };
     ChatRoomCtrl.getChatRoomByUser(users)
     .then(chatRoom => {
+      console.log(chatRoom);
       if(chatRoom){
         var updateData = {
           room: chatRoom._id,
