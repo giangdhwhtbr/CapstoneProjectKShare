@@ -3042,7 +3042,6 @@ webpackJsonp([2],[
 	            id: id,
 	            num: num
 	        });
-	        console.log(_data);
 	        return this._http.put(this._Url.replace(':id', ''), _data, options)
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
@@ -6009,7 +6008,6 @@ webpackJsonp([2],[
 	                }
 	            }
 	            _this.getFriendName();
-	            console.log(_this.acceptedRequest);
 	        });
 	    };
 	    FriendListComponent.prototype.getFriendName = function () {
@@ -6109,7 +6107,6 @@ webpackJsonp([2],[
 	        this.getRequestByUser();
 	    };
 	    UserProfileComponent.prototype.ngOnDestroy = function () {
-	        console.log(this.sub);
 	        this.sub.unsubscribe();
 	    };
 	    UserProfileComponent.prototype.getRequestByUser = function () {
@@ -6120,7 +6117,6 @@ webpackJsonp([2],[
 	            for (var i = 0; i < requests.length; i++) {
 	                _this.requests.push(requests[i]);
 	            }
-	            console.log(_this.requests);
 	        });
 	    };
 	    UserProfileComponent.prototype.getKnowledgeNameOfRequest = function (knowledgeId) {
