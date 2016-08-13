@@ -42,14 +42,7 @@ export class PrivateChatComponent {
 
     ngOnInit():void {
         //list all friends
-        var isOwner = false;
-        isOwner = function (users, username) {
-            for (var user in users) {
-                if (user == username) {
-                    return true;
-                }
-            }
-        };
+
 
 
         this._userService.getFriendList(this.username).subscribe((listFriend)=>{
@@ -69,7 +62,14 @@ export class PrivateChatComponent {
 
         this.socket.on('room-created', chatRoom => {
             //check if logged in user is belong to the chatRoom
-            console.log(chatRoom);
+
+             var isOwner = function (users, username) {
+                for (var user in users) {
+                    if (user == username) {
+                        return true;
+                    }
+                }
+            };
             if (isOwner(chatRoom.users, this.username)) {
                 var data = {
                     room: chatRoom._id
@@ -82,12 +82,24 @@ export class PrivateChatComponent {
         });
 
         this.socket.on('room-returned',chatRoom => {
+            var isOwner = function (users, username) {
+                for (var user in users) {
+                    if (user == username) {
+                        return true;
+                    }
+                }
+            };
+            console.log(chatRoom.users);
+            console.log(this.username);
+            console.log(isOwner(chatRoom.users, this.username));
+            console.log(chatRoom);
             if(isOwner(chatRoom.users, this.username)){
                 var data = {
                     room: chatRoom._id
                 };
                 //join room
                 this.socket.emit('subscribe', data);
+
                 this.messages.push(chatRoom.chatLogs[0]);
                 this.room = chatRoom._id;
             }

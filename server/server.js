@@ -175,7 +175,7 @@ io.on('connection',  (socket) => {
     ChatRoomCtrl.getChatRoomByUser(data)
     .then(chatRoom =>{
       console.log(chatRoom);
-      socket.broadcast.emit('room-returned', chatRoom);
+      io.emit('room-returned', chatRoom);
     })
     .catch(error => {console.log(error)});
   });
