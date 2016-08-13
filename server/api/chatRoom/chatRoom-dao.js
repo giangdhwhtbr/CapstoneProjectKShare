@@ -5,18 +5,18 @@ const Promise = require('bluebird');
 const chatRoomSchema = require('./chatRoom-model');
 const _ = require('lodash');
 
-//chatRoomSchema.statics.getAll = () => {
-//    return new Promise((resolve, reject) => {
-//        let _query = {};
-//
-//        ChatRoom
-//          .find(_query)
-//          .exec((err, chatRooms) => {
-//              err ? reject(err)
-//                  : resolve(chatRooms);
-//          });
-//      });
-//};
+chatRoomSchema.statics.getAll = () => {
+    return new Promise((resolve, reject) => {
+        let _query = {};
+
+        ChatRoom
+          .find(_query)
+          .exec((err, chatRooms) => {
+              err ? reject(err)
+                  : resolve(chatRooms);
+          });
+      });
+};
 
 chatRoomSchema.statics.getChatRoomByUsers = (data) => {
     return new Promise((resolve, reject) => {
@@ -36,10 +36,6 @@ chatRoomSchema.statics.getChatRoomByUsers = (data) => {
 chatRoomSchema.statics.getChatRoomById = (id) => {
 
   return new Promise((resolve, reject) => {
-    if(!_.isString(id)){
-      return reject(new TypeError('ID is not a String.'));
-    }
-
     ChatRoom
       .findById(id)
       .exec((err, chatRoom) => {

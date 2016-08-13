@@ -124,7 +124,7 @@ io.on('connection',  (socket) => {
     };
     ChatRoomCtrl.getChatRoomByUser(users)
     .then(chatRoom => {
-      if(chatRoom._id){
+      if(chatRoom){
         var updateData = {
           room: chatRoom._id,
           sender: data.sender,
@@ -138,7 +138,7 @@ io.on('connection',  (socket) => {
           console.log(error);
           io.in(data.room).emit('chat-error',{message: 'Có lỗi hệ thống xảy ra, mong bạn thông cảm!'});
         });
-      }else {
+      } else {
         ChatRoomCtrl.createChatRoom(data)
             .then(chatRoom => {
               io.emit('room-created', chatRoom);

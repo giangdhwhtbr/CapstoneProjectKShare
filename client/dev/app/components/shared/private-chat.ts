@@ -44,7 +44,7 @@ export class PrivateChatComponent {
         //list all friends
         var isOwner = false;
         isOwner = function (users, username) {
-            for (user in users) {
+            for (var user in users) {
                 if (user == username) {
                     return true;
                 }
@@ -65,11 +65,9 @@ export class PrivateChatComponent {
 
             }
             this.getFriendName();
-            console.log(this.friendNames);
         });
 
         this.socket.on('room-created', chatRoom => {
-
             //check if logged in user is belong to the chatRoom
             console.log(chatRoom);
             if (isOwner(chatRoom.users, this.username)) {
@@ -119,7 +117,6 @@ export class PrivateChatComponent {
 
 
     sendMessage(message) {
-        console.log(message);
         var data = {
             room: this.room,
             sender: this.username,

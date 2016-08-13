@@ -37,23 +37,22 @@ module.exports = class ChatRoomController {
   }
 
  static updateChatRoom(data){
-     console.log(data);
    var chatLog = {
        sender: data.sender,
        message: data.message,
        sentAt: new Date()
    };
-    if(data.room) {
-        return ChatRoomDAO.getChatRoomById(data.room)
-          .then(chatRoom => {
-            chatRoom.chatLogs.push(chatLog);
-            return ChatRoomDAO.updateChatRoomById(chatRoom)
-              .then(chatRoom => {return chatRoom})
-              .catch(error => {return error});
-          })
-          .catch(error => {return error});
-    }
-  }
+
+  return ChatRoomDAO.getChatRoomById(data.room)
+    .then(chatRoom => {
+      chatRoom.chatLogs.push(chatLog);
+      return ChatRoomDAO.updateChatRoomById(chatRoom)
+        .then(chatRoom => {return chatRoom})
+        .catch(error => {return error});
+    })
+    .catch(error => {return error});
+
+  };
 
   static getChatRoomById(req,res) {
     if(req.params && req.params.id) {
