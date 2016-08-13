@@ -3086,7 +3086,6 @@ webpackJsonp([2],[
 	            id: id,
 	            num: num
 	        });
-	        console.log(_data);
 	        return this._http.put(this._Url.replace(':id', ''), _data, options)
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
@@ -6245,7 +6244,6 @@ webpackJsonp([2],[
 	                }
 	            }
 	            _this.getFriendName();
-	            console.log(_this.acceptedRequest);
 	        });
 	    };
 	    FriendListComponent.prototype.getFriendName = function () {
@@ -6345,7 +6343,6 @@ webpackJsonp([2],[
 	        this.getRequestByUser();
 	    };
 	    UserProfileComponent.prototype.ngOnDestroy = function () {
-	        console.log(this.sub);
 	        this.sub.unsubscribe();
 	    };
 	    UserProfileComponent.prototype.getRequestByUser = function () {
@@ -6356,7 +6353,6 @@ webpackJsonp([2],[
 	            for (var i = 0; i < requests.length; i++) {
 	                _this.requests.push(requests[i]);
 	            }
-	            console.log(_this.requests);
 	        });
 	    };
 	    UserProfileComponent.prototype.getKnowledgeNameOfRequest = function (knowledgeId) {
@@ -6506,27 +6502,20 @@ webpackJsonp([2],[
 	var users_1 = __webpack_require__(31);
 	var PrivateChatComponent = (function () {
 	    function PrivateChatComponent(_userService) {
-	        var _this = this;
 	        this._userService = _userService;
 	        this.friendlist = [];
 	        this.friendNames = [];
 	        this.username = localStorage.getItem('username');
 	        this.socket = io('https://localhost:80');
 	        this.messages = [];
-	        if (this.room) {
-	            var data = {
-	                room: this.room
-	            };
-	            this.socket.emit('subscribe', data);
-	        }
+	    }
+	    PrivateChatComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        //list all friends
 	        this.socket.on('private-message-return', function (data) {
 	            console.log(data);
 	            _this.messages.push(data);
 	        });
-	    }
-	    PrivateChatComponent.prototype.ngOnInit = function () {
-	        //list all friends
-	        var _this = this;
 	        this._userService.getFriendList(this.username).subscribe(function (listFriend) {
 	            for (var i = 0; i < listFriend.length; i++) {
 	                if (listFriend[i].user2 === _this.username && listFriend[i].status === "accepted") {
@@ -6540,47 +6529,50 @@ webpackJsonp([2],[
 	        });
 	        this.socket.on('room-created', function (chatRoom) {
 	            //check if logged in user is belong to the chatRoom
-	            var isOwner = function (users, username) {
-	                for (var user in users) {
-	                    if (user == username) {
-	                        return true;
+	            if (chatRoom) {
+	                var isOwner = function (users, username) {
+	                    for (var k in users) {
+	                        if (users[k] == username) {
+	                            return true;
+	                        }
 	                    }
-	                }
-	            };
-	            if (isOwner(chatRoom.users, _this.username)) {
-	                var data = {
-	                    room: chatRoom._id
+	                    return false;
 	                };
-	                //join room
-	                _this.socket.emit('subscribe', data);
-	                _this.messages.push(chatRoom.chatLogs[0]);
-	                _this.room = chatRoom._id;
+	                if (isOwner(chatRoom.users, _this.username)) {
+	                    var data = {
+	                        room: chatRoom._id
+	                    };
+	                    //join room
+	                    _this.socket.emit('subscribe', data);
+	                    _this.messages.push(chatRoom.chatLogs[0]);
+	                    _this.room = chatRoom._id;
+	                }
 	            }
 	        });
 	        this.socket.on('room-returned', function (chatRoom) {
-	            var isOwner = function (users, username) {
-	                for (var user in users) {
-	                    if (user == username) {
-	                        return true;
+	            if (chatRoom) {
+	                var isOwner = function (users, username) {
+	                    for (var k in users) {
+	                        if (users[k] == username) {
+	                            return true;
+	                        }
 	                    }
-	                }
-	            };
-	            console.log(chatRoom.users);
-	            console.log(_this.username);
-	            console.log(isOwner(chatRoom.users, _this.username));
-	            console.log(chatRoom);
-	            if (isOwner(chatRoom.users, _this.username)) {
-	                var data = {
-	                    room: chatRoom._id
+	                    return false;
 	                };
-	                //join room
-	                _this.socket.emit('subscribe', data);
-	                _this.messages.push(chatRoom.chatLogs[0]);
-	                _this.room = chatRoom._id;
+	                if (isOwner(chatRoom.users, _this.username)) {
+	                    var data = {
+	                        room: chatRoom._id
+	                    };
+	                    //join room
+	                    _this.socket.emit('subscribe', data);
+	                    _this.messages.push(chatRoom.chatLogs[0]);
+	                    _this.room = chatRoom._id;
+	                }
 	            }
 	        });
 	    };
 	    PrivateChatComponent.prototype.getReceiver = function (receiver) {
+	        this.messages = [];
 	        this.receiver = receiver;
 	        var data = {
 	            user1: this.username,
@@ -6590,10 +6582,10 @@ webpackJsonp([2],[
 	    };
 	    PrivateChatComponent.prototype.getFriendName = function () {
 	        for (var i = 0; i < this.friendlist.length; i++) {
-	            if (this.friendlist[i].user1 === this.name) {
+	            if (this.friendlist[i].user1 === this.username) {
 	                this.friendNames.push(this.friendlist[i].user2);
 	            }
-	            else {
+	            else if (this.friendlist[i].user2 === this.username) {
 	                this.friendNames.push(this.friendlist[i].user1);
 	            }
 	        }

@@ -4,6 +4,8 @@
 import { Component, OnInit } from '@angular/core';
 
 import {UserService} from '../../services/users';
+import { User } from '../../interface/user';
+import { FriendShip } from '../../interface/friendship';
 
 declare var io:any;
 declare var $:any;
@@ -19,32 +21,22 @@ export class PrivateChatComponent {
     socket:any;
     room:string;
     username:string;
-    friendlist:string[]=[];
+    friendlist:FriendShip[]=[];
     friendNames:any[]=[];
     receiver:string;
-    room: string;
 
     constructor(private _userService:UserService) {
         this.username = localStorage.getItem('username');
         this.socket = io('https://localhost:80');
         this.messages = [];
-        if (this.room) {
-            var data = {
-                room: this.room
-            };
-            this.socket.emit('subscribe', data);
-        }
-        this.socket.on('private-message-return', data => {
-            console.log(data);
-            this.messages.push(data);
-        });
     }
 
     ngOnInit():void {
         //list all friends
-
-
-
+        this.socket.on('private-message-return', data => {
+          console.log(data);
+          this.messages.push(data);
+        });
         this._userService.getFriendList(this.username).subscribe((listFriend)=>{
             for (var i = 0; i < listFriend.length; i++) {
 
@@ -62,51 +54,52 @@ export class PrivateChatComponent {
 
         this.socket.on('room-created', chatRoom => {
             //check if logged in user is belong to the chatRoom
-
-             var isOwner = function (users, username) {
-                for (var user in users) {
-                    if (user == username) {
-                        return true;
-                    }
+            if(chatRoom){
+              var isOwner = function (users, username) {
+                for (var k in users) {
+                  if (users[k] == username) {
+                    return true;
+                  }
                 }
-            };
-            if (isOwner(chatRoom.users, this.username)) {
+                return false;
+              };
+              if (isOwner(chatRoom.users, this.username)) {
                 var data = {
-                    room: chatRoom._id
+                  room: chatRoom._id
                 };
                 //join room
                 this.socket.emit('subscribe', data);
                 this.messages.push(chatRoom.chatLogs[0]);
                 this.room = chatRoom._id;
+              }
             }
         });
 
         this.socket.on('room-returned',chatRoom => {
+          if(chatRoom) {
             var isOwner = function (users, username) {
-                for (var user in users) {
-                    if (user == username) {
-                        return true;
-                    }
+              for (var k in users) {
+                if (users[k] == username) {
+                  return true;
                 }
+              }
+              return false;
             };
-            console.log(chatRoom.users);
-            console.log(this.username);
-            console.log(isOwner(chatRoom.users, this.username));
-            console.log(chatRoom);
             if(isOwner(chatRoom.users, this.username)){
-                var data = {
-                    room: chatRoom._id
-                };
-                //join room
-                this.socket.emit('subscribe', data);
-
-                this.messages.push(chatRoom.chatLogs[0]);
-                this.room = chatRoom._id;
+              var data = {
+                room: chatRoom._id
+              };
+              //join room
+              this.socket.emit('subscribe', data);
+              this.messages.push(chatRoom.chatLogs[0]);
+              this.room = chatRoom._id;
             }
-        })
+          }
+        });
     }
 
     getReceiver(receiver: string):void{
+        this.messages = [];
         this.receiver = receiver;
         var data = {
             user1 : this.username,
@@ -118,11 +111,12 @@ export class PrivateChatComponent {
     getFriendName():void {
         for(var i = 0; i < this.friendlist.length; i++){
 
-            if(this.friendlist[i].user1 === this.name){
+            if(this.friendlist[i].user1 === this.username){
                 this.friendNames.push(this.friendlist[i].user2);
-            } else {
-                this.friendNames.push(this.friendlist[i].user1);
             }
+           else if(this.friendlist[i].user2 === this.username){
+            this.friendNames.push(this.friendlist[i].user1);
+          }
 
         }
     }

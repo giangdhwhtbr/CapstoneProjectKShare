@@ -133,48 +133,25 @@ io.on('connection',  (socket) => {
         };
         ChatRoomCtrl.updateChatRoom(updateData)
             .then(chatRoom => {
-              io.in(chatRoom.room).emit('private-message-return',data);
+              io.in(chatRoom._id).emit('private-message-return',data);
             }).catch(error => {
-          console.log(error);
-          io.in(data.room).emit('chat-error',{message: 'Có lỗi hệ thống xảy ra, mong bạn thông cảm!'});
-        });
+              console.log(error);
+            });
       } else {
         ChatRoomCtrl.createChatRoom(data)
             .then(chatRoom => {
               io.emit('room-created', chatRoom);
             }).catch(err => {
           console.log(err);
-          socket.broadcast.emit('chat-error',{message: 'Có lỗi hệ thống xảy ra, mong bạn thông cảm!'});
         });
       }
     });
-
-    //if(data.room){
-    //  // Update chatLogs of the room
-    //  ChatRoomCtrl.updateChatRoom(data)
-    //    .then(chatRoom => {
-    //      io.in(data.room).emit('private-message-return',data);
-    //    }).catch(error => {
-    //     console.log(error);
-    //     socket.in(data.room).broadcast.emit('chat-error',{message: 'Có lỗi hệ thống xảy ra, mong bạn thông cảm!'});
-    //  });
-    //} else {
-    //  // Create new chat room
-    //  ChatRoomCtrl.createChatRoom(data)
-    //  .then(chatRoom => {
-    //    socket.broadcast.emit('room-created', chatRoom);
-    //  }).catch(err => {
-    //    console.log(err);
-    //    socket.broadcast.emit('chat-error',{message: 'Có lỗi hệ thống xảy ra, mong bạn thông cảm!'});
-    //  });
-    //}
   });
 
   //Listening for get chatroom
   socket.on('get-chatroom',data => {
     ChatRoomCtrl.getChatRoomByUser(data)
     .then(chatRoom =>{
-      console.log(chatRoom);
       io.emit('room-returned', chatRoom);
     })
     .catch(error => {console.log(error)});
