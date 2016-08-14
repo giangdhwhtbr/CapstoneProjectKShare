@@ -79,7 +79,6 @@ export class FriendListComponent {
 
         }
         this.getFriendName();
-        console.log(this.acceptedRequest);
       })
   }
 

@@ -8,10 +8,10 @@ import { ROUTER_DIRECTIVES } from '@angular/router';
  * Shared components
  */
 
-import { HeaderComponent } from "./front-end/shared/header";
 import { SideBarComponent } from "./front-end/shared/side-bar";
 import { FooterComponent } from "./front-end/shared/footer";
 import { UserProfileComponent } from "./front-end/user/user-profile/user-profile";
+import { HeaderComponent } from "./shared/header";
 //import { FriendListComponent } from "./front-end/shared/friend-list";
 
 /**
@@ -40,7 +40,6 @@ import { CreateRequestComponent } from "./back-end/request/request-create";
 @Component({
   selector: 'kshare-app',
   template:`
-    <header></header>
     <sidebar></sidebar>
     <!--<friend-list></friend-list>-->
     <router-outlet></router-outlet>

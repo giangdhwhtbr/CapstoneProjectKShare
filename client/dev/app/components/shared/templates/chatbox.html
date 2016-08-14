@@ -1,20 +1,20 @@
-<div id="chatboxWhole" class="modal">
-    <div class="modal-content">
+<!--<div id="chatboxWhole" class="modal">-->
+    <div class="modal-content container mg-top-100">
         <div class="row">
             <div class="col m4 bg-white box-list-fr">
 
                 <!-- =============================================================== -->
                 <!-- member list -->
                 <ul class="friend-list">
-                    <li *ngFor="let f of friendNames" class="fr-e">
-                        <a href="#" class="clearfix" (click)="getReceiver(f)">
+                    <li *ngFor="let room of allChatRooms" class="fr-e">
+                        <a href="#" class="clearfix" (click)="getReceiver(room)">
                             <img src="http://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
 
                             <div class="friend-name">
-                                <strong>{{f}}</strong>
+                                <strong>{{room.friendName}}</strong>
                             </div>
-                            <div class="last-message text-muted">{{currentMsg}}</div>
-                            <small class="time text-muted">Just now</small>
+                            <div class="last-message text-muted">{{room.lastMsg}}</div>
+                            <span class="new badge" data-badge-caption="tin nhắn mới">{{room.news}}</span>
                             <!--<small class="chat-alert label label-danger">1</small>-->
                         </a>
                     </li>
@@ -81,4 +81,4 @@
     <!--<div class="modal-footer">-->
     <!--<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>-->
     <!--</div>-->
-</div>
+<!--</div>-->

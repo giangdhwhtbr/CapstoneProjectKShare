@@ -103,7 +103,6 @@ export class UserProfileComponent {
   }
 
   ngOnDestroy(): void {
-    console.log(this.sub);
     this.sub.unsubscribe();
   }
 
@@ -114,7 +113,6 @@ export class UserProfileComponent {
         for(var i = 0; i < requests.length; i++){
           this.requests.push(requests[i]);
         }
-        console.log(this.requests);
       })
   }
 

@@ -13,57 +13,16 @@ var Observable_1 = require('rxjs/Observable');
 var ChatService = (function () {
     function ChatService(_http) {
         this._http = _http;
-        this._messageUrl = '/api/messages/:id';
-        this._chatRoomUrl = '/api/chat-rooms/:id';
+        this._chatRoomUrl = '/api/chat-rooms/:user';
     }
-    //messages: Observable<Message[]>;
-    ChatService.prototype.getAllMessagesFromChatRoom = function (id) {
-        return this._http.get(this._messageUrl.replace(':id', id))
-            .map(function (r) { return r.json(); })
-            .catch(this.handleError);
-    };
-    ChatService.prototype.getChatRoomById = function (id) {
-        return this._http.get(this._chatRoomUrl.replace(':id', id))
-            .map(function (r) { return r.json(); })
-            .catch(this.handleError);
-    };
-    ChatService.prototype.addMessage = function (chatRoomId, user, text) {
-        var header = new http_1.Headers;
+    ChatService.prototype.getAllChatRoomOfUser = function (username) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
-        var _message = JSON.stringify({
-            chatRoomId: chatRoomId,
-            user: user,
-            content: text
-        });
-        console.log(_message);
         return this._http
-            .post(this._messageUrl.replace(':id', ''), _message, options)
-            .map(function (r) { return r.json(); });
-    };
-    ChatService.prototype.addChatRoom = function (kshare) {
-        var header = new http_1.Headers;
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ headers: headers });
-        var _message = JSON.stringify({
-            name: "ChatRoom",
-            kSpaceId: kshare
-        });
-        return this._http
-            .post(this._chatRoomUrl.replace(':id', ''), _message, options)
-            .map(function (r) { return r.json(); });
-    };
-    ChatService.prototype.findChatRoomByKSpaceId = function (id) {
-        var header = new http_1.Headers;
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ headers: headers });
-        var _message = JSON.stringify({});
-        return this._http
-            .post(this._chatRoomUrl.replace(':id', id), _message, options)
+            .get(this._chatRoomUrl.replace(':user', username), options)
             .map(function (r) { return r.json(); });
     };
     ChatService.prototype.handleError = function (error) {
-        console.error(error);
         return Observable_1.Observable.throw(error.json().error || 'Server error');
     };
     ChatService = __decorate([

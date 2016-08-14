@@ -1,4 +1,6 @@
 export interface ChatRoom {
   _id: string;
-  name:string;
+  chatLogs:Array<any>;
+  friendName: string;
+  createdAt: Date;
 }

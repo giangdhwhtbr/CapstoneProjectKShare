@@ -49,7 +49,6 @@ var OfferService = (function () {
             id: id,
             num: num
         });
-        console.log(_data);
         return this._http.put(this._Url.replace(':id', ''), _data, options)
             .map(function (r) { return r.json(); })
             .catch(this.handleError);

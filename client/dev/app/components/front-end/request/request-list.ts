@@ -78,7 +78,6 @@ export class RequestListClientComponent implements AfterViewChecked {
   seeMore(){
     this.num = this.num + 5;
     this.getAllRequests();
-    console.log(this.num);
   }
 
   getAllRequests() {
