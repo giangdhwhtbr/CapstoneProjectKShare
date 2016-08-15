@@ -11,7 +11,7 @@
         <h1>Không có yêu cầu nào được tìm thấy</h1>
       </div>
       <div class="panel-body">
-        <a [routerLink]="['/kshare/requests/'+ request._id]" routerLinkActive="active">
+        <a [routerLink]="['/requests/'+ request._id + '/info']" routerLinkActive="active">
           <p class="lead"> {{request.title}}</p>
         </a>
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">

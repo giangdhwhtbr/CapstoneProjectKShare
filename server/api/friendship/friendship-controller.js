@@ -1,6 +1,7 @@
 "use strict";
 
 const FriendShipDAO = require('./friendship-dao');
+const ChatRoomDAO = require('./../chatRoom/chatRoom-dao');
 
 module.exports = class FriendShipController {
   static getAll(req, res) {
@@ -24,6 +25,22 @@ module.exports = class FriendShipController {
       FriendShipDAO.getFriendShipByRUserAndAUser(req.params.user1)
         .then(friendship => {
 
+          var chatRoom = {
+            chatLogs: [],
+            users: [{
+              user: req.params.user1,
+              newMessages: 0
+            },
+              {
+                user: req.params.user2,
+                newMessages: 0
+              }
+            ]
+          };
+
+          //create chat room
+          ChatRoomDAO.createChatRoom(chatRoom);
+
           for (var i = 0; i < friendship.length; i++) {
             if (friendship[i].user2 === req.params.user2) {
               friendship[i].status = 'accepted';
@@ -32,7 +49,7 @@ module.exports = class FriendShipController {
                 .catch(error => res.status(400).json(error));
             }
           }
-          
+
         })
         .catch(error => res.status(400).json(error));
     } else {

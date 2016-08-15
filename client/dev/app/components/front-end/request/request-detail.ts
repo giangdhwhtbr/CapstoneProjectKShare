@@ -18,10 +18,6 @@ import { OfferService } from '../../../services/request-offer';
 import { KnowledgeService } from '../../../services/knowledge';
 import { KSpaceService } from '../../../services/kspace';
 
-import { HeaderComponent } from '../shared/header';
-import { FooterComponent } from '../shared/footer';
-import { SideBarComponent } from '../shared/side-bar';
-import { FriendListComponent} from '../shared/friend-list';
 import { CreateOfferComponent } from '../offer/offer-create';
 import { ReportComponent } from '../report/report';
 

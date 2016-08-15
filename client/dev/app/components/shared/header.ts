@@ -4,18 +4,19 @@
 import { Component, OnChanges, SimpleChange } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router} from '@angular/router';
 
-import { Notification } from '../../../interface/notification';
+import { Notification } from '../../interface/notification';
 
-import { AuthService } from '../../../services/auth';
-import { NotificationService } from '../../../services/notification';
-import { UserService } from '../../../services/users';
-import { PrivateChatComponent } from '../../../components/shared/private-chat';
+import { AuthService } from '../../services/auth';
+import { NotificationService } from '../../services/notification';
+import { UserService } from '../../services/users';
+import { PrivateChatComponent } from '../../components/shared/private-chat';
 declare var io:any;
+declare var $:any;
 
 @Component({
     selector: 'header',
-    templateUrl: 'client/dev/app/components/front-end/shared/templates/header.html',
-    styleUrls: ['client/dev/app/components/front-end/shared/styles/header.css'],
+    templateUrl: 'client/dev/app/components/shared/templates/header.html',
+    styleUrls: ['client/dev/app/components/shared/styles/header.css'],
     directives: [
         ROUTER_DIRECTIVES, PrivateChatComponent]
 })
@@ -79,7 +80,7 @@ export class HeaderComponent {
     }
 
     openChat(){
-        //$('#chatboxWhole').openModal();
+        $('#chatBoxK').openModal();
     }
 
     logout():void {

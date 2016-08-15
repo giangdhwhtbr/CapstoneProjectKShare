@@ -115,46 +115,31 @@ io.on('connection',  (socket) => {
    * Socket.io configuration for private chatting feature
    * */
 
+  socket.on('subscribe-private-chat',(room) => {
+    socket.join(room);
+  });
+
   //Listening for private chat message
 
   socket.on('private-message', (data) => {
-    var users = {
-      user1: data.sender,
-      user2: data.receiver
-    };
-    ChatRoomCtrl.getChatRoomByUser(users)
+    ChatRoomCtrl.updateChatRoom(data)
     .then(chatRoom => {
-      if(chatRoom){
-        var updateData = {
-          room: chatRoom._id,
-          sender: data.sender,
-          message: data.message,
-          sentAt: new Date()
-        };
-        ChatRoomCtrl.updateChatRoom(updateData)
-            .then(chatRoom => {
-              io.in(chatRoom._id).emit('private-message-return',data);
-            }).catch(error => {
-              console.log(error);
-            });
-      } else {
-        ChatRoomCtrl.createChatRoom(data)
-            .then(chatRoom => {
-              io.emit('room-created', chatRoom);
-            }).catch(err => {
-          console.log(err);
-        });
-      }
+      data.sentAt = new Date();
+      data.users = chatRoom.users;
+      io.in(chatRoom._id).emit('private-message-return',data);
+    }).catch(error => {
+      console.log(error);
     });
   });
 
-  //Listening for get chatroom
-  socket.on('get-chatroom',data => {
-    ChatRoomCtrl.getChatRoomByUser(data)
-    .then(chatRoom =>{
-      io.emit('room-returned', chatRoom);
-    })
-    .catch(error => {console.log(error)});
+  socket.on('reset-new-message', (data) => {
+    ChatRoomCtrl.ResetNewMessages(data)
+    .then(chatRoom => {
+      data.sentAt = new Date();
+       data.users = chatRoom.users;
+      io.in(chatRoom._id).emit('private-message-reset',data);
+    }).catch(error => {
+      console.log(error);
+    });
   });
-
 });

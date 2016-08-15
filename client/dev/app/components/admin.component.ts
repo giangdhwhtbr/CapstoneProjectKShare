@@ -8,7 +8,7 @@ import { ROUTER_DIRECTIVES} from '@angular/router';
 // Layout component
 import { NavbarComponent } from './back-end/shared/nav-bar';
 import { SidebarComponent } from './back-end/shared/side-bar';
-
+import { HeaderComponent } from "./shared/header";
 // Functions
 import { UpdateKnowledgeComponent } from './back-end/knowledge/knowledge-update';
 import { KnowledgeListComponent } from './back-end/knowledge/knowledges-list';
@@ -23,10 +23,10 @@ import { ArtListCtlComponent } from "./back-end/article/article-list-clt";
   selector: 'kshare',
   template:`
   <div id="wrapper">
-    <nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <nav-bar></nav-bar>
+    
+      <header></header>
       <sidebar></sidebar>
-    </nav>
+    
     <router-outlet></router-outlet>
   </div>
   `,
