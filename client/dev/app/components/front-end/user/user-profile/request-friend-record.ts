@@ -29,12 +29,12 @@ export class RequestFriendRecordComponent {
   email: string;
   level: string;
   socket: any;
-
   isFriend: boolean;
 
   isAdded: boolean;
   constructor(private router: Router, private route: ActivatedRoute, private _userService: UserService,
     public _noti: NotificationService) {
+    this.socket = io('https://localhost:80');
     this.route
       .params
       .subscribe(params => {
@@ -60,7 +60,7 @@ export class RequestFriendRecordComponent {
         var link = '/user/' + this.name;
 
         //call function using socket io to send notification
-        this._noti.alertNotification(title,this.requestUser,link);
+        this._noti.alertNotification(title, this.requestUser, link);
         //save notification to database
         this._noti.createNotification(title, this.requestUser, link).subscribe(
           (notification) => {
@@ -68,6 +68,11 @@ export class RequestFriendRecordComponent {
           });
       }
     );
+    var data = {
+      sender: this.requestUser,
+      receiver: this.name
+    }
+    this.socket.emit('accept-friend-request');
   }
 
   getUserInformation(): void {

@@ -1,5 +1,5 @@
 //cores
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 //components
@@ -37,7 +37,7 @@ export class FriendListComponent {
   roleToken: string;
   userToken: string;
 
-  constructor(private router: Router,private route: ActivatedRoute, private _userService: UserService) {
+  constructor(private router: Router, private route: ActivatedRoute, private _userService: UserService) {
     this.roleToken = localStorage.getItem('role');
     this.userToken = localStorage.getItem('username');
     this.route
@@ -49,11 +49,18 @@ export class FriendListComponent {
 
   ngOnInit(): void {
 
-      this.pendingRequests = [];
-      this.acceptedRequest = [];
-      this.friendNames = [];
-      this.getFriendList();
-      //this.getFriendName();
+    this.pendingRequests = [];
+    this.acceptedRequest = [];
+    this.friendNames = [];
+    this.getFriendList();
+    //this.getFriendName();
+  }
+
+  ngOnDestroy(): void {
+    this.pendingRequests = [];
+    this.acceptedRequest = [];
+    this.friendNames = [];
+    this.getFriendList();
   }
 
   //get friend list: pending and accepted
@@ -82,10 +89,10 @@ export class FriendListComponent {
       })
   }
 
-  getFriendName():void {
-    for(var i = 0; i < this.acceptedRequest.length; i++){
+  getFriendName(): void {
+    for (var i = 0; i < this.acceptedRequest.length; i++) {
 
-      if(this.acceptedRequest[i].user1 === this.name){
+      if (this.acceptedRequest[i].user1 === this.name) {
         this.friendNames.push(this.acceptedRequest[i].user2);
       } else {
         this.friendNames.push(this.acceptedRequest[i].user1);

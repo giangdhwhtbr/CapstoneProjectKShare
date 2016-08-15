@@ -142,4 +142,15 @@ io.on('connection',  (socket) => {
       console.log(error);
     });
   });
+
+  socket.on('accept-friend-request', (data) => {
+    ChatRoomCtrl.ResetNewMessages(data)
+    .then(chatRoom => {
+      data.sentAt = new Date();
+       data.users = chatRoom.users;
+      io.in(chatRoom._id).emit('private-message-reset',data);
+    }).catch(error => {
+      console.log(error);
+    });
+  });
 });

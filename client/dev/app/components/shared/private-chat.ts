@@ -74,7 +74,7 @@ export class PrivateChatComponent {
           room.newMessages = news;
         }
       }
-      this.messages.push(data);
+      // this.messages.push(data);
     });
 
     //list all chat rooms

@@ -67,8 +67,21 @@ module.exports = class ChatRoomController {
 
   };
 
+  static deactivateChatRoom(req, res) {
+    return ChatRoomDAO
+      .getChatRoomByUsers(req.body)
+      .then(chatRoom => {
+        chatRoom.status = 'deactive';
+        return ChatRoomDAO
+        .updateChatRoom(chatRoom)
+        .then(chatRoom => res.status(200).json(chatRooms))
+        .catch(error => res.status(400).json(error))
+      })
+      .catch(error => { return error });
+
+  };
+
   static ResetNewMessages(data) {
-    console.log(data);
     var users = {
       user1: data.sender,
       user2: data.receiver

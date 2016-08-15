@@ -23,6 +23,7 @@ export class UserService {
     private _banUrl = '/api/ban/:id';
     private _emailResetPass = '/api/email-reset-pass/:email';
     private _changePass = '/api/new-pass/:token';
+    private _chatRoomUrl = 'api/chat-rooms';
 
     constructor(private _http:Http) {
     }
@@ -51,6 +52,20 @@ export class UserService {
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
         return this._http.get(this._emailResetPass.replace(':email',email),options)
+              .map((r) => r.json())
+              .catch(this.handleError);
+    }
+
+    deactivateChatRoom(user1: string, user2: string): Observable <any> {
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+        
+        let data = JSON.stringify({
+            user1: user1,
+            user2: user2
+        });
+
+        return this._http.put(this._chatRoomUrl,data,options)
               .map((r) => r.json())
               .catch(this.handleError);
     }

@@ -69,6 +69,11 @@ export class FriendRecordComponent {
         .subscribe(() => {
           this.isFriend = false;
         });
+      this._userService
+        .deactivateChatRoom(this.friendName, this.userToken)
+        .subscribe(() => {
+          
+        });
 
       alert("bạn đã hủy gửi lời  mời kết bạn");
     }

@@ -340,6 +340,7 @@ webpackJsonp([2],[
 	        this._banUrl = '/api/ban/:id';
 	        this._emailResetPass = '/api/email-reset-pass/:email';
 	        this._changePass = '/api/new-pass/:token';
+	        this._chatRoomUrl = 'api/chat-rooms';
 	    }
 	    UserService.prototype.getUserByToken = function (token) {
 	        return this._http.get(this._changePass.replace(':token', token))
@@ -361,6 +362,17 @@ webpackJsonp([2],[
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
 	        return this._http.get(this._emailResetPass.replace(':email', email), options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    UserService.prototype.deactivateChatRoom = function (user1, user2) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var data = JSON.stringify({
+	            user1: user1,
+	            user2: user2
+	        });
+	        return this._http.put(this._chatRoomUrl, data, options)
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
 	    };
@@ -6313,6 +6325,12 @@ webpackJsonp([2],[
 	        this.friendNames = [];
 	        this.getFriendList();
 	        //this.getFriendName();
+	    };
+	    FriendListComponent.prototype.ngOnDestroy = function () {
+	        this.pendingRequests = [];
+	        this.acceptedRequest = [];
+	        this.friendNames = [];
+	        this.getFriendList();
 	    };
 	    //get friend list: pending and accepted
 	    FriendListComponent.prototype.getFriendList = function () {
@@ -19994,6 +20012,10 @@ webpackJsonp([2],[
 	                .subscribe(function () {
 	                _this.isFriend = false;
 	            });
+	            this._userService
+	                .deactivateChatRoom(this.friendName, this.userToken)
+	                .subscribe(function () {
+	            });
 	            alert("bạn đã hủy gửi lời  mời kết bạn");
 	        }
 	    };
@@ -20045,6 +20067,7 @@ webpackJsonp([2],[
 	        this.route = route;
 	        this._userService = _userService;
 	        this._noti = _noti;
+	        this.socket = io('https://localhost:80');
 	        this.route
 	            .params
 	            .subscribe(function (params) {
@@ -20072,6 +20095,11 @@ webpackJsonp([2],[
 	                console.log('create a notification to ' + _this.name);
 	            });
 	        });
+	        var data = {
+	            sender: this.requestUser,
+	            receiver: this.name
+	        };
+	        this.socket.emit('accept-friend-request');
 	    };
 	    RequestFriendRecordComponent.prototype.getUserInformation = function () {
 	        var _this = this;
@@ -20281,7 +20309,7 @@ webpackJsonp([2],[
 	                    room.newMessages = news;
 	                }
 	            }
-	            _this.messages.push(data);
+	            // this.messages.push(data);
 	        });
 	        //list all chat rooms
 	        if (localStorage.getItem('username')) {

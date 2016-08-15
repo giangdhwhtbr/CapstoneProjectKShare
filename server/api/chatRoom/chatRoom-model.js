@@ -31,6 +31,10 @@ const _chatRoomSchema = {
   createdAt: {
     type: Date, default: Date.now
   },
+  status: {
+    type: String,
+    default: 'accepted'
+  }
 
 };
 
