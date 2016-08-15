@@ -9,8 +9,9 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class TagService {
     private _tagUrl = '/api/tags/:id';
-    private _activeTag='/api/tags/active/:id';
-    private _deactiveTag='/api/tag/deactive/:id';
+    private _activeTag = '/api/tags/active/:id';
+    private _reqUrl = '/api/tag/req/:id';
+    private _deactiveTag = '/api/tag/deactive/:id';
 
     constructor(private _http:Http) {
     }
@@ -20,6 +21,7 @@ export class TagService {
             .map((r) => r.json())
             .catch(this.handleError);
     }
+
     getAllDeactiveTag():Observable<any[]> {
         return this._http.get(this._deactiveTag.replace(':id', ''))
             .map((r) => r.json())
@@ -32,19 +34,26 @@ export class TagService {
             .catch(this.handleError);
     }
 
+    getReqByTag(id:string):Observable<any[]> {
+        return this._http.get(this._reqUrl.replace(':id', id))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
+
     getTagsByIds(ids:string[]):Observable<any[]> {
         let header = new Headers;
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
         let _data = JSON.stringify(
             {
-                ids:ids
+                ids: ids
             }
         );
         return this._http
             .post('/api/tags/TagNames', _data, options)
             .map((r) => r.json());
     }
+
     activeTag(id:string):Observable<any[]> {
         let header = new Headers;
         let headers = new Headers({'Content-Type': 'application/json'});
@@ -53,6 +62,7 @@ export class TagService {
             .map((r) => r.json())
             .catch(this.handleError);
     }
+
     deactivateTag(id:string):Observable<any> {
         return this._http
             .delete(this._tagUrl.replace(':id', id))

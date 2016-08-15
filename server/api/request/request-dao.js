@@ -59,6 +59,23 @@ requestSchema.statics.getRequestsExceptTagsOfUser = (userTags, x) => {
     });
 }
 
+
+requestSchema.statics.getReqByTagId = (idTag) => {
+
+    return new Promise((resolve, reject) => {
+        if (!_.isString(idTag)) {
+            return reject(new TypeError('ID is not a String.'));
+        }
+
+        Request
+            .find({'tags': idTag})
+            .exec((err, reqs) => {
+                err ? reject(err)
+                    : resolve(reqs);
+            });
+    });
+}
+
 //get all back.request dao function
 requestSchema.statics.getAllRequestForAdmin = () => {
     return new Promise((resolve, reject) => {

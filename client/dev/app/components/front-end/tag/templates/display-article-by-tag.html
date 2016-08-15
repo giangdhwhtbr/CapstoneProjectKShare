@@ -1,26 +1,68 @@
-<div *ngIf="listArt" class="container tag">
-    <div *ngFor="let a of listArt" class="panel panel-default">
-        <div class="panel-body clearfix">
-            <p><span class="title">
-                <a [routerLink]="['/article',a._id]">{{a.title}}</a>
-            </span></p>
+<div class="container tagShowData">
+    <div class="row">
+        <div class="col s12">
+            <ul class="tabs">
+                <li class="tab col s3"><a href="#tabArt">Bài viết liên quan</a></li>
+                <li class="tab col s3"><a href="#tabReq">Những câu hỏi , yêu cầu liên quan</a></li>
+            </ul>
+        </div>
+        <div id="tabArt" class="col s12">
+            <div *ngIf="listArt">
 
-            <p><span class="sumary">
 
-            </span></p>
+                <div *ngFor="let a of listArt" class="panel panel-default">
+                    <div class="panel-body clearfix">
+                        <p><span class="title"><a [routerLink]="['/article',a._id]">{{a.title}}</a></span></p>
 
-            <p>
-                tags :
-                <span *ngFor="let t of a.tagsFD">
-                    <a [routerLink]="['/tag',t._id]" routerLinkActive="active">{{t.name}}</a>,
-                </span>
-            </p>
-            <p>
-                <span class="dateArt">{{a.createdAt | date:"dd/MM/yyyy"}}</span>
-            </p>
-            <p>
-                <span *ngIf="a.ofUser" class="author">by : <a [routerLink]="['/user',a.ofUser]">{{a.ofUser}}</a> </span>
-            </p>
+                        <p><span class="sumary"></span></p>
+
+                        <p *ngIf="a.tagsFD.length>0">
+                            tags :
+                            <span *ngFor="let t of a.tagsFD">
+                                <a [routerLink]="['/tag',t._id]" routerLinkActive="active">{{t.name}}</a>,
+                            </span>
+                        </p>
+
+                        <p>
+                            <span class="dateArt">{{a.createdAt | date:"dd/MM/yyyy"}}</span>
+                        </p>
+
+                        <p>
+                            <span *ngIf="a.ofUser" class="author">by : <a
+                                    [routerLink]="['/user',a.ofUser]">{{a.ofUser}}</a> </span>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <div [hidden]="!listArt">
+                <h5 class="center-align">Không có bài viết liên quan</h5>
+            </div>
+        </div>
+        <div id="tabReq" class="col s12">
+            <div *ngIf="listReq">
+                <div *ngFor="let r of listReq" class="panel panel-default">
+                    <div class="panel-body clearfix">
+                        <p><span class="title"><a [routerLink]="['/requests/'+r._id+'/info']" routerLinkActive="active">{{r.title}}</a></span></p>
+
+                        <p><span class="sumary"></span></p>
+
+
+                        <p>
+                            <span class="dateArt">{{r.createdAt | date:"dd/MM/yyyy"}}</span>
+                        </p>
+
+                        <p>
+                            <span *ngIf="r.user" class="author">by : <a
+                                    [routerLink]="['/user',r.user]">{{r.user}}</a> </span>
+                        </p>
+                        tags : <tags [listTagId]="r.tags" ></tags>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="!listReq">
+                <h5 class="center-align">Không có yêu cầu liên quan</h5>
+            </div>
         </div>
     </div>
 </div>
+

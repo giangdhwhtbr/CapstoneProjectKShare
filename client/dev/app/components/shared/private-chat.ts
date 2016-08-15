@@ -142,9 +142,8 @@ export class PrivateChatComponent {
         this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
         this.socket.emit('private-message', data);
         this.socket.emit('reset-new-message', data);
-        $("#textboxmess").focus();
-        $("#listMess").animate({ scrollTop: $("#listMess")[0].scrollHeight}, 1);
     }
+
 
     ngOnDestroy():void {
         this.sub.unsubscribe();

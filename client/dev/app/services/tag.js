@@ -16,6 +16,7 @@ var TagService = (function () {
         this._http = _http;
         this._tagUrl = '/api/tags/:id';
         this._activeTag = '/api/tags/active/:id';
+        this._reqUrl = '/api/tag/req/:id';
         this._deactiveTag = '/api/tag/deactive/:id';
     }
     TagService.prototype.getAllTag = function () {
@@ -30,6 +31,11 @@ var TagService = (function () {
     };
     TagService.prototype.getArtByTag = function (id) {
         return this._http.get(this._tagUrl.replace(':id', id))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    TagService.prototype.getReqByTag = function (id) {
+        return this._http.get(this._reqUrl.replace(':id', id))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };

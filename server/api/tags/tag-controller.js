@@ -4,6 +4,7 @@
 "use strict";
 const TagDAO = require('./tag-dao');
 const ArticleDAO = require('../article/article-dao');
+const ReqDAO = require('../request/request-dao');
 
 module.exports = class TagController {
     static getAllTags(req, res) {
@@ -21,6 +22,7 @@ module.exports = class TagController {
                 res.status(200).json(tags);
             }).catch(error => res.status(400).json(error));
     }
+
     static getAllDeactivatedTags(req, res) {
         TagDAO
             .getAll()
@@ -49,6 +51,7 @@ module.exports = class TagController {
             });
         }
     }
+
     static getTagByIds(req, res) {
         TagDAO
             .getTagByIds(req.body.ids)
@@ -64,6 +67,7 @@ module.exports = class TagController {
                 res.status(200).json(tags);
             }).catch(error => res.status(400).json(error));
     }
+
     static activeTag(req, res) {
         if (req.params && req.params.id) {
             let _id = req.params.id;
@@ -73,8 +77,8 @@ module.exports = class TagController {
                     ArticleDAO
                         .getArticleByTagId(_id)
                         .then(art => {
-                            tag.articles=[];
-                            tag.request=[];
+                            tag.articles = [];
+                            tag.request = [];
                             console.log(art);
                             console.log(tag);
                             for (let a of art) {
@@ -82,7 +86,7 @@ module.exports = class TagController {
                                 console.log(a.tagsFD);
                                 a.save();
                             }
-                            res.status(200).json({"mess":"Deactivate Successfully !"});
+                            res.status(200).json({"mess": "Deactivate Successfully !"});
                         }).catch(error => res.status(400).json(error));
                 }).catch(error => res.status(400).json(error));
         }
@@ -106,6 +110,30 @@ module.exports = class TagController {
                     }
 
                     res.status(200).json(arts)
+                }).catch(error => res.status(400).json(error));
+        } else {
+            res.status(404).json({
+                "message": "No article Id in templates"
+            });
+        }
+    }
+
+    static getReqByTagId(req, res) {
+        if (req.params && req.params.id) {
+            ReqDAO
+                .getReqByTagId(req.params.id)
+                .then((reqs) => {
+
+                    for (let i = reqs.length - 1; i >= 0; i--) {
+                        if (reqs[i].status === "deactivate") {
+                            let index = reqs.indexOf(reqs[i]);
+                            if (index > -1) {
+                                reqs.splice(index, 1);
+                            }
+                        }
+                    }
+
+                    res.status(200).json(reqs)
                 }).catch(error => res.status(400).json(error));
         } else {
             res.status(404).json({
@@ -150,32 +178,33 @@ module.exports = class TagController {
                                 a.save();
                             }
                         }
-                        res.status(200).json({"mess":"Deactivate Successfully !"});
+                        res.status(200).json({"mess": "Deactivate Successfully !"});
                     })
                     .catch(error => res.status(400).json(error));
             })
             .catch(error => res.status(400).json(error));
     }
 
-    static getAPage(req,res){
+    static getAPage(req, res) {
         let start = req.params.start;
         if (req.params && req.params.start) {
-            TagDAO.getAPage(start,req.params.stt).then((tags)=>{
-                if(tags.length==0 && start!=0){
-                    TagDAO.getAPage(start-10,req.params.stt).then((tagsBU)=>{
+            TagDAO.getAPage(start, req.params.stt).then((tags)=> {
+                if (tags.length == 0 && start != 0) {
+                    TagDAO.getAPage(start - 10, req.params.stt).then((tagsBU)=> {
                         res.status(200).json(tagsBU);
                     }).catch(err=> res.status(400).json(err));
-                }else{
+                } else {
                     res.status(200).json(tags);
                 }
 
             }).catch(err=> res.status(400).json(err));
         }
     }
-    static getTot(req,res){
+
+    static getTot(req, res) {
 
         if (req.params && req.params.stt) {
-            TagDAO.getTot(req.params.stt).then((num)=>{
+            TagDAO.getTot(req.params.stt).then((num)=> {
                 res.status(200).json(num);
             }).catch(err=> res.status(400).json(err));
         }
