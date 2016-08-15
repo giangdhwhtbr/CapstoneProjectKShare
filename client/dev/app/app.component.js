@@ -19,8 +19,7 @@ var router_1 = require('@angular/router');
  * */
 var admin_component_1 = require("./components/admin.component");
 var kshare_component_1 = require("./components/kshare.component");
-// Shared component
-var private_chat_1 = require("./components/shared/private-chat");
+var header_1 = require("./components/shared/header");
 /**
  * services
  **/
@@ -33,6 +32,7 @@ var kspace_1 = require("./services/kspace");
 var notification_1 = require("./services/notification");
 var report_1 = require("./services/report");
 var article_1 = require("./services/article");
+var chat_1 = require("./services/chat");
 var AppComponent = (function () {
     function AppComponent() {
         this.pageTitle = 'Knowledge Sharing Network';
@@ -40,10 +40,10 @@ var AppComponent = (function () {
     AppComponent = __decorate([
         core_1.Component({
             selector: 'kshare-app',
-            template: "\n  <router-outlet></router-outlet>\n  ",
+            template: "\n  <header></header>\n  <router-outlet></router-outlet>\n  ",
             directives: [
                 router_1.ROUTER_DIRECTIVES,
-                private_chat_1.PrivateChatComponent
+                header_1.HeaderComponent
             ],
             precompile: [kshare_component_1.KshareComponent, admin_component_1.AdminComponent],
             providers: [
@@ -56,7 +56,8 @@ var AppComponent = (function () {
                 kspace_1.KSpaceService,
                 notification_1.NotificationService,
                 report_1.ReportService,
-                article_1.ArticleService
+                article_1.ArticleService,
+                chat_1.ChatService
             ]
         }), 
         __metadata('design:paramtypes', [])

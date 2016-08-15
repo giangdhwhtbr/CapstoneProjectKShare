@@ -11,6 +11,7 @@ import { NotificationService } from '../../services/notification';
 import { UserService } from '../../services/users';
 import { PrivateChatComponent } from '../../components/shared/private-chat';
 declare var io:any;
+declare var $:any;
 
 @Component({
     selector: 'header',
@@ -79,7 +80,7 @@ export class HeaderComponent {
     }
 
     openChat(){
-        //$('#chatboxWhole').openModal();
+        // $('#chatboxWhole').openModal();
     }
 
     logout():void {

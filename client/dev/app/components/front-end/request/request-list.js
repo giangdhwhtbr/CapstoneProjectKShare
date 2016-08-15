@@ -54,7 +54,6 @@ var RequestListClientComponent = (function () {
     RequestListClientComponent.prototype.seeMore = function () {
         this.num = this.num + 5;
         this.getAllRequests();
-        console.log(this.num);
     };
     RequestListClientComponent.prototype.getAllRequests = function () {
         var _this = this;

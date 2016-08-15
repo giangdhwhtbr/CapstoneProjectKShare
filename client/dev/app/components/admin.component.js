@@ -31,7 +31,7 @@ var AdminComponent = (function () {
     AdminComponent = __decorate([
         core_1.Component({
             selector: 'kshare',
-            template: "\n  <div id=\"wrapper\">\n    <nav class=\"navbar navbar-inverse navbar-fixed-top\" role=\"navigation\">\n      <nav-bar></nav-bar>\n      <sidebar></sidebar>\n    </nav>\n    <router-outlet></router-outlet>\n  </div>\n  ",
+            template: "\n  <div id=\"wrapper\">\n    \n      <header></header>\n      <sidebar></sidebar>\n    \n    <router-outlet></router-outlet>\n  </div>\n  ",
             directives: [
                 router_1.ROUTER_DIRECTIVES,
                 nav_bar_1.NavbarComponent,
