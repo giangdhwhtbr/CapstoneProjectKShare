@@ -16,6 +16,7 @@ articleSchema.statics.getAll = (x) => {
             .find({})
             .skip(x-5)
             .limit(5)
+            .sort({updatedAt:-1})
             .exec((err, articles) => {
                 err ? reject(err)
                     : resolve(articles);
@@ -113,8 +114,10 @@ articleSchema.statics.getTot = (stt) => {
         Article
             .find({"status":stt})
             .exec((err, arts) => {
-                err ? reject(err)
-                    : resolve(arts.length);
+                if(err){
+                    reject(err);
+                }
+                resolve(arts.length);
             });
     });
 }

@@ -202,8 +202,10 @@ requestSchema.statics.getAPage = (start, stt) => {
             .skip(start)
             .limit(10)
             .exec((err, reqs) => {
-                err ? reject(err)
-                    : resolve(reqs);
+                if(err) {
+                    reject(err);
+                }
+                resolve(reqs);
             });
     });
 }
@@ -216,8 +218,10 @@ requestSchema.statics.getTot = (stt) => {
         Request
             .find({ "status": stt })
             .exec((err, reqs) => {
-                err ? reject(err)
-                    : resolve(reqs.length);
+                if(err) {
+                    reject(err);
+                }
+                resolve(reqs.length);
             });
     });
 }

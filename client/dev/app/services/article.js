@@ -1,11 +1,10 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 /**
  * Created by Duc Duong on 7/13/2016.
@@ -18,6 +17,9 @@ var ArticleService = (function () {
         this._requestsUrl = '/api/article/:id';
         this._requestsGetDeArtUrl = '/api/art/de/:id';
         this._articleUserUrl = '/api/articles-user';
+        this._cmtUrl = "/api/comment/article/:artId/:cmtId";
+        this._cmtLike = "/api/comment/like/:artId/:cmtId/:user";
+        this._cmtUnLike = "/api/comment/unlike/:artId/:cmtId/:user";
     }
     ArticleService.prototype.getAllArts = function (num) {
         var header = new http_1.Headers;
@@ -79,6 +81,43 @@ var ArticleService = (function () {
             .post(this._requestsUrl.replace(':id', ''), _data, options)
             .map(function (r) { return r.json(); });
     };
+    ArticleService.prototype.addComment = function (artId, user, content) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _comment = JSON.stringify({
+            artId: artId,
+            user: user,
+            content: content
+        });
+        return this._http
+            .post(this._cmtUrl.replace(':artId', '').replace('/:cmtId', ''), _comment, options)
+            .map(function (r) { return r.json(); });
+    };
+    ArticleService.prototype.editComment = function (artId, cmtId, content) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _cmt = JSON.stringify({
+            content: content
+        });
+        return this._http
+            .put(this._cmtUrl.replace(':artId', artId).replace(':cmtId', cmtId), _cmt, options)
+            .map(function (r) { return r.json(); });
+    };
+    ArticleService.prototype.removeComment = function (artId, cmtId) {
+        return this._http.delete(this._cmtUrl.replace(':artId', artId).replace(':cmtId', cmtId)).map(function (r) { return r.json(); });
+    };
+    ArticleService.prototype.likeComment = function (artId, cmtId, user) {
+        return this._http.get(this._cmtLike.replace(':artId', artId).replace(':cmtId', cmtId).replace(':user', user))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    ArticleService.prototype.unlikeComment = function (artId, cmtId, user) {
+        return this._http.get(this._cmtUnLike.replace(':artId', artId).replace(':cmtId', cmtId).replace(':user', user))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
     ArticleService.prototype.getArtById = function (id) {
         return this._http.get(this._requestsUrl.replace(':id', id))
             .map(function (r) { return r.json(); })
@@ -112,8 +151,7 @@ var ArticleService = (function () {
             .map(function (r) { return r.json(); });
     };
     ArticleService = __decorate([
-        core_1.Injectable(), 
-        __metadata('design:paramtypes', [http_1.Http])
+        core_1.Injectable()
     ], ArticleService);
     return ArticleService;
 })();
