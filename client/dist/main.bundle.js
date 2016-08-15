@@ -19997,6 +19997,7 @@ webpackJsonp([2],[
 	        this._userService = _userService;
 	        this._auth = _auth;
 	        this.sendDataToP = new core_1.EventEmitter();
+	        this.socket = io('https://localhost:80');
 	        this.userToken = localStorage.getItem('username');
 	        this.isFriend = true;
 	        this.route
@@ -20039,6 +20040,8 @@ webpackJsonp([2],[
 	            alert("bạn đã hủy gửi lời  mời kết bạn");
 	            this.sendDataToP.emit("accept");
 	        }
+	        var data = [this.userToken, this.friendName];
+	        this.socket.emit('chatroom-friend', data);
 	    };
 	    __decorate([
 	        core_1.Input('friendName'), 
@@ -20121,6 +20124,8 @@ webpackJsonp([2],[
 	            });
 	        });
 	        this.sendDataToP.emit("accept");
+	        var data = [this.requestUser, this.name];
+	        this.socket.emit('chatroom-friend', data);
 	    };
 	    RequestFriendRecordComponent.prototype.getUserInformation = function () {
 	        var _this = this;
@@ -20339,7 +20344,17 @@ webpackJsonp([2],[
 	        this.socket.on('new-message-notification', function (data) {
 	            _this.sendDataToP.emit([data.receiver, true]);
 	        });
-	        //list all chat rooms
+	        this.listAllChatRoom();
+	        this.socket.on('chatroom-friend-return', function (data) {
+	            console.log('return');
+	            if (data[0] === _this.username || data[1] === _this.username) {
+	                _this.listAllChatRoom();
+	            }
+	        });
+	    };
+	    PrivateChatComponent.prototype.listAllChatRoom = function () {
+	        var _this = this;
+	        this.allChatRooms = [];
 	        if (localStorage.getItem('username')) {
 	            this.sub = this._chatService.getAllChatRoomOfUser(this.username)
 	                .subscribe(function (chatRooms) {

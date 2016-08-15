@@ -144,4 +144,9 @@ io.on('connection',  (socket) => {
     });
   });
 
+  socket.on('chatroom-friend', (data) => {
+      io.emit('chatroom-friend-return',data);
+    
+  });
+
 });

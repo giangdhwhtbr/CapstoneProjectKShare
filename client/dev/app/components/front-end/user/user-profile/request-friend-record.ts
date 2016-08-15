@@ -70,6 +70,8 @@ export class RequestFriendRecordComponent {
     );
 
     this.sendDataToP.emit("accept");
+    var data = [this.requestUser, this.name];
+    this.socket.emit('chatroom-friend', data);
   }
 
   getUserInformation(): void {
