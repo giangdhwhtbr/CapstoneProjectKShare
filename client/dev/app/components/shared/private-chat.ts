@@ -71,13 +71,15 @@ export class PrivateChatComponent {
       }
       for (var room of this.allChatRooms) {
         if (room.friendName === data.receiver) {
+          room.lastMsg = data.message;
           room.newMessages = news;
         }
       }
     });
+
     this.socket.on('new-message-notification', data => {
-           this.sendDataToP.emit(data.receiver);
-        });
+      this.sendDataToP.emit([data.receiver,true]);
+    });
 
     //list all chat rooms
     if (localStorage.getItem('username')) {
@@ -137,6 +139,7 @@ export class PrivateChatComponent {
       receiver: this.receiver
     };
     this.socket.emit('reset-new-message', data);
+    this.sendDataToP.emit([data.sender,false]);
   }
 
   sendMessage(message) {
@@ -153,6 +156,7 @@ export class PrivateChatComponent {
     $("#listMess").animate({ scrollTop: $("#listMess")[0].scrollHeight }, 1);
     var input = document.querySelector('input');
     input.value = '';
+    this.sendDataToP.emit([data.sender,false]);
   }
 
   ngOnDestroy(): void {

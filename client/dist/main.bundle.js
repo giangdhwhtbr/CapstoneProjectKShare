@@ -6612,13 +6612,15 @@ webpackJsonp([2],[
 	var auth_1 = __webpack_require__(42);
 	var notification_1 = __webpack_require__(83);
 	var users_1 = __webpack_require__(34);
+	var chat_1 = __webpack_require__(441);
 	var private_chat_1 = __webpack_require__(648);
 	var HeaderComponent = (function () {
-	    function HeaderComponent(_auth, router, _noti, _userService) {
+	    function HeaderComponent(_auth, router, _noti, _userService, _chatService) {
 	        this._auth = _auth;
 	        this.router = router;
 	        this._noti = _noti;
 	        this._userService = _userService;
+	        this._chatService = _chatService;
 	        this.count = 2;
 	        this.num = 10;
 	        this.isNewMessage = false;
@@ -6657,6 +6659,15 @@ webpackJsonp([2],[
 	                setTimeout(function () {
 	                    x.className = x.className.replace("show", "");
 	                }, 10000);
+	            }
+	        });
+	        this._chatService.getAllChatRoomOfUser(this.userToken).subscribe(function (chatRooms) {
+	            for (var j = 0; j < chatRooms.length; j++) {
+	                for (var i = 0; i < 2; i++) {
+	                    if (chatRooms[j].users[i].user === _this.userToken && chatRooms[j].users[i].newMessages > 0) {
+	                        _this.isNewMessage = true;
+	                    }
+	                }
 	            }
 	        });
 	    };
@@ -6701,9 +6712,8 @@ webpackJsonp([2],[
 	        });
 	    };
 	    HeaderComponent.prototype.action = function (data) {
-	        console.log(data);
-	        if (this.userToken === data) {
-	            this.isNewMessage = true;
+	        if (this.userToken === data[0]) {
+	            this.isNewMessage = data[1];
 	        }
 	    };
 	    HeaderComponent.prototype.seeMore = function () {
@@ -6718,10 +6728,10 @@ webpackJsonp([2],[
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _e) || Object])
 	    ], HeaderComponent);
 	    return HeaderComponent;
-	    var _a, _b, _c, _d;
+	    var _a, _b, _c, _d, _e;
 	}());
 	exports.HeaderComponent = HeaderComponent;
 	
@@ -20321,12 +20331,13 @@ webpackJsonp([2],[
 	            for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
 	                var room = _c[_b];
 	                if (room.friendName === data.receiver) {
+	                    room.lastMsg = data.message;
 	                    room.newMessages = news;
 	                }
 	            }
 	        });
 	        this.socket.on('new-message-notification', function (data) {
-	            _this.sendDataToP.emit(data.receiver);
+	            _this.sendDataToP.emit([data.receiver, true]);
 	        });
 	        //list all chat rooms
 	        if (localStorage.getItem('username')) {
@@ -20384,6 +20395,7 @@ webpackJsonp([2],[
 	            receiver: this.receiver
 	        };
 	        this.socket.emit('reset-new-message', data);
+	        this.sendDataToP.emit([data.sender, false]);
 	    };
 	    PrivateChatComponent.prototype.sendMessage = function (message) {
 	        console.log(this.currentRoom);
@@ -20399,6 +20411,7 @@ webpackJsonp([2],[
 	        $("#listMess").animate({ scrollTop: $("#listMess")[0].scrollHeight }, 1);
 	        var input = document.querySelector('input');
 	        input.value = '';
+	        this.sendDataToP.emit([data.sender, false]);
 	    };
 	    PrivateChatComponent.prototype.ngOnDestroy = function () {
 	        this.sub.unsubscribe();
