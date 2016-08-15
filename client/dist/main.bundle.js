@@ -2722,6 +2722,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var requests_1 = __webpack_require__(59);
+	var private_chat_1 = __webpack_require__(648);
 	var RequestCategoryComponent = (function () {
 	    function RequestCategoryComponent(_requestService, router, route) {
 	        this._requestService = _requestService;
@@ -2793,7 +2794,7 @@ webpackJsonp([2],[
 	            selector: 'request-category-cli',
 	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-category.html',
 	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
-	            directives: [router_1.ROUTER_DIRECTIVES]
+	            directives: [router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object])
 	    ], RequestCategoryComponent);
@@ -4094,17 +4095,19 @@ webpackJsonp([2],[
 	var reports_list_1 = __webpack_require__(421);
 	var tag_list_control_1 = __webpack_require__(423);
 	var article_list_clt_1 = __webpack_require__(419);
+	var private_chat_1 = __webpack_require__(648);
 	var AdminComponent = (function () {
 	    function AdminComponent() {
 	    }
 	    AdminComponent = __decorate([
 	        core_1.Component({
 	            selector: 'kshare',
-	            template: "\n  <div id=\"wrapper\">\n    \n      <header></header>\n      <sidebar></sidebar>\n    \n    <router-outlet></router-outlet>\n  </div>\n  ",
+	            template: "\n  <div id=\"wrapper\">\n    \n      <header></header>\n      <sidebar></sidebar>\n    \n    <router-outlet></router-outlet>\n  </div>\n  <private-chat></private-chat>\n  ",
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                nav_bar_1.NavbarComponent,
-	                side_bar_1.SidebarComponent
+	                side_bar_1.SidebarComponent,
+	                private_chat_1.PrivateChatComponent
 	            ],
 	            precompile: [
 	                user_list_1.UserListComponent,
@@ -4925,6 +4928,7 @@ webpackJsonp([2],[
 	var article_1 = __webpack_require__(82);
 	var tag_1 = __webpack_require__(84);
 	var primeng_1 = __webpack_require__(94);
+	var private_chat_1 = __webpack_require__(648);
 	var CKEditor = (function () {
 	    function CKEditor(_elm) {
 	        CKEDITOR.replace(_elm.nativeElement);
@@ -5091,7 +5095,7 @@ webpackJsonp([2],[
 	            selector: 'create-article',
 	            templateUrl: 'client/dev/app/components/front-end/article/templates/create-article.html',
 	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
-	            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES],
+	            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
 	            providers: [article_1.ArticleService, tag_1.TagService]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
@@ -5122,6 +5126,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var common_1 = __webpack_require__(8);
+	var private_chat_1 = __webpack_require__(648);
 	var article_1 = __webpack_require__(82);
 	var notification_1 = __webpack_require__(83);
 	var report_1 = __webpack_require__(432);
@@ -5244,7 +5249,7 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
 	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES, comment_1.commentComponent
+	                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES, comment_1.commentComponent, private_chat_1.PrivateChatComponent
 	            ],
 	            providers: [article_1.ArticleService]
 	        }), 
@@ -5354,6 +5359,7 @@ webpackJsonp([2],[
 	 */
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
+	var private_chat_1 = __webpack_require__(648);
 	var HomeComponent = (function () {
 	    function HomeComponent() {
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
@@ -5365,7 +5371,8 @@ webpackJsonp([2],[
 	            selector: 'home',
 	            templateUrl: 'client/dev/app/components/front-end/home/templates/home.html',
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES
+	                router_1.ROUTER_DIRECTIVES,
+	                private_chat_1.PrivateChatComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -5395,6 +5402,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var kspace_1 = __webpack_require__(140);
+	var private_chat_1 = __webpack_require__(648);
 	// import { SEMANTIC_COMPONENTS, SEMANTIC_DIRECTIVES } from "ng-semantic";
 	var KSpaceInfoComponent = (function () {
 	    function KSpaceInfoComponent(router, route, _kspaceService) {
@@ -5483,9 +5491,10 @@ webpackJsonp([2],[
 	    };
 	    KSpaceInfoComponent = __decorate([
 	        core_1.Component({
-	            template: "\n      <div class=\"container mg-top-50\">\n        <h3>{{title}}</h3>\n        {{rateAve}}\n         <sm-rating class=\"massive star\" disable=\"disable\" [initialRating]=\"[rateAve]\"></sm-rating>\n        <br>\n        <button (click)=\"accessRoom()\">{{accessRoomBtn}}</button>\n        <hr>\n        <h3>images</h3>\n        <div *ngFor=\"let img of images\">\n          <h4>{{img.des}}</h4>\n          <img src=\"{{img.url}}\" style=\"background-color: black; border-radius: 10px;\" alt=\"kspace\" width=\"300\" height=\"200\">\n          <br>\n        </div>\n        <hr>\n        <h3>boards</h3>\n        <div *ngFor=\"let board of boards\">\n          <h4>Board {{board.des}}</h4>\n          <img src=\"{{board.url}}\"           style=\"background-color: whitesmoke; border:black; border-weight:1px ;                                                                      border-radius: 10px;\" alt=\"kspace\" width=\"300\" height=\"200\">\n          <br>\n        </div>\n        <div id=\"createReview\">\n            <sm-message *ngIf=\"errorMessage\" class=\"warning\">\n              <message-header>{{errorMessage.header}}</message-header>\n              <message-content>\n                  {{errorMessage.content}}\n              </message-content>\n            </sm-message>\n            <sm-rating class=\"massive star\" (onRate)=\"onReceiveRating($event)\" [maxRating]=\"5\"></sm-rating>\n            <form class=\"ui form\" #reviewForm=\"ngForm\" (ngSubmit)=\"onSubmit(reviewForm.value)\">\n                <textarea  ngControl=\"content\" required ></textarea>\n                <button type=\"submit\">Review</button>\n            </form>\n        </div>\n        <div id=\"reviews\">\n          <div *ngFor=\"let review of reviews\">\n            <sm-segment class=\"raised\">\n              <p>{{review.createdUser}}</p>\n              <p>{{review.content}}</p>\n            </sm-segment>\n          </div>\n        </div>\n      </div>\n    ",
+	            template: "\n      <div class=\"container mg-top-50\">\n        <h3>{{title}}</h3>\n        {{rateAve}}\n         <sm-rating class=\"massive star\" disable=\"disable\" [initialRating]=\"[rateAve]\"></sm-rating>\n        <br>\n        <button (click)=\"accessRoom()\">{{accessRoomBtn}}</button>\n        <hr>\n        <h3>images</h3>\n        <div *ngFor=\"let img of images\">\n          <h4>{{img.des}}</h4>\n          <img src=\"{{img.url}}\" style=\"background-color: black; border-radius: 10px;\" alt=\"kspace\" width=\"300\" height=\"200\">\n          <br>\n        </div>\n        <hr>\n        <h3>boards</h3>\n        <div *ngFor=\"let board of boards\">\n          <h4>Board {{board.des}}</h4>\n          <img src=\"{{board.url}}\"           style=\"background-color: whitesmoke; border:black; border-weight:1px ;                                                                      border-radius: 10px;\" alt=\"kspace\" width=\"300\" height=\"200\">\n          <br>\n        </div>\n        <div id=\"createReview\">\n            <sm-message *ngIf=\"errorMessage\" class=\"warning\">\n              <message-header>{{errorMessage.header}}</message-header>\n              <message-content>\n                  {{errorMessage.content}}\n              </message-content>\n            </sm-message>\n            <sm-rating class=\"massive star\" (onRate)=\"onReceiveRating($event)\" [maxRating]=\"5\"></sm-rating>\n            <form class=\"ui form\" #reviewForm=\"ngForm\" (ngSubmit)=\"onSubmit(reviewForm.value)\">\n                <textarea  ngControl=\"content\" required ></textarea>\n                <button type=\"submit\">Review</button>\n            </form>\n        </div>\n        <div id=\"reviews\">\n          <div *ngFor=\"let review of reviews\">\n            <sm-segment class=\"raised\">\n              <p>{{review.createdUser}}</p>\n              <p>{{review.content}}</p>\n            </sm-segment>\n          </div>\n        </div>\n      </div>\n      <private-chat></private-chat>\n    ",
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES
+	                router_1.ROUTER_DIRECTIVES,
+	                private_chat_1.PrivateChatComponent
 	            ],
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _c) || Object])
@@ -5516,6 +5525,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var kspace_1 = __webpack_require__(140);
 	var router_1 = __webpack_require__(4);
+	var private_chat_1 = __webpack_require__(648);
 	var KSpaceListComponent = (function () {
 	    function KSpaceListComponent(_kspaceService, router) {
 	        this._kspaceService = _kspaceService;
@@ -5538,9 +5548,10 @@ webpackJsonp([2],[
 	    };
 	    KSpaceListComponent = __decorate([
 	        core_1.Component({
-	            template: "\n    <div class=\"container mg-top-50\">\n          <!-- list all-->\n          <div class=\"search-container\">\n             <form role=\"search\">\n                     <div class=\"search-component\">\n                        <input #text type=\"text\" class=\"form-control search-input\" placeholder=\"Nh\u1EADp n\u1ED9i dung t\u00ECm ki\u1EBFm\">\n                        <button (click)=\"search(text.value)\" type=\"submit\"\n                        class=\"search-button fa fa-search fa-2x\"\n                        aria-hidden=\"true\"></button>\n                     </div>\n              </form>\n           </div><!-- /.search-component -->\n          <div *ngIf=\"kspaces\" id=\"kspace-list-component\" class=\"col-md-12\">\n            <div class=\"panel panel-default card-rq\" *ngFor=\"let kspace of kspaces\">\n              <div class=\"panel-body\">\n                <a [routerLink]=\"[kspace.link]\" >\n                  <p class=\"lead\">{{kspace.requestTitle}}</p>\n                </a>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Ng\u01B0\u1EDDi y\u00EAu c\u1EA7u : {{kspace.learner}}\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Ng\u01B0\u1EDDi d\u1EA1y : {{kspace.lecturer}}\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Tr\u1EA1ng th\u00E1i : ddddddd\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu\">\n                  Ng\u00E0y t\u1EA1o : {{kspace.createdAt | date:\"dd/MM/yyyy\"}}\n                </div>\n            </div>\n          </div>\n    </div><!-- /.container -->\n    ",
+	            template: "\n    <div class=\"container mg-top-50\">\n          <!-- list all-->\n          <div class=\"search-container\">\n             <form role=\"search\">\n                     <div class=\"search-component\">\n                        <input #text type=\"text\" class=\"form-control search-input\" placeholder=\"Nh\u1EADp n\u1ED9i dung t\u00ECm ki\u1EBFm\">\n                        <button (click)=\"search(text.value)\" type=\"submit\"\n                        class=\"search-button fa fa-search fa-2x\"\n                        aria-hidden=\"true\"></button>\n                     </div>\n              </form>\n           </div><!-- /.search-component -->\n          <div *ngIf=\"kspaces\" id=\"kspace-list-component\" class=\"col-md-12\">\n            <div class=\"panel panel-default card-rq\" *ngFor=\"let kspace of kspaces\">\n              <div class=\"panel-body\">\n                <a [routerLink]=\"[kspace.link]\" >\n                  <p class=\"lead\">{{kspace.requestTitle}}</p>\n                </a>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Ng\u01B0\u1EDDi y\u00EAu c\u1EA7u : {{kspace.learner}}\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Ng\u01B0\u1EDDi d\u1EA1y : {{kspace.lecturer}}\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Tr\u1EA1ng th\u00E1i : ddddddd\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu\">\n                  Ng\u00E0y t\u1EA1o : {{kspace.createdAt | date:\"dd/MM/yyyy\"}}\n                </div>\n            </div>\n          </div>\n    </div><!-- /.container -->\n    <private-chat></private-chat>\n    ",
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES
+	                router_1.ROUTER_DIRECTIVES,
+	                private_chat_1.PrivateChatComponent
 	            ],
 	            styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace-list.css']
 	        }), 
@@ -5862,6 +5873,7 @@ webpackJsonp([2],[
 	var kspace_1 = __webpack_require__(140);
 	var offer_create_1 = __webpack_require__(635);
 	var report_1 = __webpack_require__(432);
+	var private_chat_1 = __webpack_require__(648);
 	var RequestDetailClientComponent = (function () {
 	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
 	        this._requestService = _requestService;
@@ -6024,7 +6036,8 @@ webpackJsonp([2],[
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                offer_create_1.CreateOfferComponent,
-	                report_1.ReportComponent
+	                report_1.ReportComponent,
+	                private_chat_1.PrivateChatComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object])
@@ -6050,6 +6063,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
+	var private_chat_1 = __webpack_require__(648);
 	var router_1 = __webpack_require__(4);
 	var requests_1 = __webpack_require__(59);
 	var tag_1 = __webpack_require__(84);
@@ -6212,7 +6226,8 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES,
 	                friend_list_1.FriendListComponent,
 	                request_create_1.CreateRequestComponent,
-	                request_category_1.RequestCategoryComponent
+	                request_category_1.RequestCategoryComponent,
+	                private_chat_1.PrivateChatComponent
 	            ],
 	            providers: [tag_1.TagService]
 	        }), 
@@ -6303,6 +6318,7 @@ webpackJsonp([2],[
 	var request_friend_record_1 = __webpack_require__(646);
 	var friend_record_1 = __webpack_require__(645);
 	var user_profile_bar_1 = __webpack_require__(286);
+	var private_chat_1 = __webpack_require__(648);
 	//services
 	var users_1 = __webpack_require__(34);
 	var FriendListComponent = (function () {
@@ -6374,7 +6390,8 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES,
 	                request_friend_record_1.RequestFriendRecordComponent,
 	                friend_record_1.FriendRecordComponent,
-	                user_profile_bar_1.UserProfileBarComponent
+	                user_profile_bar_1.UserProfileBarComponent,
+	                private_chat_1.PrivateChatComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object])
@@ -6405,6 +6422,7 @@ webpackJsonp([2],[
 	//Component
 	var request_record_1 = __webpack_require__(647);
 	var user_profile_bar_1 = __webpack_require__(286);
+	var private_chat_1 = __webpack_require__(648);
 	//services
 	var users_1 = __webpack_require__(34);
 	var knowledge_1 = __webpack_require__(52);
@@ -6494,7 +6512,8 @@ webpackJsonp([2],[
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                request_record_1.RequestRecordComponent,
-	                user_profile_bar_1.UserProfileBarComponent
+	                user_profile_bar_1.UserProfileBarComponent,
+	                private_chat_1.PrivateChatComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object])
@@ -6563,7 +6582,7 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES,
 	                header_1.HeaderComponent,
 	                side_bar_1.SideBarComponent,
-	                footer_1.FooterComponent
+	                footer_1.FooterComponent,
 	            ],
 	            precompile: [
 	                home_1.HomeComponent,
@@ -19112,6 +19131,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(59);
 	var users_1 = __webpack_require__(34);
 	var article_1 = __webpack_require__(82);
+	var private_chat_1 = __webpack_require__(648);
 	var NewsFeedComponent = (function () {
 	    function NewsFeedComponent(_userService, _requestService, _articleService, router) {
 	        this._userService = _userService;
@@ -19207,7 +19227,8 @@ webpackJsonp([2],[
 	            selector: 'news-feed',
 	            templateUrl: 'client/dev/app/components/front-end/newsfeed/templates/newsfeed.html',
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES
+	                router_1.ROUTER_DIRECTIVES,
+	                private_chat_1.PrivateChatComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
@@ -20037,11 +20058,11 @@ webpackJsonp([2],[
 	                .deactivateChatRoom(this.friendName, this.userToken)
 	                .subscribe(function () {
 	            });
-	            alert("bạn đã hủy gửi lời  mời kết bạn");
 	            this.sendDataToP.emit("accept");
+	            // var data = [this.userToken, this.friendName];
+	            // this.socket.emit('chatroom-friend', data);
+	            alert("bạn đã hủy gửi lời  mời kết bạn");
 	        }
-	        var data = [this.userToken, this.friendName];
-	        this.socket.emit('chatroom-friend', data);
 	    };
 	    __decorate([
 	        core_1.Input('friendName'), 
@@ -20121,11 +20142,12 @@ webpackJsonp([2],[
 	            //save notification to database
 	            _this._noti.createNotification(title, _this.requestUser, link).subscribe(function (notification) {
 	                console.log('create a notification to ' + _this.name);
+	                _this.sendDataToP.emit("accept");
+	                // var data = [this.requestUser, this.name];
+	                // this.socket.emit('chatroom-friend', data);
+	                alert('Đã là bạn bè');
 	            });
 	        });
-	        this.sendDataToP.emit("accept");
-	        var data = [this.requestUser, this.name];
-	        this.socket.emit('chatroom-friend', data);
 	    };
 	    RequestFriendRecordComponent.prototype.getUserInformation = function () {
 	        var _this = this;
@@ -20345,12 +20367,6 @@ webpackJsonp([2],[
 	            _this.sendDataToP.emit([data.receiver, true]);
 	        });
 	        this.listAllChatRoom();
-	        this.socket.on('chatroom-friend-return', function (data) {
-	            console.log('return');
-	            if (data[0] === _this.username || data[1] === _this.username) {
-	                _this.listAllChatRoom();
-	            }
-	        });
 	    };
 	    PrivateChatComponent.prototype.listAllChatRoom = function () {
 	        var _this = this;
@@ -20412,25 +20428,18 @@ webpackJsonp([2],[
 	        this.socket.emit('reset-new-message', data);
 	        this.sendDataToP.emit([data.sender, false]);
 	    };
-	    PrivateChatComponent.prototype.sendMessage = function (message) {
+	    PrivateChatComponent.prototype.sendMessage = function () {
 	        console.log(this.currentRoom);
 	        var data = {
 	            sender: this.username,
-	            message: message,
+	            message: this.mess,
 	            receiver: this.receiver
 	        };
 	        this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
 	        this.socket.emit('private-message', data);
 	        this.socket.emit('reset-new-message', data);
-	        $("#textboxmess").focus();
-	        $("#listMess").animate({ scrollTop: $("#listMess")[0].scrollHeight }, 1);
-	        var input = document.querySelector('input');
-	        input.value = '';
 	        this.sendDataToP.emit([data.sender, false]);
-	    };
-	    PrivateChatComponent.prototype.ngOnDestroy = function () {
-	        this.sub.unsubscribe();
-	        this.allChatRooms = [];
+	        this.mess = "";
 	    };
 	    __decorate([
 	        core_1.Output(), 

@@ -65,13 +65,14 @@ export class RequestFriendRecordComponent {
         this._noti.createNotification(title, this.requestUser, link).subscribe(
           (notification) => {
             console.log('create a notification to ' + this.name);
+            this.sendDataToP.emit("accept");
+            // var data = [this.requestUser, this.name];
+            // this.socket.emit('chatroom-friend', data);
+            alert('Đã là bạn bè');
           });
       }
     );
 
-    this.sendDataToP.emit("accept");
-    var data = [this.requestUser, this.name];
-    this.socket.emit('chatroom-friend', data);
   }
 
   getUserInformation(): void {

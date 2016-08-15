@@ -27,6 +27,7 @@ export class PrivateChatComponent {
   allChatRooms: Array<ChatRoom>;
   sub: Subscription;
   currentRoom: string;
+  mess:string;
 
   constructor(private _chatService: ChatService,
     private _noti: NotificationService) {
@@ -82,13 +83,6 @@ export class PrivateChatComponent {
     });
 
     this.listAllChatRoom();
-
-    this.socket.on('chatroom-friend-return', data => {
-      console.log('return');
-      if(data[0] === this.username || data[1] === this.username){
-        this.listAllChatRoom();
-      }
-    });
 
   }
 
@@ -154,25 +148,18 @@ export class PrivateChatComponent {
     this.sendDataToP.emit([data.sender, false]);
   }
 
-  sendMessage(message) {
+  sendMessage() {
     console.log(this.currentRoom);
     var data = {
       sender: this.username,
-      message: message,
+      message: this.mess,
       receiver: this.receiver
     };
     this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
     this.socket.emit('private-message', data);
     this.socket.emit('reset-new-message', data);
-    $("#textboxmess").focus();
-    $("#listMess").animate({ scrollTop: $("#listMess")[0].scrollHeight }, 1);
-    var input = document.querySelector('input');
-    input.value = '';
     this.sendDataToP.emit([data.sender, false]);
+    this.mess="";
   }
 
-  ngOnDestroy(): void {
-    this.sub.unsubscribe();
-    this.allChatRooms = [];
-  }
 }

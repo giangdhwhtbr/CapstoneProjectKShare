@@ -6,6 +6,7 @@ import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { RequestService } from '../../../services/requests';
 import { UserService } from '../../../services/users';
 import { ArticleService } from '../../../services/article';
+import { PrivateChatComponent } from './../../shared/private-chat';
 
 declare var $: any;
 
@@ -13,7 +14,8 @@ declare var $: any;
   selector: 'news-feed',
   templateUrl: 'client/dev/app/components/front-end/newsfeed/templates/newsfeed.html',
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    PrivateChatComponent
   ]
 })
 

@@ -18,6 +18,7 @@ import { UserListComponent } from "./back-end/users/user-list";
 import { ReportListComponent } from "./back-end/report/reports-list";
 import { TagListCtlComponent } from "./back-end/tag/tag-list-control";
 import { ArtListCtlComponent } from "./back-end/article/article-list-clt";
+import { PrivateChatComponent } from "./shared/private-chat";
 
 @Component({
   selector: 'kshare',
@@ -29,11 +30,13 @@ import { ArtListCtlComponent } from "./back-end/article/article-list-clt";
     
     <router-outlet></router-outlet>
   </div>
+  <private-chat></private-chat>
   `,
   directives: [
     ROUTER_DIRECTIVES,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,
+    PrivateChatComponent
   ],
   precompile: [
     UserListComponent,

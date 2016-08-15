@@ -4,6 +4,7 @@
 import { Component, OnInit, AfterViewChecked, Pipe, PipeTransform } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
+import { PrivateChatComponent } from './../../shared/private-chat';
 
 import { ArticleService } from '../../../services/article';
 import { AuthService } from '../../../services/auth';
@@ -21,7 +22,7 @@ declare var Materialize:any;
     templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
     directives: [
-        ROUTER_DIRECTIVES, ReportComponent, FORM_DIRECTIVES, commentComponent
+        ROUTER_DIRECTIVES, ReportComponent, FORM_DIRECTIVES, commentComponent,PrivateChatComponent
     ],
     providers: [ArticleService]
 })

@@ -13,12 +13,14 @@ import { Knowledge } from '../../../interface/knowledge';
 import { RequestService } from '../../../services/requests';
 
 import { Subscription } from 'rxjs/Subscription';
+import { PrivateChatComponent } from './../../shared/private-chat';
+
 
 @Component({
   selector: 'request-category-cli',
   templateUrl: 'client/dev/app/components/front-end/request/templates/request-category.html',
   styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
-  directives: [ROUTER_DIRECTIVES]
+  directives: [ROUTER_DIRECTIVES, PrivateChatComponent]
 })
 
 export class RequestCategoryComponent {

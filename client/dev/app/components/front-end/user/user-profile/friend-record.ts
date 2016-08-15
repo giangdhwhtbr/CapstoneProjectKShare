@@ -29,7 +29,7 @@ export class FriendRecordComponent {
   userToken: string;
   isFriend: boolean;
   name: string;
-  socket:any;
+  socket: any;
 
   constructor(private router: Router, private route: ActivatedRoute,
     private _userService: UserService, private _auth: AuthService) {
@@ -78,12 +78,12 @@ export class FriendRecordComponent {
         .subscribe(() => {
 
         });
-
-      alert("bạn đã hủy gửi lời  mời kết bạn");
       this.sendDataToP.emit("accept");
+      // var data = [this.userToken, this.friendName];
+      // this.socket.emit('chatroom-friend', data);
+      alert("bạn đã hủy gửi lời  mời kết bạn");
     }
-    var data = [this.userToken,this.friendName];
-    this.socket.emit('chatroom-friend', data);
+
   }
 
 }

@@ -69,10 +69,10 @@
                 <div class="chat-box bg-white row">
                     <!--<div class="  row">-->
                     <div class="input-group">
-                        <input id="textboxmess" #mess class="form-control border no-shadow no-rounded"
+                        <input id="textboxmess"  [(ngModel)]="mess" class="form-control border no-shadow no-rounded"
                                placeholder="Type your message here" autofocus>
                             <span class="input-group-btn">
-                                <button class="btn btn-success no-rounded" (click)="sendMessage(mess.value)"
+                                <button class="btn btn-success no-rounded" (click)="sendMessage()"
                                         type="button">Gửi
                                 </button>
                             </span>

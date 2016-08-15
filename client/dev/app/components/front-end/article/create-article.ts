@@ -12,6 +12,7 @@ import {ArticleService} from '../../../services/article';
 import {TagService} from '../../../services/tag';
 import { AuthService } from '../../../services/auth';
 import {AutoComplete,SelectButton,SelectItem} from 'primeng/primeng';
+import { PrivateChatComponent } from './../../shared/private-chat';
 
 declare var $ :any;
 declare var CKEDITOR: any;
@@ -31,7 +32,7 @@ class CKEditor {
     selector: 'create-article',
     templateUrl: 'client/dev/app/components/front-end/article/templates/create-article.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
-    directives: [CKEditor, AutoComplete,ROUTER_DIRECTIVES],
+    directives: [CKEditor, AutoComplete,ROUTER_DIRECTIVES, PrivateChatComponent],
     providers: [ArticleService, TagService]
 })
 
