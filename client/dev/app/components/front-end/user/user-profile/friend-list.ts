@@ -1,5 +1,5 @@
 //cores
-import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { Component, OnInit, Input, OnDestroy, Output } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 //components
@@ -53,14 +53,6 @@ export class FriendListComponent {
     this.acceptedRequest = [];
     this.friendNames = [];
     this.getFriendList();
-    //this.getFriendName();
-  }
-
-  ngOnDestroy(): void {
-    this.pendingRequests = [];
-    this.acceptedRequest = [];
-    this.friendNames = [];
-    this.getFriendList();
   }
 
   //get friend list: pending and accepted
@@ -99,6 +91,17 @@ export class FriendListComponent {
       }
 
     }
+  }
+
+  action(data: any): void {
+    if (data === "accept") {
+      this.pendingRequests = [];
+      this.acceptedRequest = [];
+      this.friendNames = [];
+      this.getFriendList();
+
+    }
+
   }
 
 }

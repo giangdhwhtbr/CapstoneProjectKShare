@@ -6324,13 +6324,6 @@ webpackJsonp([2],[
 	        this.acceptedRequest = [];
 	        this.friendNames = [];
 	        this.getFriendList();
-	        //this.getFriendName();
-	    };
-	    FriendListComponent.prototype.ngOnDestroy = function () {
-	        this.pendingRequests = [];
-	        this.acceptedRequest = [];
-	        this.friendNames = [];
-	        this.getFriendList();
 	    };
 	    //get friend list: pending and accepted
 	    FriendListComponent.prototype.getFriendList = function () {
@@ -6362,6 +6355,14 @@ webpackJsonp([2],[
 	            else {
 	                this.friendNames.push(this.acceptedRequest[i].user1);
 	            }
+	        }
+	    };
+	    FriendListComponent.prototype.action = function (data) {
+	        if (data === "accept") {
+	            this.pendingRequests = [];
+	            this.acceptedRequest = [];
+	            this.friendNames = [];
+	            this.getFriendList();
 	        }
 	    };
 	    FriendListComponent = __decorate([
@@ -20067,6 +20068,7 @@ webpackJsonp([2],[
 	        this.route = route;
 	        this._userService = _userService;
 	        this._noti = _noti;
+	        this.sendDataToP = new core_1.EventEmitter();
 	        this.socket = io('https://localhost:80');
 	        this.route
 	            .params
@@ -20081,7 +20083,6 @@ webpackJsonp([2],[
 	    };
 	    RequestFriendRecordComponent.prototype.acceptRequest = function () {
 	        var _this = this;
-	        console.log(this.requestUser + ' ' + this.name);
 	        this._userService.acceptFriendRequest(this.requestUser, this.name).subscribe(function () {
 	            console.log("accepted successful");
 	            alert("Bạn đã là bạn bè với " + _this.requestUser);
@@ -20095,11 +20096,7 @@ webpackJsonp([2],[
 	                console.log('create a notification to ' + _this.name);
 	            });
 	        });
-	        var data = {
-	            sender: this.requestUser,
-	            receiver: this.name
-	        };
-	        this.socket.emit('accept-friend-request');
+	        this.sendDataToP.emit("accept");
 	    };
 	    RequestFriendRecordComponent.prototype.getUserInformation = function () {
 	        var _this = this;
@@ -20131,6 +20128,10 @@ webpackJsonp([2],[
 	        core_1.Input('name'), 
 	        __metadata('design:type', String)
 	    ], RequestFriendRecordComponent.prototype, "name", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', (typeof (_a = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _a) || Object)
+	    ], RequestFriendRecordComponent.prototype, "sendDataToP", void 0);
 	    RequestFriendRecordComponent = __decorate([
 	        core_1.Component({
 	            selector: 'request-friend-record',
@@ -20140,10 +20141,10 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES
 	            ]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
+	        __metadata('design:paramtypes', [(typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _e) || Object])
 	    ], RequestFriendRecordComponent);
 	    return RequestFriendRecordComponent;
-	    var _a, _b, _c, _d;
+	    var _a, _b, _c, _d, _e;
 	}());
 	exports.RequestFriendRecordComponent = RequestFriendRecordComponent;
 	
@@ -20296,7 +20297,6 @@ webpackJsonp([2],[
 	        });
 	        this.socket.on('private-message-reset', function (data) {
 	            var news = 0;
-	            console.log(data);
 	            for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
 	                var user = _a[_i];
 	                if (user.user === _this.username) {
@@ -20380,6 +20380,8 @@ webpackJsonp([2],[
 	        this.socket.emit('reset-new-message', data);
 	        $("#textboxmess").focus();
 	        $("#listMess").animate({ scrollTop: $("#listMess")[0].scrollHeight }, 1);
+	        var input = document.querySelector('input');
+	        input.value = '';
 	    };
 	    PrivateChatComponent.prototype.ngOnDestroy = function () {
 	        this.sub.unsubscribe();

@@ -63,7 +63,6 @@ export class PrivateChatComponent {
 
     this.socket.on('private-message-reset', data => {
       var news = 0;
-      console.log(data);
       for (var user of data.users) {
         if (user.user === this.username) {
           news = user.newMessages;
@@ -149,6 +148,8 @@ export class PrivateChatComponent {
     this.socket.emit('reset-new-message', data);
     $("#textboxmess").focus();
     $("#listMess").animate({ scrollTop: $("#listMess")[0].scrollHeight }, 1);
+    var input = document.querySelector('input');
+    input.value = '';
   }
 
   ngOnDestroy(): void {

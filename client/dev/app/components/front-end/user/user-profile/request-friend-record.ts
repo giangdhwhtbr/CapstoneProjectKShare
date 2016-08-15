@@ -1,5 +1,5 @@
 //cores
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 declare var io: any;
 
@@ -24,6 +24,7 @@ import { FriendShip } from '../../../../interface/friendship';
 export class RequestFriendRecordComponent {
   @Input('requestUser') requestUser: string;
   @Input('name') name: string;
+  @Output() sendDataToP: EventEmitter<string> = new EventEmitter<string>();
 
   displayname: string;
   email: string;
@@ -49,7 +50,6 @@ export class RequestFriendRecordComponent {
   }
 
   acceptRequest(): void {
-    console.log(this.requestUser + ' ' + this.name);
     this._userService.acceptFriendRequest(this.requestUser, this.name).subscribe(
       () => {
         console.log("accepted successful");
@@ -68,11 +68,8 @@ export class RequestFriendRecordComponent {
           });
       }
     );
-    var data = {
-      sender: this.requestUser,
-      receiver: this.name
-    }
-    this.socket.emit('accept-friend-request');
+
+    this.sendDataToP.emit("accept");
   }
 
   getUserInformation(): void {
