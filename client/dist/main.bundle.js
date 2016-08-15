@@ -2489,6 +2489,8 @@ webpackJsonp([2],[
 	        this._authService = _authService;
 	        this.router = router;
 	        this.check = true;
+	        this.sub = [];
+	        this.parent = [];
 	        this.tags = [];
 	        this.user = localStorage.getItem('username');
 	        this.roleToken = localStorage.getItem('userrole');
@@ -2507,6 +2509,7 @@ webpackJsonp([2],[
 	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
 	            _this.loadAllTags();
 	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+	            console.log(_this.knowledges);
 	        });
 	    };
 	    CreateRequestComponent.prototype.filterONTag = function () {
