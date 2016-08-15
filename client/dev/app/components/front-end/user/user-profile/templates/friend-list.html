@@ -20,7 +20,7 @@
               <div class="row">
                 <ul *ngFor="let friendName of friendNames">
 
-                  <friend-record friendName="{{friendName}}"></friend-record>
+                  <friend-record friendName="{{friendName}}" (sendDataToP)="action($event)"></friend-record>
 
                 </ul>
               </div>

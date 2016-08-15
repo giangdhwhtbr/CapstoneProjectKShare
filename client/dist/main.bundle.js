@@ -19978,6 +19978,7 @@ webpackJsonp([2],[
 	        this.route = route;
 	        this._userService = _userService;
 	        this._auth = _auth;
+	        this.sendDataToP = new core_1.EventEmitter();
 	        this.userToken = localStorage.getItem('username');
 	        this.isFriend = true;
 	        this.route
@@ -20018,12 +20019,17 @@ webpackJsonp([2],[
 	                .subscribe(function () {
 	            });
 	            alert("bạn đã hủy gửi lời  mời kết bạn");
+	            this.sendDataToP.emit("accept");
 	        }
 	    };
 	    __decorate([
 	        core_1.Input('friendName'), 
 	        __metadata('design:type', String)
 	    ], FriendRecordComponent.prototype, "friendName", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', (typeof (_a = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _a) || Object)
+	    ], FriendRecordComponent.prototype, "sendDataToP", void 0);
 	    FriendRecordComponent = __decorate([
 	        core_1.Component({
 	            selector: 'friend-record',
@@ -20033,10 +20039,10 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES
 	            ]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
+	        __metadata('design:paramtypes', [(typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _e) || Object])
 	    ], FriendRecordComponent);
 	    return FriendRecordComponent;
-	    var _a, _b, _c, _d;
+	    var _a, _b, _c, _d, _e;
 	}());
 	exports.FriendRecordComponent = FriendRecordComponent;
 	

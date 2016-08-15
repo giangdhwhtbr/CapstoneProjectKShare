@@ -1,5 +1,5 @@
 //cores
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
 //services
@@ -21,6 +21,7 @@ import { FriendShip } from '../../../../interface/friendship';
 
 export class FriendRecordComponent {
   @Input('friendName') friendName: string;
+ @Output() sendDataToP: EventEmitter<string> = new EventEmitter<string>();
   displayname: string;
   email: string;
   level: string;
@@ -76,6 +77,7 @@ export class FriendRecordComponent {
         });
 
       alert("bạn đã hủy gửi lời  mời kết bạn");
+      this.sendDataToP.emit("accept");
     }
   }
 
