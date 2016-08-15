@@ -1,0 +1,11 @@
+
+.content-cmt{
+    word-wrap: break-word;
+}
+
+.user-cmt {
+    font-weight: 600;
+}
+.btn-ctrl-cmt{
+    cursor: pointer;
+}

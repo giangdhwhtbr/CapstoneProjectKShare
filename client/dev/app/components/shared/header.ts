@@ -61,7 +61,7 @@ export class HeaderComponent {
             if (localStorage.getItem('username') === data.data.user) {
                 //audio of notification
                 var audio = new Audio();
-                audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
+                // audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
                 audio.load();
                 audio.play();
                 this.getNotificationByUser();
@@ -80,7 +80,7 @@ export class HeaderComponent {
     }
 
     openChat(){
-        // $('#chatboxWhole').openModal();
+        $('#chatBoxK').openModal();
     }
 
     logout():void {

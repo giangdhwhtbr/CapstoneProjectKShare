@@ -15,7 +15,18 @@ const articleSchema = {
     createdAt: {type: Date, default: Date.now()},
     updatedAt: {type: Date, default: Date.now()},
     tagsFD: [],
-    status: {type: String, required: true, default: 'public',enum: ['public', 'pending', 'private','deactivate']}
+    status: {type: String, required: true, default: 'public',enum: ['public', 'pending', 'private','deactivate']},
+    like:{type:Number,default:0 },
+    userLiked:[{type:String}],
+    comments:[{
+        user:{type:String},
+        content:{type:String},
+        createdAt:{type: Date, default: Date.now()},
+        updateAt:{type: Date, default: Date.now()},
+        like:{type:Number,default:0},
+        userLiked:[{type:String}],
+        userUnLiked:[{type:String}]
+    }]
 }
 
 

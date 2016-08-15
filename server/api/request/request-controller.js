@@ -193,7 +193,7 @@ module.exports = class RequestController {
         if (req.params && req.params.start) {
             let start = req.params.start;
             RequestDAO.getAPage(start,req.params.stt).then((reqs)=>{
-                if(reqs.length==0){
+                if(reqs.length==0&&start!=0){
                     RequestDAO.getAPage(start-10,req.params.stt).then((reqsBU)=>{
                         res.status(200).json(reqsBU);
                     }).catch(err=> res.status(400).json(err));

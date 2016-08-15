@@ -1,0 +1,38 @@
+<div *ngIf="comment" class="card-panel grey lighten-5 z-depth-1 hoverable">
+    <div class="row valign-wrapper">
+        <div class="col s2">
+            <img src="http://materializecss.com/images/yuna.jpg" alt=""
+                 class="circle responsive-img">
+            <!-- notice the "circle" class -->
+        </div>
+        <div class="col s10">
+            <div class="col s12">
+                                    <span class="blue-text user-cmt"><a
+                                            [routerLink]="['/user',comment.user]">{{comment.user}}</a></span>
+            </div>
+            <div [hidden]="isEditing" class="col s12">
+                <span class="black-text content-cmt">{{comment.content}}</span>
+            </div>
+            <div [hidden]="!isEditing" *ngIf="userToken">
+                <div class="col s12 m12">
+                    <div class="input-field col s12">
+                        <i class="material-icons prefix">mode_edit</i>
+                        <textarea [(ngModel)]="textEdit" value="{{comment.content}}" class="materialize-textarea"></textarea>
+                    </div>
+                </div>
+                <button type="submit" (click)="editCmt()" class="waves-effect waves-light btn col s2 offset-s1 m2 offset-m1 l2 offset-l1">Sửa</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-action right-align">
+        <i *ngIf="comment.user==userToken || roleToken == 'admin' || author==userToken " class="material-icons btn-ctrl-cmt" (click)="deleteCmt()">delete_sweep</i>
+        <i *ngIf="comment.user==userToken || roleToken == 'admin' || author==userToken " class="material-icons btn-ctrl-cmt" (click)="openEditCmt()">border_color</i>
+        <a *ngIf="!liked && userToken" (click)="likeCmt()" class="waves-effect waves-light btn" >
+            <i class="material-icons left">favorite_border</i>{{comment.like}}
+        </a>
+        <a *ngIf="liked && userToken" (click)="unlikeCmt()" class="waves-effect waves-light btn" >
+            <i class="material-icons left">favorite</i>{{comment.like}}
+        </a>
+    </div>
+</div>
