@@ -1,95 +1,91 @@
 <!--<audio id="xyz" src="gets-in-the-way.mp3" preload="auto"></audio>-->
 <div class="navbar-header-common">
-    <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
-        <div class="container topnav">
-            <!-- Brand and toggle get grouped for better mobile display -->
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse"
-                        data-target="#bs-example-navbar-collapse-1">
+  <nav class="navbar navbar-default navbar-fixed-top topnav" role="navigation">
+    <div class="container topnav">
+      <!-- Brand and toggle get grouped for better mobile display -->
+      <div class="navbar-header">
+        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
                     <span class="sr-only">Toggle navigation</span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <!--<a class="navbar-brand topnav" href="#">UKSN Logo</a>-->
-            </div>
-            <div id="snackbar"><span><a [routerLink]=[link] style="color:white;">{{notiTitle}}</a></span></div>
-            <!-- Collect the nav links, forms, and other content for toggling -->
-            <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-                <a class="navbar-brand topnav" [routerLink]="['/']">Kshare.xyz</a>
-                <ul class="nav navbar-nav navbar-right" *ngIf="loginToken">
-                    <li>
-                        <a [routerLink]="['/kspace']" class="pd-bot-0"><i class="fa fa-television"
+        <!--<a class="navbar-brand topnav" href="#">UKSN Logo</a>-->
+      </div>
+      <div id="snackbar"><span><a [routerLink]=[link] style="color:white;">{{notiTitle}}</a></span></div>
+      <!-- Collect the nav links, forms, and other content for toggling -->
+      <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+        <a class="navbar-brand topnav" [routerLink]="['/']">Kshare.xyz</a>
+        <ul class="nav navbar-nav navbar-right" *ngIf="loginToken">
+          <li>
+            <a [routerLink]="['/kspace']" class="pd-bot-0"><i class="fa fa-television"
                                                                           data-toggle="dropdown" aria-hidden="true"></i></a>
-                    </li>
-                    <!--toggle notifications-->
-                    <!--<a (click)="changeStatusNotification()" class="dropdown-toggle" data-toggle="dropdown"-->
-                    <!--role="button" aria-expanded="false">-->
-                    <!---->
-                    <!--</a>-->
-                    <li>
-                        <span (click)="changeStatusNotification()" class="dropdown-toggle notification-icon"
-                              data-toggle="dropdown" data-count="2">
+          </li>
+          <!--toggle notifications-->
+          <!--<a (click)="changeStatusNotification()" class="dropdown-toggle" data-toggle="dropdown"-->
+          <!--role="button" aria-expanded="false">-->
+          <!---->
+          <!--</a>-->
+          <li>
+            <span (click)="changeStatusNotification()" class="dropdown-toggle notification-icon" data-toggle="dropdown" data-count="2">
 							<i class="fa fa-bell-o" aria-hidden="true"></i>
 						</span>
-                        <span *ngIf="countUnReadNoti>0" class="badge">{{countUnReadNoti}}</span>
-                        <ul class="dropdown-menu" role="menu">
-                            <li *ngFor="let notification of notifications">
-                                <a [routerLink]="[notification.link]" routerLinkActive="active">
-                                    <span *ngIf="notification.status === 'Đã đọc'">{{notification.title}}</span>
-                                    <span *ngIf="notification.status === 'Chưa đọc'" style="color:red;">{{notification.title}}</span>
-                                </a>
-                            </li>
-                            <a (click)="seeMore()">Xem thêm</a>
-                        </ul>
-                    </li>
+            <span *ngIf="countUnReadNoti>0" class="badge">{{countUnReadNoti}}</span>
+            <ul class="dropdown-menu" role="menu">
+              <li *ngFor="let notification of notifications">
+                <a [routerLink]="[notification.link]" routerLinkActive="active">
+                  <span *ngIf="notification.status === 'Đã đọc'">{{notification.title}}</span>
+                  <span *ngIf="notification.status === 'Chưa đọc'" style="color:red;">{{notification.title}}</span>
+                </a>
+              </li>
+              <a (click)="seeMore()">Xem thêm</a>
+            </ul>
+          </li>
 
-                    <!--end notification-->
-                    <li>
-                        <a [routerLink]="['/requests']" routerLinkActive="active" class="pd-bot-0"><i
+          <!--end notification-->
+          <li>
+            <a [routerLink]="['/requests']" routerLinkActive="active" class="pd-bot-0"><i
                                 class="fa fa-comments-o"
                                 aria-hidden="true"></i></a>
-                    </li>
-                    <li>
-                        <!--<button (click)="openChat()" class="btn modal-trigger">chat</button>-->
-                        <a (click)="openChat()" ><i class="material-icons">record_voice_over</i></a>
-                    </li>
-                    <li>
-                        <div class="btn-group" style="padding-top:8%;padding-right:8%;">
-                            <button type="button" style="border:none;" class="btn btn-default" aria-haspopup="true"
-                                    aria-expanded="false" [routerLink]="['/user/' + userToken]">
+          </li>
+          <li>
+            <!--<button (click)="openChat()" class="btn modal-trigger">chat</button>-->
+            <a (click)="openChat()"><i class="material-icons"><span *ngIf="isNewMessage" class="badge">Mới</span></i></a>
+          </li>
+          <li>
+            <div class="btn-group" style="padding-top:8%;padding-right:8%;">
+              <button type="button" style="border:none;" class="btn btn-default" aria-haspopup="true" aria-expanded="false" [routerLink]="['/user/' + userToken]">
                                 {{userToken}}
                             </button>
-                        </div>
-                    </li>
-                    <li *ngIf="roleToken === 'admin'">
-                        <div class="btn-group" style="padding-top:8%;padding-right:8%;">
-                            <button type="button" style="border:none;" class="btn btn-default" aria-haspopup="true"
-                                    aria-expanded="false" [routerLink]="['/admin/']">
+            </div>
+          </li>
+          <li *ngIf="roleToken === 'admin'">
+            <div class="btn-group" style="padding-top:8%;padding-right:8%;">
+              <button type="button" style="border:none;" class="btn btn-default" aria-haspopup="true" aria-expanded="false" [routerLink]="['/admin/']">
                                 Bảng điều khiển
                             </button>
-                        </div>
-                    </li>
-                    <li>
-                        <button class="btn btn-success btLogin" (click)="logout()">Logout</button>
-                    </li>
-                </ul>
-                <ul class="nav navbar-nav navbar-right" *ngIf="!loginToken">
-                    <li>
-                        <a [routerLink]="['/kspace']" class="pd-bot-0">Giới thiệu </a>
-                    </li>
-                    <li>
-                        <a [routerLink]="['/kspace']" class="pd-bot-0">Trải nghiệm Kspace </a>
-                    </li>
-                    <li>
-                        <button class="btn btn-success btLogin" id="btnShowLogin" [routerLink]="['/login']">Login
-                        </button>
-                    </li>
-                </ul>
             </div>
-            <!-- /.navbar-collapse -->
-        </div>
-        <!-- /.container -->
-    </nav>
+          </li>
+          <li>
+            <button class="btn btn-success btLogin" (click)="logout()">Logout</button>
+          </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right" *ngIf="!loginToken">
+          <li>
+            <a [routerLink]="['/kspace']" class="pd-bot-0">Giới thiệu </a>
+          </li>
+          <li>
+            <a [routerLink]="['/kspace']" class="pd-bot-0">Trải nghiệm Kspace </a>
+          </li>
+          <li>
+            <button class="btn btn-success btLogin" id="btnShowLogin" [routerLink]="['/login']">Login
+                        </button>
+          </li>
+        </ul>
+      </div>
+      <!-- /.navbar-collapse -->
+    </div>
+    <!-- /.container -->
+  </nav>
 </div>
-<private-chat></private-chat>
+<private-chat (sendDataToP)="action($event)"></private-chat>

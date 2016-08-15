@@ -1,7 +1,7 @@
 /**
  * Created by GiangDH on 8/12/16.
  */
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/core';
 
 import { ChatRoom } from '../../interface/chat-room';
 import { ChatService } from '../../services/chat';
@@ -19,6 +19,7 @@ declare var $: any;
 })
 
 export class PrivateChatComponent {
+  @Output() sendDataToP: EventEmitter<string> = new EventEmitter<string>();
   messages: Array<any>;
   socket: any;
   username: string;
@@ -73,8 +74,10 @@ export class PrivateChatComponent {
           room.newMessages = news;
         }
       }
-      // this.messages.push(data);
     });
+    this.socket.on('new-message-notification', data => {
+           this.sendDataToP.emit(data.receiver);
+        });
 
     //list all chat rooms
     if (localStorage.getItem('username')) {

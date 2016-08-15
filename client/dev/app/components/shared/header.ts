@@ -31,6 +31,7 @@ export class HeaderComponent {
     socket:any;
     count:number = 2;
     num:number = 10;
+    isNewMessage:boolean = false;
 
     notifications:Notification[];
 
@@ -81,6 +82,7 @@ export class HeaderComponent {
 
     openChat(){
         $('#chatBoxK').openModal();
+        this.isNewMessage = false;
     }
 
     logout():void {
@@ -124,6 +126,13 @@ export class HeaderComponent {
                 console.log('change status notification successful');
             }
         )
+    }
+
+    action(data):void{
+        console.log(data);
+        if(this.userToken === data){
+            this.isNewMessage = true;
+        }
     }
 
     seeMore() {

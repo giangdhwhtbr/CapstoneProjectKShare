@@ -6621,6 +6621,7 @@ webpackJsonp([2],[
 	        this._userService = _userService;
 	        this.count = 2;
 	        this.num = 10;
+	        this.isNewMessage = false;
 	        this.userToken = localStorage.getItem('username');
 	        this.roleToken = localStorage.getItem('userrole');
 	    }
@@ -6661,6 +6662,7 @@ webpackJsonp([2],[
 	    };
 	    HeaderComponent.prototype.openChat = function () {
 	        $('#chatBoxK').openModal();
+	        this.isNewMessage = false;
 	    };
 	    HeaderComponent.prototype.logout = function () {
 	        var _this = this;
@@ -6697,6 +6699,12 @@ webpackJsonp([2],[
 	        this._noti.changeStatusNotification(this.userToken).subscribe(function (notifications) {
 	            console.log('change status notification successful');
 	        });
+	    };
+	    HeaderComponent.prototype.action = function (data) {
+	        console.log(data);
+	        if (this.userToken === data) {
+	            this.isNewMessage = true;
+	        }
 	    };
 	    HeaderComponent.prototype.seeMore = function () {
 	        this.num = this.num + 10;
@@ -20267,6 +20275,7 @@ webpackJsonp([2],[
 	    function PrivateChatComponent(_chatService, _noti) {
 	        this._chatService = _chatService;
 	        this._noti = _noti;
+	        this.sendDataToP = new core_1.EventEmitter();
 	        this.username = localStorage.getItem('username');
 	        this.socket = io('https://localhost:80');
 	        this.messages = [];
@@ -20315,7 +20324,9 @@ webpackJsonp([2],[
 	                    room.newMessages = news;
 	                }
 	            }
-	            // this.messages.push(data);
+	        });
+	        this.socket.on('new-message-notification', function (data) {
+	            _this.sendDataToP.emit(data.receiver);
 	        });
 	        //list all chat rooms
 	        if (localStorage.getItem('username')) {
@@ -20393,16 +20404,20 @@ webpackJsonp([2],[
 	        this.sub.unsubscribe();
 	        this.allChatRooms = [];
 	    };
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', (typeof (_a = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _a) || Object)
+	    ], PrivateChatComponent.prototype, "sendDataToP", void 0);
 	    PrivateChatComponent = __decorate([
 	        core_1.Component({
 	            selector: 'private-chat',
 	            templateUrl: 'client/dev/app/components/shared/templates/chatbox.html',
 	            styleUrls: ['client/dev/app/components/shared/styles/chatbox.css']
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _a) || Object, (typeof (_b = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _b) || Object])
+	        __metadata('design:paramtypes', [(typeof (_b = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object])
 	    ], PrivateChatComponent);
 	    return PrivateChatComponent;
-	    var _a, _b;
+	    var _a, _b, _c;
 	}());
 	exports.PrivateChatComponent = PrivateChatComponent;
 	
