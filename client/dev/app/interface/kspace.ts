@@ -6,4 +6,6 @@ export interface KSpace {
   requestTitle: string;
   offerId:string;
   createdAt: Date;
+  tags: any[];
+  subscribers: any[];
 }

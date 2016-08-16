@@ -80,7 +80,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
                     <a *ngIf="checkCreatedUser && !checkIsAcceped">
-                        <button class="btn btn-sm btn-success" (click)="addKshare(request.user,offer.user,_id,request.title,offer._id)">Chấp thuận
+                        <button class="btn btn-sm btn-success" (click)="addKshare(offer.user,offer._id)">Chấp thuận
                         </button>
                     </a>
                     <a *ngIf="checkCreatedUser && checkIsAcceped">

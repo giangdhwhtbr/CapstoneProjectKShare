@@ -37,7 +37,9 @@ module.exports = class KSpaceController {
       requestId: req.body.requestId,
       requestTitle: req.body.requestTitle,
       offerId: req.body.offerId,
-      createdAt: currentDate
+      createdAt: currentDate,
+      tags: req.body.tags,
+      subscribers: req.body.subscribers
     };
     KSpaceDAO
       .createNew(kspace)

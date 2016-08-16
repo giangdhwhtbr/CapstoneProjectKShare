@@ -66,6 +66,7 @@ export class RequestDetailClientComponent implements AfterViewChecked {
   //variable check to hide button, user can't subcribe twice in a templates
   checkSubcribedUser: boolean;
   offers: Offer[] = [];
+  kspace: KSpace;
 
   constructor(private _requestService: RequestService, private _offerService: OfferService, public router: Router,
     private _knowledgeService: KnowledgeService, private _kspaceService: KSpaceService, private route: ActivatedRoute) {
@@ -183,10 +184,20 @@ export class RequestDetailClientComponent implements AfterViewChecked {
     }
   }
 
-  addKshare(learner: string, lecturer: string, requestId: string, requestTitle: string, offerId: string): void {
+  addKshare( lecturer: string, offerId: string){
+    this.kspace = {};
+    this.kspace.learner = this.request.user;
+    this.kspace.lecturer = lecturer;
+    this.kspace.requestId = this._id;
+    this.kspace.requestTitle = this.request.title;
+    this.kspace.offerId = offerId;
+    this.kspace.tags = this.request.tags;
+    this.kspace.subscribers = this.request.subcribers;
+
     this._kspaceService
-      .addKSpace(learner, lecturer, requestId, requestTitle, offerId)
+      .addKSpace(this.kspace)
       .subscribe((r) => {
+        console.log(r);
         console.log('create kspace successfull');
         //update offer status
         this._offerService.updateOffer(offerId, 'accepted')
@@ -203,8 +214,9 @@ export class RequestDetailClientComponent implements AfterViewChecked {
           });
         this.checkIsAcceped = true;
 
+
         this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
-      })
+      });
   }
 
   addSubcriber(id: string): void {

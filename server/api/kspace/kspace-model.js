@@ -85,6 +85,12 @@ const KSpaceSchema = new mongoose.Schema({
     finishedAt: {
         type: Date,
     },
+    subscribers: [{
+        type: String
+    }],
+    tags: [{
+        type: String
+    }]
 
 });
 
