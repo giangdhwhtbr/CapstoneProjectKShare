@@ -12,7 +12,7 @@ const _requestSchema = new Schema ({
     status: { type: String, default: 'pending' },
     updatedAt: { type: Date },
     knowledgeId: { type: mongoose.Schema.Types.ObjectId, ref: 'Knowledge',required: true },
-    subcribers: [String],
+    subscribers: [String],
     tags: [{type: mongoose.Schema.Types.ObjectId, ref: "Tag", childPath: "request"}]
 });
 

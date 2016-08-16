@@ -1070,10 +1070,12 @@ webpackJsonp([2],[
 	                description: request.description,
 	                knowledgeId: request.knowledgeId,
 	                status: request.status,
-	                tags: oldTag
+	                tags: oldTag,
+	                subscribers: request.subscribers
 	            },
 	            newTag: newTag
 	        });
+	        console.log(_data);
 	        return this._http
 	            .put(this._requestsUrl.replace(':id', request._id), _data, options)
 	            .map(function (r) { return r.json(); });
@@ -1089,7 +1091,7 @@ webpackJsonp([2],[
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
 	    };
-	    //add a subcriber to templates subcribers
+	    //add a subcriber to templates subscribers
 	    RequestService.prototype.updateSubcriber = function (id, subcriber) {
 	        var header = new http_1.Headers;
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -6178,7 +6180,7 @@ webpackJsonp([2],[
 	                _this._id = request._id;
 	                _this.updateLink = '/requests/' + request._id + '/update';
 	                _this.knowledgeId = request.knowledgeId;
-	                _this.subscribers = request.subcribers;
+	                _this.subscribers = request.subscribers;
 	                //check if user is created user
 	                if (request.user === _this.userToken) {
 	                    _this.checkCreatedUser = true;
@@ -6270,8 +6272,8 @@ webpackJsonp([2],[
 	        this.kspace.requestTitle = this.request.title;
 	        this.kspace.offerId = offerId;
 	        this.kspace.tags = this.request.tags;
-	        for (var i = 0; i < this.request.subcribers.length; i++) {
-	            this.kspace.learners.push(this.request.subcribers[i]);
+	        for (var i = 0; i < this.request.subscribers.length; i++) {
+	            this.kspace.learners.push(this.request.subscribers[i]);
 	        }
 	        console.log(this.kspace);
 	        this._kspaceService
@@ -6306,10 +6308,27 @@ webpackJsonp([2],[
 	                console.log("add subcriber successfull");
 	                _this.checkSubcribedUser = true;
 	                _this._requestService.getRequestById(_this.id).subscribe(function (request) {
-	                    _this.subscribers = request.subcribers;
+	                    _this.subscribers = request.subscribers;
 	                });
 	            });
 	        }
+	    };
+	    RequestDetailClientComponent.prototype.removeSubscriber = function () {
+	        var _this = this;
+	        console.log(this.request.subscribers);
+	        var index = this.request.subscribers.indexOf(this.userToken);
+	        if (index > -1) {
+	            this.request.subscribers.splice(index, 1);
+	        }
+	        console.log(this.request.subscribers);
+	        this._requestService.updateRequest(this.request, this.request.tags, []).subscribe(function (request) {
+	            //reload request
+	            _this._requestService.getRequestById(_this.id).subscribe(function (request) {
+	                console.log(request);
+	                _this.subscribers = request.subscribers;
+	                _this.checkSubcribedUser = false;
+	            });
+	        });
 	    };
 	    RequestDetailClientComponent = __decorate([
 	        core_1.Component({

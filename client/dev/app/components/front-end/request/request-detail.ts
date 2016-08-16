@@ -99,7 +99,7 @@ export class RequestDetailClientComponent implements AfterViewChecked {
             this._id = request._id;
             this.updateLink = '/requests/' + request._id + '/update';
             this.knowledgeId = request.knowledgeId;
-            this.subscribers = request.subcribers;
+            this.subscribers = request.subscribers;
 
             //check if user is created user
             if (request.user === this.userToken) {
@@ -148,8 +148,8 @@ export class RequestDetailClientComponent implements AfterViewChecked {
     this.getOfferByRequestId();
   }
 
-  openModal(){
-     $('#modalOfferRequest').openModal();
+  openModal() {
+    $('#modalOfferRequest').openModal();
   }
 
   ngAfterViewChecked() {
@@ -158,8 +158,8 @@ export class RequestDetailClientComponent implements AfterViewChecked {
     }
   }
 
-  action(data){
-    if(data === 'new-offer'){
+  action(data) {
+    if (data === 'new-offer') {
       this.offers = [];
       this.getOfferByRequestId();
     }
@@ -196,7 +196,7 @@ export class RequestDetailClientComponent implements AfterViewChecked {
     }
   }
 
-  addKshare( lecturer: string, offerId: string){
+  addKshare(lecturer: string, offerId: string) {
     this.kspace = {};
     this.kspace.learners = [];
     this.kspace.learners.push(this.request.user);
@@ -205,8 +205,8 @@ export class RequestDetailClientComponent implements AfterViewChecked {
     this.kspace.requestTitle = this.request.title;
     this.kspace.offerId = offerId;
     this.kspace.tags = this.request.tags;
-    for(var i = 0; i < this.request.subcribers.length; i++ ){
-      this.kspace.learners.push(this.request.subcribers[i]);
+    for (var i = 0; i < this.request.subscribers.length; i++) {
+      this.kspace.learners.push(this.request.subscribers[i]);
     }
     console.log(this.kspace);
 
@@ -245,12 +245,28 @@ export class RequestDetailClientComponent implements AfterViewChecked {
           this.checkSubcribedUser = true;
           this._requestService.getRequestById(this.id).subscribe(
             (request) => {
-              this.subscribers = request.subcribers;
-            }
-          );
+              this.subscribers = request.subscribers;
+            });
         });
     }
+  }
 
+  removeSubscriber(): void {
+    console.log(this.request.subscribers);
+    var index = this.request.subscribers.indexOf(this.userToken);
+    if (index > -1) {
+      this.request.subscribers.splice(index, 1);
+    }
+    console.log(this.request.subscribers);
+    this._requestService.updateRequest(this.request, this.request.tags, []).subscribe((request) => {
+      //reload request
+      this._requestService.getRequestById(this.id).subscribe(
+        (request) => {
+          console.log(request);
+          this.subscribers = request.subscribers;
+          this.checkSubcribedUser = false;
+        });
+    })
   }
 
 }

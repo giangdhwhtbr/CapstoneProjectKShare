@@ -10,5 +10,5 @@ export interface Request {
   knowledgeId: string;
   link: string;
   tags: any[];
-  subcribers: any[];
+  subscribers: any[];
 }
