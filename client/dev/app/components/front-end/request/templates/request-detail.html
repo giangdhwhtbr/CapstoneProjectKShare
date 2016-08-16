@@ -48,14 +48,14 @@
             <button class="glyphicon glyphicon-trash btn btn-danger" (click)="deactivateRequest(_id)"></button>
         </a>
         <a *ngIf="!checkCreatedUser || roleToken==='admin'">
-            <button *ngIf="userToken !== null"  class="glyphicon glyphicon-send btn btn-primary" data-toggle="modal" data-target="#modalOfferRequest"></button>
+            <button *ngIf="userToken !== null"  class="btn btn-primary" (click)="openModal()">Đề nghị</button>
         </a>
         <a *ngIf="!checkCreatedUser || userToken !== null">
-            <button *ngIf="userToken !== null" class="glyphicon glyphicon-eye-open btn btn-info" (click)="addSubcriber(_id)"></button>
+            <button *ngIf="userToken !== null" data-target="modalOfferRequest" class="btn modal-trigger" (click)="addSubcriber(_id)"></button>
         </a>
     </div>
 </div>
-<offer-create rid="{{_id}}"></offer-create>
+<offer-create rid="{{_id}}" (sendDataToP)="action($event)"></offer-create>
 <br>
 <!-- List offer of a back.request -->
 <div *ngIf="offers" class="container" style="min-height:437px" id="request-ofer">

@@ -6217,9 +6217,18 @@ webpackJsonp([2],[
 	        this.num = this.num + 5;
 	        this.getOfferByRequestId();
 	    };
+	    RequestDetailClientComponent.prototype.openModal = function () {
+	        $('#modalOfferRequest').openModal();
+	    };
 	    RequestDetailClientComponent.prototype.ngAfterViewChecked = function () {
 	        if (this.request != undefined) {
 	            $('#bodyReq').html(this.request.description);
+	        }
+	    };
+	    RequestDetailClientComponent.prototype.action = function (data) {
+	        if (data === 'new-offer') {
+	            this.offers = [];
+	            this.getOfferByRequestId();
 	        }
 	    };
 	    RequestDetailClientComponent.prototype.getOfferByRequestId = function () {
@@ -19497,6 +19506,7 @@ webpackJsonp([2],[
 	        this._authService = _authService;
 	        this._noti = _noti;
 	        this._requestService = _requestService;
+	        this.sendDataToP = new core_1.EventEmitter();
 	        this.user = localStorage.getItem('username');
 	        this.offerForm = fb.group({
 	            "requestId": [""],
@@ -19516,7 +19526,8 @@ webpackJsonp([2],[
 	                //save notification to database
 	                _this._noti.createNotification(title, request.user, link).subscribe(function (notification) {
 	                    console.log(notification);
-	                    window.location.reload();
+	                    _this.sendDataToP.emit('new-offer');
+	                    $('#modalOfferRequest').closeModal();
 	                });
 	            });
 	        }, function (error) {
@@ -19527,16 +19538,20 @@ webpackJsonp([2],[
 	        core_1.Input('rid'), 
 	        __metadata('design:type', String)
 	    ], CreateOfferComponent.prototype, "rid", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', (typeof (_a = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _a) || Object)
+	    ], CreateOfferComponent.prototype, "sendDataToP", void 0);
 	    CreateOfferComponent = __decorate([
 	        core_1.Component({
 	            selector: 'offer-create',
 	            templateUrl: 'client/dev/app/components/front-end/offer/templates/offer-create.html',
 	            directives: [common_1.FORM_DIRECTIVES]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object, (typeof (_e = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _e) || Object])
+	        __metadata('design:paramtypes', [(typeof (_b = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _b) || Object, (typeof (_c = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object, (typeof (_e = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _e) || Object, (typeof (_f = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _f) || Object])
 	    ], CreateOfferComponent);
 	    return CreateOfferComponent;
-	    var _a, _b, _c, _d, _e;
+	    var _a, _b, _c, _d, _e, _f;
 	}());
 	exports.CreateOfferComponent = CreateOfferComponent;
 	

@@ -4,7 +4,9 @@ import {
   Pipe,
   PipeTransform,
   Inject,
-  OnDestroy
+  OnDestroy,
+  Output,
+  EventEmitter
 } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
@@ -146,11 +148,21 @@ export class RequestDetailClientComponent implements AfterViewChecked {
     this.getOfferByRequestId();
   }
 
+  openModal(){
+     $('#modalOfferRequest').openModal();
+  }
+
   ngAfterViewChecked() {
     if (this.request != undefined) {
       $('#bodyReq').html(this.request.description);
     }
+  }
 
+  action(data){
+    if(data === 'new-offer'){
+      this.offers = [];
+      this.getOfferByRequestId();
+    }
   }
 
   getOfferByRequestId() {
