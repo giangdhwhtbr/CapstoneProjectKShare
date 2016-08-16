@@ -220,7 +220,6 @@ export class UserService {
     }
 
     acceptFriendRequest(user1:string, user2:string):Observable<any> {
-        console.log(user1 + ' ' + user2);
         return this._http
             .get(this._friendshipStatusUrl.replace(':user1', user1).replace(':user2', user2));
     }

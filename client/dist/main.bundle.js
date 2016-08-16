@@ -499,7 +499,6 @@ webpackJsonp([2],[
 	            .get(this._isUserExistUrl.replace(':username', username));
 	    };
 	    UserService.prototype.acceptFriendRequest = function (user1, user2) {
-	        console.log(user1 + ' ' + user2);
 	        return this._http
 	            .get(this._friendshipStatusUrl.replace(':user1', user1).replace(':user2', user2));
 	    };
@@ -1681,12 +1680,11 @@ webpackJsonp([2],[
 	        var options = new http_1.RequestOptions({ headers: headers });
 	        var _kspace = JSON.stringify({
 	            lecturer: kspace.lecturer,
-	            learner: kspace.learner,
+	            learners: kspace.learners,
 	            requestId: kspace.requestId,
 	            requestTitle: kspace.requestTitle,
 	            offerId: kspace.offerId,
-	            tags: kspace.tags,
-	            subscribers: kspace.subscribers
+	            tags: kspace.tags
 	        });
 	        return this._http
 	            .post(this._kspaceUrl.replace(':id', ''), _kspace, options)
@@ -2996,6 +2994,7 @@ webpackJsonp([2],[
 	//services
 	var users_1 = __webpack_require__(34);
 	var notification_1 = __webpack_require__(84);
+	var report_1 = __webpack_require__(434);
 	var UserProfileBarComponent = (function () {
 	    function UserProfileBarComponent(router, route, _userService, _noti) {
 	        this.router = router;
@@ -3032,10 +3031,8 @@ webpackJsonp([2],[
 	            this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then(function (r) {
 	                _this.linkImg = '/uploads/' + r[0].filename;
 	                _this.userProfile.linkImg = _this.linkImg;
-	                console.log(_this.linkImg);
 	                _this._userService.updateUser(_this.userProfile, []).subscribe(function (r) {
 	                    console.log("update link profile picture successful");
-	                    console.log(_this.userProfile.linkImg);
 	                });
 	            }, function (error) {
 	                console.error(error);
@@ -3058,7 +3055,6 @@ webpackJsonp([2],[
 	            this._noti.alertNotification(title, this.name, link);
 	            //save notification to database
 	            this._noti.createNotification(title, this.name, link).subscribe(function (notification) {
-	                console.log(notification);
 	            });
 	        }
 	        else {
@@ -3076,6 +3072,10 @@ webpackJsonp([2],[
 	            });
 	            this._userService
 	                .deleteFriendRequest(this.name, this.userToken)
+	                .subscribe(function () {
+	            });
+	            this._userService
+	                .deactivateChatRoom(this.name, this.userToken)
 	                .subscribe(function () {
 	            });
 	            this.getFriendList();
@@ -3123,7 +3123,8 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile-bar.html',
 	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES
+	                router_1.ROUTER_DIRECTIVES,
+	                report_1.ReportComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
@@ -3161,6 +3162,17 @@ webpackJsonp([2],[
 	        var options = new http_1.RequestOptions({ headers: headers });
 	        return this._http
 	            .get(this._chatRoomUrl.replace(':user', username), options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    ChatService.prototype.createChatRoomAdmin = function (user1, user2) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            user1: user1,
+	            user2: user2
+	        });
+	        return this._http
+	            .post(this._chatRoomUrl.replace(':user', ''), _data, options)
 	            .map(function (r) { return r.json(); });
 	    };
 	    ChatService.prototype.handleError = function (error) {
@@ -3341,7 +3353,6 @@ webpackJsonp([2],[
 	            message: offer.message,
 	            user: offer.user
 	        });
-	        //console.log(_offer);
 	        return this._http
 	            .post(this._Url.replace(':id', ''), _offer, options)
 	            .map(function (r) { return r.json(); });
@@ -4668,15 +4679,19 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var common_1 = __webpack_require__(8);
 	var report_1 = __webpack_require__(290);
+	var chat_1 = __webpack_require__(288);
 	var filter_1 = __webpack_require__(125);
 	var ReportListComponent = (function () {
-	    function ReportListComponent(fb, _reportService, router) {
+	    function ReportListComponent(fb, _reportService, router, _chatService) {
 	        this._reportService = _reportService;
 	        this.router = router;
+	        this._chatService = _chatService;
 	        this.pageTitle = 'Report List';
 	        this.pendingReports = [];
 	        this.handlingReports = [];
 	        this.filter = '';
+	        this.roleToken = localStorage.getItem('role');
+	        this.userToken = localStorage.getItem('username');
 	    }
 	    ReportListComponent.prototype.ngOnInit = function () {
 	        this.getAllPending();
@@ -4725,6 +4740,19 @@ webpackJsonp([2],[
 	            });
 	        }
 	    };
+	    ReportListComponent.prototype.createChatRoom = function (reportedUser) {
+	        if (reportedUser !== this.userToken) {
+	            this._chatService.createChatRoomAdmin(this.userToken, reportedUser)
+	                .subscribe(function (chatRoom) {
+	                alert('Phòng trò chuyện đã được tạo');
+	                console.log(reportedUser);
+	                console.log('create chatRoom successfully');
+	            });
+	        }
+	        else {
+	            alert('Đã có phòng trò chuyện');
+	        }
+	    };
 	    ReportListComponent = __decorate([
 	        core_1.Component({
 	            selector: 'reports-list',
@@ -4733,10 +4761,10 @@ webpackJsonp([2],[
 	            providers: [report_1.ReportService],
 	            pipes: [filter_1.StringFilterPipe]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof report_1.ReportService !== 'undefined' && report_1.ReportService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof report_1.ReportService !== 'undefined' && report_1.ReportService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _d) || Object])
 	    ], ReportListComponent);
 	    return ReportListComponent;
-	    var _a, _b, _c;
+	    var _a, _b, _c, _d;
 	}());
 	exports.ReportListComponent = ReportListComponent;
 	
@@ -6226,13 +6254,17 @@ webpackJsonp([2],[
 	    RequestDetailClientComponent.prototype.addKshare = function (lecturer, offerId) {
 	        var _this = this;
 	        this.kspace = {};
-	        this.kspace.learner = this.request.user;
+	        this.kspace.learners = [];
+	        this.kspace.learners.push(this.request.user);
 	        this.kspace.lecturer = lecturer;
 	        this.kspace.requestId = this._id;
 	        this.kspace.requestTitle = this.request.title;
 	        this.kspace.offerId = offerId;
 	        this.kspace.tags = this.request.tags;
-	        this.kspace.subscribers = this.request.subcribers;
+	        for (var i = 0; i < this.request.subcribers.length; i++) {
+	            this.kspace.learners.push(this.request.subcribers[i]);
+	        }
+	        console.log(this.kspace);
 	        this._kspaceService
 	            .addKSpace(this.kspace)
 	            .subscribe(function (r) {
@@ -6245,7 +6277,6 @@ webpackJsonp([2],[
 	            });
 	            _this.request.status = 'accepted';
 	            //update request status
-	            console.log(_this.request);
 	            _this._requestService.updateRequest(_this.request, _this.request.tags, [])
 	                .subscribe(function (c) {
 	                console.log('change status request successfull');
@@ -20342,7 +20373,6 @@ webpackJsonp([2],[
 	            _this._noti.alertNotification(title, _this.requestUser, link);
 	            //save notification to database
 	            _this._noti.createNotification(title, _this.requestUser, link).subscribe(function (notification) {
-	                console.log('create a notification to ' + _this.name);
 	                _this.sendDataToP.emit("accept");
 	                // var data = [this.requestUser, this.name];
 	                // this.socket.emit('chatroom-friend', data);

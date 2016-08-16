@@ -37,6 +37,32 @@ module.exports = class ChatRoomController {
       .catch(error => { return error });
   }
 
+  static createChatRoomAdmin(req,res) {
+    let data = req.body;
+    ChatRoomDAO.getChatRoomByUsers(data)
+      .then(chatRooms => {
+        if (chatRooms === null) {
+          var chatRoom = {
+            chatLogs: [],
+            users: [{
+              user: data.user1,
+              newMessages: 0
+            },
+              {
+                user: data.user2,
+                newMessages: 0
+              }],
+            createdAt: new Date()
+          };
+          return ChatRoomDAO
+            .createChatRoom(chatRoom)
+            .then(chatRoom => { return res.status(200).json(chatRooms) })
+            .catch(error => { return res.status(400).json(error) });
+        }
+      })
+      .catch(error => { return res.status(400).json(error) });
+  }
+
   static updateChatRoom(data) {
     console.log(data);
     var users = {

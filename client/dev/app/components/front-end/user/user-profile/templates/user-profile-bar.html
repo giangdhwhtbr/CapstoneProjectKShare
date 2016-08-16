@@ -19,6 +19,7 @@
                 (click)="addFriend()">Thêm bạn</button>
             <button *ngIf="!checkUser && checkSentRequestUser" (click)="deleteFriend()" type="button" class="btn btn-success btn-sm">Đã gửi kết bạn</button>
             <button *ngIf="!checkUser && isFriend" (click)="deleteFriend()" type="button" class="btn btn-success btn-sm">Đã là bạn bè</button>
+            <button *ngIf="userToken !== null && roleToken !== 'admin' && userToken !== name" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">Báo cáo</button>
             <button *ngIf="!checkUser && checkIsRecivedRequest" [routerLink]="['/user/' + userToken + '/friends']" class="btn btn-primary btn-sm">Đồng ý kết bạn</button>
             <input *ngIf="  checkUser" type="file" (change)="fileChangeEvent($event)" type="file" accept="image/*"/>
         </div>
@@ -61,3 +62,4 @@
         </div>
         <!-- END MENU -->
     </div>
+<report reportedUser="{{name}}"></report>

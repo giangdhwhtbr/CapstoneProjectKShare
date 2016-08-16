@@ -186,13 +186,17 @@ export class RequestDetailClientComponent implements AfterViewChecked {
 
   addKshare( lecturer: string, offerId: string){
     this.kspace = {};
-    this.kspace.learner = this.request.user;
+    this.kspace.learners = [];
+    this.kspace.learners.push(this.request.user);
     this.kspace.lecturer = lecturer;
     this.kspace.requestId = this._id;
     this.kspace.requestTitle = this.request.title;
     this.kspace.offerId = offerId;
     this.kspace.tags = this.request.tags;
-    this.kspace.subscribers = this.request.subcribers;
+    for(var i = 0; i < this.request.subcribers.length; i++ ){
+      this.kspace.learners.push(this.request.subcribers[i]);
+    }
+    console.log(this.kspace);
 
     this._kspaceService
       .addKSpace(this.kspace)
@@ -205,9 +209,8 @@ export class RequestDetailClientComponent implements AfterViewChecked {
             console.log('change status offer successfull');
           });
         this.request.status = 'accepted';
-        //update request status
 
-        console.log(this.request);
+        //update request status
         this._requestService.updateRequest(this.request, this.request.tags, [])
           .subscribe((c) => {
             console.log('change status request successfull');

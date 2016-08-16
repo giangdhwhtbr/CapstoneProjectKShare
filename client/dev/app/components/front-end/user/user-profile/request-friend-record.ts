@@ -64,7 +64,6 @@ export class RequestFriendRecordComponent {
         //save notification to database
         this._noti.createNotification(title, this.requestUser, link).subscribe(
           (notification) => {
-            console.log('create a notification to ' + this.name);
             this.sendDataToP.emit("accept");
             // var data = [this.requestUser, this.name];
             // this.socket.emit('chatroom-friend', data);

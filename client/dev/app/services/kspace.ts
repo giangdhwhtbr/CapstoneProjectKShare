@@ -26,12 +26,11 @@ export class KSpaceService {
 
     let _kspace = JSON.stringify({
       lecturer: kspace.lecturer,
-      learner: kspace.learner,
+      learners: kspace.learners,
       requestId: kspace.requestId,
       requestTitle: kspace.requestTitle,
       offerId: kspace.offerId,
-      tags: kspace.tags,
-      subscribers: kspace.subscribers
+      tags: kspace.tags
     });
 
     return this._http

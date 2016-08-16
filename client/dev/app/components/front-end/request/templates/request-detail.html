@@ -50,7 +50,7 @@
         <a *ngIf="!checkCreatedUser || roleToken==='admin'">
             <button *ngIf="userToken !== null"  class="glyphicon glyphicon-send btn btn-primary" data-toggle="modal" data-target="#modalOfferRequest"></button>
         </a>
-        <a *ngIf="!checkCreatedUser || roleToken==='admin' || userToken !== null">
+        <a *ngIf="!checkCreatedUser || userToken !== null">
             <button *ngIf="userToken !== null" class="glyphicon glyphicon-eye-open btn btn-info" (click)="addSubcriber(_id)"></button>
         </a>
     </div>

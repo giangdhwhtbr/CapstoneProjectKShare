@@ -18,6 +18,20 @@ export class ChatService {
             .map((r) => r.json());
     }
 
+    createChatRoomAdmin(user1: string, user2: string): Observable<any> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+
+        let _data = JSON.stringify({
+            user1: user1,
+            user2: user2
+        });
+
+        return this._http
+            .post(this._chatRoomUrl.replace(':user', ''),_data , options)
+            .map((r) => r.json());
+    }
+
 
     private handleError(error: Response) {
         return Observable.throw(error.json().error || 'Server error');

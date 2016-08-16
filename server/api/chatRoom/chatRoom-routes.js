@@ -10,6 +10,8 @@ module.exports = class ChatRoomRoutes {
 
       router
         .route('/api/chat-rooms')
-        .put(ChatRoomController.deactivateChatRoom);
+        .put(ChatRoomController.deactivateChatRoom)
+        .post(ChatRoomController.createChatRoomAdmin);
+
     }
 }

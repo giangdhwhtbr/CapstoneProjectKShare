@@ -1,11 +1,10 @@
 export interface KSpace {
   _id: string;
-  learner: string;
+  learners: string[];
   lecturer:string;
   requestId:string;
   requestTitle: string;
   offerId:string;
   createdAt: Date;
   tags: any[];
-  subscribers: any[];
 }

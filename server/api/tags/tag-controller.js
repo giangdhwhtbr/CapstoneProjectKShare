@@ -75,11 +75,8 @@ module.exports = class TagController {
                         .then(art => {
                             tag.articles=[];
                             tag.request=[];
-                            console.log(art);
-                            console.log(tag);
                             for (let a of art) {
                                 a.tagsFD.push(tag);
-                                console.log(a.tagsFD);
                                 a.save();
                             }
                             res.status(200).json({"mess":"Deactivate Successfully !"});
