@@ -128,7 +128,10 @@ articleSchema.statics.getArticleByKnwId = (id)=> {
         if (!_.isString(id)) {
             return reject(new TypeError('ID is not a string'));
         }
-        Article.find({'knowledge': id}).exec((err, arts)=> {
+        Article.find({
+            status: { $nin: 'deactivate' },
+            'knowledge': id
+        }).exec((err, arts)=> {
             err ? reject(err) : resolve(arts);
         });
     });

@@ -20,6 +20,7 @@ import { KSpaceService } from '../../../services/kspace';
 
 import { CreateOfferComponent } from '../offer/offer-create';
 import { ReportComponent } from '../report/report';
+import { listTagComponent } from '../tag/tag';
 
 import { Subscription } from 'rxjs/Subscription';
 declare var $: any;
@@ -31,7 +32,8 @@ declare var $: any;
   directives: [
     ROUTER_DIRECTIVES,
     CreateOfferComponent,
-    ReportComponent
+    ReportComponent,
+      listTagComponent
   ]
 })
 

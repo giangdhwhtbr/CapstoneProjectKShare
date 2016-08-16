@@ -127,6 +127,7 @@ io.on('connection',  (socket) => {
       data.sentAt = new Date();
       data.users = chatRoom.users;
       io.in(chatRoom._id).emit('private-message-return',data);
+      io.in(chatRoom._id).emit('new-message-notification',data);
     }).catch(error => {
       console.log(error);
     });
@@ -142,4 +143,10 @@ io.on('connection',  (socket) => {
       console.log(error);
     });
   });
+
+  socket.on('chatroom-friend', (data) => {
+      io.emit('chatroom-friend-return',data);
+    
+  });
+
 });

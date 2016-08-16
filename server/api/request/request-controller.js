@@ -65,6 +65,7 @@ module.exports = class RequestController {
           request.status = _data.rq.status;
           request.tags = _data.rq.tags;
           request.status = _data.rq.status;
+          request.updatedAt = new Date();
           console.log("go 0");
           TagDAO.createArrayTag(_data.newTag).then((tags) => {
             console.log("go 1");

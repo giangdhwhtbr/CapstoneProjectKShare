@@ -18,6 +18,7 @@ module.exports = class ArticleRoutes {
             .get(ArticleController.getArticleById)
             .put(ArticleController.updateArticleById);
 
+
         router
             .route('/api/articles-user')
             .post(ArticleController.getArticlesByTagsOfUser)
@@ -25,6 +26,10 @@ module.exports = class ArticleRoutes {
 
         router.route('/api/art/de')
             .get(ArticleController.getDeArticle);
+
+
+        router.route('/api/art/knw/:id')
+            .get(ArticleController.getArticleByKnwId);
 
         router.route('/api/art/de/:id')
             .get(ArticleController.activeArt);

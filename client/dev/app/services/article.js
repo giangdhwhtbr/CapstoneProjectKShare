@@ -17,6 +17,7 @@ var ArticleService = (function () {
         this._requestsUrl = '/api/article/:id';
         this._requestsGetDeArtUrl = '/api/art/de/:id';
         this._articleUserUrl = '/api/articles-user';
+        this._artKnw = '/api/art/knw/:id';
         this._cmtUrl = "/api/comment/article/:artId/:cmtId";
         this._cmtLike = "/api/comment/like/:artId/:cmtId/:user";
         this._cmtUnLike = "/api/comment/unlike/:artId/:cmtId/:user";
@@ -47,6 +48,11 @@ var ArticleService = (function () {
             x: num
         });
         return this._http.post(this._articleUserUrl, _data, options)
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    ArticleService.prototype.getArtByKnwId = function (id) {
+        return this._http.get(this._artKnw.replace(':id', id))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };

@@ -7,7 +7,7 @@ const _ = require('lodash');
 
 chatRoomSchema.statics.getAllChatRoomOfUser = (user) => {
     return new Promise((resolve, reject) => {
-        let _query = {"users.user":user};
+        let _query = {"users.user":user, "status": "accepted"};
         ChatRoom
           .find(_query)
           .exec((err, chatRooms) => {
@@ -22,7 +22,7 @@ chatRoomSchema.statics.getChatRoomByUsers = (data) => {
         let _query = {$or: [
           {"users.0.user":data.user1, "users.1.user":data.user2},
           {"users.0.user":data.user2, "users.1.user":data.user1}
-        ]}
+        ], "status": "accepted"}
         ChatRoom
             .findOne(_query)
             .exec((err, chatRoom) => {

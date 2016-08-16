@@ -136,7 +136,7 @@ requestSchema.statics.getRequestByKnowledgeId = (id) => {
             .find({
                 status: { $nin: ['deactive', 'accepted'] },
                 'knowledgeId': id
-            })
+            }).sort({'updatedAt':-1})
             .exec((err, requests) => {
                 err ? reject(err)
                     : resolve(requests);

@@ -163,13 +163,17 @@ export const KShareRoutes: RouterConfig = [
                         ]
                     },
                     {
-                        path: ':type/:id',
-                        pathMatch: 'full',
-                        component: RequestCategoryComponent
-                    },
-                    {
                         path: '',
                         component: RequestListClientComponent
+                    }
+                ]
+            },
+            {
+                path: 'mix',
+                children: [
+                    {
+                        path: ':type/:id',
+                        component: RequestCategoryComponent
                     }
                 ]
             },

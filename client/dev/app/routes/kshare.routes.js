@@ -156,13 +156,17 @@ exports.KShareRoutes = [
                         ]
                     },
                     {
-                        path: ':type/:id',
-                        pathMatch: 'full',
-                        component: request_category_1.RequestCategoryComponent
-                    },
-                    {
                         path: '',
                         component: request_list_1.RequestListClientComponent
+                    }
+                ]
+            },
+            {
+                path: 'mix',
+                children: [
+                    {
+                        path: ':type/:id',
+                        component: request_category_1.RequestCategoryComponent
                     }
                 ]
             },
@@ -170,7 +174,7 @@ exports.KShareRoutes = [
                 path: '',
                 component: home_1.HomeComponent
             }
-        ],
+        ]
     },
     {
         path: 'room',

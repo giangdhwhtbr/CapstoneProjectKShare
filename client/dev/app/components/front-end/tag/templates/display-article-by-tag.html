@@ -10,7 +10,7 @@
             <div *ngIf="listArt">
 
 
-                <div *ngFor="let a of listArt" class="panel panel-default">
+                <div *ngFor="let a of listArt| paginate: configArt" class="panel panel-default">
                     <div class="panel-body clearfix">
                         <p><span class="title"><a [routerLink]="['/article',a._id]">{{a.title}}</a></span></p>
 
@@ -33,16 +33,24 @@
                         </p>
                     </div>
                 </div>
+                <div *ngIf="listArt.length!=0">
+                    <pagination-controls [id]="configArt.id"
+                                         [maxSize]="maxSizeArt"
+                                         [directionLinks]="directionLinksArt"
+                                         [autoHide]="autoHideArt"
+                                         (pageChange)="onPageChangeArt($event)"></pagination-controls>
+                </div>
             </div>
-            <div [hidden]="!listArt">
+            <div *ngIf="listArt.length==0">
                 <h5 class="center-align">Không có bài viết liên quan</h5>
             </div>
         </div>
         <div id="tabReq" class="col s12">
             <div *ngIf="listReq">
-                <div *ngFor="let r of listReq" class="panel panel-default">
+                <div *ngFor="let r of listReq| paginate: config" class="panel panel-default">
                     <div class="panel-body clearfix">
-                        <p><span class="title"><a [routerLink]="['/requests/'+r._id+'/info']" routerLinkActive="active">{{r.title}}</a></span></p>
+                        <p><span class="title"><a [routerLink]="['/requests/'+r._id+'/info']">{{r.title}}</a></span>
+                        </p>
 
                         <p><span class="sumary"></span></p>
 
@@ -55,11 +63,19 @@
                             <span *ngIf="r.user" class="author">by : <a
                                     [routerLink]="['/user',r.user]">{{r.user}}</a> </span>
                         </p>
-                        tags : <tags [listTagId]="r.tags" ></tags>
+                        <tags [listTagId]="r.tags"></tags>
                     </div>
                 </div>
+                <div *ngIf="listReq.length!=0">
+                    <pagination-controls [id]="config.id"
+                                         [maxSize]="maxSize"
+                                         [directionLinks]="directionLinks"
+                                         [autoHide]="autoHide"
+                                         (pageChange)="onPageChange($event)"></pagination-controls>
+                </div>
+
             </div>
-            <div *ngIf="!listReq">
+            <div *ngIf="listReq.length==0">
                 <h5 class="center-align">Không có yêu cầu liên quan</h5>
             </div>
         </div>

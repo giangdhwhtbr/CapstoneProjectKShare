@@ -12,6 +12,8 @@ export class ArticleService {
     private _requestsGetDeArtUrl = '/api/art/de/:id';
     private _articleUserUrl = '/api/articles-user';
 
+    private _artKnw='/api/art/knw/:id';
+
     private _cmtUrl="/api/comment/article/:artId/:cmtId";
 
     private _cmtLike="/api/comment/like/:artId/:cmtId/:user";
@@ -49,6 +51,12 @@ export class ArticleService {
         });
 
         return this._http.post(this._articleUserUrl,_data,options )
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
+
+    getArtByKnwId(id:string):Observable<any[]> {
+        return this._http.get(this._artKnw.replace(':id', id))
             .map((r) => r.json())
             .catch(this.handleError);
     }

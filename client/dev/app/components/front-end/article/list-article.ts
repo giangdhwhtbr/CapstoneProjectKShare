@@ -6,6 +6,8 @@ import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../../services/article';
 import { AuthService } from '../../../services/auth';
+import { listTagComponent } from '../tag/tag';
+
 declare var $:any;
 
 @Component({
@@ -13,7 +15,7 @@ declare var $:any;
     templateUrl: 'client/dev/app/components/front-end/article/templates/list-article.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
     directives: [
-        ROUTER_DIRECTIVES
+        ROUTER_DIRECTIVES,listTagComponent
     ],
     providers: [ArticleService]
 })

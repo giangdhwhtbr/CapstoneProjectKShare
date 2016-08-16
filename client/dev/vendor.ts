@@ -16,6 +16,8 @@ import '@angular/router';
 import '@angularclass/webpack-toolkit';
 import '@angularclass/request-idle-callback';
 
+import 'ng-semantic/ng-semantic'
+
 
 // RxJS
 import 'rxjs/add/operator/map';

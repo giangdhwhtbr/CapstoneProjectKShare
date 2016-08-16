@@ -6,202 +6,212 @@ const KSpaceDAO = require('./KSpace-dao');
 const UserDAO = require('../user/user-dao');
 const Promise = require('bluebird');
 module.exports = class KSpaceController {
-  //get all KSpaces controller
-  static getAll(req, res) {
-    KSpaceDAO
-      .getAll()
-      .then(KSpaces => res.status(200).json(KSpaces))
-      .catch(error => res.status(400).json(error));
-  }
-
-  //get a front.KSpace by Id controller
-  static getKSpaceById(req, res) {
-    if(req.params && req.params.id) {
-      KSpaceDAO
-        .getKSpaceById(req.params.id)
-        .then(KSpace => res.status(200).json(KSpace))
-        .catch(error => res.status(400).json(error));
-    }else{
-      res.status(404).json({
-        "message"    :   "No KSpace ID in templates"
-      });
-    }
-  }
-
-  //create a new front.KSpace controller
-  static createNew(req, res) {
-    var currentDate = new Date();
-    var kspace = {
-      lecturer : req.body.lecturer,
-      learner  : req.body.learner,
-      requestId: req.body.requestId,
-      requestTitle: req.body.requestTitle,
-      offerId: req.body.offerId,
-      createdAt: currentDate
-    };
-    KSpaceDAO
-      .createNew(kspace)
-      .then(KSpace => res.status(200).json(KSpace))
-      .catch(error => {
-        console.log(error);
-        res.status(400).json(error)
-      });
-  }
-
-  static updateChatLogs(data) {
-
-    var log = {
-      createdAt: this.currentDate,
-      createdUser: data.createdUser,
-      message: data.message,
-      dataURL: data.dataURL
+    //get all KSpaces controller
+    static getAll(req, res) {
+        KSpaceDAO
+            .getAll()
+            .then(KSpaces => res.status(200).json(KSpaces))
+            .catch(error => res.status(400).json(error));
     }
 
+    //get a front.KSpace by Id controller
+    static getKSpaceById(req, res) {
+        if (req.params && req.params.id) {
+            KSpaceDAO
+                .getKSpaceById(req.params.id)
+                .then(KSpace => res.status(200).json(KSpace))
+                .catch(error => res.status(400).json(error));
+        } else {
+            res.status(404).json({
+                "message": "No KSpace ID in templates"
+            });
+        }
+    }
 
-   return KSpaceDAO.getKSpaceById(data.id)
-    .then(kspace => {
-      kspace.chatlog.push(log);
-      return KSpaceDAO.updateKSpaceById(kspace)
-              .then(kspace => {return kspace})
-              .catch(error => {return error});
-    })
-    .catch(error => {
-       console.log(error);
-       res.status(400).json(error)
-    });
-  }
+    //create a new front.KSpace controller
+    static createNew(req, res) {
+        var currentDate = new Date();
+        var kspace = {
+            lecturer: req.body.lecturer,
+            learner: req.body.learner,
+            requestId: req.body.requestId,
+            requestTitle: req.body.requestTitle,
+            offerId: req.body.offerId,
+            createdAt: currentDate
+        };
+        KSpaceDAO
+            .createNew(kspace)
+            .then(KSpace => res.status(200).json(KSpace))
+            .catch(error => {
+                console.log(error);
+                res.status(400).json(error)
+            });
+    }
 
-  static updateBoards(data) {
-    var board = {
-      boardNumber: data.boardNumber,
-      boardJson: data.json,
-      dataURL: data.dataURL,
-      createdAt: new Date()
-    };
-    return KSpaceDAO.getKSpaceById(data.room)
-      .then(kspace => {
-        kspace.boards.push(board);
-        return KSpaceDAO.updateKSpaceById(kspace)
-          .then(kspace => {return kspace})
-          .catch(error => {return error});
-      })
-      .catch(error => {
-        console.log(error);
-        res.status(400).json(error)
-      });
-  }
+    static updateChatLogs(data) {
 
-  // User review a kSpace and rate for it
-  static createReview(req, res) {
-    var currentDate = new Date();
-    var username = req.body.createdUser;
-    if(req.params && req.params.id) {
-      // Get KSpace to update
-      KSpaceDAO.getKSpaceById(req.params.id)
-      .then (kspace => {
-
-        function hasReviewed() {
-          for (var k in kspace.reviews) {
-            if(kspace.reviews[k].createdUser === username){
-              return true;
-            }
-          }
-          return false;
+        var log = {
+            createdAt: this.currentDate,
+            createdUser: data.createdUser,
+            message: data.message,
+            dataURL: data.dataURL
         }
 
-        if(!hasReviewed()){
-          var _review = {
-            createdAt: currentDate,
-            createdUser: username,
-            content: req.body.content,
-            rate: req.body.rate
-          };
 
-          if(kspace.reviews.length){
-            var sumR = 0;
-            for (var k in kspace.reviews){
-              sumR += kspace.reviews[k].rate;
-            }
-            kspace.rateAve = sumR / kspace.reviews.length;
-          }else {
-            kspace.rateAve = req.body.rate;
-          }
-
-          kspace.reviews.push(_review);
-          console.log(kspace);
-          // Update KSpace
-          KSpaceDAO.updateKSpaceById(kspace)
+        return KSpaceDAO.getKSpaceById(data.id)
             .then(kspace => {
-              var _rateData = {
-                kspaceId: kspace._id,
-                rate: req.body.rate,
-                ratedUser: username,
-                rateAt: currentDate
-              };
-              // Need to update User's rating -> Find user by username
-              UserDAO.getUserByUserName(kspace.lecturer)
-                .then(user => {
-                  if(!user.rates.length){
-                    var sum = 0;
-                    for (var r in user.rates){
-                      sum += user.rates[r].rate;
-                    }
-                    user.rateAve = sum/user.rates.length;
-                  } else {
-                    user.rateAve = req.body.rate
-                  }
-
-                  user.rates.push(_rateData);
-
-                  // Update User 's Rate
-                  UserDAO.updateUserById(user)
-                    .then(user => res.status(200).json(kspace.reviews))
+                kspace.chatlog.push(log);
+                return KSpaceDAO.updateKSpaceById(kspace)
+                    .then(kspace => {
+                        return kspace
+                    })
                     .catch(error => {
-                      res.status(400).json(error);
+                        return error
                     });
-                }).catch (error => {
-                res.status(400).json(error);
-              });
-
             })
             .catch(error => {
-              res.status(400).json(error);
+                console.log(error);
+                res.status(400).json(error)
             });
-        }else {
-          res.status(400).json({message: 'Bạn đã đánh giá kspace này rồi, nếu muốn thay đổi thông tin, hãy click vào' +
-          ' nút cập nhật '});
+    }
+
+    static updateBoards(data) {
+        var board = {
+            boardNumber: data.boardNumber,
+            boardJson: data.json,
+            dataURL: data.dataURL,
+            createdAt: new Date()
+        };
+        return KSpaceDAO.getKSpaceById(data.room)
+            .then(kspace => {
+                kspace.boards.push(board);
+                return KSpaceDAO.updateKSpaceById(kspace)
+                    .then(kspace => {
+                        return kspace
+                    })
+                    .catch(error => {
+                        return error
+                    });
+            })
+            .catch(error => {
+                console.log(error);
+                res.status(400).json(error)
+            });
+    }
+
+    // User review a kSpace and rate for it
+    static createReview(req, res) {
+        var currentDate = new Date();
+        var username = req.body.createdUser;
+        if (req.params && req.params.id) {
+            // Get KSpace to update
+            KSpaceDAO.getKSpaceById(req.params.id)
+                .then (kspace => {
+
+                    function hasReviewed() {
+                        for (var k in kspace.reviews) {
+                            if (kspace.reviews[k].createdUser === username) {
+                                return true;
+                            }
+                        }
+                        return false;
+                    }
+
+                    if (!hasReviewed()) {
+                        var _review = {
+                            createdAt: currentDate,
+                            createdUser: username,
+                            content: req.body.content,
+                            rate: req.body.rate
+                        };
+
+                        if (kspace.reviews.length) {
+                            var sumR = 0;
+                            for (var k in kspace.reviews) {
+                                sumR += kspace.reviews[k].rate;
+                            }
+                            kspace.rateAve = sumR / kspace.reviews.length;
+                        } else {
+                            kspace.rateAve = req.body.rate;
+                        }
+
+                        kspace.reviews.push(_review);
+                        console.log(kspace);
+                        // Update KSpace
+                        KSpaceDAO.updateKSpaceById(kspace)
+                            .then(kspace => {
+                                var _rateData = {
+                                    kspaceId: kspace._id,
+                                    rate: req.body.rate,
+                                    ratedUser: username,
+                                    rateAt: currentDate
+                                };
+                                // Need to update User's rating -> Find user by username
+                                UserDAO.getUserByUserName(kspace.lecturer)
+                                    .then(user => {
+                                        if (!user.rates.length) {
+                                            var sum = 0;
+                                            for (var r in user.rates) {
+                                                sum += user.rates[r].rate;
+                                            }
+                                            user.rateAve = sum / user.rates.length;
+                                        } else {
+                                            user.rateAve = req.body.rate
+                                        }
+
+                                        user.rates.push(_rateData);
+
+                                        // Update User 's Rate
+                                        UserDAO.updateUserById(user)
+                                            .then(user => res.status(200).json(kspace.reviews))
+                                            .catch(error => {
+                                                res.status(400).json(error);
+                                            });
+                                    }).catch (error => {
+                                    res.status(400).json(error);
+                                });
+
+                            })
+                            .catch(error => {
+                                res.status(400).json(error);
+                            });
+                    } else {
+                        res.status(400).json({
+                            message: 'Bạn đã đánh giá kspace này rồi, nếu muốn thay đổi thông tin, hãy click vào' +
+                            ' nút cập nhật '
+                        });
+                    }
+
+                }).catch (error => {
+                res.status(400).json(error);
+            });
+        } else {
+            res.status(404).json({
+                "message": "No KSpace ID"
+            });
         }
-
-      }).catch (error => {
-        res.status(400).json(error);
-      });
-    }else {
-      res.status(404).json({
-        "message"    :   "No KSpace ID"
-      });
     }
-  }
 
 
-  //finish a front.KSpace by ID controller (update finishedAt of a front.KSpace)
-  static finishKSpace(req, res){
-    var currentDate = new Date();
+    //finish a front.KSpace by ID controller (update finishedAt of a front.KSpace)
+    static finishKSpace(req, res) {
+        var currentDate = new Date();
 
-    if(req.params && req.params.id) {
-        KSpaceDAO.getKSpaceById(req.params.id)
-          .then(KSpace => {
-            KSpace.finishedAt = currentDate;
+        if (req.params && req.params.id) {
+            KSpaceDAO.getKSpaceById(req.params.id)
+                .then(KSpace => {
+                    KSpace.finishedAt = currentDate;
 
-            KSpaceDAO.updateKSpaceById(KSpace)
-              .then(KSpace => res.status(200).json(KSpace))
-              .catch(error => res.status(400).json(error));
-          })
-          .catch(error => res.status(400).json(error));
-    }else{
-      res.status(404).json({
-        "message"    :   "No KSpace ID"
-      });
+                    KSpaceDAO.updateKSpaceById(KSpace)
+                        .then(KSpace => res.status(200).json(KSpace))
+                        .catch(error => res.status(400).json(error));
+                })
+                .catch(error => res.status(400).json(error));
+        } else {
+            res.status(404).json({
+                "message": "No KSpace ID"
+            });
+        }
     }
-  }
 
 }

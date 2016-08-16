@@ -25,6 +25,7 @@ var UserService = (function () {
         this._banUrl = '/api/ban/:id';
         this._emailResetPass = '/api/email-reset-pass/:email';
         this._changePass = '/api/new-pass/:token';
+        this._chatRoomUrl = 'api/chat-rooms';
     }
     UserService.prototype.getUserByToken = function (token) {
         return this._http.get(this._changePass.replace(':token', token))
@@ -46,6 +47,17 @@ var UserService = (function () {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         return this._http.get(this._emailResetPass.replace(':email', email), options)
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    UserService.prototype.deactivateChatRoom = function (user1, user2) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var data = JSON.stringify({
+            user1: user1,
+            user2: user2
+        });
+        return this._http.put(this._chatRoomUrl, data, options)
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };

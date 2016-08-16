@@ -5,12 +5,12 @@
       <li class='has-sub'><a href='#'><span><i class="fa fa-book fa-2x" aria-hidden="true"></i></span></a>
         <ul>
           <li *ngFor="let knowledge of knowledges" class='has-sub'>
-            <a [routerLink]="['/requests/category/'+ knowledge._id]" routerLinkActive="active">
+            <a [routerLink]="['/mix/category/'+ knowledge._id]" routerLinkActive="active">
              <span>{{knowledge.name}}</span>
             </a>
             <ul *ngIf="knowledge.subCategory.length > 0">
               <li *ngFor="let subCate of knowledge.subCategory">
-                <a [routerLink]="['/requests/subcategory/'+ subCate._id]" routerLinkActive="active"><span>{{subCate.name}}
+                <a [routerLink]="['/mix/subcategory/'+ subCate._id]" routerLinkActive="active"><span>{{subCate.name}}
                 </span>
                 </a>
               </li>

@@ -12,6 +12,7 @@ var tag_1 = require('../../../services/tag');
 var friend_list_1 = require('../shared/friend-list');
 var request_create_1 = require('../../back-end/request/request-create');
 var request_category_1 = require('./request-category');
+var tag_2 = require('../tag/tag');
 var RequestListClientComponent = (function () {
     function RequestListClientComponent(_requestService, _tagService, _auth, router, route) {
         this._requestService = _requestService;
@@ -55,43 +56,37 @@ var RequestListClientComponent = (function () {
         var _this = this;
         this._requestService.getAllRequests(this.num).subscribe(function (requests) {
             //get all tag's ids of list request
-            for (var _i = 0; _i < requests.length; _i++) {
-                var e = requests[_i];
-                for (var _a = 0, _b = e.tags; _a < _b.length; _a++) {
-                    var t = _b[_a];
-                    var i = _this.arrIds.indexOf(t);
-                    if (i < 0) {
-                        _this.arrIds.push(t);
-                    }
-                }
-            }
+            //for (let e of requests) {
+            //    for (let t of e.tags) {
+            //        let i = this.arrIds.indexOf(t);
+            //        if (i < 0) {
+            //            this.arrIds.push(t);
+            //        }
+            //    }
+            //}
             //get all tag relate to ids
-            _this._tagService.getTagsByIds(_this.arrIds).subscribe(function (tags) {
-                for (var i = 0; i < requests.length; i++) {
-                    _this._data.push({
-                        req: requests[i],
-                        tags: [],
-                        sum: ''
-                    });
-                    requests[i].link = requests[i]._id + '/info';
-                    if (requests[i].status === 'pending') {
-                        requests[i].status = 'Đang chờ';
-                    }
-                    //get summary
-                    var html = requests[i].description;
-                    var div = document.createElement("div");
-                    div.innerHTML = html;
-                    var text = div.textContent || div.innerText || "";
-                    _this._data[i].sum = text.substr(0, 100) + " ......";
-                    //get tags
-                    for (var _i = 0; _i < tags.length; _i++) {
-                        var t = tags[_i];
-                        if (requests[i].tags.indexOf(t._id) > -1) {
-                            _this._data[i].tags.push(t);
-                        }
-                    }
+            //this._tagService.getTagsByIds(this.arrIds).subscribe((tags) => {
+            //
+            //    console.log(tags);
+            //
+            //
+            //});
+            for (var i = 0; i < requests.length; i++) {
+                _this._data.push({
+                    req: requests[i],
+                    sum: ''
+                });
+                requests[i].link = requests[i]._id + '/info';
+                if (requests[i].status === 'pending') {
+                    requests[i].status = 'Đang chờ';
                 }
-            });
+                //get summary
+                var html = requests[i].description;
+                var div = document.createElement("div");
+                div.innerHTML = html;
+                var text = div.textContent || div.innerText || "";
+                _this._data[i].sum = text.substr(0, 100) + " ......";
+            }
             // for(var i = 0; i < requests.length; i++){
             //     this.requests.push(requests[i]);
             //   }
@@ -106,51 +101,46 @@ var RequestListClientComponent = (function () {
         }
         else {
             this._requestService.searchRequest(search).subscribe(function (requests) {
-                _this.arrIds = [];
+                //this.arrIds = [];
                 //get all tag's ids of list request
-                for (var _i = 0; _i < requests.length; _i++) {
-                    var e = requests[_i];
-                    for (var _a = 0, _b = e.tags; _a < _b.length; _a++) {
-                        var t = _b[_a];
-                        var i = _this.arrIds.indexOf(t);
-                        if (i < 0) {
-                            _this.arrIds.push(t);
+                //for (let e of requests) {
+                //    for (let t of e.tags) {
+                //        let i = this.arrIds.indexOf(t);
+                //        if (i < 0) {
+                //            this.arrIds.push(t);
+                //        }
+                //    }
+                //}
+                _this._data = [];
+                for (var i = 0; i < requests.length; i++) {
+                    _this._data.push({
+                        req: requests[i],
+                        tags: []
+                    });
+                    requests[i].createdAt = new Date(requests[i].createdAt);
+                    if (requests[i].status === 'pending') {
+                        requests[i].status = 'Đang chờ';
+                    }
+                    for (var _i = 0; _i < tags.length; _i++) {
+                        var t = tags[_i];
+                        if (requests[i].tags.indexOf(t._id) > -1) {
+                            _this._data[i].tags.push(t);
                         }
                     }
+                    //get summary
+                    var html = requests[i].description;
+                    var div = document.createElement("div");
+                    div.innerHTML = html;
+                    var text = div.textContent || div.innerText || "";
+                    _this._data[i].sum = text.substr(0, 100) + " ......";
                 }
-                //get all tag relate to ids
-                _this._tagService.getTagsByIds(_this.arrIds).subscribe(function (tags) {
-                    _this._data = [];
-                    for (var i = 0; i < requests.length; i++) {
-                        _this._data.push({
-                            req: requests[i],
-                            tags: []
-                        });
-                        requests[i].createdAt = new Date(requests[i].createdAt);
-                        if (requests[i].status === 'pending') {
-                            requests[i].status = 'Đang chờ';
-                        }
-                        for (var _i = 0; _i < tags.length; _i++) {
-                            var t = tags[_i];
-                            if (requests[i].tags.indexOf(t._id) > -1) {
-                                _this._data[i].tags.push(t);
-                            }
-                        }
-                        //get summary
-                        var html = requests[i].description;
-                        var div = document.createElement("div");
-                        div.innerHTML = html;
-                        var text = div.textContent || div.innerText || "";
-                        _this._data[i].sum = text.substr(0, 100) + " ......";
-                    }
-                    if (requests.length === 0) {
-                        _this.isExistRecord = true;
-                    }
-                    else {
-                        _this.isExistRecord = false;
-                    }
-                    _this.requests = requests;
-                });
+                if (requests.length === 0) {
+                    _this.isExistRecord = true;
+                }
+                else {
+                    _this.isExistRecord = false;
+                }
+                _this.requests = requests;
             });
         }
     };
@@ -166,7 +156,8 @@ var RequestListClientComponent = (function () {
                 router_1.ROUTER_DIRECTIVES,
                 friend_list_1.FriendListComponent,
                 request_create_1.CreateRequestComponent,
-                request_category_1.RequestCategoryComponent
+                request_category_1.RequestCategoryComponent,
+                tag_2.listTagComponent
             ],
             providers: [tag_1.TagService]
         })

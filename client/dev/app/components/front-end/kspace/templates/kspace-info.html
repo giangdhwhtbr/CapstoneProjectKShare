@@ -1,0 +1,74 @@
+<div class="container mg-top-50">
+    <h3>{{title}}</h3>
+    {{rateAve}}
+    <sm-rating class="massive star" disable="disable" [initialRating]="[rateAve]"></sm-rating>
+    <br>
+    <button *ngIf="!isFinish" (click)="accessRoom()">{{accessRoomBtn}}</button>
+    <p *ngIf="isFinish" class="flow-text">kết thúc vào ngày {{finishDate | date:"dd/MM/yyyy"}}</p>
+    <hr>
+    <a (click)="openSelectElement()" class="waves-effect waves-light btn  blue lighten-1">
+        <i class="material-icons left">offline_pin</i><span class="black-text">Tạo bài viết</span>
+    </a>
+    <a *ngIf="!isFinish" (click)="finishKp()" class="waves-effect waves-light btn  yellow accent-4">
+        <i class="material-icons left">offline_pin</i><span class="black-text">Finish kspace</span>
+    </a>
+
+    <h4>Những hình ảnh đã lưu</h4>
+
+    <div *ngFor="let img of images" class="row">
+        <h5>{{img.des}}</h5>
+        <img  src="{{img.url}}" style="background-color: black; border-radius: 10px;"  width="400" height="300"
+             alt="kspace">
+            <span [hidden]="!isCreatingArt">
+                <a class="btn-floating waves-effect waves-light red left"><i class="material-icons">close</i></a>
+            </span>
+    </div>
+    <hr>
+    <h4>Các bảng đã lưu</h4>
+
+    <div *ngFor="let board of boards" class="row">
+        <!--<div id="eData{{board.id}}">-->
+        <h5>Bảng {{board.des}}</h5>
+
+        <div class="row">
+            <img src="{{board.url}}" width="400" height="300"
+                 style="background-color: whitesmoke; border:black; border-weight:1px ;                                                                      border-radius: 10px;"
+                 alt="kspace">
+                    <span [hidden]="!isCreatingArt">
+                        <a (click)="deleteElement(board.id)"
+                           class="btn-floating waves-effect waves-light red left btn-delete-board">
+                            <i class="material-icons">close</i>
+                        </a>
+                    </span>
+        </div>
+        <!--</div>-->
+    </div>
+        <span [hidden]="!isCreatingArt">
+            <a (click)="createArt()" class="waves-effect waves-light btn  blue lighten-1 btn-step-create">
+                <i class="material-icons left">forward</i><span class="black-text">Tạo ngay</span>
+            </a>
+        </span>
+
+    <div id="createReview">
+        <sm-message *ngIf="errorMessage" class="warning">
+            <message-header>{{errorMessage.header}}</message-header>
+            <message-content>
+                {{errorMessage.content}}
+            </message-content>
+        </sm-message>
+        <sm-rating class="massive star" (onRate)="onReceiveRating($event)" [maxRating]="5"></sm-rating>
+        <form class="ui form" #reviewForm="ngForm" (ngSubmit)="onSubmit(reviewForm.value)">
+            <textarea ngControl="content" required></textarea>
+            <button type="submit">Review</button>
+        </form>
+    </div>
+    <div id="reviews">
+        <div *ngFor="let review of reviews">
+            <sm-segment class="raised">
+                <p>{{review.createdUser}}</p>
+
+                <p>{{review.content}}</p>
+            </sm-segment>
+        </div>
+    </div>
+</div>

@@ -22,6 +22,9 @@
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
                     Trạng thái : {{request.status}}
                 </div>
+                <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
+                    <tags [listTagId]="request.tags"></tags>
+                </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
                     Ngày tạo : {{request.createdAt | date:"dd/MM/yyyy"}}
                 </div>
@@ -41,7 +44,7 @@
     </div>
 
     <div [hidden]="checkDeactive" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-        <button *ngIf="userToken !== null" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">Báo cáo</button>
+        <button *ngIf="userToken !== null && roleToken !== 'admin' && userToken !== request.user" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">Báo cáo</button>
         <a href="{{updateLink}}" *ngIf="checkCreatedUser || roleToken==='admin'"><span
                 class="btn btn-warning glyphicon glyphicon-pencil"></span></a>
         <a *ngIf="checkCreatedUser || roleToken==='admin'">

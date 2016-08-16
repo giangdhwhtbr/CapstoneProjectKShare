@@ -24,6 +24,14 @@ var KSpaceService = (function () {
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
+    KSpaceService.prototype.finish = function (id) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this._http
+            .put(this._kspaceUrl.replace(':id', id), options)
+            .map(function (r) { return r.json(); });
+    };
     KSpaceService.prototype.addKSpace = function (learner, lecturer, requestId, requestTitle, offerId) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });

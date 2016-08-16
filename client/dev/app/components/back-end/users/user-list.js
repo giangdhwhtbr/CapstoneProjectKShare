@@ -63,7 +63,10 @@ var UserListComponent = (function () {
         });
     };
     UserListComponent.prototype.banUser = function (userid) {
-        this._userService.banUser(userid).subscribe(function (response) { console.log(response); }, function (error) { });
+        this._userService.banUser(userid).subscribe(function (response) {
+            console.log(response);
+        }, function (error) {
+        });
     };
     UserListComponent = __decorate([
         core_1.Component({

@@ -12,6 +12,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
+var tag_1 = require('../tag/tag');
 var listArticleComponent = (function () {
     function listArticleComponent(router, route, _artService) {
         this.router = router;
@@ -59,7 +60,7 @@ var listArticleComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/article/templates/list-article.html',
             styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES
+                router_1.ROUTER_DIRECTIVES, tag_1.listTagComponent
             ],
             providers: [article_1.ArticleService]
         })

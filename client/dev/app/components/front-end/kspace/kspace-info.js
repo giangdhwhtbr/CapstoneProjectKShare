@@ -11,16 +11,20 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
  */
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-// import { SEMANTIC_COMPONENTS, SEMANTIC_DIRECTIVES } from "ng-semantic";
+var article_1 = require('../../../services/article');
+var ng_semantic_1 = require("ng-semantic");
 var KSpaceInfoComponent = (function () {
-    function KSpaceInfoComponent(router, route, _kspaceService) {
+    function KSpaceInfoComponent(router, route, _kspaceService, _articleService) {
         var _this = this;
         this.router = router;
         this.route = route;
         this._kspaceService = _kspaceService;
+        this._articleService = _articleService;
         this.accessRoomBtn = 'Access Room';
+        this.isFinish = false;
         this.images = [];
         this.boards = [];
+        this.isCreatingArt = false;
         this.route.params.subscribe(function (params) {
             _this.kspaceId = params['id'];
             _this.lecturer = params['lecturer'];
@@ -31,6 +35,7 @@ var KSpaceInfoComponent = (function () {
         this._kspaceService
             .getKSpaceById(this.kspaceId)
             .subscribe(function (kspace) {
+            _this.kspace = kspace;
             _this.title = kspace.requestTitle;
             _this.reviews = kspace.reviews;
             _this.rateAve = parseInt(kspace.rateAve);
@@ -38,6 +43,7 @@ var KSpaceInfoComponent = (function () {
                 var log = _a[_i];
                 if (log.dataURL) {
                     var data = {
+                        id: log._id,
                         des: log.message,
                         url: log.dataURL
                     };
@@ -46,15 +52,21 @@ var KSpaceInfoComponent = (function () {
             }
             for (var _b = 0, _c = kspace.boards; _b < _c.length; _b++) {
                 var board = _c[_b];
-                if (board.dataURL) {
+                if (board._id) {
                     var data = {
+                        id: board._id,
                         des: board.boardNumber,
                         url: board.dataURL
                     };
                     _this.boards.push(data);
                 }
             }
+            if (kspace.finishedAt) {
+                _this.isFinish = true;
+                _this.finishDate = kspace.finishedAt;
+            }
         });
+        console.log(this.isCreatingArt);
     };
     KSpaceInfoComponent.prototype.onSubmit = function (value) {
         var _this = this;
@@ -97,12 +109,54 @@ var KSpaceInfoComponent = (function () {
         var url = '/room/' + this.kspaceId + '/' + this.lecturer;
         window.open(url, name, specs);
     };
+    KSpaceInfoComponent.prototype.finishKp = function () {
+        var _this = this;
+        this._kspaceService.finish(this.kspaceId).subscribe(function (kspace) {
+            _this.isFinish = true;
+            _this.finishDate = kspace.finishedAt;
+        });
+    };
+    KSpaceInfoComponent.prototype.openSelectElement = function () {
+        this.isCreatingArt = true;
+    };
+    KSpaceInfoComponent.prototype.createArt = function () {
+        var contentArt = '';
+        for (var i = 0; i < this.images.length; i++) {
+            contentArt += "<h5>" + this.images[i].des + "</h5><br>";
+            contentArt += '<img class="responsive-img" src="' + this.images[i].url + '" style="background-color: black; border-radius: 10px;"><br>';
+        }
+        for (var i = 0; i < this.boards.length; i++) {
+            contentArt += "<h5>" + this.boards[i].des + "</h5><br>";
+            contentArt += '<img class="responsive-img" src="' + this.boards[i].url + '" style="background-color: black; border-radius: 10px;" ><br>';
+        }
+        var dateKs = new Date(this.kspace.createdAt);
+        dateKs = dateKs.toLocaleDateString();
+        var title = this.kspace.requestTitle + " " + dateKs;
+        this._articleService.addArticle(title, contentArt);
+    };
+    KSpaceInfoComponent.prototype.deleteElement = function (id) {
+        for (var i = 0; i < this.images.length; i++) {
+            if (this.images[i].id == id) {
+                this.images.splice(i, 1);
+                break;
+            }
+        }
+        for (var i = 0; i < this.boards.length; i++) {
+            if (this.boards[i].id == id) {
+                this.boards.splice(i, 1);
+                break;
+            }
+        }
+    };
     KSpaceInfoComponent = __decorate([
         core_1.Component({
-            template: "\n      <div class=\"container mg-top-50\">\n        <h3>{{title}}</h3>\n        {{rateAve}}\n         <sm-rating class=\"massive star\" disable=\"disable\" [initialRating]=\"[rateAve]\"></sm-rating>\n        <br>\n        <button (click)=\"accessRoom()\">{{accessRoomBtn}}</button>\n        <hr>\n        <h3>images</h3>\n        <div *ngFor=\"let img of images\">\n          <h4>{{img.des}}</h4>\n          <img src=\"{{img.url}}\" style=\"background-color: black; border-radius: 10px;\" alt=\"kspace\" width=\"300\" height=\"200\">\n          <br>\n        </div>\n        <hr>\n        <h3>boards</h3>\n        <div *ngFor=\"let board of boards\">\n          <h4>Board {{board.des}}</h4>\n          <img src=\"{{board.url}}\"           style=\"background-color: whitesmoke; border:black; border-weight:1px ;                                                                      border-radius: 10px;\" alt=\"kspace\" width=\"300\" height=\"200\">\n          <br>\n        </div>\n        <div id=\"createReview\">\n            <sm-message *ngIf=\"errorMessage\" class=\"warning\">\n              <message-header>{{errorMessage.header}}</message-header>\n              <message-content>\n                  {{errorMessage.content}}\n              </message-content>\n            </sm-message>\n            <sm-rating class=\"massive star\" (onRate)=\"onReceiveRating($event)\" [maxRating]=\"5\"></sm-rating>\n            <form class=\"ui form\" #reviewForm=\"ngForm\" (ngSubmit)=\"onSubmit(reviewForm.value)\">\n                <textarea  ngControl=\"content\" required ></textarea>\n                <button type=\"submit\">Review</button>\n            </form>\n        </div>\n        <div id=\"reviews\">\n          <div *ngFor=\"let review of reviews\">\n            <sm-segment class=\"raised\">\n              <p>{{review.createdUser}}</p>\n              <p>{{review.content}}</p>\n            </sm-segment>\n          </div>\n        </div>\n      </div>\n    ",
+            templateUrl: 'client/dev/app/components/front-end/kspace/templates/kspace-info.html',
             directives: [
-                router_1.ROUTER_DIRECTIVES
-            ]
+                router_1.ROUTER_DIRECTIVES,
+                ng_semantic_1.SEMANTIC_COMPONENTS,
+                ng_semantic_1.SEMANTIC_DIRECTIVES
+            ],
+            providers: [article_1.ArticleService]
         })
     ], KSpaceInfoComponent);
     return KSpaceInfoComponent;

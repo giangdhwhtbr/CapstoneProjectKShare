@@ -35,10 +35,8 @@
             <div class="bodyArt col s12 m12 l12" [class.deAc]="isDeAc">
 
             </div>
-            <div *ngIf="tags" class="tags">
-                tags : <span *ngFor="let t of tags">
-                            <a [routerLink]="['/tag',t._id]">{{t.name}}</a>,
-                        </span>
+            <div *ngIf="article.tags.length!=0" class="tags">
+                <tags [listTagId]="article.tags"></tags>
             </div>
             <div class="row">
                 <h5 class="valign">Bình luận</h5>

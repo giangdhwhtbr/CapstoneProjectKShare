@@ -25,6 +25,30 @@ module.exports = class ArticleController {
             .catch(error => res.status(400).json(error));
     }
 
+    static getArticleByKnwId(req, res) {
+        if (req.params && req.params.id) {
+            ArticleDAO
+                .getArticleByKnwId(req.params.id)
+                .then((arts) => {
+
+                    for (let i = arts.length - 1; i >= 0; i--) {
+                        if (arts[i].status === "deactivate") {
+                            let index = arts.indexOf(arts[i]);
+                            if (index > -1) {
+                                arts.splice(index, 1);
+                            }
+                        }
+                    }
+
+                    res.status(200).json(arts);
+                }).catch(error => res.status(400).json(error));
+        } else {
+            res.status(404).json({
+                "message": "No article Id in templates"
+            });
+        }
+    }
+
     static getAPage(req,res){
 
         if (req.params && req.params.start) {

@@ -13,6 +13,7 @@ require('@angular/router');
 // AngularClass
 require('@angularclass/webpack-toolkit');
 require('@angularclass/request-idle-callback');
+require('ng-semantic/ng-semantic');
 // RxJS
 require('rxjs/add/operator/map');
 require('rxjs/add/operator/mergeMap');

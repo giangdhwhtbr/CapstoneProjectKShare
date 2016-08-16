@@ -10,6 +10,7 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var offer_create_1 = require('../offer/offer-create');
 var report_1 = require('../report/report');
+var tag_1 = require('../tag/tag');
 var RequestDetailClientComponent = (function () {
     function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
         this._requestService = _requestService;
@@ -172,7 +173,8 @@ var RequestDetailClientComponent = (function () {
             directives: [
                 router_1.ROUTER_DIRECTIVES,
                 offer_create_1.CreateOfferComponent,
-                report_1.ReportComponent
+                report_1.ReportComponent,
+                tag_1.listTagComponent
             ]
         })
     ], RequestDetailClientComponent);
