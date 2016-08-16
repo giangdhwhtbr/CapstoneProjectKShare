@@ -33,7 +33,7 @@
                 </thead>
                 <tbody *ngIf="pendingReports">
                   <tr *ngFor="let report of pendingReports | stringFilter: filter">
-                    <td><a [routerLink]="[report.link]">{{report.title}}</a></td>
+                    <td><a (click)="openReportedPage(report.link)">{{report.title}}</a></td>
                     <td>{{report.content}}</td>
                     <td><a [routerLink]="['/user/'+report.user]">{{report.user}}</a></td>
                     <td><a [routerLink]="['/user/'+report.reportedUser]">{{report.reportedUser}}</a></td>
@@ -73,7 +73,7 @@
                 </thead>
                 <tbody *ngIf="handlingReports">
                   <tr *ngFor="let report of handlingReports | stringFilter: filter">
-                    <td><a [routerLink]="[report.link]">{{report.title}}</a></td>
+                    <td><a (click)="openReportedPage(report.link)">{{report.title}}</a></td>
                     <td>{{report.content}}</td>
                     <td><a [routerLink]="['/user/'+report.user]">{{report.user}}</a></td>
                     <td><a [routerLink]="['/user/'+report.reportedUser]">{{report.reportedUser}}</a></td>

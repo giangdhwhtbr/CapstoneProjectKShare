@@ -70,6 +70,12 @@ export class RequestListComponent implements AfterViewChecked {
     this.getAllRequest();
   }
 
+  openRequest(requestId: string): void {
+    var specs = 'width=1200,height=1200';
+    var url = '/requests/' + requestId + '/info';
+    window.open(url, '', specs);
+  }
+
   deactivateRequest(id: string) {
     this._requestService
       .changeStatusRequest(id)

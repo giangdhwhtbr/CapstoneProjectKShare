@@ -69,6 +69,7 @@ export class RequestFriendRecordComponent {
             // var data = [this.requestUser, this.name];
             // this.socket.emit('chatroom-friend', data);
             alert('Đã là bạn bè');
+            this.router.navigateByUrl('/user/' + this.requestUser);
           });
       }
     );
@@ -95,9 +96,10 @@ export class RequestFriendRecordComponent {
         .deleteFriendRequest(this.requestUser, this.name)
         .subscribe(() => {
           console.log('delete successfull');
-        })
-      this.isFriend = false;
-      alert("bạn đã hủy gửi lời  mời kết bạn");
+          this.sendDataToP.emit("accept");
+          this.isFriend = false;
+          alert("bạn đã hủy gửi lời  mời kết bạn");
+        });
     }
   }
 

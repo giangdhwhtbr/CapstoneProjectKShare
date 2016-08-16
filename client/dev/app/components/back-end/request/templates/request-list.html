@@ -32,7 +32,7 @@
                                 <tbody class="searchable"
                                        *ngFor="let request of activeRequests | stringFilter: filter">
                                 <tr>
-                                    <td><a [routerLink]="['/requests/' + request._id + '/info']">{{request.title}}</a>
+                                    <td><a (click)="openRequest(request._id)">{{request.title}}</a>
                                     </td>
                                     <td>{{request.status}}</td>
                                     <td class="center">
@@ -79,7 +79,7 @@
                                 <tbody class="searchable"
                                        *ngFor="let request of deactiveRequests | stringFilter: filter">
                                 <tr>
-                                    <td><a [routerLink]="['/requests/' + request._id + '/info']">{{request.title}}</a>
+                                    <td><a (click)="openRequest(request._id)">{{request.title}}</a>
                                     </td>
                                     <td>{{request.status}}</td>
                                     <td class="center">
@@ -126,7 +126,7 @@
                                 <tbody class="searchable"
                                        *ngFor="let request of acceptepRequests | stringFilter: filter">
                                 <tr>
-                                    <td><a [routerLink]="['/requests/' + request._id + '/info']">{{request.title}}</a>
+                                    <td><a (click)="openRequest(request._id)">{{request.title}}</a>
                                     </td>
                                     <td>{{request.status}}</td>
                                     <td class="center">

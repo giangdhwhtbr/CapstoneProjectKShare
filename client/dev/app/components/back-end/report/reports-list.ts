@@ -38,6 +38,12 @@ export class ReportListComponent {
             });
     }
 
+    openReportedPage(link: string): void {
+        var specs = 'width=1200,height=1200';
+        var url = link;
+        window.open(url, '', specs);
+    }
+
     getAllHandling(): void {
         this._reportService
             .getAllReports('handling')
