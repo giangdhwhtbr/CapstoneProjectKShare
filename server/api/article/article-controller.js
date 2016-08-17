@@ -25,6 +25,15 @@ module.exports = class ArticleController {
             .catch(error => res.status(400).json(error));
     }
 
+    static getArticleByUser(req, res) {
+        ArticleDAO
+            .getArticleByUser(req.params.username)
+            .then(articles => {
+                res.status(200).json(articles);
+            })
+            .catch(error => res.status(400).json(error));
+    }
+
     static fullTextSearchArticle(req, res) {
 
     ArticleDAO

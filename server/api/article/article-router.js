@@ -1,6 +1,3 @@
-/**
- * Created by Duc Duong on 7/11/2016.
- */
 "use strict";
 
 const ArticleController = require('./article-controller');
@@ -47,10 +44,12 @@ module.exports = class ArticleRoutes {
         router.route('/api/comment/article/:artId/:cmtId')
             .put(ArticleController.editComment)
             .delete(ArticleController.removeComment);
-        
+
         router.route('/api/full-search-article')
             .post(ArticleController.fullTextSearchArticle);
 
+        router.route('/api/articles-user/:username')
+            .get(ArticleController.getArticleByUser);
 
     }
 }

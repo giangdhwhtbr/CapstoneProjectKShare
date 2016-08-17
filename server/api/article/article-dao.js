@@ -175,6 +175,7 @@ articleSchema.statics.deactivateArticleById = (id) => {
             });
     });
 }
+
 articleSchema.plugin(relationship, { relationshipPathName: ['tags', 'knowledge'] });
 
 //full text search function index by title and description
@@ -194,6 +195,17 @@ articleSchema.statics.fullTextSearchArticle = (text) => {
                     : resolve(articles);
             });
 
+    });
+}
+
+articleSchema.statics.getArticleByUser = (username) => {
+    return new Promise((resolve, reject) => {
+        Article
+            .find({ 'ofUser': username, 'status': 'public' })
+            .exec((err, articles) => {
+                err ? reject(err)
+                    : resolve(articles);
+            });
     });
 }
 
