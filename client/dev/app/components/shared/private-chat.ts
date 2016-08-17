@@ -149,7 +149,6 @@ export class PrivateChatComponent {
   }
 
   sendMessage() {
-    console.log(this.currentRoom);
     var data = {
       sender: this.username,
       message: this.mess,

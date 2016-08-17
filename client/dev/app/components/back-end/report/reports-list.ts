@@ -6,31 +6,36 @@ import { Report } from '../../../interface/report';
 import { ReportService } from '../../../services/report';
 import { ChatService } from '../../../services/chat';
 
-import {StringFilterPipe} from '../shared/filter';
+import { StringFilterPipe } from '../shared/filter';
+
+import { MessageComponent } from './message';
+declare var $: any;
 
 @Component({
   selector: 'reports-list',
   templateUrl: 'client/dev/app/components/back-end/report/templates/reports-list.html',
-  directives: [ROUTER_DIRECTIVES, FORM_DIRECTIVES],
+  directives: [ROUTER_DIRECTIVES, FORM_DIRECTIVES, MessageComponent],
   providers: [ReportService],
   pipes: [StringFilterPipe]
 })
 export class ReportListComponent {
   pageTitle: string = 'Report List';
   errorMessage: string;
-  badwordForm: ControlGroup;
   pendingReports: Report[] = [];
   handlingReports: Report[] = [];
   public filter: string = '';
   roleToken: string;
   userToken: string;
+  user: string;
 
   constructor(fb: FormBuilder, private _reportService: ReportService,
     private router: Router, private _chatService: ChatService) {
     this.roleToken = localStorage.getItem('role');
     this.userToken = localStorage.getItem('username');
+    
   }
   ngOnInit() {
+    // $('#messageModal').openModal();
     this.getAllPending();
     this.getAllHandling();
   }
@@ -87,9 +92,9 @@ export class ReportListComponent {
         console.log(reportedUser);
         console.log('create chatRoom successfully');
       });
-    }else {
-      alert('Đã có phòng trò chuyện');
     }
+    this.user = reportedUser;
+    $('#messageModal').openModal();
   }
 
 }

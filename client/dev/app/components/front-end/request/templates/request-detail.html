@@ -47,11 +47,11 @@
         <a *ngIf="checkCreatedUser || roleToken==='admin'">
             <button class="btn btn-danger" (click)="deactivateRequest(_id)">Ngừng</button>
         </a>
-        <a *ngIf="!checkCreatedUser || roleToken==='admin'">
+        <a *ngIf="!checkCreatedUser">
             <button *ngIf="userToken !== null"  class="btn btn-primary" (click)="openModal()">Đề nghị</button>
         </a>
         <a *ngIf="!checkCreatedUser || userToken !== null">
-            <button *ngIf="userToken !== null && !checkSubcribedUser" class="btn btn-primary" (click)="addSubcriber(_id)">Theo dõi</button>
+            <button *ngIf="userToken !== null && !checkSubcribedUser && userToken !== request.user" class="btn btn-primary" (click)="addSubcriber(_id)">Theo dõi</button>
         </a>
         <a *ngIf="!checkCreatedUser || userToken !== null">
             <button *ngIf="userToken !== null && checkSubcribedUser" class="btn btn-primary" (click)="removeSubscriber()">Bỏ theo dõi</button>

@@ -37,9 +37,11 @@
                     <td>{{report.content}}</td>
                     <td><a [routerLink]="['/user/'+report.user]">{{report.user}}</a></td>
                     <td><a [routerLink]="['/user/'+report.reportedUser]">{{report.reportedUser}}</a></td>
-                    <td><button (click)="deactivateReport(report._id)" class="btn btn-danger btn-small glyphicon glyphicon-remove"></button>
-                    <button (click)="changeStatusHandling(report._id)" class="btn btn-warning btn-small glyphicon glyphicon-share"></button>
-                    <button (click)="createChatRoom(report.reportedUser)" class="btn btn-warning">Gửi tin nhắn</button></td>
+                    <td>
+                      <button (click)="deactivateReport(report._id)" class="btn btn-danger btn-small glyphicon glyphicon-remove"></button>
+                      <button (click)="changeStatusHandling(report._id)" class="btn btn-warning btn-small glyphicon glyphicon-share"></button>
+                      <a (click)="createChatRoom(report.reportedUser)" class="modal-trigger waves-effect waves-light btn">Gửi tin nhắn</a>
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -47,7 +49,7 @@
           </div>
         </div>
       </div>
-
+      <message [receiver]="user"></message>
       <!--handing report-->
       <div id="hr" class="tab-pane fade ">
         <!-- /.row -->

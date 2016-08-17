@@ -11,7 +11,7 @@
   </form>
   <br>
   <br>
-  <div class="container"  [style.height.px]="height+'px'">
+  <div class="container" [style.height.px]="height+'px'">
 
     <br>
     <!-- list all-->
@@ -24,8 +24,11 @@
           <a [routerLink]="['/requests/'+e.req._id+'/info']">
             <p class="lead">{{e.req.title}}</p>
           </a>
+          <div *ngIf="e.req.subscribers.indexOf(userToken) > -1">
+            <b><i>Đã theo dõi bài viết này</i></b>
+          </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-             {{e.sum}}
+            {{e.sum}}
           </div>
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
             Người tạo :<a [routerLink]="['/user/',e.req.user]"> {{e.req.user}}</a>
@@ -38,7 +41,7 @@
           </div>
           <p *ngIf="e.tags.length!=0">
             tags :
-                <span *ngFor="let t of e.tags">
+            <span *ngFor="let t of e.tags">
                     <a [routerLink]="['/tag',t._id]">{{t.name}}</a>,
                 </span>
           </p>
