@@ -11,6 +11,7 @@ export class ArticleService {
     private _requestsUrl = '/api/article/:id';
     private _requestsGetDeArtUrl = '/api/art/de/:id';
     private _articleUserUrl = '/api/articles-user';
+    private _searchArticleUrl = '/api/full-search-article';
 
     private _cmtUrl="/api/comment/article/:artId/:cmtId";
 
@@ -31,6 +32,19 @@ export class ArticleService {
             .map((r) => r.json())
             .catch(this.handleError);
     }
+
+    //search request
+    searchArticle(search: string): Observable<any> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        let _search = JSON.stringify({
+            text: search
+        });
+        return this._http
+            .post(this._searchArticleUrl, _search, options)
+            .map((r) => r.json());
+    }
+
     getAllDeArts():Observable<any[]> {
         return this._http.get(this._requestsGetDeArtUrl.replace(':id', ''))
             .map((r) => r.json())

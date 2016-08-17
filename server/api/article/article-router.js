@@ -47,7 +47,9 @@ module.exports = class ArticleRoutes {
         router.route('/api/comment/article/:artId/:cmtId')
             .put(ArticleController.editComment)
             .delete(ArticleController.removeComment);
-
+        
+        router.route('/api/full-search-article')
+            .post(ArticleController.fullTextSearchArticle);
 
 
     }

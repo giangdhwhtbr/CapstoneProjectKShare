@@ -25,6 +25,14 @@ module.exports = class ArticleController {
             .catch(error => res.status(400).json(error));
     }
 
+    static fullTextSearchArticle(req, res) {
+
+    ArticleDAO
+      .fullTextSearchArticle(req.body.text)
+      .then(article => res.status(200).json(article))
+      .catch(error => res.status(400).json(error));
+  }
+
     static getAPage(req,res){
 
         if (req.params && req.params.start) {

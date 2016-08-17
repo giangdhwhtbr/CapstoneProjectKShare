@@ -1,3 +1,18 @@
+<div class="container mg-top-50">
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+    <br/>
+<form id="searchdivid2" class="navbar-form navbar-left" role="search">
+    <div class="form-group">
+      <input #text type="text" class="form-control" placeholder="Nhập nội dung tìm kiếm">
+    </div>
+    <button (click)="searchArticle(text.value)" type="submit" class="btn btn-small">Tìm kiếm</button>
+    <button *ngIf="userToken != null" type="button" class="btn btn-primary btn-small" [routerLink]="['/article/create']">
+      Tạo bài viết
+    </button>
+  </form>
 <div *ngIf="listArt" class="container article"  [style.height.px]="height+'px'">
     <div *ngFor="let a of listArt" class="panel panel-default">
         <div class="panel-body">
@@ -24,3 +39,5 @@
         </div>
     </div>
 </div>
+</div>
+<private-chat></private-chat>

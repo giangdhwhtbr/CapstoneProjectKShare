@@ -6,6 +6,7 @@ import { Component, OnInit, Pipe, PipeTransform } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../../services/article';
 import { AuthService } from '../../../services/auth';
+import { PrivateChatComponent } from './../../shared/private-chat';
 declare var $: any;
 
 @Component({
@@ -13,7 +14,8 @@ declare var $: any;
   templateUrl: 'client/dev/app/components/front-end/article/templates/list-article.html',
   styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    PrivateChatComponent
   ],
   providers: [ArticleService]
 })
@@ -26,6 +28,8 @@ export class listArticleComponent implements OnInit {
   num: number = 5;
   articles: any[] = [];
   height: number = 400;
+  text:string;
+
   constructor(public router: Router, private route: ActivatedRoute, private _artService: ArticleService) {
     this.roleToken = localStorage.getItem('role');
     this.userToken = localStorage.getItem('username');
@@ -56,6 +60,15 @@ export class listArticleComponent implements OnInit {
         if (arts[i].status == "private" && arts[i].ofUser != this.userToken) {
           arts.splice(i, 1);
         }
+        this.listArt.push(arts[i]);
+      }
+    });
+  }
+
+  searchArticle(text) {
+    this.listArt = [];
+    this._artService.searchArticle(text).subscribe((arts) => {
+      for (var i = 0; i < arts.length; i++){
         this.listArt.push(arts[i]);
       }
     });

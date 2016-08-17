@@ -1254,6 +1254,7 @@ webpackJsonp([2],[
 	        this._requestsUrl = '/api/article/:id';
 	        this._requestsGetDeArtUrl = '/api/art/de/:id';
 	        this._articleUserUrl = '/api/articles-user';
+	        this._searchArticleUrl = '/api/full-search-article';
 	        this._cmtUrl = "/api/comment/article/:artId/:cmtId";
 	        this._cmtLike = "/api/comment/like/:artId/:cmtId/:user";
 	        this._cmtUnLike = "/api/comment/unlike/:artId/:cmtId/:user";
@@ -1268,6 +1269,17 @@ webpackJsonp([2],[
 	        return this._http.put(this._requestsUrl.replace(':id', ''), _data, options)
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
+	    };
+	    //search request
+	    ArticleService.prototype.searchArticle = function (search) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _search = JSON.stringify({
+	            text: search
+	        });
+	        return this._http
+	            .post(this._searchArticleUrl, _search, options)
+	            .map(function (r) { return r.json(); });
 	    };
 	    ArticleService.prototype.getAllDeArts = function () {
 	        return this._http.get(this._requestsGetDeArtUrl.replace(':id', ''))
@@ -5625,6 +5637,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var article_1 = __webpack_require__(84);
+	var private_chat_1 = __webpack_require__(42);
 	var listArticleComponent = (function () {
 	    function listArticleComponent(router, route, _artService) {
 	        this.router = router;
@@ -5666,13 +5679,23 @@ webpackJsonp([2],[
 	            }
 	        });
 	    };
+	    listArticleComponent.prototype.searchArticle = function (text) {
+	        var _this = this;
+	        this.listArt = [];
+	        this._artService.searchArticle(text).subscribe(function (arts) {
+	            for (var i = 0; i < arts.length; i++) {
+	                _this.listArt.push(arts[i]);
+	            }
+	        });
+	    };
 	    listArticleComponent = __decorate([
 	        core_1.Component({
 	            selector: 'list-article',
 	            templateUrl: 'client/dev/app/components/front-end/article/templates/list-article.html',
 	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES
+	                router_1.ROUTER_DIRECTIVES,
+	                private_chat_1.PrivateChatComponent
 	            ],
 	            providers: [article_1.ArticleService]
 	        }), 
@@ -18847,6 +18870,7 @@ webpackJsonp([2],[
 	var article_1 = __webpack_require__(84);
 	var tag_1 = __webpack_require__(85);
 	var primeng_1 = __webpack_require__(95);
+	var private_chat_1 = __webpack_require__(42);
 	var $ = __webpack_require__(507);
 	var CKEditor = (function () {
 	    function CKEditor(_elm, _articleService, router, route) {
@@ -19050,7 +19074,7 @@ webpackJsonp([2],[
 	            selector: 'create-article',
 	            templateUrl: 'client/dev/app/components/front-end/article/templates/edit-article.html',
 	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
-	            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES],
+	            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
 	            providers: [article_1.ArticleService, tag_1.TagService]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
