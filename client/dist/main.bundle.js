@@ -6176,6 +6176,7 @@ webpackJsonp([2],[
 	var private_chat_1 = __webpack_require__(42);
 	var RequestDetailClientComponent = (function () {
 	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
+	        var _this = this;
 	        this._requestService = _requestService;
 	        this._offerService = _offerService;
 	        this.router = router;
@@ -6190,66 +6191,57 @@ webpackJsonp([2],[
 	        this.offers = [];
 	        this.roleToken = localStorage.getItem('userrole');
 	        this.userToken = localStorage.getItem('username');
-	    }
-	    RequestDetailClientComponent.prototype.ngOnInit = function () {
-	        var _this = this;
 	        this.route
 	            .params
 	            .subscribe(function (params) {
 	            _this.id = params['id'];
-	            //get templates when load the page
-	            _this._requestService.getRequestById(_this.id)
-	                .subscribe(function (request) {
-	                //translate status
-	                if (request.status === 'accepted') {
-	                    request.status = 'Đã được chấp nhận';
-	                    _this.checkIsAcceped = true;
-	                }
-	                else if (request.status === 'deactive' || request.status === undefined) {
-	                    request.status = 'Đã kết thúc';
-	                    _this.checkDeactive = true;
-	                }
-	                else {
-	                    request.status = 'Đang chờ';
-	                }
-	                request.userlink = '/user/' + request.user;
-	                _this._id = request._id;
-	                _this.updateLink = '/requests/' + request._id + '/update';
-	                _this.knowledgeId = request.knowledgeId;
-	                _this.subscribers = request.subscribers;
-	                //check if user is created user
-	                if (request.user === _this.userToken) {
-	                    _this.checkCreatedUser = true;
-	                }
-	                //check if user already subcribed
-	                for (var i = 0; i < _this.subscribers.length; i++) {
-	                    if (_this.userToken === _this.subscribers[i]) {
-	                        _this.checkSubcribedUser = true;
-	                        break;
-	                    }
-	                }
-	                _this.request = request;
-	                //get back.knowledge name by knowledgeId
-	                _this._knowledgeService.findKnowledgeById(_this.knowledgeId)
-	                    .subscribe(function (knowledge) {
-	                    _this.knowledge = knowledge;
-	                    //this.knowledgeName = this.knowledge.name;
-	                }, function (error) {
-	                    console.log(error);
-	                });
-	            }, function (error) { return console.log(error); });
-	            _this.getOfferByRequestId();
-	            $(window).on("scroll", function () {
-	                var scrollHeight = $(document).height();
-	                var scrollPosition = $(window).height() + $(window).scrollTop();
-	                if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-	                    setTimeout(function () {
-	                        _this.seeMore();
-	                    }, 1000);
-	                    _this.height += 30;
-	                }
-	            });
 	        });
+	    }
+	    RequestDetailClientComponent.prototype.ngOnInit = function () {
+	        this.getRequestById();
+	    };
+	    RequestDetailClientComponent.prototype.getRequestById = function () {
+	        var _this = this;
+	        //get templates when load the page
+	        this._requestService.getRequestById(this.id)
+	            .subscribe(function (request) {
+	            //translate status
+	            if (request.status === 'accepted') {
+	                request.status = 'Đã được chấp nhận';
+	                _this.checkIsAcceped = true;
+	            }
+	            else if (request.status === 'deactive' || request.status === undefined) {
+	                request.status = 'Đã kết thúc';
+	                _this.checkDeactive = true;
+	            }
+	            else {
+	                request.status = 'Đang chờ';
+	            }
+	            request.userlink = '/user/' + request.user;
+	            _this._id = request._id;
+	            _this.updateLink = '/requests/' + request._id + '/update';
+	            _this.knowledgeId = request.knowledgeId;
+	            _this.subscribers = request.subscribers;
+	            //check if user is created user
+	            if (request.user === _this.userToken) {
+	                _this.checkCreatedUser = true;
+	            }
+	            //check if user already subcribed
+	            for (var i = 0; i < _this.subscribers.length; i++) {
+	                if (_this.userToken === _this.subscribers[i]) {
+	                    _this.checkSubcribedUser = true;
+	                    break;
+	                }
+	            }
+	            _this.request = request;
+	            _this.getOfferByRequestId();
+	            //get back.knowledge name by knowledgeId
+	            _this._knowledgeService.findKnowledgeById(_this.knowledgeId)
+	                .subscribe(function (knowledge) {
+	                _this.knowledge = knowledge;
+	                //this.knowledgeName = this.knowledge.name;
+	            });
+	        }, function (error) { return console.log(error); });
 	    };
 	    RequestDetailClientComponent.prototype.seeMore = function () {
 	        this.num = this.num + 5;
@@ -6265,6 +6257,7 @@ webpackJsonp([2],[
 	    };
 	    RequestDetailClientComponent.prototype.action = function (data) {
 	        if (data === 'new-offer') {
+	            this.num = 5;
 	            this.offers = [];
 	            this.getOfferByRequestId();
 	        }
@@ -6272,15 +6265,20 @@ webpackJsonp([2],[
 	    RequestDetailClientComponent.prototype.getOfferByRequestId = function () {
 	        var _this = this;
 	        //get front.offer of the templates when load the page
-	        this._offerService.getOfferByRequestId(this.id, this.num).subscribe(function (offers) {
-	            for (var i = 0; i < offers.length; i++) {
-	                if (offers[i].status === 'pending') {
-	                    offers[i].status = 'Đang chờ';
+	        this._offerService.getOfferByRequestId(this._id, this.num).subscribe(function (offers) {
+	            if (offers) {
+	                for (var i = 0; i < offers.length; i++) {
+	                    if (offers[i].status === 'pending') {
+	                        offers[i].status = 'Đang chờ';
+	                    }
+	                    else {
+	                        offers[i].status = 'Được chấp nhận';
+	                    }
+	                    _this.offers.push(offers[i]);
 	                }
-	                else {
-	                    offers[i].status = 'Được chấp nhận';
-	                }
-	                _this.offers.push(offers[i]);
+	            }
+	            else {
+	                alert('Không có đề nghị nào');
 	            }
 	        }, function (error) {
 	            console.log(error);
@@ -6364,6 +6362,14 @@ webpackJsonp([2],[
 	                _this.subscribers = request.subscribers;
 	                _this.checkSubcribedUser = false;
 	            });
+	        });
+	    };
+	    RequestDetailClientComponent.prototype.removeOffer = function (id) {
+	        var _this = this;
+	        this._offerService.updateOffer(id, 'deactive').subscribe(function (offer) {
+	            console.log(offer);
+	            _this.offers = [];
+	            _this.getOfferByRequestId();
 	        });
 	    };
 	    RequestDetailClientComponent = __decorate([

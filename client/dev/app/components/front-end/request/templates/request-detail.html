@@ -86,12 +86,16 @@
                         <button class="btn btn-sm btn-success" (click)="addKshare(offer.user,offer._id)">Chấp thuận
                         </button>
                     </a>
-                    <a *ngIf="checkCreatedUser && checkIsAcceped">
+                    <!--<a *ngIf="checkCreatedUser && checkIsAcceped">
                         <button disabled class="btn btn-sm btn-success">Chấp thuận</button>
+                    </a>-->
+                    <a *ngIf="checkCreatedUser || userToken === offer.user">
+                        <button (click)="removeOffer(offer._id)" class="btn btn-sm btn-success">Xóa</button>
                     </a>
                 </div>
             </div>
         </div>
+        <a (click)="seeMore()">Xem thêm</a>
     </div>
 </div>
 <report *ngIf="request" reportedUser="{{request.user}}"></report>
