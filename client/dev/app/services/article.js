@@ -21,6 +21,8 @@ var ArticleService = (function () {
         this._cmtUrl = "/api/comment/article/:artId/:cmtId";
         this._cmtLike = "/api/comment/like/:artId/:cmtId/:user";
         this._cmtUnLike = "/api/comment/unlike/:artId/:cmtId/:user";
+        this._artLike = "/api/art/like/:artId/:user";
+        this._artUnLike = "/api/art/unlike/:artId/:user";
     }
     ArticleService.prototype.getAllArts = function (num) {
         var header = new http_1.Headers;
@@ -114,6 +116,7 @@ var ArticleService = (function () {
     ArticleService.prototype.removeComment = function (artId, cmtId) {
         return this._http.delete(this._cmtUrl.replace(':artId', artId).replace(':cmtId', cmtId)).map(function (r) { return r.json(); });
     };
+    //action like comment
     ArticleService.prototype.likeComment = function (artId, cmtId, user) {
         return this._http.get(this._cmtLike.replace(':artId', artId).replace(':cmtId', cmtId).replace(':user', user))
             .map(function (r) { return r.json(); })
@@ -121,6 +124,17 @@ var ArticleService = (function () {
     };
     ArticleService.prototype.unlikeComment = function (artId, cmtId, user) {
         return this._http.get(this._cmtUnLike.replace(':artId', artId).replace(':cmtId', cmtId).replace(':user', user))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    //action like article
+    ArticleService.prototype.likeArt = function (artId, user) {
+        return this._http.get(this._artLike.replace(':artId', artId).replace(':user', user))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    ArticleService.prototype.unlikeArt = function (artId, user) {
+        return this._http.get(this._artUnLike.replace(':artId', artId).replace(':user', user))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };

@@ -12,6 +12,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
+var private_chat_1 = require('./../../shared/private-chat');
 var article_1 = require('../../../services/article');
 var report_1 = require('../report/report');
 var comment_1 = require('./comment');
@@ -45,6 +46,15 @@ var detailArticleComponent = (function () {
             if ((art.ofUser == _this.userToken && art.status == 'private')
                 || (_this.roleToken == 'admin')
                 || (_this.roleToken != 'admin' && art.status == 'public')) {
+                //check user liked
+                var i = art.userLiked.indexOf(_this.userToken);
+                if (i >= 0) {
+                    _this.liked = true;
+                }
+                else {
+                    _this.liked = false;
+                }
+                console.log(_this.liked);
                 _this.article = art;
                 _this.tags = art.tagsFD;
                 _this.article.createdAt = new Date(_this.article.createdAt);
@@ -86,9 +96,6 @@ var detailArticleComponent = (function () {
         if (this.article != undefined) {
             $('.bodyArt').html(this.article.content);
         }
-        $("#btnRp").click(function () {
-            $("#btnRp").hide();
-        });
     };
     detailArticleComponent.prototype.editArt = function (id) {
         this.router.navigateByUrl('/article/edit/' + this.id);
@@ -128,13 +135,27 @@ var detailArticleComponent = (function () {
                 console.log("action is empty");
         }
     };
+    detailArticleComponent.prototype.unlikeArt = function () {
+        var _this = this;
+        this._articleService.unlikeArt(this.id, this.userToken).subscribe(function (like) {
+            _this.article.like = like;
+            _this.liked = false;
+        });
+    };
+    detailArticleComponent.prototype.likeArt = function () {
+        var _this = this;
+        this._articleService.likeArt(this.id, this.userToken).subscribe(function (like) {
+            _this.article.like = like;
+            _this.liked = true;
+        });
+    };
     detailArticleComponent = __decorate([
         core_1.Component({
             selector: 'detail-article',
             templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
             styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES, comment_1.commentComponent, tag_1.listTagComponent
+                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES, comment_1.commentComponent, tag_1.listTagComponent, private_chat_1.PrivateChatComponent
             ],
             providers: [article_1.ArticleService]
         })

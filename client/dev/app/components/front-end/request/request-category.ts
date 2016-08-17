@@ -14,13 +14,16 @@ import { RequestService } from '../../../services/requests';
 import { ArticleService } from '../../../services/article';
 import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance } from 'ng2-pagination';
 import { Subscription } from 'rxjs/Subscription';
+import { PrivateChatComponent } from './../../shared/private-chat';
+
+
 import {listTagComponent} from '../tag/tag';
 declare var $:any;
 @Component({
     selector: 'request-category-cli',
     templateUrl: 'client/dev/app/components/front-end/request/templates/request-category.html',
     styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
-    directives: [ROUTER_DIRECTIVES,PaginationControlsCmp,listTagComponent],
+    directives: [ROUTER_DIRECTIVES,PaginationControlsCmp,listTagComponent,PrivateChatComponent],
     providers:[ArticleService,PaginationService],
     pipes: [PaginatePipe]
 })

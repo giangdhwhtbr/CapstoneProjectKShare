@@ -66,9 +66,8 @@ module.exports = class RequestController {
           request.tags = _data.rq.tags;
           request.status = _data.rq.status;
           request.updatedAt = new Date();
-          console.log("go 0");
+
           TagDAO.createArrayTag(_data.newTag).then((tags) => {
-            console.log("go 1");
 
             RequestDAO.updateRequestById(request).then(request => {
               if (tags.length > 0) {
@@ -77,7 +76,6 @@ module.exports = class RequestController {
                 });
                 request.save();
               }
-              console.log("go 2");
               res.status(200).json(request);
             }).catch(error => res.status(400).json(error));
           }).catch((error) => res.status(400).json(error));

@@ -9,10 +9,10 @@ const KSpaceSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    learner: {
+    learners: [{
         type: String,
         required: true
-    },
+    }],
     chatlog: [
         {
             createdAt: {
@@ -85,7 +85,11 @@ const KSpaceSchema = new mongoose.Schema({
     finishedAt: {
         type: Date,
     },
-    articleIds: [{type: String}]
+    articleIds: [{type: String}],
+    tags: [{
+        type: String
+    }]
+
 });
 
 module.exports = KSpaceSchema;

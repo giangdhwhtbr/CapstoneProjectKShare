@@ -32,17 +32,17 @@ var KSpaceService = (function () {
             .put(this._kspaceUrl.replace(':id', id), options)
             .map(function (r) { return r.json(); });
     };
-    KSpaceService.prototype.addKSpace = function (learner, lecturer, requestId, requestTitle, offerId) {
+    KSpaceService.prototype.addKSpace = function (kspace) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var _kspace = JSON.stringify({
-            lecturer: lecturer,
-            learner: learner,
-            requestId: requestId,
-            requestTitle: requestTitle,
-            offerId: offerId
+            lecturer: kspace.lecturer,
+            learners: kspace.learners,
+            requestId: kspace.requestId,
+            requestTitle: kspace.requestTitle,
+            offerId: kspace.offerId,
+            tags: kspace.tags
         });
-        console.log(_kspace);
         return this._http
             .post(this._kspaceUrl.replace(':id', ''), _kspace, options)
             .map(function (r) { return r.json(); });

@@ -21,6 +21,17 @@ var ChatService = (function () {
             .get(this._chatRoomUrl.replace(':user', username), options)
             .map(function (r) { return r.json(); });
     };
+    ChatService.prototype.createChatRoomAdmin = function (user1, user2) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _data = JSON.stringify({
+            user1: user1,
+            user2: user2
+        });
+        return this._http
+            .post(this._chatRoomUrl.replace(':user', ''), _data, options)
+            .map(function (r) { return r.json(); });
+    };
     ChatService.prototype.handleError = function (error) {
         return Observable_1.Observable.throw(error.json().error || 'Server error');
     };

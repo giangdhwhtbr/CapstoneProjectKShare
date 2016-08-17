@@ -12,13 +12,16 @@ var common_1 = require('@angular/common');
 var report_1 = require('../../../services/report');
 var filter_1 = require('../shared/filter');
 var ReportListComponent = (function () {
-    function ReportListComponent(fb, _reportService, router) {
+    function ReportListComponent(fb, _reportService, router, _chatService) {
         this._reportService = _reportService;
         this.router = router;
+        this._chatService = _chatService;
         this.pageTitle = 'Report List';
         this.pendingReports = [];
         this.handlingReports = [];
         this.filter = '';
+        this.roleToken = localStorage.getItem('role');
+        this.userToken = localStorage.getItem('username');
     }
     ReportListComponent.prototype.ngOnInit = function () {
         this.getAllPending();
@@ -31,6 +34,11 @@ var ReportListComponent = (function () {
             .subscribe(function (reports) {
             _this.pendingReports = reports;
         });
+    };
+    ReportListComponent.prototype.openReportedPage = function (link) {
+        var specs = 'width=1200,height=1200';
+        var url = link;
+        window.open(url, '', specs);
     };
     ReportListComponent.prototype.getAllHandling = function () {
         var _this = this;
@@ -60,6 +68,19 @@ var ReportListComponent = (function () {
                 _this.getAllPending();
                 _this.getAllHandling();
             });
+        }
+    };
+    ReportListComponent.prototype.createChatRoom = function (reportedUser) {
+        if (reportedUser !== this.userToken) {
+            this._chatService.createChatRoomAdmin(this.userToken, reportedUser)
+                .subscribe(function (chatRoom) {
+                alert('Phòng trò chuyện đã được tạo');
+                console.log(reportedUser);
+                console.log('create chatRoom successfully');
+            });
+        }
+        else {
+            alert('Đã có phòng trò chuyện');
         }
     };
     ReportListComponent = __decorate([

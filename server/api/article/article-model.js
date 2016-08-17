@@ -18,6 +18,7 @@ const articleSchema = {
     status: {type: String, required: true, default: 'public',enum: ['public', 'pending', 'private','deactivate']},
     like:{type:Number,default:0 },
     userLiked:[{type:String}],
+    userUnLiked:[{type:String}],
     comments:[{
         user:{type:String},
         content:{type:String},

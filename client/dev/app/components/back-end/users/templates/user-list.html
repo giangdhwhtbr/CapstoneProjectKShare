@@ -76,7 +76,7 @@
                     <tbody>
                         <tr *ngFor="let user of users | stringFilter: filter|paginate: { itemsPerPage: 10, currentPage: page }">
                           <td></td>
-                          <td>{{user.username}}</td>
+                          <td><a (click)="openUserProfile(user.username)">{{user.username}}</a></td>
                           <td>{{user.fullName}}</td>
                           <td>{{user.displayname}}</td>
                           <td>{{user.birthday | date:"dd/MM/yyyy"}}</td>

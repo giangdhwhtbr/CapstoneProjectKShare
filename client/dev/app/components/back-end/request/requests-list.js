@@ -38,6 +38,11 @@ var RequestListComponent = (function () {
     RequestListComponent.prototype.ngOnInit = function () {
         this.getAllRequest();
     };
+    RequestListComponent.prototype.openRequest = function (requestId) {
+        var specs = 'width=1200,height=1200';
+        var url = '/requests/' + requestId + '/info';
+        window.open(url, '', specs);
+    };
     RequestListComponent.prototype.deactivateRequest = function (id) {
         var _this = this;
         this._requestService

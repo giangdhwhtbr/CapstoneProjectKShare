@@ -35,7 +35,6 @@ var UserListComponent = (function () {
         this._userService
             .getAllUsers()
             .subscribe(function (users) {
-            console.log(users);
             for (var i = 0; i < users.length; i++) {
                 if (users[i].birthday) {
                     users[i].birthday = new Date(users[i].birthday);
@@ -51,6 +50,11 @@ var UserListComponent = (function () {
             _this.errorMessage = error.message;
             console.log(error);
         });
+    };
+    UserListComponent.prototype.openUserProfile = function (username) {
+        var specs = 'width=1200,height=1200';
+        var url = '/user/' + username;
+        window.open(url, '', specs);
     };
     UserListComponent.prototype.addUser = function (user) {
         var _this = this;

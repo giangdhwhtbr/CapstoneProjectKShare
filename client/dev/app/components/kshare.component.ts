@@ -48,7 +48,7 @@ import { CreateRequestComponent } from "./back-end/request/request-create";
     ROUTER_DIRECTIVES,
     HeaderComponent,
     SideBarComponent,
-    FooterComponent
+    FooterComponent,
     //FriendListComponent
   ],
   precompile: [

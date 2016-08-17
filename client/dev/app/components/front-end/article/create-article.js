@@ -14,6 +14,7 @@ var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
 var tag_1 = require('../../../services/tag');
 var primeng_1 = require('primeng/primeng');
+var private_chat_1 = require('./../../shared/private-chat');
 var CKEditor = (function () {
     function CKEditor(_elm) {
         CKEDITOR.replace(_elm.nativeElement);
@@ -167,8 +168,8 @@ var CreateArticleComponent = (function () {
         this.contentCk = CKEDITOR.instances.editor1.getData();
         var tags = [];
         tags = this.filterONTag();
-        this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (article) {
-            _this.router.navigateByUrl('/article/' + article._id);
+        this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (articleId) {
+            _this.router.navigateByUrl('/article/' + articleId);
         }, function (error) {
             console.log(error.text());
         });
@@ -178,7 +179,7 @@ var CreateArticleComponent = (function () {
             selector: 'create-article',
             templateUrl: 'client/dev/app/components/front-end/article/templates/create-article.html',
             styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
-            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES],
+            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
             providers: [article_1.ArticleService, tag_1.TagService]
         })
     ], CreateArticleComponent);

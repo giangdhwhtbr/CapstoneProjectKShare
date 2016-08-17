@@ -54,7 +54,7 @@ notificationSchema.statics.getNotificationByUser = (user,num) => {
               "user": user
           })
           .sort({_id:-1})
-          .limit(num)
+          .limit(num + 3)
           .exec((err, notifications) => {
               err ? reject(err)
                   : resolve(notifications);

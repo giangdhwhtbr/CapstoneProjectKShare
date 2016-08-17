@@ -20,13 +20,22 @@
                 </div>
             </div>
             <div class="row">
-                <div class="btn-group btn-art">
-                    <a *ngIf="roleToken=='admin' || article.ofUser==userToken" class="btn btn-primary "
-                       href="/article/edit/{{article._id}} ">Edit</a>
+                <div class="right">
+                    <a *ngIf="!liked && userToken" (click)="likeArt()" class="waves-effect waves-light btn-flat" >
+                        <i class="material-icons left">favorite_border</i>{{article.like}}
+                    </a>
+                    <a *ngIf="liked && userToken" (click)="unlikeArt()" class="waves-effect waves-light btn-flat" >
+                        <i class="material-icons left">favorite</i>{{article.like}}
+                    </a>
+                    <a *ngIf="roleToken=='admin' || article.ofUser==userToken" class="waves-effect waves-light btn-flat"
+                       href="/article/edit/{{article._id}}"><i class="material-icons left">mode_edit</i>Sửa</a>
                     <a *ngIf="(roleToken=='admin' || article.ofUser==userToken)&& article.status!='deactivate'"
-                       type="button" class="btn btn-danger" data-toggle="modal" data-target="#mdCfClose">Đóng bài
-                        viết</a>
-                    <a class="btn btn-primary " data-toggle="modal" id="btnRp" data-target="#myModal">báo cáo</a>
+                       type="button" class="waves-effect waves-light btn-flat" data-toggle="modal" data-target="#mdCfClose">
+                        <i class="material-icons left">delete</i> đóng
+                    </a>
+                    <a class="waves-effect waves-light btn-flat" data-toggle="modal" id="btnRp" data-target="#myModal">
+                        <i class="material-icons left">feedback</i> báo cáo
+                    </a>
                 </div>
             </div>
             <div class="messOff col s12 m12 l12">
@@ -59,7 +68,6 @@
                 <div *ngFor="let cmt of article.comments" class="col s12 m10 l10">
                     <comment [comment]="cmt" [author]="article.ofUser" (sendDataToP)="actionComment($event)"></comment>
                 </div>
-
             </div>
 
 
@@ -103,3 +111,4 @@
         </div>
     </div>
 </div>
+<private-chat></private-chat>

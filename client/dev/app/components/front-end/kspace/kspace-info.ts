@@ -6,20 +6,19 @@ import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { KSpaceService } from '../../../services/kspace';
 import { ArticleService } from '../../../services/article';
 import { NgForm }    from '@angular/forms';
-import { SEMANTIC_COMPONENTS, SEMANTIC_DIRECTIVES } from "ng-semantic";
+import { PrivateChatComponent } from './../../shared/private-chat';
+
 declare var $:any;
+declare var Materialize:any;
 @Component ({
     templateUrl:'client/dev/app/components/front-end/kspace/templates/kspace-info.html',
     directives: [
         ROUTER_DIRECTIVES,
-        SEMANTIC_COMPONENTS,
-        SEMANTIC_DIRECTIVES
     ],
     providers:[ArticleService]
 })
 
 export class KSpaceInfoComponent implements OnInit {
-    accessRoomBtn:string = 'Access Room';
     kspaceId:string;
     lecturer:string;
     ratePoint:number;
@@ -34,6 +33,11 @@ export class KSpaceInfoComponent implements OnInit {
 
     isFinish:boolean=false;
     finishDate:any;
+    images:Array<any> = [];
+    boards:Array<any> = [];
+    title:string;
+
+    isCreatingArt:boolean=false;
 
     constructor(private router:Router, private route:ActivatedRoute, private _kspaceService:KSpaceService, private _articleService:ArticleService) {
         this.route.params.subscribe(params => {
@@ -42,13 +46,14 @@ export class KSpaceInfoComponent implements OnInit {
         })
     }
 
-    images:Array<any> = [];
-    boards:Array<any> = [];
-    title:string;
 
-    isCreatingArt:boolean=false;
 
     ngOnInit():void {
+        this.loadAllData();
+        $('#preLoad').hide();
+    }
+
+    loadAllData(){
         this._kspaceService
             .getKSpaceById(this.kspaceId)
             .subscribe(
@@ -84,7 +89,6 @@ export class KSpaceInfoComponent implements OnInit {
                 }
             )
         console.log(this.isCreatingArt);
-
     }
 
     onSubmit(value):void {
@@ -143,19 +147,28 @@ export class KSpaceInfoComponent implements OnInit {
     }
 
     createArt(){
-        let contentArt='';
-        for(let i =0 ; i< this.images.length;i++){
-            contentArt+="<h5>"+this.images[i].des+"</h5><br>";
-            contentArt+='<img class="responsive-img" src="'+this.images[i].url+'" style="background-color: black; border-radius: 10px;"><br>';
+
+        if(this.images.length==0&&this.boards.length==0){
+            Materialize.toast('Không có dữ liệu để tạo', 4000);
+        }else{
+            $('#preLoad').show();
+            let contentArt='';
+            for(let i =0 ; i< this.images.length;i++){
+                contentArt+="<h5>ảnh "+this.images[i].des+"</h5><br>";
+                contentArt+='<img class="responsive-img" src="'+this.images[i].url+'" style="background-color: black; border-radius: 10px;"><br>';
+            }
+            for(let i =0 ; i< this.boards.length;i++){
+                contentArt+="<h5>bảng "+this.boards[i].des+"</h5><br>";
+                contentArt+='<img class="responsive-img" src="'+this.boards[i].url+'" style="background-color: whitesmoke; border-radius: 10px;" ><br>';
+            }
+            let dateKs = new Date(this.kspace.createdAt);
+            dateKs = dateKs.toLocaleDateString();
+            let title =  this.kspace.requestTitle+" " +dateKs ;
+            this._articleService.addArticle(title,contentArt,this.kspace.tags,[],"private",this.lecturer).subscribe((artId)=>{
+                this.router.navigateByUrl('/article/edit/'+artId);
+            });
         }
-        for(let i =0 ; i< this.boards.length;i++){
-            contentArt+="<h5>"+this.boards[i].des+"</h5><br>";
-            contentArt+='<img class="responsive-img" src="'+this.boards[i].url+'" style="background-color: black; border-radius: 10px;" ><br>';
-        }
-        let dateKs = new Date(this.kspace.createdAt);
-        dateKs = dateKs.toLocaleDateString();
-        let title =  this.kspace.requestTitle+" " +dateKs ;
-        this._articleService.addArticle(title,contentArt)
+
     }
 
     deleteElement(id:string){
@@ -171,5 +184,11 @@ export class KSpaceInfoComponent implements OnInit {
                 break;
             }
         }
+    }
+    cancleCreateArt(){
+        this.isCreatingArt=false;
+        this.images=[];
+        this.boards=[];
+        this.loadAllData();
     }
 }

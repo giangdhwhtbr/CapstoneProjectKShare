@@ -3,13 +3,14 @@
  */
 import { Component,OnInit } from '@angular/core';
 import { ROUTER_DIRECTIVES } from '@angular/router';
-
+import { PrivateChatComponent } from './../../shared/private-chat';
 
 @Component ({
   selector: 'home',
   templateUrl:'client/dev/app/components/front-end/home/templates/home.html',
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    PrivateChatComponent
   ]
 })
 

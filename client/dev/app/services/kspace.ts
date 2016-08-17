@@ -22,27 +22,28 @@ export class KSpaceService {
             .catch(this.handleError);
     }
 
-    finish(id:string){
+    finish(id:string) {
         let header = new Headers;
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
         return this._http
-            .put(this._kspaceUrl.replace(':id',id), options)
+            .put(this._kspaceUrl.replace(':id', id), options)
             .map((r) => r.json());
     }
 
-    addKSpace(learner:string, lecturer:string, requestId:string, requestTitle:string, offerId:string) {
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
+    addKSpace(kspace: KSpace): Observable<any> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
 
         let _kspace = JSON.stringify({
-            lecturer: lecturer,
-            learner: learner,
-            requestId: requestId,
-            requestTitle: requestTitle,
-            offerId: offerId,
+            lecturer: kspace.lecturer,
+            learners: kspace.learners,
+            requestId: kspace.requestId,
+            requestTitle: kspace.requestTitle,
+            offerId: kspace.offerId,
+            tags: kspace.tags
         });
-        console.log(_kspace);
+
         return this._http
             .post(this._kspaceUrl.replace(':id', ''), _kspace, options)
             .map((r) => r.json());

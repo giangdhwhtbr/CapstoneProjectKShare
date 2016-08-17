@@ -26,7 +26,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let a of artsAt| stringFilter: filter">
-                <td><a [routerLink]="['/article/',a._id]">{{a.title}}</a></td>
+                <td><a (click)="openArticle(a._id)">{{a.title}}</a></td>
                 <td>
                   <button *ngIf="a.status=='public'" type="button" class="btn btn-danger" (click)="deActiveArt(a._id,a.status)">
                                     deactivate
@@ -58,7 +58,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let a of artsDa| stringFilter: filter1">
-                <td><a [routerLink]="['/article/',a._id]">{{a.title}}</a></td>
+                <td><a (click)="openArticle(a._id)">{{a.title}}</a></td>
                 <td>
                   <button *ngIf="a.status=='deactivate'" type="button" class="btn btn-success" (click)="activeArt(a._id)">
                                     Active
@@ -91,7 +91,7 @@
             </thead>
             <tbody>
               <tr *ngFor="let a of artsPr| stringFilter: filter2">
-                <td><a [routerLink]="['/article/',a._id]">{{a.title}}</a></td>
+                <td><a (click)="openArticle(a._id)">{{a.title}}</a></td>
                 <td>
                   <button type="button" class="btn btn-danger" (click)="deActiveArt(a._id,a.status)">
                                     deactivate

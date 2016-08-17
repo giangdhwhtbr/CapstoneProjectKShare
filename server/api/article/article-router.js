@@ -53,6 +53,10 @@ module.exports = class ArticleRoutes {
             .put(ArticleController.editComment)
             .delete(ArticleController.removeComment);
 
+        router.route('/api/art/like/:artId/:user')
+            .get(ArticleController.likeArticle);
+        router.route('/api/art/unlike/:artId/:user')
+            .get(ArticleController.unlikeArticle);
 
 
     }

@@ -12,6 +12,7 @@ import {ArticleService} from '../../../services/article';
 import {TagService} from '../../../services/tag';
 import { AuthService } from '../../../services/auth';
 import {AutoComplete,SelectButton,SelectItem} from 'primeng/primeng';
+import { PrivateChatComponent } from './../../shared/private-chat';
 
 declare var $ :any;
 declare var CKEDITOR: any;
@@ -31,7 +32,7 @@ class CKEditor {
     selector: 'create-article',
     templateUrl: 'client/dev/app/components/front-end/article/templates/create-article.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
-    directives: [CKEditor, AutoComplete,ROUTER_DIRECTIVES],
+    directives: [CKEditor, AutoComplete,ROUTER_DIRECTIVES, PrivateChatComponent],
     providers: [ArticleService, TagService]
 })
 
@@ -196,8 +197,8 @@ export class CreateArticleComponent implements OnInit {
         this.contentCk = CKEDITOR.instances.editor1.getData();
         let tags:any[]=[];
         tags = this.filterONTag();
-        this._articleService.addArticle(this.titelArticle, this.contentCk,tags[0],tags[1],stt,this.userToken).subscribe((article)=> {
-                this.router.navigateByUrl('/article/'+article._id);
+        this._articleService.addArticle(this.titelArticle, this.contentCk,tags[0],tags[1],stt,this.userToken).subscribe((articleId)=> {
+                this.router.navigateByUrl('/article/'+articleId);
             },
             (error) => {
                 console.log(error.text());

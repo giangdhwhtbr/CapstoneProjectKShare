@@ -7,6 +7,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     }
 };
 var core_1 = require('@angular/core');
+var private_chat_1 = require('./../../shared/private-chat');
 var router_1 = require('@angular/router');
 var tag_1 = require('../../../services/tag');
 var friend_list_1 = require('../shared/friend-list');
@@ -157,7 +158,8 @@ var RequestListClientComponent = (function () {
                 friend_list_1.FriendListComponent,
                 request_create_1.CreateRequestComponent,
                 request_category_1.RequestCategoryComponent,
-                tag_2.listTagComponent
+                tag_2.listTagComponent,
+                private_chat_1.PrivateChatComponent
             ],
             providers: [tag_1.TagService]
         })

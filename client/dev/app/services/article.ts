@@ -19,6 +19,9 @@ export class ArticleService {
     private _cmtLike="/api/comment/like/:artId/:cmtId/:user";
     private _cmtUnLike="/api/comment/unlike/:artId/:cmtId/:user";
 
+    private _artLike="/api/art/like/:artId/:user";
+    private _artUnLike="/api/art/unlike/:artId/:user";
+
     constructor(private _http:Http) {
     }
 
@@ -131,7 +134,7 @@ export class ArticleService {
     removeComment(artId:string,cmtId:string):Observable<any>{
         return this._http.delete(this._cmtUrl.replace(':artId',artId).replace(':cmtId',cmtId)).map((r) => r.json());
     }
-
+    //action like comment
     likeComment(artId:string,cmtId:string,user:string):Observable<any> {
         return this._http.get(this._cmtLike.replace(':artId',artId).replace(':cmtId',cmtId).replace(':user',user))
             .map((r) => r.json())
@@ -139,6 +142,17 @@ export class ArticleService {
     }
     unlikeComment(artId:string,cmtId:string,user:string):Observable<any> {
         return this._http.get(this._cmtUnLike.replace(':artId',artId).replace(':cmtId',cmtId).replace(':user',user))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
+    //action like article
+    likeArt(artId:string,user:string):Observable<any> {
+        return this._http.get(this._artLike.replace(':artId',artId).replace(':user',user))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
+    unlikeArt(artId:string,user:string):Observable<any> {
+        return this._http.get(this._artUnLike.replace(':artId',artId).replace(':user',user))
             .map((r) => r.json())
             .catch(this.handleError);
     }

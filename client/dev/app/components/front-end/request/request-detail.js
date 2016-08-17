@@ -11,6 +11,7 @@ var router_1 = require('@angular/router');
 var offer_create_1 = require('../offer/offer-create');
 var report_1 = require('../report/report');
 var tag_1 = require('../tag/tag');
+var private_chat_1 = require('./../../shared/private-chat');
 var RequestDetailClientComponent = (function () {
     function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
         this._requestService = _requestService;
@@ -25,6 +26,7 @@ var RequestDetailClientComponent = (function () {
         //check if request is accepted
         this.checkIsAcceped = false;
         this.offers = [];
+        this.kspace = {};
         this.roleToken = localStorage.getItem('userrole');
         this.userToken = localStorage.getItem('username');
     }
@@ -89,18 +91,25 @@ var RequestDetailClientComponent = (function () {
         });
     };
     RequestDetailClientComponent.prototype.seeMore = function () {
-        this.num = this.num + 5;
-        this.getOfferByRequestId();
+    };
+    RequestDetailClientComponent.prototype.openModal = function () {
+        $('#modalOfferRequest').openModal();
     };
     RequestDetailClientComponent.prototype.ngAfterViewChecked = function () {
         if (this.request != undefined) {
             $('#bodyReq').html(this.request.description);
         }
     };
+    RequestDetailClientComponent.prototype.action = function (data) {
+        if (data === 'new-offer') {
+            this.getOfferByRequestId();
+        }
+    };
     RequestDetailClientComponent.prototype.getOfferByRequestId = function () {
         var _this = this;
         //get front.offer of the templates when load the page
         this._offerService.getOfferByRequestId(this.id, this.num).subscribe(function (offers) {
+            _this.offers = [];
             for (var i = 0; i < offers.length; i++) {
                 if (offers[i].status === 'pending') {
                     offers[i].status = 'Đang chờ';
@@ -126,11 +135,24 @@ var RequestDetailClientComponent = (function () {
             });
         }
     };
-    RequestDetailClientComponent.prototype.addKshare = function (learner, lecturer, requestId, requestTitle, offerId) {
+    RequestDetailClientComponent.prototype.addKshare = function (lecturer, offerId) {
         var _this = this;
+        //this.kspace ;
+        this.kspace.learners = [];
+        this.kspace.learners.push(this.request.user);
+        this.kspace.lecturer = lecturer;
+        this.kspace.requestId = this._id;
+        this.kspace.requestTitle = this.request.title;
+        this.kspace.offerId = offerId;
+        this.kspace.tags = this.request.tags;
+        for (var i = 0; i < this.request.subcribers.length; i++) {
+            this.kspace.learners.push(this.request.subcribers[i]);
+        }
+        console.log(this.kspace);
         this._kspaceService
-            .addKSpace(learner, lecturer, requestId, requestTitle, offerId)
+            .addKSpace(this.kspace)
             .subscribe(function (r) {
+            console.log(r);
             console.log('create kspace successfull');
             //update offer status
             _this._offerService.updateOffer(offerId, 'accepted')
@@ -139,7 +161,6 @@ var RequestDetailClientComponent = (function () {
             });
             _this.request.status = 'accepted';
             //update request status
-            console.log(_this.request);
             _this._requestService.updateRequest(_this.request, _this.request.tags, [])
                 .subscribe(function (c) {
                 console.log('change status request successfull');
@@ -174,6 +195,7 @@ var RequestDetailClientComponent = (function () {
                 router_1.ROUTER_DIRECTIVES,
                 offer_create_1.CreateOfferComponent,
                 report_1.ReportComponent,
+                private_chat_1.PrivateChatComponent,
                 tag_1.listTagComponent
             ]
         })

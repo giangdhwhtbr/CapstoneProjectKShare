@@ -28,25 +28,26 @@ module.exports = class KSpaceController {
         }
     }
 
-    //create a new front.KSpace controller
-    static createNew(req, res) {
-        var currentDate = new Date();
-        var kspace = {
-            lecturer: req.body.lecturer,
-            learner: req.body.learner,
-            requestId: req.body.requestId,
-            requestTitle: req.body.requestTitle,
-            offerId: req.body.offerId,
-            createdAt: currentDate
-        };
-        KSpaceDAO
-            .createNew(kspace)
-            .then(KSpace => res.status(200).json(KSpace))
-            .catch(error => {
-                console.log(error);
-                res.status(400).json(error)
-            });
-    }
+  //create a new front.KSpace controller
+  static createNew(req, res) {
+    var currentDate = new Date();
+    var kspace = {
+      lecturer : req.body.lecturer,
+      learners  : req.body.learners,
+      requestId: req.body.requestId,
+      requestTitle: req.body.requestTitle,
+      offerId: req.body.offerId,
+      createdAt: currentDate,
+      tags: req.body.tags
+    };
+    KSpaceDAO
+      .createNew(kspace)
+      .then(KSpace => res.status(200).json(KSpace))
+      .catch(error => {
+        console.log(error);
+        res.status(400).json(error)
+      });
+  }
 
     static updateChatLogs(data) {
 
@@ -135,29 +136,28 @@ module.exports = class KSpaceController {
                             kspace.rateAve = req.body.rate;
                         }
 
-                        kspace.reviews.push(_review);
-                        console.log(kspace);
-                        // Update KSpace
-                        KSpaceDAO.updateKSpaceById(kspace)
-                            .then(kspace => {
-                                var _rateData = {
-                                    kspaceId: kspace._id,
-                                    rate: req.body.rate,
-                                    ratedUser: username,
-                                    rateAt: currentDate
-                                };
-                                // Need to update User's rating -> Find user by username
-                                UserDAO.getUserByUserName(kspace.lecturer)
-                                    .then(user => {
-                                        if (!user.rates.length) {
-                                            var sum = 0;
-                                            for (var r in user.rates) {
-                                                sum += user.rates[r].rate;
-                                            }
-                                            user.rateAve = sum / user.rates.length;
-                                        } else {
-                                            user.rateAve = req.body.rate
-                                        }
+          kspace.reviews.push(_review);
+          // Update KSpace
+          KSpaceDAO.updateKSpaceById(kspace)
+            .then(kspace => {
+              var _rateData = {
+                kspaceId: kspace._id,
+                rate: req.body.rate,
+                ratedUser: username,
+                rateAt: currentDate
+              };
+              // Need to update User's rating -> Find user by username
+              UserDAO.getUserByUserName(kspace.lecturer)
+                .then(user => {
+                  if(!user.rates.length){
+                    var sum = 0;
+                    for (var r in user.rates){
+                      sum += user.rates[r].rate;
+                    }
+                    user.rateAve = sum/user.rates.length;
+                  } else {
+                    user.rateAve = req.body.rate
+                  }
 
                                         user.rates.push(_rateData);
 

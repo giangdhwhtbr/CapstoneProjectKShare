@@ -184,7 +184,6 @@ var UserService = (function () {
             .get(this._isUserExistUrl.replace(':username', username));
     };
     UserService.prototype.acceptFriendRequest = function (user1, user2) {
-        console.log(user1 + ' ' + user2);
         return this._http
             .get(this._friendshipStatusUrl.replace(':user1', user1).replace(':user2', user2));
     };

@@ -59,7 +59,6 @@ module.exports = class userController {
         if (!req.body.role) {
             user.role = "normal";
         }
-      console.log(user);
         userDAO
             .createNew(user)
             .then((user) => {

@@ -1,19 +1,34 @@
 <div class="container article">
     <div *ngIf="isEdited">
-
         <div class="titleDiv row">
             <div class="col-xs-12">
                 <label for="inputTitle">Title</label>
                 <input class="form-control input-sm" id="inputTitle" [(ngModel)]="titelArticle" type="text">
             </div>
         </div>
-        <div class="row">
-            <div class="col-xs-2">
-                <label for="inputTitle">Status</label>
-                <select #stt class="form-control input-sm">
-                    <option value="public" selected>Public</option>
-                    <option value="private">Private</option>
-                </select>
+        <div *ngIf="art">
+            <div class="row">
+                <div class="col-xs-2">
+                    <label for="inputTitle">Status</label>
+                    <select [(ngModel)]="stt" class="form-control input-sm">
+                        <option value="public">Public</option>
+                        <option value="private">Private</option>
+                    </select>
+                </div>
+                <!--<div *ngIf="art.status=='public'" class="col-xs-2">-->
+                    <!--<label for="inputTitle">Status</label>-->
+                    <!--<select #stt class="form-control input-sm">-->
+                        <!--<option value="public" selected>Public</option>-->
+                        <!--<option value="private">Private</option>-->
+                    <!--</select>-->
+                <!--</div>-->
+                <!--<div *ngIf="art.status=='private'" class="col-xs-2">-->
+                    <!--<label for="inputTitle">Status</label>-->
+                    <!--<select #stt class="form-control input-sm">-->
+                        <!--<option value="public">Public</option>-->
+                        <!--<option value="private" selected>Private</option>-->
+                    <!--</select>-->
+                <!--</div>-->
             </div>
         </div>
         <div class="editor">
@@ -116,7 +131,7 @@
                         [multiple]="true" [(ngModel)]="tags">
         </p-autoComplete>
         <!--end tags-->
-        <button type="button" class="btn btn-primary" (click)="editArticle(stt.value)">Submit</button>
+        <button type="button" class="btn btn-primary" (click)="editArticle()">Submit</button>
     </div>
     <div *ngIf="!isEdited">
         <div class="noti-err">
@@ -129,3 +144,4 @@
     </div>
 
 </div>
+<private-chat></private-chat>

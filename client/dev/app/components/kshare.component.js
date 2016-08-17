@@ -50,7 +50,7 @@ var KshareComponent = (function () {
                 router_1.ROUTER_DIRECTIVES,
                 header_1.HeaderComponent,
                 side_bar_1.SideBarComponent,
-                footer_1.FooterComponent
+                footer_1.FooterComponent,
             ],
             precompile: [
                 home_1.HomeComponent,

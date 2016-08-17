@@ -157,6 +157,7 @@ requestSchema.statics.getRequestByUser = (user, x) => {
             })
             .skip(x-5)
             .limit(5)
+            .sort({"updatedAt":-1})
             .exec((err, requests) => {
                 err ? reject(err)
                     : resolve(requests);
@@ -226,6 +227,7 @@ requestSchema.statics.getAPage = (start, stt) => {
             });
     });
 }
+
 requestSchema.statics.getTot = (stt) => {
 
     return new Promise((resolve, reject) => {

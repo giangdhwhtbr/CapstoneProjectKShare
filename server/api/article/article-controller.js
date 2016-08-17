@@ -169,7 +169,7 @@ module.exports = class ArticleController {
                             //pour full data of tag to article
                             article.tagsFD = ts;
                             article.save();
-                            res.status(200).json(article);
+                            res.status(200).json(article._id);
                         }).catch((err)=>res.status(400).json(err));
 
 
@@ -233,6 +233,23 @@ module.exports = class ArticleController {
             }).catch((error)=>res.status(400).json(error));
         }
     }
+    static likeArticle(req,res){
+        if (req.params && req.params.artId && req.params.user  ) {
+            ArticleDAO.getArticleById(req.params.artId).then(article => {
+                let i = article.userLiked.indexOf(req.params.user);
+                let j = article.userUnLiked.indexOf(req.params.user);
+                if(i<0){
+                    article.like+=1;
+                    article.userLiked.push(req.params.user);
+                    if(j>=0){
+                        article.userUnLiked.splice(j,1);
+                    }
+                }
+                article.save();
+                res.status(200).json(article.like);
+            }).catch((error)=>res.status(400).json(error));
+        }
+    }
     static unlikeComment(req,res){
         if (req.params && req.params.artId && req.params.cmtId && req.params.user  ) {
             ArticleDAO.getArticleById(req.params.artId).then(article => {
@@ -252,6 +269,23 @@ module.exports = class ArticleController {
                     }
                 }
                 res.status(200).json(article.comments);
+            }).catch((error)=>res.status(400).json(error));
+        }
+    }
+    static unlikeArticle(req,res){
+        if (req.params && req.params.artId && req.params.user  ) {
+            ArticleDAO.getArticleById(req.params.artId).then(article => {
+                let i = article.userLiked.indexOf(req.params.user);
+                let j = article.userUnLiked.indexOf(req.params.user);
+                if(j<0){
+                    article.like-=1;
+                    article.userUnLiked.push(req.params.user);
+                    if(i>=0){
+                        article.userLiked.splice(i,1);
+                    }
+                }
+                article.save();
+                res.status(200).json(article.like);
             }).catch((error)=>res.status(400).json(error));
         }
     }

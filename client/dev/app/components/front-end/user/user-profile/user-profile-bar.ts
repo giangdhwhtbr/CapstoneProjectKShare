@@ -13,6 +13,7 @@ import { Subscription }       from 'rxjs/Subscription';
 import { UserService } from '../../../../services/users';
 import { AuthService } from '../../../../services/auth';
 import { NotificationService } from '../../../../services/notification';
+import { ReportComponent } from '../../report/report';
 
 //interfaces
 import { User } from '../../../../interface/user';
@@ -24,7 +25,8 @@ import { Notification } from '../../../../interface/notification';
   templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile-bar.html',
   styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    ReportComponent
   ]
 })
 
@@ -85,10 +87,8 @@ export class UserProfileBarComponent {
       this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then((r) => {
         this.linkImg = '/uploads/' + r[0].filename;
         this.userProfile.linkImg = this.linkImg;
-        console.log(this.linkImg);
         this._userService.updateUser(this.userProfile, []).subscribe(r => {
           console.log("update link profile picture successful");
-          console.log(this.userProfile.linkImg);
         });
       }, (error) => {
         console.error(error);
@@ -116,7 +116,6 @@ export class UserProfileBarComponent {
       //save notification to database
       this._noti.createNotification(title, this.name, link).subscribe(
         (notification) => {
-          console.log(notification);
         });
     } else {
       alert("Bạn đã gửi kết bạn rồi!");
@@ -135,6 +134,11 @@ export class UserProfileBarComponent {
       this._userService
         .deleteFriendRequest(this.name, this.userToken)
         .subscribe(() => {
+        });
+      this._userService
+        .deactivateChatRoom(this.name, this.userToken)
+        .subscribe(() => {
+
         });
       this.getFriendList();
       this.isFriend = false;

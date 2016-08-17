@@ -14,6 +14,7 @@ var CreateOfferComponent = (function () {
         this._authService = _authService;
         this._noti = _noti;
         this._requestService = _requestService;
+        this.sendDataToP = new core_1.EventEmitter();
         this.user = localStorage.getItem('username');
         this.offerForm = fb.group({
             "requestId": [""],
@@ -33,7 +34,8 @@ var CreateOfferComponent = (function () {
                 //save notification to database
                 _this._noti.createNotification(title, request.user, link).subscribe(function (notification) {
                     console.log(notification);
-                    window.location.reload();
+                    _this.sendDataToP.emit('new-offer');
+                    $('#modalOfferRequest').closeModal();
                 });
             });
         }, function (error) {
@@ -43,6 +45,9 @@ var CreateOfferComponent = (function () {
     __decorate([
         core_1.Input('rid')
     ], CreateOfferComponent.prototype, "rid");
+    __decorate([
+        core_1.Output()
+    ], CreateOfferComponent.prototype, "sendDataToP");
     CreateOfferComponent = __decorate([
         core_1.Component({
             selector: 'offer-create',

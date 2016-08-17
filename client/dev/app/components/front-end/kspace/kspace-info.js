@@ -12,7 +12,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
-var ng_semantic_1 = require("ng-semantic");
 var KSpaceInfoComponent = (function () {
     function KSpaceInfoComponent(router, route, _kspaceService, _articleService) {
         var _this = this;
@@ -20,7 +19,6 @@ var KSpaceInfoComponent = (function () {
         this.route = route;
         this._kspaceService = _kspaceService;
         this._articleService = _articleService;
-        this.accessRoomBtn = 'Access Room';
         this.isFinish = false;
         this.images = [];
         this.boards = [];
@@ -31,6 +29,10 @@ var KSpaceInfoComponent = (function () {
         });
     }
     KSpaceInfoComponent.prototype.ngOnInit = function () {
+        this.loadAllData();
+        $('#preLoad').hide();
+    };
+    KSpaceInfoComponent.prototype.loadAllData = function () {
         var _this = this;
         this._kspaceService
             .getKSpaceById(this.kspaceId)
@@ -120,19 +122,28 @@ var KSpaceInfoComponent = (function () {
         this.isCreatingArt = true;
     };
     KSpaceInfoComponent.prototype.createArt = function () {
-        var contentArt = '';
-        for (var i = 0; i < this.images.length; i++) {
-            contentArt += "<h5>" + this.images[i].des + "</h5><br>";
-            contentArt += '<img class="responsive-img" src="' + this.images[i].url + '" style="background-color: black; border-radius: 10px;"><br>';
+        var _this = this;
+        if (this.images.length == 0 && this.boards.length == 0) {
+            Materialize.toast('Không có dữ liệu để tạo', 4000);
         }
-        for (var i = 0; i < this.boards.length; i++) {
-            contentArt += "<h5>" + this.boards[i].des + "</h5><br>";
-            contentArt += '<img class="responsive-img" src="' + this.boards[i].url + '" style="background-color: black; border-radius: 10px;" ><br>';
+        else {
+            $('#preLoad').show();
+            var contentArt = '';
+            for (var i = 0; i < this.images.length; i++) {
+                contentArt += "<h5>ảnh " + this.images[i].des + "</h5><br>";
+                contentArt += '<img class="responsive-img" src="' + this.images[i].url + '" style="background-color: black; border-radius: 10px;"><br>';
+            }
+            for (var i = 0; i < this.boards.length; i++) {
+                contentArt += "<h5>bảng " + this.boards[i].des + "</h5><br>";
+                contentArt += '<img class="responsive-img" src="' + this.boards[i].url + '" style="background-color: whitesmoke; border-radius: 10px;" ><br>';
+            }
+            var dateKs = new Date(this.kspace.createdAt);
+            dateKs = dateKs.toLocaleDateString();
+            var title = this.kspace.requestTitle + " " + dateKs;
+            this._articleService.addArticle(title, contentArt, this.kspace.tags, [], "private", this.lecturer).subscribe(function (artId) {
+                _this.router.navigateByUrl('/article/edit/' + artId);
+            });
         }
-        var dateKs = new Date(this.kspace.createdAt);
-        dateKs = dateKs.toLocaleDateString();
-        var title = this.kspace.requestTitle + " " + dateKs;
-        this._articleService.addArticle(title, contentArt);
     };
     KSpaceInfoComponent.prototype.deleteElement = function (id) {
         for (var i = 0; i < this.images.length; i++) {
@@ -148,13 +159,17 @@ var KSpaceInfoComponent = (function () {
             }
         }
     };
+    KSpaceInfoComponent.prototype.cancleCreateArt = function () {
+        this.isCreatingArt = false;
+        this.images = [];
+        this.boards = [];
+        this.loadAllData();
+    };
     KSpaceInfoComponent = __decorate([
         core_1.Component({
             templateUrl: 'client/dev/app/components/front-end/kspace/templates/kspace-info.html',
             directives: [
                 router_1.ROUTER_DIRECTIVES,
-                ng_semantic_1.SEMANTIC_COMPONENTS,
-                ng_semantic_1.SEMANTIC_DIRECTIVES
             ],
             providers: [article_1.ArticleService]
         })

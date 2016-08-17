@@ -64,14 +64,15 @@ export class RequestFriendRecordComponent {
         //save notification to database
         this._noti.createNotification(title, this.requestUser, link).subscribe(
           (notification) => {
-            console.log('create a notification to ' + this.name);
+            this.sendDataToP.emit("accept");
+            // var data = [this.requestUser, this.name];
+            // this.socket.emit('chatroom-friend', data);
+            alert('Đã là bạn bè');
+            this.router.navigateByUrl('/user/' + this.requestUser);
           });
       }
     );
 
-    this.sendDataToP.emit("accept");
-    var data = [this.requestUser, this.name];
-    this.socket.emit('chatroom-friend', data);
   }
 
   getUserInformation(): void {
@@ -94,9 +95,10 @@ export class RequestFriendRecordComponent {
         .deleteFriendRequest(this.requestUser, this.name)
         .subscribe(() => {
           console.log('delete successfull');
-        })
-      this.isFriend = false;
-      alert("bạn đã hủy gửi lời  mời kết bạn");
+          this.sendDataToP.emit("accept");
+          this.isFriend = false;
+          alert("bạn đã hủy gửi lời  mời kết bạn");
+        });
     }
   }
 

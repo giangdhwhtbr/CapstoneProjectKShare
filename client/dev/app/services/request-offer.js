@@ -35,7 +35,6 @@ var OfferService = (function () {
             message: offer.message,
             user: offer.user
         });
-        //console.log(_offer);
         return this._http
             .post(this._Url.replace(':id', ''), _offer, options)
             .map(function (r) { return r.json(); });

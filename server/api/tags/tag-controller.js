@@ -77,13 +77,10 @@ module.exports = class TagController {
                     ArticleDAO
                         .getArticleByTagId(_id)
                         .then(art => {
-                            tag.articles = [];
-                            tag.request = [];
-                            console.log(art);
-                            console.log(tag);
+                            tag.articles=[];
+                            tag.request=[];
                             for (let a of art) {
                                 a.tagsFD.push(tag);
-                                console.log(a.tagsFD);
                                 a.save();
                             }
                             res.status(200).json({"mess": "Deactivate Successfully !"});
@@ -101,7 +98,7 @@ module.exports = class TagController {
                 .then((arts) => {
 
                     for (let i = arts.length - 1; i >= 0; i--) {
-                        if (arts[i].status === "deactivate") {
+                        if (arts[i].status === "deactivate"||arts[i].status === "private") {
                             let index = arts.indexOf(arts[i]);
                             if (index > -1) {
                                 arts.splice(index, 1);

@@ -4,6 +4,7 @@
 import { Component, OnInit, AfterViewChecked, Pipe, PipeTransform } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
+import { PrivateChatComponent } from './../../shared/private-chat';
 
 import { ArticleService } from '../../../services/article';
 import { AuthService } from '../../../services/auth';
@@ -23,7 +24,7 @@ declare var Materialize:any;
     templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
     directives: [
-        ROUTER_DIRECTIVES, ReportComponent, FORM_DIRECTIVES, commentComponent,listTagComponent
+        ROUTER_DIRECTIVES, ReportComponent, FORM_DIRECTIVES, commentComponent, listTagComponent, PrivateChatComponent
     ],
     providers: [ArticleService]
 })
@@ -46,6 +47,8 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
     cmtEditForm:ControlGroup;
     cntCmt:string;
     cmtId:string;
+
+    liked:boolean;
 
     constructor(fb:FormBuilder, public router:Router, private route:ActivatedRoute,
                 private _articleService:ArticleService,
@@ -70,6 +73,16 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
             if ((art.ofUser == this.userToken && art.status == 'private')
                 || (this.roleToken == 'admin')
                 || (this.roleToken != 'admin' && art.status == 'public')) {
+                //check user liked
+                let i = art.userLiked.indexOf(this.userToken);
+                if (i >= 0) {
+                    this.liked = true;
+                }else{
+                    this.liked=false;
+                }
+
+                console.log(this.liked);
+
                 this.article = art;
 
                 this.tags = art.tagsFD;
@@ -118,9 +131,6 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
         if (this.article != undefined) {
             $('.bodyArt').html(this.article.content);
         }
-        $("#btnRp").click(function () {
-            $("#btnRp").hide();
-        });
     }
 
     editArt(id:string) {
@@ -143,17 +153,17 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
                 });
                 break;
             case'edit':
-                this._articleService.editComment(this.id, data[0],data[2]).subscribe((cmts)=>{
+                this._articleService.editComment(this.id, data[0], data[2]).subscribe((cmts)=> {
                     this.article.comments = cmts;
                 });
                 break;
             case'like':
-                this._articleService.likeComment(this.id, data[0],this.userToken).subscribe((cmts)=>{
+                this._articleService.likeComment(this.id, data[0], this.userToken).subscribe((cmts)=> {
                     this.article.comments = cmts;
                 });
                 break;
             case'unlike':
-                this._articleService.unlikeComment(this.id, data[0],this.userToken).subscribe((cmts)=>{
+                this._articleService.unlikeComment(this.id, data[0], this.userToken).subscribe((cmts)=> {
                     this.article.comments = cmts;
                 });
                 break;
@@ -161,6 +171,19 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
                 console.log("action is empty");
         }
 
+    }
+
+    unlikeArt(){
+        this._articleService.unlikeArt(this.id,this.userToken).subscribe((like)=>{
+            this.article.like=like;
+            this.liked=false;
+        });
+    }
+    likeArt(){
+        this._articleService.likeArt(this.id,this.userToken).subscribe((like)=>{
+            this.article.like=like;
+            this.liked=true;
+        });
     }
 
 }

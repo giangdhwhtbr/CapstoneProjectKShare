@@ -20,7 +20,10 @@ declare var io:any;
     </div>
 
       <button id="draw-option"><i class="fa fa-bars fa-2x" aria-hidden="true"></i></button>
-      <canvas id="chalkboard" resize=true keepalive=true></canvas>
+      <div class="wrapper-chalkboard">
+        <canvas id="chalkboard" resize=true keepalive=true></canvas>
+      </div>
+
 
       <div id="draw-tools">
           <p id="new-page" (click)="newPage()"  href="#modal1" class="tool-btn">
