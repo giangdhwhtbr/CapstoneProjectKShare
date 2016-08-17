@@ -5647,6 +5647,7 @@ webpackJsonp([2],[
 	        this.num = 5;
 	        this.articles = [];
 	        this.height = 400;
+	        this.isExist = false;
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
@@ -5677,16 +5678,28 @@ webpackJsonp([2],[
 	                }
 	                _this.listArt.push(arts[i]);
 	            }
+	            if (!arts) {
+	                _this.isExist = false;
+	            }
 	        });
 	    };
 	    listArticleComponent.prototype.searchArticle = function (text) {
 	        var _this = this;
 	        this.listArt = [];
-	        this._artService.searchArticle(text).subscribe(function (arts) {
-	            for (var i = 0; i < arts.length; i++) {
-	                _this.listArt.push(arts[i]);
-	            }
-	        });
+	        if (!text) {
+	            this.getAllArticles();
+	            this.isExist = false;
+	        }
+	        else {
+	            this._artService.searchArticle(text).subscribe(function (arts) {
+	                for (var i = 0; i < arts.length; i++) {
+	                    _this.listArt.push(arts[i]);
+	                }
+	                if (arts.length <= 0) {
+	                    _this.isExist = true;
+	                }
+	            });
+	        }
 	    };
 	    listArticleComponent = __decorate([
 	        core_1.Component({
