@@ -181,5 +181,4 @@ articleSchema.plugin(relationship, {relationshipPathName: ['tags', 'knowledge']}
 
 const Article = mongoose.model('Article', articleSchema);
 
-
 module.exports = Article;
