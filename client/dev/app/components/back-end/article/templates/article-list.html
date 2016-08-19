@@ -1,113 +1,122 @@
-<div id="page-wrapper">
-  <div class="container-fluid">
+<nav>
+    <div class="nav-wrapper indigo darken-2">
+        <a style="margin-left: 20px;" class="breadcrumb">Bảng</a>
+        <a class="breadcrumb">Quản lý bài viết</a>
 
-    <ul class="nav nav-tabs">
-      <li class="active"><a data-toggle="tab" href="#tabAt">Hoạt động</a></li>
-      <li><a data-toggle="tab" href="#tabDa">Bị đóng</a></li>
-      <li><a data-toggle="tab" href="#tabPr">Riêng tư</a></li>
-    </ul>
-
-    <div class="tab-content">
-      <div id="tabAt" class="tab-pane fade in active">
-
-        <!-- /.row -->
-        <div class="col-lg-12">
-          <div class="input-group">
-            <input type="text" class="form-control" id="filter" placeholder="Tìm kiếm" [(ngModel)]="filter">
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Tiêu đề</th>
-                <th>Chức năng</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let a of artsAt| stringFilter: filter">
-                <td><a (click)="openArticle(a._id)">{{a.title}}</a></td>
-                <td>
-                  <button *ngIf="a.status=='public'" type="button" class="btn btn-danger" (click)="deActiveArt(a._id,a.status)">
-                                    deactivate
-                                </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="col-lg-12">
-          <p-paginator rows="10" totalRecords="{{total}}" pageLinkSize="10" (onPageChange)="paginate($event)"></p-paginator>
-        </div>
-      </div>
-      <div id="tabDa" class="tab-pane fade">
-        <!-- /.row -->
-        <div class="col-lg-12">
-          <div class="input-group">
-            <input type="text" class="form-control" id="filter1" placeholder="Tìm kiếm" [(ngModel)]="filter1">
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Tiêu đề</th>
-                <th>Chức năng</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let a of artsDa| stringFilter: filter1">
-                <td><a (click)="openArticle(a._id)">{{a.title}}</a></td>
-                <td>
-                  <button *ngIf="a.status=='deactivate'" type="button" class="btn btn-success" (click)="activeArt(a._id)">
-                                    Active
-                                </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="col-lg-12">
-          <p-paginator rows="10" totalRecords="{{total1}}" pageLinkSize="10" (onPageChange)="paginate1($event)"></p-paginator>
-        </div>
-      </div>
-      <div id="tabPr" class="tab-pane fade">
-
-        <!-- /.row -->
-        <div class="col-lg-12">
-          <div class="input-group">
-            <input type="text" class="form-control" id="filter2" placeholder="Tìm kiếm" [(ngModel)]="filter2">
-          </div>
-        </div>
-        <div class="col-lg-12">
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Tiêu đề</th>
-                <th>Chức năng</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr *ngFor="let a of artsPr| stringFilter: filter2">
-                <td><a (click)="openArticle(a._id)">{{a.title}}</a></td>
-                <td>
-                  <button type="button" class="btn btn-danger" (click)="deActiveArt(a._id,a.status)">
-                                    deactivate
-                                </button>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="col-lg-12">
-          <p-paginator rows="10" totalRecords="{{total2}}" pageLinkSize="10" (onPageChange)="paginate2($event)"></p-paginator>
-        </div>
-      </div>
-
+        <div style="margin-right: 20px;" id="timestamp" class="right"></div>
     </div>
-
-  </div>
+</nav>
+<div class="row">
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s3"><a href="#tabAt" class="active">Hoạt động</a></li>
+            <li class="tab col s3"><a href="#tabDa">Bị đóng</a></li>
+            <li class="tab col s3"><a href="#tabPr">Riêng tư</a></li>
+        </ul>
+    </div>
+    <div id="tabAt" class="col s12">
+        <div class="row">
+            <div class="col s12">
+                <div style="padding: 35px;" align="center" class="card">
+                    <div class="row">
+                        <div class="left card-title">
+                            <b>Quản lý bài viết</b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input #gb id="filter" type="text" pInputText>
+                            <label for="filter">Tìm kiếm</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p-dataTable [value]="artsAt" [rows]="10" [paginator]="true" [globalFilter]="gb">
+                            <p-column field="title" header="Tiêu đề" [sortable]="true" [filter]="true">
+                                <template let-a="rowData">
+                                    <a [routerLink]="['/article/' , a._id ]">{{a.title}}</a>
+                                </template>
+                            </p-column>
+                            <p-column styleClass="col-button" header="Chức năng">
+                                <template let-a="rowData">
+                                    <button type="button" pButton type="button"
+                                            class="btn-floating waves-effect waves-light red"
+                                            (click)="deActiveArt(a._id)">
+                                        <i class="material-icons">remove</i>
+                                    </button>
+                                </template>
+                            </p-column>
+                        </p-dataTable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tabDa" class="col s12">
+        <div class="row">
+            <div class="col s12">
+                <div style="padding: 35px;" align="center" class="card">
+                    <div class="row">
+                        <div class="left card-title">
+                            <b>Quản lý bài viết</b>
+                        </div>
+                    </div>
+                    <div class="input-field col s6">
+                        <input #gb id="filter1" type="text" pInputText>
+                        <label for="filter1">Tìm kiếm</label>
+                    </div>
+                    <div class="row">
+                        <p-dataTable [value]="artsDa" [rows]="10" [paginator]="true" [globalFilter]="gb">
+                            <p-column field="title" header="Tiêu đề" [sortable]="true" [filter]="true">
+                                <template let-a="rowData">
+                                    <a [routerLink]="['/article/' , a._id ]">{{a.title}}</a>
+                                </template>
+                            </p-column>
+                            <p-column styleClass="col-button" header="Chức năng">
+                                <template let-a="rowData">
+                                    <button type="button" pButton type="button"
+                                            class="btn-floating waves-effect waves-light red"
+                                            (click)="activeArt(a._id)">
+                                        <i class="material-icons">lock_open</i>
+                                    </button>
+                                </template>
+                            </p-column>
+                        </p-dataTable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="tabPr" class="col s12">
+        <div class="row">
+            <div class="col s12">
+                <div style="padding: 35px;" align="center" class="card">
+                    <div class="row">
+                        <div class="left card-title">
+                            <b>Quản lý bài viết</b>
+                        </div>
+                    </div>
+                    <div class="input-field col s6">
+                        <input #gb id="filter2" type="text" pInputText>
+                        <label for="filter2">Tìm kiếm</label>
+                    </div>
+                    <div class="row">
+                        <p-dataTable [value]="artsPr" [rows]="10" [paginator]="true" [globalFilter]="gb">
+                            <p-column field="title" header="Tiêu đề" [sortable]="true" [filter]="true">
+                                <template let-a="rowData">
+                                    <a [routerLink]="['/article/' , a._id ]">{{a.title}}</a>
+                                </template>
+                            </p-column>
+                            <p-column styleClass="col-button" header="Chức năng">
+                                <template let-a="rowData">
+                                    <button type="button" pButton class="btn-floating waves-effect waves-light red"
+                                            (click)="deActiveArt(a._id)">
+                                        <i class="material-icons">remove</i></button>
+                                </template>
+                            </p-column>
+                        </p-dataTable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>

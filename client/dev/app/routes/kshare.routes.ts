@@ -18,9 +18,9 @@ import { KSpaceListComponent } from "../components/front-end/kspace/kspace-list"
 import { KSpaceInfoComponent } from "../components/front-end/kspace/kspace-info";
 import { FriendListComponent } from "../components/front-end/user/user-profile/friend-list";
 import { UserProfileComponent } from "../components/front-end/user/user-profile/user-profile";
+import { userSearchRsComponent } from "../components/front-end/user/search/rs-search-user";
 import { RegisterComponent } from '../components/front-end/user/register/register';
 import { RegisterInfoComponent } from '../components/front-end/user/register/info';
-import { RegisterSuccessComponent } from '../components/front-end/user/register/success';
 import { LoginComponent} from "../components/front-end/user/login/login";
 import { ResetPasswordComponent } from "../components/front-end/user/reset-password/reset-pass";
 import { NewPasswordComponent } from "../components/front-end/user/reset-password/new-pass";
@@ -53,10 +53,6 @@ export const KShareRoutes: RouterConfig = [
                     {
                         path: 'info/:id',
                         component: RegisterInfoComponent
-                    },
-                    {
-                        path: 'success',
-                        component: RegisterSuccessComponent
                     }
                 ]
             },
@@ -93,6 +89,10 @@ export const KShareRoutes: RouterConfig = [
                                 component: UserProfileComponent
                             }
                         ]
+                    },
+                    {
+                        path:'search/:name',
+                        component:userSearchRsComponent
                     }
                 ]
             },

@@ -8,17 +8,21 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var primeng_1 = require('primeng/primeng');
 var knowledge_1 = require('../../../services/knowledge');
 var knowledge_update_1 = require('./knowledge-update');
 var sub_knowledge_create_1 = require('./sub-knowledge-create');
 var ng2_pagination_1 = require('ng2-pagination');
 var filter_1 = require('../shared/filter');
+var primeng_2 = require('primeng/primeng');
+var primeng_3 = require('primeng/primeng');
 var KnowledgeListComponent = (function () {
     function KnowledgeListComponent(fb, _elRef, _knowledgeService, _requestService) {
         this._elRef = _elRef;
         this._knowledgeService = _knowledgeService;
         this._requestService = _requestService;
         this.pageTitle = 'Knowledge List';
+        this.displayDialog = false;
         this.knowledgeForm = fb.group({
             "name": [""],
             "description": [""]
@@ -28,10 +32,19 @@ var KnowledgeListComponent = (function () {
             "description": [""],
             "parent": [""]
         });
-        this.sort();
     }
     KnowledgeListComponent.prototype.ngOnInit = function () {
-        this.sort();
+        this.getAllKnowledgesForAdmin();
+        $(document).ready(function () {
+            $('.collapsible').collapsible();
+        });
+    };
+    KnowledgeListComponent.prototype.openModal = function (id) {
+        console.log(id);
+        $("#" + id).openModal();
+    };
+    KnowledgeListComponent.prototype.action = function (data) {
+        this.knowledges = data;
     };
     KnowledgeListComponent.prototype.deleteKnowledge = function (id) {
         var _this = this;
@@ -50,65 +63,45 @@ var KnowledgeListComponent = (function () {
             .addKnowledge(knowledge)
             .subscribe(function (m) {
             _this.knowledges.push(m);
-            _this.sort();
+            _this.getAll();
             _this.knowledgeForm.controls["name"].updateValue("");
             _this.knowledgeForm.controls["description"].updateValue("");
         });
     };
-    KnowledgeListComponent.prototype.changeKnowledgeStatus = function (knowledge) {
-        this._knowledgeService
-            .changeKnowledgeStatus(knowledge)
-            .subscribe(function (knowledge) {
-        });
-        if (knowledge.hasOwnProperty("subCategory")) {
-            for (var i = 0; i < knowledge["subCategory"].length; i++) {
-                if (knowledge["subCategory"][i].status == knowledge.status) {
-                    this._knowledgeService
-                        .changeKnowledgeStatus(knowledge["subCategory"][i])
-                        .subscribe(function (knowledge) { });
-                }
-            }
-        }
-        this.sort();
-    };
-    //sắp xếp knowledge dựa vào số lượng request
-    KnowledgeListComponent.prototype.sort = function () {
+    KnowledgeListComponent.prototype.changeKnowledgeStatus = function (id) {
         var _this = this;
-        this._requestService.getAllRequests().subscribe(function (requests) {
-            _this.requests = requests;
+        this._knowledgeService
+            .changeKnowledgeStatus(id)
+            .subscribe(function (response) {
+            _this.getAllKnowledgesForAdmin();
         });
+    };
+    KnowledgeListComponent.prototype.getAll = function () {
+        var _this = this;
         this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
-            for (var i = 0; i < knowledges.length; i++) {
-                var length = 0;
-                knowledges[i]["requestLength"] = 0;
-                for (var j = 0; j < _this.requests.length; j++) {
-                    if (_this.requests[j].knowledgeId == knowledges[i]._id) {
-                        length++;
-                        knowledges[i]["requestLength"] = length;
-                    }
-                }
-            }
-            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+            _this.knowledges = _this._knowledgeService.getChildFromParentAdmin(knowledges);
             for (var i = 0; i < _this.knowledges.length; i++) {
-                var a = 0;
-                for (var j = 0; j < _this.knowledges[i]["subCategory"].length; j++) {
-                    a += _this.knowledges[i]["subCategory"][j]["requestLength"];
-                    _this.knowledges[i]["requestLength"] = a;
-                }
-            }
-            for (var i = 0; i < _this.knowledges.length - 1; i++) {
-                for (var j = i + 1; j < _this.knowledges.length; j++) {
-                    if (_this.knowledges[i]["requestLength"] < _this.knowledges[j]["requestLength"]) {
-                        _this.knowledge = _this.knowledges[i];
-                        _this.knowledges[i] = _this.knowledges[j];
-                        _this.knowledges[j] = _this.knowledge;
-                    }
-                }
+                _this.knowledges[i]["num"] = i + 1;
             }
         });
     };
     KnowledgeListComponent.prototype.hide = function () {
         $(".collapse").collapse("hide");
+    };
+    KnowledgeListComponent.prototype.getAllKnowledgesForAdmin = function () {
+        var _this = this;
+        this._knowledgeService
+            .getAllKnowledgesForAdmin()
+            .then(function (knowledge) {
+            _this.knowledgeAdmin = knowledge;
+            for (var i = 0; i < _this.knowledgeAdmin.length; i++) {
+                _this.knowledgeAdmin[i].data["num"] = i + 1;
+            }
+            console.log(_this.knowledgeAdmin);
+        });
+    };
+    KnowledgeListComponent.prototype.showDialogToAdd = function () {
+        this.displayDialog = true;
     };
     __decorate([
         core_1.Input()
@@ -120,7 +113,7 @@ var KnowledgeListComponent = (function () {
             directives: [
                 knowledge_update_1.UpdateKnowledgeComponent,
                 sub_knowledge_create_1.CreateSubCategoryComponent,
-                router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp],
+                router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, primeng_2.TreeTable, primeng_3.Dialog],
             providers: [knowledge_1.KnowledgeService, ng2_pagination_1.PaginationService],
             pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
         })

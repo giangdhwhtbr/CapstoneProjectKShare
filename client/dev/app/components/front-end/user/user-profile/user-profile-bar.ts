@@ -19,7 +19,7 @@ import { ReportComponent } from '../../report/report';
 import { User } from '../../../../interface/user';
 import { FriendShip } from '../../../../interface/friendship';
 import { Notification } from '../../../../interface/notification';
-
+declare var $:any;
 @Component({
   selector: 'user-profile-bar',
   templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile-bar.html',
@@ -79,6 +79,7 @@ export class UserProfileBarComponent {
         }
         this.getFriendList();
       });
+    $('ul.tabs').tabs();
   }
 
   fileChangeEvent(fileInput: any) {

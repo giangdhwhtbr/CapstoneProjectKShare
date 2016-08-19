@@ -13,7 +13,6 @@ var core_1 = require('@angular/core');
 require('rxjs/Rx'); // Load all features
 var router_1 = require('@angular/router');
 // Layout component
-var nav_bar_1 = require('./back-end/shared/nav-bar');
 var side_bar_1 = require('./back-end/shared/side-bar');
 // Functions
 var knowledge_update_1 = require('./back-end/knowledge/knowledge-update');
@@ -31,10 +30,10 @@ var AdminComponent = (function () {
     AdminComponent = __decorate([
         core_1.Component({
             selector: 'kshare',
-            template: "\n  <div id=\"wrapper\">\n    \n      <header></header>\n      <sidebar></sidebar>\n    \n    <router-outlet></router-outlet>\n  </div>\n  <private-chat></private-chat>\n  ",
+            template: "\n  <header></header>\n      <sidebar></sidebar>\n    <main>\n    <router-outlet></router-outlet>\n    </main>\n  <private-chat></private-chat>\n  ",
+            styleUrls: ['client/dev/asserts/css/admin.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES,
-                nav_bar_1.NavbarComponent,
                 side_bar_1.SidebarComponent,
                 private_chat_1.PrivateChatComponent
             ],

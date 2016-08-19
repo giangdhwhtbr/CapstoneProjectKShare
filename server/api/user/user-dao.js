@@ -74,7 +74,20 @@ userSchema.statics.getUserByToken = (token) => {
 userSchema.statics.getUserByUserName = (username) => {
     return new Promise((resolve, reject) => {
         User.findOne({'username': username})
-            .select("-username -password -role -salt")
+            .select(" -password -role -salt")
+            .exec((err, user) => {
+                err ? reject(err) : resolve(user);
+            });
+    });
+}
+
+// find user by username
+userSchema.statics.findUsersByUserName = (username) => {
+    let _query = {username: new RegExp('^'+username+'$')};
+    console.log(_query);
+    return new Promise((resolve, reject) => {
+        User.find({username: new RegExp(username)})
+            .select(" -password -role -salt")
             .exec((err, user) => {
                 err ? reject(err) : resolve(user);
             });

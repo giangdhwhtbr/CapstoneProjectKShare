@@ -1,42 +1,95 @@
-<div class="modal" id="modalOfferRequest">
+<!--<div class="modal" id="modalOfferRequest">-->
+    <!--<div class="modal-content">-->
+        <!--<h4 id="myModalLabel">Tạo đề nghị</h4>-->
+
+        <!--<div>-->
+            <!--<form role="form" [ngFormModel]="offerForm" (ngSubmit)="addOffer(offerForm.value)">-->
+                <!--<div class="row" hidden>-->
+                    <!--<div class="col-md-12">-->
+                        <!--<label for="_id">ID</label>-->
+                        <!--<input class="form-control" type="text" value="{{rid}}" [ngModel]="rid"-->
+                               <!--[ngFormControl]="offerForm.controls['requestId']"-->
+                               <!--required="required" id="_id" name="rid"/>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <!--<div class="row">-->
+                    <!--<div class="col-md-12">-->
+                        <!--<label for="message">Lời nhắn</label>-->
+                        <!--<textarea class="form-control" type="text" required="required" id="message" name="message"-->
+                                  <!--[ngModel]="message" [ngFormControl]="offerForm.controls['message']"></textarea>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<br>-->
+
+                <!--<div class="row" hidden>-->
+                    <!--<div class="col-md-12">-->
+                        <!--<label for="user">Người tạo</label>-->
+                        <!--<input class="form-control" type="text" required="required" id="user" name="user"-->
+                               <!--[ngModel]="user" [ngFormControl]="offerForm.controls['user']"-->
+                               <!--disabled/>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<br>-->
+
+                <!--<div class="row">-->
+                    <!--<div class="col-md-12">-->
+                        <!--<button type="submit" class="btn btn-primary">Tạo</button>-->
+                        <!--<button type="reset" class="btn btn-warning">Nhập lại</button>-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</form>-->
+        <!--</div>-->
+        <!--<div class="modal-footer">-->
+            <!--<a class=" modal-action modal-close waves-effect waves-green btn-flat">Hủy bỏ</a>-->
+        <!--</div>-->
+    <!--</div>-->
+<!--</div>-->
+
+<div id="modalOfferRequest" class="modal">
     <div class="modal-content">
-        <h4 id="myModalLabel">Tạo đề nghị</h4>
-      <div>
+        <h4>Tạo đề nghị</h4>
+
         <form role="form" [ngFormModel]="offerForm" (ngSubmit)="addOffer(offerForm.value)">
-          <div class="row" hidden>
-            <div class="col-md-12">
-              <label for="_id">ID</label>
-              <input class="form-control" type="text" value="{{rid}}" [ngModel]="rid" [ngFormControl]="offerForm.controls['requestId']"
-                required="required" id="_id" name="rid" />
+            <div class="row" hidden>
+                <div class="col s12">
+                    <label for="_id">ID</label>
+                    <input class="form-control" type="text" value="{{rid}}" [ngModel]="rid"
+                           [ngFormControl]="offerForm.controls['requestId']"
+                           required="required" id="_id" name="rid"/>
+                </div>
             </div>
-          </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea type="text" required="required" id="message" name="message" [ngModel]="message"
+                              [ngFormControl]="offerForm.controls['message']" class="materialize-textarea"></textarea>
+                    <label for="message">Textarea</label>
+                </div>
+            </div>
+            <br>
 
-          <div class="row">
-            <div class="col-md-12">
-              <label for="message">Lời nhắn</label>
-              <textarea class="form-control" type="text" required="required" id="message" name="message" [ngModel]="message" [ngFormControl]="offerForm.controls['message']"></textarea>
+            <div class="row" hidden>
+                <div class="col s12 m12">
+                    <label for="user">Người tạo</label>
+                    <input class="form-control" type="text" required="required" id="user" name="user" [ngModel]="user"
+                           [ngFormControl]="offerForm.controls['user']"
+                           disabled/>
+                </div>
             </div>
-          </div>
-          <br>
+            <br>
 
-          <div class="row" hidden>
-            <div class="col-md-12">
-              <label for="user">Người tạo</label>
-              <input class="form-control" type="text" required="required" id="user" name="user" [ngModel]="user" [ngFormControl]="offerForm.controls['user']"
-                disabled/>
+            <div class="row">
+                <div class="col 12">
+                    <button type="submit" class="btn-floating btn-large waves-effect waves-light blue">
+                        <i class="material-icons">done</i>
+                    </button>
+                    <button type="reset" class="btn-floating btn-large waves-effect waves-light orange"><i
+                            class="material-icons">cached</i></button>
+                </div>
             </div>
-          </div>
-          <br>
-          <div class="row">
-            <div class="col-md-12">
-              <button type="submit" class="btn btn-primary">Tạo</button>
-              <button type="reset" class="btn btn-warning">Nhập lại</button>
-            </div>
-          </div>
         </form>
-      </div>
-      <div class="modal-footer">
-        <a class=" modal-action modal-close waves-effect waves-green btn-flat">Hủy bỏ</a>
-      </div>
+    </div>
+    <div class="modal-footer">
+        <a class=" modal-action modal-close waves-effect waves-green btn-flat">Thoát</a>
     </div>
 </div>

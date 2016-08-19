@@ -12,8 +12,8 @@ var common_1 = require('@angular/common');
 var requests_1 = require('../../../services/requests');
 var pager_1 = require('../../../services/pager');
 var request_update_1 = require('./request-update');
-var filter_1 = require('../shared/filter');
 var primeng_1 = require('primeng/primeng');
+var primeng_2 = require('primeng/primeng');
 var RequestListComponent = (function () {
     function RequestListComponent(_requestService, _knowledgeService, _pagerService, _authService) {
         var _this = this;
@@ -23,12 +23,6 @@ var RequestListComponent = (function () {
         this._authService = _authService;
         this.pageTitle = 'Request List';
         this.filter = '';
-        this.totalActive = 0;
-        this.totalDeac = 0;
-        this.totalAccepted = 0;
-        this.firstPage1 = 0;
-        this.firstPage2 = 0;
-        this.firstPage3 = 0;
         this.user = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
         this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
@@ -37,11 +31,27 @@ var RequestListComponent = (function () {
     }
     RequestListComponent.prototype.ngOnInit = function () {
         this.getAllRequest();
+        $('ul.tabs').tabs();
     };
-    RequestListComponent.prototype.openRequest = function (requestId) {
-        var specs = 'width=1200,height=1200';
-        var url = '/requests/' + requestId + '/info';
-        window.open(url, '', specs);
+    RequestListComponent.prototype.getAllRequest = function () {
+        var _this = this;
+        this.activeRequests = [];
+        this.deactiveRequests = [];
+        this.acceptepRequests = [];
+        this._requestService.getAllRequestAdmin().subscribe(function (reqs) {
+            for (var _i = 0; _i < reqs.length; _i++) {
+                var e = reqs[_i];
+                if (e.status == "pending") {
+                    _this.activeRequests.push(e);
+                }
+                else if (e.status == "deactive") {
+                    _this.deactiveRequests.push(e);
+                }
+                else if (e.status == "accepted") {
+                    _this.acceptepRequests.push(e);
+                }
+            }
+        });
     };
     RequestListComponent.prototype.deactivateRequest = function (id) {
         var _this = this;
@@ -49,8 +59,7 @@ var RequestListComponent = (function () {
             .changeStatusRequest(id)
             .subscribe(function (r) {
             console.log("deactivate sucess");
-            _this.getActiveList();
-            _this.getDeactiveList();
+            _this.getAllRequest();
         });
     };
     RequestListComponent.prototype.activateRequest = function (request) {
@@ -59,105 +68,15 @@ var RequestListComponent = (function () {
         this._requestService
             .updateRequest(request, request.tags, [])
             .subscribe(function (r) {
-            _this.getActiveList();
-            _this.getDeactiveList();
-        });
-    };
-    RequestListComponent.prototype.getActiveList = function () {
-        var _this = this;
-        this._pagerService.getAPage("request", this.firstPage1, "pending").subscribe(function (reqs) {
-            console.log(reqs);
-            _this._pagerService.getTotalNum("requesttot", "pending").subscribe(function (num) {
-                for (var i = 0; i < reqs.length; i++) {
-                    if (reqs[i].status === 'active' || reqs[i].status === 'pending') {
-                        reqs[i].status = "Đang chờ";
-                    }
-                }
-                _this.activeRequests = reqs;
-                _this.totalActive = num;
-            });
-        });
-    };
-    RequestListComponent.prototype.getDeactiveList = function () {
-        var _this = this;
-        this._pagerService.getAPage("request", this.firstPage2, "deactive").subscribe(function (reqs) {
-            console.log(reqs);
-            _this._pagerService.getTotalNum("requesttot", "deactive").subscribe(function (num) {
-                for (var i = 0; i < reqs.length; i++) {
-                    if (reqs[i].status === 'deactive') {
-                        reqs[i].status = "Kết thúc";
-                    }
-                }
-                _this.deactiveRequests = reqs;
-                _this.totalDeac = num;
-            });
-        });
-    };
-    RequestListComponent.prototype.getAcceptedList = function () {
-        var _this = this;
-        this._pagerService.getAPage("request", this.firstPage3, "accepted").subscribe(function (reqs) {
-            _this._pagerService.getTotalNum("requesttot", "accepted").subscribe(function (num) {
-                for (var i = 0; i < reqs.length; i++) {
-                    if (reqs[i].status === 'accepted') {
-                        reqs[i].status = "Được chấp thuận";
-                    }
-                }
-                _this.acceptepRequests = reqs;
-                _this.totalAccepted = num;
-            });
-        });
-    };
-    RequestListComponent.prototype.getAllRequest = function () {
-        this.activeRequests = [];
-        this.deactiveRequests = [];
-        this.acceptepRequests = [];
-        this.getAcceptedList();
-        this.getActiveList();
-        this.getDeactiveList();
-    };
-    RequestListComponent.prototype.paginate1 = function (event) {
-        var _this = this;
-        this._pagerService.getAPage("request", event.first, "pending").subscribe(function (reqs) {
-            for (var i = 0; i < reqs.length; i++) {
-                if (reqs[i].status === 'active' || reqs[i].status === 'pending') {
-                    reqs[i].status = "Đang chờ";
-                }
-            }
-            _this.activeRequests = reqs;
-            _this.firstPage1 = event.first;
-        });
-    };
-    RequestListComponent.prototype.paginate2 = function (event) {
-        var _this = this;
-        this._pagerService.getAPage("request", event.first, "deactive").subscribe(function (reqs) {
-            for (var i = 0; i < reqs.length; i++) {
-                if (reqs[i].status === 'deactive') {
-                    reqs[i].status = "Kết thúc";
-                }
-            }
-            _this.deactiveRequests = reqs;
-            _this.firstPage2 = event.first;
-        });
-    };
-    RequestListComponent.prototype.paginate3 = function (event) {
-        var _this = this;
-        this._pagerService.getAPage("request", event.first, "accepted").subscribe(function (reqs) {
-            for (var i = 0; i < reqs.length; i++) {
-                if (reqs[i].status === 'accepted') {
-                    reqs[i].status = "Được chấp thuận";
-                }
-            }
-            _this.acceptepRequests = reqs;
-            _this.firstPage3 = event.first;
+            _this.getAllRequest();
         });
     };
     RequestListComponent = __decorate([
         core_1.Component({
             selector: 'request-list',
             templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-            directives: [request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_1.Paginator],
-            providers: [requests_1.RequestService, pager_1.PagerService],
-            pipes: [filter_1.StringFilterPipe]
+            directives: [request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
+            providers: [requests_1.RequestService, pager_1.PagerService]
         })
     ], RequestListComponent);
     return RequestListComponent;

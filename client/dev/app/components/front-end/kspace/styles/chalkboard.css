@@ -4,18 +4,22 @@
     height: 100%;
     background: white;
 }
-@media screen and (min-width: 1680px) {
-    #chalkboard {
-        cursor: crosshair;
-        width: 83rem;
-        height: 100%;
-        background: white;
-    }
+ /*Dành cho máy tính bảng chiều dọc */
+@media all and (min-width: 600px) {
+
 }
-@media screen and (max-width: 1280px){
+
+/*/ Dành cho máy tính bảng chiều ngang /*/
+@media all and (min-width: 1024px) {
+
+}
+
+/*/ Dành cho màn hình desktop /*/
+@media all and (min-width: 1280px) {
     .wrapper-chalkboard {
-        width: 670px;
+        width: 60rem;
         overflow: scroll;
+        height: 37rem;
     }
     #chalkboard {
         cursor: crosshair;
@@ -24,12 +28,18 @@
         background: white;
     }
 }
+@media screen and (min-width: 1680px) {
+    #chalkboard {
+        cursor: crosshair;
+        width: 83rem;
+        height: 100%;
+        background: white;
+    }
+}
+
 #draw-tools {
     cursor: pointer;
-    position: fixed;
-    top: 11%;
-    bottom: 40%;
-    right: 3.5%;
+    position: absolute;
     border-radius: 2px;
     width: 65px;
     background: white;
@@ -63,10 +73,7 @@ hr{
 }
 
 #draw-option {
-    float: right;
-    position: absolute;
     z-index: 10;
-    margin-left: 77.5%;
     border: none;
     color: black;
     background-color: white;

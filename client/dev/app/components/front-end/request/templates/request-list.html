@@ -1,53 +1,56 @@
-<div class="container mg-top-50">
-    <!-- Search back.request -->
-    <form id="searchdivid2" class="navbar-form navbar-left" role="search">
-        <div class="form-group">
-            <input #text type="text" class="form-control" placeholder="Nhập nội dung tìm kiếm">
-        </div>
-        <button (click)="search(text.value)" type="submit" class="btn btn-small">Tìm kiếm</button>
-        <button *ngIf="userToken != null" type="button" class="btn btn-primary btn-small"
-                [routerLink]="['/requests/create']">
-            Tạo yêu cầu
-        </button>
-    </form>
-    <br>
-    <br>
 
-    <div class="container" [style.height.px]="height+'px'">
-
-        <br>
-        <!-- list all-->
-        <div id="lst-request" class="col-xs-12 col-sm-9 fixEfMenu">
-            <div *ngIf="isExistRecord">
-                <h1>Không có yêu cầu nào được tìm thấy</h1>
-            </div>
-            <div class="panel panel-default card-rq" *ngFor="let e of _data">
-                <div class="panel-body">
-                    <a [routerLink]="['/requests/'+e.req._id+'/info']">
-                        <p class="lead">{{e.req.title}}</p>
+<div class="container">
+    <div class="row">
+        <form class="col s12 m12">
+            <div class="row">
+                <div class="input-field col s6">
+                    <input #text id="search" type="text">
+                    <label for="search">Tìm kiếm yêu cầu</label>
+                </div>
+                <div class="input-field col s6">
+                    <a class="btn-floating btn-large waves-effect waves-light red" (click)="search(text.value)"><i
+                            class="material-icons">search</i></a>
+                    <a *ngIf="userToken != null" class="btn-floating btn-large waves-effect waves-light blue"
+                       [routerLink]="['/requests/create']">
+                        <i class="material-icons">add</i>
                     </a>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div *ngIf="isExistRecord" class="row">
+        <h1>Không có yêu cầu nào được tìm thấy</h1>
+    </div>
+    <div class="row">
+        <div class="col s12 m12">
+            <div class="card" *ngFor="let e of _data">
+                <div class="card-content">
+                    <a class="card-title" [routerLink]="['/requests/'+e.req._id+'/info']">{{e.req.title}}</a>
 
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-                        {{e.sum}}
+                    <p>{{e.sum}}</p>
+                </div>
+                <div class="card-action">
+                    <div class="row">
+                        <div class="col s4 m4">
+                            <p>Người tạo :<a [routerLink]="['/user/',e.req.user]"> {{e.req.user}}</a></p>
+                        </div>
+                        <div class="col s4 m4">
+                            <p>Trạng thái : {{e.req.status}}</p>
+                        </div>
+                        <div class="col s4 m4">
+                            <p>Ngày tạo : {{e.req.createdAt | date:"dd/MM/yyyy"}}</p>
+                        </div>
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-                        Người tạo :<a [routerLink]="['/user/',e.req.user]"> {{e.req.user}}</a>
+                    <div class="row">
+                        <div class="col s12 m12">
+                            <p *ngIf="e.req.tags.length!=0">
+                                <tags [listTagId]="e.req.tags"></tags>
+                            </p>
+                        </div>
                     </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-                        Trạng thái : {{e.req.status}}
-                    </div>
-                    <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-                        Ngày tạo : {{e.req.createdAt | date:"dd/MM/yyyy"}}
-                    </div>
-                    <p *ngIf="e.req.tags.length!=0">
-                        <tags [listTagId]="e.req.tags"></tags>
-                    </p>
                 </div>
             </div>
         </div>
-        <!--<friend-list></friend-list>-->
     </div>
-
 </div>
 <private-chat></private-chat>
-<!-- /.container -->

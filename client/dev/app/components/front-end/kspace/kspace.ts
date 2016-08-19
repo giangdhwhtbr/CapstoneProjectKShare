@@ -172,9 +172,14 @@ export class KSpaceComponent {
         var rtc = this.rtcService;
 
         var isKspaceUser = function() {
-          if(username === kspace.lecturer || username === kspace.learner){
-            return true;
-          }
+            for (var learner of kspace.learners){
+                if(username === learner){
+                    return true
+                }
+            }
+              if(username === kspace.lecturer){
+                return true;
+              }
           return false;
         };
         if (isKspaceUser()){
@@ -194,20 +199,6 @@ export class KSpaceComponent {
               log: true,
               debug: false
             });
-          }else if(username === kspace.learner) {
-            var webrtc = new SimpleWebRTC({
-              localVideoEl: 'localVideo',
-              remoteVideosEl: '',
-              autoRequestMedia: true,
-              nick: username,
-              localVideo: {
-                autoplay: true, // automatically play the video stream on the page
-                mirror: true, // flip the local video to mirror mode (for UX)
-                muted: true // mute local video stream to prevent echo
-              },
-              log: true,
-              debug: false
-            })
           }
           rtc.rtcSetting(webrtc,room,kspace.lecturer);
           var sharescreenToken: boolean = false;

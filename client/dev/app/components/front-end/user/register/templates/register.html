@@ -1,65 +1,64 @@
-   <div class="container mg-top-50">
-      <div class="row">
-        <div class="col-md-3"></div>
-        <div class="col-md-6">
-          <p *ngIf="errorMessage" class="alert alert-danger">{{errorMessage}}</p>
-             <div class="loginPanel">
+<div class="container">
+    <div class="row">
+        <div class="col s6 offset-s3 card-panel">
+            <p *ngIf="errorMessage" class="alert alert-danger">{{errorMessage}}</p>
+
+            <div class="loginPanel">
                 <div class="box-header">
-                  <h3>Đăng ký tài khoản Kshare</h3>
+                    <h5>Đăng ký tài khoản Kshare</h5>
                 </div>
                 <form [ngFormModel]="regForm" (ngSubmit)="register(regForm.value)">
-                  <div class="form-group">
-                    <input class="form-control form-text"
-                          type="text"
-                          required maxlength="30"
-                          placeholder="Tên đăng nhập"
-                          name="username"
-                           #username
-                          [ngFormControl]="regForm.controls['username']"
-                    >
-                  </div>
-                  <div class="form-group">
-                    <input class="form-control"
-                          type="password"
-                          required maxlength="30"
-                          placeholder="Mật Khẩu"
-                          name="password"
-                          [ngFormControl]="regForm.controls['password']"
-                    >
-                  </div>
-                  <div class="form-group">
-                    <input #copass class="form-control"
-                          type="password"
-                          required maxlength="30"
-                          placeholder="Xác nhận mật khẩu"
-                          name="copass"
-                          [ngFormControl]="regForm.controls['copass']"
-                    >
-                  </div>
-                  <div class="form-group">
-                    <input class="form-control form-text"
-                          type="email"
-                          required maxlength="50"
-                          placeholder="Địa chỉ email"
-                          name="email"
-                          [ngFormControl]="regForm.controls['email']"
-                    >
-                  </div>
-                  <p><input type="checkbox"><a href="#">Các quy định khi tham gia cộng đồng KShare </a> </p>
-                  <div class="row">
-                    <div class="col-sm-6">
-                      <button class="form-control btn btn-success" type="submit">Đăng ký</button>
+                    <div class="form-group">
+                        <input class="form-control form-text"
+                               type="text"
+                               required maxlength="30"
+                               placeholder="Tên đăng nhập"
+                               name="username"
+                               #username
+                               [ngFormControl]="regForm.controls['username']"
+                        >
                     </div>
-                    <!-- /.col-sm-6 -->
-                    <div class="col-sm-6">
-                      <button class="form-control btn btn-primary" type="reset" data-dismiss="modal" data-toggle="modal" data-target="#modalLogin">Đăng nhập</button>
+                    <div class="form-group">
+                        <input class="form-control"
+                               type="password"
+                               required maxlength="30"
+                               placeholder="Mật Khẩu"
+                               name="password"
+                               [ngFormControl]="regForm.controls['password']"
+                        >
                     </div>
-                  </div>
-                  <!-- /.row -->
+                    <div class="form-group">
+                        <input #copass class="form-control"
+                               type="password"
+                               required maxlength="30"
+                               placeholder="Xác nhận mật khẩu"
+                               name="copass"
+                               [ngFormControl]="regForm.controls['copass']"
+                        >
+                    </div>
+                    <div class="form-group">
+                        <input class="form-control form-text"
+                               type="email"
+                               required maxlength="50"
+                               placeholder="Địa chỉ email"
+                               name="email"
+                               [ngFormControl]="regForm.controls['email']"
+                        >
+                    </div>
+
+                    <div class="row">
+                        <div class="col s6">
+                            <button class="form-control btn btn-success" type="submit">Đăng ký</button>
+                        </div>
+                        <!-- /.col-sm-6 -->
+                        <div class="col s6">
+                            <a [routerLink]="['/login']" class="waves-effect waves-light btn blue">Đăng nhập</a>
+                        </div>
+                    </div>
+                    <!-- /.row -->
                 </form>
             </div>
         </div>
-        <div class="col-md-3"></div>
-      </div>
- </div>
+    </div>
+</div>
 

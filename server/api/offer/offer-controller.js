@@ -32,7 +32,7 @@ static updateOffer(req, res){
       var currentDate = new Date();
         OfferDAO.getOfferById(req.params.id)
           .then(offer => {
-            offer.status = req.body.status
+            offer.status = req.body.status;
             // res.status(200).json(templates);
             OfferDAO.updateOfferById(offer)
               .then(offer => res.status(200).json(offer))

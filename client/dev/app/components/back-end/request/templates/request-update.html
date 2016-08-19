@@ -1,127 +1,126 @@
-<div *ngIf="request" class="container">
-    <form role="form" id="update" [ngFormModel]="updateRequestFormCli" (ngSubmit)="updateRequest(updateRequestFormCli.value)">
-        <div class="form-group">
-            <h4>Thông tin yêu cầu <strong>{{request.title}}</strong></h4>
-            <label class="control-label" for="title">Tiêu đề </label>
-            <input class="form-control" id="title" type="text" [ngModel]="title" [ngFormControl]="updateRequestFormCli.controls['title']"
-            />
-            <input class="form-control" id="id" type="hidden" [ngModel]="id" [ngFormControl]="updateRequestFormCli.controls['_id']" />
-            <input class="form-control" id="status" type="hidden" [ngModel]="status" [ngFormControl]="updateRequestFormCli.controls['status']" />
-            <label for="knowledge">Lĩnh vực</label>
-            <select class="form-control" id="knowledge" [ngFormControl]="updateRequestFormCli.controls['knowledgeId']" [ngModel]="knowledgeId"
-                required>
-                <option value="{{knowledgeId}}">{{kname}}</option>
-                <optgroup *ngFor="let k of knowledges" label="{{k.name}}">
-                    <option *ngFor="let sub of k.subCategory" value={{sub._id}}>{{sub.name}}</option>
-                </optgroup>
-            </select>
-
-            <div class="editor">
-                <ck-editor>ckeditor_inst_1</ck-editor>
-            </div>
-            <button type="button" id="bdOpenModal" data-toggle="modal" data-target="#ModalUploadImgCkeditor"
-                    data-backdrop="static" data-keyboard="false" style="display: none;"></button>
-            <button type="button" id="youtubeOpenModal" data-toggle="modal" data-target="#ModalYTCkeditor"
-                    data-backdrop="static" data-keyboard="false" style="display: none;"></button>
-            <div id="ModalUploadImgCkeditor" class="modal fade">
-                <div class="modal-dialog">
-
-                    <!-- Modal content-->
+<div class="container">
+    <div class="row">
+        <form class="col s12" id="update" [ngFormModel]="updateRequestFormCli" (ngSubmit)="updateRequest(updateRequestFormCli.value)">
+            <div class="form-group">
+                <div class="row">
+                    <div class="input-field col s12">
+                        <input class="form-control" type="text" required="required" id="title" name="title"
+                               [ngModel]="title" [ngFormControl]="updateRequestFormCli.controls['title']"/>
+                        <label for="title" class="active">Tiêu đề</label>
+                    </div>
+                </div>
+                <input class="form-control" id="id" type="hidden" [ngModel]="id" [ngFormControl]="updateRequestFormCli.controls['_id']" />
+                <input class="form-control" id="status" type="hidden" [ngModel]="status" [ngFormControl]="updateRequestFormCli.controls['status']" />
+                <div class="editor">
+                    <ck-editor>ckeditor_inst_1</ck-editor>
+                </div>
+                <button type="button" id="bdOpenModal" class="btn modal-trigger" data-target="ModalUploadImgCkeditor"
+                        data-backdrop="static" data-keyboard="false" style="display: none;"></button>
+                <button type="button" id="youtubeOpenModal" class="btn modal-trigger" data-target="ModalYTCkeditor"
+                        data-backdrop="static" data-keyboard="false" style="display: none;"></button>
+                <div id="ModalUploadImgCkeditor" class="modal">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Insert Image</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="container">
-                                <div id="groupCollapse" class="panel-group">
-                                    <div class="panel panel-default isLinkPn">
-                                        <div class="panel-heading" style="cursor:pointer">
-                                            <h4 class="panel-title" data-toggle="collapse" data-parent="#groupCollapse"
-                                                href="#insertImgBody">
-                                                1. Insert image by link
-                                            </h4>
-                                        </div>
-                                        <div id="insertImgBody" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                <div class="col-xs-6">
-                                                    <label for="linkIsImg">Paste image's link here</label>
-                                                    <input #linkIsImg class="form-control" id="linkIsImg" type="text"/>
+                        <h4>Chèn ảnh</h4>
+                        <ul class="collapsible" data-collapsible="accordion">
+                            <li>
+                                <div class="collapsible-header">1. Chèn ảnh bằng link</div>
+                                <div class="collapsible-body">
+                                    <div class="row">
+                                        <div class="col s12 m12">
+                                            <div class="row">
+                                                <div class="input-field col s6">
+                                                    <input #linkIsImg class="form-control" id="linkIsImg" type="text">
+                                                    <label for="linkIsImg">Chèn link vào đây</label>
+                                                </div>
+                                                <div class="input-field col s6">
+                                                    <a  class="btn-floating btn-large waves-effect waves-light modal-close blue" (click)="insertLinkToBox(linkIsImg.value)">
+                                                        <i class="material-icons">add</i>
+                                                    </a>
                                                 </div>
                                             </div>
-                                            <div class="panel-footer">
-                                                <button type="button" class="btn btn-success"
-                                                        (click)="insertLinkToBox(linkIsImg.value)" data-dismiss="modal">
-                                                    Insert
-                                                </button>
-                                            </div>
                                         </div>
                                     </div>
-                                    <div class="panel panel-default isLinkPn">
-                                        <div class="panel-heading" style="cursor:pointer">
-                                            <h4 class="panel-title" data-toggle="collapse" data-parent="#groupCollapse"
-                                                href="#uploadImgLocal">
-                                                2. Upload image from your computer
-                                            </h4>
-                                        </div>
-                                        <div id="uploadImgLocal" class="panel-collapse collapse">
-                                            <div class="panel-body">
-                                                <input #fileInput id="uploadImg" (change)="fileChangeEvent($event)"
-                                                       type="file" accept="image/*"/>
-                                            </div>
-                                            <div class="panel-footer">
-                                                <button type="button" class="btn btn-success" (click)="uploadImageCk()"
-                                                        data-dismiss="modal">Upload and insert
-                                                </button>
+                                </div>
+                            </li>
+                            <li>
+                                <div class="collapsible-header">2. Upload ảnh từ máy</div>
+                                <div class="collapsible-body">
+                                    <div class="row">
+                                        <div class="col s12 m12">
+                                            <div class="row">
+                                                <div class="file-field input-field col s9 m9">
+                                                    <div class="btn">
+                                                        <span>File</span>
+                                                        <input #fileInput id="uploadImg" (change)="fileChangeEvent($event)"
+                                                               type="file" accept="image/*">
+                                                    </div>
+                                                    <div class="file-path-wrapper">
+                                                        <input class="file-path validate" type="text">
+                                                    </div>
+                                                </div>
+                                                <div class="input-field col s3 m3">
+                                                    <a  class="btn-floating btn-large waves-effect waves-light modal-close blue" (click)="uploadImageCk()">
+                                                        <i class="material-icons">add</i>
+                                                    </a>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="modal-footer">
+                        <a class="modal-action modal-close waves-effect waves-green btn-flat">Thoát</a>
                     </div>
                 </div>
-            </div>
-
-            <div id="ModalYTCkeditor" class="modal fade">
-                <div class="modal-dialog">
-
-                    <!-- Modal content-->
+                <div id="ModalYTCkeditor" class="modal">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Insert Image</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="">
-                                <div class="panel-heading">
-                                    <div class="panel-body">
-                                        <div class="col-xs-6">
-                                            <label for="linkIsYT">Paste youtube's link here</label>
-                                            <input #linkYT class="form-control" id="linkIsYT" type="text"/>
-                                            <button type="button" class="btn btn-success"
-                                                    (click)="insertYoutubeToBox(linkYT.value)" data-dismiss="modal">
-                                                Insert
-                                            </button>
-                                        </div>
+                        <h4>Chèn link youtube</h4>
+                        <div class="row">
+                            <div class="col s12 m12">
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <input #linkYT class="form-control" id="linkIsYT" type="text"/>
+                                        <label for="linkIsYT">Chèn link youtube vào đây</label>
                                     </div>
-
+                                    <div class="input-field col s6">
+                                        <a  class="btn-floating btn-large waves-effect waves-light modal-close blue" (click)="insertYoutubeToBox(linkYT.value)">
+                                            <i class="material-icons">add</i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+                    <div class="modal-footer">
+                        <a class="modal-action modal-close waves-effect waves-green btn-flat">Thoát</a>
+                    </div>
                 </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <p>Chọn lĩnh vực:</p>
+                        <select class="browser-default" id="knowledge" [ngFormControl]="updateRequestFormCli.controls['knowledgeId']" [ngModel]="knowledgeId"
+                                required>
+                            <option value="{{knowledgeId}}">{{kname}}</option>
+                            <optgroup *ngFor="let k of knowledges" label="{{k.name}}">
+                                <option *ngFor="let sub of k.subCategory" value={{sub._id}}>{{sub.name}}</option>
+                            </optgroup>
+                        </select>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s12">
+                        <p><span>Câu hỏi này liên quan tới</span></p>
+                        <!--end editor -->
+                        <p-autoComplete [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
+                                        [multiple]="true" [(ngModel)]="tags">
+                        </p-autoComplete>
+                    </div>
+                </div>
+                <button type="submit" class="waves-effect waves-light btn">Hoàn thành</button>
+                <button type="reset" class="waves-effect waves-light btn">Nhập lại</button>
             </div>
-
-            <p><span>Câu hỏi này liên quan tới</span></p>
-            <!--end editor -->
-            <p-autoComplete [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
-                            [multiple]="true" [(ngModel)]="tags">
-            </p-autoComplete>
-            <br>
-            <!--end tags-->
-            <button type="submit" class="btn btn-success">Hoàn thành</button>
-            <button class="btn btn-danger" [routerLink]="['/requests/' + _id + '/info' ]" >Hủy</button>
-        </div>
-    </form>
+        </form>
+    </div>
 </div>

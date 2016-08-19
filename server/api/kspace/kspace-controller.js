@@ -14,6 +14,14 @@ module.exports = class KSpaceController {
             .catch(error => res.status(400).json(error));
     }
 
+    static getKspaceProfile(req,res){
+        if (req.params && req.params.name) {
+            KSpaceDAO.getKspaceProfile(req.params.name).then((kspaces)=>{
+                res.status(200).json(kspaces)
+            }).catch(error => res.status(400).json(error));
+        }
+    }
+
     //get a front.KSpace by Id controller
     static getKSpaceById(req, res) {
         if (req.params && req.params.id) {

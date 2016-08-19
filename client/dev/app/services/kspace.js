@@ -13,7 +13,13 @@ var KSpaceService = (function () {
     function KSpaceService(_http) {
         this._http = _http;
         this._kspaceUrl = '/api/kspace/:id';
+        this._kspace_profile = '/api/kspace-profile/:name';
     }
+    KSpaceService.prototype.getKspaceProfile = function (name) {
+        return this._http.get(this._kspace_profile.replace(':name', name))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
     KSpaceService.prototype.getAllKSpace = function () {
         return this._http.get(this._kspaceUrl.replace(':id', ''))
             .map(function (r) { return r.json(); })

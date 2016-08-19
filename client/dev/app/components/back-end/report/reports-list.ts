@@ -1,19 +1,16 @@
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
-
 import { Report } from '../../../interface/report';
 import { ReportService } from '../../../services/report';
-import { ChatService } from '../../../services/chat';
-
-import {StringFilterPipe} from '../shared/filter';
-
+import {DataTable,Column, Header, MultiSelect, Footer, InputText} from 'primeng/primeng';
+import {Paginator} from 'primeng/primeng';
+declare var $:any;
 @Component({
   selector: 'reports-list',
   templateUrl: 'client/dev/app/components/back-end/report/templates/reports-list.html',
-  directives: [ROUTER_DIRECTIVES, FORM_DIRECTIVES],
-  providers: [ReportService],
-  pipes: [StringFilterPipe]
+  directives: [ROUTER_DIRECTIVES, FORM_DIRECTIVES,Paginator,FORM_DIRECTIVES,DataTable,Column,Header,Footer],
+  providers: [ReportService]
 })
 export class ReportListComponent {
   pageTitle: string = 'Report List';
@@ -22,41 +19,27 @@ export class ReportListComponent {
   pendingReports: Report[] = [];
   handlingReports: Report[] = [];
   public filter: string = '';
-  roleToken: string;
-  userToken: string;
-
-  constructor(fb: FormBuilder, private _reportService: ReportService,
-    private router: Router, private _chatService: ChatService) {
-    this.roleToken = localStorage.getItem('role');
-    this.userToken = localStorage.getItem('username');
+  constructor(fb: FormBuilder, private _reportService: ReportService, private router: Router) {
   }
   ngOnInit() {
     this.getAllPending();
     this.getAllHandling();
+    $('ul.tabs').tabs();
   }
-
   getAllPending(): void {
     this._reportService
-      .getAllReports('pending')
-      .subscribe((reports) => {
-        this.pendingReports = reports;
-      });
+        .getAllReports('pending')
+        .subscribe((reports) => {
+          this.pendingReports = reports;
+        });
   }
-
-  openReportedPage(link: string): void {
-    var specs = 'width=1200,height=1200';
-    var url = link;
-    window.open(url, '', specs);
-  }
-
   getAllHandling(): void {
     this._reportService
-      .getAllReports('handling')
-      .subscribe((reports) => {
-        this.handlingReports = reports;
-      });
+        .getAllReports('handling')
+        .subscribe((reports) => {
+          this.handlingReports = reports;
+        });
   }
-
   deactivateReport(id: string) {
     var r = confirm("Bạn có muốn xóa?");
     if (r == true) {
@@ -67,7 +50,6 @@ export class ReportListComponent {
       });
     }
   }
-
   changeStatusHandling(id: string) {
     var r = confirm("Bạn có muốn thay đổi trạng thái?");
     if (r == true) {
@@ -78,18 +60,4 @@ export class ReportListComponent {
       });
     }
   }
-
-  createChatRoom(reportedUser: string) {
-    if(reportedUser !== this.userToken){
-      this._chatService.createChatRoomAdmin(this.userToken, reportedUser)
-      .subscribe((chatRoom) => {
-        alert('Phòng trò chuyện đã được tạo');
-        console.log(reportedUser);
-        console.log('create chatRoom successfully');
-      });
-    }else {
-      alert('Đã có phòng trò chuyện');
-    }
-  }
-
 }

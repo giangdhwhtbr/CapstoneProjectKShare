@@ -12,12 +12,18 @@ export class TagService {
     private _activeTag = '/api/tags/active/:id';
     private _reqUrl = '/api/tag/req/:id';
     private _deactiveTag = '/api/tag/deactive/:id';
+    private _tagAdminUrl ='/api/tags-admin';
 
     constructor(private _http:Http) {
     }
 
     getAllTag():Observable<any[]> {
         return this._http.get(this._tagUrl.replace(':id', ''))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
+    getAllTagAdmin():Observable<any[]> {
+        return this._http.get(this._tagAdminUrl.replace(':id', ''))
             .map((r) => r.json())
             .catch(this.handleError);
     }

@@ -18,9 +18,15 @@ var TagService = (function () {
         this._activeTag = '/api/tags/active/:id';
         this._reqUrl = '/api/tag/req/:id';
         this._deactiveTag = '/api/tag/deactive/:id';
+        this._tagAdminUrl = '/api/tags-admin';
     }
     TagService.prototype.getAllTag = function () {
         return this._http.get(this._tagUrl.replace(':id', ''))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    TagService.prototype.getAllTagAdmin = function () {
+        return this._http.get(this._tagAdminUrl.replace(':id', ''))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };

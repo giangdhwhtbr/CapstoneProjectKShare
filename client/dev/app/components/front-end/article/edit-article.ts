@@ -13,6 +13,7 @@ import {ArticleService} from '../../../services/article';
 import {TagService} from '../../../services/tag';
 import {AutoComplete} from 'primeng/primeng';
 import { AuthService } from '../../../services/auth';
+import { PrivateChatComponent } from './../../shared/private-chat';
 
 import * as $ from 'jquery';
 declare var CKEDITOR: any;
@@ -54,7 +55,7 @@ class CKEditor implements OnInit,AfterViewChecked {
     selector: 'create-article',
     templateUrl: 'client/dev/app/components/front-end/article/templates/edit-article.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
-    directives: [CKEditor, AutoComplete, ROUTER_DIRECTIVES],
+    directives: [CKEditor, AutoComplete, ROUTER_DIRECTIVES, PrivateChatComponent],
     providers: [ArticleService, TagService]
 })
 

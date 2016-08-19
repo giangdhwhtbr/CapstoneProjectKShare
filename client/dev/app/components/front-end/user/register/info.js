@@ -89,7 +89,7 @@ var RegisterInfoComponent = (function () {
             ownKnowledgeIds: tags[0]
         };
         this._userService.updateUser(user, tags[1]).subscribe(function (res) {
-            _this.router.navigateByUrl('/reg/success');
+            _this.router.navigateByUrl('/');
         }, function (err) {
             console.log(err);
         });

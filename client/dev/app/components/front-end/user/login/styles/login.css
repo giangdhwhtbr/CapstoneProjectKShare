@@ -1,76 +1,22 @@
-/*
-Giang style Logig-Register Modal
-*/
 
-a {
-  text-decoration: none;
-  color: darkslategray;
+.login-form{
+  font-size: 12px;
 }
-.form-text{
-  color: darkslategray;
+.profile-image-login{
+  width: 100px;
+  height: 100px !important;
 }
-.modal-sm{
-  width: 400px;
+.login-text {
+  margin-top: -6px;
+  margin-left: -6px !important;
 }
-.loginPanel{
-  padding: 0 20px;
-  margin: 20px 20px;
+.medium-small {
+  font-size: 14px;
 }
-.col-md-6{
-  margin-top: 50px;
-  padding: 0 20px;
-  border-width:2px;
-  border-radius: 10px;
-  border-style: ridge;
-}
-::-webkit-input-placeholder { /* WebKit, Blink, Edge */
-  color: #869989;
-}
-:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-  color: #869989;
-  opacity:  1;
-}
-::-moz-placeholder { /* Mozilla Firefox 19+ */
-  color: #869989;
-  opacity:  1;
-}
-:-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: #869989;
-}
-.end-modal{
-  margin-bottom: 30px;
-}
-/*.form-text{*/
-
+/*#login-page {*/
+  /*width: 310px;*/
+  /*margin-top: 70px;*/
 /*}*/
-.box-header{
-  text-align: center;
-  border-bottom-style: solid;
-  border-width: 2px ;
-  margin-bottom: 10px;
+.errmes {
+  color: #b71c1c;
 }
-.modal {
-  text-align: center;
-  color: darkslategray;
-}
-.modal-content{
-  background-color: #FDFBFB;
-}
-
-@media screen and (min-width: 768px) {
-  .modal:before {
-    display: inline-block;
-    vertical-align: middle;
-    content: " ";
-    height: 100%;
-  }
-}
-
-.modal-dialog {
-  display: inline-block;
-  text-align: left;
-  vertical-align: middle;
-  opacity:0.9;
-}
-
-/* End Login Modal*/

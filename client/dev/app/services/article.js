@@ -17,6 +17,7 @@ var ArticleService = (function () {
         this._requestsUrl = '/api/article/:id';
         this._requestsGetDeArtUrl = '/api/art/de/:id';
         this._articleUserUrl = '/api/articles-user';
+        this._searchArticleUrl = '/api/full-search-article';
         this._artKnw = '/api/art/knw/:id';
         this._cmtUrl = "/api/comment/article/:artId/:cmtId";
         this._cmtLike = "/api/comment/like/:artId/:cmtId/:user";
@@ -34,6 +35,22 @@ var ArticleService = (function () {
         return this._http.put(this._requestsUrl.replace(':id', ''), _data, options)
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
+    };
+    ArticleService.prototype.getAllArtAdmin = function () {
+        return this._http.get("/api/articles-admin")
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    //search request
+    ArticleService.prototype.searchArticle = function (search) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var _search = JSON.stringify({
+            text: search
+        });
+        return this._http
+            .post(this._searchArticleUrl, _search, options)
+            .map(function (r) { return r.json(); });
     };
     ArticleService.prototype.getAllDeArts = function () {
         return this._http.get(this._requestsGetDeArtUrl.replace(':id', ''))

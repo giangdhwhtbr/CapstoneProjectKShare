@@ -18,6 +18,8 @@ module.exports = class ArticleRoutes {
             .get(ArticleController.getArticleById)
             .put(ArticleController.updateArticleById);
 
+        router.route('/api/articles-admin')
+            .get(ArticleController.getArtAdmin);
 
         router
             .route('/api/articles-user')
@@ -57,7 +59,11 @@ module.exports = class ArticleRoutes {
             .get(ArticleController.likeArticle);
         router.route('/api/art/unlike/:artId/:user')
             .get(ArticleController.unlikeArticle);
+        router.route('/api/full-search-article')
+            .post(ArticleController.fullTextSearchArticle);
 
+        router.route('/api/articles-user/:username')
+            .get(ArticleController.getArticleByUser);
 
     }
 }

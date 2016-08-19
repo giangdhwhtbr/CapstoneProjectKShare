@@ -12,9 +12,10 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
+var pager_1 = require('../../../services/pager');
 var users_1 = require('../../../services/users');
-var ng2_pagination_1 = require('ng2-pagination');
-var filter_1 = require('../shared/filter');
+var primeng_1 = require('primeng/primeng');
+var primeng_2 = require('primeng/primeng');
 var UserListComponent = (function () {
     function UserListComponent(fb, _userService, _auth, router) {
         this._userService = _userService;
@@ -35,6 +36,7 @@ var UserListComponent = (function () {
         this._userService
             .getAllUsers()
             .subscribe(function (users) {
+            console.log(users);
             for (var i = 0; i < users.length; i++) {
                 if (users[i].birthday) {
                     users[i].birthday = new Date(users[i].birthday);
@@ -43,6 +45,7 @@ var UserListComponent = (function () {
                 if (users[i].updatedAt) {
                     users[i].updatedAt = new Date(users[i].updatedAt);
                 }
+                users[i]["num"] = i + 1;
             }
             _this.users = users;
             _this.numOfUser = i;
@@ -50,11 +53,11 @@ var UserListComponent = (function () {
             _this.errorMessage = error.message;
             console.log(error);
         });
-    };
-    UserListComponent.prototype.openUserProfile = function (username) {
-        var specs = 'width=1200,height=1200';
-        var url = '/user/' + username;
-        window.open(url, '', specs);
+        $(document).ready(function () {
+            $('select').material_select();
+            $('.modal-trigger').leanModal();
+            $('.collapsible').collapsible();
+        });
     };
     UserListComponent.prototype.addUser = function (user) {
         var _this = this;
@@ -68,17 +71,17 @@ var UserListComponent = (function () {
     };
     UserListComponent.prototype.banUser = function (userid) {
         this._userService.banUser(userid).subscribe(function (response) {
+            Materialize.toast('Khoá người dùng này trong vòng 1 ngày!', 6000);
+            $("#" + userid).hide();
             console.log(response);
-        }, function (error) {
-        });
+        }, function (error) { });
     };
     UserListComponent = __decorate([
         core_1.Component({
             selector: 'user-list',
             templateUrl: 'client/dev/app/components/back-end/users/templates/user-list.html',
-            directives: [router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES],
-            providers: [users_1.UserService, ng2_pagination_1.PaginationService],
-            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
+            directives: [router_1.ROUTER_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
+            providers: [users_1.UserService, pager_1.PagerService]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder))
     ], UserListComponent);

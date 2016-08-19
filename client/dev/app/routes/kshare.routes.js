@@ -13,9 +13,9 @@ var kspace_list_1 = require("../components/front-end/kspace/kspace-list");
 var kspace_info_1 = require("../components/front-end/kspace/kspace-info");
 var friend_list_1 = require("../components/front-end/user/user-profile/friend-list");
 var user_profile_1 = require("../components/front-end/user/user-profile/user-profile");
+var rs_search_user_1 = require("../components/front-end/user/search/rs-search-user");
 var register_1 = require('../components/front-end/user/register/register');
 var info_1 = require('../components/front-end/user/register/info');
-var success_1 = require('../components/front-end/user/register/success');
 var login_1 = require("../components/front-end/user/login/login");
 var reset_pass_1 = require("../components/front-end/user/reset-password/reset-pass");
 var new_pass_1 = require("../components/front-end/user/reset-password/new-pass");
@@ -46,10 +46,6 @@ exports.KShareRoutes = [
                     {
                         path: 'info/:id',
                         component: info_1.RegisterInfoComponent
-                    },
-                    {
-                        path: 'success',
-                        component: success_1.RegisterSuccessComponent
                     }
                 ]
             },
@@ -86,6 +82,10 @@ exports.KShareRoutes = [
                                 component: user_profile_1.UserProfileComponent
                             }
                         ]
+                    },
+                    {
+                        path: 'search/:name',
+                        component: rs_search_user_1.userSearchRsComponent
                     }
                 ]
             },

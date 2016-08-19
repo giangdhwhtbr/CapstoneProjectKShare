@@ -124,7 +124,13 @@ var KSpaceComponent = (function () {
             var username = _this.username;
             var rtc = _this.rtcService;
             var isKspaceUser = function () {
-                if (username === kspace.lecturer || username === kspace.learner) {
+                for (var _i = 0, _a = kspace.learners; _i < _a.length; _i++) {
+                    var learner = _a[_i];
+                    if (username === learner) {
+                        return true;
+                    }
+                }
+                if (username === kspace.lecturer) {
                     return true;
                 }
                 return false;
@@ -132,21 +138,6 @@ var KSpaceComponent = (function () {
             if (isKspaceUser()) {
                 // initiate webrtc
                 if (username === kspace.lecturer) {
-                    var webrtc = new SimpleWebRTC({
-                        localVideoEl: 'localVideo',
-                        remoteVideosEl: '',
-                        autoRequestMedia: true,
-                        nick: username,
-                        localVideo: {
-                            autoplay: true,
-                            mirror: true,
-                            muted: true // mute local video stream to prevent echo
-                        },
-                        log: true,
-                        debug: false
-                    });
-                }
-                else if (username === kspace.learner) {
                     var webrtc = new SimpleWebRTC({
                         localVideoEl: 'localVideo',
                         remoteVideosEl: '',

@@ -20,9 +20,7 @@ declare var io:any;
     </div>
 
       <button id="draw-option"><i class="fa fa-bars fa-2x" aria-hidden="true"></i></button>
-      <div class="wrapper-chalkboard">
-        <canvas id="chalkboard" resize=true keepalive=true></canvas>
-      </div>
+
 
 
       <div id="draw-tools">
@@ -40,6 +38,9 @@ declare var io:any;
           <p id="eraser">
               <i class="fa fa-eraser fa-2x" aria-hidden="true"></i>
           </p>
+      </div>
+      <div class="wrapper-chalkboard">
+        <canvas id="chalkboard" resize=true keepalive=true></canvas>
       </div>
     `,
     styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]

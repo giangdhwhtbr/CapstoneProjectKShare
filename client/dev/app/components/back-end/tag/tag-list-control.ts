@@ -12,11 +12,12 @@ import { PaginationControlsCmp, PaginatePipe, PaginationService, IPaginationInst
 import {PagerService} from '../../../services/pager';
 import {StringFilterPipe} from '../shared/filter';
 import {Paginator} from 'primeng/primeng';
+import {DataTable,Column, Header, MultiSelect, Footer, InputText} from 'primeng/primeng';
 
 @Component({
     selector: 'tag-list-clt',
     templateUrl: 'client/dev/app/components/back-end/tag/templates/tag.html',
-    directives: [ROUTER_DIRECTIVES, FORM_DIRECTIVES,PaginationControlsCmp,Paginator],
+    directives: [ROUTER_DIRECTIVES, FORM_DIRECTIVES,PaginationControlsCmp,Paginator,DataTable,Column, Header, MultiSelect, Footer, InputText],
     providers: [TagService,PaginationService,PagerService],
     pipes: [PaginatePipe, StringFilterPipe]
 })
@@ -25,16 +26,6 @@ export class TagListCtlComponent implements OnInit {
     tagsAt:any[] = [];
     tagsDa:any[] = [];
 
-    filter: string = '';
-    filter1: string = '';
-
-    total:any=0;
-    total1:any=0;
-
-    status:string="true";
-
-    firstESave:any=0;
-    firstESave1:any=0;
 
 
     constructor(private _tagService:TagService, private router:Router,private _pagerService:PagerService) {
@@ -42,74 +33,34 @@ export class TagListCtlComponent implements OnInit {
     }
 
     ngOnInit() {
-        this.getTagsAt();
-        this.getTagsDa();
-
+        this.getAllTag();
+        $('ul.tabs').tabs();
     }
 
-    getTagsAt(){
-        this._pagerService.getAPage("tag",0,"true").subscribe((tags)=> {
-            this._pagerService.getTotalNum("tagtot","true").subscribe((num)=>{
-                this.tagsAt=tags;
-                this.total=num;
-            });
+    getAllTag(){
+        this.tagsAt=[];
+        this.tagsDa=[];
+        this._tagService.getAllTagAdmin().subscribe((tags)=>{
+            for(let e of tags){
+                if(e.status==true){
+                    this.tagsAt.push(e);
+                }else{
+                    this.tagsDa.push(e);
+                }
+            }
         });
     }
 
-    getTagsDa(){
-        this._pagerService.getAPage("tag",0,"false").subscribe((tags)=> {
-            this._pagerService.getTotalNum("tagtot","false").subscribe((num)=>{
-                this.tagsDa=tags;
-                this.total1=num;
-            });
-        });
-    }
 
 
     deactiveTag(id:string){
         this._tagService.deactivateTag(id).subscribe((mess)=>{
-            this._pagerService.getAPage("tag",this.firstESave,"true").subscribe((tags)=> {
-                this._pagerService.getTotalNum("tagtot","true").subscribe((num)=>{
-                    this.total=num;
-                    this.tagsAt=tags;
-                    this._pagerService.getAPage("tag",this.firstESave1,"false").subscribe((tags)=> {
-                        this._pagerService.getTotalNum("tagtot","false").subscribe((num)=>{
-                            this.total1=num;
-                            this.tagsDa=tags;
-                        });
-                    });
-                });
-            });
+            this.getAllTag();
         });
     }
     activeTag(id:string){
         this._tagService.activeTag(id).subscribe((tag)=>{
-            this._pagerService.getAPage("tag",this.firstESave1,"false").subscribe((tags)=> {
-                this._pagerService.getTotalNum("tagtot","false").subscribe((num)=>{
-                    this.total1=num;
-                    this.tagsDa=tags;
-                    this._pagerService.getAPage("tag",this.firstESave,"true").subscribe((tags)=> {
-                        this._pagerService.getTotalNum("tagtot","true").subscribe((num)=>{
-                            this.total=num;
-                            this.tagsAt=tags;
-                        });
-                    });
-                });
-            });
+            this.getAllTag();
         });
-    }
-    paginate(event:any) {
-
-        this._pagerService.getAPage("tag",event.first,"true").subscribe((tags)=> {
-            this.tagsAt=tags;
-        });
-        this.firstESave=event.first;
-    }
-    paginate1(event:any) {
-
-        this._pagerService.getAPage("tag",event.first,"false").subscribe((tags)=> {
-            this.tagsDa=tags;
-        });
-        this.firstESave1=event.first;
     }
 }

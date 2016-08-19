@@ -1,16 +1,17 @@
+
 <div class="row">
-    <div class="col-md-2 local-panel">
+    <div class="col m2 local-panel">
         <p class="peerName">{{username}}</p>
         <video id="localVideo"></video>
         <div id="rtcTools">
-            <button id="chalkboard-btn" class="kspace-btn">
-                <i class="fa fa-paint-brush fa-2x" aria-hidden="true"></i>
+            <button id="chalkboard-btn" class="kspace-btn waves-effect waves-green btn-flat">
+                <i class="material-icons">create</i>
             </button>
-            <button id="videocall-btn" class="kspace-btn">
-                <i class="fa fa-video-camera fa-2x" aria-hidden="true"></i>
+            <button id="videocall-btn" class="kspace-btn waves-effect waves-green btn-flat">
+                <i class="material-icons">video_call</i>
             </button>
-            <button id="sharescreen-btn" class="kspace-btn">
-                <i class="fa fa-desktop fa-2x" aria-hidden="true"></i>
+            <button id="sharescreen-btn" class="kspace-btn waves-effect waves-green btn-flat">
+                <i class="material-icons">tablet</i>
             </button>
         </div>
         <div id="remoteVideos"></div>
@@ -18,7 +19,8 @@
         <!-- /#remotes -->
     </div>
     <!-- /.md-2 -->
-    <div class="col-md-10 kspace-panel">
+
+    <div class="col m8 kspace-panel">
 
         <div class="row">
             <div class="col s1"></div>
@@ -27,13 +29,45 @@
             </div>
             <div class="col s1"></div>
         </div>
+    </div>
+    <!--<div id="chat-panel">
+      <div id="chat-box-output" class="panel panel-default chat-box">
+        <div *ngFor="let msg of messages ">
+          <div *ngIf="!msg.sender">
+            <ul class="msg-box other-msg-box">
+              <li>{{msg.user}} :</li>
+              <li> {{msg.msg}} </li>
+              <li *ngIf="msg.url"><img src="{{msg.url}}" alt=""></li>
+            </ul>
+          </div>
+          <div *ngIf="msg.sender" class="own-msg">
+            <ul class="msg-box own-msg-box">
+              <li> {{msg.msg}}</li>
+              <li *ngIf="msg.url"><img src="{{msg.url}}" alt=""></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <form id="chat-form" (ngSubmit)="send(mess,img)" >
+        <input type="checkbox" id="img" name="img" [(ngModel)]="img" value="">
+        <input type="text" id="chat-input" [(ngModel)]="mess" class="panel panel-default" placeholder="chat here">
+        <button type="submit" id="btn-send"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+      </form>
+    </div>
+    <button id="chat"><i class="fa fa-comments-o fa-2x" aria-hidden="true"></i></button>
+  </div>
+  <!-- /.md- -->
+    <!--</div>
+    <!-- /.row -->
+
+    <div class="col m2" style="height:100%;left:83.3%!important;position:fixed;">
         <div id="chat-panel">
             <div id="chat-box-output" class="panel panel-default chat-box">
                 <div *ngFor="let msg of messages ">
                     <div *ngIf="!msg.sender">
                         <ul class="msg-box other-msg-box">
                             <li>{{msg.user}} :</li>
-                            <li> {{msg.msg}}</li>
+                            <li> {{msg.msg}} </li>
                             <li *ngIf="msg.url"><img src="{{msg.url}}" alt=""></li>
                         </ul>
                     </div>
@@ -45,15 +79,11 @@
                     </div>
                 </div>
             </div>
-            <form id="chat-form" (ngSubmit)="send(mess,img)">
+            <form id="chat-form" (ngSubmit)="send(mess,img)" >
                 <input type="checkbox" id="img" name="img" [(ngModel)]="img" value="">
-                <input type="text" id="chat-input" [(ngModel)]="mess" class="panel panel-default"
-                       placeholder="chat here">
+                <input type="text" id="chat-input" [(ngModel)]="mess" class="panel panel-default" placeholder="chat here">
                 <button type="submit" id="btn-send"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
             </form>
         </div>
-        <button id="chat"><i class="fa fa-comments-o fa-2x" aria-hidden="true"></i></button>
     </div>
-    <!-- /.md- -->
 </div>
-<!-- /.row -->

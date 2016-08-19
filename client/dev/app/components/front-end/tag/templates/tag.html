@@ -1,5 +1,3 @@
-<!--<span *ngFor="let t of tags"><a [routerLink]="['/tag',t._id]">{{t.name}}</a></span>-->
-
 <ul class="tags">
     <li *ngFor="let t of tags"><a [routerLink]="['/tag',t._id]" class="tag">{{t.name}}</a></li>
 </ul>

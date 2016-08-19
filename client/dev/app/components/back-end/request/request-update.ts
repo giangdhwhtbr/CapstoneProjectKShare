@@ -7,6 +7,8 @@ import { KnowledgeService } from '../../../services/knowledge';
 import { TagService } from '../../../services/tag';
 import {AutoComplete} from 'primeng/primeng';
 
+import {PrivateChatComponent} from '../../shared/private-chat'
+
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
 
@@ -104,7 +106,7 @@ class CKEditor implements OnInit, AfterViewChecked {
 @Component({
     selector: 'request-update-cli',
     templateUrl: 'client/dev/app/components/back-end/request/templates/request-update.html',
-    directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES, AutoComplete, CKEditor],
+    directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES, AutoComplete, CKEditor,PrivateChatComponent],
     providers: [TagService]
 })
 

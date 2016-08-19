@@ -7,7 +7,15 @@ import { Observable } from 'rxjs/Observable';
 export class KSpaceService {
     private _kspaceUrl = '/api/kspace/:id';
 
+    private _kspace_profile='/api/kspace-profile/:name';
+
     constructor(private _http:Http) {
+    }
+
+    getKspaceProfile(name:string):Observable<KSpace> {
+        return this._http.get(this._kspace_profile.replace(':name', name))
+            .map((r) => r.json())
+            .catch(this.handleError);
     }
 
     getAllKSpace():Observable<KSpace[]> {

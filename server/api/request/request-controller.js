@@ -37,10 +37,11 @@ module.exports = class RequestController {
     let _data = req.body;
     //create new tags in database
     TagDAO.createArrayTag(_data.newTag).then((tags) => {
-
+        console.log(tags);
       RequestDAO
         .createRequest(_data.request)
         .then((request) => {
+            console.log(request);
           // push the new tag to the new request
           for (let e of tags) {
             request.tags.push(e);
@@ -56,6 +57,7 @@ module.exports = class RequestController {
     if (req.params && req.params.id) {
       var currentDate = new Date();
       let _data = req.body;
+      console.log(req.body);
       RequestDAO.getRequestById(req.params.id)
         .then(request => {
           request.title = _data.rq.title;
@@ -66,7 +68,8 @@ module.exports = class RequestController {
           request.tags = _data.rq.tags;
           request.status = _data.rq.status;
           request.updatedAt = new Date();
-
+          request.subscribers = _data.rq.subscribers;
+          console.log(request);
           TagDAO.createArrayTag(_data.newTag).then((tags) => {
 
             RequestDAO.updateRequestById(request).then(request => {
@@ -74,6 +77,10 @@ module.exports = class RequestController {
                 tags.map((e, i) => {
                   request.tags.push(e);
                 });
+                console.log(request.subscribers);
+                request.save();
+              }else{
+                console.log(request.subscribers);
                 request.save();
               }
               res.status(200).json(request);
@@ -172,7 +179,7 @@ module.exports = class RequestController {
     if (req.params && req.params.id) {
       RequestDAO.getRequestById(req.params.id)
         .then(request => {
-          request.subcribers.push(req.body.subcriber);
+          request.subscribers.push(req.body.subcriber);
 
           RequestDAO.updateRequestById(request)
             .then(request => res.status(200).json(request))

@@ -22,6 +22,15 @@ module.exports = class TagController {
                 res.status(200).json(tags);
             }).catch(error => res.status(400).json(error));
     }
+    static getAllTagsAdmin(req, res) {
+        TagDAO
+            .getAll()
+            .then(tags => {
+                res.status(200).json(tags);
+            }).catch(error => res.status(400).json(error));
+    }
+
+
 
     static getAllDeactivatedTags(req, res) {
         TagDAO

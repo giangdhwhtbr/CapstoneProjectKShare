@@ -14,11 +14,18 @@ var KnowledgeService = (function () {
         this._http = _http;
         this._knowledgesUrl = '/api/knowledges/:id';
         this._knowledgeStatusUrl = '/api/knowledges/knowledgestatus/:id';
+        this._knowledgesAdmin = '/api/knowledgesAdmin';
     }
     KnowledgeService.prototype.getAllKnowledges = function () {
         return this._http.get(this._knowledgesUrl.replace(':id', ''))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
+    };
+    KnowledgeService.prototype.getAllKnowledgesForAdmin = function () {
+        return this._http.get(this._knowledgesAdmin.replace(':id', ''))
+            .toPromise()
+            .then(function (r) { return r.json().data; })
+            .then(function (data) { return data; });
     };
     KnowledgeService.prototype.addKnowledge = function (knowledge) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -58,6 +65,26 @@ var KnowledgeService = (function () {
         var parent = [];
         var subCate = [];
         for (var i = 0; i < knowledges.length; i++) {
+            if (!knowledges[i].hasOwnProperty('parent') && knowledges[i].status == true) {
+                parent.push(knowledges[i]);
+            }
+        }
+        for (var i = 0; i < parent.length; i++) {
+            for (var j = 0; j < knowledges.length; j++) {
+                if ((knowledges[j].hasOwnProperty('parent')) && (knowledges[j].parent === parent[i]._id) && (knowledges[j].status == true)) {
+                    subCate.push(knowledges[j]);
+                }
+            }
+            parent[i]["subCategory"] = subCate;
+            subCate = [];
+        }
+        return parent;
+    };
+    //only in admin
+    KnowledgeService.prototype.getChildFromParentAdmin = function (knowledges) {
+        var parent = [];
+        var subCate = [];
+        for (var i = 0; i < knowledges.length; i++) {
             if (!knowledges[i].hasOwnProperty('parent')) {
                 parent.push(knowledges[i]);
             }
@@ -74,15 +101,9 @@ var KnowledgeService = (function () {
         knowledges = parent;
         return parent;
     };
-    KnowledgeService.prototype.changeKnowledgeStatus = function (knowledge) {
-        var header = new http_1.Headers;
-        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-        var options = new http_1.RequestOptions({ headers: headers });
-        var _knowledge = JSON.stringify({
-            status: !knowledge.status
-        });
+    KnowledgeService.prototype.changeKnowledgeStatus = function (id) {
         return this._http
-            .put(this._knowledgeStatusUrl.replace(':id', knowledge._id), _knowledge, options)
+            .get(this._knowledgeStatusUrl.replace(':id', id))
             .map(function (r) { return r.json(); });
     };
     KnowledgeService.prototype.handleError = function (error) {

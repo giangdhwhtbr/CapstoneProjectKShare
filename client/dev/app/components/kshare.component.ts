@@ -25,6 +25,7 @@ import { KSpaceComponent } from "./front-end/kspace/kspace";
 import { KSpaceListComponent } from "./front-end/kspace/kspace-list";
 import { KSpaceInfoComponent } from "./front-end/kspace/kspace-info";
 import { FriendListComponent } from "./front-end/user/user-profile/friend-list";
+import { userSearchRsComponent } from "./front-end/user/search/rs-search-user";
 import { UserProfileBarComponent } from "./front-end/user/user-profile/user-profile-bar";
 import { CreateArticleComponent } from "./front-end/article/create-article";
 import { detailArticleComponent } from "./front-end/article/detail-article";
@@ -38,36 +39,38 @@ import { CreateRequestComponent } from "./back-end/request/request-create";
 
 
 @Component({
-  selector: 'kshare-app',
-  template:`
+    selector: 'kshare-app',
+    template: `
     <sidebar></sidebar>
-    <!--<friend-list></friend-list>-->
-    <router-outlet></router-outlet>
+    <main>
+        <router-outlet></router-outlet>
+    </main>
   `,
-  directives: [
-    ROUTER_DIRECTIVES,
-    HeaderComponent,
-    SideBarComponent,
-    FooterComponent,
-    //FriendListComponent
-  ],
-  precompile: [
-    HomeComponent,
-    RequestListClientComponent,
-    RequestDetailClientComponent,
-    RequestCategoryComponent,
-    KSpaceComponent,
-    KSpaceListComponent,
-    KSpaceInfoComponent,
-    UserProfileComponent,
-    FriendListComponent,
-    UserProfileBarComponent,
-    CreateArticleComponent,
-    detailArticleComponent,
-    listArticleComponent,
-    displayArtByTagComponent,
-    CreateRequestComponent
-  ]
+    directives: [
+        ROUTER_DIRECTIVES,
+        HeaderComponent,
+        SideBarComponent,
+        FooterComponent,
+        //FriendListComponent
+    ],
+    precompile: [
+        HomeComponent,
+        RequestListClientComponent,
+        RequestDetailClientComponent,
+        RequestCategoryComponent,
+        KSpaceComponent,
+        KSpaceListComponent,
+        KSpaceInfoComponent,
+        UserProfileComponent,
+        FriendListComponent,
+        UserProfileBarComponent,
+        CreateArticleComponent,
+        detailArticleComponent,
+        listArticleComponent,
+        displayArtByTagComponent,
+        CreateRequestComponent,
+        userSearchRsComponent
+    ]
 })
 export class KshareComponent {
 

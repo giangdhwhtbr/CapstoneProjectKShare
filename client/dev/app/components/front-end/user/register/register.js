@@ -11,6 +11,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
  */
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
+var router_1 = require('@angular/router');
 var RegisterComponent = (function () {
     function RegisterComponent(fb, _authService, router) {
         this.fb = fb;
@@ -96,7 +97,7 @@ var RegisterComponent = (function () {
             selector: 'register',
             templateUrl: 'client/dev/app/components/front-end/user/register/templates/register.html',
             styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
-            directives: [common_1.FORM_DIRECTIVES]
+            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
         })
     ], RegisterComponent);
     return RegisterComponent;

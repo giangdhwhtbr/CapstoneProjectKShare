@@ -25,6 +25,11 @@ export class UserService {
     private _changePass = '/api/new-pass/:token';
     private _chatRoomUrl = 'api/chat-rooms';
 
+
+    private _searchUrl = '/api/search-user/:username';
+
+
+
     constructor(private _http:Http) {
     }
 
@@ -33,6 +38,13 @@ export class UserService {
       .map((r) => r.json())
       .catch(this.handleError);
     }
+
+    searchUserByUsername(name: string): Observable <any> {
+      return this._http.get(this._searchUrl.replace(':username',name))
+      .map((r) => r.json())
+      .catch(this.handleError);
+    }
+
     updateNewPassword(password: string, token: string): Observable <any> {
       let headers = new Headers({'Content-Type': 'application/json'});
       let options = new RequestOptions({headers: headers});

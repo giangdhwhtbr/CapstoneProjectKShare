@@ -108,7 +108,7 @@ export class RegisterInfoComponent implements OnInit{
         }
         this._userService.updateUser(user, tags[1]).subscribe(
             res => {
-                this.router.navigateByUrl('/reg/success');
+                this.router.navigateByUrl('/');
             },
             err => {
                 console.log(err);
