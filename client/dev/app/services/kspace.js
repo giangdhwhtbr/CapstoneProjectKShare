@@ -35,7 +35,6 @@ var KSpaceService = (function () {
             requestTitle: requestTitle,
             offerId: offerId,
         });
-        console.log(_kspace);
         return this._http
             .post(this._kspaceUrl.replace(':id', ''), _kspace, options)
             .map(function (r) { return r.json(); });

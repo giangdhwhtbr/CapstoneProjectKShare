@@ -17,7 +17,7 @@ var UserService = (function () {
     function UserService(_http) {
         this._http = _http;
         this._usersUrl = '/api/user/:id';
-        this._profilePictureUrl = '/api/user-picture';
+        //private _profilePictureUrl = '/api/user-picture';
         this._friendUrl = '/api/friendship/:id';
         this._getFriendUrl = '/api/getFriendship';
         this._getRequestByUserUrl = '/api/requests-user/:user/:num';
@@ -27,6 +27,16 @@ var UserService = (function () {
         this._emailResetPass = '/api/email-reset-pass/:email';
         this._changePass = '/api/new-pass/:token';
     }
+    UserService.prototype.getAllUsers = function () {
+        return this._http.get(this._usersUrl.replace(':id', ''))
+            .map(function (res) { return res.json(); })
+            .catch(this.handleError);
+    };
+    UserService.prototype.getUserById = function (id) {
+        return this._http.get(this._usersUrl.replace(':id', id))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
     UserService.prototype.getUserByToken = function (token) {
         return this._http.get(this._changePass.replace(':token', token))
             .map(function (r) { return r.json(); })
@@ -47,16 +57,6 @@ var UserService = (function () {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         return this._http.get(this._emailResetPass.replace(':email', email), options)
-            .map(function (r) { return r.json(); })
-            .catch(this.handleError);
-    };
-    UserService.prototype.getAllUsers = function () {
-        return this._http.get(this._usersUrl.replace(':id', ''))
-            .map(function (res) { return res.json(); })
-            .catch(this.handleError);
-    };
-    UserService.prototype.getUserById = function (id) {
-        return this._http.get(this._usersUrl.replace(':id', id))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
@@ -96,7 +96,6 @@ var UserService = (function () {
     UserService.prototype.updateUser = function (user, _newTag) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
-        var ownk, ink;
         var _data = JSON.stringify({
             user: {
                 _id: user._id,
@@ -117,14 +116,14 @@ var UserService = (function () {
             .put(this._usersUrl.replace(':id', user._id), _data, options)
             .map(function (r) { return r.json(); });
     };
-    UserService.prototype.banUser = function (userId) {
+    UserService.prototype.banUser = function (id) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
         var options = new http_1.RequestOptions({ headers: headers });
         var data = JSON.stringify({
             admin: localStorage.getItem('username')
         });
         return this._http
-            .put(this._banUrl.replace(':id', userId), data, options);
+            .put(this._banUrl.replace(':id', id), data, options);
     };
     //add friend service
     UserService.prototype.addFriend = function (requestUser, acceptUser) {

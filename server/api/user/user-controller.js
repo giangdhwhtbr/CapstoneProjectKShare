@@ -5,11 +5,7 @@ const crypto = require('crypto');
 const transporter = require('./config/nodemailer');
 const mailOptions = require('./config/mail-templates');
 const TagDAO = require('../tags/tag-dao');
-//Send Json
-var sendJsonResponse = function (res, status, content) {
-    res.status(status);
-    res.json(content);
-};
+
 module.exports = class userController {
     static getAll(req, res) {
         userDAO
@@ -80,7 +76,6 @@ module.exports = class userController {
                     user.fullName = _data.user.fullName;
                     user.displayName = _data.user.displayName;
                     user.phone = _data.user.phone;
-                    //user.interestedKnowledgeId = req.body.interestedKnowledgeId;
                     user.status = _data.user.status;
                     user.updatedAt = currentDate;
                     user.ownKnowledgeIds= _data.user.ownKnowledgeIds;

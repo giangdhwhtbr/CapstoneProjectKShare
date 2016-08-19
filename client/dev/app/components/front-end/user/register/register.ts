@@ -30,7 +30,7 @@ export class RegisterComponent {
     constructor(private fb:FormBuilder, private _authService:AuthService, public router:Router) {
 
     }
-    ngOnInit():vodi {
+    ngOnInit():void {
       this.regForm = this.fb.group({
         username: ["", Validators.pattern('^[a-zA-Z0-9_.-]*$')],
         password: ["", Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')],

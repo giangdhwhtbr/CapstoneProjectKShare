@@ -14,7 +14,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class UserService {
     private _usersUrl = '/api/user/:id';
-    private _profilePictureUrl = '/api/user-picture';
+    //private _profilePictureUrl = '/api/user-picture';
     private _friendUrl = '/api/friendship/:id';
     private _getFriendUrl = '/api/getFriendship';
     private _getRequestByUserUrl = '/api/requests-user/:user/:num';
@@ -27,10 +27,22 @@ export class UserService {
     constructor(private _http:Http) {
     }
 
+    getAllUsers():Observable<User[]> {
+        return this._http.get(this._usersUrl.replace(':id', ''))
+            .map((res) => res.json())
+            .catch(this.handleError);
+    }
+
+    getUserById(id:string):Observable<User> {
+        return this._http.get(this._usersUrl.replace(':id', id))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
+
     getUserByToken(token: string): Observable <any> {
       return this._http.get(this._changePass.replace(':token',token))
-      .map((r) => r.json())
-      .catch(this.handleError);
+        .map((r) => r.json())
+        .catch(this.handleError);
     }
     updateNewPassword(password: string, token: string): Observable <any> {
       let headers = new Headers({'Content-Type': 'application/json'});
@@ -48,23 +60,11 @@ export class UserService {
     }
 
     sendEmailResetPassword(email: string): Observable <any> {
-        let headers = new Headers({'Content-Type': 'application/json'});
-        let options = new RequestOptions({headers: headers});
-        return this._http.get(this._emailResetPass.replace(':email',email),options)
-              .map((r) => r.json())
-              .catch(this.handleError);
-    }
-
-    getAllUsers():Observable<User[]> {
-        return this._http.get(this._usersUrl.replace(':id', ''))
-            .map((res) => res.json())
-            .catch(this.handleError);
-    }
-
-    getUserById(id:string):Observable<User> {
-        return this._http.get(this._usersUrl.replace(':id', id))
-            .map((r) => r.json())
-            .catch(this.handleError);
+      let headers = new Headers({'Content-Type': 'application/json'});
+      let options = new RequestOptions({headers: headers});
+      return this._http.get(this._emailResetPass.replace(':email',email),options)
+        .map((r) => r.json())
+        .catch(this.handleError);
     }
 
     //get user informations by username
@@ -109,8 +109,6 @@ export class UserService {
     updateUser(user:any, _newTag:any[]):Observable<any> {
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
-        var ownk, ink;
-
 
         let _data = JSON.stringify({
             user:{
@@ -135,7 +133,7 @@ export class UserService {
     }
 
 
-    banUser(userId:string):Observable<any> {
+    banUser(id:string):Observable<any> {
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
 
@@ -143,7 +141,7 @@ export class UserService {
             admin: localStorage.getItem('username')
         });
         return this._http
-            .put(this._banUrl.replace(':id', userId), data, options);
+            .put(this._banUrl.replace(':id', id), data, options);
     }
 
     //add friend service
