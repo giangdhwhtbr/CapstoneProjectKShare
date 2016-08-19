@@ -14,7 +14,7 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class UserService {
     private _usersUrl = '/api/user/:id';
-    //private _profilePictureUrl = '/api/user-picture';
+    private _profilePictureUrl = '/api/user-picture';
     private _friendUrl = '/api/friendship/:id';
     private _getFriendUrl = '/api/getFriendship';
     private _getRequestByUserUrl = '/api/requests-user/:user/:num';
@@ -23,20 +23,9 @@ export class UserService {
     private _banUrl = '/api/ban/:id';
     private _emailResetPass = '/api/email-reset-pass/:email';
     private _changePass = '/api/new-pass/:token';
+    private _chatRoomUrl = 'api/chat-rooms';
 
     constructor(private _http:Http) {
-    }
-
-    getAllUsers():Observable<User[]> {
-        return this._http.get(this._usersUrl.replace(':id', ''))
-            .map((res) => res.json())
-            .catch(this.handleError);
-    }
-
-    getUserById(id:string):Observable<User> {
-        return this._http.get(this._usersUrl.replace(':id', id))
-            .map((r) => r.json())
-            .catch(this.handleError);
     }
 
     getUserByToken(token: string): Observable <any> {
@@ -65,6 +54,32 @@ export class UserService {
       return this._http.get(this._emailResetPass.replace(':email',email),options)
         .map((r) => r.json())
         .catch(this.handleError);
+    }
+
+    deactivateChatRoom(user1: string, user2: string): Observable <any> {
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+
+        let data = JSON.stringify({
+            user1: user1,
+            user2: user2
+        });
+
+        return this._http.put(this._chatRoomUrl,data,options)
+              .map((r) => r.json())
+              .catch(this.handleError);
+    }
+
+    getAllUsers():Observable<User[]> {
+        return this._http.get(this._usersUrl.replace(':id', ''))
+            .map((res) => res.json())
+            .catch(this.handleError);
+    }
+
+    getUserById(id:string):Observable<User> {
+        return this._http.get(this._usersUrl.replace(':id', id))
+            .map((r) => r.json())
+            .catch(this.handleError);
     }
 
     //get user informations by username
@@ -109,6 +124,8 @@ export class UserService {
     updateUser(user:any, _newTag:any[]):Observable<any> {
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
+        var ownk, ink;
+
 
         let _data = JSON.stringify({
             user:{
@@ -203,7 +220,6 @@ export class UserService {
     }
 
     acceptFriendRequest(user1:string, user2:string):Observable<any> {
-        console.log(user1 + ' ' + user2);
         return this._http
             .get(this._friendshipStatusUrl.replace(':user1', user1).replace(':user2', user2));
     }

@@ -1,0 +1,12 @@
+<!-- Modal Structure -->
+<div id="messageModal" class="modal modal-fixed-footer">
+  <div class="modal-content">
+    <h4>Gửi tin nhắn tới {{receiver}}</h4>
+    <input id="textboxmess" [(ngModel)]="mess" class="form-control border no-shadow no-rounded" placeholder="Type your message here"
+      autofocus>
+    <span class="input-group-btn">
+      <button class="btn btn-success no-rounded" (click)="sendMessage()" type="button">Gửi</button>
+            <button class="btn btn-success no-rounded" (click)="closeModal()" type="button">Hủy bỏ</button>
+    </span>
+  </div>
+</div>

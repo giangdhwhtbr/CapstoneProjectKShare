@@ -11,6 +11,12 @@ export class ArticleService {
     private _requestsUrl = '/api/article/:id';
     private _requestsGetDeArtUrl = '/api/art/de/:id';
     private _articleUserUrl = '/api/articles-user';
+    private _searchArticleUrl = '/api/full-search-article';
+
+    private _cmtUrl="/api/comment/article/:artId/:cmtId";
+
+    private _cmtLike="/api/comment/like/:artId/:cmtId/:user";
+    private _cmtUnLike="/api/comment/unlike/:artId/:cmtId/:user";
 
     constructor(private _http:Http) {
     }
@@ -26,6 +32,19 @@ export class ArticleService {
             .map((r) => r.json())
             .catch(this.handleError);
     }
+
+    //search request
+    searchArticle(search: string): Observable<any> {
+        let headers = new Headers({ 'Content-Type': 'application/json' });
+        let options = new RequestOptions({ headers: headers });
+        let _search = JSON.stringify({
+            text: search
+        });
+        return this._http
+            .post(this._searchArticleUrl, _search, options)
+            .map((r) => r.json());
+    }
+
     getAllDeArts():Observable<any[]> {
         return this._http.get(this._requestsGetDeArtUrl.replace(':id', ''))
             .map((r) => r.json())
@@ -84,6 +103,52 @@ export class ArticleService {
             .post(this._requestsUrl.replace(':id', ''), _data, options)
             .map((r) => r.json());
     }
+
+    addComment(artId:string,user:string,content:string){
+        let header = new Headers;
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+        let _comment = JSON.stringify(
+            {
+                artId: artId,
+                user:user,
+                content:content
+            }
+        );
+        return this._http
+            .post(this._cmtUrl.replace(':artId','').replace('/:cmtId',''), _comment, options)
+            .map((r) => r.json());
+    }
+
+    editComment(artId:string,cmtId:string,content:string){
+        let header = new Headers;
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+        let _cmt = JSON.stringify(
+            {
+                content: content
+            }
+        );
+        return this._http
+            .put(this._cmtUrl.replace(':artId',artId).replace(':cmtId',cmtId), _cmt, options)
+            .map((r) => r.json());
+    }
+
+    removeComment(artId:string,cmtId:string):Observable<any>{
+        return this._http.delete(this._cmtUrl.replace(':artId',artId).replace(':cmtId',cmtId)).map((r) => r.json());
+    }
+
+    likeComment(artId:string,cmtId:string,user:string):Observable<any> {
+        return this._http.get(this._cmtLike.replace(':artId',artId).replace(':cmtId',cmtId).replace(':user',user))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
+    unlikeComment(artId:string,cmtId:string,user:string):Observable<any> {
+        return this._http.get(this._cmtUnLike.replace(':artId',artId).replace(':cmtId',cmtId).replace(':user',user))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
+
 
     getArtById(id:string):Observable<any> {
         return this._http.get(this._requestsUrl.replace(':id', id))

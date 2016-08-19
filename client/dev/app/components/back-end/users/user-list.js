@@ -54,6 +54,11 @@ var UserListComponent = (function () {
             console.log(error);
         });
     };
+    UserListComponent.prototype.openUserProfile = function (username) {
+        var specs = 'width=1200,height=1200';
+        var url = '/user/' + username;
+        window.open(url, '', specs);
+    };
     UserListComponent.prototype.addUser = function (user) {
         var _this = this;
         this._userService

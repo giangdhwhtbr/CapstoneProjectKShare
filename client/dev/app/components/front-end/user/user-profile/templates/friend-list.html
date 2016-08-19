@@ -20,7 +20,7 @@
               <div class="row">
                 <ul *ngFor="let friendName of friendNames">
 
-                  <friend-record friendName="{{friendName}}"></friend-record>
+                  <friend-record friendName="{{friendName}}" (sendDataToP)="action($event)"></friend-record>
 
                 </ul>
               </div>
@@ -30,7 +30,7 @@
               <div class="row">
                 <ul *ngFor="let pendingRequest of pendingRequests">
 
-                  <request-friend-record requestUser="{{pendingRequest.user1}}"></request-friend-record>
+                  <request-friend-record requestUser="{{pendingRequest.user1}}" (sendDataToP)="action($event)"></request-friend-record>
 
                 </ul>
               </div>
@@ -41,3 +41,4 @@
     </div>
   </div>
 </div>
+<private-chat></private-chat>

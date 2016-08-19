@@ -1,20 +1,21 @@
-<!--<div id="chatboxWhole" class="modal">-->
-    <div class="modal-content container mg-top-100">
+<div id="chatBoxK" class="modal">
+    <div class="modal-content cnt-chat">
         <div class="row">
-            <div class="col m4 bg-white box-list-fr">
+            <!--<div class="wrap-box row">-->
+            <div class="col s4 m4 l4 bg-white box-list-fr">
 
                 <!-- =============================================================== -->
                 <!-- member list -->
                 <ul class="friend-list">
                     <li *ngFor="let room of allChatRooms" class="fr-e">
-                        <a href="#" class="clearfix" (click)="getReceiver(room)">
+                        <a class="clearfix" (click)="getReceiver(room)">
                             <img src="http://bootdey.com/img/Content/user_1.jpg" alt="" class="img-circle">
 
                             <div class="friend-name">
                                 <strong>{{room.friendName}}</strong>
                             </div>
                             <div class="last-message text-muted">{{room.lastMsg}}</div>
-                            <span class="new badge" data-badge-caption="tin nhắn mới">{{room.news}}</span>
+                            <span class="new badge" data-badge-caption="tin nhắn mới" *ngIf="room.newMessages > 0">{{room.newMessages}}</span>
                             <!--<small class="chat-alert label label-danger">1</small>-->
                         </a>
                     </li>
@@ -23,14 +24,15 @@
 
             <!--=========================================================-->
             <!-- selected chat -->
-            <div class="col m8 bg-white ">
-                <div class="chat-message">
+            <div id="listMess" class="col s8 m8 l8 bg-white box-text">
+                <!--<div class="col s8 m8 l8">-->
+                <div class="chat-message row">
                     <ul class="chat">
                         <div *ngFor="let mes of messages">
                             <li *ngIf="mes.sender!=username" class="left clearfix">
-                                <span class="chat-img pull-left">
+                                  <span class="chat-img pull-left">
                                     <img src="http://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">
-                                </span>
+                                  </span>
 
                                 <div class="chat-body clearfix">
                                     <div class="header">
@@ -44,9 +46,10 @@
                                 </div>
                             </li>
                             <li *ngIf="mes.sender==username" class="right clearfix">
-                            <span class="chat-img pull-right">
-                                <img src="http://bootdey.com/img/Content/user_1.jpg" alt="User Avatar">
-                            </span>
+                                  <span class="chat-img pull-right">
+                                                    <img src="http://bootdey.com/img/Content/user_1.jpg"
+                                                         alt="User Avatar">
+                                  </span>
 
                                 <div class="chat-body clearfix">
                                     <div class="header">
@@ -61,24 +64,25 @@
                             </li>
                         </div>
 
-
                     </ul>
                 </div>
-                <div class="chat-box bg-white">
+                <div class="chat-box bg-white row">
+                    <!--<div class="  row">-->
                     <div class="input-group">
-                        <input #mess class="form-control border no-shadow no-rounded"
-                               placeholder="Type your message here">
-            		<span class="input-group-btn">
-            			<button class="btn btn-success no-rounded" (click)="sendMessage(mess.value)" type="button">
-                            Send
-                        </button>
-            		</span>
-                    </div><!-- /input-group -->
+                        <input id="textboxmess"  [(ngModel)]="mess" class="form-control border no-shadow no-rounded"
+                               placeholder="Type your message here" autofocus>
+                            <span class="input-group-btn">
+                                <button class="btn btn-success no-rounded" (click)="sendMessage()"
+                                        type="button">Gửi
+                                </button>
+                            </span>
+                    </div>
+                    <!-- /input-group -->
                 </div>
             </div>
         </div>
+
     </div>
-    <!--<div class="modal-footer">-->
-    <!--<a href="#!" class="modal-action modal-close waves-effect waves-green btn-flat ">Agree</a>-->
-    <!--</div>-->
-<!--</div>-->
+</div>
+
+

@@ -5,6 +5,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { KSpaceService } from '../../../services/kspace';
 import { NgForm }    from '@angular/forms';
+import { PrivateChatComponent } from './../../shared/private-chat';
+
 // import { SEMANTIC_COMPONENTS, SEMANTIC_DIRECTIVES } from "ng-semantic";
 
 @Component ({
@@ -51,9 +53,11 @@ import { NgForm }    from '@angular/forms';
           </div>
         </div>
       </div>
+      <private-chat></private-chat>
     `,
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    PrivateChatComponent
   ],
 })
 

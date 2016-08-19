@@ -42,6 +42,11 @@ var ArtListCtlComponent = (function () {
         this.getdaArts();
         this.getPrArts();
     };
+    ArtListCtlComponent.prototype.openArticle = function (articleId) {
+        var specs = 'width=1200,height=1200';
+        var url = '/article/' + articleId;
+        window.open(url, '', specs);
+    };
     ArtListCtlComponent.prototype.getAtArts = function () {
         var _this = this;
         this._pagerService.getAPage("article", 0, "public").subscribe(function (Arts) {

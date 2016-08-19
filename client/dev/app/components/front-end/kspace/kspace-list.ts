@@ -5,6 +5,7 @@ import { Component, OnInit, OnDestroy, Pipe, PipeTransform } from '@angular/core
 import { KSpace } from '../../../interface/kspace';
 import { KSpaceService } from '../../../services/kspace';
 import { Router, ROUTER_DIRECTIVES } from '@angular/router';
+import { PrivateChatComponent } from './../../shared/private-chat';
 
 @Component({
   template: `
@@ -41,9 +42,11 @@ import { Router, ROUTER_DIRECTIVES } from '@angular/router';
             </div>
           </div>
     </div><!-- /.container -->
+    <private-chat></private-chat>
     `,
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    PrivateChatComponent
   ],
   styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace-list.css']
 })

@@ -108,10 +108,12 @@ var RequestService = (function () {
                 description: request.description,
                 knowledgeId: request.knowledgeId,
                 status: request.status,
-                tags: oldTag
+                tags: oldTag,
+                subscribers: request.subscribers
             },
             newTag: newTag
         });
+        console.log(_data);
         return this._http
             .put(this._requestsUrl.replace(':id', request._id), _data, options)
             .map(function (r) { return r.json(); });
@@ -127,7 +129,7 @@ var RequestService = (function () {
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
-    //add a subcriber to templates subcribers
+    //add a subcriber to templates subscribers
     RequestService.prototype.updateSubcriber = function (id, subcriber) {
         var header = new http_1.Headers;
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });

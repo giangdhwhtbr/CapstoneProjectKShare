@@ -1,7 +1,7 @@
 //cores
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
-
+declare var io: any;
 //services
 import { UserService } from '../../../../services/users';
 import { AuthService } from '../../../../services/auth';
@@ -21,15 +21,19 @@ import { FriendShip } from '../../../../interface/friendship';
 
 export class FriendRecordComponent {
   @Input('friendName') friendName: string;
+  @Output() sendDataToP: EventEmitter<string> = new EventEmitter<string>();
+
   displayname: string;
   email: string;
   level: string;
-  userToken:string;
-  isFriend:boolean;
-  name:string;
+  userToken: string;
+  isFriend: boolean;
+  name: string;
+  socket: any;
 
   constructor(private router: Router, private route: ActivatedRoute,
-                private _userService: UserService, private _auth:AuthService) {
+    private _userService: UserService, private _auth: AuthService) {
+    this.socket = io('https://localhost:80');
     this.userToken = localStorage.getItem('username');
     this.isFriend = true;
     this.route
@@ -43,7 +47,7 @@ export class FriendRecordComponent {
     this.getUserInformation();
   }
 
-  getUserInformation():void {
+  getUserInformation(): void {
     this._userService.getUserByUserName(this.friendName).subscribe(
       (userinfo) => {
         this.displayname = userinfo.displayName;
@@ -69,9 +73,17 @@ export class FriendRecordComponent {
         .subscribe(() => {
           this.isFriend = false;
         });
+      this._userService
+        .deactivateChatRoom(this.friendName, this.userToken)
+        .subscribe(() => {
 
+        });
+      this.sendDataToP.emit("accept");
+      // var data = [this.userToken, this.friendName];
+      // this.socket.emit('chatroom-friend', data);
       alert("bạn đã hủy gửi lời  mời kết bạn");
     }
+
   }
 
 }

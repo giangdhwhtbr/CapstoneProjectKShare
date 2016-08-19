@@ -83,6 +83,10 @@ module.exports = class userRoutes {
       .route('/api/is-user-exist/:username')
       .get(userController.checkUserExist);
 
+   router
+      .route('/api/search-user/:username')
+      .get(userController.findUsersByUsername);
+
   }
 
 }

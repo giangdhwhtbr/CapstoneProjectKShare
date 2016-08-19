@@ -14,8 +14,9 @@ articleSchema.statics.getAll = (x) => {
 
         Article
             .find({})
-            .skip(x-5)
+            .skip(x - 5)
             .limit(5)
+            .sort({ updatedAt: -1 })
             .exec((err, articles) => {
                 err ? reject(err)
                     : resolve(articles);
@@ -24,7 +25,7 @@ articleSchema.statics.getAll = (x) => {
 }
 
 //get all article by tags dao function
-articleSchema.statics.getArticlesByTagsOfUser = (userTags,x) => {
+articleSchema.statics.getArticlesByTagsOfUser = (userTags, x) => {
     return new Promise((resolve, reject) => {
         Article
             .find({
@@ -33,7 +34,7 @@ articleSchema.statics.getArticlesByTagsOfUser = (userTags,x) => {
                     { tags: { $in: userTags } }
                 ]
             })
-            .skip(x-5)
+            .skip(x - 5)
             .limit(5)
             .exec((err, articles) => {
                 err ? reject(err)
@@ -43,7 +44,7 @@ articleSchema.statics.getArticlesByTagsOfUser = (userTags,x) => {
 }
 
 //get all article except tags dao function
-articleSchema.statics.getArticlesExceptTagsOfUser = (userTags,x) => {
+articleSchema.statics.getArticlesExceptTagsOfUser = (userTags, x) => {
     return new Promise((resolve, reject) => {
         Article
             .find({
@@ -52,7 +53,7 @@ articleSchema.statics.getArticlesExceptTagsOfUser = (userTags,x) => {
                     { tags: { $nin: userTags } }
                 ]
             })
-            .skip(x-5)
+            .skip(x - 5)
             .limit(5)
             .exec((err, article) => {
                 err ? reject(err)
@@ -82,7 +83,7 @@ articleSchema.statics.getArticleByTagId = (idTag) => {
             return reject(new TypeError('ID is not a String.'));
         }
         Article
-            .find({'tags': idTag})
+            .find({ 'tags': idTag })
             .exec((err, article) => {
                 err ? reject(err)
                     : resolve(article);
@@ -90,11 +91,11 @@ articleSchema.statics.getArticleByTagId = (idTag) => {
     });
 }
 
-articleSchema.statics.getAPage = (start,stt) => {
+articleSchema.statics.getAPage = (start, stt) => {
 
     return new Promise((resolve, reject) => {
         Article
-            .find({"status":stt})
+            .find({ "status": stt })
             .skip(start)
             .limit(10)
             .exec((err, arts) => {
@@ -111,20 +112,22 @@ articleSchema.statics.getTot = (stt) => {
             return reject(new TypeError('status page is not a String.'));
         }
         Article
-            .find({"status":stt})
+            .find({ "status": stt })
             .exec((err, arts) => {
-                err ? reject(err)
-                    : resolve(arts.length);
+                if (err) {
+                    reject(err);
+                }
+                resolve(arts.length);
             });
     });
 }
 
-articleSchema.statics.getArticleByKnwId = (id)=> {
-    return new Promise((resolve, reject)=> {
+articleSchema.statics.getArticleByKnwId = (id) => {
+    return new Promise((resolve, reject) => {
         if (!_.isString(id)) {
             return reject(new TypeError('ID is not a string'));
         }
-        Article.find({'knowledge': id}).exec((err, arts)=> {
+        Article.find({ 'knowledge': id }).exec((err, arts) => {
             err ? reject(err) : resolve(arts);
         });
     });
@@ -144,6 +147,7 @@ articleSchema.statics.getArticleById = (id) => {
             });
     });
 }
+
 articleSchema.statics.updateArticle = (article) => {
     return new Promise((resolve, reject) => {
         if (!_.isObject(article)) {
@@ -155,6 +159,7 @@ articleSchema.statics.updateArticle = (article) => {
         });
     });
 }
+
 articleSchema.statics.deactivateArticleById = (id) => {
     return new Promise((resolve, reject) => {
         if (!_.isString(id))
@@ -163,16 +168,47 @@ articleSchema.statics.deactivateArticleById = (id) => {
         Article
             .findById(id)
             .exec((err, article) => {
-                article.status ="deactivate";
+                article.status = "deactivate";
                 article.save();
                 err ? reject(err)
-                    : resolve({"mes":"this article is deactivated"});
+                    : resolve({ "mes": "this article is deactivated" });
             });
     });
 }
-articleSchema.plugin(relationship, {relationshipPathName: ['tags', 'knowledge']});
+
+articleSchema.plugin(relationship, { relationshipPathName: ['tags', 'knowledge'] });
+
+//full text search function index by title and description
+articleSchema.statics.fullTextSearchArticle = (text) => {
+
+    return new Promise((resolve, reject) => {
+
+        Article
+            .find({
+                status: 'public',
+                '$text': { '$search': text }
+            },
+            { score: { $meta: "textScore" } }
+            ).sort({ score: { $meta: "textScore" } })
+            .exec((err, articles) => {
+                err ? reject(err)
+                    : resolve(articles);
+            });
+
+    });
+}
+
+articleSchema.statics.getArticleByUser = (username) => {
+    return new Promise((resolve, reject) => {
+        Article
+            .find({ 'ofUser': username, 'status': 'public' })
+            .exec((err, articles) => {
+                err ? reject(err)
+                    : resolve(articles);
+            });
+    });
+}
 
 const Article = mongoose.model('Article', articleSchema);
-
 
 module.exports = Article;

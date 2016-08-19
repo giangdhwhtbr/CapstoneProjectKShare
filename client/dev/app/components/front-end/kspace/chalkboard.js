@@ -225,8 +225,8 @@ var ChalkBoardComponent = (function () {
         });
     };
     /*
-    * Lecturer create new page
-    * */
+     * Lecturer create new page
+     * */
     ChalkBoardComponent.prototype.newPage = function () {
         if (this.isLect) {
             var json = paper.exportJSON(paper.project.activeLayer);

@@ -1,5 +1,5 @@
 //cores
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 declare var io: any;
 
@@ -24,17 +24,18 @@ import { FriendShip } from '../../../../interface/friendship';
 export class RequestFriendRecordComponent {
   @Input('requestUser') requestUser: string;
   @Input('name') name: string;
+  @Output() sendDataToP: EventEmitter<string> = new EventEmitter<string>();
 
   displayname: string;
   email: string;
   level: string;
   socket: any;
-
   isFriend: boolean;
 
   isAdded: boolean;
   constructor(private router: Router, private route: ActivatedRoute, private _userService: UserService,
     public _noti: NotificationService) {
+    this.socket = io('https://localhost:80');
     this.route
       .params
       .subscribe(params => {
@@ -49,7 +50,6 @@ export class RequestFriendRecordComponent {
   }
 
   acceptRequest(): void {
-    console.log(this.requestUser + ' ' + this.name);
     this._userService.acceptFriendRequest(this.requestUser, this.name).subscribe(
       () => {
         console.log("accepted successful");
@@ -60,14 +60,19 @@ export class RequestFriendRecordComponent {
         var link = '/user/' + this.name;
 
         //call function using socket io to send notification
-        this._noti.alertNotification(title,this.requestUser,link);
+        this._noti.alertNotification(title, this.requestUser, link);
         //save notification to database
         this._noti.createNotification(title, this.requestUser, link).subscribe(
           (notification) => {
-            console.log('create a notification to ' + this.name);
+            this.sendDataToP.emit("accept");
+            // var data = [this.requestUser, this.name];
+            // this.socket.emit('chatroom-friend', data);
+            alert('Đã là bạn bè');
+            this.router.navigateByUrl('/user/' + this.requestUser);
           });
       }
     );
+
   }
 
   getUserInformation(): void {
@@ -90,9 +95,10 @@ export class RequestFriendRecordComponent {
         .deleteFriendRequest(this.requestUser, this.name)
         .subscribe(() => {
           console.log('delete successfull');
-        })
-      this.isFriend = false;
-      alert("bạn đã hủy gửi lời  mời kết bạn");
+          this.sendDataToP.emit("accept");
+          this.isFriend = false;
+          alert("bạn đã hủy gửi lời  mời kết bạn");
+        });
     }
   }
 

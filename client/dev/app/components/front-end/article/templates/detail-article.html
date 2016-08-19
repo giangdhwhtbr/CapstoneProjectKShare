@@ -1,42 +1,70 @@
 <div class="container article">
     <div *ngIf="article">
         <div *ngIf="canSee">
-            <span class="titleArtDe"> {{article.title}}</span>
-            <span class="byAu">by <a [routerLink]="['/user',article.ofUser]">{{article.ofUser}}</a></span>
+            <h5 class="valign">{{article.title}}</h5>
+            <hr>
+            <!--<span class="titleArtDe"> </span>-->
+            <span class="byAu">viết bởi <a [routerLink]="['/user',article.ofUser]">{{article.ofUser}}</a></span>
+            <span class="dateCreate">
+                vào {{article.createdAt | date:"dd/MM/yyyy"}}
+            </span>
 
             <div class="row">
                 <div class="col-sm-12">
                 <span *ngIf="article.status=='public'"><i class="fa fa-hand-paper-o"
-                                                          aria-hidden="true"></i> public</span>
+                                                          aria-hidden="true"></i> Công khai</span>
                 <span *ngIf="article.status=='private'"><i class="fa fa-hand-rock-o"
-                                                           aria-hidden="true"></i> private</span>
-                    <span *ngIf="article.status=='deactivate'"><i class="fa fa-times-circle-o" aria-hidden="true"></i> deactivate</span>
-                    <span *ngIf="article.status=='pending'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> pending</span>
+                                                           aria-hidden="true"></i> Riêng tư</span>
+                    <span *ngIf="article.status=='deactivate'"><i class="fa fa-times-circle-o" aria-hidden="true"></i> Bị đóng</span>
+                    <span *ngIf="article.status=='pending'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chờ</span>
                 </div>
             </div>
             <div class="row">
                 <div class="btn-group btn-art">
                     <a *ngIf="roleToken=='admin' || article.ofUser==userToken" class="btn btn-primary "
                        href="/article/edit/{{article._id}} ">Edit</a>
-                    <a *ngIf="(roleToken=='admin' || article.ofUser==userToken)&& article.status!='deactivate'" type="button" class="btn btn-danger" data-toggle="modal" data-target="#mdCfClose">Đóng bài
+                    <a *ngIf="(roleToken=='admin' || article.ofUser==userToken)&& article.status!='deactivate'"
+                       type="button" class="btn btn-danger" data-toggle="modal" data-target="#mdCfClose">Đóng bài
                         viết</a>
                     <a class="btn btn-primary " data-toggle="modal" id="btnRp" data-target="#myModal">báo cáo</a>
                 </div>
             </div>
-            <div class="messOff">
+            <div class="messOff col s12 m12 l12">
 
             </div>
-            <div class="bodyArt" [class.deAc]="isDeAc">
+            <div class="bodyArt col s12 m12 l12" [class.deAc]="isDeAc">
 
             </div>
             <div *ngIf="tags" class="tags">
                 tags : <span *ngFor="let t of tags">
-            <a [routerLink]="['/tag',t._id]">{{t.name}}</a>,
-        </span>
+                            <a [routerLink]="['/tag',t._id]">{{t.name}}</a>,
+                        </span>
             </div>
-            <div class="dateCreate">
-                {{article.createdAt | date:"dd/MM/yyyy"}}
+            <div class="row">
+                <h5 class="valign">Bình luận</h5>
+                <hr>
             </div>
+            <!--comment box-->
+            <div *ngIf="userToken" class="row">
+                <div class="col s12 m12">
+                    <div class="input-field col s6">
+                        <i class="material-icons prefix">mode_edit</i>
+                        <textarea [(ngModel)]="textCmt" id="icon_prefix" class="materialize-textarea"></textarea>
+                        <label for="icon_prefix">Viết bình luận</label>
+                    </div>
+                </div>
+                <button (click)="postCmt()"
+                        class="waves-effect waves-light btn col s2 offset-s1 m1 offset-m1 l1 offset-l1">Gửi
+                </button>
+            </div>
+            <div class="row">
+                <div *ngFor="let cmt of article.comments" class="col s12 m10 l10">
+                    <comment [comment]="cmt" [author]="article.ofUser" (sendDataToP)="actionComment($event)"></comment>
+                </div>
+
+            </div>
+
+
             <!--modal close-->
             <div id="mdCfClose" class="modal fade" role="dialog">
                 <div class="modal-dialog">
@@ -64,7 +92,6 @@
                 </div>
             </div>
 
-
             <report *ngIf="article" reportedUser="{{article.ofUser}}"></report>
         </div>
     </div>
@@ -78,3 +105,4 @@
         </div>
     </div>
 </div>
+<private-chat></private-chat>

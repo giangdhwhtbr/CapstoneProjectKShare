@@ -36,10 +36,12 @@ offerSchema.statics.getOfferByRequestId = (id, x) => {
 
     Offer
       .find({
-        'requestId': id
+        'requestId': id,
+        'status': 'pending'
       })
       .skip(x-5)
       .limit(5)
+      .sort({"createdAt":-1})
       .exec((err, offer) => {
         err ? reject(err)
           : resolve(offer);

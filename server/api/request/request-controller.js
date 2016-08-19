@@ -56,6 +56,7 @@ module.exports = class RequestController {
     if (req.params && req.params.id) {
       var currentDate = new Date();
       let _data = req.body;
+      console.log(req.body);
       RequestDAO.getRequestById(req.params.id)
         .then(request => {
           request.title = _data.rq.title;
@@ -65,18 +66,22 @@ module.exports = class RequestController {
           request.status = _data.rq.status;
           request.tags = _data.rq.tags;
           request.status = _data.rq.status;
-          console.log("go 0");
+          request.updatedAt = new Date();
+          request.subscribers = _data.rq.subscribers;
+          console.log(request);
           TagDAO.createArrayTag(_data.newTag).then((tags) => {
-            console.log("go 1");
 
             RequestDAO.updateRequestById(request).then(request => {
               if (tags.length > 0) {
                 tags.map((e, i) => {
                   request.tags.push(e);
                 });
+                console.log(request.subscribers);
+                request.save();
+              }else{
+                console.log(request.subscribers);
                 request.save();
               }
-              console.log("go 2");
               res.status(200).json(request);
             }).catch(error => res.status(400).json(error));
           }).catch((error) => res.status(400).json(error));
@@ -173,7 +178,7 @@ module.exports = class RequestController {
     if (req.params && req.params.id) {
       RequestDAO.getRequestById(req.params.id)
         .then(request => {
-          request.subcribers.push(req.body.subcriber);
+          request.subscribers.push(req.body.subcriber);
 
           RequestDAO.updateRequestById(request)
             .then(request => res.status(200).json(request))
@@ -193,7 +198,7 @@ module.exports = class RequestController {
         if (req.params && req.params.start) {
             let start = req.params.start;
             RequestDAO.getAPage(start,req.params.stt).then((reqs)=>{
-                if(reqs.length==0){
+                if(reqs.length==0&&start!=0){
                     RequestDAO.getAPage(start-10,req.params.stt).then((reqsBU)=>{
                         res.status(200).json(reqsBU);
                     }).catch(err=> res.status(400).json(err));

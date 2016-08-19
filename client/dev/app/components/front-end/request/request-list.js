@@ -8,6 +8,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
+var private_chat_1 = require('./../../shared/private-chat');
 var router_1 = require('@angular/router');
 var requests_1 = require('../../../services/requests');
 var tag_1 = require('../../../services/tag');
@@ -170,7 +171,8 @@ var RequestListClientComponent = (function () {
                 router_1.ROUTER_DIRECTIVES,
                 friend_list_1.FriendListComponent,
                 request_create_1.CreateRequestComponent,
-                request_category_1.RequestCategoryComponent
+                request_category_1.RequestCategoryComponent,
+                private_chat_1.PrivateChatComponent
             ],
             providers: [tag_1.TagService]
         }), 

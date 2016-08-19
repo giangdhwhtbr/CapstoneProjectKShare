@@ -40,22 +40,25 @@
         Yêu cần này đã kết thúc
     </div>
 
-    <div [hidden]="checkDeactive" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-        <button *ngIf="userToken !== null" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">Báo cáo</button>
+    <div [hidden]="checkDeactive" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
+        <button *ngIf="userToken !== null && roleToken !== 'admin' && userToken !== request.user" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">Báo cáo</button>
         <a href="{{updateLink}}" *ngIf="checkCreatedUser || roleToken==='admin'"><span
-                class="btn btn-warning glyphicon glyphicon-pencil"></span></a>
+                class="btn btn-warning">Chỉnh sửa</span></a>
         <a *ngIf="checkCreatedUser || roleToken==='admin'">
-            <button class="glyphicon glyphicon-trash btn btn-danger" (click)="deactivateRequest(_id)"></button>
+            <button class="btn btn-danger" (click)="deactivateRequest(_id)">Ngừng</button>
         </a>
-        <a *ngIf="!checkCreatedUser || roleToken==='admin'">
-            <button *ngIf="userToken !== null"  class="glyphicon glyphicon-send btn btn-primary" data-toggle="modal" data-target="#modalOfferRequest"></button>
+        <a *ngIf="!checkCreatedUser">
+            <button *ngIf="userToken !== null"  class="btn btn-primary" (click)="openModal()">Đề nghị</button>
         </a>
-        <a *ngIf="!checkCreatedUser || roleToken==='admin' || userToken !== null">
-            <button *ngIf="userToken !== null" class="glyphicon glyphicon-eye-open btn btn-info" (click)="addSubcriber(_id)"></button>
+        <a *ngIf="!checkCreatedUser || userToken !== null">
+            <button *ngIf="userToken !== null && !checkSubcribedUser && userToken !== request.user" class="btn btn-primary" (click)="addSubcriber(_id)">Theo dõi</button>
+        </a>
+        <a *ngIf="!checkCreatedUser || userToken !== null">
+            <button *ngIf="userToken !== null && checkSubcribedUser" class="btn btn-primary" (click)="removeSubscriber()">Bỏ theo dõi</button>
         </a>
     </div>
 </div>
-<offer-create rid="{{_id}}"></offer-create>
+<offer-create rid="{{_id}}" (sendDataToP)="action($event)"></offer-create>
 <br>
 <!-- List offer of a back.request -->
 <div *ngIf="offers" class="container" style="min-height:437px" id="request-ofer">
@@ -80,15 +83,20 @@
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
                     <a *ngIf="checkCreatedUser && !checkIsAcceped">
-                        <button class="btn btn-sm btn-success" (click)="addKshare(request.user,offer.user,_id,request.title,offer._id)">Chấp thuận
+                        <button class="btn btn-sm btn-success" (click)="addKshare(offer.user,offer._id)">Chấp thuận
                         </button>
                     </a>
-                    <a *ngIf="checkCreatedUser && checkIsAcceped">
+                    <!--<a *ngIf="checkCreatedUser && checkIsAcceped">
                         <button disabled class="btn btn-sm btn-success">Chấp thuận</button>
+                    </a>-->
+                    <a *ngIf="checkCreatedUser || userToken === offer.user">
+                        <button (click)="removeOffer(offer._id)" class="btn btn-sm btn-success">Xóa</button>
                     </a>
                 </div>
             </div>
         </div>
+        <a (click)="seeMore()">Xem thêm</a>
     </div>
 </div>
 <report *ngIf="request" reportedUser="{{request.user}}"></report>
+<private-chat></private-chat>

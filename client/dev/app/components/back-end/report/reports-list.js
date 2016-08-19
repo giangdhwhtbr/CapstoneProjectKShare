@@ -11,17 +11,23 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
 var report_1 = require('../../../services/report');
+var chat_1 = require('../../../services/chat');
 var filter_1 = require('../shared/filter');
+var message_1 = require('./message');
 var ReportListComponent = (function () {
-    function ReportListComponent(fb, _reportService, router) {
+    function ReportListComponent(fb, _reportService, router, _chatService) {
         this._reportService = _reportService;
         this.router = router;
+        this._chatService = _chatService;
         this.pageTitle = 'Report List';
         this.pendingReports = [];
         this.handlingReports = [];
         this.filter = '';
+        this.roleToken = localStorage.getItem('role');
+        this.userToken = localStorage.getItem('username');
     }
     ReportListComponent.prototype.ngOnInit = function () {
+        // $('#messageModal').openModal();
         this.getAllPending();
         this.getAllHandling();
     };
@@ -32,6 +38,11 @@ var ReportListComponent = (function () {
             .subscribe(function (reports) {
             _this.pendingReports = reports;
         });
+    };
+    ReportListComponent.prototype.openReportedPage = function (link) {
+        var specs = 'width=1200,height=1200';
+        var url = link;
+        window.open(url, '', specs);
     };
     ReportListComponent.prototype.getAllHandling = function () {
         var _this = this;
@@ -63,15 +74,27 @@ var ReportListComponent = (function () {
             });
         }
     };
+    ReportListComponent.prototype.createChatRoom = function (reportedUser) {
+        if (reportedUser !== this.userToken) {
+            this._chatService.createChatRoomAdmin(this.userToken, reportedUser)
+                .subscribe(function (chatRoom) {
+                alert('Phòng trò chuyện đã được tạo');
+                console.log(reportedUser);
+                console.log('create chatRoom successfully');
+            });
+        }
+        this.user = reportedUser;
+        $('#messageModal').openModal();
+    };
     ReportListComponent = __decorate([
         core_1.Component({
             selector: 'reports-list',
             templateUrl: 'client/dev/app/components/back-end/report/templates/reports-list.html',
-            directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES],
+            directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, message_1.MessageComponent],
             providers: [report_1.ReportService],
             pipes: [filter_1.StringFilterPipe]
         }), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, report_1.ReportService, router_1.Router])
+        __metadata('design:paramtypes', [common_1.FormBuilder, report_1.ReportService, router_1.Router, chat_1.ChatService])
     ], ReportListComponent);
     return ReportListComponent;
 })();

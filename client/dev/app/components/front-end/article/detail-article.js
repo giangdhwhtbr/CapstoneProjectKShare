@@ -12,11 +12,14 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var common_1 = require('@angular/common');
+var private_chat_1 = require('./../../shared/private-chat');
 var article_1 = require('../../../services/article');
 var notification_1 = require('../../../services/notification');
 var report_1 = require('../report/report');
+var comment_1 = require('./comment');
 var detailArticleComponent = (function () {
-    function detailArticleComponent(router, route, _articleService, _noti) {
+    function detailArticleComponent(fb, router, route, _articleService, _noti) {
         var _this = this;
         this.router = router;
         this.route = route;
@@ -24,6 +27,8 @@ var detailArticleComponent = (function () {
         this._noti = _noti;
         this.canSee = true;
         this.isDeAc = false;
+        this.textCmt = "";
+        this.cmts = [];
         this.route
             .params
             .subscribe(function (params) {
@@ -31,6 +36,10 @@ var detailArticleComponent = (function () {
         });
         this.roleToken = localStorage.getItem('userrole');
         this.userToken = localStorage.getItem('username');
+        this.cmtEditForm = fb.group({
+            "cntCmt": [""],
+            "cmtId": [""]
+        });
     }
     detailArticleComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -43,6 +52,13 @@ var detailArticleComponent = (function () {
                 _this.article.createdAt = new Date(_this.article.createdAt);
                 if (art.status == "deactivate") {
                     _this.isDeAc = true;
+                }
+                for (var _i = 0, _a = _this.article.comments; _i < _a.length; _i++) {
+                    var e = _a[_i];
+                    _this.cmts.push({
+                        cmt: e,
+                        isEdit: true
+                    });
                 }
             }
             else {
@@ -62,7 +78,7 @@ var detailArticleComponent = (function () {
                 _this._noti.createNotification(title, _this.article.ofUser, link).subscribe(function (notification) {
                     console.log('create a notification to ' + _this.article.ofUser);
                 });
-                $('.messOff').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Success!</strong> ' + mes.mes + ' </div>');
+                Materialize.toast('Đã đóng bài viết!', 4000);
                 _this.isDeAc = true;
                 $('#clsArtBtn').hide();
             });
@@ -79,17 +95,52 @@ var detailArticleComponent = (function () {
     detailArticleComponent.prototype.editArt = function (id) {
         this.router.navigateByUrl('/article/edit/' + this.id);
     };
+    detailArticleComponent.prototype.postCmt = function () {
+        var _this = this;
+        this._articleService.addComment(this.id, this.userToken, this.textCmt).subscribe(function (cmts) {
+            _this.textCmt = "";
+            _this.article.comments = cmts;
+        });
+    };
+    detailArticleComponent.prototype.actionComment = function (data) {
+        var _this = this;
+        switch (data[1]) {
+            case 'delete':
+                this._articleService.removeComment(this.id, data[0]).subscribe(function (cmts) {
+                    _this.article.comments = cmts;
+                    Materialize.toast('Đã xoá bình luận!', 4000);
+                });
+                break;
+            case 'edit':
+                this._articleService.editComment(this.id, data[0], data[2]).subscribe(function (cmts) {
+                    _this.article.comments = cmts;
+                });
+                break;
+            case 'like':
+                this._articleService.likeComment(this.id, data[0], this.userToken).subscribe(function (cmts) {
+                    _this.article.comments = cmts;
+                });
+                break;
+            case 'unlike':
+                this._articleService.unlikeComment(this.id, data[0], this.userToken).subscribe(function (cmts) {
+                    _this.article.comments = cmts;
+                });
+                break;
+            default:
+                console.log("action is empty");
+        }
+    };
     detailArticleComponent = __decorate([
         core_1.Component({
             selector: 'detail-article',
             templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
             styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent
+                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES, comment_1.commentComponent, private_chat_1.PrivateChatComponent
             ],
             providers: [article_1.ArticleService]
         }), 
-        __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, article_1.ArticleService, notification_1.NotificationService])
+        __metadata('design:paramtypes', [common_1.FormBuilder, router_1.Router, router_1.ActivatedRoute, article_1.ArticleService, notification_1.NotificationService])
     ], detailArticleComponent);
     return detailArticleComponent;
 })();

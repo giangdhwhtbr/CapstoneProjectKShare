@@ -140,6 +140,7 @@ requestSchema.statics.getRequestByUser = (user, x) => {
             })
             .skip(x-5)
             .limit(5)
+            .sort({"updatedAt":-1})
             .exec((err, requests) => {
                 err ? reject(err)
                     : resolve(requests);
@@ -202,11 +203,14 @@ requestSchema.statics.getAPage = (start, stt) => {
             .skip(start)
             .limit(10)
             .exec((err, reqs) => {
-                err ? reject(err)
-                    : resolve(reqs);
+                if(err) {
+                    reject(err);
+                }
+                resolve(reqs);
             });
     });
 }
+
 requestSchema.statics.getTot = (stt) => {
 
     return new Promise((resolve, reject) => {
@@ -216,8 +220,10 @@ requestSchema.statics.getTot = (stt) => {
         Request
             .find({ "status": stt })
             .exec((err, reqs) => {
-                err ? reject(err)
-                    : resolve(reqs.length);
+                if(err) {
+                    reject(err);
+                }
+                resolve(reqs.length);
             });
     });
 }

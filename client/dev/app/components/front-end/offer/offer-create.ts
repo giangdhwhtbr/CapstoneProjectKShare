@@ -1,11 +1,11 @@
-import { Component, Inject, Input } from '@angular/core';
+import { Component, Inject, Input, Output, EventEmitter } from '@angular/core';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
 
 import { OfferService } from '../../../services/request-offer';
 import { AuthService} from '../../../services/auth';
 import { RequestService } from '../../../services/requests';
 import { NotificationService } from '../../../services/notification';
-
+declare var $: any;
 @Component({
   selector: 'offer-create',
   templateUrl: 'client/dev/app/components/front-end/offer/templates/offer-create.html',
@@ -15,6 +15,7 @@ import { NotificationService } from '../../../services/notification';
 export class CreateOfferComponent {
   user: string;
   @Input('rid') rid: string;
+  @Output() sendDataToP: EventEmitter<string> = new EventEmitter<string>();
 
   offerForm: ControlGroup;
 
@@ -42,7 +43,8 @@ export class CreateOfferComponent {
         this._noti.createNotification(title, request.user, link).subscribe(
           (notification) => {
             console.log(notification);
-            window.location.reload();
+            this.sendDataToP.emit('new-offer');     
+            $('#modalOfferRequest').closeModal();      
           });
 
       })

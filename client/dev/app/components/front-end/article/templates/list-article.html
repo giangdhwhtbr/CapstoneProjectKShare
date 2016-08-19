@@ -1,26 +1,46 @@
-<div *ngIf="listArt" class="container article"  [style.height.px]="height+'px'">
+<div class="container mg-top-50">
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <br/>
+  <form id="searchdivid2" class="navbar-form navbar-left" role="search">
+    <div class="form-group">
+      <input #text type="text" class="form-control" placeholder="Nhập nội dung tìm kiếm">
+    </div>
+    <button (click)="searchArticle(text.value)" type="submit" class="btn btn-small">Tìm kiếm</button>
+    <button *ngIf="userToken != null" type="button" class="btn btn-primary btn-small" [routerLink]="['/article/create']">
+      Tạo bài viết
+    </button>
+  </form>
+  <div *ngIf="isExist">
+    <h1>Không có bài viết nào được tìm thấy</h1>
+  </div>
+  <div *ngIf="listArt" class="container article" [style.height.px]="height+'px'">
     <div *ngFor="let a of listArt" class="panel panel-default">
-        <div class="panel-body">
-            <p><span class="title">
+      <div class="panel-body">
+        <p><span class="title">
                 <a [routerLink]="['/article',a._id]">{{a.title}}</a>
             </span></p>
 
-            <p><span class="sumary">
+        <p><span class="sumary">
 
             </span></p>
 
-            <p>
-                tags :
-                <span *ngFor="let t of a.tagsFD">
+        <p>
+          tags :
+          <span *ngFor="let t of a.tagsFD">
                     <a [routerLink]="['/tag',t._id]">{{t.name}}</a>,
                 </span>
-            </p>
-            <p>
-                <span class="dateArt">{{a.createdAt | date:"dd/MM/yyyy"}}</span>
-            </p>
-            <p>
-                <span *ngIf="a.ofUser" class="author">by : <a [routerLink]="['/user',a.ofUser]">{{a.ofUser}}</a> </span>
-            </p>
-        </div>
+        </p>
+        <p>
+          <span class="dateArt">{{a.createdAt | date:"dd/MM/yyyy"}}</span>
+        </p>
+        <p>
+          <span *ngIf="a.ofUser" class="author">by : <a [routerLink]="['/user',a.ofUser]">{{a.ofUser}}</a> </span>
+        </p>
+      </div>
     </div>
+  </div>
 </div>
+<private-chat></private-chat>

@@ -13,6 +13,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
+var private_chat_1 = require('./../../shared/private-chat');
 var listArticleComponent = (function () {
     function listArticleComponent(router, route, _artService) {
         this.router = router;
@@ -22,6 +23,7 @@ var listArticleComponent = (function () {
         this.num = 5;
         this.articles = [];
         this.height = 400;
+        this.isExist = false;
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
     }
@@ -52,7 +54,28 @@ var listArticleComponent = (function () {
                 }
                 _this.listArt.push(arts[i]);
             }
+            if (!arts) {
+                _this.isExist = false;
+            }
         });
+    };
+    listArticleComponent.prototype.searchArticle = function (text) {
+        var _this = this;
+        this.listArt = [];
+        if (!text) {
+            this.getAllArticles();
+            this.isExist = false;
+        }
+        else {
+            this._artService.searchArticle(text).subscribe(function (arts) {
+                for (var i = 0; i < arts.length; i++) {
+                    _this.listArt.push(arts[i]);
+                }
+                if (arts.length <= 0) {
+                    _this.isExist = true;
+                }
+            });
+        }
     };
     listArticleComponent = __decorate([
         core_1.Component({
@@ -60,7 +83,8 @@ var listArticleComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/article/templates/list-article.html',
             styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES
+                router_1.ROUTER_DIRECTIVES,
+                private_chat_1.PrivateChatComponent
             ],
             providers: [article_1.ArticleService]
         }), 

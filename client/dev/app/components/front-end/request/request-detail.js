@@ -15,8 +15,10 @@ var knowledge_1 = require('../../../services/knowledge');
 var kspace_1 = require('../../../services/kspace');
 var offer_create_1 = require('../offer/offer-create');
 var report_1 = require('../report/report');
+var private_chat_1 = require('./../../shared/private-chat');
 var RequestDetailClientComponent = (function () {
     function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
+        var _this = this;
         this._requestService = _requestService;
         this._offerService = _offerService;
         this.router = router;
@@ -31,88 +33,94 @@ var RequestDetailClientComponent = (function () {
         this.offers = [];
         this.roleToken = localStorage.getItem('userrole');
         this.userToken = localStorage.getItem('username');
-    }
-    RequestDetailClientComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.route
             .params
             .subscribe(function (params) {
             _this.id = params['id'];
-            //get templates when load the page
-            _this._requestService.getRequestById(_this.id)
-                .subscribe(function (request) {
-                //translate status
-                if (request.status === 'accepted') {
-                    request.status = 'Đã được chấp nhận';
-                    _this.checkIsAcceped = true;
-                }
-                else if (request.status === 'deactive' || request.status === undefined) {
-                    request.status = 'Đã kết thúc';
-                    _this.checkDeactive = true;
-                }
-                else {
-                    request.status = 'Đang chờ';
-                }
-                request.userlink = '/user/' + request.user;
-                _this._id = request._id;
-                _this.updateLink = '/requests/' + request._id + '/update';
-                _this.knowledgeId = request.knowledgeId;
-                _this.subscribers = request.subcribers;
-                //check if user is created user
-                if (request.user === _this.userToken) {
-                    _this.checkCreatedUser = true;
-                }
-                //check if user already subcribed
-                for (var i = 0; i < _this.subscribers.length; i++) {
-                    if (_this.userToken === _this.subscribers[i]) {
-                        _this.checkSubcribedUser = true;
-                        break;
-                    }
-                }
-                _this.request = request;
-                //get back.knowledge name by knowledgeId
-                _this._knowledgeService.findKnowledgeById(_this.knowledgeId)
-                    .subscribe(function (knowledge) {
-                    _this.knowledge = knowledge;
-                    //this.knowledgeName = this.knowledge.name;
-                }, function (error) {
-                    console.log(error);
-                });
-            }, function (error) { return console.log(error); });
-            _this.getOfferByRequestId();
-            $(window).on("scroll", function () {
-                var scrollHeight = $(document).height();
-                var scrollPosition = $(window).height() + $(window).scrollTop();
-                if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-                    setTimeout(function () {
-                        _this.seeMore();
-                    }, 1000);
-                    _this.height += 30;
-                }
-            });
         });
+    }
+    RequestDetailClientComponent.prototype.ngOnInit = function () {
+        this.getRequestById();
+    };
+    RequestDetailClientComponent.prototype.getRequestById = function () {
+        var _this = this;
+        //get templates when load the page
+        this._requestService.getRequestById(this.id)
+            .subscribe(function (request) {
+            //translate status
+            if (request.status === 'accepted') {
+                request.status = 'Đã được chấp nhận';
+                _this.checkIsAcceped = true;
+            }
+            else if (request.status === 'deactive' || request.status === undefined) {
+                request.status = 'Đã kết thúc';
+                _this.checkDeactive = true;
+            }
+            else {
+                request.status = 'Đang chờ';
+            }
+            request.userlink = '/user/' + request.user;
+            _this._id = request._id;
+            _this.updateLink = '/requests/' + request._id + '/update';
+            _this.knowledgeId = request.knowledgeId;
+            _this.subscribers = request.subscribers;
+            //check if user is created user
+            if (request.user === _this.userToken) {
+                _this.checkCreatedUser = true;
+            }
+            //check if user already subcribed
+            for (var i = 0; i < _this.subscribers.length; i++) {
+                if (_this.userToken === _this.subscribers[i]) {
+                    _this.checkSubcribedUser = true;
+                    break;
+                }
+            }
+            _this.request = request;
+            _this.getOfferByRequestId();
+            //get back.knowledge name by knowledgeId
+            _this._knowledgeService.findKnowledgeById(_this.knowledgeId)
+                .subscribe(function (knowledge) {
+                _this.knowledge = knowledge;
+                //this.knowledgeName = this.knowledge.name;
+            });
+        }, function (error) { return console.log(error); });
     };
     RequestDetailClientComponent.prototype.seeMore = function () {
         this.num = this.num + 5;
         this.getOfferByRequestId();
+    };
+    RequestDetailClientComponent.prototype.openModal = function () {
+        $('#modalOfferRequest').openModal();
     };
     RequestDetailClientComponent.prototype.ngAfterViewChecked = function () {
         if (this.request != undefined) {
             $('#bodyReq').html(this.request.description);
         }
     };
+    RequestDetailClientComponent.prototype.action = function (data) {
+        if (data === 'new-offer') {
+            this.num = 5;
+            this.offers = [];
+            this.getOfferByRequestId();
+        }
+    };
     RequestDetailClientComponent.prototype.getOfferByRequestId = function () {
         var _this = this;
         //get front.offer of the templates when load the page
-        this._offerService.getOfferByRequestId(this.id, this.num).subscribe(function (offers) {
-            for (var i = 0; i < offers.length; i++) {
-                if (offers[i].status === 'pending') {
-                    offers[i].status = 'Đang chờ';
+        this._offerService.getOfferByRequestId(this._id, this.num).subscribe(function (offers) {
+            if (offers) {
+                for (var i = 0; i < offers.length; i++) {
+                    if (offers[i].status === 'pending') {
+                        offers[i].status = 'Đang chờ';
+                    }
+                    else {
+                        offers[i].status = 'Được chấp nhận';
+                    }
+                    _this.offers.push(offers[i]);
                 }
-                else {
-                    offers[i].status = 'Được chấp nhận';
-                }
-                _this.offers.push(offers[i]);
+            }
+            else {
+                alert('Không có đề nghị nào');
             }
         }, function (error) {
             console.log(error);
@@ -130,11 +138,24 @@ var RequestDetailClientComponent = (function () {
             });
         }
     };
-    RequestDetailClientComponent.prototype.addKshare = function (learner, lecturer, requestId, requestTitle, offerId) {
+    RequestDetailClientComponent.prototype.addKshare = function (lecturer, offerId) {
         var _this = this;
+        this.kspace = {};
+        this.kspace.learners = [];
+        this.kspace.learners.push(this.request.user);
+        this.kspace.lecturer = lecturer;
+        this.kspace.requestId = this._id;
+        this.kspace.requestTitle = this.request.title;
+        this.kspace.offerId = offerId;
+        this.kspace.tags = this.request.tags;
+        for (var i = 0; i < this.request.subscribers.length; i++) {
+            this.kspace.learners.push(this.request.subscribers[i]);
+        }
+        console.log(this.kspace);
         this._kspaceService
-            .addKSpace(learner, lecturer, requestId, requestTitle, offerId)
+            .addKSpace(this.kspace)
             .subscribe(function (r) {
+            console.log(r);
             console.log('create kspace successfull');
             //update offer status
             _this._offerService.updateOffer(offerId, 'accepted')
@@ -143,7 +164,6 @@ var RequestDetailClientComponent = (function () {
             });
             _this.request.status = 'accepted';
             //update request status
-            console.log(_this.request);
             _this._requestService.updateRequest(_this.request, _this.request.tags, [])
                 .subscribe(function (c) {
                 console.log('change status request successfull');
@@ -164,10 +184,35 @@ var RequestDetailClientComponent = (function () {
                 console.log("add subcriber successfull");
                 _this.checkSubcribedUser = true;
                 _this._requestService.getRequestById(_this.id).subscribe(function (request) {
-                    _this.subscribers = request.subcribers;
+                    _this.subscribers = request.subscribers;
                 });
             });
         }
+    };
+    RequestDetailClientComponent.prototype.removeSubscriber = function () {
+        var _this = this;
+        console.log(this.request.subscribers);
+        var index = this.request.subscribers.indexOf(this.userToken);
+        if (index > -1) {
+            this.request.subscribers.splice(index, 1);
+        }
+        console.log(this.request.subscribers);
+        this._requestService.updateRequest(this.request, this.request.tags, []).subscribe(function (request) {
+            //reload request
+            _this._requestService.getRequestById(_this.id).subscribe(function (request) {
+                console.log(request);
+                _this.subscribers = request.subscribers;
+                _this.checkSubcribedUser = false;
+            });
+        });
+    };
+    RequestDetailClientComponent.prototype.removeOffer = function (id) {
+        var _this = this;
+        this._offerService.updateOffer(id, 'deactive').subscribe(function (offer) {
+            console.log(offer);
+            _this.offers = [];
+            _this.getOfferByRequestId();
+        });
     };
     RequestDetailClientComponent = __decorate([
         core_1.Component({
@@ -177,7 +222,8 @@ var RequestDetailClientComponent = (function () {
             directives: [
                 router_1.ROUTER_DIRECTIVES,
                 offer_create_1.CreateOfferComponent,
-                report_1.ReportComponent
+                report_1.ReportComponent,
+                private_chat_1.PrivateChatComponent
             ]
         }), 
         __metadata('design:paramtypes', [requests_1.RequestService, request_offer_1.OfferService, router_1.Router, knowledge_1.KnowledgeService, kspace_1.KSpaceService, router_1.ActivatedRoute])

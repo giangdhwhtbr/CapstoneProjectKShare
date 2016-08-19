@@ -25,17 +25,19 @@ var user_list_1 = require("./back-end/users/user-list");
 var reports_list_1 = require("./back-end/report/reports-list");
 var tag_list_control_1 = require("./back-end/tag/tag-list-control");
 var article_list_clt_1 = require("./back-end/article/article-list-clt");
+var private_chat_1 = require("./shared/private-chat");
 var AdminComponent = (function () {
     function AdminComponent() {
     }
     AdminComponent = __decorate([
         core_1.Component({
             selector: 'kshare',
-            template: "\n  <div id=\"wrapper\">\n    \n      <header></header>\n      <sidebar></sidebar>\n    \n    <router-outlet></router-outlet>\n  </div>\n  ",
+            template: "\n  <div id=\"wrapper\">\n    \n      <header></header>\n      <sidebar></sidebar>\n    \n    <router-outlet></router-outlet>\n  </div>\n  <private-chat></private-chat>\n  ",
             directives: [
                 router_1.ROUTER_DIRECTIVES,
                 nav_bar_1.NavbarComponent,
-                side_bar_1.SidebarComponent
+                side_bar_1.SidebarComponent,
+                private_chat_1.PrivateChatComponent
             ],
             precompile: [
                 user_list_1.UserListComponent,

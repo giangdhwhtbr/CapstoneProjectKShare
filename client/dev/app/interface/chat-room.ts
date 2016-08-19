@@ -3,4 +3,5 @@ export interface ChatRoom {
   chatLogs:Array<any>;
   friendName: string;
   createdAt: Date;
+  isNewMessage: boolean;
 }

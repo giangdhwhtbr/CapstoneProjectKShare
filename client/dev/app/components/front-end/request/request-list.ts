@@ -7,6 +7,7 @@ import {
   Inject,
   OnDestroy
 } from '@angular/core';
+import { PrivateChatComponent } from './../../shared/private-chat';
 import { ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { Request } from '../../../interface/request';
 import { RequestService } from '../../../services/requests';
@@ -28,7 +29,8 @@ declare var $: any;
     ROUTER_DIRECTIVES,
     FriendListComponent,
     CreateRequestComponent,
-    RequestCategoryComponent
+    RequestCategoryComponent,
+    PrivateChatComponent
   ],
   providers: [TagService]
 })

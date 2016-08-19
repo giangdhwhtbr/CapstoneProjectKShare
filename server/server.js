@@ -125,9 +125,27 @@ io.on('connection',  (socket) => {
     ChatRoomCtrl.updateChatRoom(data)
     .then(chatRoom => {
       data.sentAt = new Date();
+      data.users = chatRoom.users;
       io.in(chatRoom._id).emit('private-message-return',data);
+      io.emit('new-message-notification',data);
     }).catch(error => {
       console.log(error);
     });
   });
+
+  socket.on('reset-new-message', (data) => {
+    ChatRoomCtrl.ResetNewMessages(data)
+    .then(chatRoom => {
+      data.sentAt = new Date();
+       data.users = chatRoom.users;
+      io.in(chatRoom._id).emit('private-message-reset',data);
+    }).catch(error => {
+      console.log(error);
+    });
+  });
+
+  // socket.on('chatroom-friend', (data) => {
+  //     io.emit('chatroom-friend-return',data);
+  // });
+
 });

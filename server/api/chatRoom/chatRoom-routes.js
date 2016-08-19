@@ -7,5 +7,11 @@ module.exports = class ChatRoomRoutes {
       router
         .route('/api/chat-rooms/:user')
         .get(ChatRoomController.getAllChatRoomOfUser);
+
+      router
+        .route('/api/chat-rooms')
+        .put(ChatRoomController.deactivateChatRoom)
+        .post(ChatRoomController.createChatRoomAdmin);
+
     }
 }

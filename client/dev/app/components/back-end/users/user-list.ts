@@ -73,6 +73,12 @@ export class UserListComponent {
     );
   }
 
+  openUserProfile(username: string): void {
+        var specs = 'width=1200,height=1200';
+        var url = '/user/' + username;
+        window.open(url, '', specs);
+    }
+
   addUser(user: any): void {
     this._userService
       .addUser(user)

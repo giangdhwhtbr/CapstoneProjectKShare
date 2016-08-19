@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 //Component
 import { RequestRecordComponent } from './request-record';
 import { UserProfileBarComponent} from './user-profile-bar';
+import { PrivateChatComponent } from './../../../shared/private-chat';
 
 //services
 import { UserService } from '../../../../services/users';
@@ -26,7 +27,8 @@ declare var $: any;
   directives: [
     ROUTER_DIRECTIVES,
     RequestRecordComponent,
-    UserProfileBarComponent
+    UserProfileBarComponent,
+    PrivateChatComponent
   ]
 })
 

@@ -121,11 +121,13 @@ export class RequestService {
                     description: request.description,
                     knowledgeId: request.knowledgeId,
                     status: request.status,
-                    tags: oldTag
+                    tags: oldTag,
+                    subscribers: request.subscribers
                 },
                 newTag: newTag
             }
         );
+        console.log(_data);
         return this._http
             .put(this._requestsUrl.replace(':id', request._id), _data, options)
             .map((r) => r.json());
@@ -144,7 +146,7 @@ export class RequestService {
             .catch(this.handleError);
     }
 
-    //add a subcriber to templates subcribers
+    //add a subcriber to templates subscribers
     updateSubcriber(id: string, subcriber: string): Observable<any> {
         let header = new Headers;
         let headers = new Headers({ 'Content-Type': 'application/json' });

@@ -3,40 +3,52 @@
  */
 import { Component, OnInit, AfterViewChecked, Pipe, PipeTransform } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
+import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
+import { PrivateChatComponent } from './../../shared/private-chat';
 
 import { ArticleService } from '../../../services/article';
 import { AuthService } from '../../../services/auth';
 import { NotificationService } from '../../../services/notification';
 import { ReportComponent } from '../report/report';
 
-declare var $: any;
-declare var io: any;
+import {commentComponent} from './comment';
+
+declare var $:any;
+declare var io:any;
+declare var Materialize:any;
 
 @Component({
     selector: 'detail-article',
     templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
     directives: [
-        ROUTER_DIRECTIVES, ReportComponent
+        ROUTER_DIRECTIVES, ReportComponent, FORM_DIRECTIVES, commentComponent,PrivateChatComponent
     ],
     providers: [ArticleService]
 })
 
 export class detailArticleComponent implements OnInit, AfterViewChecked {
 
-    article: any;
-    id: string;
-    tags: Array<any>;
+    article:any;
+    id:string;
+    tags:Array<any>;
 
-    roleToken: string;
-    userToken: string;
+    roleToken:string;
+    userToken:string;
 
-    canSee: boolean = true;
-    isDeAc: boolean = false;
+    canSee:boolean = true;
+    isDeAc:boolean = false;
 
-    constructor(public router: Router, private route: ActivatedRoute,
-        private _articleService: ArticleService,
-        private _noti: NotificationService) {
+    textCmt:string = "";
+    cmts:any[] = [];
+
+    cmtEditForm:ControlGroup;
+    cntCmt:string;
+    cmtId:string;
+
+    constructor(fb:FormBuilder, public router:Router, private route:ActivatedRoute,
+                private _articleService:ArticleService,
+                private _noti:NotificationService) {
         this.route
             .params
             .subscribe(params => {
@@ -44,6 +56,11 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
             });
         this.roleToken = localStorage.getItem('userrole');
         this.userToken = localStorage.getItem('username');
+
+        this.cmtEditForm = fb.group({
+            "cntCmt": [""],
+            "cmtId": [""]
+        });
     }
 
     ngOnInit() {
@@ -62,6 +79,13 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
                     this.isDeAc = true;
                 }
 
+                for (let e of this.article.comments) {
+                    this.cmts.push({
+                        cmt: e,
+                        isEdit: true
+                    });
+                }
+
             } else {
                 this.canSee = false;
             }
@@ -70,7 +94,7 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
         });
     }
 
-    deactivateArticle(id: string) {
+    deactivateArticle(id:string) {
         if (id) {
             this._articleService.deactivateArticle(id).subscribe((mes) => {
                 var title = 'Một bài viết của bạn đã bị đóng';
@@ -82,7 +106,7 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
                     (notification) => {
                         console.log('create a notification to ' + this.article.ofUser);
                     });
-                $('.messOff').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Success!</strong> ' + mes.mes + ' </div>');
+                Materialize.toast('Đã đóng bài viết!', 4000);
                 this.isDeAc = true;
                 $('#clsArtBtn').hide();
             });
@@ -98,8 +122,44 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
         });
     }
 
-    editArt(id: string) {
+    editArt(id:string) {
         this.router.navigateByUrl('/article/edit/' + this.id);
+    }
+
+    postCmt() {
+        this._articleService.addComment(this.id, this.userToken, this.textCmt).subscribe((cmts)=> {
+            this.textCmt = "";
+            this.article.comments = cmts;
+        });
+    }
+
+    actionComment(data:any):void {
+        switch (data[1]) {
+            case'delete':
+                this._articleService.removeComment(this.id, data[0]).subscribe((cmts)=> {
+                    this.article.comments = cmts;
+                    Materialize.toast('Đã xoá bình luận!', 4000);
+                });
+                break;
+            case'edit':
+                this._articleService.editComment(this.id, data[0],data[2]).subscribe((cmts)=>{
+                    this.article.comments = cmts;
+                });
+                break;
+            case'like':
+                this._articleService.likeComment(this.id, data[0],this.userToken).subscribe((cmts)=>{
+                    this.article.comments = cmts;
+                });
+                break;
+            case'unlike':
+                this._articleService.unlikeComment(this.id, data[0],this.userToken).subscribe((cmts)=>{
+                    this.article.comments = cmts;
+                });
+                break;
+            default:
+                console.log("action is empty");
+        }
+
     }
 
 }

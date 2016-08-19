@@ -27,9 +27,17 @@ module.exports = class FriendShipController {
 
           var chatRoom = {
             chatLogs: [],
-            users: [req.params.user1, req.params.user2]
+            users: [{
+              user: req.params.user1,
+              newMessages: 0
+            },
+              {
+                user: req.params.user2,
+                newMessages: 0
+              }
+            ]
           };
-          
+
           //create chat room
           ChatRoomDAO.createChatRoom(chatRoom);
 

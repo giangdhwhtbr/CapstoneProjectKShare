@@ -3,26 +3,39 @@
 const mongoose = require('mongoose');
 
 const _chatRoomSchema = {
-    chatLogs:[
-      {
-        sentAt:{
-          type: Date
-        },
-        sender:{
-          type: String
-        },
-        message: {
-          type: String
-        }
+  chatLogs: [
+    {
+      sentAt: {
+        type: Date
+      },
+      sender: {
+        type: String
+      },
+      message: {
+        type: String
       }
-    ],
-    users : [{
+    }
+  ],
+  users: [
+    {
+      user: {
         type: String,
         ref: 'User'
-    }],
-    createdAt: {
-        type: Date, default: Date.now
+      },
+      newMessages: {
+        type: Number,
+        default: 0
+      }
     }
+  ],
+  createdAt: {
+    type: Date, default: Date.now
+  },
+  status: {
+    type: String,
+    default: 'accepted'
+  }
+
 };
 
 module.exports = mongoose.Schema(_chatRoomSchema);

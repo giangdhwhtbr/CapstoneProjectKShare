@@ -52,15 +52,36 @@ module.exports = class TagController {
     static getTagByIds(req, res) {
         TagDAO
             .getTagByIds(req.body.ids)
-            .then(tags => res.status(200).json(tags))
-            .catch(error => res.status(400).json(error));
+            .then(tags => {
+                for (let i = tags.length - 1; i >= 0; i--) {
+                    if (tags[i].status === false) {
+                        let index = tags.indexOf(tags[i]);
+                        if (index > -1) {
+                            tags.splice(index, 1);
+                        }
+                    }
+                }
+                res.status(200).json(tags);
+            }).catch(error => res.status(400).json(error));
     }
     static activeTag(req, res) {
         if (req.params && req.params.id) {
+            let _id = req.params.id;
             TagDAO
-                .activeTag(req.params.id)
-                .then(tag => res.status(200).json(tag))
-                .catch(error => res.status(400).json(error));
+                .activeTag(_id)
+                .then(tag => {
+                    ArticleDAO
+                        .getArticleByTagId(_id)
+                        .then(art => {
+                            tag.articles=[];
+                            tag.request=[];
+                            for (let a of art) {
+                                a.tagsFD.push(tag);
+                                a.save();
+                            }
+                            res.status(200).json({"mess":"Deactivate Successfully !"});
+                        }).catch(error => res.status(400).json(error));
+                }).catch(error => res.status(400).json(error));
         }
 
     }
@@ -118,7 +139,6 @@ module.exports = class TagController {
                         for (let a of art) {
                             var index = a.tags.indexOf(_id);
                             if (index >= 0) {
-                                a.tags.splice(index, 1);
                                 for (let i = 0; i < a.tagsFD.length; i++) {
                                     if (a.tagsFD[i]._id == _id) {
                                         a.tagsFD.splice(i, 1);

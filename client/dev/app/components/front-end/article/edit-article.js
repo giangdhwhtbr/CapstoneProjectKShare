@@ -15,6 +15,7 @@ var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
 var tag_1 = require('../../../services/tag');
 var primeng_1 = require('primeng/primeng');
+var private_chat_1 = require('./../../shared/private-chat');
 var $ = require('jquery');
 var CKEditor = (function () {
     function CKEditor(_elm, _articleService, router, route) {
@@ -217,7 +218,7 @@ var EditArticleComponent = (function () {
             selector: 'create-article',
             templateUrl: 'client/dev/app/components/front-end/article/templates/edit-article.html',
             styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
-            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES],
+            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
             providers: [article_1.ArticleService, tag_1.TagService]
         }), 
         __metadata('design:paramtypes', [article_1.ArticleService, tag_1.TagService, router_1.Router, router_1.ActivatedRoute])

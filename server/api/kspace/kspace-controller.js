@@ -33,11 +33,12 @@ module.exports = class KSpaceController {
     var currentDate = new Date();
     var kspace = {
       lecturer : req.body.lecturer,
-      learner  : req.body.learner,
+      learners  : req.body.learners,
       requestId: req.body.requestId,
       requestTitle: req.body.requestTitle,
       offerId: req.body.offerId,
-      createdAt: currentDate
+      createdAt: currentDate,
+      tags: req.body.tags
     };
     KSpaceDAO
       .createNew(kspace)
@@ -128,7 +129,6 @@ module.exports = class KSpaceController {
           }
 
           kspace.reviews.push(_review);
-          console.log(kspace);
           // Update KSpace
           KSpaceDAO.updateKSpaceById(kspace)
             .then(kspace => {
@@ -181,7 +181,6 @@ module.exports = class KSpaceController {
       });
     }
   }
-
 
   //finish a front.KSpace by ID controller (update finishedAt of a front.KSpace)
   static finishKSpace(req, res){
