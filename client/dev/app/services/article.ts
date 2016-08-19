@@ -23,6 +23,8 @@ export class ArticleService {
     private _artLike="/api/art/like/:artId/:user";
     private _artUnLike="/api/art/unlike/:artId/:user";
 
+    private _artProfile ="/api/articles-user/:username";
+
     constructor(private _http:Http) {
     }
 
@@ -80,6 +82,11 @@ export class ArticleService {
 
     getArtByKnwId(id:string):Observable<any[]> {
         return this._http.get(this._artKnw.replace(':id', id))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
+    getArtsByUsername(name:string):Observable<any[]> {
+        return this._http.get(this._artProfile.replace(':username', name))
             .map((r) => r.json())
             .catch(this.handleError);
     }

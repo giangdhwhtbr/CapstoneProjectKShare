@@ -27,6 +27,7 @@ import { PrivateChatComponent } from './../../shared/private-chat';
 
 import { Subscription } from 'rxjs/Subscription';
 declare var $:any;
+declare var Materialize:any;
 
 @Component({
     selector: 'request-detail-cli',
@@ -177,7 +178,7 @@ export class RequestDetailClientComponent implements AfterViewChecked {
                         this.offers.push(offers[i]);
                     }
                 } else {
-                    alert('Không có đề nghị nào');
+                    Materialize.toast('Không có đề nghị nào!', 4000);
                 }
 
             },
@@ -239,7 +240,7 @@ export class RequestDetailClientComponent implements AfterViewChecked {
 
     addSubcriber(id:string):void {
         if (this.checkSubcribedUser == true) {
-            alert('Bạn đã theo dõi vài viết này');
+            Materialize.toast('Bạn đã theo dõi bài viết này', 4000)
         } else {
             this._requestService
                 .updateSubcriber(id, this.userToken)

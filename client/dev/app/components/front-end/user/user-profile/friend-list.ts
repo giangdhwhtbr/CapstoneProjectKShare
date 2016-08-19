@@ -43,10 +43,10 @@ export class FriendListComponent {
     this.roleToken = localStorage.getItem('role');
     this.userToken = localStorage.getItem('username');
     this.route
-      .params
-      .subscribe(params => {
-        this.name = params['name'];
-      });
+        .params
+        .subscribe(params => {
+          this.name = params['name'];
+        });
   }
 
   ngOnInit(): void {
@@ -60,27 +60,27 @@ export class FriendListComponent {
   //get friend list: pending and accepted
   getFriendList(): void {
     this._userService
-      .getFriendList(this.name)
-      .subscribe((friendlist) => {
-        this.friendships = friendlist;
-        //check sent request
-        for (var i = 0; i < this.friendships.length; i++) {
+        .getFriendList(this.name)
+        .subscribe((friendlist) => {
+          this.friendships = friendlist;
+          //check sent request
+          for (var i = 0; i < this.friendships.length; i++) {
 
-          if (this.friendships[i].user2 === this.name && this.friendships[i].status === "pending") {
-            this.pendingRequests.push(this.friendships[i]);
+            if (this.friendships[i].user2 === this.name && this.friendships[i].status === "pending") {
+              this.pendingRequests.push(this.friendships[i]);
+            }
+
+            if (this.friendships[i].user2 === this.name && this.friendships[i].status === "accepted") {
+              this.acceptedRequest.push(this.friendships[i]);
+            }
+
+            if (this.friendships[i].user1 === this.name && this.friendships[i].status === "accepted") {
+              this.acceptedRequest.push(this.friendships[i]);
+            }
+
           }
-
-          if (this.friendships[i].user2 === this.name && this.friendships[i].status === "accepted") {
-            this.acceptedRequest.push(this.friendships[i]);
-          }
-
-          if (this.friendships[i].user1 === this.name && this.friendships[i].status === "accepted") {
-            this.acceptedRequest.push(this.friendships[i]);
-          }
-
-        }
-        this.getFriendName();
-      })
+          this.getFriendName();
+        })
   }
 
   getFriendName(): void {

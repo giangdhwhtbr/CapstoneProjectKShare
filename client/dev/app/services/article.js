@@ -24,6 +24,7 @@ var ArticleService = (function () {
         this._cmtUnLike = "/api/comment/unlike/:artId/:cmtId/:user";
         this._artLike = "/api/art/like/:artId/:user";
         this._artUnLike = "/api/art/unlike/:artId/:user";
+        this._artProfile = "/api/articles-user/:username";
     }
     ArticleService.prototype.getAllArts = function (num) {
         var header = new http_1.Headers;
@@ -72,6 +73,11 @@ var ArticleService = (function () {
     };
     ArticleService.prototype.getArtByKnwId = function (id) {
         return this._http.get(this._artKnw.replace(':id', id))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    ArticleService.prototype.getArtsByUsername = function (name) {
+        return this._http.get(this._artProfile.replace(':username', name))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };

@@ -24,6 +24,7 @@ var detail_article_1 = require("../components/front-end/article/detail-article")
 var list_article_1 = require("../components/front-end/article/list-article");
 var edit_article_1 = require("../components/front-end/article/edit-article");
 var displayArtByTag_1 = require("../components/front-end/tag/displayArtByTag");
+var _404_1 = require("../components/shared/404");
 var auth_1 = require('./auth');
 var auth_2 = require('../services/auth');
 exports.KShareRoutes = [
@@ -175,6 +176,10 @@ exports.KShareRoutes = [
                 component: home_1.HomeComponent
             }
         ]
+    },
+    {
+        path: 'error',
+        component: _404_1.errorPageComponent
     },
     {
         path: 'room',

@@ -105,6 +105,8 @@
                                 <button type="button" pButton (click)="deactivateReport(r._id)"
                                         class="btn-floating waves-effect waves-light red"><i class="material-icons">remove</i>
                                 </button>
+                                <button type="button" (click)="createChatRoom(r.reportedUser)" class="btn-floating waves-effect waves-light red">
+                                    <i class="material-icons">message</i>Gửi tin nhắn</button>
                             </template>
                         </p-column>
                     </p-dataTable>
@@ -113,3 +115,4 @@
         </div>
     </div>
 </div>
+<message [receiver]="user"></message>

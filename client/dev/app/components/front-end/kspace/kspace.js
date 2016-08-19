@@ -80,24 +80,6 @@ var KSpaceComponent = (function () {
         var kspacePanel = $('#kspace-panel');
         var chatBox = $('#chat-box-panel');
         var drawTools = $('#draw-tools-panel');
-        // initiate setting
-        var chatToolShow = false;
-        $('#chat-panel').hide();
-        //show chat-panel
-        $('#chat').click(function () {
-            if (!chatToolShow) {
-                $('#chat-panel').show();
-                $('#kspace-panel').css('right', '18%');
-                $('#draw-option').css('margin-left', '96.8%');
-                chatToolShow = true;
-            }
-            else {
-                $('#chat-panel').hide();
-                $('#kspace-panel').css('right', '6%');
-                $('#draw-option').css('margin-left', '97.15%');
-                chatToolShow = false;
-            }
-        });
         this._kspaceService
             .getKSpaceById(this.id)
             .subscribe(function (kspace) {

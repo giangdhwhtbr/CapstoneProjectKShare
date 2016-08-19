@@ -185,7 +185,8 @@
                         </div>
                         <div class="col s2 m2 l2">
                             <a *ngIf="checkCreatedUser && !checkIsAcceped">
-                                <button class="btn-floating btn waves-effect waves-light blue right" (click)="addKshare(request.user,offer.user,_id,request.title,offer._id)"><i class="material-icons">done</i>
+                                <button class="btn-floating btn waves-effect waves-light blue right"
+                                        (click)="addKshare(offer.user,offer._id)"><i class="material-icons">done</i>
                                 </button>
                             </a>
                             <a *ngIf="checkCreatedUser && checkIsAcceped">

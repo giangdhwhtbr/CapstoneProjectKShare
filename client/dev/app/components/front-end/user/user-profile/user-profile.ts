@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs/Subscription';
 //Component
 import { RequestRecordComponent } from './request-record';
 import { KspaceListComponent } from './kspace-list';
+import { ArticleListComponent } from './article-list';
 import { UserProfileBarComponent} from './user-profile-bar';
 import { PrivateChatComponent } from './../../../shared/private-chat';
 
@@ -14,6 +15,7 @@ import { UserService } from '../../../../services/users';
 import { AuthService } from '../../../../services/auth';
 import { KnowledgeService } from '../../../../services/knowledge';
 import { KSpaceService } from '../../../../services/kspace';
+import { ArticleService } from '../../../../services/article';
 
 //interfaces
 import { User } from '../../../../interface/user';
@@ -31,7 +33,8 @@ declare var $:any;
         RequestRecordComponent,
         UserProfileBarComponent,
         PrivateChatComponent,
-        KspaceListComponent
+        KspaceListComponent,
+        ArticleListComponent
     ]
 })
 
@@ -40,7 +43,7 @@ export class UserProfileComponent {
     //name of user in current profile page
     name:string;
 
-    isExist:boolean;
+    isExist:boolean = true;
     isFriend:boolean;
 
     roleToken:string;
@@ -65,7 +68,10 @@ export class UserProfileComponent {
 
     kspaceList:any;
 
-    constructor(public router:Router, private route:ActivatedRoute, public _userService:UserService,public _kSpaceService:KSpaceService,
+    articleList:any;
+
+    constructor(public router:Router, private route:ActivatedRoute,
+                public _userService:UserService, public _kSpaceService:KSpaceService, public _articleService:ArticleService,
                 public _knowledgeService:KnowledgeService) {
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
@@ -77,40 +83,56 @@ export class UserProfileComponent {
             .params
             .subscribe(params => {
                 this.name = params['name'];
-                this._kSpaceService.getKspaceProfile(this.name).subscribe((kspaces)=>{
-                    this.kspaceList=kspaces;
-                    this._userService.getUserByUserName(this.name).subscribe(
-                        (user) => {
-                            this.userProfile = user;
-                        },
-                        (error) => {
-                            console.log(error);
+                this._userService.checkUserExist(this.name).subscribe(
+                    (isExist) => {
+                        if (isExist._body === '0') {
+                            this.isExist = false;
+                            this.router.navigateByUrl('/error');
+                        } else {
+                            this.isExist = true;
                         }
-                    );
-                    this.checkUserExist();
-                    if (this.isExist = true) {
-                        this.getRequestByUser();
-                    }
-                });
+                        if (this.isExist = true) {
+                            this.getRequestByUser();
+                            this._kSpaceService.getKspaceProfile(this.name).subscribe((kspaces)=> {
+                                this.kspaceList = kspaces;
+                                this._articleService.getArtsByUsername(this.name).subscribe((arts)=> {
+                                    this.articleList = arts;
+                                });
+                                this._userService.getUserByUserName(this.name).subscribe(
+                                    (user) => {
+                                        this.userProfile = user;
+                                    },
+                                    (error) => {
+                                        console.log(error);
+                                    }
+                                );
+                            });
+                        }
 
 
-                $(window).on("scroll", () => {
-                    var scrollHeight = $(document).height();
-                    var scrollPosition = $(window).height() + $(window).scrollTop();
-                    if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-                        setTimeout(() => {
-                            this.seeMore();
-                        }, 1000);
-                        this.height += 30;
-                    }
-                });
+                    },
+                    (error) => {
+                        console.log(error);
+                    });
+
+
+                //$(window).on("scroll", () => {
+                //    var scrollHeight = $(document).height();
+                //    var scrollPosition = $(window).height() + $(window).scrollTop();
+                //    if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+                //        setTimeout(() => {
+                //            this.seeMore();
+                //        }, 1000);
+                //        this.height += 30;
+                //    }
+                //});
             });
         $('ul.tabs').tabs();
     }
 
-    getKspaceProfile(){
-        this._kSpaceService.getKspaceProfile(this.name).subscribe((kspaces)=>{
-            this.kspaceList=kspaces;
+    getKspaceProfile() {
+        this._kSpaceService.getKspaceProfile(this.name).subscribe((kspaces)=> {
+            this.kspaceList = kspaces;
         });
     }
 

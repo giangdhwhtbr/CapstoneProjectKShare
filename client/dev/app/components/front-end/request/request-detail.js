@@ -124,7 +124,7 @@ var RequestDetailClientComponent = (function () {
                 }
             }
             else {
-                alert('Không có đề nghị nào');
+                Materialize.toast('Không có đề nghị nào!', 4000);
             }
         }, function (error) {
             console.log(error);
@@ -179,7 +179,7 @@ var RequestDetailClientComponent = (function () {
     RequestDetailClientComponent.prototype.addSubcriber = function (id) {
         var _this = this;
         if (this.checkSubcribedUser == true) {
-            alert('Bạn đã theo dõi vài viết này');
+            Materialize.toast('Bạn đã theo dõi bài viết này', 4000);
         }
         else {
             this._requestService

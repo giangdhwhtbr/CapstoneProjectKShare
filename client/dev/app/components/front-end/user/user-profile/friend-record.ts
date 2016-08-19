@@ -9,7 +9,7 @@ import { AuthService } from '../../../../services/auth';
 //interfaces
 import { User } from '../../../../interface/user';
 import { FriendShip } from '../../../../interface/friendship';
-
+declare var Materialize:any;
 @Component({
   selector: 'friend-record',
   templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/friend-record.html',
@@ -30,17 +30,18 @@ export class FriendRecordComponent {
   isFriend: boolean;
   name: string;
   socket: any;
+  link:string;
 
   constructor(private router: Router, private route: ActivatedRoute,
-    private _userService: UserService, private _auth: AuthService) {
+              private _userService: UserService, private _auth: AuthService) {
     this.socket = io('https://localhost:80');
     this.userToken = localStorage.getItem('username');
     this.isFriend = true;
     this.route
-      .params
-      .subscribe(params => {
-        this.name = params['name'];
-      });
+        .params
+        .subscribe(params => {
+          this.name = params['name'];
+        });
   }
 
   ngOnInit(): void {
@@ -49,14 +50,15 @@ export class FriendRecordComponent {
 
   getUserInformation(): void {
     this._userService.getUserByUserName(this.friendName).subscribe(
-      (userinfo) => {
-        this.displayname = userinfo.displayName;
-        this.email = userinfo.email;
-        this.level = userinfo.level;
-      },
-      (error) => {
-        console.log(error);
-      }
+        (userinfo) => {
+          this.displayname = userinfo.displayName;
+          this.email = userinfo.email;
+          this.level = userinfo.level;
+          this.link =userinfo.linkImg;
+        },
+        (error) => {
+          console.log(error);
+        }
     );
   }
 
@@ -64,24 +66,24 @@ export class FriendRecordComponent {
     var r = confirm("Bạn có muốn hủy kết bạn");
     if (r == true) {
       this._userService
-        .deleteFriendRequest(this.userToken, this.friendName)
-        .subscribe(() => {
-          console.log('delete successfull');
-        });
+          .deleteFriendRequest(this.userToken, this.friendName)
+          .subscribe(() => {
+            console.log('delete successfull');
+          });
       this._userService
-        .deleteFriendRequest(this.friendName, this.userToken)
-        .subscribe(() => {
-          this.isFriend = false;
-        });
+          .deleteFriendRequest(this.friendName, this.userToken)
+          .subscribe(() => {
+            this.isFriend = false;
+          });
       this._userService
-        .deactivateChatRoom(this.friendName, this.userToken)
-        .subscribe(() => {
+          .deactivateChatRoom(this.friendName, this.userToken)
+          .subscribe(() => {
 
-        });
+          });
       this.sendDataToP.emit("accept");
       // var data = [this.userToken, this.friendName];
       // this.socket.emit('chatroom-friend', data);
-      alert("bạn đã hủy gửi lời  mời kết bạn");
+        Materialize.toast('Đã huỷ lời mời kết bạn', 4000)
     }
 
   }

@@ -29,6 +29,7 @@ import { detailArticleComponent } from "../components/front-end/article/detail-a
 import { listArticleComponent } from "../components/front-end/article/list-article";
 import { EditArticleComponent } from "../components/front-end/article/edit-article";
 import { displayArtByTagComponent } from "../components/front-end/tag/displayArtByTag";
+import { errorPageComponent } from "../components/shared/404";
 import { AdminAuthGuard }          from './auth';
 import { AuthService }        from '../services/auth';
 
@@ -183,6 +184,10 @@ export const KShareRoutes: RouterConfig = [
 
             }
         ],
+    },
+    {
+        path:'error',
+        component:errorPageComponent
     },
     {
         path: 'room',

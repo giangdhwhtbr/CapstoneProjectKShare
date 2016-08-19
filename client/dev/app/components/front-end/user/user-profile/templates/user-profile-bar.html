@@ -2,18 +2,34 @@
     <div class="col s12 m12">
         <div class="card">
             <div class="card-image">
-                <img src="{{linkImg}}">
+                <img class="responsive-img" src="{{linkImg}}">
             </div>
             <div class="card-content">
                 <span class="card-title"><a [routerLink]="['/user/' + name]">{{name}}</a></span>
                 <div class="row">
-                    <div class="file-field input-field" *ngIf="  checkUser">
-                        <div class="btn">
-                            <span>Thay ảnh</span>
+                    <!--<div class="col s4">-->
+                        <!---->
+                    <!--</div>-->
+                    <a [routerLink]="['/user/'+name+'/friends/']" data-position="left" data-delay="5" data-tooltip="bạn bè" class="waves-effect waves-light btn-floating tooltipped blue">
+                        <i class="material-icons">people</i>
+                    </a>
+                    <a *ngIf="userToken===name" (click)="openChooseFile()" data-position="top" data-delay="5" data-tooltip="Thay ảnh đại diện" class="waves-effect waves-light btn-floating tooltipped blue">
+                        <i class="material-icons">add_a_photo</i>
+                    </a>
+                    <a [routerLink]="['/user/'+name]" data-position="right" data-delay="5" data-tooltip="Trang cá nhân" class="waves-effect waves-light btn-floating tooltipped blue">
+                        <i class="material-icons">face</i>
+                    </a>
+                    <!--<div class="col s4">-->
+                        <!---->
+                    <!--</div>-->
+
+                    <div [hidden]="true" class="file-field input-field" *ngIf="  checkUser">
+                        <div>
+                            <i class="material-icons">people</i>
                             <input type="file">
                         </div>
                         <div class="file-path-wrapper">
-                            <input class="file-path validate" type="text" type="file" (change)="fileChangeEvent($event)" type="file" accept="image/*">
+                            <input id="chFileImg" class="file-path validate" type="text" type="file" (change)="fileChangeEvent($event)" type="file" accept="image/*">
                         </div>
                     </div>
                 </div>
@@ -36,15 +52,10 @@
             <button *ngIf="!checkUser && checkSentRequestUser" (click)="deleteFriend()" type="button" class="waves-effect waves-light btn">Đã gửi kết bạn</button>
             <button *ngIf="!checkUser && isFriend" (click)="deleteFriend()" type="button" class="waves-effect waves-light btn">Đã là bạn bè</button>
             <button *ngIf="!checkUser && checkIsRecivedRequest" [routerLink]="['/user/' + userToken + '/friends']" class="waves-effect waves-light btn blue">Đồng ý kết bạn</button>
-            <button *ngIf="userToken!== null&&!checkUser" type="button" class="waves-effect waves-light btn red">Gửi tin nhắn</button>
+            <!--<button *ngIf="userToken!== null&&!checkUser" type="button" class="waves-effect waves-light btn red">Gửi tin nhắn</button>-->
         </div>
         <div class="profile-userbuttons">
-            <a [routerLink]="['/user/'+name+'/friends/']" class="waves-effect waves-light btn">
-                Bạn bè
-            </a>
-            <a [routerLink]="['/user/'+name]" class="waves-effect waves-light btn">
-                Cá nhân
-            </a>
+
         </div>
     </div>
 </div>

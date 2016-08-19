@@ -86,23 +86,6 @@ export class RequestListClientComponent implements AfterViewChecked {
 
     getAllRequests() {
         this._requestService.getAllRequests(this.num).subscribe((requests) => {
-            //get all tag's ids of list request
-            //for (let e of requests) {
-            //    for (let t of e.tags) {
-            //        let i = this.arrIds.indexOf(t);
-            //        if (i < 0) {
-            //            this.arrIds.push(t);
-            //        }
-            //    }
-            //}
-
-            //get all tag relate to ids
-            //this._tagService.getTagsByIds(this.arrIds).subscribe((tags) => {
-            //
-            //    console.log(tags);
-            //
-            //
-            //});
 
             for (var i = 0; i < requests.length; i++) {
                 this._data.push({
@@ -123,9 +106,6 @@ export class RequestListClientComponent implements AfterViewChecked {
 
             }
 
-            // for(var i = 0; i < requests.length; i++){
-            //     this.requests.push(requests[i]);
-            //   }
         });
     }
 
@@ -136,18 +116,6 @@ export class RequestListClientComponent implements AfterViewChecked {
             this.getAllRequests();
         } else {
             this._requestService.searchRequest(search).subscribe((requests) => {
-
-                //this.arrIds = [];
-
-                //get all tag's ids of list request
-                //for (let e of requests) {
-                //    for (let t of e.tags) {
-                //        let i = this.arrIds.indexOf(t);
-                //        if (i < 0) {
-                //            this.arrIds.push(t);
-                //        }
-                //    }
-                //}
 
                 this._data = [];
                 for (var i = 0; i < requests.length; i++) {

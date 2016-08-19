@@ -29,6 +29,14 @@ var ChalkBoardComponent = (function () {
         // Socket Config
         this.socket = io('https://localhost:80');
     }
+    //gọi modal
+    ChalkBoardComponent.prototype.openModal = function () {
+        $('#modal1').openModal({
+            complete: function () {
+            }
+        });
+        $('.lean-overlay').remove();
+    };
     ChalkBoardComponent.prototype.ngOnInit = function () {
         var _this = this;
         var drawing = false;
@@ -290,7 +298,7 @@ var ChalkBoardComponent = (function () {
     ChalkBoardComponent = __decorate([
         core_1.Component({
             selector: 'chalkboard',
-            template: "\n\n    <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let board of boards\">\n          <a *ngIf=\"isLect\" (click)=\"changeBoard(board.json, board.boardNumber)\">\n             B\u1EA3ng {{board.boardNumber}}\n          </a></li>\n        </ul>\n      </div>\n    </div>\n\n      <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n\n\n\n      <div id=\"draw-tools\">\n          <p id=\"new-page\" (click)=\"newPage()\"  href=\"#modal1\" class=\"tool-btn\">\n              <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n          </p>\n          <select id=\"color-picker\" class=\"tool-btn\">\n              <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n          </select>\n          <hr>\n          <select id=\"brush-size\" class=\"tool-btn\">\n              <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n          </select>\n          <hr>\n          <p id=\"eraser\">\n              <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n          </p>\n      </div>\n      <div class=\"wrapper-chalkboard\">\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n      </div>\n    ",
+            template: "\n  <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let board of boards\">\n          <a *ngIf=\"isLect\" (click)=\"changeBoard(board.json, board.boardNumber)\">\n             B\u1EA3ng {{board.boardNumber}}\n          </a></li>\n        </ul>\n      </div>\n    </div>\n    <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n    <div id=\"draw-tools\">\n        <p id=\"new-page\"  (click)=\"openModal()\"  class=\"tool-btn modal-trigger\">\n            <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n        <select id=\"color-picker\" class=\"tool-btn\">\n            <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n        </select>\n        <hr>\n        <select id=\"brush-size\" class=\"tool-btn\">\n            <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n        </select>\n        <hr>\n        <p id=\"eraser\">\n            <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n    </div>\n      <div class=\"wrapper-chalkboard\">\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n      </div>\n      <!--Modal nh\u1EADp th\u00F4ng tin-->\n      <div id=\"modal1\" class=\"modal modal-fixed-footer\">\n        <div class=\"modal-content\">\n          <h4>Nh\u1EADp th\u00F4ng tin</h4>\n          <form>\n            <div class=\"row\">\n              <div class=\"input-field col s12\">\n                <input class=\"form-control\" type=\"text\" required=\"required\" id=\"title\" name=\"title\"/>\n                <label for=\"title\">Ti\u00EAu \u0111\u1EC1</label>\n              </div>\n            </div>\n            <div class=\"row\">\n              <button type=\"submit\" class=\"btn-floating btn-large modal-close waves-effect waves-light blue\" (click)=\"newPage()\"><i class=\"material-icons\">done</i></button>\n            </div>\n          </form>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"modal-action modal-close waves-effect waves-green btn-flat \">Tho\u00E1t</a>\n        </div>\n      </div>\n    ",
             styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
         })
     ], ChalkBoardComponent);

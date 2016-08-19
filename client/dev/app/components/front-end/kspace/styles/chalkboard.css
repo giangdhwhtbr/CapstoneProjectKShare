@@ -9,15 +9,15 @@
 
 }
 
-/*/ Dành cho máy tính bảng chiều ngang /*/
+/*/ Dành cho máy tính bảng chiều ngang !**/
 @media all and (min-width: 1024px) {
 
 }
 
-/*/ Dành cho màn hình desktop /*/
+/*/ Dành cho màn hình desktop !**/
 @media all and (min-width: 1280px) {
     .wrapper-chalkboard {
-        width: 60rem;
+        width: 55rem;
         overflow: scroll;
         height: 37rem;
     }
@@ -44,7 +44,6 @@
     width: 65px;
     background: white;
 }
-
 .tool-btn {
     text-indent: 7px;
     background-color: #ffffff;
@@ -63,15 +62,12 @@
     padding: 0px 10px;
     margin-left: 10px;
 }
-
-
 hr{
     margin-top: 6px;
     margin-bottom: 1px;
     border: 0;
     border-top: 1px solid #eee;
 }
-
 #draw-option {
     z-index: 10;
     border: none;

@@ -98,7 +98,7 @@
 <!--</div>-->
 
 <audio id="xyz" src="gets-in-the-way.mp3" preload="auto"></audio>
-<header>
+<header [hidden]="isRoom">
     <nav class="indigo" role="navigation">
         <div class="nav-wrapper">
             <a *ngIf="!isFrontend" data-activates="slide-out" (click)="open()" class="button-collapse displayPointer"><i class="medium material-icons">toc</i></a>
@@ -106,7 +106,7 @@
             <!--btn group-->
             <ul class="right" [hidden]="!loginToken">
                 <li>
-                    <a [routerLink]="['/kspace']"><i class="material-icons">videocam</i></a>
+                    <a [routerLink]="['/newsfeed']"><i class="material-icons">today</i></a>
                 </li>
                 <li>
                     <a [routerLink]="['/requests']" routerLinkActive="active"><i class="material-icons">receipt</i></a>
@@ -121,7 +121,7 @@
                 <!---->
                 <!--</a>-->
                 <li>
-                    <a class='right dropdown-button' (click)="changeStatusNotification()" data-activates='noti_dropdown'><i class=' material-icons'>add_alert</i><span *ngIf="countUnReadNoti>0" class="new badge">{{countUnReadNoti}}</span></a>
+                    <a class='right dropdown-button' (click)="changeStatusNotification()" data-activates='noti_dropdown'><i class=' material-icons'>add_alert</i><span *ngIf="countUnReadNoti>0" class="new badge red">{{countUnReadNoti}}</span></a>
                     <ul class="dropdown-content noti-liss" id="noti_dropdown">
                         <li *ngFor="let notification of notifications">
                             <a [routerLink]="[notification.link]">
@@ -138,7 +138,7 @@
                 <!--end notification-->
                 <li>
                     <!--<button (click)="openChat()" class="btn modal-trigger">chat</button>-->
-                    <a (click)="openChat()"><i class="material-icons">message</i><span *ngIf="isNewMessage" class="badge">!</span></a>
+                    <a (click)="openChat()"><i class="material-icons">message</i><span *ngIf="isNewMessage" class="new badge red">!</span></a>
                 </li>
                 <!--name-->
                 <li>

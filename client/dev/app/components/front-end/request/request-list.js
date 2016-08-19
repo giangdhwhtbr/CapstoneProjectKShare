@@ -56,22 +56,6 @@ var RequestListClientComponent = (function () {
     RequestListClientComponent.prototype.getAllRequests = function () {
         var _this = this;
         this._requestService.getAllRequests(this.num).subscribe(function (requests) {
-            //get all tag's ids of list request
-            //for (let e of requests) {
-            //    for (let t of e.tags) {
-            //        let i = this.arrIds.indexOf(t);
-            //        if (i < 0) {
-            //            this.arrIds.push(t);
-            //        }
-            //    }
-            //}
-            //get all tag relate to ids
-            //this._tagService.getTagsByIds(this.arrIds).subscribe((tags) => {
-            //
-            //    console.log(tags);
-            //
-            //
-            //});
             for (var i = 0; i < requests.length; i++) {
                 _this._data.push({
                     req: requests[i],
@@ -88,9 +72,6 @@ var RequestListClientComponent = (function () {
                 var text = div.textContent || div.innerText || "";
                 _this._data[i].sum = text.substr(0, 100) + " ......";
             }
-            // for(var i = 0; i < requests.length; i++){
-            //     this.requests.push(requests[i]);
-            //   }
         });
     };
     RequestListClientComponent.prototype.search = function (search) {
@@ -102,16 +83,6 @@ var RequestListClientComponent = (function () {
         }
         else {
             this._requestService.searchRequest(search).subscribe(function (requests) {
-                //this.arrIds = [];
-                //get all tag's ids of list request
-                //for (let e of requests) {
-                //    for (let t of e.tags) {
-                //        let i = this.arrIds.indexOf(t);
-                //        if (i < 0) {
-                //            this.arrIds.push(t);
-                //        }
-                //    }
-                //}
                 _this._data = [];
                 for (var i = 0; i < requests.length; i++) {
                     _this._data.push({

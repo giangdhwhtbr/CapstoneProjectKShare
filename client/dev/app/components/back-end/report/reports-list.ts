@@ -3,14 +3,20 @@ import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
 import { Report } from '../../../interface/report';
 import { ReportService } from '../../../services/report';
+import { ChatService } from '../../../services/chat';
+
+import { StringFilterPipe } from '../shared/filter';
+
 import {DataTable,Column, Header, MultiSelect, Footer, InputText} from 'primeng/primeng';
-import {Paginator} from 'primeng/primeng';
-declare var $:any;
+
+import { MessageComponent } from './message';
+declare var $: any;
+
 @Component({
   selector: 'reports-list',
   templateUrl: 'client/dev/app/components/back-end/report/templates/reports-list.html',
-  directives: [ROUTER_DIRECTIVES, FORM_DIRECTIVES,Paginator,FORM_DIRECTIVES,DataTable,Column,Header,Footer],
-  providers: [ReportService]
+  directives: [MessageComponent,ROUTER_DIRECTIVES, FORM_DIRECTIVES,FORM_DIRECTIVES,DataTable,Column,Header,Footer],
+  providers: [ReportService,ChatService]
 })
 export class ReportListComponent {
   pageTitle: string = 'Report List';
@@ -19,7 +25,11 @@ export class ReportListComponent {
   pendingReports: Report[] = [];
   handlingReports: Report[] = [];
   public filter: string = '';
-  constructor(fb: FormBuilder, private _reportService: ReportService, private router: Router) {
+  roleToken: string;
+  userToken: string;
+  constructor(fb: FormBuilder, private _reportService: ReportService, private _chatService: ChatService, private router: Router) {
+    this.roleToken = localStorage.getItem('role');
+    this.userToken = localStorage.getItem('username');
   }
   ngOnInit() {
     this.getAllPending();
@@ -59,5 +69,17 @@ export class ReportListComponent {
         this.getAllHandling();
       });
     }
+  }
+  createChatRoom(reportedUser: string) {
+    if(reportedUser !== this.userToken){
+      this._chatService.createChatRoomAdmin(this.userToken, reportedUser)
+          .subscribe((chatRoom) => {
+            alert('Phòng trò chuyện đã được tạo');
+            console.log(reportedUser);
+            console.log('create chatRoom successfully');
+          });
+    }
+    this.user = reportedUser;
+    $('#messageModal').openModal();
   }
 }

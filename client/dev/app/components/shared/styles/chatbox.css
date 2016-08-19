@@ -115,6 +115,9 @@ img {
 
 .chat-body {
     padding-bottom: 20px;
+    word-wrap: break-word;
+    max-width: 260px;
+
 }
 
 .chat li.left .chat-body {
@@ -237,4 +240,8 @@ a:hover, a:active, a:focus {
 
 #chatBoxK{
     overflow-y: hidden;
+}
+.chat-body .clearfix{
+    word-wrap: break-word;
+    max-width: 197px;
 }
