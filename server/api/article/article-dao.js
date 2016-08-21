@@ -216,7 +216,14 @@ articleSchema.statics.fullTextSearchArticle = (text) => {
 articleSchema.statics.getArticleByUser = (username) => {
     return new Promise((resolve, reject) => {
         Article
-            .find({ 'ofUser': username, 'status': 'public' })
+            .find({ 
+                'ofUser': username,
+                $or:[
+                    {'status':'public'},
+                    {'status':'private'}
+                ]
+                 })
+            .select('-content')
             .exec((err, articles) => {
                 err ? reject(err)
                     : resolve(articles);
