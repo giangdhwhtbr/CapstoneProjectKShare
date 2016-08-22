@@ -76,18 +76,19 @@ module.exports = class userController {
             userDAO.getUserById(req.params.id)
                 .then(user => {
 
-                    user.fullName = _data.user.fullName;
-                    user.displayName = _data.user.displayName;
-                    user.phone = _data.user.phone;
-                    //user.interestedKnowledgeId = req.body.interestedKnowledgeId;
-                    user.status = _data.user.status;
-                    user.updatedAt = currentDate;
-                    user.ownKnowledgeIds = _data.user.ownKnowledgeIds;
-                    user.linkImg = _data.user.linkImg;
-
-                    userDAO.updateUserById(user)
-                        .then((user) => {
-                            TagDAO.createArrayTag(_data.newTag).then((tags) => {
+          user.fullName = _data.user.fullName;
+          user.displayName = _data.user.displayName;
+          user.phone = _data.user.phone;
+          //user.interestedKnowledgeId = req.body.interestedKnowledgeId;
+          user.status = _data.user.status;
+          user.updatedAt = currentDate;
+          user.ownKnowledgeIds = _data.user.ownKnowledgeIds;
+          user.linkImg = _data.user.linkImg;
+          user.birthday = _data.user.birthday;
+          console.log(user.birthday);
+          userDAO.updateUserById(user)
+            .then((user) => {
+              TagDAO.createArrayTag(_data.newTag).then((tags) => {
 
                                 tags.map((e, i) => {
                                     user.ownKnowledgeIds.push(e);

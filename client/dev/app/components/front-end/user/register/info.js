@@ -90,6 +90,7 @@ var RegisterInfoComponent = (function () {
         };
         this._userService.updateUser(user, tags[1]).subscribe(function (res) {
             _this.router.navigateByUrl('/');
+            location.reload();
         }, function (err) {
             console.log(err);
         });

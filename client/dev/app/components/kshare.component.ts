@@ -27,6 +27,7 @@ import { KSpaceInfoComponent } from "./front-end/kspace/kspace-info";
 import { FriendListComponent } from "./front-end/user/user-profile/friend-list";
 import { userSearchRsComponent } from "./front-end/user/search/rs-search-user";
 import { UserProfileBarComponent } from "./front-end/user/user-profile/user-profile-bar";
+import { UpdateUserComponent } from "./front-end/user/user-profile/user-info-update";
 import { CreateArticleComponent } from "./front-end/article/create-article";
 import { detailArticleComponent } from "./front-end/article/detail-article";
 import { listArticleComponent } from "./front-end/article/list-article";
@@ -69,7 +70,8 @@ import { CreateRequestComponent } from "./back-end/request/request-create";
         listArticleComponent,
         displayArtByTagComponent,
         CreateRequestComponent,
-        userSearchRsComponent
+        userSearchRsComponent,
+        UpdateUserComponent
     ]
 })
 export class KshareComponent {

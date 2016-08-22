@@ -21,6 +21,7 @@ import { UserProfileComponent } from "../components/front-end/user/user-profile/
 import { userSearchRsComponent } from "../components/front-end/user/search/rs-search-user";
 import { RegisterComponent } from '../components/front-end/user/register/register';
 import { RegisterInfoComponent } from '../components/front-end/user/register/info';
+import { UpdateUserComponent } from '../components/front-end/user/user-profile/user-info-update';
 import { LoginComponent} from "../components/front-end/user/login/login";
 import { ResetPasswordComponent } from "../components/front-end/user/reset-password/reset-pass";
 import { NewPasswordComponent } from "../components/front-end/user/reset-password/new-pass";
@@ -88,6 +89,10 @@ export const KShareRoutes: RouterConfig = [
                             {
                                 path: '',
                                 component: UserProfileComponent
+                            },
+                            {
+                                path: 'info',
+                                component: UpdateUserComponent
                             }
                         ]
                     },

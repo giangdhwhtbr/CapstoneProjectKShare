@@ -1,0 +1,51 @@
+
+<div *ngIf="userinfo" class="container">
+    <div id="login-page" class="row">
+        <div class="col s12 z-depth-2 card-panel">
+            <form class="login-form" [ngFormModel]="updateUserForm" (ngSubmit)="update(updateUserForm.value)">
+                <div class="input-field col s12">
+                    <input class="form-control form-text"
+                           type="text"
+                           required
+                           name="fullName"
+                           [(ngModel)]="userinfo.fullName"
+                           [ngFormControl]="updateUserForm.controls['fullName']"
+                    >
+                    <label for="username" class="center-align">Họ và tên</label>
+                </div>
+                <div class="input-field col s12">
+                    <input class="datepicker"
+                           type="date"
+                           name="birthday"
+                           [(ngModel)]="userinfo.birthday"
+                           [ngFormControl]="updateUserForm.controls['birthday']"
+                    >
+                </div>
+                <div class="input-field col s12">
+                    <input class="form-control form-text"
+                           type="text"
+                           required
+                           name="phone"
+                           [(ngModel)]="userinfo.phone"
+                           [ngFormControl]="updateUserForm.controls['phone']"
+                    >
+                    <label for="password-again" class="center-align">Số điện thoại</label>
+                </div>
+                <div class="input-field col s12">
+                    <p>Lĩnh vực am hiểu:</p><br><!--end editor -->
+                    <p-autoComplete [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
+                                    [multiple]="true" [(ngModel)]="tags">
+                    </p-autoComplete>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <button type="submit" class="btn waves-effect waves-light col s12">Cập nhật</button>
+                    </div>
+                    <div class="input-field col s6">
+                        <button class="btn waves-effect waves-light col s12" (click)="returnHome()">Trang chủ</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

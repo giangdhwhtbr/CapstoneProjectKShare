@@ -1,108 +1,108 @@
 <!--<br/><br/>-->
 <!--<div class="container " *ngIf="request && knowledge">-->
-    <!--<h3>{{request.title}}</h3>-->
-    <!--<div class="col-xs-12 col-sm-9 fixEfMenu">-->
-        <!--<div class="panel panel-default card-rq">-->
-            <!--<div class="panel-body">-->
+<!--<h3>{{request.title}}</h3>-->
+<!--<div class="col-xs-12 col-sm-9 fixEfMenu">-->
+<!--<div class="panel panel-default card-rq">-->
+<!--<div class="panel-body">-->
 
 
-                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">-->
-                    <!--Người tạo : <a [routerLink]=[request.userlink]>{{request.user}}</a>-->
-                <!--</div>-->
-                <!--<br>-->
+<!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">-->
+<!--Người tạo : <a [routerLink]=[request.userlink]>{{request.user}}</a>-->
+<!--</div>-->
+<!--<br>-->
 
-                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">-->
-                    <!--Lĩnh vực : {{knowledge.name}}-->
-                <!--</div>-->
-                <!--<br>-->
+<!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">-->
+<!--Lĩnh vực : {{knowledge.name}}-->
+<!--</div>-->
+<!--<br>-->
 
-                <!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu" hidden>-->
-                    <!--ID : {{request._id}}-->
-                <!--</div>-->
-                <!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">-->
-                    <!--Trạng thái : {{request.status}}-->
-                <!--</div>-->
-                <!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">-->
-                    <!--<tags [listTagId]="request.tags"></tags>-->
-                <!--</div>-->
-                <!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">-->
-                    <!--Ngày tạo : {{request.createdAt | date:"dd/MM/yyyy"}}-->
-                <!--</div>-->
-                <!--<div id="bodyReq" class="col-xs-12">-->
+<!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu" hidden>-->
+<!--ID : {{request._id}}-->
+<!--</div>-->
+<!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">-->
+<!--Trạng thái : {{request.status}}-->
+<!--</div>-->
+<!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">-->
+<!--<tags [listTagId]="request.tags"></tags>-->
+<!--</div>-->
+<!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">-->
+<!--Ngày tạo : {{request.createdAt | date:"dd/MM/yyyy"}}-->
+<!--</div>-->
+<!--<div id="bodyReq" class="col-xs-12">-->
 
-                <!--</div>-->
-                <!--<div class="row" *ngIf="subscribers">-->
-                    <!--Danh sách theo dõi :-->
-                    <!--<p *ngFor="let subscriber of subscribers"><a [routerLink]="['/user/' + subscriber]">{{subscriber}}</a></p>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-    <!--</div>-->
+<!--</div>-->
+<!--<div class="row" *ngIf="subscribers">-->
+<!--Danh sách theo dõi :-->
+<!--<p *ngFor="let subscriber of subscribers"><a [routerLink]="['/user/' + subscriber]">{{subscriber}}</a></p>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
 
-    <!--<div [hidden]="!checkDeactive" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">-->
-        <!--Yêu cần này đã kết thúc-->
-    <!--</div>-->
+<!--<div [hidden]="!checkDeactive" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">-->
+<!--Yêu cần này đã kết thúc-->
+<!--</div>-->
 
-    <!--<div [hidden]="checkDeactive" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">-->
-        <!--<button *ngIf="userToken !== null && roleToken !== 'admin' && userToken !== request.user" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">Báo cáo</button>-->
-        <!--<a href="{{updateLink}}" *ngIf="checkCreatedUser || roleToken==='admin'"><span-->
-                <!--class="btn btn-warning">Chỉnh sửa</span></a>-->
-        <!--<a *ngIf="checkCreatedUser || roleToken==='admin'">-->
-            <!--<button class="btn btn-danger" (click)="deactivateRequest(_id)">Ngừng</button>-->
-        <!--</a>-->
-        <!--<a *ngIf="!checkCreatedUser">-->
-            <!--<button *ngIf="userToken !== null"  class="btn btn-primary" (click)="openModal()">Đề nghị</button>-->
-        <!--</a>-->
-        <!--<a *ngIf="!checkCreatedUser || userToken !== null">-->
-            <!--<button *ngIf="userToken !== null && !checkSubcribedUser && userToken !== request.user" class="btn btn-primary" (click)="addSubcriber(_id)">Theo dõi</button>-->
-        <!--</a>-->
-        <!--<a *ngIf="!checkCreatedUser || userToken !== null">-->
-            <!--<button *ngIf="userToken !== null && checkSubcribedUser" class="btn btn-primary" (click)="removeSubscriber()">Bỏ theo dõi</button>-->
-        <!--</a>-->
-    <!--</div>-->
+<!--<div [hidden]="checkDeactive" class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">-->
+<!--<button *ngIf="userToken !== null && roleToken !== 'admin' && userToken !== request.user" class="btn btn-warning btn-sm" data-toggle="modal" data-target="#myModal">Báo cáo</button>-->
+<!--<a href="{{updateLink}}" *ngIf="checkCreatedUser || roleToken==='admin'"><span-->
+<!--class="btn btn-warning">Chỉnh sửa</span></a>-->
+<!--<a *ngIf="checkCreatedUser || roleToken==='admin'">-->
+<!--<button class="btn btn-danger" (click)="deactivateRequest(_id)">Ngừng</button>-->
+<!--</a>-->
+<!--<a *ngIf="!checkCreatedUser">-->
+<!--<button *ngIf="userToken !== null"  class="btn btn-primary" (click)="openModal()">Đề nghị</button>-->
+<!--</a>-->
+<!--<a *ngIf="!checkCreatedUser || userToken !== null">-->
+<!--<button *ngIf="userToken !== null && !checkSubcribedUser && userToken !== request.user" class="btn btn-primary" (click)="addSubcriber(_id)">Theo dõi</button>-->
+<!--</a>-->
+<!--<a *ngIf="!checkCreatedUser || userToken !== null">-->
+<!--<button *ngIf="userToken !== null && checkSubcribedUser" class="btn btn-primary" (click)="removeSubscriber()">Bỏ theo dõi</button>-->
+<!--</a>-->
+<!--</div>-->
 <!--</div>-->
 <!--<offer-create rid="{{_id}}" (sendDataToP)="action($event)"></offer-create>-->
 <!--<br>-->
 <!--&lt;!&ndash; List offer of a back.request &ndash;&gt;-->
 <!--<div *ngIf="offers" class="container" style="min-height:437px" id="request-ofer">-->
-    <!--<div class="col-xs-12 col-sm-9 fixEfMenu" *ngIf="offers">-->
-        <!--<div class="panel panel-default card-rq" *ngFor="let offer of offers">-->
-            <!--<div class="panel-body">-->
-                <!--<span *ngIf="offer.status==='Được chấp nhận'" class="glyphicon glyphicon-ok" style="color:green;"></span>-->
+<!--<div class="col-xs-12 col-sm-9 fixEfMenu" *ngIf="offers">-->
+<!--<div class="panel panel-default card-rq" *ngFor="let offer of offers">-->
+<!--<div class="panel-body">-->
+<!--<span *ngIf="offer.status==='Được chấp nhận'" class="glyphicon glyphicon-ok" style="color:green;"></span>-->
 
-                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">-->
-                    <!--Người tạo : <a [routerLink]="['/user/' + offer.user]">{{offer.user}}</a>-->
-                <!--</div>-->
-                <!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">-->
-                    <!--Trạng thái : {{offer.status}}-->
-                <!--</div>-->
-                <!--<br>-->
+<!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">-->
+<!--Người tạo : <a [routerLink]="['/user/' + offer.user]">{{offer.user}}</a>-->
+<!--</div>-->
+<!--<div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">-->
+<!--Trạng thái : {{offer.status}}-->
+<!--</div>-->
+<!--<br>-->
 
-                <!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">-->
-                    <!--Lời nhắn : {{offer.message}}-->
-                <!--</div>-->
-                <!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">-->
-                    <!--Ngày tạo : {{offer.createdAt | date:"dd/MM/yyyy"}}-->
-                <!--</div>-->
-                <!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">-->
-                    <!--<a *ngIf="checkCreatedUser && !checkIsAcceped">-->
-                        <!--<button class="btn btn-sm btn-success" (click)="addKshare(offer.user,offer._id)">Chấp thuận-->
-                        <!--</button>-->
-                    <!--</a>-->
-                    <!--&lt;!&ndash;<a *ngIf="checkCreatedUser && checkIsAcceped">-->
-                        <!--<button disabled class="btn btn-sm btn-success">Chấp thuận</button>-->
-                    <!--</a>&ndash;&gt;-->
-                    <!--<a *ngIf="checkCreatedUser || userToken === offer.user">-->
-                        <!--<button (click)="removeOffer(offer._id)" class="btn btn-sm btn-success">Xóa</button>-->
-                    <!--</a>-->
-                <!--</div>-->
-            <!--</div>-->
-        <!--</div>-->
-        <!--<a (click)="seeMore()">Xem thêm</a>-->
-    <!--</div>-->
+<!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">-->
+<!--Lời nhắn : {{offer.message}}-->
+<!--</div>-->
+<!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">-->
+<!--Ngày tạo : {{offer.createdAt | date:"dd/MM/yyyy"}}-->
+<!--</div>-->
+<!--<div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">-->
+<!--<a *ngIf="checkCreatedUser && !checkIsAcceped">-->
+<!--<button class="btn btn-sm btn-success" (click)="addKshare(offer.user,offer._id)">Chấp thuận-->
+<!--</button>-->
+<!--</a>-->
+<!--&lt;!&ndash;<a *ngIf="checkCreatedUser && checkIsAcceped">-->
+<!--<button disabled class="btn btn-sm btn-success">Chấp thuận</button>-->
+<!--</a>&ndash;&gt;-->
+<!--<a *ngIf="checkCreatedUser || userToken === offer.user">-->
+<!--<button (click)="removeOffer(offer._id)" class="btn btn-sm btn-success">Xóa</button>-->
+<!--</a>-->
+<!--</div>-->
+<!--</div>-->
+<!--</div>-->
+<!--<a (click)="seeMore()">Xem thêm</a>-->
+<!--</div>-->
 <!--</div>-->
 <!--<report *ngIf="request" reportedUser="{{request.user}}"></report>-->
-<div class="container">
+<div class="container" *ngIf="request">
     <div class="row">
         <div class="col s12 m12">
             <div class="card" *ngIf="request && knowledge">
@@ -146,27 +146,30 @@
     <div class="row">
         <div class="col s12 m12">
             <div [hidden]="checkDeactive" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-                <button *ngIf="userToken !== null" class="btn modal-trigger btn-large waves-effect waves-light blue" data-target="myModal" (click)="openReport()">Báo cáo</button>
+                <button *ngIf="userToken !== null" class="btn modal-trigger btn-large waves-effect waves-light blue" data-target="myModal"
+                    (click)="openReport()">Báo cáo</button>
                 <a href="{{updateLink}}" class="btn-large waves-effect waves-light blue" *ngIf="checkCreatedUser || roleToken==='admin'">Sửa</a>
                 <a *ngIf="checkCreatedUser || roleToken==='admin'">
                     <button class=" btn-large waves-effect waves-light blue" (click)="deactivateRequest(_id)">Đóng</button>
                 </a>
-                <a *ngIf="!checkCreatedUser || roleToken==='admin'">
-                    <button *ngIf="userToken !== null"  class="btn modal-trigger btn-large waves-effect waves-light blue" (click)="openOffer()" data-target="modalOfferRequest">Đề nghị</button>
+                <a *ngIf="!checkCreatedUser">
+                    <button *ngIf="userToken !== null && request.status!=='Đã được chấp nhận'" class="btn modal-trigger btn-large waves-effect waves-light blue"
+                        (click)="openOffer()" data-target="modalOfferRequest">Đề nghị</button>
                 </a>
                 <a *ngIf="!checkCreatedUser || roleToken==='admin' || userToken !== null">
-                    <button *ngIf="userToken !== null" class="btn-large waves-effect waves-light blue" (click)="addSubcriber(_id)">theo dõi</button>
+                    <button *ngIf="userToken !== null && !checkSubcribedUser && userToken !== request.user && request.status!=='Đã được chấp nhận'"
+                        class="btn-large waves-effect waves-light blue" (click)="addSubcriber(_id)">theo dõi</button>
                 </a>
-                <button *ngIf="userToken !== null && checkSubcribedUser" class="btn-large waves-effect waves-light blue" (click)="removeSubscriber()">Bỏ theo dõi</button>
+                <a *ngIf="!checkCreatedUser || userToken !== null">
+                    <button *ngIf="userToken !== null && checkSubcribedUser" class="btn-large waves-effect waves-light blue" (click)="removeSubscriber()">Bỏ theo dõi</button>
+                </a>
             </div>
         </div>
     </div>
-    <div class="row">
+
+    <div class="row" *ngIf="request.status !=='Đã được chấp nhận'">
         <div class="col s12 m12" *ngIf="offers">
             <div class="card" *ngFor="let offer of offers">
-                <div class="card-content">
-                    <h4 *ngIf="offer.status==='Được chấp nhận'">Chấp nhận</h4>
-                </div>
                 <div class="card-action">
                     <div class="row">
                         <div class="col s3 m3">
@@ -185,8 +188,7 @@
                         </div>
                         <div class="col s2 m2 l2">
                             <a *ngIf="checkCreatedUser && !checkIsAcceped">
-                                <button class="btn-floating btn waves-effect waves-light blue right"
-                                        (click)="addKshare(offer.user,offer._id)"><i class="material-icons">done</i>
+                                <button class="btn-floating btn waves-effect waves-light blue right" (click)="addKshare(offer.user,offer._id)"><i class="material-icons">done</i>
                                 </button>
                             </a>
                             <a *ngIf="checkCreatedUser && checkIsAcceped">
@@ -194,11 +196,45 @@
                             </a>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="row" *ngIf="request.status ==='Đã được chấp nhận'">
+        <div class="col s12 m12" *ngIf="offers">
+            <div class="card" *ngFor="let offer of offers">
+                <div class="card-action" *ngIf="offer.status==='Được chấp nhận'">
+                    <div class="row">
+                        <div class="col s3 m3">
+                            <p>Người tạo : <a [routerLink]="['/user/' + offer.user]">{{offer.user}}</a></p>
+                        </div>
+                        <div class="col s3 m3">
+                            <p>Trạng thái : {{offer.status}}</p>
+                        </div>
+                        <div class="col s3 m3">
+                            <p>Ngày tạo : {{offer.createdAt | date:"dd/MM/yyyy"}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s10 m10 l10">
+                            Lời nhắn : {{offer.message}}
+                        </div>
+                        <div class="col s2 m2 l2">
+                            <a *ngIf="checkCreatedUser && !checkIsAcceped">
+                                <button class="btn-floating btn waves-effect waves-light blue right" (click)="addKshare(offer.user,offer._id)"><i class="material-icons">done</i>
+                                </button>
+                            </a>
+                            <a *ngIf="checkCreatedUser && checkIsAcceped">
+                                <button disabled class="btn-floating btn waves-effect waves-light red right"><i class="material-icons">done</i></button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 <report *ngIf="request" reportedUser="{{request.user}}"></report>
 <private-chat></private-chat>
