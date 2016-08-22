@@ -106,6 +106,15 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
 
 
         });
+        $('.modal-trigger').leanModal();
+    }
+
+    openCloseArt(){
+        $('#mdCfClose').openModal();
+    }
+
+    openRp(){
+        $('#myModal').openModal();
     }
 
     deactivateArticle(id:string) {

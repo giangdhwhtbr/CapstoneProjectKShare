@@ -23,35 +23,18 @@ var listArticleComponent = (function () {
         this.num = 5;
         this.articles = [];
         this.height = 400;
-        this.isExist = false;
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
     }
     listArticleComponent.prototype.ngOnInit = function () {
         var _this = this;
-        if (!this.userToken) {
-            this._artService.getAllArts(this.num).subscribe(function (arts) {
-                for (var i = 0; i < arts.length; i++) {
-                    if (arts[i].status == "private") {
-                        arts.splice(i, 1);
-                    }
-                    _this.listArt.push(arts[i]);
-                    console.log(_this.listArt);
-                }
-                if (!arts) {
-                    _this.isExist = false;
-                }
-            });
-        }
-        else {
-            this.getAllArticles();
-        }
+        this.getAllArticles();
         $(window).on("scroll", function () {
             var scrollHeight = $(document).height();
             var scrollPosition = $(window).height() + $(window).scrollTop();
             if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
                 setTimeout(function () {
-                    //this.seeMore();
+                    _this.seeMore();
                 }, 1000);
                 _this.height += 30;
             }
@@ -64,14 +47,16 @@ var listArticleComponent = (function () {
     listArticleComponent.prototype.getAllArticles = function () {
         var _this = this;
         this._artService.getAllArts(this.num).subscribe(function (arts) {
-            for (var i = 0; i < arts.length; i++) {
-                if (arts[i].status == "private") {
-                    arts.splice(i, 1);
-                }
-                _this.listArt.push(arts[i]);
-            }
-            if (!arts) {
+            if (arts.length == 0) {
                 _this.isExist = false;
+            }
+            else {
+                for (var i = 0; i < arts.length; i++) {
+                    if (arts[i].status === "private") {
+                        arts.splice(i, 1);
+                    }
+                    _this.listArt.push(arts[i]);
+                }
             }
         });
     };

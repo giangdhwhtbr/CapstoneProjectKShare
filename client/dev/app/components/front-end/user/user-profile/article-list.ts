@@ -32,7 +32,7 @@ import {listTagComponent} from '../../tag/tag';
 
 @Component({
     selector: 'article-list',
-    templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/list-kspace.html',
+    templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/list-article.html',
     styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
     directives: [
         ROUTER_DIRECTIVES,listTagComponent
@@ -47,7 +47,5 @@ export class ArticleListComponent {
     }
 
     ngOnInit(){
-        console.log("hello");
-        console.log(this.article);
     }
 }

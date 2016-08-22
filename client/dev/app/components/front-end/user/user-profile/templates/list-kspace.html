@@ -1,22 +1,22 @@
-<div class="row">
-    <div class="col s12 m12">
-        <div class="card">
-            <div class="card-content">
-                <a class="card-title" [routerLink]="['/kspace/info/' + kspace._id+'/' + kspace.lecturer  ]">{{kspace.requestTitle}}</a>
-            </div>
-            <div class="card-action">
-                <div class="row">
-                    <div class="col s4 m4">
-                        <p>Người dạy : <a [routerLink]="['/user/'+kspace.lecturer]">{{kspace.lecturer}}</a></p>
-                        <p>Người học : <span *ngFor="let u of kspace.learners"> <a [routerLink]="['/user/'+u]">{{u}}</a>,</span></p>
-                    </div>
-                    <div class="col s4 m4">
-                        <p>Ngày tạo : {{kspace.createdAt | date:"dd/MM/yyyy"}}</p>
-                    </div>
-                    <div class="col s4 m4">
-                        <div *ngIf="kspace.tags.length!=0" class="tags">
-                            <tags [listTagId]="kspace.tags"></tags>
-                        </div>
+<div class="col s12 m12">
+    <div *ngIf="kspace" class="card">
+        <div class="card-content">
+            <a class="card-title" [routerLink]="['/kspace/info/' + kspace._id+'/' + kspace.lecturer  ]">{{kspace.requestTitle}}</a>
+        </div>
+        <div class="card-action">
+            <div class="row">
+                <div class="col s12 m12">
+                    <p>Người dạy : <a [routerLink]="['/user/'+kspace.lecturer]">{{kspace.lecturer}}</a></p>
+                </div>
+                <div class="col s12 m12">
+                    <p>Người học : <a *ngFor="let u of kspace.learners" [routerLink]="['/user/'+u]">{{u}},</a></p>
+                </div>
+                <div class="col s12 m12">
+                    <p>Ngày tạo : {{kspace.createdAt | date:"dd/MM/yyyy"}}</p>
+                </div>
+                <div class="col s12 m12">
+                    <div *ngIf="kspace.tags.length!=0" class="tags">
+                        <tags [listTagId]="kspace.tags"></tags>
                     </div>
                 </div>
             </div>

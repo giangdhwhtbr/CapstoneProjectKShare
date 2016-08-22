@@ -66,9 +66,9 @@ var KSpaceComponent = (function () {
         }
     };
     /*
-    * Init when the component is initiated
-    *
-    * */
+     * Init when the component is initiated
+     *
+     * */
     KSpaceComponent.prototype.ngOnInit = function () {
         // DOM elements
         var _this = this;

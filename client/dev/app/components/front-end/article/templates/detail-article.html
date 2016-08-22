@@ -30,10 +30,10 @@
                     <a *ngIf="roleToken=='admin' || article.ofUser==userToken" class="waves-effect waves-light btn-flat"
                        href="/article/edit/{{article._id}}"><i class="material-icons left">mode_edit</i>Sửa</a>
                     <a *ngIf="(roleToken=='admin' || article.ofUser==userToken)&& article.status!='deactivate'"
-                       type="button" class="waves-effect waves-light btn-flat" data-toggle="modal" data-target="#mdCfClose">
+                       type="button" class="waves-effect waves-light btn-flat" (click)="openCloseArt()">
                         <i class="material-icons left">delete</i> đóng
                     </a>
-                    <a class="waves-effect waves-light btn-flat" data-toggle="modal" id="btnRp" data-target="#myModal">
+                    <a class="waves-effect waves-light btn-flat" (click)="openRp()" id="btnRp" >
                         <i class="material-icons left">feedback</i> báo cáo
                     </a>
                 </div>
@@ -71,30 +71,19 @@
             </div>
 
 
-            <!--modal close-->
-            <div id="mdCfClose" class="modal fade" role="dialog">
-                <div class="modal-dialog">
-
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Modal Header</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p>Bài viết sẽ bị đóng không thể khôi phục trừ khi có quyển trị viên can thiệp , bạn có muốn
-                                tiếp tục ?</p>
-                        </div>
-                        <div class="modal-footer">
-                            <button id="clsArtBtn"
-                                    *ngIf="(roleToken=='admin' || article.ofUser==userToken)&& article.status!='deactivate'"
-                                    (click)="deactivateArticle(article._id)" type="button" class="btn btn-danger"
-                                    data-dismiss="modal">Đóng bài viết
-                            </button>
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Huỷ</button>
-                        </div>
-                    </div>
-
+            <!--modal closing article-->
+            <div id="mdCfClose" class="modal">
+                <div class="modal-content">
+                    <p>Bài viết sẽ bị đóng không thể khôi phục trừ khi có quyển trị viên can thiệp , bạn có muốn
+                        tiếp tục ?</p>
+                </div>
+                <div class="modal-footer">
+                    <button id="clsArtBtn"
+                            *ngIf="(roleToken=='admin' || article.ofUser==userToken)&& article.status!='deactivate'"
+                            (click)="deactivateArticle(article._id)" type="button" class="btn red"
+                            data-dismiss="modal">Đóng bài viết
+                    </button>
+                    <a  class=" modal-action modal-close waves-effect waves-green btn-flat">Huỷ</a>
                 </div>
             </div>
 

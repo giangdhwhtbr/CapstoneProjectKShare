@@ -50,6 +50,9 @@ var CreateArticleComponent = (function () {
         this.addCommandBtnCk();
         this.loadAllTags();
     };
+    CreateArticleComponent.prototype.ngOnDestroy = function () {
+        CKEDITOR.instances.editor1.destroy();
+    };
     CreateArticleComponent.prototype.filterONTag = function () {
         var oldTag = [];
         if (this.tags.length > 0) {

@@ -34,11 +34,13 @@ var SideBarComponent = (function () {
             knowledges = parent;
             _this.knowledges = parent;
         });
-        $(document).ready(function () {
-            $('.collapsible').collapsible({
-                accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-            });
+        $('.collapsible').collapsible({
+            accordion: true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
         });
+    };
+    SideBarComponent.prototype.ngAfterViewChecked = function () {
+        $('#sidenav-overlay').remove();
+        $('.drag-target').remove();
     };
     SideBarComponent.prototype.closeNav = function () {
         $('.btnOpenNavF').sideNav({ closeOnClick: "true" });

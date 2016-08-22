@@ -29,57 +29,56 @@ export class UserService {
     private _searchUrl = '/api/search-user/:username';
 
 
-
     constructor(private _http:Http) {
     }
 
-    getUserByToken(token: string): Observable <any> {
-      return this._http.get(this._changePass.replace(':token',token))
-      .map((r) => r.json())
-      .catch(this.handleError);
+    getUserByToken(token:string):Observable <any> {
+        return this._http.get(this._changePass.replace(':token', token))
+            .map((r) => r.json())
+            .catch(this.handleError);
     }
 
-    searchUserByUsername(name: string): Observable <any> {
-      return this._http.get(this._searchUrl.replace(':username',name))
-      .map((r) => r.json())
-      .catch(this.handleError);
+    searchUserByUsername(name:string):Observable <any> {
+        return this._http.get(this._searchUrl.replace(':username', name))
+            .map((r) => r.json())
+            .catch(this.handleError);
     }
 
-    updateNewPassword(password: string, token: string): Observable <any> {
-      let headers = new Headers({'Content-Type': 'application/json'});
-      let options = new RequestOptions({headers: headers});
-
-      var data = {
-        password: password,
-        token: token
-      };
-
-      return this._http.put(this._changePass.replace(':token',token),data,options)
-        .map((r) => r.json())
-        .catch(this.handleError);
-
-    }
-
-    sendEmailResetPassword(email: string): Observable <any> {
+    updateNewPassword(password:string, token:string):Observable <any> {
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
-        return this._http.get(this._emailResetPass.replace(':email',email),options)
-              .map((r) => r.json())
-              .catch(this.handleError);
+
+        var data = {
+            password: password,
+            token: token
+        };
+
+        return this._http.put(this._changePass.replace(':token', token), data, options)
+            .map((r) => r.json())
+            .catch(this.handleError);
+
     }
 
-    deactivateChatRoom(user1: string, user2: string): Observable <any> {
+    sendEmailResetPassword(email:string):Observable <any> {
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
-        
+        return this._http.get(this._emailResetPass.replace(':email', email), options)
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
+
+    deactivateChatRoom(user1:string, user2:string):Observable <any> {
+        let headers = new Headers({'Content-Type': 'application/json'});
+        let options = new RequestOptions({headers: headers});
+
         let data = JSON.stringify({
             user1: user1,
             user2: user2
         });
 
-        return this._http.put(this._chatRoomUrl,data,options)
-              .map((r) => r.json())
-              .catch(this.handleError);
+        return this._http.put(this._chatRoomUrl, data, options)
+            .map((r) => r.json())
+            .catch(this.handleError);
     }
 
     getAllUsers():Observable<User[]> {
@@ -140,7 +139,7 @@ export class UserService {
 
 
         let _data = JSON.stringify({
-            user:{
+            user: {
                 _id: user._id,
                 fullName: user.fullName,
                 displayName: user.displayName,
@@ -153,7 +152,7 @@ export class UserService {
                 linkImg: user.linkImg,
                 ownKnowledgeIds: user.ownKnowledgeIds,
             },
-            newTag:_newTag
+            newTag: _newTag
         });
 
         return this._http
@@ -206,7 +205,7 @@ export class UserService {
     getRequestByUser(user:string, num:string):Observable<any> {
 
         return this._http
-            .get(this._getRequestByUserUrl.replace(':user', user).replace(':num',num))
+            .get(this._getRequestByUserUrl.replace(':user', user).replace(':num', num))
             .map((r) => r.json())
             .catch(this.handleError);
     }

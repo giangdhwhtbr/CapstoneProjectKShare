@@ -8,7 +8,7 @@
                     <h6>Yêu cầu</h6>
                     <a [routerLink]="['/requests/' + record._id + '/info']"><h5>{{record.title}}</h5></a>
 
-                    <p><span class="sumary">{{record.description.substring(0,100)}}</span></p>
+                    <p><span class="sumary">{{record.description.substring(0,100)}} ...</span></p>
                 </div>
                 <div class="card-action">
                     <div class="row">
@@ -32,9 +32,10 @@
             <div *ngIf="record.ofUser" class="card" >
                 <div class="card-content">
                     <h3>Bài viết</h3>
-                    <a [routerLink]="['/article/' + record._id]"><h5>{{record.title}}</h5></a>
+                    <a *ngIf="record.title.length>=70" [routerLink]="['/article/' + record._id]"><h5>{{record.title.substring(0,70)}} ...</h5></a>
+                    <a *ngIf="record.title.length<70" [routerLink]="['/article/' + record._id]"><h5>{{record.title}}</h5></a>
 
-                    <p><span class="sumary">{{record.content.substring(0,50)}}</span></p>
+                    <p><span class="sumary">{{record.content.substring(0,50)}} ...</span></p>
                 </div>
                 <div class="card-action">
                     <div class="row">

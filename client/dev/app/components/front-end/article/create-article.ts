@@ -4,7 +4,8 @@
 import {
     Component,
     OnInit,
-    ElementRef
+    ElementRef,
+    OnDestroy
 } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
@@ -21,10 +22,11 @@ declare var CKEDITOR: any;
     selector: 'ck-editor',
     template: ``
 })
-class CKEditor {
+class CKEditor implements OnDestroy{
     constructor(_elm:ElementRef) {
         CKEDITOR.replace(_elm.nativeElement);
     }
+
 }
 
 
@@ -36,7 +38,7 @@ class CKEditor {
     providers: [ArticleService, TagService]
 })
 
-export class CreateArticleComponent implements OnInit {
+export class CreateArticleComponent implements OnInit,OnDestroy {
     filesToUpload:Array<File>;
     contentCk:string="";
     titelArticle:string="";
@@ -66,6 +68,11 @@ export class CreateArticleComponent implements OnInit {
         this.addCommandBtnCk();
         this.loadAllTags();
     }
+
+    ngOnDestroy(){
+        CKEDITOR.instances.editor1.destroy();
+    }
+
 
     filterONTag() {
         let oldTag: any[]=[];

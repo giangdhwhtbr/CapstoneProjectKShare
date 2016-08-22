@@ -5303,6 +5303,9 @@ webpackJsonp([2],[
 	        this.addCommandBtnCk();
 	        this.loadAllTags();
 	    };
+	    CreateArticleComponent.prototype.ngOnDestroy = function () {
+	        CKEDITOR.instances.editor1.destroy();
+	    };
 	    CreateArticleComponent.prototype.filterONTag = function () {
 	        var oldTag = [];
 	        if (this.tags.length > 0) {
@@ -5525,6 +5528,13 @@ webpackJsonp([2],[
 	                _this.canSee = false;
 	            }
 	        });
+	        $('.modal-trigger').leanModal();
+	    };
+	    detailArticleComponent.prototype.openCloseArt = function () {
+	        $('#mdCfClose').openModal();
+	    };
+	    detailArticleComponent.prototype.openRp = function () {
+	        $('#myModal').openModal();
 	    };
 	    detailArticleComponent.prototype.deactivateArticle = function (id) {
 	        var _this = this;
@@ -5650,35 +5660,18 @@ webpackJsonp([2],[
 	        this.num = 5;
 	        this.articles = [];
 	        this.height = 400;
-	        this.isExist = false;
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
 	    listArticleComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        if (!this.userToken) {
-	            this._artService.getAllArts(this.num).subscribe(function (arts) {
-	                for (var i = 0; i < arts.length; i++) {
-	                    if (arts[i].status == "private") {
-	                        arts.splice(i, 1);
-	                    }
-	                    _this.listArt.push(arts[i]);
-	                    console.log(_this.listArt);
-	                }
-	                if (!arts) {
-	                    _this.isExist = false;
-	                }
-	            });
-	        }
-	        else {
-	            this.getAllArticles();
-	        }
+	        this.getAllArticles();
 	        $(window).on("scroll", function () {
 	            var scrollHeight = $(document).height();
 	            var scrollPosition = $(window).height() + $(window).scrollTop();
 	            if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
 	                setTimeout(function () {
-	                    //this.seeMore();
+	                    _this.seeMore();
 	                }, 1000);
 	                _this.height += 30;
 	            }
@@ -5691,14 +5684,16 @@ webpackJsonp([2],[
 	    listArticleComponent.prototype.getAllArticles = function () {
 	        var _this = this;
 	        this._artService.getAllArts(this.num).subscribe(function (arts) {
-	            for (var i = 0; i < arts.length; i++) {
-	                if (arts[i].status == "private") {
-	                    arts.splice(i, 1);
-	                }
-	                _this.listArt.push(arts[i]);
-	            }
-	            if (!arts) {
+	            if (arts.length == 0) {
 	                _this.isExist = false;
+	            }
+	            else {
+	                for (var i = 0; i < arts.length; i++) {
+	                    if (arts[i].status === "private") {
+	                        arts.splice(i, 1);
+	                    }
+	                    _this.listArt.push(arts[i]);
+	                }
 	            }
 	        });
 	    };
@@ -6105,9 +6100,9 @@ webpackJsonp([2],[
 	        }
 	    };
 	    /*
-	    * Init when the component is initiated
-	    *
-	    * */
+	     * Init when the component is initiated
+	     *
+	     * */
 	    KSpaceComponent.prototype.ngOnInit = function () {
 	        // DOM elements
 	        var _this = this;
@@ -6906,6 +6901,8 @@ webpackJsonp([2],[
 	        this.requests = [];
 	        this.num = 5;
 	        this.height = 400;
+	        this.kspaceList = [];
+	        this.articleList = [];
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
@@ -6925,31 +6922,21 @@ webpackJsonp([2],[
 	                }
 	                if (_this.isExist = true) {
 	                    _this.getRequestByUser();
-	                    _this._kSpaceService.getKspaceProfile(_this.name).subscribe(function (kspaces) {
-	                        _this.kspaceList = kspaces;
-	                        _this._articleService.getArtsByUsername(_this.name).subscribe(function (arts) {
-	                            _this.articleList = arts;
-	                        });
-	                        _this._userService.getUserByUserName(_this.name).subscribe(function (user) {
-	                            _this.userProfile = user;
-	                        }, function (error) {
-	                            console.log(error);
+	                    _this._articleService.getArtsByUsername(_this.name).subscribe(function (arts) {
+	                        _this.articleList = arts;
+	                        _this._kSpaceService.getKspaceProfile(_this.name).subscribe(function (kspaces) {
+	                            _this.kspaceList = kspaces;
+	                            _this._userService.getUserByUserName(_this.name).subscribe(function (user) {
+	                                _this.userProfile = user;
+	                            }, function (error) {
+	                                console.log(error);
+	                            });
 	                        });
 	                    });
 	                }
 	            }, function (error) {
 	                console.log(error);
 	            });
-	            //$(window).on("scroll", () => {
-	            //    var scrollHeight = $(document).height();
-	            //    var scrollPosition = $(window).height() + $(window).scrollTop();
-	            //    if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-	            //        setTimeout(() => {
-	            //            this.seeMore();
-	            //        }, 1000);
-	            //        this.height += 30;
-	            //    }
-	            //});
 	        });
 	        $('ul.tabs').tabs();
 	    };
@@ -7192,10 +7179,6 @@ webpackJsonp([2],[
 	            }
 	        });
 	        $('.dropdown-button').dropdown();
-	    };
-	    HeaderComponent.prototype.ngAfterViewChecked = function () {
-	        $('#sidenav-overlay').hide();
-	        $('.drag-target').hide();
 	    };
 	    HeaderComponent.prototype.openChat = function () {
 	        $('#chatBoxK').openModal();
@@ -19600,7 +19583,9 @@ webpackJsonp([2],[
 	                container.id = 'container_' + webrtc.getDomId(peer);
 	                container.appendChild(video);
 	                // suppress contextmenu
-	                video.oncontextmenu = function () { return false; };
+	                video.oncontextmenu = function () {
+	                    return false;
+	                };
 	                remotes.appendChild(container);
 	                var kspacePanel = $('#kspace-panel');
 	                var v = webrtc.getDomId(peer);
@@ -20031,11 +20016,13 @@ webpackJsonp([2],[
 	            knowledges = parent;
 	            _this.knowledges = parent;
 	        });
-	        $(document).ready(function () {
-	            $('.collapsible').collapsible({
-	                accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-	            });
+	        $('.collapsible').collapsible({
+	            accordion: true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
 	        });
+	    };
+	    SideBarComponent.prototype.ngAfterViewChecked = function () {
+	        $('#sidenav-overlay').remove();
+	        $('.drag-target').remove();
 	    };
 	    SideBarComponent.prototype.closeNav = function () {
 	        $('.btnOpenNavF').sideNav({ closeOnClick: "true" });
@@ -20564,8 +20551,6 @@ webpackJsonp([2],[
 	        this.route = route;
 	    }
 	    ArticleListComponent.prototype.ngOnInit = function () {
-	        console.log("hello");
-	        console.log(this.article);
 	    };
 	    __decorate([
 	        core_1.Input(), 
@@ -20574,7 +20559,7 @@ webpackJsonp([2],[
 	    ArticleListComponent = __decorate([
 	        core_1.Component({
 	            selector: 'article-list',
-	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/list-kspace.html',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/list-article.html',
 	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES, tag_1.listTagComponent
