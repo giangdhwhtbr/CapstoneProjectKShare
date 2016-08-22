@@ -11,18 +11,21 @@ import {
 import { User } from '../../../../interface/user.ts';
 import { UserService } from '../../../../services/users';
 import {TagService} from '../../../../services/tag';
+import { PrivateChatComponent } from './../../../shared/private-chat';
 import {AutoComplete,SelectButton,SelectItem} from 'primeng/primeng';
 
 @Component({
-    templateUrl: `client/dev/app/components/front-end/user/register/templates/info.html`,
+    templateUrl: `client/dev/app/components/front-end/user/user-profile/templates/user-info-update.html`,
     styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
-    directives: [AutoComplete],
+    directives: [AutoComplete,PrivateChatComponent],
     providers: [TagService]
 })
 
-export class RegisterInfoComponent implements OnInit{
+export class UpdateUserComponent implements OnInit{
     user:User[] = [];
     userId:string = '';
+    username:string;
+    userinfo: User;
     updateUserForm:ControlGroup;
 
     filteredKnw:string[];
@@ -38,18 +41,25 @@ export class RegisterInfoComponent implements OnInit{
         this.route
             .params
             .subscribe(params => {
-                this.userId = params['id'];
+                this.username = params['name'];
             });
 
         this.updateUserForm = fb.group({
             fullName: [""],
-            displayName: [""],
             birthday: [""],
             phone: [""]
         });
     }
     ngOnInit(){
         this.loadAllTags();
+        this.getUserByUsername();
+    }
+
+    getUserByUsername(){
+        this._userService.getUserByUserName(this.username).subscribe((user) => {
+            this.userinfo = user;
+            console.log(this.userinfo);
+        });
     }
 
     //tags control
@@ -100,11 +110,12 @@ export class RegisterInfoComponent implements OnInit{
         let tags:any[];
         tags = this.filterONTag();//0 -> oldTags , 1 -> newTags
         user = {
-            _id: this.userId,
+            _id: this.userinfo._id,
             fullName: user.fullName,
             displayName: user.displayName,
             birthday: user.birthday,
-            ownKnowledgeIds: tags[0]
+            ownKnowledgeIds: tags[0],
+            phone: user.phone
         }
         this._userService.updateUser(user, tags[1]).subscribe(
             res => {

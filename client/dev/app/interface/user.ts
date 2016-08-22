@@ -3,7 +3,7 @@
  */
 export interface User {
   _id: string;
-  fullname: string;
+  fullName: string;
   displayName: string;
   birthday: Date;
   phone: string;

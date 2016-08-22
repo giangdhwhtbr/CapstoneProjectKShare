@@ -75,6 +75,10 @@ tagSchema.statics.createArrayTag = (arrTagName) => {
                 });
 
 
+                console.log(arr);
+
+                console.log("day la dao");
+
 
             });
         }

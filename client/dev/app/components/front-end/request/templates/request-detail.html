@@ -153,11 +153,12 @@
                     <button class=" btn-large waves-effect waves-light blue" (click)="deactivateRequest(_id)">Đóng</button>
                 </a>
                 <a *ngIf="!checkCreatedUser">
-                    <button *ngIf="userToken !== null" class="btn modal-trigger btn-large waves-effect waves-light blue"
+                    <button *ngIf="userToken !== null && request.status!=='Đã được chấp nhận'" class="btn modal-trigger btn-large waves-effect waves-light blue"
                         (click)="openOffer()" data-target="modalOfferRequest">Đề nghị</button>
                 </a>
                 <a *ngIf="!checkCreatedUser || roleToken==='admin' || userToken !== null">
-                    <button *ngIf="userToken !== null && !checkSubcribedUser && userToken !== request.user" class="btn-large waves-effect waves-light blue" (click)="addSubcriber(_id)">theo dõi</button>
+                    <button *ngIf="userToken !== null && !checkSubcribedUser && userToken !== request.user && request.status!=='Đã được chấp nhận'"
+                        class="btn-large waves-effect waves-light blue" (click)="addSubcriber(_id)">theo dõi</button>
                 </a>
                 <a *ngIf="!checkCreatedUser || userToken !== null">
                     <button *ngIf="userToken !== null && checkSubcribedUser" class="btn-large waves-effect waves-light blue" (click)="removeSubscriber()">Bỏ theo dõi</button>
@@ -165,12 +166,10 @@
             </div>
         </div>
     </div>
-    <div class="row">
+
+    <div class="row" *ngIf="request.status !=='Đã được chấp nhận'">
         <div class="col s12 m12" *ngIf="offers">
             <div class="card" *ngFor="let offer of offers">
-                <div class="card-content">
-                    <h4 *ngIf="offer.status==='Được chấp nhận'">Chấp nhận</h4>
-                </div>
                 <div class="card-action">
                     <div class="row">
                         <div class="col s3 m3">
@@ -197,11 +196,45 @@
                             </a>
                         </div>
                     </div>
-
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="row" *ngIf="request.status ==='Đã được chấp nhận'">
+        <div class="col s12 m12" *ngIf="offers">
+            <div class="card" *ngFor="let offer of offers">
+                <div class="card-action" *ngIf="offer.status==='Được chấp nhận'">
+                    <div class="row">
+                        <div class="col s3 m3">
+                            <p>Người tạo : <a [routerLink]="['/user/' + offer.user]">{{offer.user}}</a></p>
+                        </div>
+                        <div class="col s3 m3">
+                            <p>Trạng thái : {{offer.status}}</p>
+                        </div>
+                        <div class="col s3 m3">
+                            <p>Ngày tạo : {{offer.createdAt | date:"dd/MM/yyyy"}}</p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s10 m10 l10">
+                            Lời nhắn : {{offer.message}}
+                        </div>
+                        <div class="col s2 m2 l2">
+                            <a *ngIf="checkCreatedUser && !checkIsAcceped">
+                                <button class="btn-floating btn waves-effect waves-light blue right" (click)="addKshare(offer.user,offer._id)"><i class="material-icons">done</i>
+                                </button>
+                            </a>
+                            <a *ngIf="checkCreatedUser && checkIsAcceped">
+                                <button disabled class="btn-floating btn waves-effect waves-light red right"><i class="material-icons">done</i></button>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 <report *ngIf="request" reportedUser="{{request.user}}"></report>
 <private-chat></private-chat>

@@ -43,7 +43,8 @@ const userSchema = new mongoose.Schema({
         default: ''
     },
     birthday: {
-        type: Date
+        type: Date,
+        default: Date.now
     },
     username: {
         type: String,

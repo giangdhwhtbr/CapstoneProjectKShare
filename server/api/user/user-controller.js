@@ -84,7 +84,8 @@ module.exports = class userController {
           user.updatedAt = currentDate;
           user.ownKnowledgeIds = _data.user.ownKnowledgeIds;
           user.linkImg = _data.user.linkImg;
-
+          user.birthday = _data.user.birthday;
+          console.log(user.birthday);
           userDAO.updateUserById(user)
             .then((user) => {
               TagDAO.createArrayTag(_data.newTag).then((tags) => {
