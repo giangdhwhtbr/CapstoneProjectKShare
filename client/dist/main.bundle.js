@@ -401,7 +401,6 @@ webpackJsonp([2],[
 	    function PrivateChatComponent(_chatService, _noti) {
 	        this._chatService = _chatService;
 	        this._noti = _noti;
-	        this.sendDataToP = new core_1.EventEmitter();
 	        this.username = localStorage.getItem('username');
 	        this.socket = io('https://localhost:80');
 	        this.messages = [];
@@ -438,6 +437,7 @@ webpackJsonp([2],[
 	        });
 	        this.socket.on('private-message-reset', function (data) {
 	            var news = 0;
+	            console.log('12');
 	            for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
 	                var user = _a[_i];
 	                if (user.user === _this.username) {
@@ -451,9 +451,6 @@ webpackJsonp([2],[
 	                    room.newMessages = news;
 	                }
 	            }
-	        });
-	        this.socket.on('new-message-notification', function (data) {
-	            _this.sendDataToP.emit([data.receiver, true]);
 	        });
 	        this.listAllChatRoom();
 	    };
@@ -515,7 +512,6 @@ webpackJsonp([2],[
 	            receiver: this.receiver
 	        };
 	        this.socket.emit('reset-new-message', data);
-	        this.sendDataToP.emit([data.sender, false]);
 	    };
 	    PrivateChatComponent.prototype.sendMessage = function () {
 	        var data = {
@@ -526,23 +522,18 @@ webpackJsonp([2],[
 	        this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
 	        this.socket.emit('private-message', data);
 	        this.socket.emit('reset-new-message', data);
-	        this.sendDataToP.emit([data.sender, false]);
 	        this.mess = "";
 	    };
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', (typeof (_a = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _a) || Object)
-	    ], PrivateChatComponent.prototype, "sendDataToP", void 0);
 	    PrivateChatComponent = __decorate([
 	        core_1.Component({
 	            selector: 'private-chat',
 	            templateUrl: 'client/dev/app/components/shared/templates/chatbox.html',
 	            styleUrls: ['client/dev/app/components/shared/styles/chatbox.css']
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_b = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _a) || Object, (typeof (_b = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _b) || Object])
 	    ], PrivateChatComponent);
 	    return PrivateChatComponent;
-	    var _a, _b, _c;
+	    var _a, _b;
 	}());
 	exports.PrivateChatComponent = PrivateChatComponent;
 	
@@ -7294,14 +7285,11 @@ webpackJsonp([2],[
 	                audio.load();
 	                audio.play();
 	                _this.getNotificationByUser();
-	                //show noti
-	                _this.notiTitle = data.data.title;
-	                _this.link = data.data.link;
-	                var x = document.getElementById("snackbar");
-	                x.className = "show";
-	                setTimeout(function () {
-	                    x.className = x.className.replace("show", "");
-	                }, 10000);
+	            }
+	        });
+	        this.socket.on('new-message-notification', function (data) {
+	            if (data.receiver === _this.userToken) {
+	                _this.isNewMessage = true;
 	            }
 	        });
 	        this._chatService.getAllChatRoomOfUser(this.userToken).subscribe(function (chatRooms) {
@@ -7314,6 +7302,10 @@ webpackJsonp([2],[
 	            }
 	        });
 	        $('.dropdown-button').dropdown();
+	    };
+	    HeaderComponent.prototype.ngAfterViewChecked = function () {
+	        $('#sidenav-overlay').hide();
+	        $('.drag-target').hide();
 	    };
 	    HeaderComponent.prototype.openChat = function () {
 	        $('#chatBoxK').openModal();

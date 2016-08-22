@@ -2,7 +2,7 @@
  * Created by GiangDH on 5/18/16.
  */
 import { AfterViewChecked,
-    AfterViewInit,DoCheck,AfterContentInit,AfterContentChecked,Component, OnChanges, SimpleChange } from '@angular/core';
+    AfterViewInit, DoCheck, AfterContentInit, AfterContentChecked, Component, OnChanges, SimpleChange } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router} from '@angular/router';
 
 import { Notification } from '../../interface/notification';
@@ -36,32 +36,32 @@ export class HeaderComponent {
     isNewMessage: boolean = false;
 
     notifications: Notification[];
-    isFrontend:boolean=false;
+    isFrontend: boolean = false;
 
-    isRoom:boolean=false;
+    isRoom: boolean = false;
 
     constructor(private _auth: AuthService, public router: Router, public _noti: NotificationService,
-                private _userService: UserService, private _chatService: ChatService) {
+        private _userService: UserService, private _chatService: ChatService) {
         this.userToken = localStorage.getItem('username');
         this.roleToken = localStorage.getItem('userrole');
     }
 
     ngOnInit(): void {
 
-        this.isFrontend=(window.location.pathname+"").substring(0,6)!="/admin";
+        this.isFrontend = (window.location.pathname + "").substring(0, 6) != "/admin";
 
-        this.isRoom=(window.location.pathname+"").substring(0,5)=="/room";
+        this.isRoom = (window.location.pathname + "").substring(0, 5) == "/room";
 
 
         this._auth.isLoggedIn().subscribe(res => {
-                if (res.login) {
-                    this.loginToken = true;
-                    this.getNotificationByUser();
-                } else {
-                    this._auth.logoutClient();
-                    this.loginToken = false;
-                }
-            },
+            if (res.login) {
+                this.loginToken = true;
+                this.getNotificationByUser();
+            } else {
+                this._auth.logoutClient();
+                this.loginToken = false;
+            }
+        },
             error => {
                 console.log('Server error');
             });
@@ -77,20 +77,16 @@ export class HeaderComponent {
                 audio.play();
                 this.getNotificationByUser();
 
-                //show noti
-                this.notiTitle = data.data.title;
-                this.link = data.data.link;
-                var x = document.getElementById("snackbar")
-                x.className = "show";
-                setTimeout(function () {
-                    x.className = x.className.replace("show", "");
-                }, 10000);
             }
+        });
+        this.socket.on('new-message-notification', data => {
+            if (data.receiver === this.userToken)
+            { this.isNewMessage = true; }
         });
         this._chatService.getAllChatRoomOfUser(this.userToken).subscribe((chatRooms) => {
             for (var j = 0; j < chatRooms.length; j++) {
-                for(var i = 0; i < 2; i++){
-                    if(chatRooms[j].users[i].user === this.userToken && chatRooms[j].users[i].newMessages > 0){
+                for (var i = 0; i < 2; i++) {
+                    if (chatRooms[j].users[i].user === this.userToken && chatRooms[j].users[i].newMessages > 0) {
                         this.isNewMessage = true;
                     }
                 }
@@ -99,22 +95,25 @@ export class HeaderComponent {
         $('.dropdown-button').dropdown();
     }
 
-
+    ngAfterViewChecked() {
+        $('#sidenav-overlay').hide();
+        $('.drag-target').hide();
+    }
 
     openChat() {
         $('#chatBoxK').openModal();
         this.isNewMessage = false;
     }
-    open():void {
+    open(): void {
         $('.button-collapse').sideNav();
     }
 
-    openKnw(){
+    openKnw() {
         $('.btnOpenNavF').sideNav();
     }
 
-    searchFriend(nameSearch:string){
-        this.router.navigateByUrl('/user/search/'+nameSearch);
+    searchFriend(nameSearch: string) {
+        this.router.navigateByUrl('/user/search/' + nameSearch);
     }
 
     logout(): void {

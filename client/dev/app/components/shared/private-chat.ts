@@ -19,7 +19,6 @@ declare var $: any;
 })
 
 export class PrivateChatComponent {
-  @Output() sendDataToP: EventEmitter<string> = new EventEmitter<string>();
   messages: Array<any>;
   socket: any;
   username: string;
@@ -65,6 +64,7 @@ export class PrivateChatComponent {
 
     this.socket.on('private-message-reset', data => {
       var news = 0;
+      console.log('12');
       for (var user of data.users) {
         if (user.user === this.username) {
           news = user.newMessages;
@@ -76,10 +76,6 @@ export class PrivateChatComponent {
           room.newMessages = news;
         }
       }
-    });
-
-    this.socket.on('new-message-notification', data => {
-      this.sendDataToP.emit([data.receiver, true]);
     });
 
     this.listAllChatRoom();
@@ -145,7 +141,6 @@ export class PrivateChatComponent {
       receiver: this.receiver
     };
     this.socket.emit('reset-new-message', data);
-    this.sendDataToP.emit([data.sender, false]);
   }
 
   sendMessage() {
@@ -157,7 +152,6 @@ export class PrivateChatComponent {
     this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
     this.socket.emit('private-message', data);
     this.socket.emit('reset-new-message', data);
-    this.sendDataToP.emit([data.sender, false]);
     this.mess="";
   }
 
