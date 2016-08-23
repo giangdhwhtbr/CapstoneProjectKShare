@@ -26,6 +26,19 @@ module.exports = class userController {
             });
         }
     }
+    static getAvartaByUserNaname(req, res) {
+        let listUserName = req.body.listName;
+        if (req.params && req.params.id) {
+            userDAO
+                .getAvartaByUserNaname(req.params.id)
+                .then(user => res.status(200).json(user))
+                .catch(error => res.status(400).json(error));
+        } else {
+            res.status(404).json({
+                "message": "No Userid in templates"
+            });
+        }
+    }
 
     //get User informations by username
     static getUserByUserName(req, res) {

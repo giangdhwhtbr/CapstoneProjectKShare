@@ -112,3 +112,18 @@ nav .nav-wrapper{
 .contain-text{
     word-wrap: break-word;
 }
+
+.err-msg{
+    color: #a94442;
+    background-color: #f2dede;
+    border-color: #ebccd1;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.wrap-err-msg{
+    margin-top: 10px;
+}
