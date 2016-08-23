@@ -51,11 +51,8 @@
                     </div>
                 </div>
                 <div *ngIf="arts.length!=0">
-                    <pagination-controls [id]="configArt.id"
-                                         [maxSize]="maxSizeArt"
-                                         [directionLinks]="directionLinksArt"
-                                         [autoHide]="autoHideArt"
-                                         (pageChange)="onPageChangeArt($event)"></pagination-controls>
+                    <pagination-controls [id]="configArt.id" [maxSize]="maxSizeArt" [directionLinks]="directionLinksArt" [autoHide]="autoHideArt"
+                        (pageChange)="onPageChangeArt($event)"></pagination-controls>
                 </div>
             </div>
             <div *ngIf="arts.length==0">
@@ -67,7 +64,10 @@
                 <div class="col s12" *ngFor="let request of requests| paginate: configReq">
                     <div class="card">
                         <div *ngIf="isExistRecord">
-                            <h1>Không có yêu cầu nào được tìm thấy</h1>
+                            <h5>Kết quả tìm kiếm</h5>
+                            <div class="valign-wrapper">
+                                <h5 class="valign">Rất tiếc không tìm thấy dữ liệu phù hợp</h5>
+                            </div>
                         </div>
                         <div class="card-content">
                             <div class="row">
@@ -106,11 +106,8 @@
                 </div>
             </div>
             <div *ngIf="requests.length!=0">
-                <pagination-controls [id]="configReq.id"
-                                     [maxSize]="maxSizeReq"
-                                     [directionLinks]="directionLinksReq"
-                                     [autoHide]="autoHideReq"
-                                     (pageChange)="onPageChangeReq($event)"></pagination-controls>
+                <pagination-controls [id]="configReq.id" [maxSize]="maxSizeReq" [directionLinks]="directionLinksReq" [autoHide]="autoHideReq"
+                    (pageChange)="onPageChangeReq($event)"></pagination-controls>
             </div>
         </div>
     </div>

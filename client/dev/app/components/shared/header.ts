@@ -127,15 +127,6 @@ export class HeaderComponent {
             });
     }
 
-    showNotification(title: string) {
-        this.notiTitle = title;
-        var x = document.getElementById("snackbar")
-        x.className = "show";
-        setTimeout(function () {
-            x.className = x.className.replace("show", "");
-        }, 10000);
-    }
-
     getNotificationByUser(): void {
         this.countUnReadNoti = 0;
         this._noti.getNotificationByUser(this.userToken, this.num).subscribe(
