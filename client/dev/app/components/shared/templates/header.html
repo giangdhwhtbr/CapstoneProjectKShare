@@ -140,7 +140,7 @@
                     </ul>
                 </li>
                 <!--end notification-->
-                <li [hidden]="!isFrontend">
+                <li>
                     <!--<button (click)="openChat()" class="btn modal-trigger">chat</button>-->
                     <a (click)="openChat()"><i class="material-icons">message</i><span *ngIf="isNewMessage" class="new badge red">!</span></a>
                 </li>

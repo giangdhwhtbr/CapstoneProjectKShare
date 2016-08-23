@@ -5689,9 +5689,12 @@ webpackJsonp([2],[
 	            }
 	            else {
 	                for (var i = 0; i < arts.length; i++) {
-	                    if (arts[i].status === "private") {
-	                        arts.splice(i, 1);
-	                    }
+	                    //get summary
+	                    var html = arts[i].content;
+	                    var div = document.createElement("div");
+	                    div.innerHTML = html;
+	                    var text = div.textContent || div.innerText || "";
+	                    arts[i].content = text;
 	                    _this.listArt.push(arts[i]);
 	                }
 	            }

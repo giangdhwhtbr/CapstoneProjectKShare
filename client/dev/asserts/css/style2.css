@@ -127,3 +127,20 @@ nav .nav-wrapper{
 .wrap-err-msg{
     margin-top: 10px;
 }
+.logo-outter{
+    margin-top: 0px;
+    display: block;
+    padding: 3px;
+    background-color: #fff;
+    color: #3B5999;
+    height: 50px;
+    width: 50px;
+    margin: 0px;
+    margin-right: 2px;
+    margin-left: 15px;
+    font-weight: 700;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 0 1px;
+    border-radius: 2px;
+}

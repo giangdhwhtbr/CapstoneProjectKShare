@@ -63,9 +63,15 @@ export class listArticleComponent implements OnInit {
                 this.isExist = false;
             }else{
                 for (let i = 0; i < arts.length; i++) {
-                    if (arts[i].status === "private") {
-                        arts.splice(i, 1);
-                    }
+
+                    //get summary
+                    let html = arts[i].content;
+                    let div = document.createElement("div");
+                    div.innerHTML = html;
+                    let text = div.textContent || div.innerText || "";
+
+                    arts[i].content=text;
+
                     this.listArt.push(arts[i]);
                 }
             }

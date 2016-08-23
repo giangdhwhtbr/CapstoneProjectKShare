@@ -18,9 +18,17 @@
         <div class="col s12 m12"  *ngFor="let a of listArt">
             <div class="card">
                 <div *ngIf="a" class="card-content">
-                    <a [routerLink]="['/article',a._id]">{{a.title}}</a>
 
-                    <span class="sumary"></span>
+                    <a *ngIf="a.title.length>70" [routerLink]="['/article',a._id]"><h5>{{a.title.substring(0,70)}} ...</h5></a>
+
+                    <a *ngIf="a.title.length<=70" [routerLink]="['/article',a._id]"><h5>{{a.title}}</h5></a>
+
+                    <p><span *ngIf="a.content.length>70" class="sumary">
+                        {{a.content.substring(0,70)}} ...
+                    </span>
+                    <p><span *ngIf="a.content.length<=70" class="sumary">
+                        {{a.content}}
+                    </span>
                 </div>
                 <div *ngIf="a" class="card-action">
                     <div class="row">
