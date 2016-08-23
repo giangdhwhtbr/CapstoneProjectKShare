@@ -6249,6 +6249,7 @@ webpackJsonp([2],[
 	        this.checkIsAcceped = false;
 	        this.offers = [];
 	        this.kspace = {};
+	        this.isSubscriberd = false;
 	        this.roleToken = localStorage.getItem('userrole');
 	        this.userToken = localStorage.getItem('username');
 	        this.route
@@ -6399,7 +6400,7 @@ webpackJsonp([2],[
 	    };
 	    RequestDetailClientComponent.prototype.addSubcriber = function (id) {
 	        var _this = this;
-	        if (this.checkSubcribedUser == true) {
+	        if (this.checkSubcribedUser == true && this.isSubscriberd === true) {
 	            Materialize.toast('Bạn đã theo dõi bài viết này', 4000);
 	        }
 	        else {
@@ -6410,6 +6411,7 @@ webpackJsonp([2],[
 	                _this.checkSubcribedUser = true;
 	                _this._requestService.getRequestById(_this.id).subscribe(function (request) {
 	                    _this.subscribers = request.subscribers;
+	                    _this.isSubscriberd = true;
 	                });
 	            });
 	        }
@@ -6526,7 +6528,15 @@ webpackJsonp([2],[
 	    };
 	    RequestListClientComponent.prototype.getAllRequests = function () {
 	        var _this = this;
+	        this.text = "";
 	        this._requestService.getAllRequests(this.num).subscribe(function (requests) {
+	            if (requests.length === 0) {
+	                _this.isExistRecord = true;
+	            }
+	            else {
+	                _this.isExistRecord = false;
+	            }
+	            _this.requests = requests;
 	            for (var i = 0; i < requests.length; i++) {
 	                _this._data.push({
 	                    req: requests[i],
@@ -6545,15 +6555,15 @@ webpackJsonp([2],[
 	            }
 	        });
 	    };
-	    RequestListClientComponent.prototype.search = function (search) {
+	    RequestListClientComponent.prototype.search = function () {
 	        var _this = this;
-	        if (search === '') {
+	        if (this.text === '') {
 	            this.isExistRecord = false;
 	            this.num = 5;
 	            this.getAllRequests();
 	        }
 	        else {
-	            this._requestService.searchRequest(search).subscribe(function (requests) {
+	            this._requestService.searchRequest(this.text).subscribe(function (requests) {
 	                _this._data = [];
 	                for (var i = 0; i < requests.length; i++) {
 	                    _this._data.push({
@@ -7357,14 +7367,6 @@ webpackJsonp([2],[
 	                window.location.reload();
 	            }
 	        });
-	    };
-	    HeaderComponent.prototype.showNotification = function (title) {
-	        this.notiTitle = title;
-	        var x = document.getElementById("snackbar");
-	        x.className = "show";
-	        setTimeout(function () {
-	            x.className = x.className.replace("show", "");
-	        }, 10000);
 	    };
 	    HeaderComponent.prototype.getNotificationByUser = function () {
 	        var _this = this;

@@ -72,6 +72,7 @@ export class RequestDetailClientComponent implements AfterViewChecked {
     checkSubcribedUser:boolean;
     offers:Offer[] = [];
     kspace:KSpace = {};
+    isSubscriberd: boolean = false;
 
     constructor(private _requestService:RequestService, private _offerService:OfferService, public router:Router,
                 private _knowledgeService:KnowledgeService, private _kspaceService:KSpaceService, private route:ActivatedRoute) {
@@ -239,7 +240,7 @@ export class RequestDetailClientComponent implements AfterViewChecked {
     }
 
     addSubcriber(id:string):void {
-        if (this.checkSubcribedUser == true) {
+        if (this.checkSubcribedUser == true && this.isSubscriberd === true) {
             Materialize.toast('Bạn đã theo dõi bài viết này', 4000)
         } else {
             this._requestService
@@ -250,6 +251,7 @@ export class RequestDetailClientComponent implements AfterViewChecked {
                     this._requestService.getRequestById(this.id).subscribe(
                         (request) => {
                             this.subscribers = request.subscribers;
+                            this.isSubscriberd = true;
                         });
                 });
         }

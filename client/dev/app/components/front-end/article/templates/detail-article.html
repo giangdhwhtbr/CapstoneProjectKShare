@@ -4,7 +4,8 @@
             <h5 class="valign">{{article.title}}</h5>
             <hr>
             <!--<span class="titleArtDe"> </span>-->
-            <span class="byAu">viết bởi <a [routerLink]="['/user',article.author]">{{article.author}}</a></span>
+            <span *ngIf="article.author" class="byAu">viết bởi <a [routerLink]="['/user',article.author]">{{article.author}}</a></span>
+            <span *ngIf="!article.author" class="byAu">viết bởi <a [routerLink]="['/user',article.ofUser]">{{article.ofUser}}</a></span>
             <span class="dateCreate">
                 vào {{article.createdAt | date:"dd/MM/yyyy"}}
             </span>

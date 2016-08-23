@@ -1,4 +1,4 @@
-import { Component,OnInit } from '@angular/core';
+import { Component, OnInit, AfterViewInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router'
 import {
     Validators,
@@ -7,38 +7,39 @@ import {
     Control,
     FORM_DIRECTIVES,
 } from '@angular/common';
+declare var $: any;
 
 import { User } from '../../../../interface/user.ts';
 import { UserService } from '../../../../services/users';
 import {TagService} from '../../../../services/tag';
 import { PrivateChatComponent } from './../../../shared/private-chat';
-import {AutoComplete,SelectButton,SelectItem} from 'primeng/primeng';
+import {AutoComplete, SelectButton, SelectItem} from 'primeng/primeng';
 
 
 @Component({
     templateUrl: `client/dev/app/components/front-end/user/user-profile/templates/user-info-update.html`,
     styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
-    directives: [AutoComplete,PrivateChatComponent],
+    directives: [AutoComplete, PrivateChatComponent],
     providers: [TagService]
 })
 
-export class UpdateUserComponent implements OnInit{
-    user:User[] = [];
-    userId:string = '';
-    username:string;
+export class UpdateUserComponent implements OnInit {
+    user: User[] = [];
+    userId: string = '';
+    username: string;
     userinfo: User;
-    updateUserForm:ControlGroup;
+    updateUserForm: ControlGroup;
 
-    filteredKnw:string[];
+    filteredKnw: string[];
 
-    tags:any[];
-    tagsEx:Array<any>;
+    tags: any[];
+    tagsEx: Array<any>;
 
-    constructor(private fb:FormBuilder,
-                private router:Router,
-                private _userService:UserService,
-                private route:ActivatedRoute,
-                private _tagService:TagService) {
+    constructor(private fb: FormBuilder,
+        private router: Router,
+        private _userService: UserService,
+        private route: ActivatedRoute,
+        private _tagService: TagService) {
         this.route
             .params
             .subscribe(params => {
@@ -51,12 +52,12 @@ export class UpdateUserComponent implements OnInit{
             phone: [""]
         });
     }
-    ngOnInit(){
+    ngOnInit() {
         this.loadAllTags();
         this.getUserByUsername();
     }
 
-    getUserByUsername(){
+    getUserByUsername() {
         this._userService.getUserByUserName(this.username).subscribe((user) => {
             this.userinfo = user;
             console.log(this.userinfo);
@@ -65,7 +66,7 @@ export class UpdateUserComponent implements OnInit{
 
     //tags control
     filterONTag() {
-        let oldTag:any[] = [];
+        let oldTag: any[] = [];
         for (let e of this.tagsEx) {
             for (let e1 of this.tags) {
                 //catch old tags
@@ -107,8 +108,8 @@ export class UpdateUserComponent implements OnInit{
 
     //end control tags
 
-    update(user:any):void {
-        let tags:any[];
+    update(user: any): void {
+        let tags: any[];
         tags = this.filterONTag();//0 -> oldTags , 1 -> newTags
         user = {
             _id: this.userinfo._id,
@@ -129,7 +130,7 @@ export class UpdateUserComponent implements OnInit{
         )
     }
 
-    returnHome():void {
+    returnHome(): void {
         this.router.navigateByUrl('/');
     }
 }
