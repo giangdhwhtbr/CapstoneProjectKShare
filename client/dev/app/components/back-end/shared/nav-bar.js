@@ -8,25 +8,30 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var core_2 = require("@angular/core");
+var auth_1 = require('../../../services/auth');
 var router_1 = require("@angular/router");
-var SidebarComponent = (function () {
-    function SidebarComponent() {
+var NavbarComponent = (function () {
+    function NavbarComponent(_auth, router) {
+        this._auth = _auth;
+        this.router = router;
     }
-    __decorate([
-        core_2.Input(), 
-        __metadata('design:type', String)
-    ], SidebarComponent.prototype, "pageTitle", void 0);
-    SidebarComponent = __decorate([
+    NavbarComponent.prototype.logout = function () {
+        this._auth.logout();
+        this._auth.logoutClient();
+        this.router.navigateByUrl('/');
+    };
+    NavbarComponent = __decorate([
         core_1.Component({
-            selector: 'sidebar',
-            templateUrl: 'client/dev/app/components/back-end/shared/templates/side-bar.html',
+            selector: 'nav-bar',
+            templateUrl: 'client/dev/app/components/back-end/shared/templates/nav-bar.html',
             styleUrls: ['client/dev/asserts/css/admin.css'],
-            directives: [router_1.ROUTER_DIRECTIVES]
+            directives: [
+                router_1.ROUTER_DIRECTIVES
+            ]
         }), 
-        __metadata('design:paramtypes', [])
-    ], SidebarComponent);
-    return SidebarComponent;
+        __metadata('design:paramtypes', [auth_1.AuthService, router_1.Router])
+    ], NavbarComponent);
+    return NavbarComponent;
 })();
-exports.SidebarComponent = SidebarComponent;
-//# sourceMappingURL=side-bar.js.map
+exports.NavbarComponent = NavbarComponent;
+//# sourceMappingURL=nav-bar.js.map

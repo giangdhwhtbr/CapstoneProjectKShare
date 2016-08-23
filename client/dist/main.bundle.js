@@ -680,14 +680,14 @@ webpackJsonp([2],[
 	            .put(this._usersUrl.replace(':id', user._id), _data, options)
 	            .map(function (r) { return r.json(); });
 	    };
-	    UserService.prototype.banUser = function (userId) {
+	    UserService.prototype.banUser = function (id) {
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
 	        var data = JSON.stringify({
 	            admin: localStorage.getItem('username')
 	        });
 	        return this._http
-	            .put(this._banUrl.replace(':id', userId), data, options);
+	            .put(this._banUrl.replace(':id', id), data, options);
 	    };
 	    //add friend service
 	    UserService.prototype.addFriend = function (requestUser, acceptUser) {
@@ -6154,21 +6154,19 @@ webpackJsonp([2],[
 	            };
 	            if (isKspaceUser()) {
 	                // initiate webrtc
-	                if (username === kspace.lecturer) {
-	                    var webrtc = new SimpleWebRTC({
-	                        localVideoEl: 'localVideo',
-	                        remoteVideosEl: '',
-	                        autoRequestMedia: true,
-	                        nick: username,
-	                        localVideo: {
-	                            autoplay: true,
-	                            mirror: true,
-	                            muted: true // mute local video stream to prevent echo
-	                        },
-	                        log: true,
-	                        debug: false
-	                    });
-	                }
+	                var webrtc = new SimpleWebRTC({
+	                    localVideoEl: 'localVideo',
+	                    remoteVideosEl: '',
+	                    autoRequestMedia: true,
+	                    nick: username,
+	                    localVideo: {
+	                        autoplay: true,
+	                        mirror: true,
+	                        muted: true // mute local video stream to prevent echo
+	                    },
+	                    log: true,
+	                    debug: false
+	                });
 	                rtc.rtcSetting(webrtc, room, kspace.lecturer);
 	                var sharescreenToken = false;
 	                shareScreenBtn.click(function () {

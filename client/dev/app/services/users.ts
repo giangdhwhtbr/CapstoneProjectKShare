@@ -70,7 +70,6 @@ export class UserService {
     deactivateChatRoom(user1:string, user2:string):Observable <any> {
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
-
         let data = JSON.stringify({
             user1: user1,
             user2: user2
@@ -162,7 +161,7 @@ export class UserService {
     }
 
 
-    banUser(userId:string):Observable<any> {
+    banUser(id:string):Observable<any> {
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
 
@@ -170,7 +169,7 @@ export class UserService {
             admin: localStorage.getItem('username')
         });
         return this._http
-            .put(this._banUrl.replace(':id', userId), data, options);
+            .put(this._banUrl.replace(':id', id), data, options);
     }
 
     //add friend service

@@ -165,8 +165,8 @@ export class KSpaceComponent {
                     if (isKspaceUser()) {
 
                         // initiate webrtc
-                        if (username === kspace.lecturer) {
-                            var webrtc = new SimpleWebRTC({
+
+                      var webrtc = new SimpleWebRTC({
                                 localVideoEl: 'localVideo',
                                 remoteVideosEl: '',
                                 autoRequestMedia: true,
@@ -178,8 +178,8 @@ export class KSpaceComponent {
                                 },
                                 log: true,
                                 debug: false
-                            });
-                        }
+                      });
+
                         rtc.rtcSetting(webrtc, room, kspace.lecturer);
                         var sharescreenToken:boolean = false;
                         shareScreenBtn.click(function () {

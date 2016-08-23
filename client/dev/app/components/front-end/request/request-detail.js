@@ -1,13 +1,18 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var requests_1 = require('../../../services/requests');
+var request_offer_1 = require('../../../services/request-offer');
+var knowledge_1 = require('../../../services/knowledge');
+var kspace_1 = require('../../../services/kspace');
 var offer_create_1 = require('../offer/offer-create');
 var report_1 = require('../report/report');
 var tag_1 = require('../tag/tag');
@@ -230,7 +235,8 @@ var RequestDetailClientComponent = (function () {
                 private_chat_1.PrivateChatComponent,
                 tag_1.listTagComponent
             ]
-        })
+        }), 
+        __metadata('design:paramtypes', [requests_1.RequestService, request_offer_1.OfferService, router_1.Router, knowledge_1.KnowledgeService, kspace_1.KSpaceService, router_1.ActivatedRoute])
     ], RequestDetailClientComponent);
     return RequestDetailClientComponent;
 })();
