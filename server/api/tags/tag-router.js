@@ -16,6 +16,12 @@ module.exports = class TagRoutes {
             .delete(TagController.deleteTag)
             .get(TagController.getArticleByTagId);
 
+        router.route('/api/tags-admin')
+            .get(TagController.getAllTagsAdmin);
+
+        router.route('/api/tag/req/:id')
+            .get(TagController.getReqByTagId);
+
         router.route('/api/tags/TagNames')
             .post(TagController.getTagByIds);
 

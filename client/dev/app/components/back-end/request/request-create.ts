@@ -69,6 +69,9 @@ export class CreateRequestComponent {
             this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
 
         });
+        $('.modal-trigger').leanModal();
+        $('select').material_select();
+        $('.collapsible').collapsible();
     }
 
     filterONTag() {

@@ -14,7 +14,13 @@ var KSpaceService = (function () {
     function KSpaceService(_http) {
         this._http = _http;
         this._kspaceUrl = '/api/kspace/:id';
+        this._kspace_profile = '/api/kspace-profile/:name';
     }
+    KSpaceService.prototype.getKspaceProfile = function (name) {
+        return this._http.get(this._kspace_profile.replace(':name', name))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
     KSpaceService.prototype.getAllKSpace = function () {
         return this._http.get(this._kspaceUrl.replace(':id', ''))
             .map(function (r) { return r.json(); })
@@ -24,6 +30,14 @@ var KSpaceService = (function () {
         return this._http.get(this._kspaceUrl.replace(':id', id))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
+    };
+    KSpaceService.prototype.finish = function (id) {
+        var header = new http_1.Headers;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        return this._http
+            .put(this._kspaceUrl.replace(':id', id), options)
+            .map(function (r) { return r.json(); });
     };
     KSpaceService.prototype.addKSpace = function (kspace) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -36,7 +50,6 @@ var KSpaceService = (function () {
             offerId: kspace.offerId,
             tags: kspace.tags
         });
-        console.log(_kspace);
         return this._http
             .post(this._kspaceUrl.replace(':id', ''), _kspace, options)
             .map(function (r) { return r.json(); });

@@ -5,7 +5,8 @@ import {
   Pipe,
   PipeTransform,
   Inject,
-  OnDestroy
+  OnDestroy,
+  AfterViewChecked
 } from '@angular/core'; import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 import { Subscription }       from 'rxjs/Subscription';
 
@@ -19,7 +20,8 @@ import { ReportComponent } from '../../report/report';
 import { User } from '../../../../interface/user';
 import { FriendShip } from '../../../../interface/friendship';
 import { Notification } from '../../../../interface/notification';
-
+declare var $:any;
+declare var Materialize:any;
 @Component({
   selector: 'user-profile-bar',
   templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile-bar.html',
@@ -79,6 +81,20 @@ export class UserProfileBarComponent {
         }
         this.getFriendList();
       });
+    $('ul.tabs').tabs();
+    $('.tooltipped').tooltip({delay: 5});
+  }
+
+  ngAfterViewChecked(){
+
+  }
+
+  ngOnDestroy(){
+    $( ".material-tooltip" ).remove();
+  }
+
+  openChooseFile(){
+    $('#chFileImg').trigger( "click" );
   }
 
   fileChangeEvent(fileInput: any) {
@@ -108,7 +124,7 @@ export class UserProfileBarComponent {
       var title = 'Lời mời kết bạn từ ' + this.userToken;
       var link = '/user/' + this.name + '/friends';
 
-      alert("đã gửi lời mời kết bạn thành công");
+      Materialize.toast('đã gửi lời mời kết bạn thành công', 4000);
 
       //call function using socket io to send notification
       this._noti.alertNotification(title, this.name, link);
@@ -118,7 +134,7 @@ export class UserProfileBarComponent {
         (notification) => {
         });
     } else {
-      alert("Bạn đã gửi kết bạn rồi!");
+      Materialize.toast('Bạn đã gửi kết bạn rồi!', 4000);
     }
     this.getFriendList();
   }
@@ -142,7 +158,7 @@ export class UserProfileBarComponent {
         });
       this.getFriendList();
       this.isFriend = false;
-      alert("bạn đã hủy gửi lời  mời kết bạn");
+      Materialize.toast('bạn đã hủy gửi lời  mời kết bạn', 4000);
     }
   }
 

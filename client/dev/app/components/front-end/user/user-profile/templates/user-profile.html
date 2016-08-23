@@ -1,39 +1,50 @@
-<br/>
-<br/>
-<br/>
-<br/>
-
 <!--<push-notification #myNotification title="demo notification" icon="https://goo.gl/3eqeiE" body="demo notification">
 </push-notification>-->
-<div *ngIf="!isExist">
-    <div class="row profile">
-        <div class="col-md-3">
-        </div>
-        <div class='col-md-9'>
-            <h3>Tài khoản không tồn tại</h3>
-        </div>
-    </div>
-</div>
 <div *ngIf="isExist" class="container">
-    <div class="row profile">
-        <div class="col-md-3">
+    <div *ngIf="requests && articleList && kspaceList" class="row profile">
+        <div class="col s4 m4 l4">
             <!--<button (click)="myNotification.show()" type="button" class="btn btn danger btn-sm">Demo Show Notification</button>-->
             <user-profile-bar></user-profile-bar>
         </div>
-        <div class="col-md-9">
-            <div class="profile-content"  [style.height.px]="height+'px'">
-                <!--content of user's wall-->
-                <h3>Danh sách yêu cầu đã tạo</h3>
-                <div *ngFor="let request of requests">
-                    <request-record title="{{request.title}}" requestId="{{request._id}}" description="{{request.description}}" status="{{request.status}}"
-                        createdAt="{{request.createdAt}}" knowledgeId="{{request.knowledgeId}}">
-                    </request-record>
+        <div class="col s8">
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s4"><a href="#userPage" class="active">Danh sách yêu cầu</a></li>
+                        <li class="tab col s4"><a href="#article">Danh sách bài viết</a></li>
+                        <li class="tab col s4"><a href="#kspace">Kspace</a></li>
+                    </ul>
                 </div>
-                <!--content of user's wall-->
+                <div id="userPage" class="col s12">
+                    <div *ngFor="let request of requests">
+                        <request-record title="{{request.title}}" requestId="{{request._id}}"
+                                        description="{{request.description}}" status="{{request.status}}"
+                                        createdAt="{{request.createdAt}}" knowledgeId="{{request.knowledgeId}}">
+                        </request-record>
+                    </div>
+                </div>
+                <div id="article" class="row">
+                    <div *ngFor="let art of articleList">
+                        <article-list [article]="art"></article-list>
+                    </div>
+                </div>
+                <div id="kspace" class="row">
+                    <div *ngFor="let kspace of kspaceList">
+                        <kspace-list [kspace]="kspace"></kspace-list>
+                    </div>
+                </div>
             </div>
         </div>
+        <!--<div class="col s8 m8 l8">
+          <div class="profile-content"  [style.height.px]="height+'px'">
+            <!--content of user's wall-->
+        <!--<h3>Danh sách yêu cầu đã tạo</h3>
+        <div *ngFor="let request of requests">
+        <request-record title="{{request.title}}" requestId="{{request._id}}" description="{{request.description}}" status="{{request.status}}"
+        createdAt="{{request.createdAt}}" knowledgeId="{{request.knowledgeId}}">
+      </request-record>
+    </div>
+    <!--content of user's wall-->
     </div>
 </div>
-<br>
-<br>
 <private-chat></private-chat>

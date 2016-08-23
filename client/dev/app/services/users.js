@@ -27,9 +27,15 @@ var UserService = (function () {
         this._emailResetPass = '/api/email-reset-pass/:email';
         this._changePass = '/api/new-pass/:token';
         this._chatRoomUrl = 'api/chat-rooms';
+        this._searchUrl = '/api/search-user/:username';
     }
     UserService.prototype.getUserByToken = function (token) {
         return this._http.get(this._changePass.replace(':token', token))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
+    UserService.prototype.searchUserByUsername = function (name) {
+        return this._http.get(this._searchUrl.replace(':username', name))
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };

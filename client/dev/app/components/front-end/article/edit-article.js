@@ -57,6 +57,7 @@ var EditArticleComponent = (function () {
         this.router = router;
         this.route = route;
         this.isEdited = true;
+        this.stt = "public";
         this.filesToUpload = [];
         this.tags = [];
         this.route
@@ -75,6 +76,7 @@ var EditArticleComponent = (function () {
             }
             else {
                 _this.art = art;
+                _this.stt = art.status;
                 _this.titelArticle = art.title;
                 for (var _i = 0, _a = _this.art.tagsFD; _i < _a.length; _i++) {
                     var e = _a[_i];
@@ -199,15 +201,16 @@ var EditArticleComponent = (function () {
     EditArticleComponent.prototype.openModalYoutube = function () {
         $("#youtubeOpenModal").trigger("click");
     };
-    EditArticleComponent.prototype.editArticle = function (stt) {
+    EditArticleComponent.prototype.editArticle = function () {
         var _this = this;
         this.art.content = CKEDITOR.instances.editor1.getData();
         var tags = [];
         tags = this.filterONTag();
         this.art.tags = tags[0];
         this.art.title = this.titelArticle;
-        this.art.status = stt;
+        this.art.status = this.stt;
         this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe(function (article) {
+            Materialize.toast('Đã sửa xong', 4000);
             _this.router.navigateByUrl('/article/' + article._id);
         }, function (error) {
             console.log(error.text());

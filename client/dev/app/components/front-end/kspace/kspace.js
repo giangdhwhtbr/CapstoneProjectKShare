@@ -68,9 +68,9 @@ var KSpaceComponent = (function () {
         }
     };
     /*
-    * Init when the component is initiated
-    *
-    * */
+     * Init when the component is initiated
+     *
+     * */
     KSpaceComponent.prototype.ngOnInit = function () {
         // DOM elements
         var _this = this;
@@ -82,24 +82,6 @@ var KSpaceComponent = (function () {
         var kspacePanel = $('#kspace-panel');
         var chatBox = $('#chat-box-panel');
         var drawTools = $('#draw-tools-panel');
-        // initiate setting
-        var chatToolShow = false;
-        $('#chat-panel').hide();
-        //show chat-panel
-        $('#chat').click(function () {
-            if (!chatToolShow) {
-                $('#chat-panel').show();
-                $('#kspace-panel').css('right', '18%');
-                $('#draw-option').css('margin-left', '96.8%');
-                chatToolShow = true;
-            }
-            else {
-                $('#chat-panel').hide();
-                $('#kspace-panel').css('right', '6%');
-                $('#draw-option').css('margin-left', '97.15%');
-                chatToolShow = false;
-            }
-        });
         this._kspaceService
             .getKSpaceById(this.id)
             .subscribe(function (kspace) {
@@ -126,43 +108,32 @@ var KSpaceComponent = (function () {
             var username = _this.username;
             var rtc = _this.rtcService;
             var isKspaceUser = function () {
-                if (username === kspace.lecturer || username === kspace.learner) {
+                for (var _i = 0, _a = kspace.learners; _i < _a.length; _i++) {
+                    var learner = _a[_i];
+                    if (username === learner) {
+                        return true;
+                    }
+                }
+                if (username === kspace.lecturer) {
                     return true;
                 }
                 return false;
             };
             if (isKspaceUser()) {
                 // initiate webrtc
-                if (username === kspace.lecturer) {
-                    var webrtc = new SimpleWebRTC({
-                        localVideoEl: 'localVideo',
-                        remoteVideosEl: '',
-                        autoRequestMedia: true,
-                        nick: username,
-                        localVideo: {
-                            autoplay: true,
-                            mirror: true,
-                            muted: true // mute local video stream to prevent echo
-                        },
-                        log: true,
-                        debug: false
-                    });
-                }
-                else if (username === kspace.learner) {
-                    var webrtc = new SimpleWebRTC({
-                        localVideoEl: 'localVideo',
-                        remoteVideosEl: '',
-                        autoRequestMedia: true,
-                        nick: username,
-                        localVideo: {
-                            autoplay: true,
-                            mirror: true,
-                            muted: true // mute local video stream to prevent echo
-                        },
-                        log: true,
-                        debug: false
-                    });
-                }
+                var webrtc = new SimpleWebRTC({
+                    localVideoEl: 'localVideo',
+                    remoteVideosEl: '',
+                    autoRequestMedia: true,
+                    nick: username,
+                    localVideo: {
+                        autoplay: true,
+                        mirror: true,
+                        muted: true // mute local video stream to prevent echo
+                    },
+                    log: true,
+                    debug: false
+                });
                 rtc.rtcSetting(webrtc, room, kspace.lecturer);
                 var sharescreenToken = false;
                 shareScreenBtn.click(function () {

@@ -23,6 +23,17 @@ articleSchema.statics.getAll = (x) => {
             });
     });
 }
+articleSchema.statics.getAllAdmin = (x) => {
+    return new Promise((resolve, reject) => {
+
+        Article
+            .find({})
+            .exec((err, articles) => {
+                err ? reject(err)
+                    : resolve(articles);
+            });
+    });
+}
 
 //get all article by tags dao function
 articleSchema.statics.getArticlesByTagsOfUser = (userTags, x) => {
@@ -91,7 +102,8 @@ articleSchema.statics.getArticleByTagId = (idTag) => {
     });
 }
 
-articleSchema.statics.getAPage = (start, stt) => {
+
+articleSchema.statics.getAPage = (start,stt) => {
 
     return new Promise((resolve, reject) => {
         Article
@@ -127,7 +139,10 @@ articleSchema.statics.getArticleByKnwId = (id) => {
         if (!_.isString(id)) {
             return reject(new TypeError('ID is not a string'));
         }
-        Article.find({ 'knowledge': id }).exec((err, arts) => {
+        Article.find({
+            status: { $nin: 'deactivate' },
+            'knowledge': id
+        }).exec((err, arts)=> {
             err ? reject(err) : resolve(arts);
         });
     });
@@ -201,7 +216,14 @@ articleSchema.statics.fullTextSearchArticle = (text) => {
 articleSchema.statics.getArticleByUser = (username) => {
     return new Promise((resolve, reject) => {
         Article
-            .find({ 'ofUser': username, 'status': 'public' })
+            .find({
+                'ofUser': username,
+                $or:[
+                    {'status':'public'},
+                    {'status':'private'}
+                ]
+            })
+            .select('-content')
             .exec((err, articles) => {
                 err ? reject(err)
                     : resolve(articles);
@@ -210,5 +232,6 @@ articleSchema.statics.getArticleByUser = (username) => {
 }
 
 const Article = mongoose.model('Article', articleSchema);
+
 
 module.exports = Article;

@@ -25,6 +25,65 @@ module.exports = class ArticleController {
             .catch(error => res.status(400).json(error));
     }
 
+    static getArticleByKnwId(req, res) {
+        if (req.params && req.params.id) {
+            ArticleDAO
+                .getArticleByKnwId(req.params.id)
+                .then((arts) => {
+
+                    for (let i = arts.length - 1; i >= 0; i--) {
+                        if (arts[i].status === "deactivate") {
+                            let index = arts.indexOf(arts[i]);
+                            if (index > -1) {
+                                arts.splice(index, 1);
+                            }
+                        }
+                    }
+
+                    res.status(200).json(arts);
+                }).catch(error => res.status(400).json(error));
+        } else {
+            res.status(404).json({
+                "message": "No article Id in templates"
+            });
+        }
+    }
+
+    static likeArticle(req,res){
+        if (req.params && req.params.artId && req.params.user  ) {
+            ArticleDAO.getArticleById(req.params.artId).then(article => {
+                let i = article.userLiked.indexOf(req.params.user);
+                let j = article.userUnLiked.indexOf(req.params.user);
+                if(i<0){
+                    article.like+=1;
+                    article.userLiked.push(req.params.user);
+                    if(j>=0){
+                        article.userUnLiked.splice(j,1);
+                    }
+                }
+                article.save();
+                res.status(200).json(article.like);
+            }).catch((error)=>res.status(400).json(error));
+        }
+    }
+    static unlikeArticle(req,res){
+        if (req.params && req.params.artId && req.params.user  ) {
+            ArticleDAO.getArticleById(req.params.artId).then(article => {
+                let i = article.userLiked.indexOf(req.params.user);
+                let j = article.userUnLiked.indexOf(req.params.user);
+                if(j<0){
+                    article.like-=1;
+                    article.userUnLiked.push(req.params.user);
+                    if(i>=0){
+                        article.userLiked.splice(i,1);
+                    }
+                }
+                article.save();
+                res.status(200).json(article.like);
+            }).catch((error)=>res.status(400).json(error));
+        }
+    }
+
     static getArticleByUser(req, res) {
         ArticleDAO
             .getArticleByUser(req.params.username)
@@ -80,6 +139,15 @@ module.exports = class ArticleController {
                         }
                     }
                 }
+                res.status(200).json(articles);
+            })
+            .catch(error => res.status(400).json(error));
+    }
+
+    static getArtAdmin(req,res){
+        ArticleDAO
+            .getAll()
+            .then(articles => {
                 res.status(200).json(articles);
             })
             .catch(error => res.status(400).json(error));
@@ -162,7 +230,7 @@ module.exports = class ArticleController {
                             //pour full data of tag to article
                             article.tagsFD = ts;
                             article.save();
-                            res.status(200).json(article);
+                            res.status(200).json(article._id);
                         }).catch((err)=>res.status(400).json(err));
 
 

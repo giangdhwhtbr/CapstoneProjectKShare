@@ -37,10 +37,11 @@ module.exports = class RequestController {
     let _data = req.body;
     //create new tags in database
     TagDAO.createArrayTag(_data.newTag).then((tags) => {
-
+        console.log(tags);
       RequestDAO
         .createRequest(_data.request)
         .then((request) => {
+            console.log(request);
           // push the new tag to the new request
           for (let e of tags) {
             request.tags.push(e);

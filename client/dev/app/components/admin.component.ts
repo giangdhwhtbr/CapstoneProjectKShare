@@ -6,7 +6,6 @@ import 'rxjs/Rx';   // Load all features
 import { ROUTER_DIRECTIVES} from '@angular/router';
 
 // Layout component
-import { NavbarComponent } from './back-end/shared/nav-bar';
 import { SidebarComponent } from './back-end/shared/side-bar';
 import { HeaderComponent } from "./shared/header";
 // Functions
@@ -23,18 +22,16 @@ import { PrivateChatComponent } from "./shared/private-chat";
 @Component({
   selector: 'kshare',
   template:`
-  <div id="wrapper">
-    
-      <header></header>
+  <header></header>
       <sidebar></sidebar>
-    
+    <main>
     <router-outlet></router-outlet>
-  </div>
+    </main>
   <private-chat></private-chat>
   `,
+  styleUrls: ['client/dev/asserts/css/admin.css'],
   directives: [
     ROUTER_DIRECTIVES,
-    NavbarComponent,
     SidebarComponent,
     PrivateChatComponent
   ],

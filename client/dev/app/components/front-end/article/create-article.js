@@ -52,6 +52,9 @@ var CreateArticleComponent = (function () {
         this.addCommandBtnCk();
         this.loadAllTags();
     };
+    CreateArticleComponent.prototype.ngOnDestroy = function () {
+        CKEDITOR.instances.editor1.destroy();
+    };
     CreateArticleComponent.prototype.filterONTag = function () {
         var oldTag = [];
         if (this.tags.length > 0) {
@@ -170,8 +173,8 @@ var CreateArticleComponent = (function () {
         this.contentCk = CKEDITOR.instances.editor1.getData();
         var tags = [];
         tags = this.filterONTag();
-        this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (article) {
-            _this.router.navigateByUrl('/article/' + article._id);
+        this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (articleId) {
+            _this.router.navigateByUrl('/article/' + articleId);
         }, function (error) {
             console.log(error.text());
         });

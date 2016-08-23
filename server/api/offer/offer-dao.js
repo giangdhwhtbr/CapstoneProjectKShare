@@ -36,8 +36,7 @@ offerSchema.statics.getOfferByRequestId = (id, x) => {
 
     Offer
       .find({
-        'requestId': id,
-        'status': 'pending'
+        'requestId': id
       })
       .skip(x-5)
       .limit(5)

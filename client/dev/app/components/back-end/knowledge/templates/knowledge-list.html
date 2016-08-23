@@ -1,96 +1,80 @@
-<div id="page-wrapper">
-  <div class="container-fluid">
-      <!-- /.row -->
-      <div class="col-lg-8">
-        <div class="row">
-          <div class="input-group">
-            <input type="text" class="form-control" id="filter" placeholder="Tìm kiếm" [(ngModel)]="filter">
-            <span class="input-group-btn" style="width:0;">
-              <button type="button" class="btn btn-info" id="submit" data-toggle="collapse" data-target="#create">Tạo</button>
-            </span>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-8">
-          <div class="create">
-            <form role="form" id="create" class="collapse" [ngFormModel]="knowledgeForm" (ngSubmit)="addKnowledge(knowledgeForm.value)">
-              <div class="form-group">
-                <label for="title">Tiêu đề</label>
-                <input class="form-control" type="text" required="required" id="name" name="name"
-                       [ngFormControl]="knowledgeForm.controls['name']"/>
-                <label for="description">Nội dung</label>
-                <textarea class="form-control" type="text" required="required" id="description" name="description"
-                          [ngFormControl]="knowledgeForm.controls['description']"></textarea>
-                <button type="submit" class="btn btn-success">Hoàn thành</button>
-                <button type="reset" class="btn btn-warning">Nhập lại</button>
-              </div>
-            </form>
-          </div>
-        </div>
-      </div>
-      <div class="row">
-        <div class="col-lg-12">
+<div class="row" style="padding-right:0!important;">
+    <div class="col s12 m12" style="padding-right:0!important;">
+        <ul class="collapsible" data-collapsible="accordion">
+            <li>
+                <div class="collapsible-header">Tạo</div>
+                <div class="collapsible-body">
+                    <div class="row">
+                        <form class="col s12" role="form" [ngFormModel]="knowledgeForm" (ngSubmit)="addKnowledge(knowledgeForm.value)">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col s6">
+                                        <input class="form-control"
+                                               type="text"
+                                               required="required"
+                                               id="name" name="name"
+                                               placeholder="Tri thức"
+                                               [ngFormControl]="knowledgeForm.controls['name']"/>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col s6">
+                                        <input class="form-control"
+                                               type="text"
+                                               required="required"
+                                               id="description" name="description"
+                                               placeholder="Nội dung"
+                                               [ngFormControl]="knowledgeForm.controls['description']"/>
+                                    </div>
+                                </div>
+                                <button type="submit" class="waves-effect waves-light btn">Hoàn thành</button>
+                                <button type="reset" class="waves-effect waves-light btn">Nhập lại</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
+</div>
+<div class="row">
+    <div class="col s12 m12">
+        <div style="padding: 35px;" align="center" class="card">
+            <div class="row">
+                <div class="left card-title">
+                    <b>Quản lý người dùng</b>
+                </div>
+            </div>
             <div>
-                <table class="table table-responsive">
-                    <thead class="thead-inverse">
-                        <tr>
-                          <th>STT</th>
-                          <th>Tri thức</th>
-                          <th>Nội dung</th>
-                          <th>Trạng thái</th>
-                          <th>Chức năng</th>
-                        </tr>
-                    </thead>
-                    <tbody class="searchable" *ngFor="let knowledge of knowledges | stringFilter: filter| paginate: { itemsPerPage: 10, currentPage: page }">
-                        <tr>
-                          <td></td>
-                          <td>{{knowledge.name}}</td>
-                          <td>{{knowledge.description}}</td>
-                          <td *ngIf="knowledge.status==true">active</td>
-                          <td *ngIf="knowledge.status==false">deactive</td>
-                          <td class="center">
-          									<a class="btn btn-info" *ngIf="knowledge.status==true" [routerLink]="['/admin/knowledges/'+ knowledge._id]">
-          										<i class="fa fa-pencil-square-o white"></i>
-          									</a>
-          									<a class="btn btn-danger" *ngIf="knowledge.status==true" (click)="changeKnowledgeStatus(knowledge)">
-          										<i class="fa fa-times white"></i>
-          									</a>
-                            <a class="btn btn-warning" *ngIf="knowledge.status==false" (click)="changeKnowledgeStatus(knowledge)">
-          										<i class="fa fa fa-check white"></i>
-          									</a>
-                            <a class="btn btn-primary" *ngIf="knowledge.status==true" (click)="hide()" data-toggle="modal" [attr.data-target]="'#' + knowledge._id">
-                              <i class="fa fa-plus"></i>
-                            </a>
-
-                            <sub-create [knowledges]="knowledges" kId="{{knowledge._id}}"></sub-create>
-                            <a class="btn btn-success" data-toggle="collapse" [attr.data-target]="'.' + knowledge._id">
-          										<i class="fa fa-code-fork" aria-hidden="true"></i>
-          									</a>
-          								</td>
-                        </tr>
-                        <tr bgcolor="#5bc0de" *ngFor="let subCate of knowledge.subCategory" class="{{knowledge._id}}" hidden>
-                          <td></td>
-                          <td>{{subCate.name}}</td>
-                          <td>{{subCate.description}}</td>
-                          <td *ngIf="subCate.status==true">active</td>
-                          <td *ngIf="subCate.status==false">deactive</td>
-                          <td>
-                            <a class="btn btn-info" *ngIf="subCate.status==true" [routerLink]="['/admin/knowledges/'+ subCate._id]">
-          										<i class="fa fa-pencil-square-o white"></i>
-          									</a>
-                            <a class="btn btn-danger" *ngIf="subCate.status==true" (click)="changeKnowledgeStatus(subCate)">
-          										<i class="fa fa-times white"></i>
-          									</a>
-                            <a class="btn btn-warning" *ngIf="subCate.status==false&&knowledge.status==true" (click)="changeKnowledgeStatus(subCate)">
-          										<i class="fa fa-check white"></i>
-          									</a>
-                          </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <pagination-controls (pageChange)="page = $event"></pagination-controls>
+                <p-treeTable [value]="knowledgeAdmin">
+                    <p-column field="num" header="STT"></p-column>
+                    <p-column field="name" header="Tri thức"></p-column>
+                    <p-column field="description" header="Nội dung"></p-column>
+                    <p-column field="status" header="Trạng thái">
+                        <template let-knowledge="rowData">
+                            <p *ngIf="knowledge.data.status==true">Kích hoạt</p>
+                            <p *ngIf="knowledge.data.status==false">Đóng</p>
+                        </template>
+                    </p-column>
+                    <p-column styleClass="col-button">
+                        <template let-knowledge="rowData">
+                            <button type="button" *ngIf="knowledge.data.status==true" pButton class="btn-floating waves-effect waves-light red" (click)="changeKnowledgeStatus(knowledge.data._id)">
+                                <i class="material-icons">remove</i>
+                            </button>
+                            <button type="button" *ngIf="knowledge.data.status==true" pButton class="btn-floating waves-effect waves-light orange" [routerLink]="['/admin/knowledges/'+ knowledge.data._id]">
+                                <i class="material-icons">edit</i>
+                            </button>
+                            <button type="button" *ngIf="(knowledge.data.status==false&&!knowledge.data.hasOwnProperty('parent'))||(knowledge.data.hasOwnProperty('parent')&&knowledge.data.status==false)" pButton class="btn-floating waves-effect waves-light green" (click)="changeKnowledgeStatus(knowledge.data._id)">
+                                <i class="material-icons">done</i>
+                            </button>
+                            <button type="button" *ngIf="knowledge.data.status==true&&!knowledge.data.hasOwnProperty('parent')" pButton class="btn-floating waves-effect waves-light blue modal-trigger" (click)="openModal(knowledge.data._id)">
+                                <i class="material-icons">add</i>
+                            </button>
+                            <sub-create [knowledges]="knowledge.data" kId="{{knowledge.data._id}}"></sub-create>
+                        </template>
+                    </p-column>
+                </p-treeTable>
             </div>
         </div>
-  </div>
+    </div>
 </div>

@@ -1,3 +1,4 @@
+
 import { Component, OnInit, ViewChild, ElementRef, AfterViewInit, Input } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
@@ -32,7 +33,7 @@ export class MessageComponent {
   @Input('receiver') receiver: string;
 
   constructor(fb: FormBuilder, private _reportService: ReportService,
-    private router: Router, private _chatService: ChatService, private _noti: NotificationService) {
+              private router: Router, private _chatService: ChatService, private _noti: NotificationService) {
     this.roleToken = localStorage.getItem('role');
     this.userToken = localStorage.getItem('username');
     this.socket = io('https://localhost:80');
@@ -56,7 +57,7 @@ export class MessageComponent {
     this.socket.emit('private-message', data);
     this.socket.emit('reset-new-message', data);
     this.mess = "";
-   $('#messageModal').closeModal();
+    $('#messageModal').closeModal();
   }
 
 }

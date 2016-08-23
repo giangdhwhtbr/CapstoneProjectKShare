@@ -6,7 +6,6 @@ const RequestRoutes = require('../api/request/request-routes');
 const OfferRoutes = require('../api/offer/offer-routes');
 const KSpaceRoutes = require('../api/kspace/kspace-route');
 const ChatRoomRoutes = require('../api/chatRoom/chatRoom-routes');
-const MessageRoutes = require('../api/message/message-routes');
 const FriendShipRoutes = require('../api/friendship/friendship-routes');
 const NotificationRoutes = require('../api/notification/notification-routes');
 const ReportRoutes = require('../api/report/report-routes');
@@ -23,7 +22,6 @@ module.exports = class Routes {
         KnowledgeRoutes.init(router);
         KSpaceRoutes.init(router);
         ChatRoomRoutes.init(router);
-        MessageRoutes.init(router);
         FriendShipRoutes.init(router);
         NotificationRoutes.init(router);
         ArticleRoutes.init(router);
@@ -36,4 +34,4 @@ module.exports = class Routes {
             .get(StaticDispatcher.sendIndex);
         app.use('/', router);
     }
-}
+};

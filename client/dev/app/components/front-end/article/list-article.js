@@ -14,6 +14,7 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
 var private_chat_1 = require('./../../shared/private-chat');
+var tag_1 = require('../tag/tag');
 var listArticleComponent = (function () {
     function listArticleComponent(router, route, _artService) {
         this.router = router;
@@ -23,12 +24,12 @@ var listArticleComponent = (function () {
         this.num = 5;
         this.articles = [];
         this.height = 400;
-        this.isExist = false;
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
     }
     listArticleComponent.prototype.ngOnInit = function () {
         var _this = this;
+        this.getAllArticles();
         $(window).on("scroll", function () {
             var scrollHeight = $(document).height();
             var scrollPosition = $(window).height() + $(window).scrollTop();
@@ -39,7 +40,6 @@ var listArticleComponent = (function () {
                 _this.height += 30;
             }
         });
-        this.getAllArticles();
     };
     listArticleComponent.prototype.seeMore = function () {
         this.num = this.num + 5;
@@ -48,14 +48,16 @@ var listArticleComponent = (function () {
     listArticleComponent.prototype.getAllArticles = function () {
         var _this = this;
         this._artService.getAllArts(this.num).subscribe(function (arts) {
-            for (var i = 0; i < arts.length; i++) {
-                if (arts[i].status == "private" && arts[i].ofUser != _this.userToken) {
-                    arts.splice(i, 1);
-                }
-                _this.listArt.push(arts[i]);
-            }
-            if (!arts) {
+            if (arts.length == 0) {
                 _this.isExist = false;
+            }
+            else {
+                for (var i = 0; i < arts.length; i++) {
+                    if (arts[i].status === "private") {
+                        arts.splice(i, 1);
+                    }
+                    _this.listArt.push(arts[i]);
+                }
             }
         });
     };
@@ -84,7 +86,8 @@ var listArticleComponent = (function () {
             styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES,
-                private_chat_1.PrivateChatComponent
+                private_chat_1.PrivateChatComponent,
+                tag_1.listTagComponent
             ],
             providers: [article_1.ArticleService]
         }), 

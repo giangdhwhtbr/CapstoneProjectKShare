@@ -1,92 +1,75 @@
-<div id="page-wrapper">
-    <div class="container-fluid">
-
-        <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#tagAt">Đang hoạt động</a></li>
-            <li><a data-toggle="tab" href="#tagDa">Bị đóng</a></li>
+<nav>
+    <div class="nav-wrapper indigo darken-2">
+        <a style="margin-left: 20px;" class="breadcrumb">Bảng</a>
+        <a class="breadcrumb">Quản lý thẻ tag</a>
+        <div style="margin-right: 20px;" id="timestamp" class="right"></div>
+    </div>
+</nav>
+<div class="row">
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s3"><a href="#tagAt" class="active">Tag đang hoạt động</a></li>
+            <li class="tab col s3"><a href="#tagDa">Tag bị đóng</a></li>
         </ul>
-
-        <div class="tab-content">
-            <div id="tagAt" class="tab-pane fade in active">
-                <div class="col-lg-12">
+    </div>
+    <div id="tagAt" class="col s12">
+        <div class="row">
+            <div class="col s12">
+                <div style="padding: 35px;" align="center" class="card">
                     <div class="row">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="filter" placeholder="Tìm kiếm"
-                                   [(ngModel)]="filter">
+                        <div class="left card-title">
+                            <b>Quản lý thẻ tag</b>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div>
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Tên</th>
-                                    <th>Chức năng</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let t of tagsAt| stringFilter: filter">
-                                    <td>{{t.name}}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-danger"
-                                                (click)="deactiveTag(t._id)">
-                                            deactivate
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-lg-12">
-                    <p-paginator rows="10" totalRecords="{{total}}" pageLinkSize="10"
-                                 (onPageChange)="paginate($event)"></p-paginator>
-                </div>
-            </div>
-            <div id="tagDa" class="tab-pane fade">
-                <div class="col-lg-12">
                     <div class="row">
-                        <div class="input-group">
-                            <input type="text" class="form-control" id="filter1" placeholder="Tìm kiếm"
-                                   [(ngModel)]="filter1">
+                        <div class="input-field col s6">
+                            <input #gb id="filter" type="text" pInputText>
+                            <label for="filter">Tìm kiếm</label>
                         </div>
                     </div>
-                </div>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <div>
-                            <table class="table">
-                                <thead>
-                                <tr>
-                                    <th>Tên</th>
-                                    <th>Chức năng</th>
-                                </tr>
-                                </thead>
-                                <tbody>
-                                <tr *ngFor="let t of tagsDa| stringFilter: filter1">
-                                    <td>{{t.name}}</td>
-                                    <td>
-                                        <button type="button" class="btn btn-success"
-                                                (click)="activeTag(t._id)">
-                                            active
-                                        </button>
-                                    </td>
-                                </tr>
-                                </tbody>
-                            </table>
-                        </div>
+                    <div class="row">
+                        <p-dataTable [value]="tagsAt" [rows]="10" [paginator]="true" [globalFilter]="gb">
+                            <p-column field="name" header="Tên"[sortable]="true" [filter]="true"></p-column>
+                            <p-column styleClass="col-button" header="Chức năng">
+                                <template let-t="rowData">
+                                    <button type="button" pButton class="btn-floating waves-effect waves-light red" (click)="deactiveTag(t._id)">
+                                        <i class="material-icons">remove</i></button>
+                                </template>
+                            </p-column>
+                        </p-dataTable>
                     </div>
-                </div>
-                <div class="col-lg-12">
-                    <p-paginator rows="10" totalRecords="{{total1}}" pageLinkSize="10"
-                                 (onPageChange)="paginate1($event)"></p-paginator>
                 </div>
             </div>
         </div>
-
-
+    </div>
+    <div id="tagDa" class="col s12">
+        <div class="row">
+            <div class="col s12">
+                <div style="padding: 35px;" align="center" class="card">
+                    <div class="row">
+                        <div class="left card-title">
+                            <b>Quản lý thẻ tag</b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input #gb id="filter1" type="text" pInputText>
+                            <label for="filter1">Tìm kiếm</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p-dataTable [value]="tagsDa" [rows]="10" [paginator]="true" [globalFilter]="gb">
+                            <p-column field="name" header="Tên"[sortable]="true" [filter]="true"></p-column>
+                            <p-column styleClass="col-button" header="Chức năng">
+                                <template let-t="rowData">
+                                    <button type="button" pButton class="btn-floating waves-effect waves-light red" (click)="activeTag(t._id)">
+                                        <i class="material-icons">done</i></button>
+                                </template>
+                            </p-column>
+                        </p-dataTable>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>

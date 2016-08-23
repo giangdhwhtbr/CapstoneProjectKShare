@@ -1,44 +1,32 @@
-<br/>
-<br/>
-<br/>
-<br/>
-
 <div class="container">
-  <div class="row profile">
-    <div class="col-md-3">
-      <user-profile-bar></user-profile-bar>
-    </div>
-    <div class="col-md-7">
-      <div class="profile-content">
-        <div class="container">
-          <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#friends">Friends</a></li>
-            <li *ngIf="userToken===name"><a data-toggle="tab" href="#friendrequests">Friend requests</a></li>
-          </ul>
-          <div class="tab-content">
-            <div id="friends" class="tab-pane fade in active">
-              <div class="row">
-                <ul *ngFor="let friendName of friendNames">
-
-                  <friend-record friendName="{{friendName}}" (sendDataToP)="action($event)"></friend-record>
-
-                </ul>
-              </div>
-            </div>
-
-            <div id="friendrequests" *ngIf="pendingRequests" class="tab-pane fade">
-              <div class="row">
-                <ul *ngFor="let pendingRequest of pendingRequests">
-
-                  <request-friend-record requestUser="{{pendingRequest.user1}}" (sendDataToP)="action($event)"></request-friend-record>
-
-                </ul>
-              </div>
-            </div>
-          </div>
+    <div class="row profile">
+        <div class="col s4 m4 l4">
+            <!--<button (click)="myNotification.show()" type="button" class="btn btn danger btn-sm">Demo Show Notification</button>-->
+            <user-profile-bar></user-profile-bar>
         </div>
-      </div>
+        <div class="col s8 m8 l8">
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s3"><a href="#friendList" class="active">Danh sách bạn bè</a></li>
+                        <li class="tab col s3" *ngIf="userToken===name"><a href="#friendRequest">Yêu cầu kết bạn</a></li>
+                    </ul>
+                </div>
+                <div id="friendList" class="col s12">
+                    <div class="row">
+                        <div *ngFor="let friendName of friendNames">
+                            <friend-record (sendDataToP)="action($event)" friendName="{{friendName}}"></friend-record>
+                        </div>
+                    </div>
+                </div>
+                <div *ngIf="userToken===name" id="friendRequest" class="col s12">
+                    <div class="row">
+                        <ul *ngFor="let pendingRequest of pendingRequests">
+                            <request-friend-record (sendDataToP)="action($event)" requestUser="{{pendingRequest.user1}}"></request-friend-record>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
 </div>
-<private-chat></private-chat>

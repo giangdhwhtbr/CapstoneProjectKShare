@@ -29,6 +29,9 @@ var ReportComponent = (function () {
     }
     ReportComponent.prototype.ngOnInit = function () {
     };
+    ReportComponent.prototype.close = function () {
+        $("#myModal").closeModal();
+    };
     ReportComponent.prototype.addReport = function (report) {
         var _this = this;
         this._reportService.addReport(report).subscribe(function (report) {

@@ -17,6 +17,7 @@ import { PrivateChatComponent } from './../../shared/private-chat';
 
 import * as $ from 'jquery';
 declare var CKEDITOR: any;
+declare var Materialize: any;
 
 @Component({
     selector: 'ck-editor',
@@ -75,6 +76,8 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
     roleToken:string;
     userToken:string;
 
+    stt:string="public";
+
     constructor(private _articleService:ArticleService, private _tagService:TagService, public router:Router, private route:ActivatedRoute) {
         this.filesToUpload = [];
         this.tags = [];
@@ -94,6 +97,7 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
                 this.isEdited = false;
             } else {
                 this.art = art;
+                this.stt = art.status;
                 this.titelArticle = art.title;
                 for (let e of this.art.tagsFD) {
                     this.tags.push(e.name);
@@ -235,14 +239,15 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
         $("#youtubeOpenModal").trigger("click");
     }
 
-    editArticle(stt:string) {
+    editArticle() {
         this.art.content = CKEDITOR.instances.editor1.getData();
         let tags:any[] = [];
         tags = this.filterONTag();
         this.art.tags = tags[0];
         this.art.title = this.titelArticle;
-        this.art.status = stt;
+        this.art.status = this.stt;
         this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe((article)=> {
+                Materialize.toast('Đã sửa xong', 4000);
                 this.router.navigateByUrl('/article/' + article._id);
             },
             (error) => {

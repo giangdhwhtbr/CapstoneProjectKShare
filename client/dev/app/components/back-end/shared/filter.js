@@ -19,7 +19,7 @@ var StringFilterPipe = (function () {
             return value.filter(function (item) {
                 for (var key in item) {
                     if ((typeof item[key] === 'string' || item[key] instanceof String) &&
-                        (item[key].trim().toLocaleLowerCase().indexOf(args.toLocaleLowerCase()) > -1) && (key !== "_id")) {
+                        (item[key].trim().toLocaleLowerCase().indexOf(args.toLocaleLowerCase()) > -1) && (key === "title")) {
                         return true;
                     }
                 }

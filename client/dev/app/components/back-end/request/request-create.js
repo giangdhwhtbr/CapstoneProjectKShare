@@ -58,6 +58,9 @@ var CreateRequestComponent = (function () {
             _this.loadAllTags();
             _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
         });
+        $('.modal-trigger').leanModal();
+        $('select').material_select();
+        $('.collapsible').collapsible();
     };
     CreateRequestComponent.prototype.filterONTag = function () {
         var oldTag = [];

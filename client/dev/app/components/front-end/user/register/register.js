@@ -99,7 +99,7 @@ var RegisterComponent = (function () {
             selector: 'register',
             templateUrl: 'client/dev/app/components/front-end/user/register/templates/register.html',
             styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
-            directives: [common_1.FORM_DIRECTIVES]
+            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
         }), 
         __metadata('design:paramtypes', [common_1.FormBuilder, auth_1.AuthService, router_1.Router])
     ], RegisterComponent);

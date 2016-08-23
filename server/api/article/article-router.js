@@ -1,3 +1,6 @@
+/**
+ * Created by Duc Duong on 7/11/2016.
+ */
 "use strict";
 
 const ArticleController = require('./article-controller');
@@ -15,6 +18,9 @@ module.exports = class ArticleRoutes {
             .get(ArticleController.getArticleById)
             .put(ArticleController.updateArticleById);
 
+        router.route('/api/articles-admin')
+            .get(ArticleController.getArtAdmin);
+
         router
             .route('/api/articles-user')
             .post(ArticleController.getArticlesByTagsOfUser)
@@ -22,6 +28,10 @@ module.exports = class ArticleRoutes {
 
         router.route('/api/art/de')
             .get(ArticleController.getDeArticle);
+
+
+        router.route('/api/art/knw/:id')
+            .get(ArticleController.getArticleByKnwId);
 
         router.route('/api/art/de/:id')
             .get(ArticleController.activeArt);
@@ -45,6 +55,10 @@ module.exports = class ArticleRoutes {
             .put(ArticleController.editComment)
             .delete(ArticleController.removeComment);
 
+        router.route('/api/art/like/:artId/:user')
+            .get(ArticleController.likeArticle);
+        router.route('/api/art/unlike/:artId/:user')
+            .get(ArticleController.unlikeArticle);
         router.route('/api/full-search-article')
             .post(ArticleController.fullTextSearchArticle);
 

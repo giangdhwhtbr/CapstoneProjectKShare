@@ -18,9 +18,10 @@ import { KSpaceListComponent } from "../components/front-end/kspace/kspace-list"
 import { KSpaceInfoComponent } from "../components/front-end/kspace/kspace-info";
 import { FriendListComponent } from "../components/front-end/user/user-profile/friend-list";
 import { UserProfileComponent } from "../components/front-end/user/user-profile/user-profile";
+import { userSearchRsComponent } from "../components/front-end/user/search/rs-search-user";
 import { RegisterComponent } from '../components/front-end/user/register/register';
 import { RegisterInfoComponent } from '../components/front-end/user/register/info';
-import { RegisterSuccessComponent } from '../components/front-end/user/register/success';
+import { UpdateUserComponent } from '../components/front-end/user/user-profile/user-info-update';
 import { LoginComponent} from "../components/front-end/user/login/login";
 import { ResetPasswordComponent } from "../components/front-end/user/reset-password/reset-pass";
 import { NewPasswordComponent } from "../components/front-end/user/reset-password/new-pass";
@@ -29,6 +30,7 @@ import { detailArticleComponent } from "../components/front-end/article/detail-a
 import { listArticleComponent } from "../components/front-end/article/list-article";
 import { EditArticleComponent } from "../components/front-end/article/edit-article";
 import { displayArtByTagComponent } from "../components/front-end/tag/displayArtByTag";
+import { errorPageComponent } from "../components/shared/404";
 import { AdminAuthGuard }          from './auth';
 import { AuthService }        from '../services/auth';
 
@@ -53,10 +55,6 @@ export const KShareRoutes: RouterConfig = [
                     {
                         path: 'info/:id',
                         component: RegisterInfoComponent
-                    },
-                    {
-                        path: 'success',
-                        component: RegisterSuccessComponent
                     }
                 ]
             },
@@ -91,8 +89,16 @@ export const KShareRoutes: RouterConfig = [
                             {
                                 path: '',
                                 component: UserProfileComponent
+                            },
+                            {
+                                path: 'info',
+                                component: UpdateUserComponent
                             }
                         ]
+                    },
+                    {
+                        path:'search/:name',
+                        component:userSearchRsComponent
                     }
                 ]
             },
@@ -163,13 +169,17 @@ export const KShareRoutes: RouterConfig = [
                         ]
                     },
                     {
-                        path: ':type/:id',
-                        pathMatch: 'full',
-                        component: RequestCategoryComponent
-                    },
-                    {
                         path: '',
                         component: RequestListClientComponent
+                    }
+                ]
+            },
+            {
+                path: 'mix',
+                children: [
+                    {
+                        path: ':type/:id',
+                        component: RequestCategoryComponent
                     }
                 ]
             },
@@ -179,6 +189,10 @@ export const KShareRoutes: RouterConfig = [
 
             }
         ],
+    },
+    {
+        path:'error',
+        component:errorPageComponent
     },
     {
         path: 'room',

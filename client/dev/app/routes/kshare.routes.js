@@ -13,9 +13,10 @@ var kspace_list_1 = require("../components/front-end/kspace/kspace-list");
 var kspace_info_1 = require("../components/front-end/kspace/kspace-info");
 var friend_list_1 = require("../components/front-end/user/user-profile/friend-list");
 var user_profile_1 = require("../components/front-end/user/user-profile/user-profile");
+var rs_search_user_1 = require("../components/front-end/user/search/rs-search-user");
 var register_1 = require('../components/front-end/user/register/register');
 var info_1 = require('../components/front-end/user/register/info');
-var success_1 = require('../components/front-end/user/register/success');
+var user_info_update_1 = require('../components/front-end/user/user-profile/user-info-update');
 var login_1 = require("../components/front-end/user/login/login");
 var reset_pass_1 = require("../components/front-end/user/reset-password/reset-pass");
 var new_pass_1 = require("../components/front-end/user/reset-password/new-pass");
@@ -24,6 +25,7 @@ var detail_article_1 = require("../components/front-end/article/detail-article")
 var list_article_1 = require("../components/front-end/article/list-article");
 var edit_article_1 = require("../components/front-end/article/edit-article");
 var displayArtByTag_1 = require("../components/front-end/tag/displayArtByTag");
+var _404_1 = require("../components/shared/404");
 var auth_1 = require('./auth');
 var auth_2 = require('../services/auth');
 exports.KShareRoutes = [
@@ -46,10 +48,6 @@ exports.KShareRoutes = [
                     {
                         path: 'info/:id',
                         component: info_1.RegisterInfoComponent
-                    },
-                    {
-                        path: 'success',
-                        component: success_1.RegisterSuccessComponent
                     }
                 ]
             },
@@ -84,8 +82,16 @@ exports.KShareRoutes = [
                             {
                                 path: '',
                                 component: user_profile_1.UserProfileComponent
+                            },
+                            {
+                                path: 'info',
+                                component: user_info_update_1.UpdateUserComponent
                             }
                         ]
+                    },
+                    {
+                        path: 'search/:name',
+                        component: rs_search_user_1.userSearchRsComponent
                     }
                 ]
             },
@@ -156,13 +162,17 @@ exports.KShareRoutes = [
                         ]
                     },
                     {
-                        path: ':type/:id',
-                        pathMatch: 'full',
-                        component: request_category_1.RequestCategoryComponent
-                    },
-                    {
                         path: '',
                         component: request_list_1.RequestListClientComponent
+                    }
+                ]
+            },
+            {
+                path: 'mix',
+                children: [
+                    {
+                        path: ':type/:id',
+                        component: request_category_1.RequestCategoryComponent
                     }
                 ]
             },
@@ -171,6 +181,10 @@ exports.KShareRoutes = [
                 component: home_1.HomeComponent
             }
         ],
+    },
+    {
+        path: 'error',
+        component: _404_1.errorPageComponent
     },
     {
         path: 'room',

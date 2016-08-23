@@ -15,6 +15,7 @@ var knowledge_1 = require('../../../services/knowledge');
 var kspace_1 = require('../../../services/kspace');
 var offer_create_1 = require('../offer/offer-create');
 var report_1 = require('../report/report');
+var tag_1 = require('../tag/tag');
 var private_chat_1 = require('./../../shared/private-chat');
 var RequestDetailClientComponent = (function () {
     function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
@@ -31,6 +32,7 @@ var RequestDetailClientComponent = (function () {
         //check if request is accepted
         this.checkIsAcceped = false;
         this.offers = [];
+        this.kspace = {};
         this.roleToken = localStorage.getItem('userrole');
         this.userToken = localStorage.getItem('username');
         this.route
@@ -41,6 +43,13 @@ var RequestDetailClientComponent = (function () {
     }
     RequestDetailClientComponent.prototype.ngOnInit = function () {
         this.getRequestById();
+        $('.modal-trigger').leanModal();
+    };
+    RequestDetailClientComponent.prototype.openOffer = function () {
+        $('#modalOfferRequest').openModal();
+    };
+    RequestDetailClientComponent.prototype.openReport = function () {
+        $('#myModal').openModal();
     };
     RequestDetailClientComponent.prototype.getRequestById = function () {
         var _this = this;
@@ -120,7 +129,7 @@ var RequestDetailClientComponent = (function () {
                 }
             }
             else {
-                alert('Không có đề nghị nào');
+                Materialize.toast('Không có đề nghị nào!', 4000);
             }
         }, function (error) {
             console.log(error);
@@ -175,7 +184,7 @@ var RequestDetailClientComponent = (function () {
     RequestDetailClientComponent.prototype.addSubcriber = function (id) {
         var _this = this;
         if (this.checkSubcribedUser == true) {
-            alert('Bạn đã theo dõi vài viết này');
+            Materialize.toast('Bạn đã theo dõi bài viết này', 4000);
         }
         else {
             this._requestService
@@ -223,7 +232,8 @@ var RequestDetailClientComponent = (function () {
                 router_1.ROUTER_DIRECTIVES,
                 offer_create_1.CreateOfferComponent,
                 report_1.ReportComponent,
-                private_chat_1.PrivateChatComponent
+                private_chat_1.PrivateChatComponent,
+                tag_1.listTagComponent
             ]
         }), 
         __metadata('design:paramtypes', [requests_1.RequestService, request_offer_1.OfferService, router_1.Router, knowledge_1.KnowledgeService, kspace_1.KSpaceService, router_1.ActivatedRoute])

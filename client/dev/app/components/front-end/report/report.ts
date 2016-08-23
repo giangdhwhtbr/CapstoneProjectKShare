@@ -43,6 +43,10 @@ export class ReportComponent {
 
     }
 
+    close():void {
+        $("#myModal").closeModal();
+    }
+
     addReport(report:Report) {
         this._reportService.addReport(report).subscribe((report) => {
 

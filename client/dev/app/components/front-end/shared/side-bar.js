@@ -20,21 +20,32 @@ var SideBarComponent = (function () {
             var parent = [];
             var subCate = [];
             for (var i = 0; i < knowledges.length; i++) {
-                if (!knowledges[i].hasOwnProperty('parent')) {
+                if (!knowledges[i].hasOwnProperty('parent') && knowledges[i].status == true) {
                     parent.push(knowledges[i]);
                 }
             }
             for (var i = 0; i < parent.length; i++) {
                 for (var j = 0; j < knowledges.length; j++) {
-                    if ((knowledges[j].hasOwnProperty('parent')) && (knowledges[j].parent === parent[i]._id)) {
+                    if ((knowledges[j].hasOwnProperty('parent')) && (knowledges[j].parent === parent[i]._id) && (knowledges[j].status == true)) {
                         subCate.push(knowledges[j]);
                     }
                 }
                 parent[i]["subCategory"] = subCate;
                 subCate = [];
             }
+            knowledges = parent;
             _this.knowledges = parent;
         });
+        $('.collapsible').collapsible({
+            accordion: true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+        });
+    };
+    SideBarComponent.prototype.ngAfterViewChecked = function () {
+        $('#sidenav-overlay').remove();
+        $('.drag-target').remove();
+    };
+    SideBarComponent.prototype.closeNav = function () {
+        $('.btnOpenNavF').sideNav({ closeOnClick: "true" });
     };
     SideBarComponent = __decorate([
         core_1.Component({

@@ -1,93 +1,118 @@
-<div id="page-wrapper">
-  <div class="container-fluid">
+<nav>
+    <div class="nav-wrapper indigo darken-2">
+        <a style="margin-left: 20px;" class="breadcrumb">Bảng</a>
+        <a class="breadcrumb">Quản lý báo cáo vi phạm</a>
 
-    <ul class="nav nav-tabs">
-      <li class="active"><a data-toggle="tab" href="#pr">Chờ xử lý</a></li>
-      <li><a data-toggle="tab" href="#hr">Đang xử lý</a></li>
-    </ul>
-    <div class="tab-content">
-
-      <!--pending report-->
-      <div id="pr" class="tab-pane fade in active">
-        <!-- /.row -->
-        <div class="col-lg-8">
-          <div class="row">
-            <div class="input-group">
-              <input type="text" class="form-control" id="filter" placeholder="Tìm kiếm" [(ngModel)]="filter">
-            </div>
-          </div>
-        </div>
-        <br/>
-        <div class="row">
-          <div class="col-lg-12">
-            <div>
-              <table class="table table-striped table-responsive searchable">
-                <thead class="thead-inverse">
-                  <tr>
-                    <th>Báo cáo vi phạm</th>
-                    <th>Nội dung</th>
-                    <th>Người gửi</th>
-                    <th>Người vi phạm</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody *ngIf="pendingReports">
-                  <tr *ngFor="let report of pendingReports | stringFilter: filter">
-                    <td><a (click)="openReportedPage(report.link)">{{report.title}}</a></td>
-                    <td>{{report.content}}</td>
-                    <td><a [routerLink]="['/user/'+report.user]">{{report.user}}</a></td>
-                    <td><a [routerLink]="['/user/'+report.reportedUser]">{{report.reportedUser}}</a></td>
-                    <td>
-                      <button (click)="deactivateReport(report._id)" class="btn btn-danger btn-small glyphicon glyphicon-remove"></button>
-                      <button (click)="changeStatusHandling(report._id)" class="btn btn-warning btn-small glyphicon glyphicon-share"></button>
-                      <a (click)="createChatRoom(report.reportedUser)" class="modal-trigger waves-effect waves-light btn">Gửi tin nhắn</a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
-      <message [receiver]="user"></message>
-      <!--handing report-->
-      <div id="hr" class="tab-pane fade ">
-        <!-- /.row -->
-        <div class="col-lg-8">
-          <div class="row">
-            <div class="input-group">
-              <input type="text" class="form-control" id="filter" placeholder="Tìm kiếm" [(ngModel)]="filter">
-            </div>
-          </div>
-        </div>
-        <br/>
-        <div class="row">
-          <div class="col-lg-12">
-            <div>
-              <table class="table table-striped table-responsive searchable">
-                <thead class="thead-inverse">
-                  <tr>
-                    <th>Báo cáo vi phạm</th>
-                    <th>Nội dung</th>
-                    <th>Người gửi</th>
-                    <th>Người vi phạm</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody *ngIf="handlingReports">
-                  <tr *ngFor="let report of handlingReports | stringFilter: filter">
-                    <td><a (click)="openReportedPage(report.link)">{{report.title}}</a></td>
-                    <td>{{report.content}}</td>
-                    <td><a [routerLink]="['/user/'+report.user]">{{report.user}}</a></td>
-                    <td><a [routerLink]="['/user/'+report.reportedUser]">{{report.reportedUser}}</a></td>
-                    <td><button (click)="deactivateReport(report._id)" class="btn btn-danger btn-small glyphicon glyphicon-remove"></button></td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
-      </div>
+        <div style="margin-right: 20px;" id="timestamp" class="right"></div>
     </div>
-  </div>
+</nav>
+<div class="row">
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s3"><a href="#pr" class="active">Chờ xử lí</a></li>
+            <li class="tab col s3"><a href="#hr">Đang xử lí</a></li>
+        </ul>
+    </div>
+    <div id="pr" class="col s12">
+        <div class="row">
+            <div class="col s12">
+                <div style="padding: 35px;" align="center" class="card">
+                    <div class="row">
+                        <div class="left card-title">
+                            <b>Quản lý báo cáo vi phạm</b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input #gb id="filter" type="text" pInputText>
+                            <label for="filter">Tìm kiếm</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p-dataTable [value]="pendingReports" [rows]="10" [paginator]="true" [globalFilter]="gb">
+                            <p-column field="title" styleClass="col-button" header="Báo cáo vi phạm" [filter]="true"
+                                      [sortable]="true">
+                                <template let-r="rowData">
+                                    <a [routerLink]="[r.link]">{{r.title}}</a>
+                                </template>
+                            </p-column>
+                            <p-column field="content" header="Nội dung" [sortable]="true" [filter]="true"></p-column>
+                            <p-column styleClass="col-button" field="user" header="Người báo cáo" [filter]="true"
+                                      [sortable]="true">
+                                <template let-r="rowData">
+                                    <a [routerLink]="['/user/'+r.user]">{{r.user}}</a>
+                                </template>
+                            </p-column>
+                            <p-column styleClass="col-button" field="reportedUser" header="Người vi phạm"
+                                      [filter]="true" [sortable]="true">
+                                <template let-r="rowData">
+                                    <a [routerLink]="['/user/'+r.reportedUser]">{{r.reportedUser}}</a>
+                                </template>
+                            </p-column>
+                            <p-column styleClass="col-button" header="Chức năng">
+                                <template let-r="rowData">
+                                    <button  type="button" pButton (click)="changeStatusHandling(r._id)"
+                                             class="btn-floating waves-effect waves-light red">
+                                        <i class="material-icons">switch_camera</i>
+                                    </button>
+                                    <button type="button" pButton (click)="deactivateReport(r._id)"
+                                            class="btn-floating waves-effect waves-light red"><i class="material-icons">remove</i>
+                                    </button>
+                                </template>
+                            </p-column>
+                        </p-dataTable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="hr" class="col s12">
+        <div class="col s12">
+            <div style="padding: 35px;" align="center" class="card">
+                <div class="row">
+                    <div class="left card-title">
+                        <b>Quản lý báo cáo vi phạm</b>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="input-field col s6">
+                        <input #gb id="filter1" type="text" pInputText>
+                        <label for="filter1">Tìm kiếm</label>
+                    </div>
+                </div>
+                <div class="row">
+                    <p-dataTable [value]="handlingReports" [rows]="10" [paginator]="true" [globalFilter]="gb">
+                        <p-column styleClass="col-button" header="Báo cáo vi phạm" [filter]="true" [sortable]="true">
+                            <template let-r="rowData">
+                                <a [routerLink]="[r.link]">{{r.title}}</a>
+                            </template>
+                        </p-column>
+                        <p-column field="content" header="Nội dung" [filter]="true" [sortable]="true"></p-column>
+                        <p-column styleClass="col-button" field="user" header="Người báo cáo" [filter]="true"
+                                  [sortable]="true">
+                            <template let-r="rowData">
+                                <a [routerLink]="['/user/'+r.user]">{{r.user}}</a>
+                            </template>
+                        </p-column>
+                        <p-column styleClass="col-button" field="reportedUser" header="Người vi phạm" [filter]="true"
+                                  [sortable]="true">
+                            <template let-r="rowData">
+                                <a [routerLink]="['/user/'+r.reportedUser]">{{r.reportedUser}}</a>
+                            </template>
+                        </p-column>
+                        <p-column styleClass="col-button" header="Chức năng">
+                            <template let-r="rowData">
+                                <button type="button" pButton (click)="deactivateReport(r._id)"
+                                        class="btn-floating waves-effect waves-light red"><i class="material-icons">remove</i>
+                                </button>
+                                <button type="button" (click)="createChatRoom(r.reportedUser)" class="btn-floating waves-effect waves-light red">
+                                    <i class="material-icons">message</i>Gửi tin nhắn</button>
+                            </template>
+                        </p-column>
+                    </p-dataTable>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<message [receiver]="user"></message>

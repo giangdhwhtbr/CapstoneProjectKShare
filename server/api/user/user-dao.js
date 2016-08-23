@@ -66,7 +66,7 @@ userSchema.statics.getUserByUserName = (username) => {
     });
 }
 
-// find user by username
+// find user by username search on header
 userSchema.statics.findUsersByUserName = (username) => {
     let _query = {username: new RegExp('^'+username+'$')};
     console.log(_query);

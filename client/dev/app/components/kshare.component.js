@@ -31,7 +31,9 @@ var kspace_1 = require("./front-end/kspace/kspace");
 var kspace_list_1 = require("./front-end/kspace/kspace-list");
 var kspace_info_1 = require("./front-end/kspace/kspace-info");
 var friend_list_1 = require("./front-end/user/user-profile/friend-list");
+var rs_search_user_1 = require("./front-end/user/search/rs-search-user");
 var user_profile_bar_1 = require("./front-end/user/user-profile/user-profile-bar");
+var user_info_update_1 = require("./front-end/user/user-profile/user-info-update");
 var create_article_1 = require("./front-end/article/create-article");
 var detail_article_1 = require("./front-end/article/detail-article");
 var list_article_1 = require("./front-end/article/list-article");
@@ -46,7 +48,7 @@ var KshareComponent = (function () {
     KshareComponent = __decorate([
         core_1.Component({
             selector: 'kshare-app',
-            template: "\n    <sidebar></sidebar>\n    <!--<friend-list></friend-list>-->\n    <router-outlet></router-outlet>\n  ",
+            template: "\n    <sidebar></sidebar>\n    <main>\n        <router-outlet></router-outlet>\n    </main>\n  ",
             directives: [
                 router_1.ROUTER_DIRECTIVES,
                 header_1.HeaderComponent,
@@ -68,7 +70,9 @@ var KshareComponent = (function () {
                 detail_article_1.detailArticleComponent,
                 list_article_1.listArticleComponent,
                 displayArtByTag_1.displayArtByTagComponent,
-                request_create_1.CreateRequestComponent
+                request_create_1.CreateRequestComponent,
+                rs_search_user_1.userSearchRsComponent,
+                user_info_update_1.UpdateUserComponent
             ]
         }), 
         __metadata('design:paramtypes', [])

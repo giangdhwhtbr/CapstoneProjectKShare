@@ -64,6 +64,7 @@ knowledgeSchema.statics.getKnwByNames = (names) => {
 
 }
 
+
 knowledgeSchema.statics.createKnowledge = (knowledge) => {
     return new Promise((resolve, reject) => {
         if (!_.isObject(knowledge))

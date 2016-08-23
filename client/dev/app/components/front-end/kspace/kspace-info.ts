@@ -1,161 +1,194 @@
 /**
  * Created by GiangDH on 7/9/16.
  */
-import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Component, OnInit, OnDestroy,Pipe, PipeTransform } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { KSpaceService } from '../../../services/kspace';
+import { ArticleService } from '../../../services/article';
 import { NgForm }    from '@angular/forms';
 import { PrivateChatComponent } from './../../shared/private-chat';
 
-// import { SEMANTIC_COMPONENTS, SEMANTIC_DIRECTIVES } from "ng-semantic";
-
+declare var $:any;
+declare var Materialize:any;
 @Component ({
-  template: `
-      <div class="container mg-top-50">
-        <h3>{{title}}</h3>
-        {{rateAve}}
-         <sm-rating class="massive star" disable="disable" [initialRating]="[rateAve]"></sm-rating>
-        <br>
-        <button (click)="accessRoom()">{{accessRoomBtn}}</button>
-        <hr>
-        <h3>images</h3>
-        <div *ngFor="let img of images">
-          <h4>{{img.des}}</h4>
-          <img src="{{img.url}}" style="background-color: black; border-radius: 10px;" alt="kspace" width="300" height="200">
-          <br>
-        </div>
-        <hr>
-        <h3>boards</h3>
-        <div *ngFor="let board of boards">
-          <h4>Board {{board.des}}</h4>
-          <img src="{{board.url}}"           style="background-color: whitesmoke; border:black; border-weight:1px ;                                                                      border-radius: 10px;" alt="kspace" width="300" height="200">
-          <br>
-        </div>
-        <div id="createReview">
-            <sm-message *ngIf="errorMessage" class="warning">
-              <message-header>{{errorMessage.header}}</message-header>
-              <message-content>
-                  {{errorMessage.content}}
-              </message-content>
-            </sm-message>
-            <sm-rating class="massive star" (onRate)="onReceiveRating($event)" [maxRating]="5"></sm-rating>
-            <form class="ui form" #reviewForm="ngForm" (ngSubmit)="onSubmit(reviewForm.value)">
-                <textarea  ngControl="content" required ></textarea>
-                <button type="submit">Review</button>
-            </form>
-        </div>
-        <div id="reviews">
-          <div *ngFor="let review of reviews">
-            <sm-segment class="raised">
-              <p>{{review.createdUser}}</p>
-              <p>{{review.content}}</p>
-            </sm-segment>
-          </div>
-        </div>
-      </div>
-      <private-chat></private-chat>
-    `,
-  directives: [
-    ROUTER_DIRECTIVES,
-    PrivateChatComponent
-  ],
+    templateUrl:'client/dev/app/components/front-end/kspace/templates/kspace-info.html',
+    directives: [
+        ROUTER_DIRECTIVES,
+    ],
+    providers:[ArticleService]
 })
 
 export class KSpaceInfoComponent implements OnInit {
-  accessRoomBtn: string = 'Access Room';
-  kspaceId: string;
-  lecturer: string;
-  ratePoint: number;
-  reviews: any;
+    kspaceId:string;
+    lecturer:string;
+    ratePoint:number;
+    reviews:any;
 
-  rateAve: number;
+    kspace:any;
 
-  // error message
-  errorMessage: any;
+    rateAve:number;
 
-  constructor( private router: Router, private route: ActivatedRoute, private _kspaceService: KSpaceService) {
-    this.route.params.subscribe(params => {
-      this.kspaceId = params['id'];
-      this.lecturer = params['lecturer'];
-    })
-  }
+    // error message
+    errorMessage:any;
 
-  images: Array<any> = [];
-  boards: Array<any> = [];
-  title: string;
-  ngOnInit(): void {
-    this._kspaceService
-    .getKSpaceById(this.kspaceId)
-    .subscribe(
-      kspace => {
-        this.title = kspace.requestTitle;
-        this.reviews = kspace.reviews;
-        this.rateAve = parseInt(kspace.rateAve);
-        for (var log of kspace.chatlog){
-          if(log.dataURL){
-            var data = {
-              des: log.message,
-              url: log.dataURL
-            }
-            this.images.push(data);
-          }
-        }
-        for (var board of kspace.boards){
-          if(board.dataURL){
-            var data = {
-              des: board.boardNumber,
-              url: board.dataURL
-            }
-            this.boards.push(data);
-          }
-        }
-      }
-    )
+    isFinish:boolean=false;
+    finishDate:any;
+    images:Array<any> = [];
+    boards:Array<any> = [];
+    title:string;
 
-  }
+    isCreatingArt:boolean=false;
 
-  onSubmit(value): void {
-    if(!this.ratePoint){
-      this.errorMessage = {
-        header: '',
-        content: 'Vui lòng chấm điểm cho bài giảng'
-      };
-    }else {
-      var data = {
-        id : this.kspaceId,
-        createdUser: localStorage.getItem('username'),
-        content: value.content,
-        rate: this.ratePoint
-      };
-      this._kspaceService.createReview(data).subscribe(
-        (reviews) => {
-          this.reviews = reviews;
-        },
-        (error) => {
-          if(error._body) {
-            console.log(error);
-            error = JSON.parse(error._body);
-            if(error.message){
-              this.errorMessage = {
-                header: '',
-                content: error.message
-              };
-            }
-          }
-        }
-      );
+    constructor(private router:Router, private route:ActivatedRoute, private _kspaceService:KSpaceService, private _articleService:ArticleService) {
+        this.route.params.subscribe(params => {
+            this.kspaceId = params['id'];
+            this.lecturer = params['lecturer'];
+        })
     }
-  }
 
-  onReceiveRating(event){
-    this.errorMessage = '';
-    this.ratePoint = event;
-  }
 
-  accessRoom(): void {
-    var specs = 'resizable=yes, fullscreen=yes';
-    var name = '_blank';
-    var url = '/room/'+this.kspaceId+'/'+this.lecturer;
-    window.open(url, name ,specs);
-  }
+
+    ngOnInit():void {
+        this.loadAllData();
+        $('#preLoad').hide();
+    }
+
+    loadAllData(){
+        this._kspaceService
+            .getKSpaceById(this.kspaceId)
+            .subscribe(
+                kspace => {
+                    this.kspace=kspace;
+                    this.title = kspace.requestTitle;
+                    this.reviews = kspace.reviews;
+                    this.rateAve = parseInt(kspace.rateAve);
+                    for (var log of kspace.chatlog) {
+                        if (log.dataURL) {
+                            var data = {
+                                id:log._id,
+                                des: log.message,
+                                url: log.dataURL
+                            }
+                            this.images.push(data);
+                        }
+                    }
+                    for (var board of kspace.boards) {
+                        if (board._id) {
+                            var data = {
+                                id: board._id,
+                                des: board.boardNumber,
+                                url: board.dataURL
+                            }
+                            this.boards.push(data);
+                        }
+                    }
+                    if(kspace.finishedAt){
+                        this.isFinish=true;
+                        this.finishDate=kspace.finishedAt;
+                    }
+                }
+            )
+        console.log(this.isCreatingArt);
+    }
+
+    onSubmit(value):void {
+        if (!this.ratePoint) {
+            this.errorMessage = {
+                header: '',
+                content: 'Vui lòng chấm điểm cho bài giảng'
+            };
+        } else {
+            var data = {
+                id: this.kspaceId,
+                createdUser: localStorage.getItem('username'),
+                content: value.content,
+                rate: this.ratePoint
+            };
+            this._kspaceService.createReview(data).subscribe(
+                (reviews) => {
+                    this.reviews = reviews;
+                },
+                (error) => {
+                    if (error._body) {
+                        console.log(error);
+                        error = JSON.parse(error._body);
+                        if (error.message) {
+                            this.errorMessage = {
+                                header: '',
+                                content: error.message
+                            };
+                        }
+                    }
+                }
+            );
+        }
+    }
+
+    onReceiveRating(event) {
+        this.errorMessage = '';
+        this.ratePoint = event;
+    }
+
+    accessRoom():void {
+        var specs = 'resizable=yes, fullscreen=yes';
+        var name = '_blank';
+        var url = '/room/' + this.kspaceId + '/' + this.lecturer;
+        window.open(url, name, specs);
+    }
+    finishKp(){
+        this._kspaceService.finish(this.kspaceId).subscribe((kspace)=>{
+            this.isFinish=true;
+            this.finishDate=kspace.finishedAt;
+        });
+    }
+
+    openSelectElement(){
+        this.isCreatingArt=true;
+    }
+
+    createArt(){
+
+        if(this.images.length==0&&this.boards.length==0){
+            Materialize.toast('Không có dữ liệu để tạo', 4000);
+        }else{
+            $('#preLoad').show();
+            let contentArt='';
+            for(let i =0 ; i< this.images.length;i++){
+                contentArt+="<h5>ảnh "+this.images[i].des+"</h5><br>";
+                contentArt+='<img class="responsive-img" src="'+this.images[i].url+'" style="background-color: black; border-radius: 10px;"><br>';
+            }
+            for(let i =0 ; i< this.boards.length;i++){
+                contentArt+="<h5>bảng "+this.boards[i].des+"</h5><br>";
+                contentArt+='<img class="responsive-img" src="'+this.boards[i].url+'" style="background-color: whitesmoke; border-radius: 10px;" ><br>';
+            }
+            let dateKs = new Date(this.kspace.createdAt);
+            dateKs = dateKs.toLocaleDateString();
+            let title =  this.kspace.requestTitle+" " +dateKs ;
+            this._articleService.addArticle(title,contentArt,this.kspace.tags,[],"private",this.lecturer).subscribe((artId)=>{
+                this.router.navigateByUrl('/article/edit/'+artId);
+            });
+        }
+
+    }
+
+    deleteElement(id:string){
+        for(let i =0 ; i< this.images.length;i++){
+            if(this.images[i].id==id){
+                this.images.splice(i,1);
+                break;
+            }
+        }
+        for(let i =0 ; i < this.boards.length;i++){
+            if(this.boards[i].id==id){
+                this.boards.splice(i,1);
+                break;
+            }
+        }
+    }
+    cancleCreateArt(){
+        this.isCreatingArt=false;
+        this.images=[];
+        this.boards=[];
+        this.loadAllData();
+    }
 }

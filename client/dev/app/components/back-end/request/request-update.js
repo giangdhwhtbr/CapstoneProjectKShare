@@ -15,6 +15,7 @@ var requests_1 = require('../../../services/requests');
 var knowledge_1 = require('../../../services/knowledge');
 var tag_1 = require('../../../services/tag');
 var primeng_1 = require('primeng/primeng');
+var private_chat_1 = require('../../shared/private-chat');
 var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
 var $ = require('jquery');
@@ -239,7 +240,7 @@ var UpdateRequestComponent = (function () {
         core_1.Component({
             selector: 'request-update-cli',
             templateUrl: 'client/dev/app/components/back-end/request/templates/request-update.html',
-            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, primeng_1.AutoComplete, CKEditor],
+            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, primeng_1.AutoComplete, CKEditor, private_chat_1.PrivateChatComponent],
             providers: [tag_1.TagService]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),

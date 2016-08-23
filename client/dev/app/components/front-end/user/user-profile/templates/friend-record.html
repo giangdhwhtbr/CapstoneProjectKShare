@@ -1,35 +1,35 @@
-<li>
-    <div class="col-md-6">
-        <div class="well well-sm">
+<div class="col s6 m6">
+    <div class="card">
+        <div class="card-image">
+            <img class="responsive-img" src="{{link}}">
+        </div>
+        <div class="card-content">
+                     <span class="card-title">
+                       <a [routerLink]="['/user/'+friendName]">
+                           {{friendName}}
+                       </a>
+                     </span>
+
             <div class="row">
-                <div class="col-md-4">
-                    <img src="http://placehold.it/380x500" alt="" class="img-rounded img-responsive" />
-                </div>
-                <div class="col-md-8">
-                    <a [routerLink]="['/user/'+friendName]">
-                        <h4>{{friendName}}</h4>
-                    </a>
-                    <small><cite title="San Francisco, USA">Hanoi<i class="glyphicon glyphicon-map-marker">
-                        </i></cite></small>
-                    <p>
-                        <i class="glyphicon glyphicon-envelope"></i>{{email}}
-                        <br />
-                        <i class="glyphicon glyphicon-globe"></i>{{displayname}}
-                        <br />
-                        <i class="glyphicon glyphicon-gift"></i>{{level}}</p>
-                    <!-- Split button -->
-                    <div class="btn-group" *ngIf="isFriend">
-                        <button type="button" class="btn btn-danger">Bạn bè</button>
-                        <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            <span class="caret"></span>
-                            <span class="sr-only">Bạn bè</span>
-                          </button>
-                        <ul *ngIf="userToken===name" class="dropdown-menu">
-                            <li (click)="deleteFriend()"><a>Hủy kết bạn</a></li>
-                        </ul>
-                    </div>
+                <p>
+                    Tên: {{displayname}}
+                </p>
+
+                <p>
+                    Email: {{email}}
+                </p>
+
+                <p>
+                    Cấp độ: {{level}}
+                </p>
+            </div>
+            <div class="row">
+                <div class="col s12 userButton">
+                    <button type="button" class="waves-effect waves-light btn red" *ngIf="userToken===name"
+                            (click)="deleteFriend()">Hủy bạn
+                    </button>
                 </div>
             </div>
         </div>
     </div>
-</li>
+</div>

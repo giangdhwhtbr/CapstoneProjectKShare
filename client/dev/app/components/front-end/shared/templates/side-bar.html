@@ -1,29 +1,20 @@
-<div class="body-rq-page" id="sb-site">
-  <!-- tool bar -->
-  <div id='cssmenu'>
-    <ul>
-      <li class='has-sub'><a href='#'><span><i class="fa fa-book fa-2x" aria-hidden="true"></i></span></a>
-        <ul>
-          <li *ngFor="let knowledge of knowledges" class='has-sub'>
-            <a [routerLink]="['/requests/category/'+ knowledge._id]" routerLinkActive="active">
-             <span>{{knowledge.name}}</span>
+<ul class="collapsible side-nav" data-collapsible="accordion" id="slide-out">
+    <i class="material-icons displayPointer" (click)="closeNav()">close</i>
+    <li *ngFor="let knowledge of knowledges">
+        <div class="collapsible-header">
+            <a [routerLink]="['/mix/category/'+ knowledge._id]" routerLinkActive="active">
+                <span>{{knowledge.name}}</span>
+                <span class="right"><i *ngIf="knowledge.subCategory.length > 0" class="material-icons">arrow_drop_down</i></span>
             </a>
+        </div>
+        <div class="collapsible-body">
             <ul *ngIf="knowledge.subCategory.length > 0">
-              <li *ngFor="let subCate of knowledge.subCategory">
-                <a [routerLink]="['/requests/subcategory/'+ subCate._id]" routerLinkActive="active"><span>{{subCate.name}}
-                </span>
-                </a>
-              </li>
+                <li *ngFor="let subCate of knowledge.subCategory">
+                    <a [routerLink]="['/mix/subcategory/'+ subCate._id]" routerLinkActive="active">
+                        <span>{{subCate.name}}</span>
+                    </a>
+                </li>
             </ul>
-          </li>
-        </ul>
-      </li>
-      <!--<li><a href='#'><span><i class="fa fa-archive fa-2x" aria-hidden="true"></i></span></a></li>
-      <li class='last has-sub'><a href='#'><span><i class="fa fa-search fa-2x" aria-hidden="true"></i></span></a>
-        <ul>
-          <li class='last'><a href='#'><span>Sub cat</span></a></li>
-        </ul>
-      </li>-->
-    </ul>
-  </div>
-</div>
+        </div>
+    </li>
+</ul>

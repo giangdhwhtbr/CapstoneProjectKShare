@@ -1,48 +1,113 @@
-<div class="container" *ngIf="records" [style.height.px]="height+'px'">
-    <div *ngFor="let record of records">
-        <div *ngIf="record.user" class="panel-body">
-            <h3>Yêu cầu</h3>
-            <p>
-                <span class="title">
-                <a [routerLink]="['/requests/' + record._id + '/info']">{{record.title}}</a>
-            </span>
-            </p>
-            <p>
-                <span class="sumary">{{record.description.substring(0,100)}}</span>
-            </p>
-            <p>
-                <span class="dateArt">{{record.createdAt | date:"dd/MM/yyyy"}}</span>
-            </p>
-            <p>
-                <span>Tạo bởi : <a [routerLink]="['/user/' + record.user]">{{record.user}}</a> </span>
-            </p>
+
+<div class="container">
+    <div *ngFor="let record of records" class="row">
+        <div class="col s12 m12">
+            <!--1--><!--1--><!--1--><!--1--><!--1--><!--1-->
+            <div *ngIf="record.user" class="card" >
+                <div class="card-content">
+                    <h6>Yêu cầu</h6>
+                    <a [routerLink]="['/requests/' + record._id + '/info']"><h5>{{record.title}}</h5></a>
+
+                    <p><span class="sumary">{{record.description.substring(0,100)}} ...</span></p>
+                </div>
+                <div class="card-action">
+                    <div class="row">
+                        <div class="col s4 m4">
+                            <span>Tạo bởi : <a [routerLink]="['/user/' + record.user]">{{record.user}}</a> </span>
+                        </div>
+                        <div class="col s4 m4">
+                            <span class="dateArt">{{record.createdAt | date:"dd/MM/yyyy"}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12">
+                            <p *ngIf="record.tags">
+                                <tags [listTagId]="record.tags"></tags>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!--2--> <!--2--> <!--2--> <!--2--> <!--2-->
+            <div *ngIf="record.ofUser" class="card" >
+                <div class="card-content">
+                    <h3>Bài viết</h3>
+                    <a *ngIf="record.title.length>=70" [routerLink]="['/article/' + record._id]"><h5>{{record.title.substring(0,70)}} ...</h5></a>
+                    <a *ngIf="record.title.length<70" [routerLink]="['/article/' + record._id]"><h5>{{record.title}}</h5></a>
+
+                    <p><span class="sumary">{{record.content.substring(0,50)}} ...</span></p>
+                </div>
+                <div class="card-action">
+                    <div class="row">
+                        <div class="col s4 m4">
+                            <span>Tạo bởi : <a>{{record.ofUser}}</a> </span>
+                        </div>
+                        <div class="col s4 m4">
+                            <span>Trạng thái : {{record.status}}</span>
+                        </div>
+                        <div class="col s4 m4">
+                            <span class="dateArt">{{record.createdAt | date:"dd/MM/yyyy"}}</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col s12 m12">
+                            <p *ngIf="record.tags">
+                                <tags [listTagId]="record.tags"></tags>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div *ngIf="record.ofUser" class="panel-body">
-            <h3>Bài viết</h3>
-            <p>
-                <span class="title">
-                    <a [routerLink]="['/article/' + record._id]">{{record.title}}</a>
-                </span>
-            </p>
-            <p>
-                <span class="sumary">{{record.content.substring(0,50)}}</span>
-            </p>
-            <p>
-                <span class="dateArt">{{record.createdAt | date:"dd/MM/yyyy"}}</span>
-            </p>
-            <p>
-                <span>by : <a>{{record.ofUser}}</a> </span>
-            </p>
-        </div>
-
-        <!--<p>
-            Từ khóa :
-            <span *ngFor="let t of a.tagsFD">
-                    <a [routerLink]="['/tag',t._id]">{{t.name}}</a>,
-                </span>
-        </p>-->
-
     </div>
 </div>
 <private-chat></private-chat>
+
+<!--<div class="container" *ngIf="records" [style.height.px]="height+'px'">-->
+    <!--<div *ngFor="let record of records">-->
+        <!--<div *ngIf="record.user" class="panel-body">-->
+            <!--<h3>Yêu cầu</h3>-->
+            <!--<p>-->
+                <!--<span class="title">-->
+                <!--<a [routerLink]="['/requests/' + record._id + '/info']">{{record.title}}</a>-->
+            <!--</span>-->
+            <!--</p>-->
+            <!--<p>-->
+                <!--<span class="sumary">{{record.description.substring(0,100)}}</span>-->
+            <!--</p>-->
+            <!--<p>-->
+                <!--<span class="dateArt">{{record.createdAt | date:"dd/MM/yyyy"}}</span>-->
+            <!--</p>-->
+            <!--<p>-->
+                <!--<span>Tạo bởi : <a [routerLink]="['/user/' + record.user]">{{record.user}}</a> </span>-->
+            <!--</p>-->
+        <!--</div>-->
+
+        <!--<div *ngIf="record.ofUser" class="panel-body">-->
+            <!--<h3>Bài viết</h3>-->
+            <!--<p>-->
+                <!--<span class="title">-->
+                    <!--<a [routerLink]="['/article/' + record._id]">{{record.title}}</a>-->
+                <!--</span>-->
+            <!--</p>-->
+            <!--<p>-->
+                <!--<span class="sumary">{{record.content.substring(0,50)}}</span>-->
+            <!--</p>-->
+            <!--<p>-->
+                <!--<span class="dateArt">{{record.createdAt | date:"dd/MM/yyyy"}}</span>-->
+            <!--</p>-->
+            <!--<p>-->
+                <!--<span>by : <a>{{record.ofUser}}</a> </span>-->
+            <!--</p>-->
+        <!--</div>-->
+
+        <!--&lt;!&ndash;<p>-->
+            <!--Từ khóa :-->
+            <!--<span *ngFor="let t of a.tagsFD">-->
+                    <!--<a [routerLink]="['/tag',t._id]">{{t.name}}</a>,-->
+                <!--</span>-->
+        <!--</p>&ndash;&gt;-->
+
+    <!--</div>-->
+<!--</div>-->
+<!--<private-chat></private-chat>-->

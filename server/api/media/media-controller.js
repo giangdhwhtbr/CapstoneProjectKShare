@@ -2,7 +2,6 @@
  * Created by Duc Duong on 6/13/2016.
  */
 "use strict";
-const mediaDAO = require('./media-dao');
 var fs = require('fs');
 
 module.exports = class mediaController {
