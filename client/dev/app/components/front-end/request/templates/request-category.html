@@ -12,7 +12,7 @@
 
 
                 <div class="col s12" *ngFor="let a of arts| paginate: configArt">
-                    <div class="card">
+                    <div class="card" *ngIf="a">
                         <div class="card-content">
                             <span class="card-title"><a [routerLink]="['/article',a._id]">{{a.title}}</a></span>
 
@@ -22,7 +22,7 @@
                                     <span class="stt">Trạng thái : {{a.status}} </span>
                                 </div>
 
-                                <div class="col s4">
+                                <div class="col s4" *ngIf="a.createdAt">
                                     <span class="dateArt">Ngày tạo : {{a.createdAt | date:"dd/MM/yyyy"}}</span>
                                 </div>
 
@@ -50,7 +50,7 @@
                 <h5 class="center-align">Không có bài viết liên quan</h5>
             </div>
         </div>
-        <div id="tabReq">
+        <div id="tabReq" *ngIf="requests">
             <div class="row">
                 <div class="col s12" *ngFor="let request of requests| paginate: configReq">
                     <div class="card">
@@ -60,7 +60,7 @@
                                 <h5 class="valign">Rất tiếc không tìm thấy dữ liệu phù hợp</h5>
                             </div>
                         </div>
-                        <div class="card-content">
+                        <div class="card-content" *ngIf="request">
                             <div class="row">
                                 <span class="card-title">
                                     <a [routerLink]="['/requests/'+ request._id + '/info']" routerLinkActive="active">
@@ -74,7 +74,7 @@
                                 <div class="col s4">
                                     Trạng thái : {{request.status}}
                                 </div>
-                                <div class="col s4">
+                                <div class="col s4" *ngIf="request.createdAt">
                                     Ngày tạo : {{request.createdAt | date:"dd/MM/yyyy"}}
                                 </div>
                             </div>
