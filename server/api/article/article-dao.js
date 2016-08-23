@@ -27,7 +27,7 @@ articleSchema.statics.getAllNf = (x) => {
     return new Promise((resolve, reject) => {
 
         Article
-            .find({status: { $nin: ['deactivate','private'] }})
+            .find({status: 'public'})
             .skip(x - 5)
             .limit(5)
             .sort({ updatedAt: -1 })
