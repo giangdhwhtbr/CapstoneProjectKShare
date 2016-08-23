@@ -101,17 +101,21 @@
 <header [hidden]="isRoom">
     <nav class="indigo" role="navigation">
         <div class="nav-wrapper">
-            <a *ngIf="!isFrontend" data-activates="slide-out" (click)="open()" class="button-collapse displayPointer"><i class="medium material-icons">toc</i></a>
-            <a *ngIf="isFrontend" class="btnOpenNavF left displayPointer" (click)="openKnw()" data-activates="slide-out"><i (click)="openKnw()" class="material-icons">import_contacts</i></a>
+            <a *ngIf="!isFrontend" data-activates="slide-out" (click)="open()" class="button-collapse displayPointer">
+                <i class="medium material-icons">toc</i>
+            </a>
+            <a *ngIf="isFrontend" class="btnOpenNavF left displayPointer" (click)="openKnw()" data-activates="slide-out">
+                <i (click)="openKnw()" class="material-icons">import_contacts</i>
+            </a>
             <!--btn group-->
             <ul class="right" [hidden]="!loginToken">
-                <li>
+                <li [hidden]="!isFrontend">
                     <a [routerLink]="['/newsfeed']"><i class="material-icons">today</i></a>
                 </li>
-                <li>
+                <li [hidden]="!isFrontend">
                     <a [routerLink]="['/requests']" routerLinkActive="active"><i class="material-icons">receipt</i></a>
                 </li>
-                <li>
+                <li [hidden]="!isFrontend">
                     <a aria-label="Các bài viết" [routerLink]="['/article']" routerLinkActive="active"><i class="material-icons">book</i></a>
                 </li>
                 <!--toggle notifications-->
@@ -120,7 +124,7 @@
                 <!--role="button" aria-expanded="false">-->
                 <!---->
                 <!--</a>-->
-                <li>
+                <li [hidden]="!isFrontend">
                     <a class='right dropdown-button' (click)="changeStatusNotification()" data-activates='noti_dropdown'><i class=' material-icons'>add_alert</i><span *ngIf="countUnReadNoti>0" class="new badge red">{{countUnReadNoti}}</span></a>
                     <ul class="dropdown-content noti-liss" id="noti_dropdown">
                         <li *ngFor="let notification of notifications">
@@ -142,19 +146,24 @@
                 </li>
                 <!--name-->
                 <li>
-                    <a class='right dropdown-button' data-activates='user_dropdown'><i class=' material-icons'>account_circle</i></a>
+                    <a [hidden]="!isFrontend" class='right dropdown-button' data-activates='user_dropdown'><i class=' material-icons'>account_circle</i></a>
                     <ul class="dropdown-content" id="user_dropdown">
                         <li><a class="indigo-text" [routerLink]="['/user/' + userToken]">{{userToken}}</a></li>
                         <li><a class="indigo-text" (click)="logout()">Logout</a></li>
                     </ul>
                 </li>
             </ul>
-            <ul class="right" *ngIf="loginToken&&roleToken=='admin'">
+            <ul [hidden]="!isFrontend" class="right" *ngIf="loginToken&&roleToken=='admin'">
                 <li>
                     <a class="waves-effect waves-light btn btLogin" href="/admin">Quản lý</a>
                 </li>
             </ul>
-            <ul class="left">
+            <ul [hidden]="isFrontend" class="right" *ngIf="loginToken&&roleToken=='admin'">
+                <li>
+                    <a class="waves-effect waves-light btn btLogin" href="/">Thoát</a>
+                </li>
+            </ul>
+            <ul [hidden]="!isFrontend" class="left">
                 <li>
                     <input #nameSearch id="searchFriend" type="search" placeholder="Tìm bạn" required (keyup.enter)="searchFriend(nameSearch.value)">
                 </li>

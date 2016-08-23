@@ -680,14 +680,14 @@ webpackJsonp([2],[
 	            .put(this._usersUrl.replace(':id', user._id), _data, options)
 	            .map(function (r) { return r.json(); });
 	    };
-	    UserService.prototype.banUser = function (userId) {
+	    UserService.prototype.banUser = function (id) {
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
 	        var data = JSON.stringify({
 	            admin: localStorage.getItem('username')
 	        });
 	        return this._http
-	            .put(this._banUrl.replace(':id', userId), data, options);
+	            .put(this._banUrl.replace(':id', id), data, options);
 	    };
 	    //add friend service
 	    UserService.prototype.addFriend = function (requestUser, acceptUser) {
@@ -2886,6 +2886,7 @@ webpackJsonp([2],[
 	var knowledge_1 = __webpack_require__(55);
 	var router_1 = __webpack_require__(4);
 	var common_1 = __webpack_require__(7);
+	var private_chat_1 = __webpack_require__(28);
 	var UpdateKnowledgeComponent = (function () {
 	    function UpdateKnowledgeComponent(fb, _knowledgeService, router, route) {
 	        var _this = this;
@@ -2926,7 +2927,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'knowledge-update',
 	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-update.html',
-	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
+	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
 	            providers: [knowledge_1.KnowledgeService]
 	        }),
 	        __param(0, core_1.Inject(common_1.FormBuilder)),
@@ -3217,6 +3218,7 @@ webpackJsonp([2],[
 	var report_1 = __webpack_require__(191);
 	var notification_1 = __webpack_require__(62);
 	var users_1 = __webpack_require__(31);
+	var private_chat_1 = __webpack_require__(28);
 	var ReportComponent = (function () {
 	    function ReportComponent(fb, _reportService, _noti, _userService) {
 	        this._reportService = _reportService;
@@ -3270,7 +3272,7 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/report/templates/report.html',
 	            styleUrls: [],
 	            directives: [
-	                common_1.FORM_DIRECTIVES,
+	                common_1.FORM_DIRECTIVES, private_chat_1.PrivateChatComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof report_1.ReportService !== 'undefined' && report_1.ReportService) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object])
@@ -4652,6 +4654,7 @@ webpackJsonp([2],[
 	var pager_1 = __webpack_require__(190);
 	var primeng_1 = __webpack_require__(30);
 	var primeng_2 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var ArtListCtlComponent = (function () {
 	    function ArtListCtlComponent(_articleService, _pagerService, router) {
 	        this._articleService = _articleService;
@@ -4706,7 +4709,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'art-list-clt',
 	            templateUrl: 'client/dev/app/components/back-end/article/templates/article-list.html',
-	            directives: [router_1.ROUTER_DIRECTIVES, primeng_1.Paginator, common_1.FORM_DIRECTIVES, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.Footer],
+	            directives: [router_1.ROUTER_DIRECTIVES, primeng_1.Paginator, common_1.FORM_DIRECTIVES, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.Footer, private_chat_1.PrivateChatComponent],
 	            providers: [article_1.ArticleService, pager_1.PagerService]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof pager_1.PagerService !== 'undefined' && pager_1.PagerService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
@@ -4744,6 +4747,7 @@ webpackJsonp([2],[
 	var filter_1 = __webpack_require__(290);
 	var primeng_2 = __webpack_require__(30);
 	var primeng_3 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var KnowledgeListComponent = (function () {
 	    function KnowledgeListComponent(fb, _elRef, _knowledgeService, _requestService) {
 	        this._elRef = _elRef;
@@ -4842,7 +4846,7 @@ webpackJsonp([2],[
 	            directives: [
 	                knowledge_update_1.UpdateKnowledgeComponent,
 	                sub_knowledge_create_1.CreateSubCategoryComponent,
-	                router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, primeng_2.TreeTable, primeng_3.Dialog],
+	                router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, primeng_2.TreeTable, primeng_3.Dialog, private_chat_1.PrivateChatComponent],
 	            providers: [knowledge_2.KnowledgeService, ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
 	        }), 
@@ -4875,6 +4879,7 @@ webpackJsonp([2],[
 	var chat_1 = __webpack_require__(126);
 	var primeng_1 = __webpack_require__(30);
 	var message_1 = __webpack_require__(657);
+	var private_chat_1 = __webpack_require__(28);
 	var ReportListComponent = (function () {
 	    function ReportListComponent(fb, _reportService, _chatService, router) {
 	        this._reportService = _reportService;
@@ -4946,7 +4951,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'reports-list',
 	            templateUrl: 'client/dev/app/components/back-end/report/templates/reports-list.html',
-	            directives: [message_1.MessageComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
+	            directives: [message_1.MessageComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, private_chat_1.PrivateChatComponent],
 	            providers: [report_1.ReportService, chat_1.ChatService]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof report_1.ReportService !== 'undefined' && report_1.ReportService) === 'function' && _b) || Object, (typeof (_c = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
@@ -4981,6 +4986,7 @@ webpackJsonp([2],[
 	var request_update_1 = __webpack_require__(189);
 	var primeng_1 = __webpack_require__(30);
 	var primeng_2 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var RequestListComponent = (function () {
 	    function RequestListComponent(_requestService, _knowledgeService, _pagerService, _authService) {
 	        var _this = this;
@@ -5042,7 +5048,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'request-list',
 	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-	            directives: [request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
+	            directives: [private_chat_1.PrivateChatComponent, request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
 	            providers: [requests_1.RequestService, pager_1.PagerService]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object, (typeof (_c = typeof pager_1.PagerService !== 'undefined' && pager_1.PagerService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
@@ -5079,6 +5085,7 @@ webpackJsonp([2],[
 	var filter_1 = __webpack_require__(290);
 	var primeng_1 = __webpack_require__(30);
 	var primeng_2 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var TagListCtlComponent = (function () {
 	    function TagListCtlComponent(_tagService, router, _pagerService) {
 	        this._tagService = _tagService;
@@ -5123,7 +5130,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'tag-list-clt',
 	            templateUrl: 'client/dev/app/components/back-end/tag/templates/tag.html',
-	            directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.Paginator, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.MultiSelect, primeng_2.Footer, primeng_2.InputText],
+	            directives: [private_chat_1.PrivateChatComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.Paginator, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.MultiSelect, primeng_2.Footer, primeng_2.InputText],
 	            providers: [tag_1.TagService, ng2_pagination_1.PaginationService, pager_1.PagerService],
 	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
 	        }), 
@@ -5160,6 +5167,7 @@ webpackJsonp([2],[
 	var auth_1 = __webpack_require__(44);
 	var primeng_1 = __webpack_require__(30);
 	var primeng_2 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var UserListComponent = (function () {
 	    function UserListComponent(fb, _userService, _auth, router) {
 	        this._userService = _userService;
@@ -5224,7 +5232,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'user-list',
 	            templateUrl: 'client/dev/app/components/back-end/users/templates/user-list.html',
-	            directives: [router_1.ROUTER_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
+	            directives: [router_1.ROUTER_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, private_chat_1.PrivateChatComponent],
 	            providers: [users_1.UserService, pager_1.PagerService],
 	        }),
 	        __param(0, core_1.Inject(common_1.FormBuilder)), 
@@ -5295,6 +5303,9 @@ webpackJsonp([2],[
 	        this.CreateYoutubeBtnCkeditor();
 	        this.addCommandBtnCk();
 	        this.loadAllTags();
+	    };
+	    CreateArticleComponent.prototype.ngOnDestroy = function () {
+	        CKEDITOR.instances.editor1.destroy();
 	    };
 	    CreateArticleComponent.prototype.filterONTag = function () {
 	        var oldTag = [];
@@ -5518,6 +5529,13 @@ webpackJsonp([2],[
 	                _this.canSee = false;
 	            }
 	        });
+	        $('.modal-trigger').leanModal();
+	    };
+	    detailArticleComponent.prototype.openCloseArt = function () {
+	        $('#mdCfClose').openModal();
+	    };
+	    detailArticleComponent.prototype.openRp = function () {
+	        $('#myModal').openModal();
 	    };
 	    detailArticleComponent.prototype.deactivateArticle = function (id) {
 	        var _this = this;
@@ -5643,35 +5661,18 @@ webpackJsonp([2],[
 	        this.num = 5;
 	        this.articles = [];
 	        this.height = 400;
-	        this.isExist = false;
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
 	    listArticleComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        if (!this.userToken) {
-	            this._artService.getAllArts(this.num).subscribe(function (arts) {
-	                for (var i = 0; i < arts.length; i++) {
-	                    if (arts[i].status == "private") {
-	                        arts.splice(i, 1);
-	                    }
-	                    _this.listArt.push(arts[i]);
-	                    console.log(_this.listArt);
-	                }
-	                if (!arts) {
-	                    _this.isExist = false;
-	                }
-	            });
-	        }
-	        else {
-	            this.getAllArticles();
-	        }
+	        this.getAllArticles();
 	        $(window).on("scroll", function () {
 	            var scrollHeight = $(document).height();
 	            var scrollPosition = $(window).height() + $(window).scrollTop();
 	            if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
 	                setTimeout(function () {
-	                    //this.seeMore();
+	                    _this.seeMore();
 	                }, 1000);
 	                _this.height += 30;
 	            }
@@ -5684,14 +5685,19 @@ webpackJsonp([2],[
 	    listArticleComponent.prototype.getAllArticles = function () {
 	        var _this = this;
 	        this._artService.getAllArts(this.num).subscribe(function (arts) {
-	            for (var i = 0; i < arts.length; i++) {
-	                if (arts[i].status == "private") {
-	                    arts.splice(i, 1);
-	                }
-	                _this.listArt.push(arts[i]);
-	            }
-	            if (!arts) {
+	            if (arts.length == 0) {
 	                _this.isExist = false;
+	            }
+	            else {
+	                for (var i = 0; i < arts.length; i++) {
+	                    //get summary
+	                    var html = arts[i].content;
+	                    var div = document.createElement("div");
+	                    div.innerHTML = html;
+	                    var text = div.textContent || div.innerText || "";
+	                    arts[i].content = text;
+	                    _this.listArt.push(arts[i]);
+	                }
 	            }
 	        });
 	    };
@@ -5796,6 +5802,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var kspace_1 = __webpack_require__(127);
 	var article_1 = __webpack_require__(52);
+	var private_chat_1 = __webpack_require__(28);
 	var KSpaceInfoComponent = (function () {
 	    function KSpaceInfoComponent(router, route, _kspaceService, _articleService) {
 	        var _this = this;
@@ -5953,7 +5960,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/kspace-info.html',
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES,
+	                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent
 	            ],
 	            providers: [article_1.ArticleService]
 	        }), 
@@ -6098,9 +6105,9 @@ webpackJsonp([2],[
 	        }
 	    };
 	    /*
-	    * Init when the component is initiated
-	    *
-	    * */
+	     * Init when the component is initiated
+	     *
+	     * */
 	    KSpaceComponent.prototype.ngOnInit = function () {
 	        // DOM elements
 	        var _this = this;
@@ -6151,21 +6158,19 @@ webpackJsonp([2],[
 	            };
 	            if (isKspaceUser()) {
 	                // initiate webrtc
-	                if (username === kspace.lecturer) {
-	                    var webrtc = new SimpleWebRTC({
-	                        localVideoEl: 'localVideo',
-	                        remoteVideosEl: '',
-	                        autoRequestMedia: true,
-	                        nick: username,
-	                        localVideo: {
-	                            autoplay: true,
-	                            mirror: true,
-	                            muted: true // mute local video stream to prevent echo
-	                        },
-	                        log: true,
-	                        debug: false
-	                    });
-	                }
+	                var webrtc = new SimpleWebRTC({
+	                    localVideoEl: 'localVideo',
+	                    remoteVideosEl: '',
+	                    autoRequestMedia: true,
+	                    nick: username,
+	                    localVideo: {
+	                        autoplay: true,
+	                        mirror: true,
+	                        muted: true // mute local video stream to prevent echo
+	                    },
+	                    log: true,
+	                    debug: false
+	                });
 	                rtc.rtcSetting(webrtc, room, kspace.lecturer);
 	                var sharescreenToken = false;
 	                shareScreenBtn.click(function () {
@@ -6630,6 +6635,7 @@ webpackJsonp([2],[
 	var tag_1 = __webpack_require__(64);
 	var tag_2 = __webpack_require__(73);
 	var ng2_pagination_1 = __webpack_require__(151);
+	var private_chat_1 = __webpack_require__(28);
 	var displayArtByTagComponent = (function () {
 	    function displayArtByTagComponent(router, route, _tagService) {
 	        this.router = router;
@@ -6684,7 +6690,7 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/tag/templates/display-article-by-tag.html',
 	            styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES, tag_2.listTagComponent, ng2_pagination_1.PaginationControlsCmp
+	                router_1.ROUTER_DIRECTIVES, tag_2.listTagComponent, ng2_pagination_1.PaginationControlsCmp, private_chat_1.PrivateChatComponent
 	            ],
 	            providers: [tag_1.TagService, ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe]
@@ -7032,6 +7038,8 @@ webpackJsonp([2],[
 	        this.requests = [];
 	        this.num = 5;
 	        this.height = 400;
+	        this.kspaceList = [];
+	        this.articleList = [];
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
@@ -7051,33 +7059,37 @@ webpackJsonp([2],[
 	                }
 	                if (_this.isExist = true) {
 	                    _this.getRequestByUser();
-	                    _this._kSpaceService.getKspaceProfile(_this.name).subscribe(function (kspaces) {
-	                        _this.kspaceList = kspaces;
-	                        _this._articleService.getArtsByUsername(_this.name).subscribe(function (arts) {
+	                    _this._articleService.getArtsByUsername(_this.name).subscribe(function (arts) {
+	                        //filter article
+	                        if (_this.userToken) {
 	                            _this.articleList = arts;
-	                        });
-	                        _this._userService.getUserByUserName(_this.name).subscribe(function (user) {
-	                            _this.userProfile = user;
-	                        }, function (error) {
-	                            console.log(error);
+	                        }
+	                        else {
+	                            _this.articleList = _this.filterArticle(arts);
+	                        }
+	                        _this._kSpaceService.getKspaceProfile(_this.name).subscribe(function (kspaces) {
+	                            _this.kspaceList = kspaces;
+	                            _this._userService.getUserByUserName(_this.name).subscribe(function (user) {
+	                                _this.userProfile = user;
+	                            }, function (error) {
+	                                console.log(error);
+	                            });
 	                        });
 	                    });
 	                }
 	            }, function (error) {
 	                console.log(error);
 	            });
-	            //$(window).on("scroll", () => {
-	            //    var scrollHeight = $(document).height();
-	            //    var scrollPosition = $(window).height() + $(window).scrollTop();
-	            //    if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-	            //        setTimeout(() => {
-	            //            this.seeMore();
-	            //        }, 1000);
-	            //        this.height += 30;
-	            //    }
-	            //});
 	        });
 	        $('ul.tabs').tabs();
+	    };
+	    UserProfileComponent.prototype.filterArticle = function (listArt) {
+	        for (var i = listArt.length - 1; i >= 0; i--) {
+	            if (listArt[i].status === 'private') {
+	                listArt.splice(i, 1);
+	            }
+	        }
+	        return listArt;
 	    };
 	    UserProfileComponent.prototype.getKspaceProfile = function () {
 	        var _this = this;
@@ -7319,8 +7331,9 @@ webpackJsonp([2],[
 	        $('.dropdown-button').dropdown();
 	    };
 	    HeaderComponent.prototype.ngAfterViewChecked = function () {
-	        $('#sidenav-overlay').hide();
-	        $('.drag-target').hide();
+	        //$('#sidenav-overlay').remove();
+	        //$('.drag-target').remove();
+	        $("body").css("overflow", "scroll");
 	    };
 	    HeaderComponent.prototype.openChat = function () {
 	        $('#chatBoxK').openModal();
@@ -18900,6 +18913,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(7);
 	var knowledge_1 = __webpack_require__(55);
 	var primeng_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var CreateSubCategoryComponent = (function () {
 	    function CreateSubCategoryComponent(fb, _knowledgeService) {
 	        this._knowledgeService = _knowledgeService;
@@ -18938,7 +18952,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'sub-create',
 	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/sub-knowledge-create.html',
-	            directives: [common_1.FORM_DIRECTIVES, primeng_1.Dialog]
+	            directives: [common_1.FORM_DIRECTIVES, primeng_1.Dialog, private_chat_1.PrivateChatComponent]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object])
 	    ], CreateSubCategoryComponent);
@@ -19725,7 +19739,9 @@ webpackJsonp([2],[
 	                container.id = 'container_' + webrtc.getDomId(peer);
 	                container.appendChild(video);
 	                // suppress contextmenu
-	                video.oncontextmenu = function () { return false; };
+	                video.oncontextmenu = function () {
+	                    return false;
+	                };
 	                remotes.appendChild(container);
 	                var kspacePanel = $('#kspace-panel');
 	                var v = webrtc.getDomId(peer);
@@ -19948,6 +19964,7 @@ webpackJsonp([2],[
 	var auth_1 = __webpack_require__(44);
 	var requests_1 = __webpack_require__(63);
 	var notification_1 = __webpack_require__(62);
+	var private_chat_1 = __webpack_require__(28);
 	var CreateOfferComponent = (function () {
 	    function CreateOfferComponent(fb, _offerService, _authService, _noti, _requestService) {
 	        this._offerService = _offerService;
@@ -19994,7 +20011,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'offer-create',
 	            templateUrl: 'client/dev/app/components/front-end/offer/templates/offer-create.html',
-	            directives: [common_1.FORM_DIRECTIVES]
+	            directives: [common_1.FORM_DIRECTIVES, private_chat_1.PrivateChatComponent]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_b = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _b) || Object, (typeof (_c = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object, (typeof (_e = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _e) || Object, (typeof (_f = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _f) || Object])
 	    ], CreateOfferComponent);
@@ -20156,11 +20173,13 @@ webpackJsonp([2],[
 	            knowledges = parent;
 	            _this.knowledges = parent;
 	        });
-	        $(document).ready(function () {
-	            $('.collapsible').collapsible({
-	                accordion: false // A setting that changes the collapsible behavior to expandable instead of the default accordion style
-	            });
+	        $('.collapsible').collapsible({
+	            accordion: true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
 	        });
+	    };
+	    SideBarComponent.prototype.ngAfterViewChecked = function () {
+	        $('#sidenav-overlay').remove();
+	        $('.drag-target').remove();
 	    };
 	    SideBarComponent.prototype.closeNav = function () {
 	        $('.btnOpenNavF').sideNav({ closeOnClick: "true" });
@@ -20286,6 +20305,7 @@ webpackJsonp([2],[
 	var users_1 = __webpack_require__(31);
 	var tag_1 = __webpack_require__(64);
 	var primeng_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var RegisterInfoComponent = (function () {
 	    function RegisterInfoComponent(fb, router, _userService, route, _tagService) {
 	        var _this = this;
@@ -20379,7 +20399,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            templateUrl: "client/dev/app/components/front-end/user/register/templates/info.html",
 	            styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
-	            directives: [primeng_1.AutoComplete],
+	            directives: [primeng_1.AutoComplete, private_chat_1.PrivateChatComponent],
 	            providers: [tag_1.TagService]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object, (typeof (_e = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _e) || Object])
@@ -20690,8 +20710,6 @@ webpackJsonp([2],[
 	        this.route = route;
 	    }
 	    ArticleListComponent.prototype.ngOnInit = function () {
-	        console.log("hello");
-	        console.log(this.article);
 	    };
 	    __decorate([
 	        core_1.Input(), 
@@ -20700,7 +20718,7 @@ webpackJsonp([2],[
 	    ArticleListComponent = __decorate([
 	        core_1.Component({
 	            selector: 'article-list',
-	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/list-kspace.html',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/list-article.html',
 	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES, tag_1.listTagComponent

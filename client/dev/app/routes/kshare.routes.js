@@ -16,6 +16,7 @@ var user_profile_1 = require("../components/front-end/user/user-profile/user-pro
 var rs_search_user_1 = require("../components/front-end/user/search/rs-search-user");
 var register_1 = require('../components/front-end/user/register/register');
 var info_1 = require('../components/front-end/user/register/info');
+var user_info_update_1 = require('../components/front-end/user/user-profile/user-info-update');
 var login_1 = require("../components/front-end/user/login/login");
 var reset_pass_1 = require("../components/front-end/user/reset-password/reset-pass");
 var new_pass_1 = require("../components/front-end/user/reset-password/new-pass");
@@ -81,6 +82,10 @@ exports.KShareRoutes = [
                             {
                                 path: '',
                                 component: user_profile_1.UserProfileComponent
+                            },
+                            {
+                                path: 'info',
+                                component: user_info_update_1.UpdateUserComponent
                             }
                         ]
                     },
@@ -175,7 +180,7 @@ exports.KShareRoutes = [
                 path: '',
                 component: home_1.HomeComponent
             }
-        ]
+        ],
     },
     {
         path: 'error',

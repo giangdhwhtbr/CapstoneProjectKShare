@@ -13,6 +13,7 @@ var report_1 = require('../../../services/report');
 var chat_1 = require('../../../services/chat');
 var primeng_1 = require('primeng/primeng');
 var message_1 = require('./message');
+var private_chat_1 = require('../../shared/private-chat');
 var ReportListComponent = (function () {
     function ReportListComponent(fb, _reportService, _chatService, router) {
         this._reportService = _reportService;
@@ -84,7 +85,7 @@ var ReportListComponent = (function () {
         core_1.Component({
             selector: 'reports-list',
             templateUrl: 'client/dev/app/components/back-end/report/templates/reports-list.html',
-            directives: [message_1.MessageComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
+            directives: [message_1.MessageComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, private_chat_1.PrivateChatComponent],
             providers: [report_1.ReportService, chat_1.ChatService]
         })
     ], ReportListComponent);

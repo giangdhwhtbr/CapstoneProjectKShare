@@ -103,7 +103,9 @@ export class ChalkBoardComponent {
         var path:any;
         var streamPath:any;
         var strokeColor:string = 'black';
-        var strokeWidth = 1;   var room = this.id;
+        var strokeWidth = 1;
+        var room = this.id;
+
         var socket = this.socket;
         function isLecturer (username, lecturer){
             if(username === lecturer){
@@ -141,7 +143,7 @@ export class ChalkBoardComponent {
         });
         socket.on('shareBoard', (board) => {
             // if logged in user is not lecturer => import board
-            if(!isLecturer(localStorage.getItem('username'), data.lecturer)){
+            if (!isLecturer(localStorage.getItem('username'), data.lecturer)) {
                 paper.importJSON(board.json);
             }
         });

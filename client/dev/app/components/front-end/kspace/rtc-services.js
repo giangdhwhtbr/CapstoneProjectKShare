@@ -16,7 +16,9 @@ var WebRCTService = (function () {
                 container.id = 'container_' + webrtc.getDomId(peer);
                 container.appendChild(video);
                 // suppress contextmenu
-                video.oncontextmenu = function () { return false; };
+                video.oncontextmenu = function () {
+                    return false;
+                };
                 remotes.appendChild(container);
                 var kspacePanel = $('#kspace-panel');
                 var v = webrtc.getDomId(peer);

@@ -73,6 +73,13 @@ var detailArticleComponent = (function () {
                 _this.canSee = false;
             }
         });
+        $('.modal-trigger').leanModal();
+    };
+    detailArticleComponent.prototype.openCloseArt = function () {
+        $('#mdCfClose').openModal();
+    };
+    detailArticleComponent.prototype.openRp = function () {
+        $('#myModal').openModal();
     };
     detailArticleComponent.prototype.deactivateArticle = function (id) {
         var _this = this;

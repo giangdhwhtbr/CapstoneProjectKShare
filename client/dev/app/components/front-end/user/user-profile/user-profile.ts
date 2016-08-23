@@ -66,9 +66,9 @@ export class UserProfileComponent {
     num:any = 5;
     height:number = 400;
 
-    kspaceList:any;
+    kspaceList:any[] = [];
 
-    articleList:any;
+    articleList:any[] = [];
 
     constructor(public router:Router, private route:ActivatedRoute,
                 public _userService:UserService, public _kSpaceService:KSpaceService, public _articleService:ArticleService,
@@ -93,19 +93,26 @@ export class UserProfileComponent {
                         }
                         if (this.isExist = true) {
                             this.getRequestByUser();
-                            this._kSpaceService.getKspaceProfile(this.name).subscribe((kspaces)=> {
-                                this.kspaceList = kspaces;
-                                this._articleService.getArtsByUsername(this.name).subscribe((arts)=> {
+                            this._articleService.getArtsByUsername(this.name).subscribe((arts)=> {
+                                //filter article
+                                if(this.userToken){
                                     this.articleList = arts;
+                                }else{
+                                    this.articleList = this.filterArticle(arts);
+                                }
+
+                                this._kSpaceService.getKspaceProfile(this.name).subscribe((kspaces)=> {
+                                    this.kspaceList = kspaces;
+
+                                    this._userService.getUserByUserName(this.name).subscribe(
+                                        (user) => {
+                                            this.userProfile = user;
+                                        },
+                                        (error) => {
+                                            console.log(error);
+                                        }
+                                    );
                                 });
-                                this._userService.getUserByUserName(this.name).subscribe(
-                                    (user) => {
-                                        this.userProfile = user;
-                                    },
-                                    (error) => {
-                                        console.log(error);
-                                    }
-                                );
                             });
                         }
 
@@ -116,18 +123,17 @@ export class UserProfileComponent {
                     });
 
 
-                //$(window).on("scroll", () => {
-                //    var scrollHeight = $(document).height();
-                //    var scrollPosition = $(window).height() + $(window).scrollTop();
-                //    if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-                //        setTimeout(() => {
-                //            this.seeMore();
-                //        }, 1000);
-                //        this.height += 30;
-                //    }
-                //});
             });
         $('ul.tabs').tabs();
+    }
+
+    filterArticle(listArt){
+        for(let i=listArt.length-1; i >= 0;i--){
+            if(listArt[i].status==='private'){
+                listArt.splice(i,1);
+            }
+        }
+        return listArt;
     }
 
     getKspaceProfile() {

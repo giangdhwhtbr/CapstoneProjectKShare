@@ -31,7 +31,7 @@ export class listArticleComponent implements OnInit {
     num:number = 5;
     articles:any[] = [];
     height:number = 400;
-    isExist:boolean = false;
+    isExist:boolean ;
 
     constructor(public router:Router, private route:ActivatedRoute, private _artService:ArticleService) {
         this.roleToken = localStorage.getItem('role');
@@ -39,28 +39,13 @@ export class listArticleComponent implements OnInit {
     }
 
     ngOnInit() {
-        if (!this.userToken) {
-            this._artService.getAllArts(this.num).subscribe((arts) => {
-                for (let i = 0; i < arts.length; i++) {
-                    if (arts[i].status == "private") {
-                        arts.splice(i, 1);
-                    }
-                    this.listArt.push(arts[i]);
-                    console.log(this.listArt);
-                }
-                if (!arts) {
-                    this.isExist = false;
-                }
-            });
-        } else {
-            this.getAllArticles();
-        }
+        this.getAllArticles();
         $(window).on("scroll", () => {
             var scrollHeight = $(document).height();
             var scrollPosition = $(window).height() + $(window).scrollTop();
             if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
                 setTimeout(() => {
-                    //this.seeMore();
+                    this.seeMore();
                 }, 1000);
                 this.height += 30;
             }
@@ -74,14 +59,21 @@ export class listArticleComponent implements OnInit {
 
     getAllArticles() {
         this._artService.getAllArts(this.num).subscribe((arts) => {
-            for (let i = 0; i < arts.length; i++) {
-                if (arts[i].status == "private") {
-                    arts.splice(i, 1);
-                }
-                this.listArt.push(arts[i]);
-            }
-            if (!arts) {
+            if (arts.length==0) {
                 this.isExist = false;
+            }else{
+                for (let i = 0; i < arts.length; i++) {
+
+                    //get summary
+                    let html = arts[i].content;
+                    let div = document.createElement("div");
+                    div.innerHTML = html;
+                    let text = div.textContent || div.innerText || "";
+
+                    arts[i].content=text;
+
+                    this.listArt.push(arts[i]);
+                }
             }
         });
     }

@@ -16,6 +16,7 @@ var ng2_pagination_1 = require('ng2-pagination');
 var filter_1 = require('../shared/filter');
 var primeng_2 = require('primeng/primeng');
 var primeng_3 = require('primeng/primeng');
+var private_chat_1 = require('../../shared/private-chat');
 var KnowledgeListComponent = (function () {
     function KnowledgeListComponent(fb, _elRef, _knowledgeService, _requestService) {
         this._elRef = _elRef;
@@ -113,7 +114,7 @@ var KnowledgeListComponent = (function () {
             directives: [
                 knowledge_update_1.UpdateKnowledgeComponent,
                 sub_knowledge_create_1.CreateSubCategoryComponent,
-                router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, primeng_2.TreeTable, primeng_3.Dialog],
+                router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, primeng_2.TreeTable, primeng_3.Dialog, private_chat_1.PrivateChatComponent],
             providers: [knowledge_1.KnowledgeService, ng2_pagination_1.PaginationService],
             pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
         })

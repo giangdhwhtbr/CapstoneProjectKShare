@@ -13,11 +13,11 @@ import {PagerService} from '../../../services/pager';
 import {StringFilterPipe} from '../shared/filter';
 import {Paginator} from 'primeng/primeng';
 import {DataTable,Column, Header, MultiSelect, Footer, InputText} from 'primeng/primeng';
-
+import {PrivateChatComponent} from '../../shared/private-chat';
 @Component({
     selector: 'tag-list-clt',
     templateUrl: 'client/dev/app/components/back-end/tag/templates/tag.html',
-    directives: [ROUTER_DIRECTIVES, FORM_DIRECTIVES,PaginationControlsCmp,Paginator,DataTable,Column, Header, MultiSelect, Footer, InputText],
+    directives: [PrivateChatComponent,ROUTER_DIRECTIVES, FORM_DIRECTIVES,PaginationControlsCmp,Paginator,DataTable,Column, Header, MultiSelect, Footer, InputText],
     providers: [TagService,PaginationService,PagerService],
     pipes: [PaginatePipe, StringFilterPipe]
 })

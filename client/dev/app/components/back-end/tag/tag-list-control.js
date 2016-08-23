@@ -1,10 +1,11 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 /**
  * Created by Duc Duong on 8/8/2016.
@@ -18,6 +19,7 @@ var pager_1 = require('../../../services/pager');
 var filter_1 = require('../shared/filter');
 var primeng_1 = require('primeng/primeng');
 var primeng_2 = require('primeng/primeng');
+var private_chat_1 = require('../../shared/private-chat');
 var TagListCtlComponent = (function () {
     function TagListCtlComponent(_tagService, router, _pagerService) {
         this._tagService = _tagService;
@@ -62,10 +64,11 @@ var TagListCtlComponent = (function () {
         core_1.Component({
             selector: 'tag-list-clt',
             templateUrl: 'client/dev/app/components/back-end/tag/templates/tag.html',
-            directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.Paginator, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.MultiSelect, primeng_2.Footer, primeng_2.InputText],
+            directives: [private_chat_1.PrivateChatComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.Paginator, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.MultiSelect, primeng_2.Footer, primeng_2.InputText],
             providers: [tag_1.TagService, ng2_pagination_1.PaginationService, pager_1.PagerService],
             pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
-        })
+        }), 
+        __metadata('design:paramtypes', [tag_1.TagService, router_1.Router, pager_1.PagerService])
     ], TagListCtlComponent);
     return TagListCtlComponent;
 })();

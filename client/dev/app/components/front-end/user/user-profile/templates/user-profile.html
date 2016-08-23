@@ -1,7 +1,7 @@
 <!--<push-notification #myNotification title="demo notification" icon="https://goo.gl/3eqeiE" body="demo notification">
 </push-notification>-->
 <div *ngIf="isExist" class="container">
-    <div class="row profile">
+    <div *ngIf="requests && articleList && kspaceList" class="row profile">
         <div class="col s4 m4 l4">
             <!--<button (click)="myNotification.show()" type="button" class="btn btn danger btn-sm">Demo Show Notification</button>-->
             <user-profile-bar></user-profile-bar>
@@ -23,12 +23,12 @@
                         </request-record>
                     </div>
                 </div>
-                <div id="article" class="col s12">
+                <div id="article" class="row">
                     <div *ngFor="let art of articleList">
-                        <kspace-list [article]="art"></kspace-list>
+                        <article-list [article]="art"></article-list>
                     </div>
                 </div>
-                <div id="kspace" class="col s12">
+                <div id="kspace" class="row">
                     <div *ngFor="let kspace of kspaceList">
                         <kspace-list [kspace]="kspace"></kspace-list>
                     </div>
@@ -46,6 +46,5 @@
     </div>
     <!--content of user's wall-->
     </div>
-
-    <private-chat></private-chat>
 </div>
+<private-chat></private-chat>

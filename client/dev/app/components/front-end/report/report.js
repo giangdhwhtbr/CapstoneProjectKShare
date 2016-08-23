@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
+var private_chat_1 = require('../../shared/private-chat');
 var ReportComponent = (function () {
     function ReportComponent(fb, _reportService, _noti, _userService) {
         this._reportService = _reportService;
@@ -60,7 +61,7 @@ var ReportComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/report/templates/report.html',
             styleUrls: [],
             directives: [
-                common_1.FORM_DIRECTIVES,
+                common_1.FORM_DIRECTIVES, private_chat_1.PrivateChatComponent
             ]
         })
     ], ReportComponent);

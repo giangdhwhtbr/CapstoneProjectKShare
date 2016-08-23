@@ -22,12 +22,13 @@ import  { UserService} from '../../../services/users';
 import  { AuthService} from '../../../services/auth';
 import {DataTable,Column, Header, MultiSelect, Footer, InputText} from 'primeng/primeng';
 import {Paginator} from 'primeng/primeng';
+import {PrivateChatComponent} from '../../shared/private-chat';
 declare var $:any;
 declare var Materialize:any;
 @Component({
     selector: 'user-list',
     templateUrl: 'client/dev/app/components/back-end/users/templates/user-list.html',
-    directives: [ROUTER_DIRECTIVES,Paginator,FORM_DIRECTIVES,DataTable,Column,Header,Footer],
+    directives: [ROUTER_DIRECTIVES,Paginator,FORM_DIRECTIVES,DataTable,Column,Header,Footer,PrivateChatComponent],
     providers: [UserService,PagerService],
 })
 export class UserListComponent {

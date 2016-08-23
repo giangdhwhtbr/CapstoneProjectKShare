@@ -157,13 +157,6 @@ module.exports = class TagController {
             .catch(error => res.status(400).json(error));
     }
 
-    //static createArrayTag(req, res){
-    //    let tagNames= req.body;
-    //    TagDAO.createArrayTag(tagNames.list).then((tags)=>{
-    //        res.status(201).json(tags);
-    //    }).catch(error => res.status(400).json(error));
-    //}
-
     static deleteTag(req, res) {
         let _id = req.params.id;
 

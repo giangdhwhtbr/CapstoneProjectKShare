@@ -20,11 +20,12 @@ import { CreateOfferComponent  } from '../../front-end/offer/offer-create';
 import { UpdateRequestComponent } from './request-update';
 import {DataTable,Column, Header, MultiSelect, Footer, InputText} from 'primeng/primeng';
 import {Paginator} from 'primeng/primeng';
+import {PrivateChatComponent} from '../../shared/private-chat';
 declare var $:any;
 @Component({
     selector: 'request-list',
     templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-    directives: [UpdateRequestComponent, ROUTER_DIRECTIVES, FORM_DIRECTIVES, Paginator,FORM_DIRECTIVES,DataTable,Column,Header,Footer],
+    directives: [PrivateChatComponent,UpdateRequestComponent, ROUTER_DIRECTIVES, FORM_DIRECTIVES, Paginator,FORM_DIRECTIVES,DataTable,Column,Header,Footer],
     providers: [RequestService, PagerService]
 })
 export class RequestListComponent implements AfterViewChecked {

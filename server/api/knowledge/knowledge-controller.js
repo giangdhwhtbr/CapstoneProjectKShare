@@ -165,4 +165,4 @@ module.exports = class KnowledgeController {
             })
             .catch(error => console.log(console.error));
     }
-}
+};

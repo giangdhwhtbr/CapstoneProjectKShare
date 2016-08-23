@@ -11,7 +11,6 @@ import {PrivateChatComponent} from '../../shared/private-chat'
 
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
-
 import * as $ from 'jquery';
 
 @Component({

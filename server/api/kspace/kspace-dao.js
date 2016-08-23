@@ -72,21 +72,6 @@ KSpaceSchema.statics.createNew = (kspace) => {
     });
 };
 
-//function delete front.KSpace dao
-KSpaceSchema.statics.removeById = (id) => {
-    return new Promise((resolve, reject) => {
-        if (!_.isString(id)) {
-            return reject(new TypeError('Id is not a valid string.'));
-        }
-        KSpace
-            .findByIdAndRemove(id)
-            .exec((err, deleted) => {
-                err ? reject(err)
-                    : resolve();
-            });
-    });
-};
-
 //function update front.KSpace dao
 KSpaceSchema.statics.updateKSpaceById = (KSpaceinfo) => {
     return new Promise((resolve, reject) => {

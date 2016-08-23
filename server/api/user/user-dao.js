@@ -7,16 +7,10 @@ const passport = require('passport');
 const _ = require('lodash');
 var relationship = require("mongoose-relationship");
 
-//Send Json
-var sendJsonResponse = function (res, status, content) {
-    res.status(status);
-    res.json(content);
-};
 
 userSchema.statics.getAll = () => {
     return new Promise((resolve, reject) => {
         let _query = {};
-
         User
             .find(_query)
             .exec((err, user) => {
@@ -30,12 +24,23 @@ userSchema.statics.getAll = () => {
 userSchema.statics.getUserById = (id) => {
 
     return new Promise((resolve, reject) => {
-        if (!_.isString(id)) {
-            return reject(new TypeError('ID is not a String.'));
-        }
         User
             .findById(id)
             .select("-username -password -role -salt")
+            .exec((err, user) => {
+                err ? reject(err)
+                    : resolve(user);
+            });
+    });
+}
+userSchema.statics.getAvartaByUserNaname = (arrName) => {
+
+    return new Promise((resolve, reject) => {
+        User
+            .find({
+                linkImg:{ $in: arrName }
+            })
+            .select("linkImg")
             .exec((err, user) => {
                 err ? reject(err)
                     : resolve(user);
@@ -46,9 +51,6 @@ userSchema.statics.getUserById = (id) => {
 
 userSchema.statics.getUserByEmail = (email) => {
     return new Promise((resolve, reject) => {
-        if (!_.isString(email)) {
-            return reject(new TypeError('Not valid email.'));
-        }
         User.findOne({'email': email})
             .select("_id username email resetPasswordToken sendTokenDate")
             .exec((err, user) => {
@@ -59,9 +61,6 @@ userSchema.statics.getUserByEmail = (email) => {
 userSchema.statics.getUserByToken = (token) => {
   token = token+'==';
   return new Promise((resolve, reject) => {
-    if (!_.isString(token)) {
-      return reject(new TypeError('Not valid String.'));
-    }
     User.findOne({'resetPasswordToken': token})
       .select("_id password sendTokenDate")
       .exec((err, user) => {
@@ -81,7 +80,7 @@ userSchema.statics.getUserByUserName = (username) => {
     });
 }
 
-// find user by username
+// find user by username search on header
 userSchema.statics.findUsersByUserName = (username) => {
     let _query = {username: new RegExp('^'+username+'$')};
     console.log(_query);
@@ -96,7 +95,6 @@ userSchema.statics.findUsersByUserName = (username) => {
 
 userSchema.statics.checkUserExist = (user) => {
     return new Promise((resolve, reject) => {
-
         User.count({'username': user})
             .exec((err, count) => {
                 err ? reject(err) : resolve(count);
@@ -106,10 +104,6 @@ userSchema.statics.checkUserExist = (user) => {
 
 userSchema.statics.createNew = (user) => {
     return new Promise((resolve, reject) => {
-        if (!_.isObject(user)) {
-            return reject(new TypeError('User is not a valid object.'));
-        }
-
         let _user = new User(user);
 
         _user.save((err, saved) => {
@@ -117,28 +111,10 @@ userSchema.statics.createNew = (user) => {
                 : resolve(saved);
         });
     });
-}
-
-userSchema.statics.removeById = (id) => {
-    return new Promise((resolve, reject) => {
-        if (!_.isString(id)) {
-            return reject(new TypeError('Id is not a valid string.'));
-        }
-
-        User
-            .findByIdAndRemove(id)
-            .exec((err, deleted) => {
-                err ? reject(err)
-                    : resolve();
-            });
-    });
-}
+};
 
 userSchema.statics.updateUserById = (userinfo) => {
     return new Promise((resolve, reject) => {
-        if (!_.isObject(userinfo)) {
-            return reject(new TypeError('User is not a valid object.'));
-        }
         userinfo.save((err, user) => {
             err ? reject(err)
                 : resolve(user);

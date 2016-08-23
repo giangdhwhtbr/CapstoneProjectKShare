@@ -6,24 +6,31 @@
                 <input #text type="text" class="form-control" placeholder="Nhập nội dung tìm kiếm">
             </div>
             <button (click)="searchArticle(text.value)" type="submit" class="btn btn-small">Tìm kiếm</button>
-            <button *ngIf="userToken != null" type="button" class="btn btn-primary btn-small"
-                    [routerLink]="['/article/create']">
+            <a *ngIf="userToken != null" type="button" class="btn btn-primary btn-small" href="/article/create">
                 Tạo bài viết
-            </button>
+            </a>
         </form>
     </div>
     <div *ngIf="isExist">
         <h1>Không có bài viết nào được tìm thấy</h1>
     </div>
     <div *ngIf="listArt" class="row">
-        <div class="col s12 m12">
-            <div class="card" *ngFor="let a of listArt">
-                <div class="card-content">
-                    <a [routerLink]="['/article',a._id]">{{a.title}}</a>
+        <div class="col s12 m12"  *ngFor="let a of listArt">
+            <div class="card">
+                <div *ngIf="a" class="card-content">
 
-                    <span class="sumary"></span>
+                    <a *ngIf="a.title.length>70" [routerLink]="['/article',a._id]"><h5>{{a.title.substring(0,70)}} ...</h5></a>
+
+                    <a *ngIf="a.title.length<=70" [routerLink]="['/article',a._id]"><h5>{{a.title}}</h5></a>
+
+                    <p><span *ngIf="a.content.length>70" class="sumary">
+                        {{a.content.substring(0,70)}} ...
+                    </span>
+                    <p><span *ngIf="a.content.length<=70" class="sumary">
+                        {{a.content}}
+                    </span>
                 </div>
-                <div class="card-action">
+                <div *ngIf="a" class="card-action">
                     <div class="row">
                         <div class="col s4 m4">
                             <span *ngIf="a.author" class="author">Tạo bởi : <a

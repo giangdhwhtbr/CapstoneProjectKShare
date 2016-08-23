@@ -1,7 +1,7 @@
 "use strict";
 
 const mongoose = require('mongoose');
-var validator = require('validator');
+const validator = require('validator');
 const crypto = require('crypto');
 
 

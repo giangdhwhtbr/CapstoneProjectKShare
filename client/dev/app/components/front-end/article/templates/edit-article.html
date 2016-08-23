@@ -1,16 +1,16 @@
 <div class="container article">
     <div *ngIf="isEdited">
         <div class="titleDiv row">
-            <div class="col-xs-12">
+            <div class="col s12">
                 <label for="inputTitle">Title</label>
                 <input class="form-control input-sm" id="inputTitle" [(ngModel)]="titelArticle" type="text">
             </div>
         </div>
         <div *ngIf="art">
             <div class="row">
-                <div class="col-xs-2">
+                <div class="col s2">
                     <label for="inputTitle">Status</label>
-                    <select [(ngModel)]="stt" class="form-control input-sm">
+                    <select [(ngModel)]="stt" class="browser-default">
                         <option value="public">Public</option>
                         <option value="private">Private</option>
                     </select>
@@ -131,14 +131,12 @@
                         [multiple]="true" [(ngModel)]="tags">
         </p-autoComplete>
         <!--end tags-->
-        <button type="button" class="btn btn-primary" (click)="editArticle()">Submit</button>
+        <button type="button" class="btn btn-primary" (click)="editArticle()">Sửa</button>
     </div>
     <div *ngIf="!isEdited">
         <div class="noti-err">
             <div class="row">
-                <div class="col-xs-offset-3 col-xs-9">
-                    <i class="fa fa-ban fa-3x" aria-hidden="true"></i><span class="text-noti-err-edit">Nội dung này không khả dụng</span>
-                </div>
+                <i class="fa fa-ban fa-3x" aria-hidden="true"></i><span class="text-noti-err-edit">Nội dung này không khả dụng</span>
             </div>
         </div>
     </div>

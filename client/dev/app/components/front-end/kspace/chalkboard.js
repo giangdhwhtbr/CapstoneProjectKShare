@@ -1,10 +1,11 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
 var ChalkBoardComponent = (function () {
@@ -290,17 +291,20 @@ var ChalkBoardComponent = (function () {
         }
     };
     __decorate([
-        core_1.Input()
-    ], ChalkBoardComponent.prototype, "id");
+        core_1.Input(), 
+        __metadata('design:type', String)
+    ], ChalkBoardComponent.prototype, "id", void 0);
     __decorate([
-        core_1.Input()
-    ], ChalkBoardComponent.prototype, "lecturer");
+        core_1.Input(), 
+        __metadata('design:type', String)
+    ], ChalkBoardComponent.prototype, "lecturer", void 0);
     ChalkBoardComponent = __decorate([
         core_1.Component({
             selector: 'chalkboard',
             template: "\n  <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let board of boards\">\n          <a *ngIf=\"isLect\" (click)=\"changeBoard(board.json, board.boardNumber)\">\n             B\u1EA3ng {{board.boardNumber}}\n          </a></li>\n        </ul>\n      </div>\n    </div>\n    <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n    <div id=\"draw-tools\">\n        <p id=\"new-page\"  (click)=\"openModal()\"  class=\"tool-btn modal-trigger\">\n            <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n        <select id=\"color-picker\" class=\"tool-btn\">\n            <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n        </select>\n        <hr>\n        <select id=\"brush-size\" class=\"tool-btn\">\n            <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n        </select>\n        <hr>\n        <p id=\"eraser\">\n            <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n    </div>\n      <div class=\"wrapper-chalkboard\">\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n      </div>\n      <!--Modal nh\u1EADp th\u00F4ng tin-->\n      <div id=\"modal1\" class=\"modal modal-fixed-footer\">\n        <div class=\"modal-content\">\n          <h4>Nh\u1EADp th\u00F4ng tin</h4>\n          <form>\n            <div class=\"row\">\n              <div class=\"input-field col s12\">\n                <input class=\"form-control\" type=\"text\" required=\"required\" id=\"title\" name=\"title\"/>\n                <label for=\"title\">Ti\u00EAu \u0111\u1EC1</label>\n              </div>\n            </div>\n            <div class=\"row\">\n              <button type=\"submit\" class=\"btn-floating btn-large modal-close waves-effect waves-light blue\" (click)=\"newPage()\"><i class=\"material-icons\">done</i></button>\n            </div>\n          </form>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"modal-action modal-close waves-effect waves-green btn-flat \">Tho\u00E1t</a>\n        </div>\n      </div>\n    ",
             styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
-        })
+        }), 
+        __metadata('design:paramtypes', [])
     ], ChalkBoardComponent);
     return ChalkBoardComponent;
 })();

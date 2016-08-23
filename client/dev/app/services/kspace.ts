@@ -51,7 +51,6 @@ export class KSpaceService {
             offerId: kspace.offerId,
             tags: kspace.tags
         });
-
         return this._http
             .post(this._kspaceUrl.replace(':id', ''), _kspace, options)
             .map((r) => r.json());

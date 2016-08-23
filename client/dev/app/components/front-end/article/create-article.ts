@@ -4,7 +4,8 @@
 import {
     Component,
     OnInit,
-    ElementRef
+    ElementRef,
+    OnDestroy
 } from '@angular/core';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 
@@ -13,7 +14,6 @@ import {TagService} from '../../../services/tag';
 import { AuthService } from '../../../services/auth';
 import {AutoComplete,SelectButton,SelectItem} from 'primeng/primeng';
 import { PrivateChatComponent } from './../../shared/private-chat';
-
 declare var $ :any;
 declare var CKEDITOR: any;
 
@@ -21,10 +21,11 @@ declare var CKEDITOR: any;
     selector: 'ck-editor',
     template: ``
 })
-class CKEditor {
+class CKEditor implements OnDestroy{
     constructor(_elm:ElementRef) {
         CKEDITOR.replace(_elm.nativeElement);
     }
+
 }
 
 
@@ -36,7 +37,7 @@ class CKEditor {
     providers: [ArticleService, TagService]
 })
 
-export class CreateArticleComponent implements OnInit {
+export class CreateArticleComponent implements OnInit,OnDestroy {
     filesToUpload:Array<File>;
     contentCk:string="";
     titelArticle:string="";
@@ -66,6 +67,11 @@ export class CreateArticleComponent implements OnInit {
         this.addCommandBtnCk();
         this.loadAllTags();
     }
+
+    ngOnDestroy(){
+        CKEDITOR.instances.editor1.destroy();
+    }
+
 
     filterONTag() {
         let oldTag: any[]=[];

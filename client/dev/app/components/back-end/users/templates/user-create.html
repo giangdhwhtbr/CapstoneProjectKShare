@@ -8,13 +8,13 @@
         <button type="button" class="close" data-dismiss="modal"
                 aria-label="Close"><span aria-hidden="true">&times;</span>
         </button>
-        <h4 class="modal-title" id="myModalLabel">Create new user</h4>
+        <h4 class="modal-title" id="myModalLabel">Tạo người dùng mới</h4>
       </div>
       <div class="modal-body">
         <form [ngFormModel]="userForm" (ngSubmit)="addUser(userForm.value)"  >
           <div class="row">
             <div class="col-md-12">
-              <label for="firstName">First name</label>
+              <label for="firstName">Tên</label>
               <input class="form-control"
                      type="text"
                      required="required"
@@ -27,7 +27,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <label for="lastName">Last name</label>
+              <label for="lastName">Họ & đệm</label>
               <input class="form-control"
                      type="text"
                      required="required"
@@ -39,7 +39,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <label for="displayName">Display Name</label>
+              <label for="displayName">Tên hiển thị</label>
               <input class="form-control"
                      type="text"
                      required="required"
@@ -51,7 +51,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <label for="displayName">Birthday</label>
+              <label for="displayName">Ngày sinh nhật</label>
               <input class="form-control"
                      type="date"
                      required="required"
@@ -63,7 +63,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <label for="username">Username</label>
+              <label for="username">Tên đăng nhập</label>
               <input class="form-control"
                      type="text"
                      required="required"
@@ -75,7 +75,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <label for="password">Password</label>
+              <label for="password">mật khẩu</label>
               <input class="form-control"
                      type="password"
                      required="required"
@@ -99,7 +99,7 @@
           </div>
           <div class="row">
             <div class="col-md-12">
-              <label for="role">Role</label>
+              <label for="role">Chức năng</label>
               <select name="role"
                       id="role"
                       required="required"
@@ -152,9 +152,9 @@
           <br>
           <div class="row">
             <div class="col-md-12">
-              <button type="submit" class="btn btn-primary" >Create
+              <button type="submit" class="btn btn-primary" >Tạo
               </button>
-              <button type="reset" class="btn btn-warning">Reset
+              <button type="reset" class="btn btn-warning">Tạo lại
               </button>
             </div>
           </div>
@@ -162,9 +162,10 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">
-          Close
+          Đóng
         </button>
       </div>
     </div>
   </div>
 </div>
+<private-chat></private-chat>

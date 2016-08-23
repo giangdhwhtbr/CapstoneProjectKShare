@@ -1,10 +1,11 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
@@ -13,6 +14,7 @@ var core_1 = require('@angular/core');
 var knowledge_1 = require('../../../services/knowledge');
 var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
+var private_chat_1 = require('../../shared/private-chat');
 var UpdateKnowledgeComponent = (function () {
     function UpdateKnowledgeComponent(fb, _knowledgeService, router, route) {
         var _this = this;
@@ -27,7 +29,7 @@ var UpdateKnowledgeComponent = (function () {
         this.updateKnowledgeForm = fb.group({
             "name": [""],
             "description": [""],
-            "_id": [""]
+            "_id": [""],
         });
     }
     UpdateKnowledgeComponent.prototype.ngOnInit = function () {
@@ -53,11 +55,12 @@ var UpdateKnowledgeComponent = (function () {
         core_1.Component({
             selector: 'knowledge-update',
             templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-update.html',
-            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
+            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
             providers: [knowledge_1.KnowledgeService]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
-        __param(1, core_1.Inject(knowledge_1.KnowledgeService))
+        __param(1, core_1.Inject(knowledge_1.KnowledgeService)), 
+        __metadata('design:paramtypes', [common_1.FormBuilder, knowledge_1.KnowledgeService, router_1.Router, router_1.ActivatedRoute])
     ], UpdateKnowledgeComponent);
     return UpdateKnowledgeComponent;
 })();

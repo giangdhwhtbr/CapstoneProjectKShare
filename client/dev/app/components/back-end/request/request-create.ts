@@ -9,7 +9,7 @@ import { AuthService} from '../../../services/auth';
 import {TagService} from '../../../services/tag';
 import { PrivateChatComponent } from './../../shared/private-chat';
 import {AutoComplete, SelectButton, SelectItem} from 'primeng/primeng';
-
+import {PrivateChatComponent} from '../../shared/private-chat';
 declare var $: any;
 declare var CKEDITOR: any;
 

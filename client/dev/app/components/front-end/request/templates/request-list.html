@@ -11,7 +11,7 @@
                     <a class="btn-floating btn-large waves-effect waves-light red" (click)="search(text.value)"><i
                             class="material-icons">search</i></a>
                     <a *ngIf="userToken != null" class="btn-floating btn-large waves-effect waves-light blue"
-                       [routerLink]="['/requests/create']">
+                       href="/requests/create">
                         <i class="material-icons">add</i>
                     </a>
                 </div>

@@ -12,11 +12,11 @@ import { User } from '../../../../interface/user.ts';
 import { UserService } from '../../../../services/users';
 import {TagService} from '../../../../services/tag';
 import {AutoComplete,SelectButton,SelectItem} from 'primeng/primeng';
-
+import {PrivateChatComponent} from '../../../shared/private-chat';
 @Component({
     templateUrl: `client/dev/app/components/front-end/user/register/templates/info.html`,
     styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
-    directives: [AutoComplete],
+    directives: [AutoComplete,PrivateChatComponent],
     providers: [TagService]
 })
 
