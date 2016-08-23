@@ -14,6 +14,7 @@ import {TagService} from '../../../../services/tag';
 import { PrivateChatComponent } from './../../../shared/private-chat';
 import {AutoComplete,SelectButton,SelectItem} from 'primeng/primeng';
 
+
 @Component({
     templateUrl: `client/dev/app/components/front-end/user/user-profile/templates/user-info-update.html`,
     styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],

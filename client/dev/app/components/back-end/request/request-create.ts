@@ -7,6 +7,7 @@ import { RequestService} from '../../../services/requests';
 import { Knowledge } from '../../../interface/knowledge';
 import { AuthService} from '../../../services/auth';
 import {TagService} from '../../../services/tag';
+import { PrivateChatComponent } from './../../shared/private-chat';
 import {AutoComplete, SelectButton, SelectItem} from 'primeng/primeng';
 import {PrivateChatComponent} from '../../shared/private-chat';
 declare var $: any;

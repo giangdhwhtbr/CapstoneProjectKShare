@@ -114,7 +114,7 @@ export class ArticleService {
         let _data = JSON.stringify(
             {
                 art: {
-                    ofUser: user,
+                    author: user,
                     title: _title,
                     content: _content,
                     tags: oldTag,

@@ -29,7 +29,7 @@
                 </div>
             </div>
             <!--2--> <!--2--> <!--2--> <!--2--> <!--2-->
-            <div *ngIf="record.ofUser" class="card" >
+            <div *ngIf="record.author" class="card" >
                 <div class="card-content">
                     <h3>Bài viết</h3>
                     <a *ngIf="record.title.length>=70" [routerLink]="['/article/' + record._id]"><h5>{{record.title.substring(0,70)}} ...</h5></a>
@@ -40,7 +40,7 @@
                 <div class="card-action">
                     <div class="row">
                         <div class="col s4 m4">
-                            <span>Tạo bởi : <a>{{record.ofUser}}</a> </span>
+                            <span>Tạo bởi : <a>{{record.author}}</a> </span>
                         </div>
                         <div class="col s4 m4">
                             <span>Trạng thái : {{record.status}}</span>
@@ -83,7 +83,7 @@
             <!--</p>-->
         <!--</div>-->
 
-        <!--<div *ngIf="record.ofUser" class="panel-body">-->
+        <!--<div *ngIf="record.author" class="panel-body">-->
             <!--<h3>Bài viết</h3>-->
             <!--<p>-->
                 <!--<span class="title">-->
@@ -97,7 +97,7 @@
                 <!--<span class="dateArt">{{record.createdAt | date:"dd/MM/yyyy"}}</span>-->
             <!--</p>-->
             <!--<p>-->
-                <!--<span>by : <a>{{record.ofUser}}</a> </span>-->
+                <!--<span>by : <a>{{record.author}}</a> </span>-->
             <!--</p>-->
         <!--</div>-->
 

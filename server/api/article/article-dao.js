@@ -230,8 +230,8 @@ articleSchema.statics.fullTextSearchArticle = (text) => {
 articleSchema.statics.getArticleByUser = (username) => {
     return new Promise((resolve, reject) => {
         Article
-            .find({
-                'ofUser': username,
+            .find({ 
+                'author': username,
                 $or:[
                     {'status':'public'},
                     {'status':'private'}
