@@ -13,7 +13,7 @@ import {listTagComponent} from '../tag/tag';
 
 import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance } from 'ng2-pagination';
 import { Subscription }       from 'rxjs/Subscription';
-
+import {PrivateChatComponent} from '../../shared/private-chat';
 declare var $:any;
 
 @Component ({
@@ -21,7 +21,7 @@ declare var $:any;
     templateUrl: 'client/dev/app/components/front-end/tag/templates/display-article-by-tag.html',
     styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
     directives: [
-        ROUTER_DIRECTIVES,listTagComponent,PaginationControlsCmp
+        ROUTER_DIRECTIVES,listTagComponent,PaginationControlsCmp,PrivateChatComponent
     ],
     providers: [TagService,PaginationService],
     pipes: [PaginatePipe]

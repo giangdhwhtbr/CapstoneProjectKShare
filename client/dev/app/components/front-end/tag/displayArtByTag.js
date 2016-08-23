@@ -14,6 +14,7 @@ var router_1 = require('@angular/router');
 var tag_1 = require('../../../services/tag');
 var tag_2 = require('../tag/tag');
 var ng2_pagination_1 = require('ng2-pagination');
+var private_chat_1 = require('../../shared/private-chat');
 var displayArtByTagComponent = (function () {
     function displayArtByTagComponent(router, route, _tagService) {
         this.router = router;
@@ -68,7 +69,7 @@ var displayArtByTagComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/tag/templates/display-article-by-tag.html',
             styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES, tag_2.listTagComponent, ng2_pagination_1.PaginationControlsCmp
+                router_1.ROUTER_DIRECTIVES, tag_2.listTagComponent, ng2_pagination_1.PaginationControlsCmp, private_chat_1.PrivateChatComponent
             ],
             providers: [tag_1.TagService, ng2_pagination_1.PaginationService],
             pipes: [ng2_pagination_1.PaginatePipe]

@@ -13,6 +13,7 @@ var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 // UI
 var primeng_1 = require('primeng/primeng');
+var private_chat_1 = require('../../shared/private-chat');
 var users_1 = require('../../../services/users');
 var CreateUserComponent = (function () {
     function CreateUserComponent(fb, _userService, router) {
@@ -45,7 +46,7 @@ var CreateUserComponent = (function () {
             directives: [
                 common_1.FORM_DIRECTIVES,
                 primeng_1.Dialog,
-                primeng_1.Calendar
+                primeng_1.Calendar, private_chat_1.PrivateChatComponent
             ]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),

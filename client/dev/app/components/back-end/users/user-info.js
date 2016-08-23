@@ -12,6 +12,7 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var router_1 = require('@angular/router');
+var private_chat_1 = require('../../shared/private-chat');
 var nav_bar_1 = require('../shared/nav-bar');
 var side_bar_1 = require('../shared/side-bar');
 var users_1 = require('../../../services/users');
@@ -63,7 +64,7 @@ var UserInfoComponent = (function () {
                 common_1.FORM_DIRECTIVES,
                 router_1.ROUTER_DIRECTIVES,
                 nav_bar_1.NavbarComponent,
-                side_bar_1.SidebarComponent
+                side_bar_1.SidebarComponent, private_chat_1.PrivateChatComponent
             ]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),

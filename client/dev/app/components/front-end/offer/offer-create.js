@@ -8,6 +8,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 };
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
+var private_chat_1 = require('../../shared/private-chat');
 var CreateOfferComponent = (function () {
     function CreateOfferComponent(fb, _offerService, _authService, _noti, _requestService) {
         this._offerService = _offerService;
@@ -52,7 +53,7 @@ var CreateOfferComponent = (function () {
         core_1.Component({
             selector: 'offer-create',
             templateUrl: 'client/dev/app/components/front-end/offer/templates/offer-create.html',
-            directives: [common_1.FORM_DIRECTIVES]
+            directives: [common_1.FORM_DIRECTIVES, private_chat_1.PrivateChatComponent]
         })
     ], CreateOfferComponent);
     return CreateOfferComponent;

@@ -5,11 +5,12 @@ import { OfferService } from '../../../services/request-offer';
 import { AuthService} from '../../../services/auth';
 import { RequestService } from '../../../services/requests';
 import { NotificationService } from '../../../services/notification';
+import {PrivateChatComponent} from '../../shared/private-chat';
 declare var $: any;
 @Component({
   selector: 'offer-create',
   templateUrl: 'client/dev/app/components/front-end/offer/templates/offer-create.html',
-  directives: [FORM_DIRECTIVES]
+  directives: [FORM_DIRECTIVES,PrivateChatComponent]
 })
 
 export class CreateOfferComponent {

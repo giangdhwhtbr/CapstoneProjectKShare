@@ -23,6 +23,20 @@ articleSchema.statics.getAll = (x) => {
             });
     });
 }
+articleSchema.statics.getAllNf = (x) => {
+    return new Promise((resolve, reject) => {
+
+        Article
+            .find({status: { $nin: ['deactivate','private'] }})
+            .skip(x - 5)
+            .limit(5)
+            .sort({ updatedAt: -1 })
+            .exec((err, articles) => {
+                err ? reject(err)
+                    : resolve(articles);
+            });
+    });
+}
 articleSchema.statics.getAllAdmin = (x) => {
     return new Promise((resolve, reject) => {
 
@@ -140,7 +154,7 @@ articleSchema.statics.getArticleByKnwId = (id) => {
             return reject(new TypeError('ID is not a string'));
         }
         Article.find({
-            status: { $nin: 'deactivate' },
+            status: { $nin: ['deactivate','private'] },
             'knowledge': id
         }).exec((err, arts)=> {
             err ? reject(err) : resolve(arts);

@@ -19,7 +19,7 @@ import {
   Dialog,
   Calendar
 } from 'primeng/primeng';
-
+import {PrivateChatComponent} from '../../shared/private-chat';
 // Interfaces & services
 import  { User } from '../../../interface/user';
 import  { UserService} from '../../../services/users';
@@ -30,7 +30,7 @@ import  { UserService} from '../../../services/users';
   directives: [
     FORM_DIRECTIVES,
     Dialog,
-    Calendar
+    Calendar,PrivateChatComponent
   ],
 })
 export class CreateUserComponent {

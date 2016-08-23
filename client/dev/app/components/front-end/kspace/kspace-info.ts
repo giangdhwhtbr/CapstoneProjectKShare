@@ -13,7 +13,7 @@ declare var Materialize:any;
 @Component ({
     templateUrl:'client/dev/app/components/front-end/kspace/templates/kspace-info.html',
     directives: [
-        ROUTER_DIRECTIVES,
+        ROUTER_DIRECTIVES,PrivateChatComponent
     ],
     providers:[ArticleService]
 })

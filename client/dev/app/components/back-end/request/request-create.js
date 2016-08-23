@@ -14,6 +14,7 @@ var common_1 = require('@angular/common');
 var requests_1 = require('../../../services/requests');
 var tag_1 = require('../../../services/tag');
 var primeng_1 = require('primeng/primeng');
+var private_chat_1 = require('../../shared/private-chat');
 var CKEditor = (function () {
     function CKEditor(_elm) {
         CKEDITOR.replace(_elm.nativeElement);
@@ -188,7 +189,7 @@ var CreateRequestComponent = (function () {
             selector: 'request-create',
             templateUrl: 'client/dev/app/components/back-end/request/templates/request-create.html',
             styleUrls: ['client/dev/app/components/bac  k-end/request/templates/request.css'],
-            directives: [common_1.FORM_DIRECTIVES, primeng_1.AutoComplete, CKEditor],
+            directives: [common_1.FORM_DIRECTIVES, primeng_1.AutoComplete, CKEditor, private_chat_1.PrivateChatComponent],
             providers: [tag_1.TagService]
         }),
         __param(1, core_1.Inject(common_1.FormBuilder)),

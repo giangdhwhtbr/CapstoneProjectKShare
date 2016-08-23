@@ -10,16 +10,8 @@ const KnwDAO = require('../knowledge/knowledge-dao');
 module.exports = class ArticleController {
     static getAllArticles(req, res) {
         ArticleDAO
-            .getAll(req.body.num)
+            .getAllNf(req.body.num)
             .then(articles => {
-                for (let i = articles.length - 1; i >= 0; i--) {
-                    if (articles[i].status === "deactivate") {
-                        let index = articles.indexOf(articles[i]);
-                        if (index > -1) {
-                            articles.splice(index, 1);
-                        }
-                    }
-                }
                 res.status(200).json(articles);
             })
             .catch(error => res.status(400).json(error));
@@ -30,16 +22,6 @@ module.exports = class ArticleController {
             ArticleDAO
                 .getArticleByKnwId(req.params.id)
                 .then((arts) => {
-
-                    for (let i = arts.length - 1; i >= 0; i--) {
-                        if (arts[i].status === "deactivate") {
-                            let index = arts.indexOf(arts[i]);
-                            if (index > -1) {
-                                arts.splice(index, 1);
-                            }
-                        }
-                    }
-
                     res.status(200).json(arts);
                 }).catch(error => res.status(400).json(error));
         } else {

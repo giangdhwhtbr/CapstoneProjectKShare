@@ -12,6 +12,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
+var private_chat_1 = require('./../../shared/private-chat');
 var KSpaceInfoComponent = (function () {
     function KSpaceInfoComponent(router, route, _kspaceService, _articleService) {
         var _this = this;
@@ -169,7 +170,7 @@ var KSpaceInfoComponent = (function () {
         core_1.Component({
             templateUrl: 'client/dev/app/components/front-end/kspace/templates/kspace-info.html',
             directives: [
-                router_1.ROUTER_DIRECTIVES,
+                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent
             ],
             providers: [article_1.ArticleService]
         })

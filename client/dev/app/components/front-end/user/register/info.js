@@ -9,6 +9,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require('@angular/core');
 var tag_1 = require('../../../../services/tag');
 var primeng_1 = require('primeng/primeng');
+var private_chat_1 = require('../../../shared/private-chat');
 var RegisterInfoComponent = (function () {
     function RegisterInfoComponent(fb, router, _userService, route, _tagService) {
         var _this = this;
@@ -102,7 +103,7 @@ var RegisterInfoComponent = (function () {
         core_1.Component({
             templateUrl: "client/dev/app/components/front-end/user/register/templates/info.html",
             styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
-            directives: [primeng_1.AutoComplete],
+            directives: [primeng_1.AutoComplete, private_chat_1.PrivateChatComponent],
             providers: [tag_1.TagService]
         })
     ], RegisterInfoComponent);

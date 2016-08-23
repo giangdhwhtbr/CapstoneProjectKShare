@@ -43,6 +43,167 @@ webpackJsonp([2],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	/**
+	 * Created by GiangDH on 8/12/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var chat_1 = __webpack_require__(125);
+	var notification_1 = __webpack_require__(62);
+	var PrivateChatComponent = (function () {
+	    function PrivateChatComponent(_chatService, _noti) {
+	        this._chatService = _chatService;
+	        this._noti = _noti;
+	        this.username = localStorage.getItem('username');
+	        this.socket = io('https://localhost:80');
+	        this.messages = [];
+	        this.allChatRooms = [];
+	    }
+	    PrivateChatComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.socket.on('private-message-return', function (data) {
+	            var news = 0;
+	            for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
+	                var user = _a[_i];
+	                if (user.user === _this.username) {
+	                    news = user.newMessages;
+	                }
+	            }
+	            for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
+	                var room = _c[_b];
+	                if (room.friendName === data.sender) {
+	                    room.lastSent = data.sentAt;
+	                    room.lastMsg = data.message;
+	                    room.newMessages = news;
+	                }
+	            }
+	            _this.allChatRooms.sort(function (a, b) {
+	                if (a.lastSent > b.lastSent) {
+	                    return -1;
+	                }
+	                else if (a.lastSent < b.lastSent) {
+	                    return 1;
+	                }
+	                return 0;
+	            });
+	            _this.messages.push(data);
+	        });
+	        this.socket.on('private-message-reset', function (data) {
+	            var news = 0;
+	            console.log('12');
+	            for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
+	                var user = _a[_i];
+	                if (user.user === _this.username) {
+	                    news = user.newMessages;
+	                }
+	            }
+	            for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
+	                var room = _c[_b];
+	                if (room.friendName === data.receiver) {
+	                    room.lastMsg = data.message;
+	                    room.newMessages = news;
+	                }
+	            }
+	        });
+	        this.listAllChatRoom();
+	    };
+	    PrivateChatComponent.prototype.listAllChatRoom = function () {
+	        var _this = this;
+	        this.allChatRooms = [];
+	        if (localStorage.getItem('username')) {
+	            this.sub = this._chatService.getAllChatRoomOfUser(this.username)
+	                .subscribe(function (chatRooms) {
+	                if (chatRooms) {
+	                    for (var _i = 0, chatRooms_1 = chatRooms; _i < chatRooms_1.length; _i++) {
+	                        var chatRoom = chatRooms_1[_i];
+	                        _this.socket.emit('subscribe-private-chat', chatRoom._id);
+	                        var room = {
+	                            _id: chatRoom._id,
+	                            chatLogs: chatRoom.chatLogs,
+	                            newMessages: 0
+	                        };
+	                        if (chatRoom.chatLogs.length) {
+	                            room.lastMsg = chatRoom.chatLogs[chatRoom.chatLogs.length - 1].message;
+	                            room.lastSent = chatRoom.chatLogs[chatRoom.chatLogs.length - 1].sentAt;
+	                        }
+	                        for (var _a = 0, _b = chatRoom.users; _a < _b.length; _a++) {
+	                            var user = _b[_a];
+	                            if (user.user !== _this.username) {
+	                                room.friendName = user.user;
+	                            }
+	                            if (user.user === _this.username) {
+	                                room.newMessages = user.newMessages;
+	                            }
+	                        }
+	                        _this.allChatRooms.push(room);
+	                        _this.allChatRooms.sort(function (a, b) {
+	                            if (a.lastSent > b.lastSent) {
+	                                return -1;
+	                            }
+	                            if (a.lastSent < b.lastSent) {
+	                                return 1;
+	                            }
+	                            return 0;
+	                        });
+	                        _this.receiver = _this.allChatRooms[0].friendName;
+	                        _this.messages = _this.allChatRooms[0].chatLogs;
+	                        _this.currentRoom = _this.allChatRooms[0]._id;
+	                    }
+	                }
+	            });
+	        }
+	    };
+	    PrivateChatComponent.prototype.getReceiver = function (slRoom) {
+	        //Click on friend
+	        this.messages = [];
+	        // this.news = 0;
+	        this.currentRoom = slRoom._id;
+	        this.receiver = slRoom.friendName;
+	        this.messages = slRoom.chatLogs;
+	        var data = {
+	            sender: this.username,
+	            receiver: this.receiver
+	        };
+	        this.socket.emit('reset-new-message', data);
+	    };
+	    PrivateChatComponent.prototype.sendMessage = function () {
+	        var data = {
+	            sender: this.username,
+	            message: this.mess,
+	            receiver: this.receiver
+	        };
+	        this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
+	        this.socket.emit('private-message', data);
+	        this.socket.emit('reset-new-message', data);
+	        this.mess = "";
+	    };
+	    PrivateChatComponent = __decorate([
+	        core_1.Component({
+	            selector: 'private-chat',
+	            templateUrl: 'client/dev/app/components/shared/templates/chatbox.html',
+	            styleUrls: ['client/dev/app/components/shared/styles/chatbox.css']
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _a) || Object, (typeof (_b = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _b) || Object])
+	    ], PrivateChatComponent);
+	    return PrivateChatComponent;
+	    var _a, _b;
+	}());
+	exports.PrivateChatComponent = PrivateChatComponent;
+	
+
+/***/ },
+/* 12 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	var core_1 = __webpack_require__(1);
 	var DomHandler = (function () {
 	    function DomHandler() {
@@ -286,7 +447,6 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 12 */,
 /* 13 */,
 /* 14 */,
 /* 15 */,
@@ -303,7 +463,8 @@ webpackJsonp([2],[
 /* 26 */,
 /* 27 */,
 /* 28 */,
-/* 29 */
+/* 29 */,
+/* 30 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -375,167 +536,6 @@ webpackJsonp([2],[
 	__export(__webpack_require__(1110));
 	__export(__webpack_require__(540));
 	__export(__webpack_require__(541));
-	
-
-/***/ },
-/* 30 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	/**
-	 * Created by GiangDH on 8/12/16.
-	 */
-	var core_1 = __webpack_require__(1);
-	var chat_1 = __webpack_require__(125);
-	var notification_1 = __webpack_require__(62);
-	var PrivateChatComponent = (function () {
-	    function PrivateChatComponent(_chatService, _noti) {
-	        this._chatService = _chatService;
-	        this._noti = _noti;
-	        this.username = localStorage.getItem('username');
-	        this.socket = io('https://localhost:80');
-	        this.messages = [];
-	        this.allChatRooms = [];
-	    }
-	    PrivateChatComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this.socket.on('private-message-return', function (data) {
-	            var news = 0;
-	            for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
-	                var user = _a[_i];
-	                if (user.user === _this.username) {
-	                    news = user.newMessages;
-	                }
-	            }
-	            for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
-	                var room = _c[_b];
-	                if (room.friendName === data.sender) {
-	                    room.lastSent = data.sentAt;
-	                    room.lastMsg = data.message;
-	                    room.newMessages = news;
-	                }
-	            }
-	            _this.allChatRooms.sort(function (a, b) {
-	                if (a.lastSent > b.lastSent) {
-	                    return -1;
-	                }
-	                else if (a.lastSent < b.lastSent) {
-	                    return 1;
-	                }
-	                return 0;
-	            });
-	            _this.messages.push(data);
-	        });
-	        this.socket.on('private-message-reset', function (data) {
-	            var news = 0;
-	            console.log('12');
-	            for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
-	                var user = _a[_i];
-	                if (user.user === _this.username) {
-	                    news = user.newMessages;
-	                }
-	            }
-	            for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
-	                var room = _c[_b];
-	                if (room.friendName === data.receiver) {
-	                    room.lastMsg = data.message;
-	                    room.newMessages = news;
-	                }
-	            }
-	        });
-	        this.listAllChatRoom();
-	    };
-	    PrivateChatComponent.prototype.listAllChatRoom = function () {
-	        var _this = this;
-	        this.allChatRooms = [];
-	        if (localStorage.getItem('username')) {
-	            this.sub = this._chatService.getAllChatRoomOfUser(this.username)
-	                .subscribe(function (chatRooms) {
-	                if (chatRooms) {
-	                    for (var _i = 0, chatRooms_1 = chatRooms; _i < chatRooms_1.length; _i++) {
-	                        var chatRoom = chatRooms_1[_i];
-	                        _this.socket.emit('subscribe-private-chat', chatRoom._id);
-	                        var room = {
-	                            _id: chatRoom._id,
-	                            chatLogs: chatRoom.chatLogs,
-	                            newMessages: 0
-	                        };
-	                        if (chatRoom.chatLogs.length) {
-	                            room.lastMsg = chatRoom.chatLogs[chatRoom.chatLogs.length - 1].message;
-	                            room.lastSent = chatRoom.chatLogs[chatRoom.chatLogs.length - 1].sentAt;
-	                        }
-	                        for (var _a = 0, _b = chatRoom.users; _a < _b.length; _a++) {
-	                            var user = _b[_a];
-	                            if (user.user !== _this.username) {
-	                                room.friendName = user.user;
-	                            }
-	                            if (user.user === _this.username) {
-	                                room.newMessages = user.newMessages;
-	                            }
-	                        }
-	                        _this.allChatRooms.push(room);
-	                        _this.allChatRooms.sort(function (a, b) {
-	                            if (a.lastSent > b.lastSent) {
-	                                return -1;
-	                            }
-	                            if (a.lastSent < b.lastSent) {
-	                                return 1;
-	                            }
-	                            return 0;
-	                        });
-	                        _this.receiver = _this.allChatRooms[0].friendName;
-	                        _this.messages = _this.allChatRooms[0].chatLogs;
-	                        _this.currentRoom = _this.allChatRooms[0]._id;
-	                    }
-	                }
-	            });
-	        }
-	    };
-	    PrivateChatComponent.prototype.getReceiver = function (slRoom) {
-	        //Click on friend
-	        this.messages = [];
-	        // this.news = 0;
-	        this.currentRoom = slRoom._id;
-	        this.receiver = slRoom.friendName;
-	        this.messages = slRoom.chatLogs;
-	        var data = {
-	            sender: this.username,
-	            receiver: this.receiver
-	        };
-	        this.socket.emit('reset-new-message', data);
-	    };
-	    PrivateChatComponent.prototype.sendMessage = function () {
-	        var data = {
-	            sender: this.username,
-	            message: this.mess,
-	            receiver: this.receiver
-	        };
-	        this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
-	        this.socket.emit('private-message', data);
-	        this.socket.emit('reset-new-message', data);
-	        this.mess = "";
-	    };
-	    PrivateChatComponent = __decorate([
-	        core_1.Component({
-	            selector: 'private-chat',
-	            templateUrl: 'client/dev/app/components/shared/templates/chatbox.html',
-	            styleUrls: ['client/dev/app/components/shared/styles/chatbox.css']
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _a) || Object, (typeof (_b = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _b) || Object])
-	    ], PrivateChatComponent);
-	    return PrivateChatComponent;
-	    var _a, _b;
-	}());
-	exports.PrivateChatComponent = PrivateChatComponent;
 	
 
 /***/ },
@@ -1894,7 +1894,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var Button = (function () {
 	    function Button(el, domHandler) {
 	        this.el = el;
@@ -2098,8 +2098,8 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(63);
 	var knowledge_1 = __webpack_require__(55);
 	var tag_1 = __webpack_require__(64);
-	var primeng_1 = __webpack_require__(29);
-	var private_chat_1 = __webpack_require__(30);
+	var primeng_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var router_1 = __webpack_require__(4);
 	var common_1 = __webpack_require__(7);
 	var $ = __webpack_require__(511);
@@ -2471,7 +2471,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(19);
+	var Subject_1 = __webpack_require__(20);
 	/**
 	 * @class AsyncSubject<T>
 	 */
@@ -2885,6 +2885,7 @@ webpackJsonp([2],[
 	var knowledge_1 = __webpack_require__(55);
 	var router_1 = __webpack_require__(4);
 	var common_1 = __webpack_require__(7);
+	var private_chat_1 = __webpack_require__(11);
 	var UpdateKnowledgeComponent = (function () {
 	    function UpdateKnowledgeComponent(fb, _knowledgeService, router, route) {
 	        var _this = this;
@@ -2925,7 +2926,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'knowledge-update',
 	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-update.html',
-	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
+	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
 	            providers: [knowledge_1.KnowledgeService]
 	        }),
 	        __param(0, core_1.Inject(common_1.FormBuilder)),
@@ -2962,7 +2963,8 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(63);
 	var auth_1 = __webpack_require__(44);
 	var tag_1 = __webpack_require__(64);
-	var primeng_1 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var CKEditor = (function () {
 	    function CKEditor(_elm) {
 	        CKEDITOR.replace(_elm.nativeElement);
@@ -3139,7 +3141,7 @@ webpackJsonp([2],[
 	            selector: 'request-create',
 	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-create.html',
 	            styleUrls: ['client/dev/app/components/bac  k-end/request/templates/request.css'],
-	            directives: [common_1.FORM_DIRECTIVES, primeng_1.AutoComplete, CKEditor],
+	            directives: [common_1.FORM_DIRECTIVES, primeng_1.AutoComplete, CKEditor, private_chat_1.PrivateChatComponent],
 	            providers: [tag_1.TagService]
 	        }),
 	        __param(1, core_1.Inject(common_1.FormBuilder)),
@@ -3215,6 +3217,7 @@ webpackJsonp([2],[
 	var report_1 = __webpack_require__(191);
 	var notification_1 = __webpack_require__(62);
 	var users_1 = __webpack_require__(31);
+	var private_chat_1 = __webpack_require__(11);
 	var ReportComponent = (function () {
 	    function ReportComponent(fb, _reportService, _noti, _userService) {
 	        this._reportService = _reportService;
@@ -3268,7 +3271,7 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/report/templates/report.html',
 	            styleUrls: [],
 	            directives: [
-	                common_1.FORM_DIRECTIVES,
+	                common_1.FORM_DIRECTIVES, private_chat_1.PrivateChatComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof report_1.ReportService !== 'undefined' && report_1.ReportService) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object])
@@ -3298,7 +3301,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(63);
 	var article_1 = __webpack_require__(51);
 	var ng2_pagination_1 = __webpack_require__(150);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var tag_1 = __webpack_require__(73);
 	var RequestCategoryComponent = (function () {
 	    function RequestCategoryComponent(_requestService, _articleService, router, route) {
@@ -3673,8 +3676,8 @@ webpackJsonp([2],[
 	var ArrayObservable_1 = __webpack_require__(88);
 	var isArray_1 = __webpack_require__(91);
 	var isScheduler_1 = __webpack_require__(104);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Combines multiple Observables to create an Observable whose values are
 	 * calculated from the latest values of each of its input Observables.
@@ -3977,8 +3980,8 @@ webpackJsonp([2],[
 	var ArrayObservable_1 = __webpack_require__(88);
 	var isArray_1 = __webpack_require__(91);
 	var Subscriber_1 = __webpack_require__(8);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	var iterator_1 = __webpack_require__(142);
 	/**
 	 * @param observables
@@ -4594,7 +4597,7 @@ webpackJsonp([2],[
 	var reports_list_1 = __webpack_require__(426);
 	var tag_list_control_1 = __webpack_require__(428);
 	var article_list_clt_1 = __webpack_require__(424);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var AdminComponent = (function () {
 	    function AdminComponent() {
 	    }
@@ -4648,8 +4651,9 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(7);
 	var article_1 = __webpack_require__(51);
 	var pager_1 = __webpack_require__(190);
-	var primeng_1 = __webpack_require__(29);
-	var primeng_2 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
+	var primeng_2 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var ArtListCtlComponent = (function () {
 	    function ArtListCtlComponent(_articleService, _pagerService, router) {
 	        this._articleService = _articleService;
@@ -4704,7 +4708,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'art-list-clt',
 	            templateUrl: 'client/dev/app/components/back-end/article/templates/article-list.html',
-	            directives: [router_1.ROUTER_DIRECTIVES, primeng_1.Paginator, common_1.FORM_DIRECTIVES, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.Footer],
+	            directives: [router_1.ROUTER_DIRECTIVES, primeng_1.Paginator, common_1.FORM_DIRECTIVES, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.Footer, private_chat_1.PrivateChatComponent],
 	            providers: [article_1.ArticleService, pager_1.PagerService]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof pager_1.PagerService !== 'undefined' && pager_1.PagerService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
@@ -4732,7 +4736,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var common_1 = __webpack_require__(7);
-	var primeng_1 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
 	var knowledge_1 = __webpack_require__(678);
 	var knowledge_2 = __webpack_require__(55);
 	var requests_1 = __webpack_require__(63);
@@ -4740,8 +4744,9 @@ webpackJsonp([2],[
 	var sub_knowledge_create_1 = __webpack_require__(655);
 	var ng2_pagination_1 = __webpack_require__(150);
 	var filter_1 = __webpack_require__(289);
-	var primeng_2 = __webpack_require__(29);
-	var primeng_3 = __webpack_require__(29);
+	var primeng_2 = __webpack_require__(30);
+	var primeng_3 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var KnowledgeListComponent = (function () {
 	    function KnowledgeListComponent(fb, _elRef, _knowledgeService, _requestService) {
 	        this._elRef = _elRef;
@@ -4840,7 +4845,7 @@ webpackJsonp([2],[
 	            directives: [
 	                knowledge_update_1.UpdateKnowledgeComponent,
 	                sub_knowledge_create_1.CreateSubCategoryComponent,
-	                router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, primeng_2.TreeTable, primeng_3.Dialog],
+	                router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, primeng_2.TreeTable, primeng_3.Dialog, private_chat_1.PrivateChatComponent],
 	            providers: [knowledge_2.KnowledgeService, ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
 	        }), 
@@ -4871,8 +4876,9 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(7);
 	var report_1 = __webpack_require__(191);
 	var chat_1 = __webpack_require__(125);
-	var primeng_1 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
 	var message_1 = __webpack_require__(656);
+	var private_chat_1 = __webpack_require__(11);
 	var ReportListComponent = (function () {
 	    function ReportListComponent(fb, _reportService, _chatService, router) {
 	        this._reportService = _reportService;
@@ -4944,7 +4950,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'reports-list',
 	            templateUrl: 'client/dev/app/components/back-end/report/templates/reports-list.html',
-	            directives: [message_1.MessageComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
+	            directives: [message_1.MessageComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, private_chat_1.PrivateChatComponent],
 	            providers: [report_1.ReportService, chat_1.ChatService]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof report_1.ReportService !== 'undefined' && report_1.ReportService) === 'function' && _b) || Object, (typeof (_c = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
@@ -4977,8 +4983,9 @@ webpackJsonp([2],[
 	var auth_1 = __webpack_require__(44);
 	var pager_1 = __webpack_require__(190);
 	var request_update_1 = __webpack_require__(189);
-	var primeng_1 = __webpack_require__(29);
-	var primeng_2 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
+	var primeng_2 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var RequestListComponent = (function () {
 	    function RequestListComponent(_requestService, _knowledgeService, _pagerService, _authService) {
 	        var _this = this;
@@ -5040,7 +5047,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'request-list',
 	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-	            directives: [request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
+	            directives: [private_chat_1.PrivateChatComponent, request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
 	            providers: [requests_1.RequestService, pager_1.PagerService]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object, (typeof (_c = typeof pager_1.PagerService !== 'undefined' && pager_1.PagerService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
@@ -5075,8 +5082,9 @@ webpackJsonp([2],[
 	var ng2_pagination_1 = __webpack_require__(150);
 	var pager_1 = __webpack_require__(190);
 	var filter_1 = __webpack_require__(289);
-	var primeng_1 = __webpack_require__(29);
-	var primeng_2 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
+	var primeng_2 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var TagListCtlComponent = (function () {
 	    function TagListCtlComponent(_tagService, router, _pagerService) {
 	        this._tagService = _tagService;
@@ -5121,7 +5129,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'tag-list-clt',
 	            templateUrl: 'client/dev/app/components/back-end/tag/templates/tag.html',
-	            directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.Paginator, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.MultiSelect, primeng_2.Footer, primeng_2.InputText],
+	            directives: [private_chat_1.PrivateChatComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.Paginator, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.MultiSelect, primeng_2.Footer, primeng_2.InputText],
 	            providers: [tag_1.TagService, ng2_pagination_1.PaginationService, pager_1.PagerService],
 	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
 	        }), 
@@ -5156,8 +5164,9 @@ webpackJsonp([2],[
 	var pager_1 = __webpack_require__(190);
 	var users_1 = __webpack_require__(31);
 	var auth_1 = __webpack_require__(44);
-	var primeng_1 = __webpack_require__(29);
-	var primeng_2 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
+	var primeng_2 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var UserListComponent = (function () {
 	    function UserListComponent(fb, _userService, _auth, router) {
 	        this._userService = _userService;
@@ -5222,7 +5231,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'user-list',
 	            templateUrl: 'client/dev/app/components/back-end/users/templates/user-list.html',
-	            directives: [router_1.ROUTER_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
+	            directives: [router_1.ROUTER_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, private_chat_1.PrivateChatComponent],
 	            providers: [users_1.UserService, pager_1.PagerService],
 	        }),
 	        __param(0, core_1.Inject(common_1.FormBuilder)), 
@@ -5255,8 +5264,8 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var article_1 = __webpack_require__(51);
 	var tag_1 = __webpack_require__(64);
-	var primeng_1 = __webpack_require__(29);
-	var private_chat_1 = __webpack_require__(30);
+	var primeng_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var CKEditor = (function () {
 	    function CKEditor(_elm) {
 	        CKEDITOR.replace(_elm.nativeElement);
@@ -5457,7 +5466,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var common_1 = __webpack_require__(7);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var article_1 = __webpack_require__(51);
 	var notification_1 = __webpack_require__(62);
 	var report_1 = __webpack_require__(290);
@@ -5640,7 +5649,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var article_1 = __webpack_require__(51);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var tag_1 = __webpack_require__(73);
 	var listArticleComponent = (function () {
 	    function listArticleComponent(router, route, _artService) {
@@ -5745,7 +5754,7 @@ webpackJsonp([2],[
 	 */
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var HomeComponent = (function () {
 	    function HomeComponent() {
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
@@ -5789,6 +5798,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var kspace_1 = __webpack_require__(126);
 	var article_1 = __webpack_require__(51);
+	var private_chat_1 = __webpack_require__(11);
 	var KSpaceInfoComponent = (function () {
 	    function KSpaceInfoComponent(router, route, _kspaceService, _articleService) {
 	        var _this = this;
@@ -5946,7 +5956,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/kspace-info.html',
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES,
+	                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent
 	            ],
 	            providers: [article_1.ArticleService]
 	        }), 
@@ -5978,7 +5988,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var kspace_1 = __webpack_require__(126);
 	var router_1 = __webpack_require__(4);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var KSpaceListComponent = (function () {
 	    function KSpaceListComponent(_kspaceService, router) {
 	        this._kspaceService = _kspaceService;
@@ -6220,7 +6230,7 @@ webpackJsonp([2],[
 	var offer_create_1 = __webpack_require__(663);
 	var report_1 = __webpack_require__(290);
 	var tag_1 = __webpack_require__(73);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var RequestDetailClientComponent = (function () {
 	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
 	        var _this = this;
@@ -6463,7 +6473,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var router_1 = __webpack_require__(4);
 	var requests_1 = __webpack_require__(63);
 	var tag_1 = __webpack_require__(64);
@@ -6623,6 +6633,7 @@ webpackJsonp([2],[
 	var tag_1 = __webpack_require__(64);
 	var tag_2 = __webpack_require__(73);
 	var ng2_pagination_1 = __webpack_require__(150);
+	var private_chat_1 = __webpack_require__(11);
 	var displayArtByTagComponent = (function () {
 	    function displayArtByTagComponent(router, route, _tagService) {
 	        this.router = router;
@@ -6677,7 +6688,7 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/tag/templates/display-article-by-tag.html',
 	            styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES, tag_2.listTagComponent, ng2_pagination_1.PaginationControlsCmp
+	                router_1.ROUTER_DIRECTIVES, tag_2.listTagComponent, ng2_pagination_1.PaginationControlsCmp, private_chat_1.PrivateChatComponent
 	            ],
 	            providers: [tag_1.TagService, ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe]
@@ -6711,7 +6722,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var users_1 = __webpack_require__(31);
 	var ng2_pagination_1 = __webpack_require__(150);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var userSearchRsComponent = (function () {
 	    function userSearchRsComponent(_userService, router, route) {
 	        this._userService = _userService;
@@ -6768,7 +6779,7 @@ webpackJsonp([2],[
 	var request_friend_record_1 = __webpack_require__(675);
 	var friend_record_1 = __webpack_require__(673);
 	var user_profile_bar_1 = __webpack_require__(292);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	//services
 	var users_1 = __webpack_require__(31);
 	var FriendListComponent = (function () {
@@ -6871,8 +6882,8 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(7);
 	var users_1 = __webpack_require__(31);
 	var tag_1 = __webpack_require__(64);
-	var private_chat_1 = __webpack_require__(30);
-	var primeng_1 = __webpack_require__(29);
+	var private_chat_1 = __webpack_require__(11);
+	var primeng_1 = __webpack_require__(30);
 	var UpdateUserComponent = (function () {
 	    function UpdateUserComponent(fb, router, _userService, route, _tagService) {
 	        var _this = this;
@@ -7007,7 +7018,7 @@ webpackJsonp([2],[
 	var kspace_list_1 = __webpack_require__(674);
 	var article_list_1 = __webpack_require__(672);
 	var user_profile_bar_1 = __webpack_require__(292);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	//services
 	var users_1 = __webpack_require__(31);
 	var knowledge_1 = __webpack_require__(55);
@@ -7047,7 +7058,13 @@ webpackJsonp([2],[
 	                if (_this.isExist = true) {
 	                    _this.getRequestByUser();
 	                    _this._articleService.getArtsByUsername(_this.name).subscribe(function (arts) {
-	                        _this.articleList = arts;
+	                        //filter article
+	                        if (_this.userToken) {
+	                            _this.articleList = arts;
+	                        }
+	                        else {
+	                            _this.articleList = _this.filterArticle(arts);
+	                        }
 	                        _this._kSpaceService.getKspaceProfile(_this.name).subscribe(function (kspaces) {
 	                            _this.kspaceList = kspaces;
 	                            _this._userService.getUserByUserName(_this.name).subscribe(function (user) {
@@ -7063,6 +7080,14 @@ webpackJsonp([2],[
 	            });
 	        });
 	        $('ul.tabs').tabs();
+	    };
+	    UserProfileComponent.prototype.filterArticle = function (listArt) {
+	        for (var i = listArt.length - 1; i >= 0; i--) {
+	            if (listArt[i].status === 'private') {
+	                listArt.splice(i, 1);
+	            }
+	        }
+	        return listArt;
 	    };
 	    UserProfileComponent.prototype.getKspaceProfile = function () {
 	        var _this = this;
@@ -7243,7 +7268,7 @@ webpackJsonp([2],[
 	var notification_1 = __webpack_require__(62);
 	var users_1 = __webpack_require__(31);
 	var chat_1 = __webpack_require__(125);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var HeaderComponent = (function () {
 	    function HeaderComponent(_auth, router, _noti, _userService, _chatService) {
 	        this._auth = _auth;
@@ -7443,7 +7468,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(19);
+	var Subject_1 = __webpack_require__(20);
 	var queue_1 = __webpack_require__(470);
 	var observeOn_1 = __webpack_require__(299);
 	/**
@@ -7526,7 +7551,7 @@ webpackJsonp([2],[
 	// Subject imported before Observable to bypass circular dependency issue since
 	// Subject extends Observable and Observable references Subject in it's
 	// definition
-	var Subject_1 = __webpack_require__(19);
+	var Subject_1 = __webpack_require__(20);
 	exports.Subject = Subject_1.Subject;
 	/* tslint:enable:no-unused-variable */
 	var Observable_1 = __webpack_require__(2);
@@ -7966,8 +7991,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Projects each source value to the same Observable which is merged multiple
 	 * times in the output Observable.
@@ -8150,8 +8175,8 @@ webpackJsonp([2],[
 	};
 	var isArray_1 = __webpack_require__(91);
 	var ArrayObservable_1 = __webpack_require__(88);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Returns an Observable that mirrors the first source Observable to emit an item
 	 * from the combination of this Observable and supplied Observables
@@ -18884,7 +18909,8 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var common_1 = __webpack_require__(7);
 	var knowledge_1 = __webpack_require__(55);
-	var primeng_1 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var CreateSubCategoryComponent = (function () {
 	    function CreateSubCategoryComponent(fb, _knowledgeService) {
 	        this._knowledgeService = _knowledgeService;
@@ -18923,7 +18949,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'sub-create',
 	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/sub-knowledge-create.html',
-	            directives: [common_1.FORM_DIRECTIVES, primeng_1.Dialog]
+	            directives: [common_1.FORM_DIRECTIVES, primeng_1.Dialog, private_chat_1.PrivateChatComponent]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object])
 	    ], CreateSubCategoryComponent);
@@ -19150,8 +19176,8 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var article_1 = __webpack_require__(51);
 	var tag_1 = __webpack_require__(64);
-	var primeng_1 = __webpack_require__(29);
-	var private_chat_1 = __webpack_require__(30);
+	var primeng_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var $ = __webpack_require__(511);
 	var CKEditor = (function () {
 	    function CKEditor(_elm, _articleService, router, route) {
@@ -19781,7 +19807,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(63);
 	var users_1 = __webpack_require__(31);
 	var article_1 = __webpack_require__(51);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var tag_1 = __webpack_require__(73);
 	var NewsFeedComponent = (function () {
 	    function NewsFeedComponent(_userService, _requestService, _articleService, router) {
@@ -19935,6 +19961,7 @@ webpackJsonp([2],[
 	var auth_1 = __webpack_require__(44);
 	var requests_1 = __webpack_require__(63);
 	var notification_1 = __webpack_require__(62);
+	var private_chat_1 = __webpack_require__(11);
 	var CreateOfferComponent = (function () {
 	    function CreateOfferComponent(fb, _offerService, _authService, _noti, _requestService) {
 	        this._offerService = _offerService;
@@ -19981,7 +20008,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'offer-create',
 	            templateUrl: 'client/dev/app/components/front-end/offer/templates/offer-create.html',
-	            directives: [common_1.FORM_DIRECTIVES]
+	            directives: [common_1.FORM_DIRECTIVES, private_chat_1.PrivateChatComponent]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_b = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _b) || Object, (typeof (_c = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object, (typeof (_e = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _e) || Object, (typeof (_f = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _f) || Object])
 	    ], CreateOfferComponent);
@@ -20274,7 +20301,8 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(7);
 	var users_1 = __webpack_require__(31);
 	var tag_1 = __webpack_require__(64);
-	var primeng_1 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var RegisterInfoComponent = (function () {
 	    function RegisterInfoComponent(fb, router, _userService, route, _tagService) {
 	        var _this = this;
@@ -20368,7 +20396,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            templateUrl: "client/dev/app/components/front-end/user/register/templates/info.html",
 	            styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
-	            directives: [primeng_1.AutoComplete],
+	            directives: [primeng_1.AutoComplete, private_chat_1.PrivateChatComponent],
 	            providers: [tag_1.TagService]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object, (typeof (_e = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _e) || Object])
@@ -21076,7 +21104,7 @@ webpackJsonp([2],[
 	var notification_1 = __webpack_require__(62);
 	var users_1 = __webpack_require__(31);
 	var chat_1 = __webpack_require__(125);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(11);
 	var errorPageComponent = (function () {
 	    function errorPageComponent(_auth, router, _noti, _userService, _chatService, routerCh) {
 	        this._auth = _auth;
@@ -22656,8 +22684,8 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var subscribeToResult_1 = __webpack_require__(14);
-	var OuterSubscriber_1 = __webpack_require__(13);
+	var subscribeToResult_1 = __webpack_require__(15);
+	var OuterSubscriber_1 = __webpack_require__(14);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -23563,8 +23591,8 @@ webpackJsonp([2],[
 	};
 	var tryCatch_1 = __webpack_require__(47);
 	var errorObject_1 = __webpack_require__(40);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * @param durationSelector
 	 * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
@@ -23716,8 +23744,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Buffers the source Observable values until `closingNotifier` emits.
 	 *
@@ -24069,8 +24097,8 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscription_1 = __webpack_require__(45);
-	var subscribeToResult_1 = __webpack_require__(14);
-	var OuterSubscriber_1 = __webpack_require__(13);
+	var subscribeToResult_1 = __webpack_require__(15);
+	var OuterSubscriber_1 = __webpack_require__(14);
 	/**
 	 * Buffers the source Observable values starting from an emission from
 	 * `openings` and ending when the output of `closingSelector` emits.
@@ -24228,8 +24256,8 @@ webpackJsonp([2],[
 	var Subscription_1 = __webpack_require__(45);
 	var tryCatch_1 = __webpack_require__(47);
 	var errorObject_1 = __webpack_require__(40);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Buffers the source Observable values, using a factory function of closing
 	 * Observables to determine when to close, emit, and reset the buffer.
@@ -24795,8 +24823,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Returns the source Observable delayed by the computed debounce duration,
 	 * with the duration lengthened if a new source item arrives before the delay
@@ -25098,8 +25126,8 @@ webpackJsonp([2],[
 	};
 	var Subscriber_1 = __webpack_require__(8);
 	var Observable_1 = __webpack_require__(2);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Returns an Observable that delays the emission of items from the source Observable
 	 * by a subscription delay and a delay selector function for each element.
@@ -25507,8 +25535,8 @@ webpackJsonp([2],[
 	};
 	var tryCatch_1 = __webpack_require__(47);
 	var errorObject_1 = __webpack_require__(40);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Returns an Observable where for each item in the source Observable, the supplied function is applied to each item,
 	 * resulting in a new value to then be applied again with the function.
@@ -25829,7 +25857,7 @@ webpackJsonp([2],[
 	var Subscriber_1 = __webpack_require__(8);
 	var Subscription_1 = __webpack_require__(45);
 	var Observable_1 = __webpack_require__(2);
-	var Subject_1 = __webpack_require__(19);
+	var Subject_1 = __webpack_require__(20);
 	var Map_1 = __webpack_require__(885);
 	var FastMap_1 = __webpack_require__(883);
 	/**
@@ -26686,11 +26714,11 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(19);
+	var Subject_1 = __webpack_require__(20);
 	var tryCatch_1 = __webpack_require__(47);
 	var errorObject_1 = __webpack_require__(40);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Returns an Observable that emits the same values as the source observable with the exception of an `error`.
 	 * An `error` will cause the emission of the Throwable that cause the error to the Observable returned from
@@ -26797,8 +26825,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Returns an Observable that, when the specified sampler Observable emits an item or completes, it then emits the most
 	 * recently emitted item (if any) emitted by the source Observable since the previous emission from the sampler
@@ -27042,7 +27070,7 @@ webpackJsonp([2],[
 
 	"use strict";
 	var multicast_1 = __webpack_require__(127);
-	var Subject_1 = __webpack_require__(19);
+	var Subject_1 = __webpack_require__(20);
 	function shareSubjectFactory() {
 	    return new Subject_1.Subject();
 	}
@@ -27231,8 +27259,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.
 	 *
@@ -27450,8 +27478,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable by
 	 * subscribing to only the most recently emitted of those inner Observables.
@@ -27563,8 +27591,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Projects each source value to an Observable which is merged in the output
 	 * Observable, emitting values only from the most recently projected Observable.
@@ -27707,8 +27735,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Projects each source value to the same Observable which is flattened multiple
 	 * times with {@link switch} in the output Observable.
@@ -27923,8 +27951,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * @param notifier
 	 * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
@@ -28043,8 +28071,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * @param durationSelector
 	 * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
@@ -28301,8 +28329,8 @@ webpackJsonp([2],[
 	};
 	var async_1 = __webpack_require__(46);
 	var isDate_1 = __webpack_require__(202);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * @param due
 	 * @param withObservable
@@ -28464,9 +28492,9 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(19);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var Subject_1 = __webpack_require__(20);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Branch out the source Observable values as a nested Observable whenever
 	 * `windowBoundaries` emits.
@@ -28575,7 +28603,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(8);
-	var Subject_1 = __webpack_require__(19);
+	var Subject_1 = __webpack_require__(20);
 	/**
 	 * Branch out the source Observable values as a nested Observable with each
 	 * nested Observable emitting at most `windowSize` values.
@@ -28706,7 +28734,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Subscriber_1 = __webpack_require__(8);
-	var Subject_1 = __webpack_require__(19);
+	var Subject_1 = __webpack_require__(20);
 	var async_1 = __webpack_require__(46);
 	/**
 	 * Branch out the source Observable values as a nested Observable periodically
@@ -28880,12 +28908,12 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(19);
+	var Subject_1 = __webpack_require__(20);
 	var Subscription_1 = __webpack_require__(45);
 	var tryCatch_1 = __webpack_require__(47);
 	var errorObject_1 = __webpack_require__(40);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Branch out the source Observable values as a nested Observable starting from
 	 * an emission from `openings` and ending when the output of `closingSelector`
@@ -29065,11 +29093,11 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(19);
+	var Subject_1 = __webpack_require__(20);
 	var tryCatch_1 = __webpack_require__(47);
 	var errorObject_1 = __webpack_require__(40);
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Branch out the source Observable values as a nested Observable using a
 	 * factory function of closing Observables to determine when to start a new
@@ -29198,8 +29226,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(13);
-	var subscribeToResult_1 = __webpack_require__(14);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Combines the source Observable with other Observables to create an Observable
 	 * whose values are calculated from the latest values of each, only when the
@@ -30422,7 +30450,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var inputtext_1 = __webpack_require__(215);
 	var button_1 = __webpack_require__(151);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var common_1 = __webpack_require__(7);
 	var AUTOCOMPLETE_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return AutoComplete; }),
@@ -31209,7 +31237,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var Carousel = (function () {
 	    function Carousel(el, domHandler, differs, renderer) {
 	        this.el = el;
@@ -31739,7 +31767,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var router_1 = __webpack_require__(4);
 	var ContextMenuSub = (function () {
 	    function ContextMenuSub(domHandler, router) {
@@ -32209,7 +32237,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var common_1 = __webpack_require__(38);
 	var common_2 = __webpack_require__(38);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var DataScroller = (function () {
 	    function DataScroller(el, differs, renderer, domHandler) {
 	        this.el = el;
@@ -32393,7 +32421,7 @@ webpackJsonp([2],[
 	var common_2 = __webpack_require__(38);
 	var paginator_1 = __webpack_require__(216);
 	var inputtext_1 = __webpack_require__(215);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var DataTable = (function () {
 	    function DataTable(el, domHandler, differs, cols, renderer, changeDetector) {
 	        var _this = this;
@@ -33481,7 +33509,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var Dialog = (function () {
 	    function Dialog(el, domHandler, renderer) {
 	        this.el = el;
@@ -33779,7 +33807,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var Draggable = (function () {
 	    function Draggable(el, domHandler) {
 	        this.el = el;
@@ -33902,7 +33930,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var Droppable = (function () {
 	    function Droppable(el, domHandler) {
 	        this.el = el;
@@ -34021,7 +34049,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var common_1 = __webpack_require__(7);
 	var DROPDOWN_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Dropdown; }),
@@ -34367,7 +34395,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var common_1 = __webpack_require__(38);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var common_2 = __webpack_require__(7);
 	var EDITOR_VALUE_ACCESSOR = new core_1.Provider(common_2.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Editor; }),
@@ -34572,7 +34600,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var Galleria = (function () {
 	    function Galleria(el, domHandler, differs) {
 	        this.el = el;
@@ -34942,7 +34970,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var Growl = (function () {
 	    function Growl(el, domHandler, differs) {
 	        this.el = el;
@@ -35052,7 +35080,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var common_1 = __webpack_require__(7);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var INPUTSWITCH_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return InputSwitch; }),
 	    multi: true
@@ -35325,7 +35353,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var Lightbox = (function () {
 	    function Lightbox(el, domHandler, renderer) {
 	        this.el = el;
@@ -35509,7 +35537,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var common_1 = __webpack_require__(7);
 	var LISTBOX_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Listbox; }),
@@ -35729,7 +35757,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var router_1 = __webpack_require__(4);
 	var MegaMenu = (function () {
 	    function MegaMenu(el, domHandler, renderer, router) {
@@ -35861,7 +35889,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var router_1 = __webpack_require__(4);
 	var Menu = (function () {
 	    function Menu(el, domHandler, renderer, router) {
@@ -35992,7 +36020,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var router_1 = __webpack_require__(4);
 	var MenubarSub = (function () {
 	    function MenubarSub(domHandler, router) {
@@ -36176,7 +36204,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var common_1 = __webpack_require__(7);
 	var MULTISELECT_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return MultiSelect; }),
@@ -36454,7 +36482,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var button_1 = __webpack_require__(151);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var OrderList = (function () {
 	    function OrderList(el, domHandler) {
 	        this.el = el;
@@ -36655,7 +36683,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var OverlayPanel = (function () {
 	    function OverlayPanel(el, domHandler, renderer) {
 	        this.el = el;
@@ -37005,7 +37033,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var Password = (function () {
 	    function Password(el, domHandler) {
 	        this.el = el;
@@ -37182,7 +37210,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var button_1 = __webpack_require__(151);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var PickList = (function () {
 	    function PickList(el, domHandler) {
 	        this.el = el;
@@ -38104,7 +38132,7 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var router_1 = __webpack_require__(4);
 	var SlideMenuSub = (function () {
 	    function SlideMenuSub(slideMenu, router) {
@@ -38436,7 +38464,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var inputtext_1 = __webpack_require__(215);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var common_1 = __webpack_require__(7);
 	var SPINNER_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Spinner; }),
@@ -38667,7 +38695,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var splitbuttonitem_1 = __webpack_require__(538);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var router_1 = __webpack_require__(4);
 	var SplitButton = (function () {
 	    function SplitButton(el, domHandler, renderer, router) {
@@ -38772,7 +38800,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var router_1 = __webpack_require__(4);
 	var TabMenu = (function () {
 	    function TabMenu(router) {
@@ -38988,7 +39016,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var Terminal = (function () {
 	    function Terminal(el, domHandler) {
 	        this.el = el;
@@ -39083,7 +39111,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var common_1 = __webpack_require__(7);
 	var router_1 = __webpack_require__(4);
 	var TieredMenuSub = (function () {
@@ -39382,7 +39410,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(11);
+	var domhandler_1 = __webpack_require__(12);
 	var Tooltip = (function () {
 	    function Tooltip(el, domHandler) {
 	        this.el = el;

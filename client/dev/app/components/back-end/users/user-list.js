@@ -16,6 +16,7 @@ var pager_1 = require('../../../services/pager');
 var users_1 = require('../../../services/users');
 var primeng_1 = require('primeng/primeng');
 var primeng_2 = require('primeng/primeng');
+var private_chat_1 = require('../../shared/private-chat');
 var UserListComponent = (function () {
     function UserListComponent(fb, _userService, _auth, router) {
         this._userService = _userService;
@@ -80,7 +81,7 @@ var UserListComponent = (function () {
         core_1.Component({
             selector: 'user-list',
             templateUrl: 'client/dev/app/components/back-end/users/templates/user-list.html',
-            directives: [router_1.ROUTER_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
+            directives: [router_1.ROUTER_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, private_chat_1.PrivateChatComponent],
             providers: [users_1.UserService, pager_1.PagerService]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder))

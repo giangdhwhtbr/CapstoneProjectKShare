@@ -9,6 +9,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var primeng_1 = require('primeng/primeng');
+var private_chat_1 = require('../../shared/private-chat');
 var CreateSubCategoryComponent = (function () {
     function CreateSubCategoryComponent(fb, _knowledgeService) {
         this._knowledgeService = _knowledgeService;
@@ -45,7 +46,7 @@ var CreateSubCategoryComponent = (function () {
         core_1.Component({
             selector: 'sub-create',
             templateUrl: 'client/dev/app/components/back-end/knowledge/templates/sub-knowledge-create.html',
-            directives: [common_1.FORM_DIRECTIVES, primeng_1.Dialog]
+            directives: [common_1.FORM_DIRECTIVES, primeng_1.Dialog, private_chat_1.PrivateChatComponent]
         })
     ], CreateSubCategoryComponent);
     return CreateSubCategoryComponent;

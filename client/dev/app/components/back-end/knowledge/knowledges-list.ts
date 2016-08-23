@@ -25,6 +25,7 @@ import {StringFilterPipe} from '../shared/filter';
 import {TreeTable} from 'primeng/primeng';
 import {TreeNode} from 'primeng/primeng';
 import {Dialog} from 'primeng/primeng';
+import {PrivateChatComponent} from '../../shared/private-chat';
 declare var $:any
 @Component({
     selector: 'knowledge-list',
@@ -32,7 +33,7 @@ declare var $:any
     directives: [
         UpdateKnowledgeComponent,
         CreateSubCategoryComponent,
-        ROUTER_DIRECTIVES, PaginationControlsCmp,DataTable,Column,Header,Footer,TreeTable,Dialog],
+        ROUTER_DIRECTIVES, PaginationControlsCmp,DataTable,Column,Header,Footer,TreeTable,Dialog,PrivateChatComponent],
     providers: [KnowledgeService, PaginationService],
     pipes: [PaginatePipe, StringFilterPipe]
 })
