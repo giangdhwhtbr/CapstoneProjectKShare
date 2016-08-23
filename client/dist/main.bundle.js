@@ -302,83 +302,7 @@ webpackJsonp([2],[
 /* 25 */,
 /* 26 */,
 /* 27 */,
-/* 28 */,
-/* 29 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	__export(__webpack_require__(39));
-	__export(__webpack_require__(537));
-	__export(__webpack_require__(1056));
-	__export(__webpack_require__(1057));
-	__export(__webpack_require__(1058));
-	__export(__webpack_require__(152));
-	__export(__webpack_require__(1059));
-	__export(__webpack_require__(1060));
-	__export(__webpack_require__(1063));
-	__export(__webpack_require__(1064));
-	__export(__webpack_require__(1061));
-	__export(__webpack_require__(1062));
-	__export(__webpack_require__(328));
-	__export(__webpack_require__(39));
-	__export(__webpack_require__(39));
-	__export(__webpack_require__(1065));
-	__export(__webpack_require__(1066));
-	__export(__webpack_require__(1067));
-	__export(__webpack_require__(1068));
-	__export(__webpack_require__(1070));
-	__export(__webpack_require__(1071));
-	__export(__webpack_require__(1072));
-	__export(__webpack_require__(1073));
-	__export(__webpack_require__(1074));
-	__export(__webpack_require__(1075));
-	__export(__webpack_require__(1076));
-	__export(__webpack_require__(1077));
-	__export(__webpack_require__(1078));
-	__export(__webpack_require__(1079));
-	__export(__webpack_require__(216));
-	__export(__webpack_require__(1080));
-	__export(__webpack_require__(1081));
-	__export(__webpack_require__(1082));
-	__export(__webpack_require__(1083));
-	__export(__webpack_require__(1084));
-	__export(__webpack_require__(1085));
-	__export(__webpack_require__(1086));
-	__export(__webpack_require__(1087));
-	__export(__webpack_require__(1088));
-	__export(__webpack_require__(1089));
-	__export(__webpack_require__(217));
-	__export(__webpack_require__(1090));
-	__export(__webpack_require__(1091));
-	__export(__webpack_require__(1092));
-	__export(__webpack_require__(1093));
-	__export(__webpack_require__(1094));
-	__export(__webpack_require__(1095));
-	__export(__webpack_require__(1096));
-	__export(__webpack_require__(1097));
-	__export(__webpack_require__(1098));
-	__export(__webpack_require__(1099));
-	__export(__webpack_require__(1100));
-	__export(__webpack_require__(1101));
-	__export(__webpack_require__(1102));
-	__export(__webpack_require__(539));
-	__export(__webpack_require__(1104));
-	__export(__webpack_require__(540));
-	__export(__webpack_require__(1103));
-	__export(__webpack_require__(1105));
-	__export(__webpack_require__(1106));
-	__export(__webpack_require__(1107));
-	__export(__webpack_require__(1108));
-	__export(__webpack_require__(1109));
-	__export(__webpack_require__(541));
-	__export(__webpack_require__(542));
-	
-
-/***/ },
-/* 30 */
+/* 28 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -536,6 +460,82 @@ webpackJsonp([2],[
 	    var _a, _b;
 	}());
 	exports.PrivateChatComponent = PrivateChatComponent;
+	
+
+/***/ },
+/* 29 */,
+/* 30 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	__export(__webpack_require__(39));
+	__export(__webpack_require__(537));
+	__export(__webpack_require__(1056));
+	__export(__webpack_require__(1057));
+	__export(__webpack_require__(1058));
+	__export(__webpack_require__(152));
+	__export(__webpack_require__(1059));
+	__export(__webpack_require__(1060));
+	__export(__webpack_require__(1063));
+	__export(__webpack_require__(1064));
+	__export(__webpack_require__(1061));
+	__export(__webpack_require__(1062));
+	__export(__webpack_require__(328));
+	__export(__webpack_require__(39));
+	__export(__webpack_require__(39));
+	__export(__webpack_require__(1065));
+	__export(__webpack_require__(1066));
+	__export(__webpack_require__(1067));
+	__export(__webpack_require__(1068));
+	__export(__webpack_require__(1070));
+	__export(__webpack_require__(1071));
+	__export(__webpack_require__(1072));
+	__export(__webpack_require__(1073));
+	__export(__webpack_require__(1074));
+	__export(__webpack_require__(1075));
+	__export(__webpack_require__(1076));
+	__export(__webpack_require__(1077));
+	__export(__webpack_require__(1078));
+	__export(__webpack_require__(1079));
+	__export(__webpack_require__(216));
+	__export(__webpack_require__(1080));
+	__export(__webpack_require__(1081));
+	__export(__webpack_require__(1082));
+	__export(__webpack_require__(1083));
+	__export(__webpack_require__(1084));
+	__export(__webpack_require__(1085));
+	__export(__webpack_require__(1086));
+	__export(__webpack_require__(1087));
+	__export(__webpack_require__(1088));
+	__export(__webpack_require__(1089));
+	__export(__webpack_require__(217));
+	__export(__webpack_require__(1090));
+	__export(__webpack_require__(1091));
+	__export(__webpack_require__(1092));
+	__export(__webpack_require__(1093));
+	__export(__webpack_require__(1094));
+	__export(__webpack_require__(1095));
+	__export(__webpack_require__(1096));
+	__export(__webpack_require__(1097));
+	__export(__webpack_require__(1098));
+	__export(__webpack_require__(1099));
+	__export(__webpack_require__(1100));
+	__export(__webpack_require__(1101));
+	__export(__webpack_require__(1102));
+	__export(__webpack_require__(539));
+	__export(__webpack_require__(1104));
+	__export(__webpack_require__(540));
+	__export(__webpack_require__(1103));
+	__export(__webpack_require__(1105));
+	__export(__webpack_require__(1106));
+	__export(__webpack_require__(1107));
+	__export(__webpack_require__(1108));
+	__export(__webpack_require__(1109));
+	__export(__webpack_require__(541));
+	__export(__webpack_require__(542));
 	
 
 /***/ },
@@ -2098,8 +2098,8 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(63);
 	var knowledge_1 = __webpack_require__(55);
 	var tag_1 = __webpack_require__(64);
-	var primeng_1 = __webpack_require__(29);
-	var private_chat_1 = __webpack_require__(30);
+	var primeng_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var router_1 = __webpack_require__(4);
 	var common_1 = __webpack_require__(7);
 	var $ = __webpack_require__(512);
@@ -2963,8 +2963,8 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(63);
 	var auth_1 = __webpack_require__(44);
 	var tag_1 = __webpack_require__(64);
-	var private_chat_1 = __webpack_require__(30);
-	var primeng_1 = __webpack_require__(29);
+	var private_chat_1 = __webpack_require__(28);
+	var primeng_1 = __webpack_require__(30);
 	var CKEditor = (function () {
 	    function CKEditor(_elm) {
 	        CKEDITOR.replace(_elm.nativeElement);
@@ -3300,7 +3300,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(63);
 	var article_1 = __webpack_require__(52);
 	var ng2_pagination_1 = __webpack_require__(151);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var tag_1 = __webpack_require__(73);
 	var RequestCategoryComponent = (function () {
 	    function RequestCategoryComponent(_requestService, _articleService, router, route) {
@@ -4596,7 +4596,7 @@ webpackJsonp([2],[
 	var reports_list_1 = __webpack_require__(427);
 	var tag_list_control_1 = __webpack_require__(429);
 	var article_list_clt_1 = __webpack_require__(425);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var AdminComponent = (function () {
 	    function AdminComponent() {
 	    }
@@ -4650,8 +4650,8 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(7);
 	var article_1 = __webpack_require__(52);
 	var pager_1 = __webpack_require__(190);
-	var primeng_1 = __webpack_require__(29);
-	var primeng_2 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
+	var primeng_2 = __webpack_require__(30);
 	var ArtListCtlComponent = (function () {
 	    function ArtListCtlComponent(_articleService, _pagerService, router) {
 	        this._articleService = _articleService;
@@ -4734,7 +4734,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var common_1 = __webpack_require__(7);
-	var primeng_1 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
 	var knowledge_1 = __webpack_require__(679);
 	var knowledge_2 = __webpack_require__(55);
 	var requests_1 = __webpack_require__(63);
@@ -4742,8 +4742,8 @@ webpackJsonp([2],[
 	var sub_knowledge_create_1 = __webpack_require__(656);
 	var ng2_pagination_1 = __webpack_require__(151);
 	var filter_1 = __webpack_require__(290);
-	var primeng_2 = __webpack_require__(29);
-	var primeng_3 = __webpack_require__(29);
+	var primeng_2 = __webpack_require__(30);
+	var primeng_3 = __webpack_require__(30);
 	var KnowledgeListComponent = (function () {
 	    function KnowledgeListComponent(fb, _elRef, _knowledgeService, _requestService) {
 	        this._elRef = _elRef;
@@ -4873,7 +4873,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(7);
 	var report_1 = __webpack_require__(191);
 	var chat_1 = __webpack_require__(126);
-	var primeng_1 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
 	var message_1 = __webpack_require__(657);
 	var ReportListComponent = (function () {
 	    function ReportListComponent(fb, _reportService, _chatService, router) {
@@ -4979,8 +4979,8 @@ webpackJsonp([2],[
 	var auth_1 = __webpack_require__(44);
 	var pager_1 = __webpack_require__(190);
 	var request_update_1 = __webpack_require__(189);
-	var primeng_1 = __webpack_require__(29);
-	var primeng_2 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
+	var primeng_2 = __webpack_require__(30);
 	var RequestListComponent = (function () {
 	    function RequestListComponent(_requestService, _knowledgeService, _pagerService, _authService) {
 	        var _this = this;
@@ -5077,8 +5077,8 @@ webpackJsonp([2],[
 	var ng2_pagination_1 = __webpack_require__(151);
 	var pager_1 = __webpack_require__(190);
 	var filter_1 = __webpack_require__(290);
-	var primeng_1 = __webpack_require__(29);
-	var primeng_2 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
+	var primeng_2 = __webpack_require__(30);
 	var TagListCtlComponent = (function () {
 	    function TagListCtlComponent(_tagService, router, _pagerService) {
 	        this._tagService = _tagService;
@@ -5158,8 +5158,8 @@ webpackJsonp([2],[
 	var pager_1 = __webpack_require__(190);
 	var users_1 = __webpack_require__(31);
 	var auth_1 = __webpack_require__(44);
-	var primeng_1 = __webpack_require__(29);
-	var primeng_2 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
+	var primeng_2 = __webpack_require__(30);
 	var UserListComponent = (function () {
 	    function UserListComponent(fb, _userService, _auth, router) {
 	        this._userService = _userService;
@@ -5257,8 +5257,8 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var article_1 = __webpack_require__(52);
 	var tag_1 = __webpack_require__(64);
-	var primeng_1 = __webpack_require__(29);
-	var private_chat_1 = __webpack_require__(30);
+	var primeng_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var CKEditor = (function () {
 	    function CKEditor(_elm) {
 	        CKEDITOR.replace(_elm.nativeElement);
@@ -5456,7 +5456,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var common_1 = __webpack_require__(7);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var article_1 = __webpack_require__(52);
 	var notification_1 = __webpack_require__(62);
 	var report_1 = __webpack_require__(291);
@@ -5632,7 +5632,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var article_1 = __webpack_require__(52);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var tag_1 = __webpack_require__(73);
 	var listArticleComponent = (function () {
 	    function listArticleComponent(router, route, _artService) {
@@ -5752,7 +5752,7 @@ webpackJsonp([2],[
 	 */
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var HomeComponent = (function () {
 	    function HomeComponent() {
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
@@ -5985,7 +5985,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var kspace_1 = __webpack_require__(127);
 	var router_1 = __webpack_require__(4);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var KSpaceListComponent = (function () {
 	    function KSpaceListComponent(_kspaceService, router) {
 	        this._kspaceService = _kspaceService;
@@ -6227,7 +6227,7 @@ webpackJsonp([2],[
 	var offer_create_1 = __webpack_require__(664);
 	var report_1 = __webpack_require__(291);
 	var tag_1 = __webpack_require__(73);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var RequestDetailClientComponent = (function () {
 	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
 	        var _this = this;
@@ -6470,7 +6470,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var router_1 = __webpack_require__(4);
 	var requests_1 = __webpack_require__(63);
 	var tag_1 = __webpack_require__(64);
@@ -6718,7 +6718,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var users_1 = __webpack_require__(31);
 	var ng2_pagination_1 = __webpack_require__(151);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var userSearchRsComponent = (function () {
 	    function userSearchRsComponent(_userService, router, route) {
 	        this._userService = _userService;
@@ -6775,7 +6775,7 @@ webpackJsonp([2],[
 	var request_friend_record_1 = __webpack_require__(676);
 	var friend_record_1 = __webpack_require__(674);
 	var user_profile_bar_1 = __webpack_require__(293);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	//services
 	var users_1 = __webpack_require__(31);
 	var FriendListComponent = (function () {
@@ -6878,8 +6878,8 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(7);
 	var users_1 = __webpack_require__(31);
 	var tag_1 = __webpack_require__(64);
-	var private_chat_1 = __webpack_require__(30);
-	var primeng_1 = __webpack_require__(29);
+	var private_chat_1 = __webpack_require__(28);
+	var primeng_1 = __webpack_require__(30);
 	var UpdateUserComponent = (function () {
 	    function UpdateUserComponent(fb, router, _userService, route, _tagService) {
 	        var _this = this;
@@ -7014,7 +7014,7 @@ webpackJsonp([2],[
 	var kspace_list_1 = __webpack_require__(675);
 	var article_list_1 = __webpack_require__(673);
 	var user_profile_bar_1 = __webpack_require__(293);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	//services
 	var users_1 = __webpack_require__(31);
 	var knowledge_1 = __webpack_require__(55);
@@ -7258,7 +7258,7 @@ webpackJsonp([2],[
 	var notification_1 = __webpack_require__(62);
 	var users_1 = __webpack_require__(31);
 	var chat_1 = __webpack_require__(126);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var HeaderComponent = (function () {
 	    function HeaderComponent(_auth, router, _noti, _userService, _chatService) {
 	        this._auth = _auth;
@@ -18899,7 +18899,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var common_1 = __webpack_require__(7);
 	var knowledge_1 = __webpack_require__(55);
-	var primeng_1 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
 	var CreateSubCategoryComponent = (function () {
 	    function CreateSubCategoryComponent(fb, _knowledgeService) {
 	        this._knowledgeService = _knowledgeService;
@@ -19165,8 +19165,8 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var article_1 = __webpack_require__(52);
 	var tag_1 = __webpack_require__(64);
-	var primeng_1 = __webpack_require__(29);
-	var private_chat_1 = __webpack_require__(30);
+	var primeng_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var $ = __webpack_require__(512);
 	var CKEditor = (function () {
 	    function CKEditor(_elm, _articleService, router, route) {
@@ -19794,7 +19794,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(63);
 	var users_1 = __webpack_require__(31);
 	var article_1 = __webpack_require__(52);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var tag_1 = __webpack_require__(73);
 	var NewsFeedComponent = (function () {
 	    function NewsFeedComponent(_userService, _requestService, _articleService, router) {
@@ -20285,7 +20285,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(7);
 	var users_1 = __webpack_require__(31);
 	var tag_1 = __webpack_require__(64);
-	var primeng_1 = __webpack_require__(29);
+	var primeng_1 = __webpack_require__(30);
 	var RegisterInfoComponent = (function () {
 	    function RegisterInfoComponent(fb, router, _userService, route, _tagService) {
 	        var _this = this;
@@ -21089,7 +21089,7 @@ webpackJsonp([2],[
 	var notification_1 = __webpack_require__(62);
 	var users_1 = __webpack_require__(31);
 	var chat_1 = __webpack_require__(126);
-	var private_chat_1 = __webpack_require__(30);
+	var private_chat_1 = __webpack_require__(28);
 	var errorPageComponent = (function () {
 	    function errorPageComponent(_auth, router, _noti, _userService, _chatService, routerCh) {
 	        this._auth = _auth;
