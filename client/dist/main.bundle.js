@@ -5700,7 +5700,6 @@ webpackJsonp([2],[
 	        this.num = 5;
 	        this.articles = [];
 	        this.height = 400;
-	        this.isExist = true;
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
@@ -5724,13 +5723,11 @@ webpackJsonp([2],[
 	    };
 	    listArticleComponent.prototype.getAllArticles = function () {
 	        var _this = this;
-	        this.text = "";
 	        this._artService.getAllArts(this.num).subscribe(function (arts) {
 	            if (arts.length == 0) {
 	                _this.isExist = false;
 	            }
 	            else {
-	                _this.isExist = true;
 	                for (var i = 0; i < arts.length; i++) {
 	                    //get summary
 	                    var html = arts[i].content;
@@ -5743,23 +5740,19 @@ webpackJsonp([2],[
 	            }
 	        });
 	    };
-	    listArticleComponent.prototype.searchArticle = function () {
+	    listArticleComponent.prototype.searchArticle = function (text) {
 	        var _this = this;
 	        this.listArt = [];
-	        if (!this.text) {
+	        if (!text) {
 	            this.getAllArticles();
 	            this.isExist = false;
 	        }
 	        else {
-	            this._artService.searchArticle(this.text).subscribe(function (arts) {
-	                console.log(arts.length);
+	            this._artService.searchArticle(text).subscribe(function (arts) {
 	                for (var i = 0; i < arts.length; i++) {
 	                    _this.listArt.push(arts[i]);
 	                }
 	                if (arts.length <= 0) {
-	                    _this.isExist = false;
-	                }
-	                else {
 	                    _this.isExist = true;
 	                }
 	            });
