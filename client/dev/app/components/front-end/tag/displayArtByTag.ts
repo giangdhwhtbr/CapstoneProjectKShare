@@ -71,10 +71,30 @@ export class displayArtByTagComponent implements OnInit{
                 this.id = params['id'];
 
                 this._tagService.getArtByTag(this.id).subscribe((arts)=>{
+                    for(let e of arts){
+                        //get summary
+                        let html = e.content;
+                        let div = document.createElement("div");
+                        div.innerHTML = html;
+                        let text = div.textContent || div.innerText || "";
+
+                        e.content = text;
+                    }
+                    this.listArt =arts;
                     this._tagService.getReqByTag(this.id).subscribe((reqs)=>{
+                        for(let e of reqs){
+                            //get summary
+                            let html = e.description;
+                            let div = document.createElement("div");
+                            div.innerHTML = html;
+                            let text = div.textContent || div.innerText || "";
+
+                            e.description = text;
+                        }
                         this.listReq=reqs;
-                        this.listArt =arts;
                     });
+                },(error)=>{
+                    window.location.href="/error";
                 });
             });
         $('ul.tabs').tabs();

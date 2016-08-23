@@ -144,3 +144,8 @@ nav .nav-wrapper{
     text-shadow: 0 0 1px;
     border-radius: 2px;
 }
+
+.ui-inputtext, .ui-widget-content .ui-inputtext, .ui-widget-header .ui-inputtext{
+    border-radius: 0px;
+    box-shadow: none;
+}

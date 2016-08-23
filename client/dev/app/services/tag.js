@@ -54,7 +54,7 @@ var TagService = (function () {
         });
         return this._http
             .post('/api/tags/TagNames', _data, options)
-            .map(function (r) { return r.json(); });
+            .map(function (r) { return r.json(); }).catch(this.handleError);
     };
     TagService.prototype.activeTag = function (id) {
         var header = new http_1.Headers;
@@ -67,7 +67,7 @@ var TagService = (function () {
     TagService.prototype.deactivateTag = function (id) {
         return this._http
             .delete(this._tagUrl.replace(':id', id))
-            .map(function (r) { return r.json(); });
+            .map(function (r) { return r.json(); }).catch(this.handleError);
     };
     TagService = __decorate([
         core_1.Injectable()

@@ -113,6 +113,10 @@ exports.KShareRoutes = [
                     {
                         path: ':id',
                         component: detail_article_1.detailArticleComponent
+                    },
+                    {
+                        path: '**',
+                        redirectTo: '/error'
                     }
                 ]
             },
@@ -180,7 +184,7 @@ exports.KShareRoutes = [
                 path: '',
                 component: home_1.HomeComponent
             }
-        ],
+        ]
     },
     {
         path: 'error',

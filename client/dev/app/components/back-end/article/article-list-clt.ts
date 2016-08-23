@@ -65,13 +65,14 @@ export class ArtListCtlComponent implements OnInit {
         this._articleService.activeArt(id).subscribe((art) => {
 
             this.getAllArt();
-
+            Materialize.toast('Đã mở lại , bài viết chuyển sang trạng thái riêng tư', 4000);
         });
     }
 
     deActiveArt(id: string) {
         this._articleService.deactivateArticle(id).subscribe((art) => {
             this.getAllArt();
+            Materialize.toast('Đã đóng bài viết', 4000);
         });
     }
 

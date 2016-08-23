@@ -57,7 +57,7 @@ export class TagService {
         );
         return this._http
             .post('/api/tags/TagNames', _data, options)
-            .map((r) => r.json());
+            .map((r) => r.json()).catch(this.handleError);
     }
 
     activeTag(id:string):Observable<any[]> {
@@ -72,7 +72,7 @@ export class TagService {
     deactivateTag(id:string):Observable<any> {
         return this._http
             .delete(this._tagUrl.replace(':id', id))
-            .map((r) => r.json());
+            .map((r) => r.json()).catch(this.handleError);
     }
 
 }
