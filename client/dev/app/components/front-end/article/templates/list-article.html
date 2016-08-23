@@ -19,12 +19,12 @@
             <div class="card">
                 <div *ngIf="a" class="card-content">
 
-                    <a *ngIf="a.title.length>70" [routerLink]="['/article',a._id]"><h5>{{a.title.substring(0,70)}} ...</h5></a>
+                    <a *ngIf="a.title.length>70" [routerLink]="['/article',a._id]"><h5>{{a.title.substring(0,150)}} ...</h5></a>
 
                     <a *ngIf="a.title.length<=70" [routerLink]="['/article',a._id]"><h5>{{a.title}}</h5></a>
 
                     <p><span *ngIf="a.content.length>70" class="sumary">
-                        {{a.content.substring(0,70)}} ...
+                        {{a.content.substring(0,150)}} ...
                     </span>
                     <p><span *ngIf="a.content.length<=70" class="sumary">
                         {{a.content}}

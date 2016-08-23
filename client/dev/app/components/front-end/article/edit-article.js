@@ -1,11 +1,10 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 /**
  * Created by Duc Duong on 7/26/2016.
@@ -44,8 +43,7 @@ var CKEditor = (function () {
         core_1.Component({
             selector: 'ck-editor',
             template: ""
-        }), 
-        __metadata('design:paramtypes', [core_1.ElementRef, article_1.ArticleService, router_1.Router, router_1.ActivatedRoute])
+        })
     ], CKEditor);
     return CKEditor;
 })();
@@ -71,7 +69,7 @@ var EditArticleComponent = (function () {
     EditArticleComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._articleService.getArtById(this.id).subscribe(function (art) {
-            if (art.ofUser != _this.userToken && _this.roleToken != "admin") {
+            if (art.author != _this.userToken && _this.roleToken != "admin") {
                 _this.isEdited = false;
             }
             else {
@@ -86,6 +84,10 @@ var EditArticleComponent = (function () {
                 _this.CreateYoutubeBtnCkeditor();
                 _this.addCommandBtnCk();
                 _this.loadAllTags();
+            }
+        }, function (error) {
+            if (error.status == 400) {
+                window.location.href = "/error";
             }
         });
     };
@@ -209,12 +211,20 @@ var EditArticleComponent = (function () {
         this.art.tags = tags[0];
         this.art.title = this.titelArticle;
         this.art.status = this.stt;
-        this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe(function (article) {
-            Materialize.toast('Đã sửa xong', 4000);
-            _this.router.navigateByUrl('/article/' + article._id);
-        }, function (error) {
-            console.log(error.text());
-        });
+        if (this.titelArticle.length < 10) {
+            Materialize.toast('Tiêu đề quá ngắn', 4000);
+        }
+        else if (this.art.content.length < 50) {
+            Materialize.toast('Nội dung phải trên 50 ký tự', 4000);
+        }
+        else {
+            this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe(function (article) {
+                Materialize.toast('Đã sửa xong', 4000);
+                _this.router.navigateByUrl('/article/' + article._id);
+            }, function (error) {
+                console.log(error.text());
+            });
+        }
     };
     EditArticleComponent = __decorate([
         core_1.Component({
@@ -223,8 +233,7 @@ var EditArticleComponent = (function () {
             styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
             directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
             providers: [article_1.ArticleService, tag_1.TagService]
-        }), 
-        __metadata('design:paramtypes', [article_1.ArticleService, tag_1.TagService, router_1.Router, router_1.ActivatedRoute])
+        })
     ], EditArticleComponent);
     return EditArticleComponent;
 })();

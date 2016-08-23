@@ -929,6 +929,7 @@ webpackJsonp([2],[
 	 */
 	var core_1 = __webpack_require__(1);
 	var http_1 = __webpack_require__(35);
+	var Observable_1 = __webpack_require__(2);
 	var ArticleService = (function () {
 	    function ArticleService(_http) {
 	        this._http = _http;
@@ -1028,7 +1029,7 @@ webpackJsonp([2],[
 	        });
 	        return this._http
 	            .post(this._requestsUrl.replace(':id', ''), _data, options)
-	            .map(function (r) { return r.json(); });
+	            .map(function (r) { return r.json(); }).catch(this.handleError);
 	    };
 	    ArticleService.prototype.addComment = function (artId, user, content) {
 	        var header = new http_1.Headers;
@@ -1052,7 +1053,7 @@ webpackJsonp([2],[
 	        });
 	        return this._http
 	            .put(this._cmtUrl.replace(':artId', artId).replace(':cmtId', cmtId), _cmt, options)
-	            .map(function (r) { return r.json(); });
+	            .map(function (r) { return r.json(); }).catch(this.handleError);
 	    };
 	    ArticleService.prototype.removeComment = function (artId, cmtId) {
 	        return this._http.delete(this._cmtUrl.replace(':artId', artId).replace(':cmtId', cmtId)).map(function (r) { return r.json(); });
@@ -1087,12 +1088,12 @@ webpackJsonp([2],[
 	    ArticleService.prototype.activeArt = function (id) {
 	        return this._http.get(this._requestsGetDeArtUrl.replace(':id', id))
 	            .map(function (r) { return r.json(); })
-	            .catch(this.handleError);
+	            .catch(this.handleError).catch(this.handleError);
 	    };
 	    ArticleService.prototype.deactivateArticle = function (id) {
 	        return this._http
 	            .delete(this._requestsUrl.replace(':id', id))
-	            .map(function (r) { return r.json(); });
+	            .map(function (r) { return r.json(); }).catch(this.handleError);
 	    };
 	    //deleteRequestById(id:string):Observable<any> {
 	    //  return this._http
@@ -1109,7 +1110,10 @@ webpackJsonp([2],[
 	        });
 	        return this._http
 	            .put(this._requestsUrl.replace(':id', id), _data, options)
-	            .map(function (r) { return r.json(); });
+	            .map(function (r) { return r.json(); }).catch(this.handleError);
+	    };
+	    ArticleService.prototype.handleError = function (error) {
+	        return Observable_1.Observable.throw(error);
 	    };
 	    ArticleService = __decorate([
 	        core_1.Injectable(), 
@@ -1573,7 +1577,7 @@ webpackJsonp([2],[
 	        });
 	        return this._http
 	            .post('/api/tags/TagNames', _data, options)
-	            .map(function (r) { return r.json(); });
+	            .map(function (r) { return r.json(); }).catch(this.handleError);
 	    };
 	    TagService.prototype.activeTag = function (id) {
 	        var header = new http_1.Headers;
@@ -1586,7 +1590,7 @@ webpackJsonp([2],[
 	    TagService.prototype.deactivateTag = function (id) {
 	        return this._http
 	            .delete(this._tagUrl.replace(':id', id))
-	            .map(function (r) { return r.json(); });
+	            .map(function (r) { return r.json(); }).catch(this.handleError);
 	    };
 	    TagService = __decorate([
 	        core_1.Injectable(), 
@@ -2963,8 +2967,8 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(63);
 	var auth_1 = __webpack_require__(44);
 	var tag_1 = __webpack_require__(64);
-	var primeng_1 = __webpack_require__(30);
 	var private_chat_1 = __webpack_require__(11);
+	var primeng_1 = __webpack_require__(30);
 	var CKEditor = (function () {
 	    function CKEditor(_elm) {
 	        CKEDITOR.replace(_elm.nativeElement);
@@ -3344,6 +3348,15 @@ webpackJsonp([2],[
 	            var type = params['type'];
 	            var id = params['id'];
 	            _this._articleService.getArtByKnwId(id).subscribe(function (arts) {
+	                for (var _i = 0, arts_1 = arts; _i < arts_1.length; _i++) {
+	                    var e = arts_1[_i];
+	                    //get summary
+	                    var html = e.content;
+	                    var div = document.createElement("div");
+	                    div.innerHTML = html;
+	                    var text = div.textContent || div.innerText || "";
+	                    e.content = text;
+	                }
 	                _this.arts = arts;
 	            });
 	            //get templates from children category
@@ -3358,6 +3371,12 @@ webpackJsonp([2],[
 	                    for (var i = 0; i < requests.length; i++) {
 	                        requests[i].createdAt = new Date(requests[i].createdAt);
 	                        requests[i].modifiedDate = new Date(requests[i].modifiedDate);
+	                        //get summary
+	                        var html = requests[i].description;
+	                        var div = document.createElement("div");
+	                        div.innerHTML = html;
+	                        var text = div.textContent || div.innerText || "";
+	                        requests[i].description = text;
 	                    }
 	                    _this.requests = requests;
 	                });
@@ -3379,6 +3398,12 @@ webpackJsonp([2],[
 	                                if (requests[i].status === 'pending') {
 	                                    requests[i].status = 'Đang chờ';
 	                                }
+	                                //get summary
+	                                var html = e.description;
+	                                var div = document.createElement("div");
+	                                div.innerHTML = html;
+	                                var text = div.textContent || div.innerText || "";
+	                                requests[i].description = text;
 	                            }
 	                            if (a.length == 0) {
 	                                _this.isExistRecord = true;
@@ -4696,12 +4721,14 @@ webpackJsonp([2],[
 	        var _this = this;
 	        this._articleService.activeArt(id).subscribe(function (art) {
 	            _this.getAllArt();
+	            Materialize.toast('Đã mở lại , bài viết chuyển sang trạng thái riêng tư', 4000);
 	        });
 	    };
 	    ArtListCtlComponent.prototype.deActiveArt = function (id) {
 	        var _this = this;
 	        this._articleService.deactivateArticle(id).subscribe(function (art) {
 	            _this.getAllArt();
+	            Materialize.toast('Đã đóng bài viết', 4000);
 	        });
 	    };
 	    ArtListCtlComponent = __decorate([
@@ -5117,12 +5144,14 @@ webpackJsonp([2],[
 	        var _this = this;
 	        this._tagService.deactivateTag(id).subscribe(function (mess) {
 	            _this.getAllTag();
+	            Materialize.toast('Đã đóng tag ', 4000);
 	        });
 	    };
 	    TagListCtlComponent.prototype.activeTag = function (id) {
 	        var _this = this;
 	        this._tagService.activeTag(id).subscribe(function (tag) {
 	            _this.getAllTag();
+	            Materialize.toast('Đã mở lại tag', 4000);
 	        });
 	    };
 	    TagListCtlComponent = __decorate([
@@ -5424,11 +5453,19 @@ webpackJsonp([2],[
 	        this.contentCk = CKEDITOR.instances.editor1.getData();
 	        var tags = [];
 	        tags = this.filterONTag();
-	        this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (articleId) {
-	            _this.router.navigateByUrl('/article/' + articleId);
-	        }, function (error) {
-	            console.log(error.text());
-	        });
+	        if (this.titelArticle.length < 5) {
+	            Materialize.toast('Tiêu đề quá ngắn', 4000);
+	        }
+	        else if (this.contentCk.length < 50) {
+	            Materialize.toast('Nội dung bài viết phải trên 50 ký tự', 4000);
+	        }
+	        else {
+	            this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (articleId) {
+	                _this.router.navigateByUrl('/article/' + articleId);
+	            }, function (error) {
+	                console.log(error.text());
+	            });
+	        }
 	    };
 	    CreateArticleComponent = __decorate([
 	        core_1.Component({
@@ -5526,6 +5563,9 @@ webpackJsonp([2],[
 	            }
 	            else {
 	                _this.canSee = false;
+	            }
+	        }, function (error) {
+	            if (error.status == 400) {
 	            }
 	        });
 	        $('.modal-trigger').leanModal();
@@ -6672,10 +6712,30 @@ webpackJsonp([2],[
 	            .subscribe(function (params) {
 	            _this.id = params['id'];
 	            _this._tagService.getArtByTag(_this.id).subscribe(function (arts) {
+	                for (var _i = 0, arts_1 = arts; _i < arts_1.length; _i++) {
+	                    var e = arts_1[_i];
+	                    //get summary
+	                    var html = e.content;
+	                    var div = document.createElement("div");
+	                    div.innerHTML = html;
+	                    var text = div.textContent || div.innerText || "";
+	                    e.content = text;
+	                }
+	                _this.listArt = arts;
 	                _this._tagService.getReqByTag(_this.id).subscribe(function (reqs) {
+	                    for (var _i = 0, reqs_1 = reqs; _i < reqs_1.length; _i++) {
+	                        var e = reqs_1[_i];
+	                        //get summary
+	                        var html = e.description;
+	                        var div = document.createElement("div");
+	                        div.innerHTML = html;
+	                        var text = div.textContent || div.innerText || "";
+	                        e.description = text;
+	                    }
 	                    _this.listReq = reqs;
-	                    _this.listArt = arts;
 	                });
+	            }, function (error) {
+	                window.location.href = "/error";
 	            });
 	        });
 	        $('ul.tabs').tabs();
@@ -19252,6 +19312,10 @@ webpackJsonp([2],[
 	                _this.addCommandBtnCk();
 	                _this.loadAllTags();
 	            }
+	        }, function (error) {
+	            if (error.status == 400) {
+	                window.location.href = "/error";
+	            }
 	        });
 	    };
 	    EditArticleComponent.prototype.ngAfterViewChecked = function () {
@@ -19374,12 +19438,20 @@ webpackJsonp([2],[
 	        this.art.tags = tags[0];
 	        this.art.title = this.titelArticle;
 	        this.art.status = this.stt;
-	        this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe(function (article) {
-	            Materialize.toast('Đã sửa xong', 4000);
-	            _this.router.navigateByUrl('/article/' + article._id);
-	        }, function (error) {
-	            console.log(error.text());
-	        });
+	        if (this.titelArticle.length < 10) {
+	            Materialize.toast('Tiêu đề quá ngắn', 4000);
+	        }
+	        else if (this.art.content.length < 50) {
+	            Materialize.toast('Nội dung phải trên 50 ký tự', 4000);
+	        }
+	        else {
+	            this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe(function (article) {
+	                Materialize.toast('Đã sửa xong', 4000);
+	                _this.router.navigateByUrl('/article/' + article._id);
+	            }, function (error) {
+	                console.log(error.text());
+	            });
+	        }
 	    };
 	    EditArticleComponent = __decorate([
 	        core_1.Component({
@@ -19843,6 +19915,7 @@ webpackJsonp([2],[
 	                _this.height += 30;
 	            }
 	        });
+	        $('.parallax').parallax();
 	    };
 	    NewsFeedComponent.prototype.seeMore = function () {
 	        this.countR1 = this.countR1 + 5;
@@ -19929,6 +20002,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'news-feed',
 	            templateUrl: 'client/dev/app/components/front-end/newsfeed/templates/newsfeed.html',
+	            styleUrls: ['client/dev/app/components/front-end/newsfeed/styles/newsfeed.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                private_chat_1.PrivateChatComponent,
@@ -20146,9 +20220,12 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var knowledge_1 = __webpack_require__(55);
+	var router_2 = __webpack_require__(4);
 	var SideBarComponent = (function () {
-	    function SideBarComponent(_knowledgeService) {
+	    function SideBarComponent(_knowledgeService, router, route) {
 	        this._knowledgeService = _knowledgeService;
+	        this.router = router;
+	        this.route = route;
 	    }
 	    SideBarComponent.prototype.ngOnInit = function () {
 	        var _this = this;
@@ -20183,6 +20260,9 @@ webpackJsonp([2],[
 	    SideBarComponent.prototype.closeNav = function () {
 	        $('.btnOpenNavF').sideNav({ closeOnClick: "true" });
 	    };
+	    SideBarComponent.prototype.backHome = function () {
+	        this.router.navigateByUrl('/');
+	    };
 	    SideBarComponent = __decorate([
 	        core_1.Component({
 	            selector: 'sidebar',
@@ -20190,10 +20270,10 @@ webpackJsonp([2],[
 	            styleUrls: ['client/dev/app/components/front-end/shared/styles/side-bar.css'],
 	            directives: [router_1.ROUTER_DIRECTIVES]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _a) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_2.ActivatedRoute !== 'undefined' && router_2.ActivatedRoute) === 'function' && _c) || Object])
 	    ], SideBarComponent);
 	    return SideBarComponent;
-	    var _a;
+	    var _a, _b, _c;
 	}());
 	exports.SideBarComponent = SideBarComponent;
 	
@@ -21359,6 +21439,10 @@ webpackJsonp([2],[
 	                    {
 	                        path: ':id',
 	                        component: detail_article_1.detailArticleComponent
+	                    },
+	                    {
+	                        path: '**',
+	                        redirectTo: '/error'
 	                    }
 	                ]
 	            },

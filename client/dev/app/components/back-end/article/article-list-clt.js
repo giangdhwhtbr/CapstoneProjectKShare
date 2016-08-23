@@ -59,12 +59,14 @@ var ArtListCtlComponent = (function () {
         var _this = this;
         this._articleService.activeArt(id).subscribe(function (art) {
             _this.getAllArt();
+            Materialize.toast('Đã mở lại , bài viết chuyển sang trạng thái riêng tư', 4000);
         });
     };
     ArtListCtlComponent.prototype.deActiveArt = function (id) {
         var _this = this;
         this._articleService.deactivateArticle(id).subscribe(function (art) {
             _this.getAllArt();
+            Materialize.toast('Đã đóng bài viết', 4000);
         });
     };
     ArtListCtlComponent = __decorate([

@@ -125,7 +125,7 @@ export class ArticleService {
         );
         return this._http
             .post(this._requestsUrl.replace(':id', ''), _data, options)
-            .map((r) => r.json());
+            .map((r) => r.json()).catch(this.handleError);
     }
 
     addComment(artId:string,user:string,content:string){
@@ -155,7 +155,7 @@ export class ArticleService {
         );
         return this._http
             .put(this._cmtUrl.replace(':artId',artId).replace(':cmtId',cmtId), _cmt, options)
-            .map((r) => r.json());
+            .map((r) => r.json()).catch(this.handleError);
     }
 
     removeComment(artId:string,cmtId:string):Observable<any>{
@@ -194,14 +194,14 @@ export class ArticleService {
     activeArt(id:string):Observable<any> {
         return this._http.get(this._requestsGetDeArtUrl.replace(':id', id))
             .map((r) => r.json())
-            .catch(this.handleError);
+            .catch(this.handleError).catch(this.handleError);
     }
 
 
     deactivateArticle(id:string):Observable<any> {
         return this._http
             .delete(this._requestsUrl.replace(':id', id))
-            .map((r) => r.json());
+            .map((r) => r.json()).catch(this.handleError);
     }
 
     //deleteRequestById(id:string):Observable<any> {
@@ -222,7 +222,11 @@ export class ArticleService {
         );
         return this._http
             .put(this._requestsUrl.replace(':id', id), _data, options)
-            .map((r) => r.json());
+            .map((r) => r.json()).catch(this.handleError);
+    }
+
+    private handleError(error:Response) {
+        return Observable.throw(error);
     }
 
 }

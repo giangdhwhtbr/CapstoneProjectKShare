@@ -7,6 +7,7 @@ import {
 import { ROUTER_DIRECTIVES, Router} from '@angular/router';
 import { Knowledge } from '../../../interface/knowledge';
 import { KnowledgeService } from '../../../services/knowledge';
+import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 declare var $:any;
 @Component({
     selector: 'sidebar',
@@ -15,7 +16,7 @@ declare var $:any;
     directives: [ROUTER_DIRECTIVES]
 })
 export class SideBarComponent {
-    constructor(private _knowledgeService:KnowledgeService) {
+    constructor(private _knowledgeService:KnowledgeService,public router:Router,private route: ActivatedRoute) {
     }
 
     knowledges:Knowledge[];
@@ -53,5 +54,9 @@ export class SideBarComponent {
 
     closeNav() {
         $('.btnOpenNavF').sideNav({closeOnClick: "true"});
+    }
+
+    backHome(){
+        this.router.navigateByUrl('/');
     }
 }

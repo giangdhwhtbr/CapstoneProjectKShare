@@ -120,6 +120,10 @@ export const KShareRoutes: RouterConfig = [
                     {
                         path: ':id',
                         component: detailArticleComponent
+                    },
+                    {
+                        path:'**',
+                        redirectTo:'/error'
                     }
                 ]
             },

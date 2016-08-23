@@ -14,6 +14,7 @@ declare var $:any;
 @Component({
     selector: 'news-feed',
     templateUrl: 'client/dev/app/components/front-end/newsfeed/templates/newsfeed.html',
+    styleUrls: ['client/dev/app/components/front-end/newsfeed/styles/newsfeed.css'],
     directives: [
         ROUTER_DIRECTIVES,
         PrivateChatComponent,
@@ -66,6 +67,7 @@ export class NewsFeedComponent implements OnInit {
                 this.height += 30;
             }
         });
+        $('.parallax').parallax();
     }
 
     seeMore():void {

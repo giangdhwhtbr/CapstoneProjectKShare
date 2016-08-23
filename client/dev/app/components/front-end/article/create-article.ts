@@ -16,6 +16,7 @@ import {AutoComplete,SelectButton,SelectItem} from 'primeng/primeng';
 import { PrivateChatComponent } from './../../shared/private-chat';
 declare var $ :any;
 declare var CKEDITOR: any;
+declare var Materialize:any;
 
 @Component({
     selector: 'ck-editor',
@@ -203,12 +204,18 @@ export class CreateArticleComponent implements OnInit,OnDestroy {
         this.contentCk = CKEDITOR.instances.editor1.getData();
         let tags:any[]=[];
         tags = this.filterONTag();
-        this._articleService.addArticle(this.titelArticle, this.contentCk,tags[0],tags[1],stt,this.userToken).subscribe((articleId)=> {
-                this.router.navigateByUrl('/article/'+articleId);
-            },
-            (error) => {
-                console.log(error.text());
-            }
-        );
+        if(this.titelArticle.length<5){
+            Materialize.toast('Tiêu đề quá ngắn', 4000);
+        }else if(this.contentCk.length<50){
+            Materialize.toast('Nội dung bài viết phải trên 50 ký tự', 4000);
+        }else{
+            this._articleService.addArticle(this.titelArticle, this.contentCk,tags[0],tags[1],stt,this.userToken).subscribe((articleId)=> {
+                    this.router.navigateByUrl('/article/'+articleId);
+                },
+                (error) => {
+                    console.log(error.text());
+                }
+            );
+        }
     }
 }
