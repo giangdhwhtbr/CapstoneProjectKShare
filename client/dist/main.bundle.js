@@ -1019,7 +1019,7 @@ webpackJsonp([2],[
 	        var options = new http_1.RequestOptions({ headers: headers });
 	        var _data = JSON.stringify({
 	            art: {
-	                ofUser: user,
+	                author: user,
 	                title: _title,
 	                content: _content,
 	                tags: oldTag,
@@ -2176,7 +2176,7 @@ webpackJsonp([2],[
 	    CKEditor = __decorate([
 	        core_1.Component({
 	            selector: 'ck-editor',
-	            template: ""
+	            template: "",
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
 	    ], CKEditor);
@@ -2963,6 +2963,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(63);
 	var auth_1 = __webpack_require__(44);
 	var tag_1 = __webpack_require__(64);
+	var private_chat_1 = __webpack_require__(30);
 	var primeng_1 = __webpack_require__(29);
 	var CKEditor = (function () {
 	    function CKEditor(_elm) {
@@ -3140,7 +3141,7 @@ webpackJsonp([2],[
 	            selector: 'request-create',
 	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-create.html',
 	            styleUrls: ['client/dev/app/components/bac  k-end/request/templates/request.css'],
-	            directives: [common_1.FORM_DIRECTIVES, primeng_1.AutoComplete, CKEditor],
+	            directives: [common_1.FORM_DIRECTIVES, primeng_1.AutoComplete, CKEditor, private_chat_1.PrivateChatComponent],
 	            providers: [tag_1.TagService]
 	        }),
 	        __param(1, core_1.Inject(common_1.FormBuilder)),
@@ -5487,7 +5488,7 @@ webpackJsonp([2],[
 	    detailArticleComponent.prototype.ngOnInit = function () {
 	        var _this = this;
 	        this._articleService.getArtById(this.id).subscribe(function (art) {
-	            if ((art.ofUser == _this.userToken && art.status == 'private')
+	            if ((art.author == _this.userToken && art.status == 'private')
 	                || (_this.roleToken == 'admin')
 	                || (_this.roleToken != 'admin' && art.status == 'public')) {
 	                //check user liked
@@ -5525,10 +5526,10 @@ webpackJsonp([2],[
 	                var title = 'Một bài viết của bạn đã bị đóng';
 	                var link = '/article/' + _this.article._id;
 	                //call function using socket io to send notification
-	                _this._noti.alertNotification(title, _this.article.ofUser, link);
+	                _this._noti.alertNotification(title, _this.article.author, link);
 	                //save notification to database
-	                _this._noti.createNotification(title, _this.article.ofUser, link).subscribe(function (notification) {
-	                    console.log('create a notification to ' + _this.article.ofUser);
+	                _this._noti.createNotification(title, _this.article.author, link).subscribe(function (notification) {
+	                    console.log('create a notification to ' + _this.article.author);
 	                });
 	                Materialize.toast('Đã đóng bài viết!', 4000);
 	                _this.isDeAc = true;
@@ -19222,7 +19223,7 @@ webpackJsonp([2],[
 	    EditArticleComponent.prototype.ngOnInit = function () {
 	        var _this = this;
 	        this._articleService.getArtById(this.id).subscribe(function (art) {
-	            if (art.ofUser != _this.userToken && _this.roleToken != "admin") {
+	            if (art.author != _this.userToken && _this.roleToken != "admin") {
 	                _this.isEdited = false;
 	            }
 	            else {

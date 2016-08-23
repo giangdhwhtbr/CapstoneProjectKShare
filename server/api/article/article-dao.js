@@ -217,7 +217,7 @@ articleSchema.statics.getArticleByUser = (username) => {
     return new Promise((resolve, reject) => {
         Article
             .find({ 
-                'ofUser': username,
+                'author': username,
                 $or:[
                     {'status':'public'},
                     {'status':'private'}

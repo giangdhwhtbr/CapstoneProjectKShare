@@ -4,7 +4,7 @@
             <h5 class="valign">{{article.title}}</h5>
             <hr>
             <!--<span class="titleArtDe"> </span>-->
-            <span class="byAu">viết bởi <a [routerLink]="['/user',article.ofUser]">{{article.ofUser}}</a></span>
+            <span class="byAu">viết bởi <a [routerLink]="['/user',article.author]">{{article.author}}</a></span>
             <span class="dateCreate">
                 vào {{article.createdAt | date:"dd/MM/yyyy"}}
             </span>
@@ -27,9 +27,9 @@
                     <a *ngIf="liked && userToken" (click)="unlikeArt()" class="waves-effect waves-light btn-flat" >
                         <i class="material-icons left">favorite</i>{{article.like}}
                     </a>
-                    <a *ngIf="roleToken=='admin' || article.ofUser==userToken" class="waves-effect waves-light btn-flat"
+                    <a *ngIf="roleToken=='admin' || article.author==userToken" class="waves-effect waves-light btn-flat"
                        href="/article/edit/{{article._id}}"><i class="material-icons left">mode_edit</i>Sửa</a>
-                    <a *ngIf="(roleToken=='admin' || article.ofUser==userToken)&& article.status!='deactivate'"
+                    <a *ngIf="(roleToken=='admin' || article.author==userToken)&& article.status!='deactivate'"
                        type="button" class="waves-effect waves-light btn-flat" data-toggle="modal" data-target="#mdCfClose">
                         <i class="material-icons left">delete</i> đóng
                     </a>
@@ -66,7 +66,7 @@
             </div>
             <div class="row">
                 <div *ngFor="let cmt of article.comments" class="col s12 m10 l10">
-                    <comment [comment]="cmt" [author]="article.ofUser" (sendDataToP)="actionComment($event)"></comment>
+                    <comment [comment]="cmt" [author]="article.author" (sendDataToP)="actionComment($event)"></comment>
                 </div>
             </div>
 
@@ -87,7 +87,7 @@
                         </div>
                         <div class="modal-footer">
                             <button id="clsArtBtn"
-                                    *ngIf="(roleToken=='admin' || article.ofUser==userToken)&& article.status!='deactivate'"
+                                    *ngIf="(roleToken=='admin' || article.author==userToken)&& article.status!='deactivate'"
                                     (click)="deactivateArticle(article._id)" type="button" class="btn btn-danger"
                                     data-dismiss="modal">Đóng bài viết
                             </button>
@@ -98,7 +98,7 @@
                 </div>
             </div>
 
-            <report *ngIf="article" reportedUser="{{article.ofUser}}"></report>
+            <report *ngIf="article" reportedUser="{{article.author}}"></report>
         </div>
     </div>
 

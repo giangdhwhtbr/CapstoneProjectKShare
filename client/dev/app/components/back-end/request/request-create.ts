@@ -7,6 +7,7 @@ import { RequestService} from '../../../services/requests';
 import { Knowledge } from '../../../interface/knowledge';
 import { AuthService} from '../../../services/auth';
 import {TagService} from '../../../services/tag';
+import { PrivateChatComponent } from './../../shared/private-chat';
 import {AutoComplete, SelectButton, SelectItem} from 'primeng/primeng';
 
 declare var $: any;
@@ -26,7 +27,7 @@ class CKEditor {
     selector: 'request-create',
     templateUrl: 'client/dev/app/components/back-end/request/templates/request-create.html',
     styleUrls: ['client/dev/app/components/bac  k-end/request/templates/request.css'],
-    directives: [FORM_DIRECTIVES, AutoComplete, CKEditor],
+    directives: [FORM_DIRECTIVES, AutoComplete, CKEditor,PrivateChatComponent],
     providers: [TagService]
 })
 export class CreateRequestComponent {

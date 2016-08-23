@@ -16,7 +16,7 @@ import * as $ from 'jquery';
 
 @Component({
     selector: 'ck-editor',
-    template: ``
+    template: ``,
 })
 
 class CKEditor implements OnInit, AfterViewChecked {
