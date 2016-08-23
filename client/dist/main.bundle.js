@@ -7327,8 +7327,9 @@ webpackJsonp([2],[
 	        $('.dropdown-button').dropdown();
 	    };
 	    HeaderComponent.prototype.ngAfterViewChecked = function () {
-	        $('#sidenav-overlay').hide();
-	        $('.drag-target').hide();
+	        //$('#sidenav-overlay').remove();
+	        //$('.drag-target').remove();
+	        $("body").css("overflow", "scroll");
 	    };
 	    HeaderComponent.prototype.openChat = function () {
 	        $('#chatBoxK').openModal();

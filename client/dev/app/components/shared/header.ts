@@ -96,8 +96,9 @@ export class HeaderComponent {
     }
 
     ngAfterViewChecked() {
-        $('#sidenav-overlay').hide();
-        $('.drag-target').hide();
+        //$('#sidenav-overlay').remove();
+        //$('.drag-target').remove();
+        $("body").css("overflow","scroll");
     }
 
     openChat() {
