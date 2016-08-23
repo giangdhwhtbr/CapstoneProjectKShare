@@ -37,18 +37,6 @@ module.exports = class TagController {
             }).catch(error => res.status(400).json(error));
     }
 
-    static getTagById(req, res) {
-        if (req.params && req.params.id) {
-            TagDAO
-                .getTagById(req.params.id)
-                .then(tag => res.status(200).json(tag))
-                .catch(error => res.status(400).json(error));
-        } else {
-            res.status(404).json({
-                "message": "No tag Id in templates"
-            });
-        }
-    }
     static getTagByIds(req, res) {
         TagDAO
             .getTagByIds(req.body.ids)
@@ -119,13 +107,6 @@ module.exports = class TagController {
             .then((tag) => res.status(201).end())
             .catch(error => res.status(400).json(error));
     }
-
-    //static createArrayTag(req, res){
-    //    let tagNames= req.body;
-    //    TagDAO.createArrayTag(tagNames.list).then((tags)=>{
-    //        res.status(201).json(tags);
-    //    }).catch(error => res.status(400).json(error));
-    //}
 
     static deleteTag(req, res) {
         let _id = req.params.id;

@@ -71,30 +71,6 @@ module.exports = class KnowledgeController {
         }
     }
 
-    static deleteKnowledge(req, res) {
-        let _id = req.params.id;
-
-        KnowledgeDAO
-            .deleteKnowledge(_id)
-            .then(() => {
-                //delete knowledge id in article
-                ArticleDAO
-                    .getArticleByKnwId(_id)
-                    .then(art => {
-                        for (let a of art) {
-                            var index = a.knowledge.indexOf(_id);
-                            if (index >= 0) {
-                                a.knowledge.splice(index, 1);
-                                a.save();
-                            }
-                        }
-                        // code more here
-                        res.status(200).end();
-                    })
-                    .catch(error => res.status(400).json(error));
-            }).catch(error => res.status(400).json(error));
-    }
-
     static updateKnowledge(req, res) {
         if (req.params && req.params.id) {
             KnowledgeDAO.getKnowledgeById(req.params.id)

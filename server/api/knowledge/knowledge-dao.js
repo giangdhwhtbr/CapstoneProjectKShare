@@ -76,21 +76,7 @@ knowledgeSchema.statics.createKnowledge = (knowledge) => {
                 : resolve(saved);
         });
     });
-}
-
-knowledgeSchema.statics.deleteKnowledge = (id) => {
-    return new Promise((resolve, reject) => {
-        if (!_.isString(id))
-            return reject(new TypeError('Id is not a valid string.'));
-
-        Knowledge
-            .findByIdAndRemove(id)
-            .exec((err, deleted) => {
-                err ? reject(err)
-                    : resolve();
-            });
-    });
-}
+};
 
 knowledgeSchema.statics.updateKnowledge = (knowledge) => {
     return new Promise((resolve, reject) => {
