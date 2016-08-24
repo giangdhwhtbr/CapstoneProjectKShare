@@ -161,17 +161,20 @@ export class ArticleService {
     removeComment(artId:string,cmtId:string):Observable<any>{
         return this._http.delete(this._cmtUrl.replace(':artId',artId).replace(':cmtId',cmtId)).map((r) => r.json());
     }
+
     //action like comment
     likeComment(artId:string,cmtId:string,user:string):Observable<any> {
         return this._http.get(this._cmtLike.replace(':artId',artId).replace(':cmtId',cmtId).replace(':user',user))
             .map((r) => r.json())
             .catch(this.handleError);
     }
+
     unlikeComment(artId:string,cmtId:string,user:string):Observable<any> {
         return this._http.get(this._cmtUnLike.replace(':artId',artId).replace(':cmtId',cmtId).replace(':user',user))
             .map((r) => r.json())
             .catch(this.handleError);
     }
+
     //action like article
     likeArt(artId:string,user:string):Observable<any> {
         return this._http.get(this._artLike.replace(':artId',artId).replace(':user',user))
@@ -184,6 +187,12 @@ export class ArticleService {
             .catch(this.handleError);
     }
 
+    topArticle():Observable<any>{
+        return this._http
+            .get(this._requestsUrl.replace(':id',''))
+            .map((r) => r.json())
+            .catch(this.handleError);
+    }
 
     getArtById(id:string):Observable<any> {
         return this._http.get(this._requestsUrl.replace(':id', id))

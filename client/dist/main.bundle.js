@@ -1081,6 +1081,12 @@ webpackJsonp([2],[
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
 	    };
+	    ArticleService.prototype.topArticle = function () {
+	        return this._http
+	            .get(this._requestsUrl.replace(':id', ''))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
 	    ArticleService.prototype.getArtById = function (id) {
 	        return this._http.get(this._requestsUrl.replace(':id', id))
 	            .map(function (r) { return r.json(); })
@@ -3336,7 +3342,7 @@ webpackJsonp([2],[
 	        };
 	    }
 	    RequestCategoryComponent.prototype.onPageChangeReq = function (number) {
-	        this.config.currentPage = number;
+	        this.configReq.currentPage = number;
 	    };
 	    RequestCategoryComponent.prototype.onPageChangeArt = function (number) {
 	        this.configArt.currentPage = number;
@@ -3474,7 +3480,6 @@ webpackJsonp([2],[
 	    }
 	    UserProfileBarComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        $('#loading').show();
 	        this.route
 	            .params
 	            .subscribe(function (params) {
@@ -3483,7 +3488,6 @@ webpackJsonp([2],[
 	            _this._userService.getUserByUserName(_this.name).subscribe(function (user) {
 	                _this.userProfile = user;
 	                _this.linkImg = user.linkImg;
-	                $('#loading').hide();
 	            }, function (error) {
 	                console.log(error);
 	            });
@@ -3508,13 +3512,11 @@ webpackJsonp([2],[
 	        var _this = this;
 	        this.filesToUpload = fileInput.target.files;
 	        if (this.filesToUpload) {
-	            $('#loading').show();
 	            this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then(function (r) {
 	                _this.linkImg = '/uploads/' + r[0].filename;
 	                _this.userProfile.linkImg = _this.linkImg;
 	                _this._userService.updateUser(_this.userProfile, []).subscribe(function (r) {
 	                    console.log("update link profile picture successful");
-	                    $('#loading').hide();
 	                });
 	            }, function (error) {
 	                console.error(error);
@@ -5379,7 +5381,6 @@ webpackJsonp([2],[
 	        var _this = this;
 	        this._tagService.getAllTag().subscribe(function (tags) {
 	            _this.tagsEx = tags;
-	            $('#preLoad').hide();
 	        });
 	    };
 	    // ckeditor
@@ -5456,7 +5457,6 @@ webpackJsonp([2],[
 	    //finish control Ckeditor
 	    CreateArticleComponent.prototype.postArticle = function (stt) {
 	        var _this = this;
-	        $('#preLoad').show();
 	        this.contentCk = CKEDITOR.instances.editor1.getData();
 	        var tags = [];
 	        tags = this.filterONTag();
@@ -5573,6 +5573,7 @@ webpackJsonp([2],[
 	            }
 	        }, function (error) {
 	            if (error.status == 400) {
+	                window.location.href = "/error";
 	            }
 	        });
 	        $('.modal-trigger').leanModal();
@@ -5885,7 +5886,6 @@ webpackJsonp([2],[
 	        });
 	    }
 	    KSpaceInfoComponent.prototype.ngOnInit = function () {
-	        $('#createReview').trigger('autoresize');
 	        this.loadAllData();
 	        $('#preLoad').hide();
 	    };
@@ -5897,7 +5897,6 @@ webpackJsonp([2],[
 	            _this.kspace = kspace;
 	            _this.title = kspace.requestTitle;
 	            _this.reviews = kspace.reviews;
-	            console.log(_this.reviews);
 	            _this.rateAve = parseInt(kspace.rateAve);
 	            for (var _i = 0, _a = kspace.chatlog; _i < _a.length; _i++) {
 	                var log = _a[_i];
@@ -5930,7 +5929,10 @@ webpackJsonp([2],[
 	    KSpaceInfoComponent.prototype.onSubmit = function (value) {
 	        var _this = this;
 	        if (!this.ratePoint) {
-	            this.errorMessage = 'Vui lòng chấm điểm cho bài giảng';
+	            this.errorMessage = {
+	                header: '',
+	                content: 'Vui lòng chấm điểm cho bài giảng'
+	            };
 	        }
 	        else {
 	            var data = {
@@ -5946,7 +5948,10 @@ webpackJsonp([2],[
 	                    console.log(error);
 	                    error = JSON.parse(error._body);
 	                    if (error.message) {
-	                        _this.errorMessage = error.message;
+	                        _this.errorMessage = {
+	                            header: '',
+	                            content: error.message
+	                        };
 	                    }
 	                }
 	            });
@@ -6022,8 +6027,7 @@ webpackJsonp([2],[
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent, ng_semantic_1.SEMANTIC_COMPONENTS, ng_semantic_1.SEMANTIC_DIRECTIVES, ratingPoint_1.RatingPoint
 	            ],
-	            providers: [article_1.ArticleService],
-	            styles: ["\n      button#submitReview {\n          margin-top: 50px;\n      }\n    "]
+	            providers: [article_1.ArticleService]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _c) || Object, (typeof (_d = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _d) || Object])
 	    ], KSpaceInfoComponent);
@@ -19310,6 +19314,7 @@ webpackJsonp([2],[
 	var tag_1 = __webpack_require__(64);
 	var primeng_1 = __webpack_require__(30);
 	var private_chat_1 = __webpack_require__(11);
+	var $ = __webpack_require__(511);
 	var CKEditor = (function () {
 	    function CKEditor(_elm, _articleService, router, route) {
 	        var _this = this;
@@ -19380,7 +19385,6 @@ webpackJsonp([2],[
 	                _this.CreateYoutubeBtnCkeditor();
 	                _this.addCommandBtnCk();
 	                _this.loadAllTags();
-	                $('#preLoad').hide();
 	            }
 	        }, function (error) {
 	            if (error.status == 400) {
@@ -19502,7 +19506,6 @@ webpackJsonp([2],[
 	    };
 	    EditArticleComponent.prototype.editArticle = function () {
 	        var _this = this;
-	        $('#preLoad').show();
 	        this.art.content = CKEDITOR.instances.editor1.getData();
 	        var tags = [];
 	        tags = this.filterONTag();
@@ -20622,7 +20625,7 @@ webpackJsonp([2],[
 	    }
 	    RegisterComponent.prototype.ngOnInit = function () {
 	        this.regForm = this.fb.group({
-	            username: ["", common_1.Validators.pattern('^[a-zA-Z0-9_.-]{8,30}$')],
+	            username: ["", common_1.Validators.pattern('^[a-zA-Z0-9_.-]*$')],
 	            password: ["", common_1.Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')],
 	            copass: [""],
 	            email: ["", common_1.Validators.pattern('^(([a-zA-Z]|[0-9])|([-]|[_]|[.]))+[@](([a-zA-Z0-9])|([-])){2,63}[.](([a-zA-Z0-9]){2,63})+$')]
@@ -20631,7 +20634,7 @@ webpackJsonp([2],[
 	    RegisterComponent.prototype.register = function (user) {
 	        var _this = this;
 	        var validateUsername = function (username) {
-	            var pattern = new RegExp('^[a-zA-Z0-9_.-]{8,30}$');
+	            var pattern = new RegExp('^[a-zA-Z0-9_.-]*$');
 	            return pattern.test(username);
 	        };
 	        var validatePass = function (password) {
@@ -21339,11 +21342,11 @@ webpackJsonp([2],[
 	    __decorate([
 	        core_1.Input(), 
 	        __metadata('design:type', Number)
-	    ], RatingPoint.prototype, "rate", void 0);
+	    ], RatingPoint.prototype, "rateAve", void 0);
 	    RatingPoint = __decorate([
 	        core_1.Component({
 	            selector: "rating-point",
-	            template: "\n      <div *ngIf=\"!rate\">\n        <div  class=\"ui massive heart rating\">\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n        </div>\n      </div>\n      <div *ngIf=\"rate && rate <= 1\">\n        <div  class=\"ui massive heart rating\">\n          <i class=\"icon active\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n        </div>\n      </div>\n      <div *ngIf=\"rate > 1 && rate <= 2\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rate > 2 && rate <= 3\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rate > 3 && rate <= 4\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rate > 4 && rate <= 5\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n          </div>\n      </div>\n  "
+	            template: "\n      <div *ngIf=\"!rateAve\">\n        <div  class=\"ui massive heart rating\">\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n        </div>\n      </div>\n      <div *ngIf=\"rateAve && rateAve <= 1\">\n        <div  class=\"ui massive heart rating\">\n          <i class=\"icon active\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n        </div>\n      </div>\n      <div *ngIf=\"rateAve > 1 && rateAve <= 2\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rateAve > 2 && rateAve <= 3\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rateAve > 3 && rateAve <= 4\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rateAve > 4 && rateAve <= 5\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n          </div>\n      </div>\n  "
 	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], RatingPoint);
