@@ -92,6 +92,7 @@ var CreateArticleComponent = (function () {
         var _this = this;
         this._tagService.getAllTag().subscribe(function (tags) {
             _this.tagsEx = tags;
+            $('#preLoad').hide();
         });
     };
     // ckeditor
@@ -168,6 +169,7 @@ var CreateArticleComponent = (function () {
     //finish control Ckeditor
     CreateArticleComponent.prototype.postArticle = function (stt) {
         var _this = this;
+        $('#preLoad').show();
         this.contentCk = CKEDITOR.instances.editor1.getData();
         var tags = [];
         tags = this.filterONTag();

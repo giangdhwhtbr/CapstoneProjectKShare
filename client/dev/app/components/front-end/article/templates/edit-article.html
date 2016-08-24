@@ -127,10 +127,18 @@
             </div>
         </div>
         <!--end editor -->
-        <p-autoComplete [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
-                        [multiple]="true" [(ngModel)]="tags">
-        </p-autoComplete>
-        <!--end tags-->
+        <div class="row">
+            <div class="input-field col s12">
+                <p><span>Bài viết này liên quan tới</span></p>
+                <!--end editor -->
+                <p-autoComplete [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
+                                [multiple]="true" [(ngModel)]="tags">
+                </p-autoComplete>
+            </div>
+            <div id="preLoad" class="progress green accent-3">
+                <div class="indeterminate"></div>
+            </div>
+        </div>
         <button type="button" class="btn btn-primary" (click)="editArticle()">Sửa</button>
     </div>
     <div *ngIf="!isEdited">
