@@ -62,11 +62,8 @@ export class listArticleComponent implements OnInit {
         this.text = "";
         this._artService.getAllArts(this.num).subscribe((arts) => {
             if (arts.length==0) {
-                this.isExist = false;
             }else{
-                this.isExist = true;
                 for (let i = 0; i < arts.length; i++) {
-
                     //get summary
                     let html = arts[i].content;
                     let div = document.createElement("div");
@@ -81,11 +78,18 @@ export class listArticleComponent implements OnInit {
         });
     }
 
+    backToAll(){
+        this.isExist = true;
+        this.num = 5;
+        this.getAllArticles();
+    }
+
     searchArticle() {
+        this.num = 5;
         this.listArt = [];
-        if (!this.text) {
+        if (!this.text) { 
             this.getAllArticles();
-            this.isExist = false;
+            this.isExist = true;
         } else {
             this._artService.searchArticle(this.text).subscribe((arts) => {
                 console.log(arts.length);

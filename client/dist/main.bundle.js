@@ -5728,10 +5728,8 @@ webpackJsonp([2],[
 	        this.text = "";
 	        this._artService.getAllArts(this.num).subscribe(function (arts) {
 	            if (arts.length == 0) {
-	                _this.isExist = false;
 	            }
 	            else {
-	                _this.isExist = true;
 	                for (var i = 0; i < arts.length; i++) {
 	                    //get summary
 	                    var html = arts[i].content;
@@ -5744,12 +5742,18 @@ webpackJsonp([2],[
 	            }
 	        });
 	    };
+	    listArticleComponent.prototype.backToAll = function () {
+	        this.isExist = true;
+	        this.num = 5;
+	        this.getAllArticles();
+	    };
 	    listArticleComponent.prototype.searchArticle = function () {
 	        var _this = this;
+	        this.num = 5;
 	        this.listArt = [];
 	        if (!this.text) {
 	            this.getAllArticles();
-	            this.isExist = false;
+	            this.isExist = true;
 	        }
 	        else {
 	            this._artService.searchArticle(this.text).subscribe(function (arts) {
@@ -6574,16 +6578,15 @@ webpackJsonp([2],[
 	        this.num = this.num + 5;
 	        this.getAllRequests();
 	    };
+	    RequestListClientComponent.prototype.backToAll = function () {
+	        this.isExistRecord = false;
+	        this.num = 5;
+	        this.getAllRequests();
+	    };
 	    RequestListClientComponent.prototype.getAllRequests = function () {
 	        var _this = this;
 	        this.text = "";
 	        this._requestService.getAllRequests(this.num).subscribe(function (requests) {
-	            if (requests.length === 0) {
-	                _this.isExistRecord = true;
-	            }
-	            else {
-	                _this.isExistRecord = false;
-	            }
 	            _this.requests = requests;
 	            for (var i = 0; i < requests.length; i++) {
 	                _this._data.push({
@@ -6605,9 +6608,9 @@ webpackJsonp([2],[
 	    };
 	    RequestListClientComponent.prototype.search = function () {
 	        var _this = this;
+	        this.num = 5;
 	        if (this.text === '') {
 	            this.isExistRecord = false;
-	            this.num = 5;
 	            this.getAllRequests();
 	        }
 	        else {
