@@ -142,7 +142,10 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
 
     ngAfterViewChecked() {
         if (this.article != undefined) {
-            $('.bodyArt').html(this.article.content);
+            $('.bodyArt').html(()=> {
+                return this.article.content;
+            });
+            $('.bodyArt img').css('max-width','900px');
         }
     }
 
