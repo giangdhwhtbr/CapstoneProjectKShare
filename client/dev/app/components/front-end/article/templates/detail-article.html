@@ -28,13 +28,13 @@
                     <a *ngIf="liked && userToken" (click)="unlikeArt()" class="waves-effect waves-light btn-flat" >
                         <i class="material-icons left">favorite</i>{{article.like}}
                     </a>
-                    <a *ngIf="roleToken=='admin' || article.author==userToken" class="waves-effect waves-light btn-flat"
+                    <a *ngIf="(roleToken=='admin' || article.author==userToken) && userToken" class="waves-effect waves-light btn-flat"
                        href="/article/edit/{{article._id}}"><i class="material-icons left">mode_edit</i>Sửa</a>
-                    <a *ngIf="(roleToken=='admin' || article.author==userToken)&& article.status!='deactivate'"
+                    <a *ngIf="(roleToken=='admin' || article.author==userToken)&& article.status!='deactivate' && userToken"
                        type="button" class="waves-effect waves-light btn-flat" (click)="openCloseArt()">
                         <i class="material-icons left">delete</i> đóng
                     </a>
-                    <a class="waves-effect waves-light btn-flat" (click)="openRp()" id="btnRp" >
+                    <a *ngIf="userToken" class="waves-effect waves-light btn-flat" (click)="openRp()" id="btnRp" >
                         <i class="material-icons left">feedback</i> báo cáo
                     </a>
                 </div>

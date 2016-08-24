@@ -11,7 +11,6 @@
                         <a class="clearfix" (click)="getReceiver(room)">
                             <img [src]="room.friendAva" alt="" class="circle">
                             <div class="friend-name">
-
                                 <strong>{{room.friendName}}</strong>
                             </div>
                             <div class="last-message text-muted">{{room.lastMsg}}</div>
@@ -65,12 +64,11 @@
 
                     </ul>
                 </div>
-                <div class="chat-box bg-white row">
+                <div class="chat-box bg-white row" *ngIf="allChatRooms.length > 0">
                     <!--<div class="  row">-->
                     <div class="input-group">
-                        <input id="textboxmess" [(ngModel)]="mess" class="form-control border no-shadow no-rounded"
-                               placeholder="Type your message here">
-                            <span class="input-group-btn">
+                        <input id="textboxmess" [(ngModel)]="mess" class="form-control border no-shadow no-rounded" placeholder="Type your message here">
+                        <span class="input-group-btn">
                                 <button class="btn btn-success no-rounded" (click)="sendMessage()"
                                         type="button">Gửi
                                 </button>
@@ -78,10 +76,11 @@
                     </div>
                     <!-- /input-group -->
                 </div>
+                <div *ngIf="allChatRooms.length <= 0">
+                    Bạn chưa có ai để trò chuyện
+                </div>
             </div>
         </div>
-
     </div>
+
 </div>
-
-

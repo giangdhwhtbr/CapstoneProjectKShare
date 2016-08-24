@@ -8,14 +8,11 @@
                 <div class="card-content">
                     <span class="card-title"><a [routerLink]="['/user/'+requestUser]">{{requestUser}}</a></span>
                     <div class="row">
-                        <p>
+                        <p *ngIf="displayName">
                             Tên: {{displayName}}
                         </p>
                         <p>
                             Email: {{email}}
-                        </p>
-                        <p>
-                            Cấp độ: {{level}}
                         </p>
                     </div>
                     <div class="row">
