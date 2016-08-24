@@ -20,8 +20,8 @@ import { ReportComponent } from '../../report/report';
 import { User } from '../../../../interface/user';
 import { FriendShip } from '../../../../interface/friendship';
 import { Notification } from '../../../../interface/notification';
-declare var $:any;
-declare var Materialize:any;
+declare var $: any;
+declare var Materialize: any;
 @Component({
   selector: 'user-profile-bar',
   templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile-bar.html',
@@ -84,19 +84,19 @@ export class UserProfileBarComponent {
         this.getFriendList();
       });
     $('ul.tabs').tabs();
-    $('.tooltipped').tooltip({delay: 5});
+    $('.tooltipped').tooltip({ delay: 5 });
   }
 
-  ngAfterViewChecked(){
-
+  openReport():void{
+        $('#myModal').openModal();
   }
 
-  ngOnDestroy(){
-    $( ".material-tooltip" ).remove();
+  ngOnDestroy() {
+    $(".material-tooltip").remove();
   }
 
-  openChooseFile(){
-    $('#chFileImg').trigger( "click" );
+  openChooseFile() {
+    $('#chFileImg').trigger("click");
   }
 
   fileChangeEvent(fileInput: any) {
@@ -137,7 +137,7 @@ export class UserProfileBarComponent {
       this._noti.createNotification(title, this.name, link).subscribe(
         (notification) => {
         });
-        this.isFriend = true;
+      this.isFriend = true;
     } else {
       Materialize.toast('Bạn đã gửi kết bạn rồi!', 4000);
     }

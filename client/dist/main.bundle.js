@@ -3502,7 +3502,8 @@ webpackJsonp([2],[
 	        $('ul.tabs').tabs();
 	        $('.tooltipped').tooltip({ delay: 5 });
 	    };
-	    UserProfileBarComponent.prototype.ngAfterViewChecked = function () {
+	    UserProfileBarComponent.prototype.openReport = function () {
+	        $('#myModal').openModal();
 	    };
 	    UserProfileBarComponent.prototype.ngOnDestroy = function () {
 	        $(".material-tooltip").remove();
