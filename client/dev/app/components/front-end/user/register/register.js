@@ -25,7 +25,7 @@ var RegisterComponent = (function () {
     }
     RegisterComponent.prototype.ngOnInit = function () {
         this.regForm = this.fb.group({
-            username: ["", common_1.Validators.pattern('^[a-zA-Z0-9_.-]*$')],
+            username: ["", common_1.Validators.pattern('^[a-zA-Z0-9_.-]{8,30}$')],
             password: ["", common_1.Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')],
             copass: [""],
             email: ["", common_1.Validators.pattern('^(([a-zA-Z]|[0-9])|([-]|[_]|[.]))+[@](([a-zA-Z0-9])|([-])){2,63}[.](([a-zA-Z0-9]){2,63})+$')]
@@ -34,7 +34,7 @@ var RegisterComponent = (function () {
     RegisterComponent.prototype.register = function (user) {
         var _this = this;
         var validateUsername = function (username) {
-            var pattern = new RegExp('^[a-zA-Z0-9_.-]*$');
+            var pattern = new RegExp('^[a-zA-Z0-9_.-]{8,30}$');
             return pattern.test(username);
         };
         var validatePass = function (password) {

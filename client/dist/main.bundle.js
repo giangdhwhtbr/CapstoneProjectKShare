@@ -5573,6 +5573,7 @@ webpackJsonp([2],[
 	            }
 	        }, function (error) {
 	            if (error.status == 400) {
+	                window.location.href = "/error";
 	            }
 	        });
 	        $('.modal-trigger').leanModal();

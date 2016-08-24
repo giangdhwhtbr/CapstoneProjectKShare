@@ -1,22 +1,18 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 var core_1 = require('@angular/core');
 var private_chat_1 = require('./../../shared/private-chat');
 var router_1 = require('@angular/router');
-var requests_1 = require('../../../services/requests');
 var tag_1 = require('../../../services/tag');
 var friend_list_1 = require('../shared/friend-list');
 var request_create_1 = require('../../back-end/request/request-create');
 var request_category_1 = require('./request-category');
-var auth_1 = require('../../../services/auth');
-var router_2 = require("@angular/router");
 var tag_2 = require('../tag/tag');
 var RequestListClientComponent = (function () {
     function RequestListClientComponent(_requestService, _tagService, _auth, router, route) {
@@ -57,16 +53,15 @@ var RequestListClientComponent = (function () {
         this.num = this.num + 5;
         this.getAllRequests();
     };
+    RequestListClientComponent.prototype.backToAll = function () {
+        this.isExistRecord = false;
+        this.num = 5;
+        this.getAllRequests();
+    };
     RequestListClientComponent.prototype.getAllRequests = function () {
         var _this = this;
         this.text = "";
         this._requestService.getAllRequests(this.num).subscribe(function (requests) {
-            if (requests.length === 0) {
-                _this.isExistRecord = true;
-            }
-            else {
-                _this.isExistRecord = false;
-            }
             _this.requests = requests;
             for (var i = 0; i < requests.length; i++) {
                 _this._data.push({
@@ -88,15 +83,19 @@ var RequestListClientComponent = (function () {
     };
     RequestListClientComponent.prototype.search = function () {
         var _this = this;
+        this.num = 5;
         if (this.text === '') {
             this.isExistRecord = false;
-            this.num = 5;
             this.getAllRequests();
         }
         else {
             this._requestService.searchRequest(this.text).subscribe(function (requests) {
                 _this._data = [];
                 for (var i = 0; i < requests.length; i++) {
+                    _this._data.push({
+                        req: requests[i],
+                        tags: []
+                    });
                     requests[i].createdAt = new Date(requests[i].createdAt);
                     if (requests[i].status === 'pending') {
                         requests[i].status = 'Đang chờ';
@@ -141,8 +140,7 @@ var RequestListClientComponent = (function () {
                 private_chat_1.PrivateChatComponent
             ],
             providers: [tag_1.TagService]
-        }), 
-        __metadata('design:paramtypes', [requests_1.RequestService, tag_1.TagService, auth_1.AuthService, router_2.Router, router_1.ActivatedRoute])
+        })
     ], RequestListClientComponent);
     return RequestListClientComponent;
 })();

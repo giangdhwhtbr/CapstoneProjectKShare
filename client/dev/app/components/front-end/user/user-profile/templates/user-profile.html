@@ -16,22 +16,28 @@
                     </ul>
                 </div>
                 <div id="userPage" class="col s12">
-                    <div *ngFor="let request of requests">
+                    <div *ngFor="let request of requests| paginate: configReq">
                         <request-record title="{{request.title}}" requestId="{{request._id}}"
                                         description="{{request.description}}" status="{{request.status}}"
                                         createdAt="{{request.createdAt}}" knowledgeId="{{request.knowledgeId}}">
                         </request-record>
                     </div>
+                    <pagination-controls [id]="configReq.id" [maxSize]="maxSizeReq" [directionLinks]="directionLinksReq" [autoHide]="autoHideReq"
+                                         (pageChange)="onPageChangeReq($event)"></pagination-controls>
                 </div>
                 <div id="article" class="row">
-                    <div *ngFor="let art of articleList">
+                    <div *ngFor="let art of articleList| paginate: configArt">
                         <article-list [article]="art"></article-list>
                     </div>
+                    <pagination-controls [id]="configArt.id" [maxSize]="maxSizeArt" [directionLinks]="directionLinksArt" [autoHide]="autoHideArt"
+                                         (pageChange)="onPageChangeArt($event)"></pagination-controls>
                 </div>
                 <div id="kspace" class="row">
-                    <div *ngFor="let kspace of kspaceList">
+                    <div *ngFor="let kspace of kspaceList| paginate: configKp">
                         <kspace-list [kspace]="kspace"></kspace-list>
                     </div>
+                    <pagination-controls [id]="configKp.id" [maxSize]="maxSizeKp" [directionLinks]="directionLinksKp" [autoHide]="autoHideKp"
+                                         (pageChange)="onPageChangeKp($event)"></pagination-controls>
                 </div>
             </div>
         </div>

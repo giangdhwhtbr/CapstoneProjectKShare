@@ -2,9 +2,10 @@
     <div id="login-page" class="row">
         <div class="col s6 offset-s3 z-depth-2 card-panel">
             <form class="login-form " [ngFormModel]="loginForm" (ngSubmit)="login(loginForm.value)">
-
-                <div *ngIf="errorMessage" class="center row wrap-err-msg">
-                    <span class="err-msg center"><i class="tiny material-icons">error</i>{{errorMessage}}</span>
+                <div *ngIf="errorMessage" class="card-panel orange darken-1">
+                    <span class="white-text">
+                      <i class="material-icons left">report_problem</i>{{errorMessage}}
+                    </span>
                 </div>
                 <div class="row margin">
                     <div class="input-field col s12">

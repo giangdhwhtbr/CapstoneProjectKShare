@@ -19,10 +19,10 @@ module.exports = function(passport){
           return done(err);
         }
         if(!user){
-          return done(null, false, { invalidUsername: 'Incorrect username.' });
+          return done(null, false, { invalidUsername: 'Tên đăng nhập không đúng, vui lòng thử lại' });
         }
         if(!user.authenticate(password)) {
-          return done(null, false, { invalidPassword: 'Incorrect password.'});
+          return done(null, false, { invalidPassword: 'Mật khẩu không chính xác, vui long kiểm tra lại'});
         }
 
         if(user.banStatus.status) {
