@@ -34,6 +34,7 @@ var KSpaceInfoComponent = (function () {
         });
     }
     KSpaceInfoComponent.prototype.ngOnInit = function () {
+        $('#createReview').trigger('autoresize');
         this.loadAllData();
         $('#preLoad').hide();
     };
@@ -45,6 +46,7 @@ var KSpaceInfoComponent = (function () {
             _this.kspace = kspace;
             _this.title = kspace.requestTitle;
             _this.reviews = kspace.reviews;
+            console.log(_this.reviews);
             _this.rateAve = parseInt(kspace.rateAve);
             for (var _i = 0, _a = kspace.chatlog; _i < _a.length; _i++) {
                 var log = _a[_i];
@@ -77,10 +79,7 @@ var KSpaceInfoComponent = (function () {
     KSpaceInfoComponent.prototype.onSubmit = function (value) {
         var _this = this;
         if (!this.ratePoint) {
-            this.errorMessage = {
-                header: '',
-                content: 'Vui lòng chấm điểm cho bài giảng'
-            };
+            this.errorMessage = 'Vui lòng chấm điểm cho bài giảng';
         }
         else {
             var data = {
@@ -96,10 +95,7 @@ var KSpaceInfoComponent = (function () {
                     console.log(error);
                     error = JSON.parse(error._body);
                     if (error.message) {
-                        _this.errorMessage = {
-                            header: '',
-                            content: error.message
-                        };
+                        _this.errorMessage = error.message;
                     }
                 }
             });
@@ -175,7 +171,8 @@ var KSpaceInfoComponent = (function () {
             directives: [
                 router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent, ng_semantic_1.SEMANTIC_COMPONENTS, ng_semantic_1.SEMANTIC_DIRECTIVES, ratingPoint_1.RatingPoint
             ],
-            providers: [article_1.ArticleService]
+            providers: [article_1.ArticleService],
+            styles: ["\n      button#submitReview {\n          margin-top: 50px;\n      }\n    "]
         }), 
         __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, kspace_1.KSpaceService, article_1.ArticleService])
     ], KSpaceInfoComponent);

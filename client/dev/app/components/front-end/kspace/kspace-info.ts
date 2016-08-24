@@ -17,7 +17,12 @@ declare var Materialize:any;
     directives: [
         ROUTER_DIRECTIVES,PrivateChatComponent,SEMANTIC_COMPONENTS,SEMANTIC_DIRECTIVES, RatingPoint
     ],
-    providers:[ArticleService]
+    providers:[ArticleService],
+    styles:[`
+      button#submitReview {
+          margin-top: 50px;
+      }
+    `]
 })
 
 export class KSpaceInfoComponent implements OnInit {
@@ -31,7 +36,7 @@ export class KSpaceInfoComponent implements OnInit {
     rateAve:number;
 
     // error message
-    errorMessage:any;
+    errorMessage:string;
 
     isFinish:boolean=false;
     finishDate:any;
@@ -51,8 +56,9 @@ export class KSpaceInfoComponent implements OnInit {
 
 
     ngOnInit():void {
-        this.loadAllData();
-        $('#preLoad').hide();
+      $('#createReview').trigger('autoresize');
+      this.loadAllData();
+      $('#preLoad').hide();
     }
 
     loadAllData(){
@@ -63,6 +69,7 @@ export class KSpaceInfoComponent implements OnInit {
                     this.kspace=kspace;
                     this.title = kspace.requestTitle;
                     this.reviews = kspace.reviews;
+                  console.log(this.reviews);
                     this.rateAve = parseInt(kspace.rateAve);
                     for (var log of kspace.chatlog) {
                         if (log.dataURL) {
@@ -94,10 +101,7 @@ export class KSpaceInfoComponent implements OnInit {
 
     onSubmit(value):void {
         if (!this.ratePoint) {
-            this.errorMessage = {
-                header: '',
-                content: 'Vui lòng chấm điểm cho bài giảng'
-            };
+            this.errorMessage ='Vui lòng chấm điểm cho bài giảng';
         } else {
             var data = {
                 id: this.kspaceId,
@@ -114,10 +118,7 @@ export class KSpaceInfoComponent implements OnInit {
                         console.log(error);
                         error = JSON.parse(error._body);
                         if (error.message) {
-                            this.errorMessage = {
-                                header: '',
-                                content: error.message
-                            };
+                            this.errorMessage = error.message
                         }
                     }
                 }

@@ -5869,6 +5869,7 @@ webpackJsonp([2],[
 	        });
 	    }
 	    KSpaceInfoComponent.prototype.ngOnInit = function () {
+	        $('#createReview').trigger('autoresize');
 	        this.loadAllData();
 	        $('#preLoad').hide();
 	    };
@@ -5880,6 +5881,7 @@ webpackJsonp([2],[
 	            _this.kspace = kspace;
 	            _this.title = kspace.requestTitle;
 	            _this.reviews = kspace.reviews;
+	            console.log(_this.reviews);
 	            _this.rateAve = parseInt(kspace.rateAve);
 	            for (var _i = 0, _a = kspace.chatlog; _i < _a.length; _i++) {
 	                var log = _a[_i];
@@ -5912,10 +5914,7 @@ webpackJsonp([2],[
 	    KSpaceInfoComponent.prototype.onSubmit = function (value) {
 	        var _this = this;
 	        if (!this.ratePoint) {
-	            this.errorMessage = {
-	                header: '',
-	                content: 'Vui lòng chấm điểm cho bài giảng'
-	            };
+	            this.errorMessage = 'Vui lòng chấm điểm cho bài giảng';
 	        }
 	        else {
 	            var data = {
@@ -5931,10 +5930,7 @@ webpackJsonp([2],[
 	                    console.log(error);
 	                    error = JSON.parse(error._body);
 	                    if (error.message) {
-	                        _this.errorMessage = {
-	                            header: '',
-	                            content: error.message
-	                        };
+	                        _this.errorMessage = error.message;
 	                    }
 	                }
 	            });
@@ -6010,7 +6006,8 @@ webpackJsonp([2],[
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent, ng_semantic_1.SEMANTIC_COMPONENTS, ng_semantic_1.SEMANTIC_DIRECTIVES, ratingPoint_1.RatingPoint
 	            ],
-	            providers: [article_1.ArticleService]
+	            providers: [article_1.ArticleService],
+	            styles: ["\n      button#submitReview {\n          margin-top: 50px;\n      }\n    "]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _c) || Object, (typeof (_d = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _d) || Object])
 	    ], KSpaceInfoComponent);
@@ -21326,11 +21323,11 @@ webpackJsonp([2],[
 	    __decorate([
 	        core_1.Input(), 
 	        __metadata('design:type', Number)
-	    ], RatingPoint.prototype, "rateAve", void 0);
+	    ], RatingPoint.prototype, "rate", void 0);
 	    RatingPoint = __decorate([
 	        core_1.Component({
 	            selector: "rating-point",
-	            template: "\n      <div *ngIf=\"!rateAve\">\n        <div  class=\"ui massive heart rating\">\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n        </div>\n      </div>\n      <div *ngIf=\"rateAve && rateAve <= 1\">\n        <div  class=\"ui massive heart rating\">\n          <i class=\"icon active\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n        </div>\n      </div>\n      <div *ngIf=\"rateAve > 1 && rateAve <= 2\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rateAve > 2 && rateAve <= 3\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rateAve > 3 && rateAve <= 4\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rateAve > 4 && rateAve <= 5\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n          </div>\n      </div>\n  "
+	            template: "\n      <div *ngIf=\"!rate\">\n        <div  class=\"ui massive heart rating\">\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n        </div>\n      </div>\n      <div *ngIf=\"rate && rate <= 1\">\n        <div  class=\"ui massive heart rating\">\n          <i class=\"icon active\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n        </div>\n      </div>\n      <div *ngIf=\"rate > 1 && rate <= 2\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rate > 2 && rate <= 3\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rate > 3 && rate <= 4\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rate > 4 && rate <= 5\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n          </div>\n      </div>\n  "
 	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], RatingPoint);
