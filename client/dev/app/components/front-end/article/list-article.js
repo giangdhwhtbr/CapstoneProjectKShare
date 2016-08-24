@@ -24,6 +24,7 @@ var listArticleComponent = (function () {
         this.num = 5;
         this.articles = [];
         this.height = 400;
+        this.isExist = true;
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
     }
@@ -47,33 +48,42 @@ var listArticleComponent = (function () {
     };
     listArticleComponent.prototype.getAllArticles = function () {
         var _this = this;
+        this.text = "";
         this._artService.getAllArts(this.num).subscribe(function (arts) {
             if (arts.length == 0) {
                 _this.isExist = false;
             }
             else {
+                _this.isExist = true;
                 for (var i = 0; i < arts.length; i++) {
-                    if (arts[i].status === "private") {
-                        arts.splice(i, 1);
-                    }
+                    //get summary
+                    var html = arts[i].content;
+                    var div = document.createElement("div");
+                    div.innerHTML = html;
+                    var text = div.textContent || div.innerText || "";
+                    arts[i].content = text;
                     _this.listArt.push(arts[i]);
                 }
             }
         });
     };
-    listArticleComponent.prototype.searchArticle = function (text) {
+    listArticleComponent.prototype.searchArticle = function () {
         var _this = this;
         this.listArt = [];
-        if (!text) {
+        if (!this.text) {
             this.getAllArticles();
             this.isExist = false;
         }
         else {
-            this._artService.searchArticle(text).subscribe(function (arts) {
+            this._artService.searchArticle(this.text).subscribe(function (arts) {
+                console.log(arts.length);
                 for (var i = 0; i < arts.length; i++) {
                     _this.listArt.push(arts[i]);
                 }
                 if (arts.length <= 0) {
+                    _this.isExist = false;
+                }
+                else {
                     _this.isExist = true;
                 }
             });

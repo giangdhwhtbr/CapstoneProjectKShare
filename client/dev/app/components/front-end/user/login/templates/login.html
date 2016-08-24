@@ -2,6 +2,10 @@
     <div id="login-page" class="row">
         <div class="col s6 offset-s3 z-depth-2 card-panel">
             <form class="login-form " [ngFormModel]="loginForm" (ngSubmit)="login(loginForm.value)">
+
+                <div *ngIf="errorMessage" class="center row wrap-err-msg">
+                    <span class="err-msg center"><i class="tiny material-icons">error</i>{{errorMessage}}</span>
+                </div>
                 <div class="row margin">
                     <div class="input-field col s12">
                         <input id="username" class="form-control form-text" type="text" required maxlength="30"
@@ -29,9 +33,6 @@
                 <div class="input-field col s12 m12 l12">
                     <p class="margin right-align medium-small"><a [routerLink]="['/reset-password']">Quên mật khẩu
                         đăng nhập?</a></p>
-                </div>
-                <div class="input-field col s12 m12 l12 errmes">
-                    <p *ngIf="errorMessage" class="right-align medium-small">{{errorMessage}}</p>
                 </div>
             </form>
         </div>

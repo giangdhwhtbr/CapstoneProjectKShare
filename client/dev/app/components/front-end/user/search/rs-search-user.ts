@@ -16,7 +16,6 @@ import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInsta
 import { Subscription } from 'rxjs/Subscription';
 import { PrivateChatComponent } from '../../../shared/private-chat';
 
-
 declare var $:any;
 @Component({
     selector: 'rs-user-search',

@@ -45,7 +45,7 @@ var detailArticleComponent = (function () {
     detailArticleComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._articleService.getArtById(this.id).subscribe(function (art) {
-            if ((art.ofUser == _this.userToken && art.status == 'private')
+            if ((art.author == _this.userToken && art.status == 'private')
                 || (_this.roleToken == 'admin')
                 || (_this.roleToken != 'admin' && art.status == 'public')) {
                 //check user liked
@@ -75,6 +75,8 @@ var detailArticleComponent = (function () {
                 _this.canSee = false;
             }
         }, function (error) {
+            if (error.status == 400) {
+            }
         });
         $('.modal-trigger').leanModal();
     };
@@ -91,10 +93,10 @@ var detailArticleComponent = (function () {
                 var title = 'Một bài viết của bạn đã bị đóng';
                 var link = '/article/' + _this.article._id;
                 //call function using socket io to send notification
-                _this._noti.alertNotification(title, _this.article.ofUser, link);
+                _this._noti.alertNotification(title, _this.article.author, link);
                 //save notification to database
-                _this._noti.createNotification(title, _this.article.ofUser, link).subscribe(function (notification) {
-                    console.log('create a notification to ' + _this.article.ofUser);
+                _this._noti.createNotification(title, _this.article.author, link).subscribe(function (notification) {
+                    console.log('create a notification to ' + _this.article.author);
                 });
                 Materialize.toast('Đã đóng bài viết!', 4000);
                 _this.isDeAc = true;

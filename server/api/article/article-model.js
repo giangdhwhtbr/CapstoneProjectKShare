@@ -7,7 +7,7 @@ const mongoose = require('mongoose');
 var relationship = require("mongoose-relationship");
 
 const articleSchema = {
-    ofUser: {type:String, required: true},
+    author: {type:String, required: true},
     title: {type: String, required: true, trim: true},
     content: {type: String, required: true, trim: true},
     tags: [{type: mongoose.Schema.Types.ObjectId, ref: "Tag", childPath: "articles"}],

@@ -93,7 +93,7 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
     ngOnInit() {
         this._articleService.getArtById(this.id).subscribe((art)=> {
 
-            if (art.ofUser != this.userToken && this.roleToken != "admin") {
+            if (art.author != this.userToken && this.roleToken != "admin") {
                 this.isEdited = false;
             } else {
                 this.art = art;
@@ -109,6 +109,10 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
 
             }
 
+        },(error)=>{
+            if(error.status==400){
+                window.location.href="/error";
+            }
         });
 
     }
@@ -246,13 +250,19 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
         this.art.tags = tags[0];
         this.art.title = this.titelArticle;
         this.art.status = this.stt;
-        this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe((article)=> {
-                Materialize.toast('Đã sửa xong', 4000);
-                this.router.navigateByUrl('/article/' + article._id);
-            },
-            (error) => {
-                console.log(error.text());
-            }
-        );
+        if(this.titelArticle.length<10){
+            Materialize.toast('Tiêu đề quá ngắn', 4000);
+        }else if(this.art.content.length<50){
+            Materialize.toast('Nội dung phải trên 50 ký tự', 4000);
+        }else {
+            this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe((article)=> {
+                    Materialize.toast('Đã sửa xong', 4000);
+                    this.router.navigateByUrl('/article/' + article._id);
+                },
+                (error) => {
+                    console.log(error.text());
+                }
+            );
+        }
     }
 }

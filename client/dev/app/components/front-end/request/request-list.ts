@@ -20,7 +20,7 @@ import { Router } from "@angular/router";
 import { Subscription } from 'rxjs/Subscription';
 import {listTagComponent} from '../tag/tag';
 
-declare var $:any;
+declare var $: any;
 
 @Component({
     selector: 'request-list-cli',
@@ -38,28 +38,28 @@ declare var $:any;
 })
 
 export class RequestListClientComponent implements AfterViewChecked {
-    pageTitle:string = 'Welcome to Knowledge Sharing Network';
-    text:string;
-    isExistRecord:boolean = false;
-    roleToken:string;
-    userToken:string;
-    link:string;
-    arrIds:any[] = [];
-    _data:any[] = [];
-    num:number = 5;
-    height:number = 400;
-    private sub:Subscription;
+    pageTitle: string = 'Welcome to Knowledge Sharing Network';
+    text: string;
+    isExistRecord: boolean = false;
+    roleToken: string;
+    userToken: string;
+    link: string;
+    arrIds: any[] = [];
+    _data: any[] = [];
+    num: number = 5;
+    height: number = 400;
+    private sub: Subscription;
 
-    constructor(private _requestService:RequestService, private _tagService:TagService,
-                private _auth:AuthService, private router:Router,
-                private route:ActivatedRoute) {
+    constructor(private _requestService: RequestService, private _tagService: TagService,
+        private _auth: AuthService, private router: Router,
+        private route: ActivatedRoute) {
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
     }
 
-    requests:Request[] = [];
+    requests: Request[] = [];
 
-    ngOnInit():void {
+    ngOnInit(): void {
         this.sub = this.route
             .params
             .subscribe(params => {
@@ -85,8 +85,14 @@ export class RequestListClientComponent implements AfterViewChecked {
     }
 
     getAllRequests() {
+        this.text="";
         this._requestService.getAllRequests(this.num).subscribe((requests) => {
-
+            if (requests.length === 0) {
+                this.isExistRecord = true;
+            } else {
+                this.isExistRecord = false;
+            }
+            this.requests = requests;
             for (var i = 0; i < requests.length; i++) {
                 this._data.push({
                     req: requests[i],
@@ -109,13 +115,13 @@ export class RequestListClientComponent implements AfterViewChecked {
         });
     }
 
-    search(search:string) {
-        if (search === '') {
+    search() {
+        if (this.text === '') {
             this.isExistRecord = false;
             this.num = 5;
             this.getAllRequests();
         } else {
-            this._requestService.searchRequest(search).subscribe((requests) => {
+            this._requestService.searchRequest(this.text).subscribe((requests) => {
 
                 this._data = [];
                 for (var i = 0; i < requests.length; i++) {
@@ -152,7 +158,7 @@ export class RequestListClientComponent implements AfterViewChecked {
         }
     }
 
-    ngOnDestroy():void {
+    ngOnDestroy(): void {
         this.sub.unsubscribe();
     }
 }

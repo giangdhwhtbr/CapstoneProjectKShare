@@ -70,7 +70,7 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
     ngOnInit() {
         this._articleService.getArtById(this.id).subscribe((art) => {
 
-            if ((art.ofUser == this.userToken && art.status == 'private')
+            if ((art.author == this.userToken && art.status == 'private')
                 || (this.roleToken == 'admin')
                 || (this.roleToken != 'admin' && art.status == 'public')) {
                 //check user liked
@@ -105,10 +105,11 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
             }
 
 
-        },
-          (error) => {
-
-          });
+        },(error)=>{
+            if(error.status==400){
+                //window.location.href="/error";
+            }
+        });
         $('.modal-trigger').leanModal();
     }
 
@@ -126,11 +127,11 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
                 var title = 'Một bài viết của bạn đã bị đóng';
                 var link = '/article/' + this.article._id;
                 //call function using socket io to send notification
-                this._noti.alertNotification(title, this.article.ofUser, link);
+                this._noti.alertNotification(title, this.article.author, link);
                 //save notification to database
-                this._noti.createNotification(title, this.article.ofUser, link).subscribe(
+                this._noti.createNotification(title, this.article.author, link).subscribe(
                     (notification) => {
-                        console.log('create a notification to ' + this.article.ofUser);
+                        console.log('create a notification to ' + this.article.author);
                     });
                 Materialize.toast('Đã đóng bài viết!', 4000);
                 this.isDeAc = true;

@@ -11,7 +11,7 @@ import {
   FORM_DIRECTIVES,
 } from '@angular/common';
 import { ROUTER_DIRECTIVES,Router,RouteSegment } from '@angular/router';
-
+import {PrivateChatComponent} from '../../shared/private-chat';
 
 import  { NavbarComponent } from '../shared/nav-bar';
 import  { SidebarComponent }  from '../shared/side-bar';
@@ -27,7 +27,7 @@ import  { AuthService} from '../../../services/auth';
     FORM_DIRECTIVES,
     ROUTER_DIRECTIVES,
     NavbarComponent,
-    SidebarComponent
+    SidebarComponent,PrivateChatComponent
   ],
 })
 export class UserInfoComponent {

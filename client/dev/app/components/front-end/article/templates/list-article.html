@@ -3,30 +3,42 @@
     <div class="row">
         <form id="searchdivid2" class="navbar-form navbar-left" role="search">
             <div class="form-group">
-                <input #text type="text" class="form-control" placeholder="Nhập nội dung tìm kiếm">
+                <input [(ngModel)]="text" type="text" class="form-control" placeholder="Nhập nội dung tìm kiếm">
             </div>
-            <button (click)="searchArticle(text.value)" type="submit" class="btn btn-small">Tìm kiếm</button>
+            <button (click)="searchArticle()" class="btn btn-small">Tìm kiếm</button>
             <a *ngIf="userToken != null" type="button" class="btn btn-primary btn-small" href="/article/create">
                 Tạo bài viết
             </a>
         </form>
     </div>
-    <div *ngIf="isExist">
-        <h1>Không có bài viết nào được tìm thấy</h1>
+    <div *ngIf="!isExist">
+         <h5>Kết quả tìm kiếm</h5>
+        <div class="valign-wrapper">
+            <h5 class="valign">Rất tiếc không tìm thấy dữ liệu phù hợp</h5>
+        </div>
+        <button class="btn-large waves-effect waves-light blue" (click)="getAllArticles()">Trở lại</button>
     </div>
     <div *ngIf="listArt" class="row">
         <div class="col s12 m12"  *ngFor="let a of listArt">
             <div class="card">
                 <div *ngIf="a" class="card-content">
-                    <a [routerLink]="['/article',a._id]">{{a.title}}</a>
 
-                    <span class="sumary"></span>
+                    <a *ngIf="a.title.length>70" [routerLink]="['/article',a._id]"><h5>{{a.title.substring(0,150)}} ...</h5></a>
+
+                    <a *ngIf="a.title.length<=70" [routerLink]="['/article',a._id]"><h5>{{a.title}}</h5></a>
+
+                    <p><span *ngIf="a.content.length>70" class="sumary">
+                        {{a.content.substring(0,150)}} ...
+                    </span>
+                    <p><span *ngIf="a.content.length<=70" class="sumary">
+                        {{a.content}}
+                    </span>
                 </div>
                 <div *ngIf="a" class="card-action">
                     <div class="row">
                         <div class="col s4 m4">
-                            <span *ngIf="a.ofUser" class="author">Tạo bởi : <a
-                                    [routerLink]="['/user',a.ofUser]">{{a.ofUser}}</a> </span>
+                            <span *ngIf="a.author" class="author">Tạo bởi : <a
+                                    [routerLink]="['/user',a.author]">{{a.author}}</a> </span>
                         </div>
                         <div class="col s4 m4">
                             <span>Trạng thái : {{a.status}}</span>

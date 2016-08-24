@@ -33,6 +33,7 @@ var RequestDetailClientComponent = (function () {
         this.checkIsAcceped = false;
         this.offers = [];
         this.kspace = {};
+        this.isSubscriberd = false;
         this.roleToken = localStorage.getItem('userrole');
         this.userToken = localStorage.getItem('username');
         this.route
@@ -183,7 +184,7 @@ var RequestDetailClientComponent = (function () {
     };
     RequestDetailClientComponent.prototype.addSubcriber = function (id) {
         var _this = this;
-        if (this.checkSubcribedUser == true) {
+        if (this.checkSubcribedUser == true && this.isSubscriberd === true) {
             Materialize.toast('Bạn đã theo dõi bài viết này', 4000);
         }
         else {
@@ -194,6 +195,7 @@ var RequestDetailClientComponent = (function () {
                 _this.checkSubcribedUser = true;
                 _this._requestService.getRequestById(_this.id).subscribe(function (request) {
                     _this.subscribers = request.subscribers;
+                    _this.isSubscriberd = true;
                 });
             });
         }

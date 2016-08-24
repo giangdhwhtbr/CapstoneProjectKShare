@@ -13,7 +13,7 @@ import {listTagComponent} from '../tag/tag';
 
 import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance } from 'ng2-pagination';
 import { Subscription }       from 'rxjs/Subscription';
-
+import {PrivateChatComponent} from '../../shared/private-chat';
 declare var $:any;
 
 @Component ({
@@ -21,7 +21,7 @@ declare var $:any;
     templateUrl: 'client/dev/app/components/front-end/tag/templates/display-article-by-tag.html',
     styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
     directives: [
-        ROUTER_DIRECTIVES,listTagComponent,PaginationControlsCmp
+        ROUTER_DIRECTIVES,listTagComponent,PaginationControlsCmp,PrivateChatComponent
     ],
     providers: [TagService,PaginationService],
     pipes: [PaginatePipe]
@@ -71,10 +71,30 @@ export class displayArtByTagComponent implements OnInit{
                 this.id = params['id'];
 
                 this._tagService.getArtByTag(this.id).subscribe((arts)=>{
+                    for(let e of arts){
+                        //get summary
+                        let html = e.content;
+                        let div = document.createElement("div");
+                        div.innerHTML = html;
+                        let text = div.textContent || div.innerText || "";
+
+                        e.content = text;
+                    }
+                    this.listArt =arts;
                     this._tagService.getReqByTag(this.id).subscribe((reqs)=>{
+                        for(let e of reqs){
+                            //get summary
+                            let html = e.description;
+                            let div = document.createElement("div");
+                            div.innerHTML = html;
+                            let text = div.textContent || div.innerText || "";
+
+                            e.description = text;
+                        }
                         this.listReq=reqs;
-                        this.listArt =arts;
                     });
+                },(error)=>{
+                    window.location.href="/error";
                 });
             });
         $('ul.tabs').tabs();

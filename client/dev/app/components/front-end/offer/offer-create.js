@@ -13,6 +13,7 @@ var request_offer_1 = require('../../../services/request-offer');
 var auth_1 = require('../../../services/auth');
 var requests_1 = require('../../../services/requests');
 var notification_1 = require('../../../services/notification');
+var private_chat_1 = require('../../shared/private-chat');
 var CreateOfferComponent = (function () {
     function CreateOfferComponent(fb, _offerService, _authService, _noti, _requestService) {
         this._offerService = _offerService;
@@ -59,7 +60,7 @@ var CreateOfferComponent = (function () {
         core_1.Component({
             selector: 'offer-create',
             templateUrl: 'client/dev/app/components/front-end/offer/templates/offer-create.html',
-            directives: [common_1.FORM_DIRECTIVES]
+            directives: [common_1.FORM_DIRECTIVES, private_chat_1.PrivateChatComponent]
         }), 
         __metadata('design:paramtypes', [common_1.FormBuilder, request_offer_1.OfferService, auth_1.AuthService, notification_1.NotificationService, requests_1.RequestService])
     ], CreateOfferComponent);

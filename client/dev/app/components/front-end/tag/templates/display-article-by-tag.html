@@ -7,30 +7,41 @@
             </ul>
         </div>
         <div id="tabArt" class="col s12">
-            <div *ngIf="listArt">
+            <div *ngIf="listArt" class="row">
+                <div *ngFor="let a of listArt| paginate: configArt" class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <span *ngIf="a.title.length>70" class="card-title"><a [routerLink]="['/article',a._id]">{{a.title.substring(0,150)}}
+                                ...</a></span>
+                            <span *ngIf="a.title.length<=70" class="card-title"><a [routerLink]="['/article',a._id]">{{a.title}}</a></span>
 
+                            <div class="row">
 
-                <div *ngFor="let a of listArt| paginate: configArt" class="panel panel-default">
-                    <div class="panel-body clearfix">
-                        <p><span class="title"><a [routerLink]="['/article',a._id]">{{a.title}}</a></span></p>
+                                <div class="col s4">
+                                    <span class="stt">Trạng thái : {{a.status}} </span>
+                                </div>
 
-                        <p><span class="sumary"></span></p>
+                                <div class="col s4">
+                                    <span class="dateArt">Ngày tạo : {{a.createdAt | date:"dd/MM/yyyy"}}</span>
+                                </div>
 
-                        <p *ngIf="a.tagsFD.length>0">
-                            tags :
-                            <span *ngFor="let t of a.tagsFD">
-                                <a [routerLink]="['/tag',t._id]" routerLinkActive="active">{{t.name}}</a>,
-                            </span>
-                        </p>
-
-                        <p>
-                            <span class="dateArt">{{a.createdAt | date:"dd/MM/yyyy"}}</span>
-                        </p>
-
-                        <p>
-                            <span *ngIf="a.ofUser" class="author">by : <a
-                                    [routerLink]="['/user',a.ofUser]">{{a.ofUser}}</a> </span>
-                        </p>
+                                <div class="col s4">
+                                    <span *ngIf="a.author" class="author">viết bởi :
+                                        <a [routerLink]="['/user',a.author]">{{a.author}}</a> </span>
+                                </div>
+                            </div>
+                            <div class="col s12">
+                                <span *ngIf="a.content.length>70">{{a.content.substring(0,150)}} ...</span>
+                                <span *ngIf="a.content.length<=70">{{a.content}}</span>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m12">
+                                    <p *ngIf="a.tags.length!=0">
+                                        <tags [listTagId]="a.tags"></tags>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div *ngIf="listArt.length!=0">
@@ -46,24 +57,35 @@
             </div>
         </div>
         <div id="tabReq" class="col s12">
-            <div *ngIf="listReq">
-                <div *ngFor="let r of listReq| paginate: config" class="panel panel-default">
-                    <div class="panel-body clearfix">
-                        <p><span class="title"><a [routerLink]="['/requests/'+r._id+'/info']">{{r.title}}</a></span>
-                        </p>
-
-                        <p><span class="sumary"></span></p>
-
-
-                        <p>
-                            <span class="dateArt">{{r.createdAt | date:"dd/MM/yyyy"}}</span>
-                        </p>
-
-                        <p>
-                            <span *ngIf="r.user" class="author">by : <a
-                                    [routerLink]="['/user',r.user]">{{r.user}}</a> </span>
-                        </p>
-                        <tags [listTagId]="r.tags"></tags>
+            <div *ngIf="listReq" class="row">
+                <div *ngFor="let r of listReq| paginate: config" class="col s12">
+                    <div class="card">
+                        <div class="card-content">
+                            <span *ngIf="r.title.length>70" class="card-title"><a
+                                    [routerLink]="['/requests/'+r._id+'/info']">{{r.title.substring(0,150)}} ...</a></span>
+                            <span *ngIf="r.title.length<=70" class="card-title"><a
+                                    [routerLink]="['/requests/'+r._id+'/info']">{{r.title}}</a></span>
+                            <div class="row">
+                                <div class="col s4">
+                                    Người tạo : <a [routerLink]="['/user/' + r.user]">{{r.user}}</a>
+                                </div>
+                                <div class="col s4">
+                                    Trạng thái : {{r.status}}
+                                </div>
+                                <div class="col s4">
+                                    Ngày tạo : {{r.createdAt | date:"dd/MM/yyyy"}}
+                                </div>
+                            </div>
+                            <div class="col s12">
+                                <span *ngIf="r.description.length>70">{{r.description.substring(0,150)}} ...</span>
+                                <span *ngIf="r.description.length<=70">{{r.description}}</span>
+                            </div>
+                            <div class="row">
+                                <div class="col s12 m12">
+                                    <tags [listTagId]="r.tags"></tags>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div *ngIf="listReq.length!=0">
@@ -76,9 +98,10 @@
 
             </div>
             <div *ngIf="listReq.length==0">
-                <h5 class="center-align">Không có yêu cầu liên quan</h5>
+                <h5 class="center-align">Không có dữ liệu liên quan</h5>
             </div>
         </div>
     </div>
 </div>
 
+<private-chat></private-chat>

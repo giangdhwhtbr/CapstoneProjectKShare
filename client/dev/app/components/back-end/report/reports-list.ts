@@ -10,12 +10,13 @@ import { StringFilterPipe } from '../shared/filter';
 import {DataTable,Column, Header, MultiSelect, Footer, InputText} from 'primeng/primeng';
 
 import { MessageComponent } from './message';
+import {PrivateChatComponent} from '../../shared/private-chat';
 declare var $: any;
 
 @Component({
   selector: 'reports-list',
   templateUrl: 'client/dev/app/components/back-end/report/templates/reports-list.html',
-  directives: [MessageComponent,ROUTER_DIRECTIVES, FORM_DIRECTIVES,FORM_DIRECTIVES,DataTable,Column,Header,Footer],
+  directives: [MessageComponent,ROUTER_DIRECTIVES, FORM_DIRECTIVES,FORM_DIRECTIVES,DataTable,Column,Header,Footer,PrivateChatComponent],
   providers: [ReportService,ChatService]
 })
 export class ReportListComponent {

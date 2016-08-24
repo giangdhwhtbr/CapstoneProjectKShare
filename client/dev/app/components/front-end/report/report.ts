@@ -5,7 +5,7 @@ import { ReportService } from '../../../services/report';
 import { NotificationService } from '../../../services/notification';
 import { UserService } from '../../../services/users';
 import { Report } from '../../../interface/report';
-
+import {PrivateChatComponent} from '../../shared/private-chat';
 declare var $:any;
 
 @Component({
@@ -13,7 +13,7 @@ declare var $:any;
     templateUrl: 'client/dev/app/components/front-end/report/templates/report.html',
     styleUrls: [],
     directives: [
-        FORM_DIRECTIVES,
+        FORM_DIRECTIVES,PrivateChatComponent
     ]
 })
 

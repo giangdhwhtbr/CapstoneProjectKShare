@@ -13,6 +13,7 @@ var common_1 = require('@angular/common');
 var users_1 = require('../../../../services/users');
 var tag_1 = require('../../../../services/tag');
 var primeng_1 = require('primeng/primeng');
+var private_chat_1 = require('../../../shared/private-chat');
 var RegisterInfoComponent = (function () {
     function RegisterInfoComponent(fb, router, _userService, route, _tagService) {
         var _this = this;
@@ -128,7 +129,7 @@ var RegisterInfoComponent = (function () {
         core_1.Component({
             templateUrl: "client/dev/app/components/front-end/user/register/templates/info.html",
             styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
-            directives: [primeng_1.AutoComplete],
+            directives: [primeng_1.AutoComplete, private_chat_1.PrivateChatComponent],
             providers: [tag_1.TagService]
         }), 
         __metadata('design:paramtypes', [common_1.FormBuilder, router_1.Router, users_1.UserService, router_1.ActivatedRoute, tag_1.TagService])

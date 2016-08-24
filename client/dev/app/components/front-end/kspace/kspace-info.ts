@@ -7,13 +7,15 @@ import { KSpaceService } from '../../../services/kspace';
 import { ArticleService } from '../../../services/article';
 import { NgForm }    from '@angular/forms';
 import { PrivateChatComponent } from './../../shared/private-chat';
+import { RatingPoint } from '../../shared/ratingPoint';
+import { SEMANTIC_COMPONENTS, SEMANTIC_DIRECTIVES } from "ng-semantic";
 
 declare var $:any;
 declare var Materialize:any;
 @Component ({
     templateUrl:'client/dev/app/components/front-end/kspace/templates/kspace-info.html',
     directives: [
-        ROUTER_DIRECTIVES,
+        ROUTER_DIRECTIVES,PrivateChatComponent,SEMANTIC_COMPONENTS,SEMANTIC_DIRECTIVES, RatingPoint
     ],
     providers:[ArticleService]
 })
@@ -87,8 +89,7 @@ export class KSpaceInfoComponent implements OnInit {
                         this.finishDate=kspace.finishedAt;
                     }
                 }
-            )
-        console.log(this.isCreatingArt);
+            );
     }
 
     onSubmit(value):void {

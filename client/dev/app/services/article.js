@@ -12,6 +12,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var core_1 = require('@angular/core');
 var http_1 = require('@angular/http');
+var Observable_1 = require('rxjs/Observable');
 var ArticleService = (function () {
     function ArticleService(_http) {
         this._http = _http;
@@ -101,7 +102,7 @@ var ArticleService = (function () {
         var options = new http_1.RequestOptions({ headers: headers });
         var _data = JSON.stringify({
             art: {
-                ofUser: user,
+                author: user,
                 title: _title,
                 content: _content,
                 tags: oldTag,
@@ -111,7 +112,7 @@ var ArticleService = (function () {
         });
         return this._http
             .post(this._requestsUrl.replace(':id', ''), _data, options)
-            .map(function (r) { return r.json(); });
+            .map(function (r) { return r.json(); }).catch(this.handleError);
     };
     ArticleService.prototype.addComment = function (artId, user, content) {
         var header = new http_1.Headers;
@@ -135,7 +136,7 @@ var ArticleService = (function () {
         });
         return this._http
             .put(this._cmtUrl.replace(':artId', artId).replace(':cmtId', cmtId), _cmt, options)
-            .map(function (r) { return r.json(); });
+            .map(function (r) { return r.json(); }).catch(this.handleError);
     };
     ArticleService.prototype.removeComment = function (artId, cmtId) {
         return this._http.delete(this._cmtUrl.replace(':artId', artId).replace(':cmtId', cmtId)).map(function (r) { return r.json(); });
@@ -170,12 +171,12 @@ var ArticleService = (function () {
     ArticleService.prototype.activeArt = function (id) {
         return this._http.get(this._requestsGetDeArtUrl.replace(':id', id))
             .map(function (r) { return r.json(); })
-            .catch(this.handleError);
+            .catch(this.handleError).catch(this.handleError);
     };
     ArticleService.prototype.deactivateArticle = function (id) {
         return this._http
             .delete(this._requestsUrl.replace(':id', id))
-            .map(function (r) { return r.json(); });
+            .map(function (r) { return r.json(); }).catch(this.handleError);
     };
     //deleteRequestById(id:string):Observable<any> {
     //  return this._http
@@ -192,7 +193,10 @@ var ArticleService = (function () {
         });
         return this._http
             .put(this._requestsUrl.replace(':id', id), _data, options)
-            .map(function (r) { return r.json(); });
+            .map(function (r) { return r.json(); }).catch(this.handleError);
+    };
+    ArticleService.prototype.handleError = function (error) {
+        return Observable_1.Observable.throw(error);
     };
     ArticleService = __decorate([
         core_1.Injectable(), 

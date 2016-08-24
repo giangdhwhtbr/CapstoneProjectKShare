@@ -120,7 +120,7 @@ exports.KShareRoutes = [
                     },
                     {
                         path: '**',
-                        redirectTo: '/'
+                        redirectTo: '/error'
                     }
                 ]
             },

@@ -33,6 +33,20 @@ userSchema.statics.getUserById = (id) => {
             });
     });
 }
+userSchema.statics.getAvartaByUserNaname = (arrName) => {
+
+    return new Promise((resolve, reject) => {
+        User
+            .find({
+                linkImg:{ $in: arrName }
+            })
+            .select("linkImg")
+            .exec((err, user) => {
+                err ? reject(err)
+                    : resolve(user);
+            });
+    });
+}
 
 
 userSchema.statics.getUserByEmail = (email) => {

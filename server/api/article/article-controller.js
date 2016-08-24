@@ -10,16 +10,8 @@ const KnwDAO = require('../knowledge/knowledge-dao');
 module.exports = class ArticleController {
     static getAllArticles(req, res) {
         ArticleDAO
-            .getAll(req.body.num)
+            .getAllNf(req.body.num)
             .then(articles => {
-                for (let i = articles.length - 1; i >= 0; i--) {
-                    if (articles[i].status === "deactivate") {
-                        let index = articles.indexOf(articles[i]);
-                        if (index > -1) {
-                            articles.splice(index, 1);
-                        }
-                    }
-                }
                 res.status(200).json(articles);
             })
             .catch(error => res.status(400).json(error));
@@ -30,16 +22,6 @@ module.exports = class ArticleController {
             ArticleDAO
                 .getArticleByKnwId(req.params.id)
                 .then((arts) => {
-
-                    for (let i = arts.length - 1; i >= 0; i--) {
-                        if (arts[i].status === "deactivate") {
-                            let index = arts.indexOf(arts[i]);
-                            if (index > -1) {
-                                arts.splice(index, 1);
-                            }
-                        }
-                    }
-
                     res.status(200).json(arts);
                 }).catch(error => res.status(400).json(error));
         } else {
@@ -49,16 +31,16 @@ module.exports = class ArticleController {
         }
     }
 
-    static likeArticle(req,res){
-        if (req.params && req.params.artId && req.params.user  ) {
+    static likeArticle(req, res) {
+        if (req.params && req.params.artId && req.params.user) {
             ArticleDAO.getArticleById(req.params.artId).then(article => {
                 let i = article.userLiked.indexOf(req.params.user);
                 let j = article.userUnLiked.indexOf(req.params.user);
-                if(i<0){
-                    article.like+=1;
+                if (i < 0) {
+                    article.like += 1;
                     article.userLiked.push(req.params.user);
-                    if(j>=0){
-                        article.userUnLiked.splice(j,1);
+                    if (j >= 0) {
+                        article.userUnLiked.splice(j, 1);
                     }
                 }
                 article.save();
@@ -66,16 +48,17 @@ module.exports = class ArticleController {
             }).catch((error)=>res.status(400).json(error));
         }
     }
-    static unlikeArticle(req,res){
-        if (req.params && req.params.artId && req.params.user  ) {
+
+    static unlikeArticle(req, res) {
+        if (req.params && req.params.artId && req.params.user) {
             ArticleDAO.getArticleById(req.params.artId).then(article => {
                 let i = article.userLiked.indexOf(req.params.user);
                 let j = article.userUnLiked.indexOf(req.params.user);
-                if(j<0){
-                    article.like-=1;
+                if (j < 0) {
+                    article.like -= 1;
                     article.userUnLiked.push(req.params.user);
-                    if(i>=0){
-                        article.userLiked.splice(i,1);
+                    if (i >= 0) {
+                        article.userLiked.splice(i, 1);
                     }
                 }
                 article.save();
@@ -95,22 +78,22 @@ module.exports = class ArticleController {
 
     static fullTextSearchArticle(req, res) {
 
-    ArticleDAO
-      .fullTextSearchArticle(req.body.text)
-      .then(article => res.status(200).json(article))
-      .catch(error => res.status(400).json(error));
-  }
+        ArticleDAO
+            .fullTextSearchArticle(req.body.text)
+            .then(article => res.status(200).json(article))
+            .catch(error => res.status(400).json(error));
+    }
 
-    static getAPage(req,res){
+    static getAPage(req, res) {
 
         if (req.params && req.params.start) {
             let start = req.params.start;
-            ArticleDAO.getAPage(start,req.params.stt).then((arts)=>{
-                if(arts.length==0 && start!=0){
-                    ArticleDAO.getAPage(start-10,req.params.stt).then((artsBU)=>{
+            ArticleDAO.getAPage(start, req.params.stt).then((arts)=> {
+                if (arts.length == 0 && start != 0) {
+                    ArticleDAO.getAPage(start - 10, req.params.stt).then((artsBU)=> {
                         res.status(200).json(artsBU);
                     }).catch(err=> res.status(400).json(err));
-                }else{
+                } else {
                     res.status(200).json(arts);
                 }
 
@@ -118,10 +101,10 @@ module.exports = class ArticleController {
         }
     }
 
-    static getTot(req,res){
+    static getTot(req, res) {
 
         if (req.params && req.params.stt) {
-            ArticleDAO.getTot(req.params.stt).then((num)=>{
+            ArticleDAO.getTot(req.params.stt).then((num)=> {
                 res.status(200).json(num);
             }).catch(err=> res.status(400).json(err));
         }
@@ -144,7 +127,7 @@ module.exports = class ArticleController {
             .catch(error => res.status(400).json(error));
     }
 
-    static getArtAdmin(req,res){
+    static getArtAdmin(req, res) {
         ArticleDAO
             .getAll()
             .then(articles => {
@@ -185,7 +168,7 @@ module.exports = class ArticleController {
             ArticleDAO
                 .getArticleById(req.params.id)
                 .then(art => {
-                    art.status="private";
+                    art.status = "private";
                     art.save();
                     res.status(200).json(art);
                 }).catch(error => res.status(400).json(error));
@@ -215,7 +198,7 @@ module.exports = class ArticleController {
                         // clear data article in the tags of article
                         ts.map((e, i)=> {
                             ts[i].articles = [];
-                            ts[i].request=[];
+                            ts[i].request = [];
                         });
                         //get list name
                         var names = [];
@@ -241,28 +224,28 @@ module.exports = class ArticleController {
     }
 
 
-    static addComment(req,res){
+    static addComment(req, res) {
         let _cmt = req.body;
-        let comment={
-            user:_cmt.user,
-            content:_cmt.content
+        let comment = {
+            user: _cmt.user,
+            content: _cmt.content
         };
-        ArticleDAO.getArticleById(_cmt.artId).then((art)=>{
+        ArticleDAO.getArticleById(_cmt.artId).then((art)=> {
             art.comments.unshift(comment);
             art.save();
             res.status(200).json(art.comments);
         }).catch((error)=>res.status(400).json(error));
     }
 
-    static editComment(req,res){
-        if (req.params && req.params.artId && req.params.cmtId ) {
+    static editComment(req, res) {
+        if (req.params && req.params.artId && req.params.cmtId) {
             let _comment = req.body;
             let cmtId = req.params.cmtId;
             ArticleDAO.getArticleById(req.params.artId).then(article => {
-                for(let cmt of article.comments){
-                    if(cmt._id==cmtId){
-                        cmt.content= _comment.content;
-                        cmt.updateAt= new Date();
+                for (let cmt of article.comments) {
+                    if (cmt._id == cmtId) {
+                        cmt.content = _comment.content;
+                        cmt.updateAt = new Date();
                         article.save();
                         break;
                     }
@@ -272,40 +255,18 @@ module.exports = class ArticleController {
         }
     }
 
-    static likeComment(req,res){
-        if (req.params && req.params.artId && req.params.cmtId && req.params.user  ) {
+    static likeComment(req, res) {
+        if (req.params && req.params.artId && req.params.cmtId && req.params.user) {
             ArticleDAO.getArticleById(req.params.artId).then(article => {
-                for(let cmt of article.comments){
-                    if(cmt._id==req.params.cmtId){
+                for (let cmt of article.comments) {
+                    if (cmt._id == req.params.cmtId) {
                         let i = cmt.userLiked.indexOf(req.params.user);
                         let j = cmt.userUnLiked.indexOf(req.params.user);
-                        if(i<0){
-                            cmt.like+=1;
+                        if (i < 0) {
+                            cmt.like += 1;
                             cmt.userLiked.push(req.params.user);
-                            if(j>=0){
-                                cmt.userUnLiked.splice(j,1);
-                            }
-                        }
-                        article.save();
-                        break;
-                    }
-                }
-                res.status(200).json(article.comments);
-            }).catch((error)=>res.status(400).json(error));
-        }
-    }
-    static unlikeComment(req,res){
-        if (req.params && req.params.artId && req.params.cmtId && req.params.user  ) {
-            ArticleDAO.getArticleById(req.params.artId).then(article => {
-                for(let cmt of article.comments){
-                    if(cmt._id==req.params.cmtId){
-                        let i = cmt.userLiked.indexOf(req.params.user);
-                        let j = cmt.userUnLiked.indexOf(req.params.user);
-                        if(j<0){
-                            cmt.like-=1;
-                            cmt.userUnLiked.push(req.params.user);
-                            if(i>=0){
-                                cmt.userLiked.splice(i,1);
+                            if (j >= 0) {
+                                cmt.userUnLiked.splice(j, 1);
                             }
                         }
                         article.save();
@@ -317,16 +278,39 @@ module.exports = class ArticleController {
         }
     }
 
-    static removeComment(req,res){
+    static unlikeComment(req, res) {
+        if (req.params && req.params.artId && req.params.cmtId && req.params.user) {
+            ArticleDAO.getArticleById(req.params.artId).then(article => {
+                for (let cmt of article.comments) {
+                    if (cmt._id == req.params.cmtId) {
+                        let i = cmt.userLiked.indexOf(req.params.user);
+                        let j = cmt.userUnLiked.indexOf(req.params.user);
+                        if (j < 0) {
+                            cmt.like -= 1;
+                            cmt.userUnLiked.push(req.params.user);
+                            if (i >= 0) {
+                                cmt.userLiked.splice(i, 1);
+                            }
+                        }
+                        article.save();
+                        break;
+                    }
+                }
+                res.status(200).json(article.comments);
+            }).catch((error)=>res.status(400).json(error));
+        }
+    }
+
+    static removeComment(req, res) {
         if (req.params && req.params.artId && req.params.cmtId) {
             let _artId = req.params.artId;
             let _cmtId = req.params.cmtId;
-            ArticleDAO.getArticleById(_artId).then((art)=>{
-                for(let i = 0 ; i < art.comments.length;i++){
+            ArticleDAO.getArticleById(_artId).then((art)=> {
+                for (let i = 0; i < art.comments.length; i++) {
                     console.log(art.comments[i]);
-                    if(art.comments[i]._id==_cmtId){
+                    if (art.comments[i]._id == _cmtId) {
                         console.log(art.comments[i]);
-                        art.comments.splice(i,1);
+                        art.comments.splice(i, 1);
                         break;
                     }
                 }

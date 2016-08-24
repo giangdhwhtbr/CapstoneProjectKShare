@@ -13,11 +13,12 @@ import {
 import { KnowledgeService } from '../../../services/knowledge';
 import { Knowledge } from '../../../interface/knowledge';
 import {Dialog} from 'primeng/primeng';
+import {PrivateChatComponent} from '../../shared/private-chat';
 declare var $:any
 @Component({
     selector: 'sub-create',
     templateUrl: 'client/dev/app/components/back-end/knowledge/templates/sub-knowledge-create.html',
-    directives: [FORM_DIRECTIVES,Dialog]
+    directives: [FORM_DIRECTIVES,Dialog,PrivateChatComponent]
 })
 export class CreateSubCategoryComponent {
     @Input('kId') kId: string;

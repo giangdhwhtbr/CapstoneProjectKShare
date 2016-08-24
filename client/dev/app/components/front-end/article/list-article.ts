@@ -31,7 +31,8 @@ export class listArticleComponent implements OnInit {
     num:number = 5;
     articles:any[] = [];
     height:number = 400;
-    isExist:boolean ;
+    isExist:boolean = true;
+    text:string;
 
     constructor(public router:Router, private route:ActivatedRoute, private _artService:ArticleService) {
         this.roleToken = localStorage.getItem('role');
@@ -58,31 +59,42 @@ export class listArticleComponent implements OnInit {
     }
 
     getAllArticles() {
+        this.text = "";
         this._artService.getAllArts(this.num).subscribe((arts) => {
             if (arts.length==0) {
                 this.isExist = false;
             }else{
+                this.isExist = true;
                 for (let i = 0; i < arts.length; i++) {
-                    if (arts[i].status === "private") {
-                        arts.splice(i, 1);
-                    }
+
+                    //get summary
+                    let html = arts[i].content;
+                    let div = document.createElement("div");
+                    div.innerHTML = html;
+                    let text = div.textContent || div.innerText || "";
+
+                    arts[i].content=text;
+
                     this.listArt.push(arts[i]);
                 }
             }
         });
     }
 
-    searchArticle(text) {
+    searchArticle() {
         this.listArt = [];
-        if (!text) {
+        if (!this.text) {
             this.getAllArticles();
             this.isExist = false;
         } else {
-            this._artService.searchArticle(text).subscribe((arts) => {
+            this._artService.searchArticle(this.text).subscribe((arts) => {
+                console.log(arts.length);
                 for (var i = 0; i < arts.length; i++) {
                     this.listArt.push(arts[i]);
                 }
                 if (arts.length <= 0) {
+                    this.isExist = false;
+                }else{
                     this.isExist = true;
                 }
             });

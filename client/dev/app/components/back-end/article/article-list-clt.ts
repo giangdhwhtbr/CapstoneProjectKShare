@@ -11,13 +11,13 @@ import {ArticleService} from '../../../services/article';
 import {PagerService} from '../../../services/pager';
 import {Paginator} from 'primeng/primeng';
 import {DataTable,Column, Header, MultiSelect, Footer, InputText} from 'primeng/primeng';
-
+import {PrivateChatComponent} from '../../shared/private-chat';
 declare var $:any;
 
 @Component({
     selector: 'art-list-clt',
     templateUrl: 'client/dev/app/components/back-end/article/templates/article-list.html',
-    directives: [ROUTER_DIRECTIVES,Paginator,FORM_DIRECTIVES,DataTable,Column,Header,Footer],
+    directives: [ROUTER_DIRECTIVES,Paginator,FORM_DIRECTIVES,DataTable,Column,Header,Footer,PrivateChatComponent],
     providers: [ArticleService, PagerService]
 })
 
@@ -65,13 +65,14 @@ export class ArtListCtlComponent implements OnInit {
         this._articleService.activeArt(id).subscribe((art) => {
 
             this.getAllArt();
-
+            Materialize.toast('Đã mở lại , bài viết chuyển sang trạng thái riêng tư', 4000);
         });
     }
 
     deActiveArt(id: string) {
         this._articleService.deactivateArticle(id).subscribe((art) => {
             this.getAllArt();
+            Materialize.toast('Đã đóng bài viết', 4000);
         });
     }
 

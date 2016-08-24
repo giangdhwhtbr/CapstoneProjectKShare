@@ -94,7 +94,13 @@ export class UserProfileComponent {
                         if (this.isExist = true) {
                             this.getRequestByUser();
                             this._articleService.getArtsByUsername(this.name).subscribe((arts)=> {
-                                this.articleList = arts;
+                                //filter article
+                                if(this.userToken){
+                                    this.articleList = arts;
+                                }else{
+                                    this.articleList = this.filterArticle(arts);
+                                }
+
                                 this._kSpaceService.getKspaceProfile(this.name).subscribe((kspaces)=> {
                                     this.kspaceList = kspaces;
 
@@ -119,6 +125,15 @@ export class UserProfileComponent {
 
             });
         $('ul.tabs').tabs();
+    }
+
+    filterArticle(listArt){
+        for(let i=listArt.length-1; i >= 0;i--){
+            if(listArt[i].status==='private'){
+                listArt.splice(i,1);
+            }
+        }
+        return listArt;
     }
 
     getKspaceProfile() {

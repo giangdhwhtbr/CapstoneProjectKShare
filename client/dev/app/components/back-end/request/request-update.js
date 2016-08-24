@@ -92,7 +92,7 @@ var CKEditor = (function () {
     CKEditor = __decorate([
         core_1.Component({
             selector: 'ck-editor',
-            template: ""
+            template: "",
         }), 
         __metadata('design:paramtypes', [core_1.ElementRef, requests_1.RequestService, router_1.Router, router_1.ActivatedRoute])
     ], CKEditor);

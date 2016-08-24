@@ -71,7 +71,7 @@ var EditArticleComponent = (function () {
     EditArticleComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._articleService.getArtById(this.id).subscribe(function (art) {
-            if (art.ofUser != _this.userToken && _this.roleToken != "admin") {
+            if (art.author != _this.userToken && _this.roleToken != "admin") {
                 _this.isEdited = false;
             }
             else {
@@ -86,6 +86,10 @@ var EditArticleComponent = (function () {
                 _this.CreateYoutubeBtnCkeditor();
                 _this.addCommandBtnCk();
                 _this.loadAllTags();
+            }
+        }, function (error) {
+            if (error.status == 400) {
+                window.location.href = "/error";
             }
         });
     };
@@ -209,12 +213,20 @@ var EditArticleComponent = (function () {
         this.art.tags = tags[0];
         this.art.title = this.titelArticle;
         this.art.status = this.stt;
-        this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe(function (article) {
-            Materialize.toast('Đã sửa xong', 4000);
-            _this.router.navigateByUrl('/article/' + article._id);
-        }, function (error) {
-            console.log(error.text());
-        });
+        if (this.titelArticle.length < 10) {
+            Materialize.toast('Tiêu đề quá ngắn', 4000);
+        }
+        else if (this.art.content.length < 50) {
+            Materialize.toast('Nội dung phải trên 50 ký tự', 4000);
+        }
+        else {
+            this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe(function (article) {
+                Materialize.toast('Đã sửa xong', 4000);
+                _this.router.navigateByUrl('/article/' + article._id);
+            }, function (error) {
+                console.log(error.text());
+            });
+        }
     };
     EditArticleComponent = __decorate([
         core_1.Component({

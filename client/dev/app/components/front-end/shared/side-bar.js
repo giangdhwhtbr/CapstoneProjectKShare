@@ -10,9 +10,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var knowledge_1 = require('../../../services/knowledge');
+var router_2 = require('@angular/router');
 var SideBarComponent = (function () {
-    function SideBarComponent(_knowledgeService) {
+    function SideBarComponent(_knowledgeService, router, route) {
         this._knowledgeService = _knowledgeService;
+        this.router = router;
+        this.route = route;
     }
     SideBarComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -47,6 +50,9 @@ var SideBarComponent = (function () {
     SideBarComponent.prototype.closeNav = function () {
         $('.btnOpenNavF').sideNav({ closeOnClick: "true" });
     };
+    SideBarComponent.prototype.backHome = function () {
+        this.router.navigateByUrl('/');
+    };
     SideBarComponent = __decorate([
         core_1.Component({
             selector: 'sidebar',
@@ -54,7 +60,7 @@ var SideBarComponent = (function () {
             styleUrls: ['client/dev/app/components/front-end/shared/styles/side-bar.css'],
             directives: [router_1.ROUTER_DIRECTIVES]
         }), 
-        __metadata('design:paramtypes', [knowledge_1.KnowledgeService])
+        __metadata('design:paramtypes', [knowledge_1.KnowledgeService, router_1.Router, router_2.ActivatedRoute])
     ], SideBarComponent);
     return SideBarComponent;
 })();

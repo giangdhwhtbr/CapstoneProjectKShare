@@ -1,8 +1,7 @@
 <div class="container mg-top-50">
     <h3>{{title}}</h3>
-    {{rateAve}}
-    <sm-rating class="massive star" disable="disable" [initialRating]="[rateAve]"></sm-rating>
     <br>
+    <rating-point *ngIf="rateAve" [rateAve]="rateAve"></rating-point>
     <p *ngIf="isFinish" class="flow-text">Lớp học đã kết thúc vào ngày {{finishDate | date:"dd/MM/yyyy"}}</p>
     <hr>
     <div class="row">
@@ -58,27 +57,34 @@
             </div>
         </span>
 
-    <!--<div id="createReview">-->
-    <!--<sm-message *ngIf="errorMessage" class="warning">-->
-    <!--<message-header>{{errorMessage.header}}</message-header>-->
-    <!--<message-content>-->
-    <!--{{errorMessage.content}}-->
-    <!--</message-content>-->
-    <!--</sm-message>-->
-    <!--<sm-rating class="massive star" (onRate)="onReceiveRating($event)" [maxRating]="5"></sm-rating>-->
-    <!--<form class="ui form" #reviewForm="ngForm" (ngSubmit)="onSubmit(reviewForm.value)">-->
-    <!--<textarea ngControl="content" required></textarea>-->
-    <!--<button type="submit">Review</button>-->
-    <!--</form>-->
-    <!--</div>-->
-    <!--<div id="reviews">-->
-    <!--<div *ngFor="let review of reviews">-->
-    <!--<sm-segment class="raised">-->
-    <!--<p>{{review.createdUser}}</p>-->
+    <div class="row">
 
-    <!--<p>{{review.content}}</p>-->
-    <!--</sm-segment>-->
-    <!--</div>-->
-    <!--</div>-->
+
+
+
+      <!--<sm-message *ngIf="errorMessage" class="warning">-->
+      <!--<message-header>{{errorMessage.header}}</message-header>-->
+      <!--<message-content>-->
+      <!--{{errorMessage.content}}-->
+      <!--</message-content>-->
+      <!--</sm-message>-->
+      <sm-rating class="massive heart" (onRate)="onReceiveRating($event)" [maxRating]="5"></sm-rating>
+
+      <form class="ui form" #reviewForm="ngForm" (ngSubmit)="onSubmit(reviewForm.value)">
+        <textarea ngControl="content" required></textarea>
+        <button type="submit">Review</button>
+      </form>
+
+      <div id="reviews">
+        <div *ngFor="let review of reviews">
+          <sm-segment class="raised">
+            <p>{{review.createdUser}}</p>
+
+            <p>{{review.content}}</p>
+          </sm-segment>
+        </div>
+      </div>
+    </div>
+
 </div>
 <private-chat></private-chat>

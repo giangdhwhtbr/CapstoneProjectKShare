@@ -19,6 +19,7 @@ var pager_1 = require('../../../services/pager');
 var filter_1 = require('../shared/filter');
 var primeng_1 = require('primeng/primeng');
 var primeng_2 = require('primeng/primeng');
+var private_chat_1 = require('../../shared/private-chat');
 var TagListCtlComponent = (function () {
     function TagListCtlComponent(_tagService, router, _pagerService) {
         this._tagService = _tagService;
@@ -51,19 +52,21 @@ var TagListCtlComponent = (function () {
         var _this = this;
         this._tagService.deactivateTag(id).subscribe(function (mess) {
             _this.getAllTag();
+            Materialize.toast('Đã đóng tag ', 4000);
         });
     };
     TagListCtlComponent.prototype.activeTag = function (id) {
         var _this = this;
         this._tagService.activeTag(id).subscribe(function (tag) {
             _this.getAllTag();
+            Materialize.toast('Đã mở lại tag', 4000);
         });
     };
     TagListCtlComponent = __decorate([
         core_1.Component({
             selector: 'tag-list-clt',
             templateUrl: 'client/dev/app/components/back-end/tag/templates/tag.html',
-            directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.Paginator, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.MultiSelect, primeng_2.Footer, primeng_2.InputText],
+            directives: [private_chat_1.PrivateChatComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.Paginator, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.MultiSelect, primeng_2.Footer, primeng_2.InputText],
             providers: [tag_1.TagService, ng2_pagination_1.PaginationService, pager_1.PagerService],
             pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
         }), 

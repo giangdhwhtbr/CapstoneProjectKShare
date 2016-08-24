@@ -14,6 +14,7 @@ var core_1 = require('@angular/core');
 var knowledge_1 = require('../../../services/knowledge');
 var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
+var private_chat_1 = require('../../shared/private-chat');
 var UpdateKnowledgeComponent = (function () {
     function UpdateKnowledgeComponent(fb, _knowledgeService, router, route) {
         var _this = this;
@@ -54,7 +55,7 @@ var UpdateKnowledgeComponent = (function () {
         core_1.Component({
             selector: 'knowledge-update',
             templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-update.html',
-            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
+            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
             providers: [knowledge_1.KnowledgeService]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),

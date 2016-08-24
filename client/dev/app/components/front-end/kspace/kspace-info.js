@@ -14,6 +14,9 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var kspace_1 = require('../../../services/kspace');
 var article_1 = require('../../../services/article');
+var private_chat_1 = require('./../../shared/private-chat');
+var ratingPoint_1 = require('../../shared/ratingPoint');
+var ng_semantic_1 = require("ng-semantic");
 var KSpaceInfoComponent = (function () {
     function KSpaceInfoComponent(router, route, _kspaceService, _articleService) {
         var _this = this;
@@ -70,7 +73,6 @@ var KSpaceInfoComponent = (function () {
                 _this.finishDate = kspace.finishedAt;
             }
         });
-        console.log(this.isCreatingArt);
     };
     KSpaceInfoComponent.prototype.onSubmit = function (value) {
         var _this = this;
@@ -171,7 +173,7 @@ var KSpaceInfoComponent = (function () {
         core_1.Component({
             templateUrl: 'client/dev/app/components/front-end/kspace/templates/kspace-info.html',
             directives: [
-                router_1.ROUTER_DIRECTIVES,
+                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent, ng_semantic_1.SEMANTIC_COMPONENTS, ng_semantic_1.SEMANTIC_DIRECTIVES, ratingPoint_1.RatingPoint
             ],
             providers: [article_1.ArticleService]
         }), 

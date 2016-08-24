@@ -1,4 +1,17 @@
-
+<div *ngIf="!userToken" class="row img-nf">
+    <div class="parallax-container intro">
+        <div class="parallax">
+            <img src="/client/dev/asserts/images/intro-bg.jpg">
+        </div>
+        <div class="row">
+            <div class="col s12 m12 l12">
+                <h1 class="grey-text text-lighten-5">Kshare</h1>
+                <h5 clas="grey lighten-4 grey-text text-darken-1">Mạng chia sẻ tri thức không giới hạn</h5><br>
+                <button class="btn-large waves-effect waves-light blue">Đăng ký ngay!</button>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="container">
     <div *ngFor="let record of records" class="row">
         <div class="col s12 m12">
@@ -29,10 +42,10 @@
                 </div>
             </div>
             <!--2--> <!--2--> <!--2--> <!--2--> <!--2-->
-            <div *ngIf="record.ofUser" class="card" >
+            <div *ngIf="record.author" class="card" >
                 <div class="card-content">
                     <h3>Bài viết</h3>
-                    <a *ngIf="record.title.length>=70" [routerLink]="['/article/' + record._id]"><h5>{{record.title.substring(0,70)}} ...</h5></a>
+                    <a *ngIf="record.title.length>=70" [routerLink]="['/article/' + record._id]"><h5>{{record.title.substring(0,150)}} ...</h5></a>
                     <a *ngIf="record.title.length<70" [routerLink]="['/article/' + record._id]"><h5>{{record.title}}</h5></a>
 
                     <p><span class="sumary">{{record.content.substring(0,50)}} ...</span></p>
@@ -40,7 +53,7 @@
                 <div class="card-action">
                     <div class="row">
                         <div class="col s4 m4">
-                            <span>Tạo bởi : <a>{{record.ofUser}}</a> </span>
+                            <span>Tạo bởi : <a>{{record.author}}</a> </span>
                         </div>
                         <div class="col s4 m4">
                             <span>Trạng thái : {{record.status}}</span>
@@ -83,7 +96,7 @@
             <!--</p>-->
         <!--</div>-->
 
-        <!--<div *ngIf="record.ofUser" class="panel-body">-->
+        <!--<div *ngIf="record.author" class="panel-body">-->
             <!--<h3>Bài viết</h3>-->
             <!--<p>-->
                 <!--<span class="title">-->
@@ -97,7 +110,7 @@
                 <!--<span class="dateArt">{{record.createdAt | date:"dd/MM/yyyy"}}</span>-->
             <!--</p>-->
             <!--<p>-->
-                <!--<span>by : <a>{{record.ofUser}}</a> </span>-->
+                <!--<span>by : <a>{{record.author}}</a> </span>-->
             <!--</p>-->
         <!--</div>-->
 

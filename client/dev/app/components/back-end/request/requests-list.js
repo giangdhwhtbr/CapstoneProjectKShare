@@ -17,6 +17,7 @@ var pager_1 = require('../../../services/pager');
 var request_update_1 = require('./request-update');
 var primeng_1 = require('primeng/primeng');
 var primeng_2 = require('primeng/primeng');
+var private_chat_1 = require('../../shared/private-chat');
 var RequestListComponent = (function () {
     function RequestListComponent(_requestService, _knowledgeService, _pagerService, _authService) {
         var _this = this;
@@ -78,7 +79,7 @@ var RequestListComponent = (function () {
         core_1.Component({
             selector: 'request-list',
             templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-            directives: [request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
+            directives: [private_chat_1.PrivateChatComponent, request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
             providers: [requests_1.RequestService, pager_1.PagerService]
         }), 
         __metadata('design:paramtypes', [requests_1.RequestService, knowledge_1.KnowledgeService, pager_1.PagerService, auth_1.AuthService])

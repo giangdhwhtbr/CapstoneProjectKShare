@@ -2,15 +2,15 @@
     <div *ngIf="isEdited">
         <div class="titleDiv row">
             <div class="col s12">
-                <label for="inputTitle">Title</label>
+                <label for="inputTitle">Tiêu đề</label>
                 <input class="form-control input-sm" id="inputTitle" [(ngModel)]="titelArticle" type="text">
             </div>
         </div>
         <div *ngIf="art">
             <div class="row">
                 <div class="col s2">
-                    <label for="inputTitle">Status</label>
-                    <select [(ngModel)]="stt" class="form-control input-sm">
+                    <label for="inputTitle">Trạng thái</label>
+                    <select [(ngModel)]="stt" class="browser-default">
                         <option value="public">Public</option>
                         <option value="private">Private</option>
                     </select>

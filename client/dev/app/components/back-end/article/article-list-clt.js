@@ -17,6 +17,7 @@ var article_1 = require('../../../services/article');
 var pager_1 = require('../../../services/pager');
 var primeng_1 = require('primeng/primeng');
 var primeng_2 = require('primeng/primeng');
+var private_chat_1 = require('../../shared/private-chat');
 var ArtListCtlComponent = (function () {
     function ArtListCtlComponent(_articleService, _pagerService, router) {
         this._articleService = _articleService;
@@ -59,19 +60,21 @@ var ArtListCtlComponent = (function () {
         var _this = this;
         this._articleService.activeArt(id).subscribe(function (art) {
             _this.getAllArt();
+            Materialize.toast('Đã mở lại , bài viết chuyển sang trạng thái riêng tư', 4000);
         });
     };
     ArtListCtlComponent.prototype.deActiveArt = function (id) {
         var _this = this;
         this._articleService.deactivateArticle(id).subscribe(function (art) {
             _this.getAllArt();
+            Materialize.toast('Đã đóng bài viết', 4000);
         });
     };
     ArtListCtlComponent = __decorate([
         core_1.Component({
             selector: 'art-list-clt',
             templateUrl: 'client/dev/app/components/back-end/article/templates/article-list.html',
-            directives: [router_1.ROUTER_DIRECTIVES, primeng_1.Paginator, common_1.FORM_DIRECTIVES, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.Footer],
+            directives: [router_1.ROUTER_DIRECTIVES, primeng_1.Paginator, common_1.FORM_DIRECTIVES, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.Footer, private_chat_1.PrivateChatComponent],
             providers: [article_1.ArticleService, pager_1.PagerService]
         }), 
         __metadata('design:paramtypes', [article_1.ArticleService, pager_1.PagerService, router_1.Router])

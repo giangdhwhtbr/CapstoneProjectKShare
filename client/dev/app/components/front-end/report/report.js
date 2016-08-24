@@ -12,6 +12,7 @@ var common_1 = require('@angular/common');
 var report_1 = require('../../../services/report');
 var notification_1 = require('../../../services/notification');
 var users_1 = require('../../../services/users');
+var private_chat_1 = require('../../shared/private-chat');
 var ReportComponent = (function () {
     function ReportComponent(fb, _reportService, _noti, _userService) {
         this._reportService = _reportService;
@@ -65,7 +66,7 @@ var ReportComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/report/templates/report.html',
             styleUrls: [],
             directives: [
-                common_1.FORM_DIRECTIVES,
+                common_1.FORM_DIRECTIVES, private_chat_1.PrivateChatComponent
             ]
         }), 
         __metadata('design:paramtypes', [common_1.FormBuilder, report_1.ReportService, notification_1.NotificationService, users_1.UserService])

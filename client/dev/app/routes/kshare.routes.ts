@@ -126,8 +126,8 @@ export const KShareRoutes: RouterConfig = [
                         component: detailArticleComponent
                     },
                     {
-                      path: '**',
-                      redirectTo: '/'
+                        path:'**',
+                        redirectTo:'/error'
                     }
                 ]
             },
@@ -194,7 +194,6 @@ export const KShareRoutes: RouterConfig = [
                               path: '**',
                               redirectTo: '/'
                             }
-
                         ]
                     },
                     {

@@ -173,11 +173,19 @@ var CreateArticleComponent = (function () {
         this.contentCk = CKEDITOR.instances.editor1.getData();
         var tags = [];
         tags = this.filterONTag();
-        this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (articleId) {
-            _this.router.navigateByUrl('/article/' + articleId);
-        }, function (error) {
-            console.log(error.text());
-        });
+        if (this.titelArticle.length < 5) {
+            Materialize.toast('Tiêu đề quá ngắn', 4000);
+        }
+        else if (this.contentCk.length < 50) {
+            Materialize.toast('Nội dung bài viết phải trên 50 ký tự', 4000);
+        }
+        else {
+            this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (articleId) {
+                _this.router.navigateByUrl('/article/' + articleId);
+            }, function (error) {
+                console.log(error.text());
+            });
+        }
     };
     CreateArticleComponent = __decorate([
         core_1.Component({
