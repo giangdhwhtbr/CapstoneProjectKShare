@@ -3474,6 +3474,7 @@ webpackJsonp([2],[
 	    }
 	    UserProfileBarComponent.prototype.ngOnInit = function () {
 	        var _this = this;
+	        $('#loading').show();
 	        this.route
 	            .params
 	            .subscribe(function (params) {
@@ -3482,6 +3483,7 @@ webpackJsonp([2],[
 	            _this._userService.getUserByUserName(_this.name).subscribe(function (user) {
 	                _this.userProfile = user;
 	                _this.linkImg = user.linkImg;
+	                $('#loading').hide();
 	            }, function (error) {
 	                console.log(error);
 	            });
@@ -3506,11 +3508,13 @@ webpackJsonp([2],[
 	        var _this = this;
 	        this.filesToUpload = fileInput.target.files;
 	        if (this.filesToUpload) {
+	            $('#loading').show();
 	            this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then(function (r) {
 	                _this.linkImg = '/uploads/' + r[0].filename;
 	                _this.userProfile.linkImg = _this.linkImg;
 	                _this._userService.updateUser(_this.userProfile, []).subscribe(function (r) {
 	                    console.log("update link profile picture successful");
+	                    $('#loading').hide();
 	                });
 	            }, function (error) {
 	                console.error(error);
@@ -5375,6 +5379,7 @@ webpackJsonp([2],[
 	        var _this = this;
 	        this._tagService.getAllTag().subscribe(function (tags) {
 	            _this.tagsEx = tags;
+	            $('#preLoad').hide();
 	        });
 	    };
 	    // ckeditor
@@ -5451,6 +5456,7 @@ webpackJsonp([2],[
 	    //finish control Ckeditor
 	    CreateArticleComponent.prototype.postArticle = function (stt) {
 	        var _this = this;
+	        $('#preLoad').show();
 	        this.contentCk = CKEDITOR.instances.editor1.getData();
 	        var tags = [];
 	        tags = this.filterONTag();
@@ -5728,10 +5734,8 @@ webpackJsonp([2],[
 	        this.text = "";
 	        this._artService.getAllArts(this.num).subscribe(function (arts) {
 	            if (arts.length == 0) {
-	                _this.isExist = false;
 	            }
 	            else {
-	                _this.isExist = true;
 	                for (var i = 0; i < arts.length; i++) {
 	                    //get summary
 	                    var html = arts[i].content;
@@ -5744,17 +5748,29 @@ webpackJsonp([2],[
 	            }
 	        });
 	    };
+	    listArticleComponent.prototype.backToAll = function () {
+	        this.isExist = true;
+	        this.num = 5;
+	        this.getAllArticles();
+	    };
 	    listArticleComponent.prototype.searchArticle = function () {
 	        var _this = this;
+	        this.num = 5;
 	        this.listArt = [];
 	        if (!this.text) {
 	            this.getAllArticles();
-	            this.isExist = false;
+	            this.isExist = true;
 	        }
 	        else {
 	            this._artService.searchArticle(this.text).subscribe(function (arts) {
 	                console.log(arts.length);
 	                for (var i = 0; i < arts.length; i++) {
+	                    //get summary
+	                    var html = arts[i].content;
+	                    var div = document.createElement("div");
+	                    div.innerHTML = html;
+	                    var text = div.textContent || div.innerText || "";
+	                    arts[i].content = text;
 	                    _this.listArt.push(arts[i]);
 	                }
 	                if (arts.length <= 0) {
@@ -6571,16 +6587,15 @@ webpackJsonp([2],[
 	        this.num = this.num + 5;
 	        this.getAllRequests();
 	    };
+	    RequestListClientComponent.prototype.backToAll = function () {
+	        this.isExistRecord = false;
+	        this.num = 5;
+	        this.getAllRequests();
+	    };
 	    RequestListClientComponent.prototype.getAllRequests = function () {
 	        var _this = this;
 	        this.text = "";
 	        this._requestService.getAllRequests(this.num).subscribe(function (requests) {
-	            if (requests.length === 0) {
-	                _this.isExistRecord = true;
-	            }
-	            else {
-	                _this.isExistRecord = false;
-	            }
 	            _this.requests = requests;
 	            for (var i = 0; i < requests.length; i++) {
 	                _this._data.push({
@@ -6602,9 +6617,9 @@ webpackJsonp([2],[
 	    };
 	    RequestListClientComponent.prototype.search = function () {
 	        var _this = this;
+	        this.num = 5;
 	        if (this.text === '') {
 	            this.isExistRecord = false;
-	            this.num = 5;
 	            this.getAllRequests();
 	        }
 	        else {
@@ -19295,7 +19310,6 @@ webpackJsonp([2],[
 	var tag_1 = __webpack_require__(64);
 	var primeng_1 = __webpack_require__(30);
 	var private_chat_1 = __webpack_require__(11);
-	var $ = __webpack_require__(511);
 	var CKEditor = (function () {
 	    function CKEditor(_elm, _articleService, router, route) {
 	        var _this = this;
@@ -19366,6 +19380,7 @@ webpackJsonp([2],[
 	                _this.CreateYoutubeBtnCkeditor();
 	                _this.addCommandBtnCk();
 	                _this.loadAllTags();
+	                $('#preLoad').hide();
 	            }
 	        }, function (error) {
 	            if (error.status == 400) {
@@ -19487,6 +19502,7 @@ webpackJsonp([2],[
 	    };
 	    EditArticleComponent.prototype.editArticle = function () {
 	        var _this = this;
+	        $('#preLoad').show();
 	        this.art.content = CKEDITOR.instances.editor1.getData();
 	        var tags = [];
 	        tags = this.filterONTag();
@@ -20606,7 +20622,7 @@ webpackJsonp([2],[
 	    }
 	    RegisterComponent.prototype.ngOnInit = function () {
 	        this.regForm = this.fb.group({
-	            username: ["", common_1.Validators.pattern('^[a-zA-Z0-9_.-]*$')],
+	            username: ["", common_1.Validators.pattern('^[a-zA-Z0-9_.-]{8,30}$')],
 	            password: ["", common_1.Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')],
 	            copass: [""],
 	            email: ["", common_1.Validators.pattern('^(([a-zA-Z]|[0-9])|([-]|[_]|[.]))+[@](([a-zA-Z0-9])|([-])){2,63}[.](([a-zA-Z0-9]){2,63})+$')]
@@ -20615,7 +20631,7 @@ webpackJsonp([2],[
 	    RegisterComponent.prototype.register = function (user) {
 	        var _this = this;
 	        var validateUsername = function (username) {
-	            var pattern = new RegExp('^[a-zA-Z0-9_.-]*$');
+	            var pattern = new RegExp('^[a-zA-Z0-9_.-]{8,30}$');
 	            return pattern.test(username);
 	        };
 	        var validatePass = function (password) {

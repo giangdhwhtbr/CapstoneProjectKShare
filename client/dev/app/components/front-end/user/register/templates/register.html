@@ -1,8 +1,11 @@
 <div class="container">
     <div class="row">
         <div class="col s6 offset-s3 card-panel">
-            <p *ngIf="errorMessage" class="err-msg">{{errorMessage}}</p>
-
+            <div *ngIf="errorMessage" class="card-panel orange darken-1">
+                      <span class="white-text">
+                        <i class="material-icons left">report_problem</i>{{errorMessage}}
+                      </span>
+            </div>
             <div class="loginPanel">
                 <div class="box-header">
                     <h5>Đăng ký tài khoản Kshare</h5>
