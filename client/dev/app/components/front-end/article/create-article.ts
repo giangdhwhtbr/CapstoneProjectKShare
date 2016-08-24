@@ -113,6 +113,7 @@ export class CreateArticleComponent implements OnInit,OnDestroy {
     loadAllTags() {
         this._tagService.getAllTag().subscribe((tags) => {
             this.tagsEx = tags;
+            $('#preLoad').hide();
         });
     }
 
@@ -201,6 +202,7 @@ export class CreateArticleComponent implements OnInit,OnDestroy {
 
 
     postArticle(stt:any) {
+        $('#preLoad').show();
         this.contentCk = CKEDITOR.instances.editor1.getData();
         let tags:any[]=[];
         tags = this.filterONTag();

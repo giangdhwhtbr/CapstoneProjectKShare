@@ -94,6 +94,15 @@ export class listArticleComponent implements OnInit {
             this._artService.searchArticle(this.text).subscribe((arts) => {
                 console.log(arts.length);
                 for (var i = 0; i < arts.length; i++) {
+
+                    //get summary
+                    let html = arts[i].content;
+                    let div = document.createElement("div");
+                    div.innerHTML = html;
+                    let text = div.textContent || div.innerText || "";
+
+                    arts[i].content=text;
+
                     this.listArt.push(arts[i]);
                 }
                 if (arts.length <= 0) {

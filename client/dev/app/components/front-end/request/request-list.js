@@ -97,10 +97,6 @@ var RequestListClientComponent = (function () {
             this._requestService.searchRequest(this.text).subscribe(function (requests) {
                 _this._data = [];
                 for (var i = 0; i < requests.length; i++) {
-                    _this._data.push({
-                        req: requests[i],
-                        tags: []
-                    });
                     requests[i].createdAt = new Date(requests[i].createdAt);
                     if (requests[i].status === 'pending') {
                         requests[i].status = 'Đang chờ';
