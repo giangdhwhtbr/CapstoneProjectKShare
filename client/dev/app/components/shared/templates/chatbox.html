@@ -1,6 +1,6 @@
 <div id="chatBoxK" class="modal">
     <div class="modal-content cnt-chat">
-        <div class="row" *ngIf="allChatRooms">
+        <div class="row">
             <!--<div class="wrap-box row">-->
             <div class="col s4 m4 l4 bg-white box-list-fr">
 
@@ -30,7 +30,7 @@
                     <ul class="chat">
                         <div *ngFor="let mes of messages">
                             <li *ngIf="mes.sender!=username" class="left clearfix">
-                                  <span class="chat-img pull-left">
+                                <span class="chat-img pull-left">
                                     <img src="http://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">
                                   </span>
 
@@ -46,7 +46,7 @@
                                 </div>
                             </li>
                             <li *ngIf="mes.sender==username" class="right clearfix">
-                                  <span class="chat-img pull-right">
+                                <span class="chat-img pull-right">
                                                     <img src="http://bootdey.com/img/Content/user_1.jpg"
                                                          alt="User Avatar">
                                   </span>
@@ -66,12 +66,11 @@
 
                     </ul>
                 </div>
-                <div class="chat-box bg-white row">
+                <div class="chat-box bg-white row" *ngIf="allChatRooms.length > 0">
                     <!--<div class="  row">-->
                     <div class="input-group">
-                        <input id="textboxmess" [(ngModel)]="mess" class="form-control border no-shadow no-rounded"
-                               placeholder="Type your message here">
-                            <span class="input-group-btn">
+                        <input id="textboxmess" [(ngModel)]="mess" class="form-control border no-shadow no-rounded" placeholder="Type your message here">
+                        <span class="input-group-btn">
                                 <button class="btn btn-success no-rounded" (click)="sendMessage()"
                                         type="button">Gửi
                                 </button>
@@ -79,10 +78,11 @@
                     </div>
                     <!-- /input-group -->
                 </div>
+                <div *ngIf="allChatRooms.length <= 0">
+                    Bạn chưa có ai để trò chuyện
+                </div>
             </div>
         </div>
-
     </div>
+
 </div>
-
-
