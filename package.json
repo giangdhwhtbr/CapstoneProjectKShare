@@ -73,7 +73,7 @@
     "socket.io": "1.4.6",
     "socket.io-client": "1.4.6",
     "systemjs": "0.19.27",
-    "typescript": "1.8.9",
+    "typescript": "^1.8.10",
     "validator": "*",
     "zone.js": "0.6.12"
   },

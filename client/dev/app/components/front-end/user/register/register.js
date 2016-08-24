@@ -14,11 +14,13 @@ var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var router_1 = require('@angular/router');
 var auth_1 = require('../../../../services/auth');
+var common_2 = require('@angular/common');
 var RegisterComponent = (function () {
-    function RegisterComponent(fb, _authService, router) {
+    function RegisterComponent(fb, _authService, router, _location) {
         this.fb = fb;
         this._authService = _authService;
         this.router = router;
+        this._location = _location;
         this.errorMessage = '';
     }
     RegisterComponent.prototype.ngOnInit = function () {
@@ -66,7 +68,7 @@ var RegisterComponent = (function () {
                     .subscribe(function (res) {
                     localStorage.setItem('username', res.username);
                     localStorage.setItem('userrole', 'normal');
-                    _this.router.navigateByUrl('/reg/info/' + response._id);
+                    window.location.href = '/reg/info/' + response._id;
                 }, function (error) {
                     console.log(error);
                 });
@@ -101,7 +103,7 @@ var RegisterComponent = (function () {
             styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
             directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
         }), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, auth_1.AuthService, router_1.Router])
+        __metadata('design:paramtypes', [common_1.FormBuilder, auth_1.AuthService, router_1.Router, common_2.Location])
     ], RegisterComponent);
     return RegisterComponent;
 })();

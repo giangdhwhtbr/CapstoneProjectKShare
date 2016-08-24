@@ -74,6 +74,7 @@ var detailArticleComponent = (function () {
             else {
                 _this.canSee = false;
             }
+        }, function (error) {
         });
         $('.modal-trigger').leanModal();
     };

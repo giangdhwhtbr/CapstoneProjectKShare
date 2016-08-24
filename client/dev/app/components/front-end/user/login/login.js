@@ -16,11 +16,12 @@ var __param = (this && this.__param) || function (paramIndex, decorator) {
 var core_1 = require('@angular/core');
 var common_1 = require('@angular/common');
 var router_1 = require('@angular/router');
+var common_2 = require('@angular/common');
 var auth_1 = require('../../../../services/auth');
 var LoginComponent = (function () {
-    function LoginComponent(fb, _authService, router) {
+    function LoginComponent(fb, _authService, _location) {
         this._authService = _authService;
-        this.router = router;
+        this._location = _location;
         this.user = [];
         this.errorMessage = '';
         this.userValid = "";
@@ -42,13 +43,20 @@ var LoginComponent = (function () {
             else {
                 localStorage.setItem('userrole', 'normal');
             }
-            window.location.reload();
+            if (localStorage.getItem('redirectUrl')) {
+                var redirectUrl = localStorage.getItem('redirectUrl');
+                localStorage.removeItem('redirectUrl');
+                console.log(redirectUrl);
+                window.location.href = redirectUrl;
+            }
+            else {
+                window.location.href = '/';
+            }
         }, function (error) {
             if (error._body) {
                 error = JSON.parse(error._body);
                 if (error.invalidUsername) {
                     _this.errorMessage = '*' + error.invalidUsername;
-                    console.log(_this.errorMessage);
                 }
                 else if (error.invalidPassword) {
                     _this.errorMessage = '*' + error.invalidPassword;
@@ -71,7 +79,7 @@ var LoginComponent = (function () {
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
         __param(1, core_1.Inject(auth_1.AuthService)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, auth_1.AuthService, router_1.Router])
+        __metadata('design:paramtypes', [common_1.FormBuilder, auth_1.AuthService, common_2.Location])
     ], LoginComponent);
     return LoginComponent;
 })();

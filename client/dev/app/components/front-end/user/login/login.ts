@@ -3,7 +3,7 @@
  */
 import {
   Component,
-  Inject
+  Inject,
 } from '@angular/core';
 import {
   Validators,
@@ -16,6 +16,7 @@ import {
   Router,
   ROUTER_DIRECTIVES
 } from '@angular/router';
+import { Location } from '@angular/common';
 import { User } from '../../../../interface/user.ts';
 import { AuthService } from '../../../../services/auth';
 @Component({
@@ -33,7 +34,7 @@ export class LoginComponent {
   user: User[] = [];
   loginForm: ControlGroup;
   errorMessage: string = '';
-  constructor(@Inject(FormBuilder) fb:FormBuilder, @Inject(AuthService) private _authService: AuthService, public router: Router) {
+  constructor(@Inject(FormBuilder) fb:FormBuilder, @Inject(AuthService) private _authService: AuthService, private _location: Location) {
     this.userValid="";
     this.passValid="";
     this.loginForm = fb.group({
@@ -48,20 +49,26 @@ export class LoginComponent {
       .subscribe(
         res => {
             localStorage.setItem('username', res.username);
-
             if(res.role == 'admin'){
               localStorage.setItem('userrole', res.role);
             }else {
               localStorage.setItem('userrole', 'normal');
             }
-            window.location.reload();
+
+            if(localStorage.getItem('redirectUrl')){
+              let redirectUrl = localStorage.getItem('redirectUrl');
+              localStorage.removeItem('redirectUrl');
+              console.log(redirectUrl);
+              window.location.href = redirectUrl;
+            }else {
+              window.location.href = '/';
+            }
         },
         error => {
           if(error._body){
             error = JSON.parse(error._body);
             if(error.invalidUsername){
               this.errorMessage = '*'+error.invalidUsername;
-              console.log(this.errorMessage);
             }else if(error.invalidPassword){
               this.errorMessage = '*'+error.invalidPassword;
             } else if (error.message){

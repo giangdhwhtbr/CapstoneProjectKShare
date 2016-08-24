@@ -39,25 +39,27 @@ exports.KShareRoutes = [
             },
             {
                 path: 'reg',
-                //canActivate: [ AdminAuthGuard ],
                 children: [
                     {
                         path: '',
-                        component: register_1.RegisterComponent
+                        component: register_1.RegisterComponent,
+                        canActivate: [auth_1.Guest],
                     },
                     {
                         path: 'info/:id',
-                        component: info_1.RegisterInfoComponent
+                        component: info_1.RegisterInfoComponent,
+                        canActivate: [auth_1.isLogin],
                     }
                 ]
             },
             {
                 path: 'login',
-                canActivate: [auth_1.AdminAuthGuard],
+                canActivate: [auth_1.Guest],
                 component: login_1.LoginComponent
             },
             {
                 path: 'reset-password',
+                canActivate: [auth_1.Guest],
                 children: [
                     {
                         path: '',
@@ -100,7 +102,8 @@ exports.KShareRoutes = [
                 children: [
                     {
                         path: 'create',
-                        component: create_article_1.CreateArticleComponent
+                        component: create_article_1.CreateArticleComponent,
+                        canActivate: [auth_1.isLogin]
                     },
                     {
                         path: '',
@@ -108,11 +111,16 @@ exports.KShareRoutes = [
                     },
                     {
                         path: 'edit/:id',
-                        component: edit_article_1.EditArticleComponent
+                        component: edit_article_1.EditArticleComponent,
+                        canActivate: [auth_1.isLogin]
                     },
                     {
                         path: ':id',
                         component: detail_article_1.detailArticleComponent
+                    },
+                    {
+                        path: '**',
+                        redirectTo: '/'
                     }
                 ]
             },
@@ -122,6 +130,10 @@ exports.KShareRoutes = [
                     {
                         path: ':id',
                         component: displayArtByTag_1.displayArtByTagComponent
+                    },
+                    {
+                        path: '**',
+                        redirectTo: '/'
                     }
                 ]
             },
@@ -130,14 +142,24 @@ exports.KShareRoutes = [
                 children: [
                     {
                         path: 'info',
-                        children: [{
+                        children: [
+                            {
                                 path: ':id/:lecturer',
                                 component: kspace_info_1.KSpaceInfoComponent
-                            }]
+                            },
+                            {
+                                path: '**',
+                                redirectTo: '/'
+                            }
+                        ]
                     },
                     {
                         path: '',
                         component: kspace_list_1.KSpaceListComponent
+                    },
+                    {
+                        path: '**',
+                        redirectTo: '/'
                     }
                 ]
             },
@@ -146,7 +168,8 @@ exports.KShareRoutes = [
                 children: [
                     {
                         path: 'create',
-                        component: request_create_1.CreateRequestComponent
+                        component: request_create_1.CreateRequestComponent,
+                        canActivate: [auth_1.isLogin]
                     },
                     {
                         path: ':id',
@@ -157,13 +180,22 @@ exports.KShareRoutes = [
                             },
                             {
                                 path: 'update',
-                                component: request_update_1.UpdateRequestComponent
+                                component: request_update_1.UpdateRequestComponent,
+                                canActivate: auth_1.isLogin
+                            },
+                            {
+                                path: '**',
+                                redirectTo: '/'
                             }
                         ]
                     },
                     {
                         path: '',
                         component: request_list_1.RequestListClientComponent
+                    },
+                    {
+                        path: '**',
+                        redirectTo: '/'
                     }
                 ]
             },
@@ -188,11 +220,18 @@ exports.KShareRoutes = [
     },
     {
         path: 'room',
-        children: [{
+        canActivate: auth_1.isLogin,
+        children: [
+            {
                 path: ':id/:lecturer',
                 component: kspace_1.KSpaceComponent
-            }]
-    },
+            },
+            {
+                path: '**',
+                redirectTo: '/'
+            }
+        ]
+    }
 ];
-exports.authProviders = [auth_1.AdminAuthGuard, auth_2.AuthService];
+exports.authProviders = [auth_1.AdminAuthGuard, auth_1.isLogin, auth_1.Guest, auth_2.AuthService];
 //# sourceMappingURL=kshare.routes.js.map

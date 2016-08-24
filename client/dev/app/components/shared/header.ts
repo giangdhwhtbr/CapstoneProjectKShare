@@ -2,7 +2,7 @@
  * Created by GiangDH on 5/18/16.
  */
 import { AfterViewChecked,
-    AfterViewInit, DoCheck, AfterContentInit, AfterContentChecked, Component, OnChanges, SimpleChange } from '@angular/core';
+    AfterViewInit, DoCheck, AfterContentInit, AfterContentChecked, Component } from '@angular/core';
 import { ROUTER_DIRECTIVES, Router} from '@angular/router';
 
 import { Notification } from '../../interface/notification';
@@ -12,6 +12,7 @@ import { NotificationService } from '../../services/notification';
 import { UserService } from '../../services/users';
 import { ChatService } from '../../services/chat';
 import { PrivateChatComponent } from '../../components/shared/private-chat';
+
 declare var io: any;
 declare var $: any;
 
@@ -39,7 +40,7 @@ export class HeaderComponent {
     isFrontend: boolean = false;
 
     isRoom: boolean = false;
-
+    sub: Subscription;
     constructor(private _auth: AuthService, public router: Router, public _noti: NotificationService,
         private _userService: UserService, private _chatService: ChatService) {
         this.userToken = localStorage.getItem('username');
@@ -53,7 +54,7 @@ export class HeaderComponent {
         this.isRoom = (window.location.pathname + "").substring(0, 5) == "/room";
 
 
-        this._auth.isLoggedIn().subscribe(res => {
+        this.sub = this._auth.isLoggedIn().subscribe(res => {
             if (res.login) {
                 this.loginToken = true;
                 this.getNotificationByUser();

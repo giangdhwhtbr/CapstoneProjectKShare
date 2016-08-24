@@ -18,6 +18,7 @@ import {
 } from '@angular/router';
 import { User } from '../../../../interface/user.ts';
 import { AuthService } from '../../../../services/auth';
+import {Location} from '@angular/common';
 declare var $:any;
 @Component({
     selector: 'register',
@@ -29,7 +30,7 @@ export class RegisterComponent {
     user:User;
     regForm:ControlGroup;
     errorMessage: string = '';
-    constructor(private fb:FormBuilder, private _authService:AuthService, public router:Router) {
+    constructor(private fb:FormBuilder, private _authService:AuthService, public router:Router, private _location: Location) {
     }
     ngOnInit():void {
         this.regForm = this.fb.group({
@@ -74,7 +75,7 @@ export class RegisterComponent {
                                 res => {
                                     localStorage.setItem('username', res.username);
                                     localStorage.setItem('userrole', 'normal');
-                                    this.router.navigateByUrl('/reg/info/' + response._id);
+                                    window.location.href = '/reg/info/' + response._id;
                                 },
                                 error => {
                                     console.log(error);
@@ -99,7 +100,7 @@ export class RegisterComponent {
                             }
                         }
                     }
-                );
+              );
         }
     }
 }

@@ -105,7 +105,10 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
             }
 
 
-        });
+        },
+          (error) => {
+
+          });
         $('.modal-trigger').leanModal();
     }
 

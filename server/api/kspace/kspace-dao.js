@@ -45,10 +45,6 @@ KSpaceSchema.statics.getKspaceProfile = (name) => {
 KSpaceSchema.statics.getKSpaceById = (id) => {
 
     return new Promise((resolve, reject) => {
-        if (!_.isString(id)) {
-            return reject(new TypeError('ID is not a String.'));
-        }
-
         KSpace
             .findById(id)
             .exec((err, KSpace) => {

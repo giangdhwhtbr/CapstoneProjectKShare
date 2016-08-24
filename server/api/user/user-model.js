@@ -87,26 +87,16 @@ const userSchema = new mongoose.Schema({
         }
     ],
     rates: [{
-        kspaceId: {
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'KSpace'
-        },
-        rate: {
-            type: Number,
-            min: 1,
-            max: 5
-        },
-        rateAt: {
-            type: Date
-        },
-        ratedUser: {
-            type: String
-        }
+      ratePoint: {
+        type: Number
+      },
+      kspaceId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Kspace"
+      }
     }],
     rateAve: {
-        type: Number,
-        min: 0,
-        max: 5
+        type: Number
     },
     banStatus: {
         admin: {

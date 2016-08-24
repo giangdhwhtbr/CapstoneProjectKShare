@@ -23,6 +23,7 @@ var RegisterInfoComponent = (function () {
         this._tagService = _tagService;
         this.user = [];
         this.userId = '';
+        this.errorMessage = '';
         this.route
             .params
             .subscribe(function (params) {
@@ -30,12 +31,27 @@ var RegisterInfoComponent = (function () {
         });
         this.updateUserForm = fb.group({
             fullName: [""],
-            displayName: [""],
             birthday: [""],
-            phone: [""]
+            phone: [""],
+            ownKnowledgeIds: [""]
         });
     }
     RegisterInfoComponent.prototype.ngOnInit = function () {
+        $('.datepicker').pickadate({
+            monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+            weekdaysFull: ['Chủ nhật ', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+            // Buttons
+            today: '',
+            clear: 'Xoá',
+            close: 'Đóng',
+            selectMonths: true,
+            selectYears: 15,
+            format: 'dd-mm-yyyy',
+            min: new Date(1950, 1, 1),
+            max: new Date(2010, 12, 31),
+            selectYears: 60
+        });
         this.loadAllTags();
     };
     //tags control
@@ -83,21 +99,27 @@ var RegisterInfoComponent = (function () {
     //end control tags
     RegisterInfoComponent.prototype.update = function (user) {
         var _this = this;
-        var tags;
-        tags = this.filterONTag(); //0 -> oldTags , 1 -> newTags
-        user = {
-            _id: this.userId,
-            fullName: user.fullName,
-            displayName: user.displayName,
-            birthday: user.birthday,
-            ownKnowledgeIds: tags[0]
-        };
-        this._userService.updateUser(user, tags[1]).subscribe(function (res) {
-            _this.router.navigateByUrl('/');
-            location.reload();
-        }, function (err) {
-            console.log(err);
-        });
+        var birthday = $(".datepicker").val();
+        var pattern = new RegExp("^[0-9]{1,13}$");
+        if (!pattern.test(user.phone)) {
+            this.errorMessage = "Số điện thoại chỉ bao gồm số và không nhiều hơn 13 kí tự";
+        }
+        else {
+            var tags;
+            tags = this.filterONTag(); //0 -> oldTags , 1 -> newTags
+            user = {
+                _id: this.userId,
+                fullName: user.fullName,
+                phone: user.phone,
+                birthday: birthday,
+                ownKnowledgeIds: tags[0]
+            };
+            this._userService.updateUser(user, tags[1]).subscribe(function (res) {
+                _this.router.navigateByUrl('/');
+            }, function (err) {
+                console.log(err);
+            });
+        }
     };
     RegisterInfoComponent.prototype.returnHome = function () {
         this.router.navigateByUrl('/');

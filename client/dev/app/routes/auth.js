@@ -13,25 +13,27 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var auth_1 = require('../services/auth');
+var common_1 = require('@angular/common');
 var AdminAuthGuard = (function () {
     function AdminAuthGuard(router, auth) {
         this.router = router;
         this.auth = auth;
     }
     AdminAuthGuard.prototype.canActivate = function (route, state) {
-        if (state.url.includes('admin')) {
-            if (localStorage.getItem('userrole') && localStorage.getItem('userrole') === 'admin') {
-                return true;
-            }
-            // Navigate to the login page
-            this.router.navigate(['/login']);
+        if (localStorage.getItem('redirectUrl')) {
+            localStorage.removeItem('redirectUrl');
         }
-        if (state.url.includes('login') || state.url.includes('reg')) {
-            if (!localStorage.getItem('username')) {
+        if (localStorage.getItem('userrole')) {
+            if (state.url.includes('admin') && (localStorage.getItem('userrole') === 'admin' || localStorage.getItem('userrole') === 'mod')) {
                 return true;
             }
-            // Navigate to the login page
-            this.router.navigate(['/']);
+            else {
+                this.router.navigate(['/']);
+            }
+        }
+        else {
+            localStorage.setItem('redirectUrl', state.url);
+            this.router.navigate(['/login']);
         }
         return false;
     };
@@ -42,4 +44,47 @@ var AdminAuthGuard = (function () {
     return AdminAuthGuard;
 })();
 exports.AdminAuthGuard = AdminAuthGuard;
+var isLogin = (function () {
+    function isLogin(router, auth) {
+        this.router = router;
+        this.auth = auth;
+    }
+    isLogin.prototype.canActivate = function (route, state) {
+        if (localStorage.getItem('redirectUrl')) {
+            localStorage.removeItem('redirectUrl');
+        }
+        if (localStorage.getItem('username')) {
+            return true;
+        }
+        localStorage.setItem('redirectUrl', state.url);
+        this.router.navigate(['/login']);
+        return false;
+    };
+    isLogin = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [router_1.Router, auth_1.AuthService])
+    ], isLogin);
+    return isLogin;
+})();
+exports.isLogin = isLogin;
+var Guest = (function () {
+    function Guest(router, auth, _location) {
+        this.router = router;
+        this.auth = auth;
+        this._location = _location;
+    }
+    Guest.prototype.canActivate = function (route, state) {
+        if (!localStorage.getItem('username')) {
+            return true;
+        }
+        this._location.back();
+        return false;
+    };
+    Guest = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [router_1.Router, auth_1.AuthService, common_1.Location])
+    ], Guest);
+    return Guest;
+})();
+exports.Guest = Guest;
 //# sourceMappingURL=auth.js.map
