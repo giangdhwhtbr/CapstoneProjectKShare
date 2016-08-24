@@ -1,7 +1,7 @@
 .idea
 node_modules
 demo
-client/**/*.js
+#client/**/*.js
 client/**/*.js.map
 npm-debug.log
 tests
