@@ -31,7 +31,7 @@ import { listArticleComponent } from "../components/front-end/article/list-artic
 import { EditArticleComponent } from "../components/front-end/article/edit-article";
 import { displayArtByTagComponent } from "../components/front-end/tag/displayArtByTag";
 import { errorPageComponent } from "../components/shared/404";
-import { AdminAuthGuard }          from './auth';
+import { AdminAuthGuard, isLogin, Guest }          from './auth';
 import { AuthService }        from '../services/auth';
 
 export const KShareRoutes: RouterConfig = [
@@ -46,25 +46,27 @@ export const KShareRoutes: RouterConfig = [
             },
             {
                 path: 'reg',
-                //canActivate: [ AdminAuthGuard ],
                 children: [
                     {
                         path: '',
-                        component: RegisterComponent
+                        component: RegisterComponent,
+                        canActivate: [ Guest ],
                     },
                     {
                         path: 'info/:id',
-                        component: RegisterInfoComponent
+                        component: RegisterInfoComponent,
+                        canActivate: [ isLogin ],
                     }
                 ]
             },
             {
                 path: 'login',
-                canActivate: [AdminAuthGuard],
+                canActivate: [ Guest ],
                 component: LoginComponent
             },
             {
                 path: 'reset-password',
+                canActivate: [ Guest ],
                 children: [
                   {
                     path: '',
@@ -107,7 +109,8 @@ export const KShareRoutes: RouterConfig = [
                 children: [
                     {
                         path: 'create',
-                        component: CreateArticleComponent
+                        component: CreateArticleComponent,
+                        canActivate: [ isLogin ]
                     },
                     {
                         path: '',
@@ -115,7 +118,8 @@ export const KShareRoutes: RouterConfig = [
                     },
                     {
                         path: 'edit/:id',
-                        component: EditArticleComponent
+                        component: EditArticleComponent,
+                        canActivate: [ isLogin ]
                     },
                     {
                         path: ':id',
@@ -133,7 +137,11 @@ export const KShareRoutes: RouterConfig = [
                     {
                         path: ':id',
                         component: displayArtByTagComponent
-                    }
+                    },
+                  {
+                    path: '**',
+                    redirectTo: '/'
+                  }
                 ]
             },
             {
@@ -141,14 +149,24 @@ export const KShareRoutes: RouterConfig = [
                 children: [
                     {
                         path: 'info',
-                        children: [{
+                        children: [
+                          {
                             path: ':id/:lecturer',
                             component: KSpaceInfoComponent
-                        }]
+                          },
+                          {
+                            path: '**',
+                            redirectTo: '/'
+                          }
+                        ]
                     },
                     {
                         path: '',
                         component: KSpaceListComponent
+                    },
+                    {
+                      path: '**',
+                      redirectTo: '/'
                     }
                 ]
             },
@@ -157,7 +175,8 @@ export const KShareRoutes: RouterConfig = [
                 children: [
                     {
                         path:'create',
-                        component:CreateRequestComponent
+                        component:CreateRequestComponent,
+                        canActivate: [ isLogin ]
                     },
                     {
                         path: ':id',
@@ -168,13 +187,22 @@ export const KShareRoutes: RouterConfig = [
                             },
                             {
                                 path: 'update',
-                                component: UpdateRequestComponent
+                                component: UpdateRequestComponent,
+                                canActivate: isLogin
+                            },
+                            {
+                              path: '**',
+                              redirectTo: '/'
                             }
                         ]
                     },
                     {
                         path: '',
                         component: RequestListClientComponent
+                    },
+                    {
+                      path: '**',
+                      redirectTo: '/'
                     }
                 ]
             },
@@ -200,12 +228,19 @@ export const KShareRoutes: RouterConfig = [
     },
     {
         path: 'room',
-        children: [{
+        canActivate: isLogin,
+        children: [
+          {
             path: ':id/:lecturer',
             component: KSpaceComponent
-        }]
-    },
+          },
+          {
+            path: '**',
+            redirectTo: '/'
+          }
+        ]
+    }
 ];
 
 
-export const authProviders = [AdminAuthGuard, AuthService];
+export const authProviders = [AdminAuthGuard,isLogin,Guest, AuthService];

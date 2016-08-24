@@ -7,32 +7,56 @@ import {CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot}  from 
 
 import { AuthService } from '../services/auth';
 import {stat} from "fs";
+import {Location} from '@angular/common';
 
 @Injectable()
-
-
 export  class AdminAuthGuard implements CanActivate {
 
   constructor(private router: Router, private auth: AuthService) {}
 
   canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
-
-    if(state.url.includes('admin')){
-      if(localStorage.getItem('userrole') && localStorage.getItem('userrole') === 'admin'){
+    if(localStorage.getItem('redirectUrl')){
+      localStorage.removeItem('redirectUrl');
+    }
+    if(localStorage.getItem('userrole')){
+        if(state.url.includes('admin') && (localStorage.getItem('userrole') === 'admin' || localStorage.getItem('userrole') === 'mod' )){
           return true;
-      }
-      // Navigate to the login page
+        }else {
+          this.router.navigate(['/']);
+        }
+    } else {
+      localStorage.setItem('redirectUrl',state.url);
       this.router.navigate(['/login']);
     }
+    return false;
+  }
+}
 
-    if(state.url.includes('login') || state.url.includes('reg')){
-      if(!localStorage.getItem('username')){
-        return true;
-      }
-      // Navigate to the login page
-      this.router.navigate(['/']);
+@Injectable()
+export class isLogin implements  CanActivate {
+  constructor(private router: Router, private auth: AuthService) {}
+
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    if(localStorage.getItem('redirectUrl')){
+      localStorage.removeItem('redirectUrl');
     }
+    if(localStorage.getItem('username')){
+      return true;
+    }
+    localStorage.setItem('redirectUrl',state.url);
+    this.router.navigate(['/login']);
+    return false;
+  }
+}
 
+@Injectable()
+export class Guest implements  CanActivate {
+  constructor(private router: Router, private auth: AuthService, private _location: Location) {}
+  canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot) {
+    if(!localStorage.getItem('username')){
+      return true;
+    }
+    this._location.back();
     return false;
   }
 }

@@ -21,11 +21,6 @@
                     <a aria-label="Các bài viết" [routerLink]="['/article']" routerLinkActive="active"><i class="material-icons">book</i></a>
                 </li>
                 <!--toggle notifications-->
-
-                <!--<a (click)="changeStatusNotification()" class="dropdown-toggle" data-toggle="dropdown"-->
-                <!--role="button" aria-expanded="false">-->
-                <!---->
-                <!--</a>-->
                 <li [hidden]="!isFrontend">
                     <a class='right dropdown-button' (click)="changeStatusNotification()" data-activates='noti_dropdown'><i class=' material-icons'>add_alert</i><span *ngIf="countUnReadNoti>0" class="new badge red">{{countUnReadNoti}}</span></a>
                     <ul class="dropdown-content noti-liss" id="noti_dropdown">
@@ -43,7 +38,6 @@
                 </li>
                 <!--end notification-->
                 <li>
-                    <!--<button (click)="openChat()" class="btn modal-trigger">chat</button>-->
                     <a (click)="openChat()"><i class="material-icons">message</i><span *ngIf="isNewMessage" class="new badge red">!</span></a>
                 </li>
                 <!--name-->
