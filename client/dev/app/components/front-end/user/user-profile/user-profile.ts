@@ -22,6 +22,10 @@ import { User } from '../../../../interface/user';
 import { FriendShip } from '../../../../interface/friendship';
 import { Request } from '../../../../interface/request';
 import { Knowledge } from '../../../../interface/knowledge';
+
+
+import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance } from 'ng2-pagination';
+
 declare var $:any;
 
 @Component({
@@ -34,8 +38,11 @@ declare var $:any;
         UserProfileBarComponent,
         PrivateChatComponent,
         KspaceListComponent,
-        ArticleListComponent
-    ]
+        ArticleListComponent,
+        PaginationControlsCmp
+    ],
+    providers:[PaginationService],
+    pipes: [PaginatePipe]
 })
 
 export class UserProfileComponent {
@@ -70,6 +77,33 @@ export class UserProfileComponent {
 
     articleList:any[] = [];
 
+    public maxSizeReq: number = 7;
+    public directionLinksReq: boolean = true;
+    public autoHideReq: boolean = false;
+    public configReq: IPaginationInstance = {
+        id: 'req',
+        itemsPerPage: 10,
+        currentPage: 1
+    };
+
+    public maxSizeArt: number = 7;
+    public directionLinksArt: boolean = true;
+    public autoHideArt: boolean = false;
+    public configArt: IPaginationInstance = {
+        id: 'Art',
+        itemsPerPage: 10,
+        currentPage: 1
+    };
+
+    public maxSizeKp: number = 7;
+    public directionLinksKp: boolean = true;
+    public autoHideKp: boolean = false;
+    public configKp: IPaginationInstance = {
+        id: 'Kp',
+        itemsPerPage: 10,
+        currentPage: 1
+    };
+
     constructor(public router:Router, private route:ActivatedRoute,
                 public _userService:UserService, public _kSpaceService:KSpaceService, public _articleService:ArticleService,
                 public _knowledgeService:KnowledgeService) {
@@ -95,9 +129,9 @@ export class UserProfileComponent {
                             this.getRequestByUser();
                             this._articleService.getArtsByUsername(this.name).subscribe((arts)=> {
                                 //filter article
-                                if(this.userToken){
+                                if (this.userToken) {
                                     this.articleList = arts;
-                                }else{
+                                } else {
                                     this.articleList = this.filterArticle(arts);
                                 }
 
@@ -127,10 +161,22 @@ export class UserProfileComponent {
         $('ul.tabs').tabs();
     }
 
-    filterArticle(listArt){
-        for(let i=listArt.length-1; i >= 0;i--){
-            if(listArt[i].status==='private'){
-                listArt.splice(i,1);
+    onPageChangeReq(number: number) {
+        this.configReq.currentPage = number;
+    }
+
+    onPageChangeArt(number: number) {
+        this.configArt.currentPage = number;
+    }
+
+    onPageChangeKp(number: number) {
+        this.configKp.currentPage = number;
+    }
+
+    filterArticle(listArt) {
+        for (let i = listArt.length - 1; i >= 0; i--) {
+            if (listArt[i].status === 'private') {
+                listArt.splice(i, 1);
             }
         }
         return listArt;
