@@ -62,7 +62,7 @@ export class RequestCategoryComponent {
     }
 
     onPageChangeReq(number: number) {
-        this.config.currentPage = number;
+        this.configReq.currentPage = number;
     }
     onPageChangeArt(number: number) {
         this.configArt.currentPage = number;
