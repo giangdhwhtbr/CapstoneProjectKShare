@@ -1,7 +1,7 @@
 <div class="container mg-top-50">
     <h3>{{title}}</h3>
     <br>
-    <rating-point *ngIf="rateAve" [rateAve]="rateAve"></rating-point>
+    <rating-point *ngIf="rateAve" [rate]="rateAve"></rating-point>
     <p *ngIf="isFinish" class="flow-text">Lớp học đã kết thúc vào ngày {{finishDate | date:"dd/MM/yyyy"}}</p>
     <hr>
     <div class="row">
@@ -56,32 +56,47 @@
                 <div class="indeterminate"></div>
             </div>
         </span>
-
+    <hr>
     <div class="row">
 
 
-
-
-      <!--<sm-message *ngIf="errorMessage" class="warning">-->
-      <!--<message-header>{{errorMessage.header}}</message-header>-->
-      <!--<message-content>-->
-      <!--{{errorMessage.content}}-->
-      <!--</message-content>-->
-      <!--</sm-message>-->
+      <div *ngIf="errorMessage" class="card-panel orange darken-1">
+          <span class="white-text">
+            <i class="material-icons left">report_problem</i>{{errorMessage}}
+          </span>
+      </div>
       <sm-rating class="massive heart" (onRate)="onReceiveRating($event)" [maxRating]="5"></sm-rating>
 
-      <form class="ui form" #reviewForm="ngForm" (ngSubmit)="onSubmit(reviewForm.value)">
-        <textarea ngControl="content" required></textarea>
-        <button type="submit">Review</button>
-      </form>
-
-      <div id="reviews">
+      <div class="row">
+        <form class="ui form" #reviewForm="ngForm" (ngSubmit)="onSubmit(reviewForm.value)">
+          <div class="input-field col s10">
+            <textarea ngControl="content" required id="createReview" class="materialize-textarea"></textarea>
+            <label for="createReview">Nhận xét</label>
+          </div>
+          <button class="col s2 waves-effect waves-light btn" id="submitReview" type="submit"><i
+            class="material-icons right">cloud
+          </i>Review
+          </button>
+        </form>
+      </div>
+      <!-- /.row -->
+      <div class="row">
         <div *ngFor="let review of reviews">
-          <sm-segment class="raised">
-            <p>{{review.createdUser}}</p>
-
-            <p>{{review.content}}</p>
-          </sm-segment>
+          <div class="card-panel blue-grey lighten-5">
+            <div class="row">
+              <span class="blue-text">
+              {{review.createdUser}}
+              </span>
+              <rating-point [rate]="review.rate"></rating-point>
+            </div>
+            <!-- /.row -->
+            <div class="row">
+              <span class="purple-text">
+              {{review.content}}
+              </span>
+            </div>
+            <!-- /.row -->
+          </div>
         </div>
       </div>
     </div>

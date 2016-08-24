@@ -112,10 +112,13 @@ module.exports = class KSpaceController {
   static createReview(req, res) {
     var currentDate = new Date();
     var username = req.body.createdUser;
+    var content = req.body.content;
+    var rate = req.body.rate;
     if (req.params && req.params.id) {
       // Get KSpace to update
       KSpaceDAO.getKSpaceById(req.params.id)
         .then(kspace => {
+          //check if user hase review the kspace
           function hasReviewed() {
             for (var k in kspace.reviews) {
               if (kspace.reviews[k].createdUser === username) {
@@ -124,6 +127,7 @@ module.exports = class KSpaceController {
             }
             return false;
           }
+          //check if user is kspace leaners
           function  isLearner() {
             for (var learner of kspace.learners){
               if(username === learner){
@@ -133,13 +137,14 @@ module.exports = class KSpaceController {
               }
             }
           }
+          //review successfull conditions
           if(isLearner()){
             if (!hasReviewed()) {
               var _review = {
                 createdAt: currentDate,
                 createdUser: username,
-                content: req.body.content,
-                rate: req.body.rate
+                content: content,
+                rate: rate
               };
 
               if (kspace.reviews.length) {

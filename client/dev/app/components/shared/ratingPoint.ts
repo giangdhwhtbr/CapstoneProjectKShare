@@ -7,7 +7,7 @@ import {Component, onInit, Input} from '@angular/core';
 @Component({
   selector:"rating-point",
   template:`
-      <div *ngIf="!rateAve">
+      <div *ngIf="!rate">
         <div  class="ui massive heart rating">
           <i class="icon"></i>
           <i class="icon"></i>
@@ -16,7 +16,7 @@ import {Component, onInit, Input} from '@angular/core';
           <i class="icon"></i>
         </div>
       </div>
-      <div *ngIf="rateAve && rateAve <= 1">
+      <div *ngIf="rate && rate <= 1">
         <div  class="ui massive heart rating">
           <i class="icon active"></i>
           <i class="icon"></i>
@@ -25,7 +25,7 @@ import {Component, onInit, Input} from '@angular/core';
           <i class="icon"></i>
         </div>
       </div>
-      <div *ngIf="rateAve > 1 && rateAve <= 2">
+      <div *ngIf="rate > 1 && rate <= 2">
           <div  class="ui massive heart rating">
             <i class="icon active"></i>
             <i class="icon active"></i>
@@ -34,7 +34,7 @@ import {Component, onInit, Input} from '@angular/core';
             <i class="icon"></i>
           </div>
       </div>
-      <div *ngIf="rateAve > 2 && rateAve <= 3">
+      <div *ngIf="rate > 2 && rate <= 3">
           <div  class="ui massive heart rating">
             <i class="icon active"></i>
             <i class="icon active"></i>
@@ -43,7 +43,7 @@ import {Component, onInit, Input} from '@angular/core';
             <i class="icon"></i>
           </div>
       </div>
-      <div *ngIf="rateAve > 3 && rateAve <= 4">
+      <div *ngIf="rate > 3 && rate <= 4">
           <div  class="ui massive heart rating">
             <i class="icon active"></i>
             <i class="icon active"></i>
@@ -52,7 +52,7 @@ import {Component, onInit, Input} from '@angular/core';
             <i class="icon"></i>
           </div>
       </div>
-      <div *ngIf="rateAve > 4 && rateAve <= 5">
+      <div *ngIf="rate > 4 && rate <= 5">
           <div  class="ui massive heart rating">
             <i class="icon active"></i>
             <i class="icon active"></i>
@@ -65,5 +65,5 @@ import {Component, onInit, Input} from '@angular/core';
 })
 
 export class RatingPoint {
-  @Input() rateAve: number;
+  @Input() rate: number;
 }
