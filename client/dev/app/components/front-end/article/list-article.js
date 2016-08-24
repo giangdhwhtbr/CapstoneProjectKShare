@@ -51,10 +51,8 @@ var listArticleComponent = (function () {
         this.text = "";
         this._artService.getAllArts(this.num).subscribe(function (arts) {
             if (arts.length == 0) {
-                _this.isExist = false;
             }
             else {
-                _this.isExist = true;
                 for (var i = 0; i < arts.length; i++) {
                     //get summary
                     var html = arts[i].content;
@@ -67,17 +65,29 @@ var listArticleComponent = (function () {
             }
         });
     };
+    listArticleComponent.prototype.backToAll = function () {
+        this.isExist = true;
+        this.num = 5;
+        this.getAllArticles();
+    };
     listArticleComponent.prototype.searchArticle = function () {
         var _this = this;
+        this.num = 5;
         this.listArt = [];
         if (!this.text) {
             this.getAllArticles();
-            this.isExist = false;
+            this.isExist = true;
         }
         else {
             this._artService.searchArticle(this.text).subscribe(function (arts) {
                 console.log(arts.length);
                 for (var i = 0; i < arts.length; i++) {
+                    //get summary
+                    var html = arts[i].content;
+                    var div = document.createElement("div");
+                    div.innerHTML = html;
+                    var text = div.textContent || div.innerText || "";
+                    arts[i].content = text;
                     _this.listArt.push(arts[i]);
                 }
                 if (arts.length <= 0) {

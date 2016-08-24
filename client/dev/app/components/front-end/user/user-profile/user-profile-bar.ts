@@ -61,6 +61,7 @@ export class UserProfileBarComponent {
   }
 
   ngOnInit(): void {
+    $('#loading').show();
     this.route
       .params
       .subscribe(params => {
@@ -70,6 +71,7 @@ export class UserProfileBarComponent {
           (user) => {
             this.userProfile = user;
             this.linkImg = user.linkImg;
+            $('#loading').hide();
           }, (error) => {
             console.log(error);
           }
@@ -100,11 +102,13 @@ export class UserProfileBarComponent {
   fileChangeEvent(fileInput: any) {
     this.filesToUpload = <Array<File>>fileInput.target.files;
     if (this.filesToUpload) {
+      $('#loading').show();
       this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then((r) => {
         this.linkImg = '/uploads/' + r[0].filename;
         this.userProfile.linkImg = this.linkImg;
         this._userService.updateUser(this.userProfile, []).subscribe(r => {
           console.log("update link profile picture successful");
+          $('#loading').hide();
         });
       }, (error) => {
         console.error(error);

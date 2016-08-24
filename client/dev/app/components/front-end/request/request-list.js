@@ -57,16 +57,15 @@ var RequestListClientComponent = (function () {
         this.num = this.num + 5;
         this.getAllRequests();
     };
+    RequestListClientComponent.prototype.backToAll = function () {
+        this.isExistRecord = false;
+        this.num = 5;
+        this.getAllRequests();
+    };
     RequestListClientComponent.prototype.getAllRequests = function () {
         var _this = this;
         this.text = "";
         this._requestService.getAllRequests(this.num).subscribe(function (requests) {
-            if (requests.length === 0) {
-                _this.isExistRecord = true;
-            }
-            else {
-                _this.isExistRecord = false;
-            }
             _this.requests = requests;
             for (var i = 0; i < requests.length; i++) {
                 _this._data.push({
@@ -88,9 +87,9 @@ var RequestListClientComponent = (function () {
     };
     RequestListClientComponent.prototype.search = function () {
         var _this = this;
+        this.num = 5;
         if (this.text === '') {
             this.isExistRecord = false;
-            this.num = 5;
             this.getAllRequests();
         }
         else {

@@ -16,7 +16,6 @@ var article_1 = require('../../../services/article');
 var tag_1 = require('../../../services/tag');
 var primeng_1 = require('primeng/primeng');
 var private_chat_1 = require('./../../shared/private-chat');
-var $ = require('jquery');
 var CKEditor = (function () {
     function CKEditor(_elm, _articleService, router, route) {
         var _this = this;
@@ -86,6 +85,7 @@ var EditArticleComponent = (function () {
                 _this.CreateYoutubeBtnCkeditor();
                 _this.addCommandBtnCk();
                 _this.loadAllTags();
+                $('#preLoad').hide();
             }
         }, function (error) {
             if (error.status == 400) {
@@ -207,6 +207,7 @@ var EditArticleComponent = (function () {
     };
     EditArticleComponent.prototype.editArticle = function () {
         var _this = this;
+        $('#preLoad').show();
         this.art.content = CKEDITOR.instances.editor1.getData();
         var tags = [];
         tags = this.filterONTag();

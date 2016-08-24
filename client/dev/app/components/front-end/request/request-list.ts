@@ -84,14 +84,15 @@ export class RequestListClientComponent implements AfterViewChecked {
         this.getAllRequests();
     }
 
+    backToAll(){
+        this.isExistRecord = false;
+        this.num = 5;
+        this.getAllRequests();
+    }
+
     getAllRequests() {
         this.text="";
         this._requestService.getAllRequests(this.num).subscribe((requests) => {
-            if (requests.length === 0) {
-                this.isExistRecord = true;
-            } else {
-                this.isExistRecord = false;
-            }
             this.requests = requests;
             for (var i = 0; i < requests.length; i++) {
                 this._data.push({
@@ -116,9 +117,9 @@ export class RequestListClientComponent implements AfterViewChecked {
     }
 
     search() {
+        this.num = 5;
         if (this.text === '') {
             this.isExistRecord = false;
-            this.num = 5;
             this.getAllRequests();
         } else {
             this._requestService.searchRequest(this.text).subscribe((requests) => {

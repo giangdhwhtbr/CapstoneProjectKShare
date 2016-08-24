@@ -15,7 +15,7 @@ import {AutoComplete} from 'primeng/primeng';
 import { AuthService } from '../../../services/auth';
 import { PrivateChatComponent } from './../../shared/private-chat';
 
-import * as $ from 'jquery';
+declare var $:any;
 declare var CKEDITOR: any;
 declare var Materialize: any;
 
@@ -107,6 +107,7 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
                 this.addCommandBtnCk();
                 this.loadAllTags();
 
+                $('#preLoad').hide();
             }
 
         },(error)=>{
@@ -244,6 +245,7 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
     }
 
     editArticle() {
+        $('#preLoad').show();
         this.art.content = CKEDITOR.instances.editor1.getData();
         let tags:any[] = [];
         tags = this.filterONTag();
