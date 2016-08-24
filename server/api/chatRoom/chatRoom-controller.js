@@ -1,6 +1,7 @@
 "use strict";
 
 const ChatRoomDAO = require('./chatRoom-dao');
+const userDAO = require('../user/user-dao');
 
 module.exports = class ChatRoomController {
   static getAllChatRoomOfUser(req, res) {
@@ -64,7 +65,6 @@ module.exports = class ChatRoomController {
   }
 
   static updateChatRoom(data) {
-    console.log(data);
     var users = {
       user1: data.sender,
       user2: data.receiver
@@ -72,6 +72,7 @@ module.exports = class ChatRoomController {
     var chatLog = {
       sender: data.sender,
       message: data.message,
+      avatar: data.avatar,
       sentAt: new Date()
     };
     //  var isNewMessage = true;

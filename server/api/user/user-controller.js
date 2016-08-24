@@ -26,16 +26,15 @@ module.exports = class userController {
             });
         }
     }
-    static getAvartaByUserNaname(req, res) {
-        let listUserName = req.body.listName;
-        if (req.params && req.params.id) {
+    static getAvatarByUserName(req, res) {
+        if (req.params && req.params.username) {
             userDAO
-                .getAvartaByUserNaname(req.params.id)
+                .getAvatarByUsername(req.params.username)
                 .then(user => res.status(200).json(user))
                 .catch(error => res.status(400).json(error));
         } else {
             res.status(404).json({
-                "message": "No Userid in templates"
+                "message": "User not found"
             });
         }
     }

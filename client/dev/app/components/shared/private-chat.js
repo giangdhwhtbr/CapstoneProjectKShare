@@ -13,10 +13,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var chat_1 = require('../../services/chat');
 var notification_1 = require('../../services/notification');
+var users_1 = require('../../services/users');
 var PrivateChatComponent = (function () {
-    function PrivateChatComponent(_chatService, _noti) {
+    function PrivateChatComponent(_chatService, _noti, _userService) {
         this._chatService = _chatService;
         this._noti = _noti;
+        this._userService = _userService;
         this.username = localStorage.getItem('username');
         this.socket = io('https://localhost:80');
         this.messages = [];
@@ -68,7 +70,19 @@ var PrivateChatComponent = (function () {
                 }
             }
         });
-        this.listAllChatRoom();
+        if (this.username) {
+            this.loadAva();
+            this.listAllChatRoom();
+        }
+    };
+    PrivateChatComponent.prototype.loadAva = function () {
+        var _this = this;
+        this._userService.loadAva(this.username)
+            .subscribe(function (res) {
+            _this.avatar = res.linkImg;
+        }, function (err) {
+            console.log(err);
+        });
     };
     PrivateChatComponent.prototype.listAllChatRoom = function () {
         var _this = this;
@@ -93,6 +107,7 @@ var PrivateChatComponent = (function () {
                             var user = _b[_a];
                             if (user.user !== _this.username) {
                                 room.friendName = user.user;
+                                room.friendAva = user.avatar;
                             }
                             if (user.user === _this.username) {
                                 room.newMessages = user.newMessages;
@@ -133,7 +148,8 @@ var PrivateChatComponent = (function () {
         var data = {
             sender: this.username,
             message: this.mess,
-            receiver: this.receiver
+            receiver: this.receiver,
+            avatar: this.avatar
         };
         this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
         this.socket.emit('private-message', data);
@@ -146,7 +162,7 @@ var PrivateChatComponent = (function () {
             templateUrl: 'client/dev/app/components/shared/templates/chatbox.html',
             styleUrls: ['client/dev/app/components/shared/styles/chatbox.css']
         }), 
-        __metadata('design:paramtypes', [chat_1.ChatService, notification_1.NotificationService])
+        __metadata('design:paramtypes', [chat_1.ChatService, notification_1.NotificationService, users_1.UserService])
     ], PrivateChatComponent);
     return PrivateChatComponent;
 })();
