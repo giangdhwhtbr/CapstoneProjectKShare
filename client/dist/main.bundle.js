@@ -1081,6 +1081,12 @@ webpackJsonp([2],[
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
 	    };
+	    ArticleService.prototype.topArticle = function () {
+	        return this._http
+	            .get(this._requestsUrl.replace(':id', ''))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
 	    ArticleService.prototype.getArtById = function (id) {
 	        return this._http.get(this._requestsUrl.replace(':id', id))
 	            .map(function (r) { return r.json(); })
@@ -3336,7 +3342,7 @@ webpackJsonp([2],[
 	        };
 	    }
 	    RequestCategoryComponent.prototype.onPageChangeReq = function (number) {
-	        this.config.currentPage = number;
+	        this.configReq.currentPage = number;
 	    };
 	    RequestCategoryComponent.prototype.onPageChangeArt = function (number) {
 	        this.configArt.currentPage = number;
