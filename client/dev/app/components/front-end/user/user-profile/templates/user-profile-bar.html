@@ -37,14 +37,11 @@
                     </div>
                 </div>
                 <div class="row" *ngIf="userProfile">
-                    <p>
+                    <p *ngIf="userProfile.displayName">
                         Tên: {{userProfile.displayName}}
                     </p>
                     <p>
                         Email: {{userProfile.email}}
-                    </p>
-                    <p>
-                        Cấp độ: {{userProfile.level}}
                     </p>
                 </div>
             </div>

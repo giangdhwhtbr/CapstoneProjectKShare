@@ -137,10 +137,11 @@ export class UserProfileBarComponent {
       this._noti.createNotification(title, this.name, link).subscribe(
         (notification) => {
         });
+        this.isFriend = true;
     } else {
       Materialize.toast('Bạn đã gửi kết bạn rồi!', 4000);
     }
-    this.getFriendList();
+    // this.getFriendList();
   }
 
   deleteFriend(): void {

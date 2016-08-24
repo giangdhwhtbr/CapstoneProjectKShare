@@ -3544,11 +3544,12 @@ webpackJsonp([2],[
 	            //save notification to database
 	            this._noti.createNotification(title, this.name, link).subscribe(function (notification) {
 	            });
+	            this.isFriend = true;
 	        }
 	        else {
 	            Materialize.toast('Bạn đã gửi kết bạn rồi!', 4000);
 	        }
-	        this.getFriendList();
+	        // this.getFriendList();
 	    };
 	    UserProfileBarComponent.prototype.deleteFriend = function () {
 	        var r = confirm("Bạn có muốn hủy kết bạn");
@@ -6934,6 +6935,11 @@ webpackJsonp([2],[
 	            else {
 	                this.friendNames.push(this.acceptedRequest[i].user1);
 	            }
+	        }
+	        console.log(this.friendNames);
+	        for (var _i = 0, _a = this.pendingRequests; _i < _a.length; _i++) {
+	            var a = _a[_i];
+	            console.log(a.user1);
 	        }
 	    };
 	    FriendListComponent.prototype.action = function (data) {
