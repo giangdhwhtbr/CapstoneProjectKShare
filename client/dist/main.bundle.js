@@ -5052,12 +5052,15 @@ webpackJsonp([2],[
 	            for (var _i = 0, reqs_1 = reqs; _i < reqs_1.length; _i++) {
 	                var e = reqs_1[_i];
 	                if (e.status == "pending") {
+	                    e.status = "Đang chờ";
 	                    _this.activeRequests.push(e);
 	                }
 	                else if (e.status == "deactive") {
+	                    e.status = "Đã đóng";
 	                    _this.deactiveRequests.push(e);
 	                }
 	                else if (e.status == "accepted") {
+	                    e.status = "Được chấp nhận";
 	                    _this.acceptepRequests.push(e);
 	                }
 	            }

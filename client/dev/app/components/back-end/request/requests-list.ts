@@ -62,10 +62,13 @@ export class RequestListComponent implements AfterViewChecked {
         this._requestService.getAllRequestAdmin().subscribe((reqs)=> {
             for(let e of reqs){
                 if(e.status == "pending"){
+                    e.status = "Đang chờ";
                     this.activeRequests.push(e);
                 }else if(e.status =="deactive"){
+                    e.status = "Đã đóng";
                     this.deactiveRequests.push(e);
                 }else if(e.status =="accepted"){
+                    e.status = "Được chấp nhận";
                     this.acceptepRequests.push(e);
                 }
             }
