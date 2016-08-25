@@ -228,7 +228,7 @@ export const KShareRoutes: RouterConfig = [
     },
     {
         path: 'room',
-        canActivate: isLogin,
+        canActivate: [isLogin],
         children: [
           {
             path: ':id/:lecturer',

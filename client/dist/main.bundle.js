@@ -17,7 +17,7 @@ webpackJsonp([2],[
 	    app_routes_ts_1.APP_ROUTER_PROVIDERS,
 	    http_1.HTTP_PROVIDERS
 	]).catch(function (err) { return console.error(err); });
-
+	
 
 /***/ },
 /* 1 */,
@@ -197,14 +197,14 @@ webpackJsonp([2],[
 	            selector: 'private-chat',
 	            templateUrl: 'client/dev/app/components/shared/templates/chatbox.html',
 	            styleUrls: ['client/dev/app/components/shared/styles/chatbox.css']
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _a) || Object, (typeof (_b = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object])
 	    ], PrivateChatComponent);
 	    return PrivateChatComponent;
 	    var _a, _b, _c;
 	}());
 	exports.PrivateChatComponent = PrivateChatComponent;
-
+	
 
 /***/ },
 /* 12 */
@@ -454,13 +454,13 @@ webpackJsonp([2],[
 	    };
 	    DomHandler.zindex = 1000;
 	    DomHandler = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [])
 	    ], DomHandler);
 	    return DomHandler;
 	}());
 	exports.DomHandler = DomHandler;
-
+	
 
 /***/ },
 /* 13 */,
@@ -710,14 +710,14 @@ webpackJsonp([2],[
 	        return Observable_1.Observable.throw(error);
 	    };
 	    UserService = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
 	    ], UserService);
 	    return UserService;
 	    var _a;
 	}());
 	exports.UserService = UserService;
-
+	
 
 /***/ },
 /* 30 */,
@@ -793,7 +793,7 @@ webpackJsonp([2],[
 	__export(__webpack_require__(1111));
 	__export(__webpack_require__(540));
 	__export(__webpack_require__(541));
-
+	
 
 /***/ },
 /* 32 */,
@@ -823,7 +823,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'header',
 	            template: '<ng-content></ng-content>'
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], Header);
 	    return Header;
@@ -836,13 +836,13 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'footer',
 	            template: '<ng-content></ng-content>'
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], Footer);
 	    return Footer;
 	}());
 	exports.Footer = Footer;
-
+	
 
 /***/ },
 /* 39 */,
@@ -917,14 +917,14 @@ webpackJsonp([2],[
 	        return Observable_1.Observable.throw(error.json());
 	    };
 	    AuthService = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
 	    ], AuthService);
 	    return AuthService;
 	    var _a;
 	}());
 	exports.AuthService = AuthService;
-
+	
 
 /***/ },
 /* 45 */,
@@ -1144,14 +1144,14 @@ webpackJsonp([2],[
 	        return Observable_1.Observable.throw(error);
 	    };
 	    ArticleService = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
 	    ], ArticleService);
 	    return ArticleService;
 	    var _a;
 	}());
 	exports.ArticleService = ArticleService;
-
+	
 
 /***/ },
 /* 52 */,
@@ -1275,14 +1275,14 @@ webpackJsonp([2],[
 	        return Observable_1.Observable.throw(error.json().error || 'Server error');
 	    };
 	    KnowledgeService = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
 	    ], KnowledgeService);
 	    return KnowledgeService;
 	    var _a;
 	}());
 	exports.KnowledgeService = KnowledgeService;
-
+	
 
 /***/ },
 /* 56 */,
@@ -1357,14 +1357,14 @@ webpackJsonp([2],[
 	            .map(function (r) { return r.json(); });
 	    };
 	    NotificationService = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
 	    ], NotificationService);
 	    return NotificationService;
 	    var _a;
 	}());
 	exports.NotificationService = NotificationService;
-
+	
 
 /***/ },
 /* 63 */
@@ -1534,14 +1534,14 @@ webpackJsonp([2],[
 	        return Observable_1.Observable.throw(error.json().error || 'Server error');
 	    };
 	    RequestService = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
 	    ], RequestService);
 	    return RequestService;
 	    var _a;
 	}());
 	exports.RequestService = RequestService;
-
+	
 
 /***/ },
 /* 64 */
@@ -1621,14 +1621,14 @@ webpackJsonp([2],[
 	            .map(function (r) { return r.json(); }).catch(this.handleError);
 	    };
 	    TagService = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
 	    ], TagService);
 	    return TagService;
 	    var _a;
 	}());
 	exports.TagService = TagService;
-
+	
 
 /***/ },
 /* 65 */,
@@ -1671,7 +1671,7 @@ webpackJsonp([2],[
 	        });
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], listTagComponent.prototype, "listTagId", void 0);
 	    listTagComponent = __decorate([
@@ -1683,14 +1683,14 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES
 	            ],
 	            providers: [tag_1.TagService]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _c) || Object])
 	    ], listTagComponent);
 	    return listTagComponent;
 	    var _a, _b, _c;
 	}());
 	exports.listTagComponent = listTagComponent;
-
+	
 
 /***/ },
 /* 74 */,
@@ -1787,14 +1787,14 @@ webpackJsonp([2],[
 	        return Observable_1.Observable.throw(error.json().error || 'Server error');
 	    };
 	    ChatService = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
 	    ], ChatService);
 	    return ChatService;
 	    var _a;
 	}());
 	exports.ChatService = ChatService;
-
+	
 
 /***/ },
 /* 126 */
@@ -1869,14 +1869,14 @@ webpackJsonp([2],[
 	        return Observable_1.Observable.throw(error || 'server error');
 	    };
 	    KSpaceService = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
 	    ], KSpaceService);
 	    return KSpaceService;
 	    var _a;
 	}());
 	exports.KSpaceService = KSpaceService;
-
+	
 
 /***/ },
 /* 127 */,
@@ -2007,51 +2007,51 @@ webpackJsonp([2],[
 	        this.initialized = false;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Button.prototype, "icon", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Button.prototype, "iconPos", void 0);
 	    __decorate([
-	        core_1.HostListener('mouseenter', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('mouseenter', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Button.prototype, "onMouseenter", null);
 	    __decorate([
-	        core_1.HostListener('mouseleave', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('mouseleave', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Button.prototype, "onMouseleave", null);
 	    __decorate([
-	        core_1.HostListener('mousedown', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('mousedown', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Button.prototype, "onMouseDown", null);
 	    __decorate([
-	        core_1.HostListener('mouseup', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('mouseup', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Button.prototype, "onMouseUp", null);
 	    __decorate([
-	        core_1.HostListener('focus', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('focus', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Button.prototype, "onFocus", null);
 	    __decorate([
-	        core_1.HostListener('blur', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('blur', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Button.prototype, "onBlur", null);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Button.prototype, "label", null);
 	    Button = __decorate([
@@ -2064,13 +2064,13 @@ webpackJsonp([2],[
 	                '[class.ui-state-disabled]': 'isDisabled()'
 	            },
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
 	    ], Button);
 	    return Button;
 	}());
 	exports.Button = Button;
-
+	
 
 /***/ },
 /* 152 */,
@@ -2209,7 +2209,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'ck-editor',
 	            template: "",
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
 	    ], CKEditor);
 	    return CKEditor;
@@ -2362,14 +2362,14 @@ webpackJsonp([2],[
 	        }),
 	        __param(0, core_1.Inject(common_1.FormBuilder)),
 	        __param(1, core_1.Inject(requests_1.RequestService)),
-	        __param(5, core_1.Inject(knowledge_1.KnowledgeService)),
+	        __param(5, core_1.Inject(knowledge_1.KnowledgeService)), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object, (typeof (_e = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _e) || Object, (typeof (_f = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _f) || Object])
 	    ], UpdateRequestComponent);
 	    return UpdateRequestComponent;
 	    var _a, _b, _c, _d, _e, _f;
 	}());
 	exports.UpdateRequestComponent = UpdateRequestComponent;
-
+	
 
 /***/ },
 /* 190 */
@@ -2407,14 +2407,14 @@ webpackJsonp([2],[
 	            .catch(this.handleError);
 	    };
 	    PagerService = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
 	    ], PagerService);
 	    return PagerService;
 	    var _a;
 	}());
 	exports.PagerService = PagerService;
-
+	
 
 /***/ },
 /* 191 */
@@ -2484,14 +2484,14 @@ webpackJsonp([2],[
 	        return Observable_1.Observable.throw(error.json().error || 'Server error');
 	    };
 	    ReportService = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
 	    ], ReportService);
 	    return ReportService;
 	    var _a;
 	}());
 	exports.ReportService = ReportService;
-
+	
 
 /***/ },
 /* 192 */
@@ -2648,27 +2648,27 @@ webpackJsonp([2],[
 	        return this.el.nativeElement.disabled;
 	    };
 	    __decorate([
-	        core_1.HostListener('mouseover', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('mouseover', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], InputText.prototype, "onMouseover", null);
 	    __decorate([
-	        core_1.HostListener('mouseout', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('mouseout', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], InputText.prototype, "onMouseout", null);
 	    __decorate([
-	        core_1.HostListener('focus', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('focus', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], InputText.prototype, "onFocus", null);
 	    __decorate([
-	        core_1.HostListener('blur', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('blur', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], InputText.prototype, "onBlur", null);
 	    InputText = __decorate([
@@ -2683,13 +2683,13 @@ webpackJsonp([2],[
 	                '[class.ui-state-focus]': 'focus',
 	                '[class.ui-state-disabled]': 'isDisabled()'
 	            }
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef])
 	    ], InputText);
 	    return InputText;
 	}());
 	exports.InputText = InputText;
-
+	
 
 /***/ },
 /* 216 */
@@ -2783,48 +2783,48 @@ webpackJsonp([2],[
 	        this.changePageToFirst();
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Paginator.prototype, "rows", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Paginator.prototype, "first", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Paginator.prototype, "pageLinkSize", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Paginator.prototype, "onPageChange", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Paginator.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Paginator.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Paginator.prototype, "rowsPerPageOptions", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Paginator.prototype, "totalRecords", null);
 	    Paginator = __decorate([
 	        core_1.Component({
 	            selector: 'p-paginator',
 	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"{'ui-paginator ui-widget-header ui-unselectable-text':true}\">\n            <span #firstlink class=\"ui-paginator-first ui-paginator-element ui-state-default ui-corner-all\" (mouseenter)=\"hoveredItem = $event.target\" (mouseleave)=\"hoveredItem = null\"\n                        (click)=\"changePageToFirst()\" [ngClass]=\"{'ui-state-disabled':isFirstPage(),'ui-state-hover':(firstlink === hoveredItem && !isFirstPage())}\">\n                <span class=\"fa fa-step-backward\"></span>\n            </span>\n            <span #prevlink class=\"ui-paginator-prev ui-paginator-element ui-state-default ui-corner-all\" (mouseenter)=\"hoveredItem = $event.target\" (mouseleave)=\"hoveredItem = null\"\n                    (click)=\"changePageToPrev()\" [ngClass]=\"{'ui-state-disabled':isFirstPage(),'ui-state-hover':(prevlink === hoveredItem && !isFirstPage())}\">\n                <span class=\"fa fa-backward\"></span>\n            </span>\n            <span class=\"ui-paginator-pages\">\n                <span #plink *ngFor=\"let pageLink of pageLinks\" class=\"ui-paginator-page ui-paginator-element ui-state-default ui-corner-all\"\n                    (mouseenter)=\"hoveredItem = $event.target\" (mouseleave)=\"hoveredItem = null\" (click)=\"changePage(pageLink - 1)\"\n                    [ngClass]=\"{'ui-state-hover':(plink === hoveredItem), 'ui-state-active': (pageLink-1 == getPage())}\">{{pageLink}}</span>\n            </span>\n            <span #nextlink class=\"ui-paginator-next ui-paginator-element ui-state-default ui-corner-all\" (mouseenter)=\"hoveredItem = $event.target\" (mouseleave)=\"hoveredItem = null\"\n                    (click)=\"changePageToNext()\" [ngClass]=\"{'ui-state-disabled':isLastPage(),'ui-state-hover':(nextlink === hoveredItem  && !isLastPage())}\">\n                <span class=\"fa fa-forward\"></span>\n            </span>\n            <span #lastlink class=\"ui-paginator-last ui-paginator-element ui-state-default ui-corner-all\" (mouseenter)=\"hoveredItem = $event.target\" (mouseleave)=\"hoveredItem = null\"\n                    (click)=\"changePageToLast()\" [ngClass]=\"{'ui-state-disabled':isLastPage(),'ui-state-hover':(lastlink === hoveredItem  && !isLastPage())}\">\n                <span class=\"fa fa-step-forward\"></span>\n            </span>\n            <select class=\"ui-paginator-rpp-options ui-widget ui-state-default\" *ngIf=\"rowsPerPageOptions\" (change)=\"onRppChange($event)\">\n                <option *ngFor=\"let opt of rowsPerPageOptions\" [value]=\"opt\" [selected]=\"rows == opt\">{{opt}}</option>\n            </select>\n        </div>\n    "
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], Paginator);
 	    return Paginator;
 	}());
 	exports.Paginator = Paginator;
-
+	
 
 /***/ },
 /* 217 */,
@@ -2962,14 +2962,14 @@ webpackJsonp([2],[
 	            providers: [knowledge_1.KnowledgeService]
 	        }),
 	        __param(0, core_1.Inject(common_1.FormBuilder)),
-	        __param(1, core_1.Inject(knowledge_1.KnowledgeService)),
+	        __param(1, core_1.Inject(knowledge_1.KnowledgeService)), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
 	    ], UpdateKnowledgeComponent);
 	    return UpdateKnowledgeComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.UpdateKnowledgeComponent = UpdateKnowledgeComponent;
-
+	
 
 /***/ },
 /* 288 */
@@ -3005,7 +3005,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'ck-editor',
 	            template: ""
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
 	    ], CKEditor);
 	    return CKEditor;
@@ -3177,14 +3177,14 @@ webpackJsonp([2],[
 	            providers: [tag_1.TagService]
 	        }),
 	        __param(1, core_1.Inject(common_1.FormBuilder)),
-	        __param(2, core_1.Inject(requests_1.RequestService)),
+	        __param(2, core_1.Inject(requests_1.RequestService)), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _a) || Object, (typeof (_b = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _b) || Object, (typeof (_c = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _f) || Object])
 	    ], CreateRequestComponent);
 	    return CreateRequestComponent;
 	    var _a, _b, _c, _d, _e, _f;
 	}());
 	exports.CreateRequestComponent = CreateRequestComponent;
-
+	
 
 /***/ },
 /* 289 */
@@ -3222,13 +3222,13 @@ webpackJsonp([2],[
 	    StringFilterPipe = __decorate([
 	        core_1.Pipe({
 	            name: 'stringFilter'
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], StringFilterPipe);
 	    return StringFilterPipe;
 	}());
 	exports.StringFilterPipe = StringFilterPipe;
-
+	
 
 /***/ },
 /* 290 */
@@ -3294,7 +3294,7 @@ webpackJsonp([2],[
 	        });
 	    };
 	    __decorate([
-	        core_1.Input('reportedUser'),
+	        core_1.Input('reportedUser'), 
 	        __metadata('design:type', String)
 	    ], ReportComponent.prototype, "reportedUser", void 0);
 	    ReportComponent = __decorate([
@@ -3305,14 +3305,14 @@ webpackJsonp([2],[
 	            directives: [
 	                common_1.FORM_DIRECTIVES, private_chat_1.PrivateChatComponent
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof report_1.ReportService !== 'undefined' && report_1.ReportService) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object])
 	    ], ReportComponent);
 	    return ReportComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.ReportComponent = ReportComponent;
-
+	
 
 /***/ },
 /* 291 */
@@ -3460,14 +3460,14 @@ webpackJsonp([2],[
 	            directives: [router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, tag_1.listTagComponent, private_chat_1.PrivateChatComponent],
 	            providers: [article_1.ArticleService, ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
 	    ], RequestCategoryComponent);
 	    return RequestCategoryComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.RequestCategoryComponent = RequestCategoryComponent;
-
+	
 
 /***/ },
 /* 292 */
@@ -3637,14 +3637,14 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES,
 	                report_1.ReportComponent
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
 	    ], UserProfileBarComponent);
 	    return UserProfileBarComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.UserProfileBarComponent = UserProfileBarComponent;
-
+	
 
 /***/ },
 /* 293 */
@@ -3710,14 +3710,14 @@ webpackJsonp([2],[
 	        return Observable_1.Observable.throw(error.json().error || 'Server error');
 	    };
 	    OfferService = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
 	    ], OfferService);
 	    return OfferService;
 	    var _a;
 	}());
 	exports.OfferService = OfferService;
-
+	
 
 /***/ },
 /* 294 */,
@@ -4459,76 +4459,76 @@ webpackJsonp([2],[
 	        this.sortFunction = new core_1.EventEmitter();
 	    }
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Column.prototype, "field", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Column.prototype, "header", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Column.prototype, "footer", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Column.prototype, "sortable", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Column.prototype, "editable", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Column.prototype, "filter", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Column.prototype, "filterMatchMode", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Column.prototype, "rowspan", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Column.prototype, "colspan", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Column.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Column.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Column.prototype, "hidden", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Column.prototype, "expander", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Column.prototype, "sortFunction", void 0);
 	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef),
+	        core_1.ContentChild(core_1.TemplateRef), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], Column.prototype, "template", void 0);
 	    Column = __decorate([
 	        core_1.Component({
 	            selector: 'p-column',
 	            template: ""
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], Column);
 	    return Column;
 	}());
 	exports.Column = Column;
-
+	
 
 /***/ },
 /* 328 */,
@@ -4680,13 +4680,13 @@ webpackJsonp([2],[
 	                tag_list_control_1.TagListCtlComponent,
 	                article_list_clt_1.ArtListCtlComponent
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], AdminComponent);
 	    return AdminComponent;
 	}());
 	exports.AdminComponent = AdminComponent;
-
+	
 
 /***/ },
 /* 424 */
@@ -4771,14 +4771,14 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/back-end/article/templates/article-list.html',
 	            directives: [router_1.ROUTER_DIRECTIVES, primeng_1.Paginator, common_1.FORM_DIRECTIVES, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.Footer, private_chat_1.PrivateChatComponent],
 	            providers: [article_1.ArticleService, pager_1.PagerService]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof pager_1.PagerService !== 'undefined' && pager_1.PagerService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
 	    ], ArtListCtlComponent);
 	    return ArtListCtlComponent;
 	    var _a, _b, _c;
 	}());
 	exports.ArtListCtlComponent = ArtListCtlComponent;
-
+	
 
 /***/ },
 /* 425 */
@@ -4893,7 +4893,7 @@ webpackJsonp([2],[
 	        });
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', (typeof (_a = typeof knowledge_1.Knowledge !== 'undefined' && knowledge_1.Knowledge) === 'function' && _a) || Object)
 	    ], KnowledgeListComponent.prototype, "knowledge", void 0);
 	    KnowledgeListComponent = __decorate([
@@ -4906,14 +4906,14 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, primeng_2.TreeTable, primeng_3.Dialog, private_chat_1.PrivateChatComponent],
 	            providers: [knowledge_2.KnowledgeService, ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_b = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _b) || Object, (typeof (_c = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_2.KnowledgeService !== 'undefined' && knowledge_2.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _e) || Object])
 	    ], KnowledgeListComponent);
 	    return KnowledgeListComponent;
 	    var _a, _b, _c, _d, _e;
 	}());
 	exports.KnowledgeListComponent = KnowledgeListComponent;
-
+	
 
 /***/ },
 /* 426 */
@@ -5010,14 +5010,14 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/back-end/report/templates/reports-list.html',
 	            directives: [message_1.MessageComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, private_chat_1.PrivateChatComponent],
 	            providers: [report_1.ReportService, chat_1.ChatService]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof report_1.ReportService !== 'undefined' && report_1.ReportService) === 'function' && _b) || Object, (typeof (_c = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
 	    ], ReportListComponent);
 	    return ReportListComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.ReportListComponent = ReportListComponent;
-
+	
 
 /***/ },
 /* 427 */
@@ -5110,14 +5110,14 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
 	            directives: [private_chat_1.PrivateChatComponent, request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
 	            providers: [requests_1.RequestService, pager_1.PagerService]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object, (typeof (_c = typeof pager_1.PagerService !== 'undefined' && pager_1.PagerService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
 	    ], RequestListComponent);
 	    return RequestListComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.RequestListComponent = RequestListComponent;
-
+	
 
 /***/ },
 /* 428 */
@@ -5195,14 +5195,14 @@ webpackJsonp([2],[
 	            directives: [private_chat_1.PrivateChatComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.Paginator, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.MultiSelect, primeng_2.Footer, primeng_2.InputText],
 	            providers: [tag_1.TagService, ng2_pagination_1.PaginationService, pager_1.PagerService],
 	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof pager_1.PagerService !== 'undefined' && pager_1.PagerService) === 'function' && _c) || Object])
 	    ], TagListCtlComponent);
 	    return TagListCtlComponent;
 	    var _a, _b, _c;
 	}());
 	exports.TagListCtlComponent = TagListCtlComponent;
-
+	
 
 /***/ },
 /* 429 */
@@ -5297,14 +5297,14 @@ webpackJsonp([2],[
 	            directives: [router_1.ROUTER_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, private_chat_1.PrivateChatComponent],
 	            providers: [users_1.UserService, pager_1.PagerService],
 	        }),
-	        __param(0, core_1.Inject(common_1.FormBuilder)),
+	        __param(0, core_1.Inject(common_1.FormBuilder)), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
 	    ], UserListComponent);
 	    return UserListComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.UserListComponent = UserListComponent;
-
+	
 
 /***/ },
 /* 430 */
@@ -5337,7 +5337,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'ck-editor',
 	            template: ""
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
 	    ], CKEditor);
 	    return CKEditor;
@@ -5510,14 +5510,14 @@ webpackJsonp([2],[
 	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
 	            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
 	            providers: [article_1.ArticleService, tag_1.TagService]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
 	    ], CreateArticleComponent);
 	    return CreateArticleComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.CreateArticleComponent = CreateArticleComponent;
-
+	
 
 /***/ },
 /* 431 */
@@ -5632,8 +5632,12 @@ webpackJsonp([2],[
 	        }
 	    };
 	    detailArticleComponent.prototype.ngAfterViewChecked = function () {
+	        var _this = this;
 	        if (this.article != undefined) {
-	            $('.bodyArt').html(this.article.content);
+	            $('.bodyArt').html(function () {
+	                return _this.article.content;
+	            });
+	            $('.bodyArt img').css('max-width', '900px');
 	        }
 	    };
 	    detailArticleComponent.prototype.editArt = function (id) {
@@ -5697,14 +5701,14 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES, comment_1.commentComponent, tag_1.listTagComponent, private_chat_1.PrivateChatComponent
 	            ],
 	            providers: [article_1.ArticleService]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object, (typeof (_d = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _d) || Object, (typeof (_e = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _e) || Object])
 	    ], detailArticleComponent);
 	    return detailArticleComponent;
 	    var _a, _b, _c, _d, _e;
 	}());
 	exports.detailArticleComponent = detailArticleComponent;
-
+	
 
 /***/ },
 /* 432 */
@@ -5823,14 +5827,14 @@ webpackJsonp([2],[
 	                tag_1.listTagComponent
 	            ],
 	            providers: [article_1.ArticleService]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object])
 	    ], listArticleComponent);
 	    return listArticleComponent;
 	    var _a, _b, _c;
 	}());
 	exports.listArticleComponent = listArticleComponent;
-
+	
 
 /***/ },
 /* 433 */
@@ -5866,13 +5870,13 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES,
 	                private_chat_1.PrivateChatComponent
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], HomeComponent);
 	    return HomeComponent;
 	}());
 	exports.HomeComponent = HomeComponent;
-
+	
 
 /***/ },
 /* 434 */
@@ -6054,14 +6058,14 @@ webpackJsonp([2],[
 	            ],
 	            providers: [article_1.ArticleService],
 	            styles: ["\n      button#submitReview {\n          margin-top: 50px;\n      }\n    "]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _c) || Object, (typeof (_d = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _d) || Object])
 	    ], KSpaceInfoComponent);
 	    return KSpaceInfoComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.KSpaceInfoComponent = KSpaceInfoComponent;
-
+	
 
 /***/ },
 /* 435 */
@@ -6112,14 +6116,14 @@ webpackJsonp([2],[
 	                private_chat_1.PrivateChatComponent
 	            ],
 	            styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace-list.css']
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
 	    ], KSpaceListComponent);
 	    return KSpaceListComponent;
 	    var _a, _b;
 	}());
 	exports.KSpaceListComponent = KSpaceListComponent;
-
+	
 
 /***/ },
 /* 436 */
@@ -6291,14 +6295,14 @@ webpackJsonp([2],[
 	            providers: [
 	                rtc_services_1.WebRCTService
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _c) || Object, (typeof (_d = typeof rtc_services_1.WebRCTService !== 'undefined' && rtc_services_1.WebRCTService) === 'function' && _d) || Object])
 	    ], KSpaceComponent);
 	    return KSpaceComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.KSpaceComponent = KSpaceComponent;
-
+	
 
 /***/ },
 /* 437 */
@@ -6544,14 +6548,14 @@ webpackJsonp([2],[
 	                private_chat_1.PrivateChatComponent,
 	                tag_1.listTagComponent
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object])
 	    ], RequestDetailClientComponent);
 	    return RequestDetailClientComponent;
 	    var _a, _b, _c, _d, _e, _f;
 	}());
 	exports.RequestDetailClientComponent = RequestDetailClientComponent;
-
+	
 
 /***/ },
 /* 438 */
@@ -6704,14 +6708,14 @@ webpackJsonp([2],[
 	                private_chat_1.PrivateChatComponent
 	            ],
 	            providers: [tag_1.TagService]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object, (typeof (_d = typeof router_2.Router !== 'undefined' && router_2.Router) === 'function' && _d) || Object, (typeof (_e = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _e) || Object])
 	    ], RequestListClientComponent);
 	    return RequestListClientComponent;
 	    var _a, _b, _c, _d, _e;
 	}());
 	exports.RequestListClientComponent = RequestListClientComponent;
-
+	
 
 /***/ },
 /* 439 */
@@ -6814,14 +6818,14 @@ webpackJsonp([2],[
 	            ],
 	            providers: [tag_1.TagService, ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _c) || Object])
 	    ], displayArtByTagComponent);
 	    return displayArtByTagComponent;
 	    var _a, _b, _c;
 	}());
 	exports.displayArtByTagComponent = displayArtByTagComponent;
-
+	
 
 /***/ },
 /* 440 */
@@ -6871,14 +6875,14 @@ webpackJsonp([2],[
 	            directives: [router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, private_chat_1.PrivateChatComponent],
 	            providers: [users_1.UserService, ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object])
 	    ], userSearchRsComponent);
 	    return userSearchRsComponent;
 	    var _a, _b, _c;
 	}());
 	exports.userSearchRsComponent = userSearchRsComponent;
-
+	
 
 /***/ },
 /* 441 */
@@ -6981,14 +6985,14 @@ webpackJsonp([2],[
 	                user_profile_bar_1.UserProfileBarComponent,
 	                private_chat_1.PrivateChatComponent
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object])
 	    ], FriendListComponent);
 	    return FriendListComponent;
 	    var _a, _b, _c;
 	}());
 	exports.FriendListComponent = FriendListComponent;
-
+	
 
 /***/ },
 /* 442 */
@@ -7114,14 +7118,14 @@ webpackJsonp([2],[
 	            styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
 	            directives: [primeng_1.AutoComplete, private_chat_1.PrivateChatComponent],
 	            providers: [tag_1.TagService]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object, (typeof (_e = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _e) || Object])
 	    ], UpdateUserComponent);
 	    return UpdateUserComponent;
 	    var _a, _b, _c, _d, _e;
 	}());
 	exports.UpdateUserComponent = UpdateUserComponent;
-
+	
 
 /***/ },
 /* 443 */
@@ -7311,14 +7315,14 @@ webpackJsonp([2],[
 	            ],
 	            providers: [ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _d) || Object, (typeof (_e = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _e) || Object, (typeof (_f = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _f) || Object])
 	    ], UserProfileComponent);
 	    return UserProfileComponent;
 	    var _a, _b, _c, _d, _e, _f;
 	}());
 	exports.UserProfileComponent = UserProfileComponent;
-
+	
 
 /***/ },
 /* 444 */
@@ -7401,13 +7405,13 @@ webpackJsonp([2],[
 	                rs_search_user_1.userSearchRsComponent,
 	                user_info_update_1.UpdateUserComponent
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], KshareComponent);
 	    return KshareComponent;
 	}());
 	exports.KshareComponent = KshareComponent;
-
+	
 
 /***/ },
 /* 445 */
@@ -7554,14 +7558,14 @@ webpackJsonp([2],[
 	            styleUrls: ['client/dev/app/components/shared/styles/header.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _e) || Object])
 	    ], HeaderComponent);
 	    return HeaderComponent;
 	    var _a, _b, _c, _d, _e;
 	}());
 	exports.HeaderComponent = HeaderComponent;
-
+	
 
 /***/ },
 /* 446 */
@@ -7608,7 +7612,7 @@ webpackJsonp([2],[
 	        return false;
 	    };
 	    AdminAuthGuard = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object])
 	    ], AdminAuthGuard);
 	    return AdminAuthGuard;
@@ -7632,7 +7636,7 @@ webpackJsonp([2],[
 	        return false;
 	    };
 	    isLogin = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object])
 	    ], isLogin);
 	    return isLogin;
@@ -7653,14 +7657,14 @@ webpackJsonp([2],[
 	        return false;
 	    };
 	    Guest = __decorate([
-	        core_1.Injectable(),
+	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object, (typeof (_c = typeof common_1.Location !== 'undefined' && common_1.Location) === 'function' && _c) || Object])
 	    ], Guest);
 	    return Guest;
 	    var _a, _b, _c;
 	}());
 	exports.Guest = Guest;
-
+	
 
 /***/ },
 /* 447 */
@@ -8599,36 +8603,36 @@ webpackJsonp([2],[
 	        this.tabs.push(tab);
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Accordion.prototype, "multiple", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Accordion.prototype, "onClose", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Accordion.prototype, "onOpen", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Accordion.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Accordion.prototype, "styleClass", void 0);
 	    Accordion = __decorate([
 	        core_1.Component({
 	            selector: 'p-accordion',
 	            template: "\n        <div [ngClass]=\"'ui-accordion ui-widget ui-helper-reset'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ng-content></ng-content>\n        </div>\n    ",
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef])
 	    ], Accordion);
 	    return Accordion;
 	}());
 	exports.Accordion = Accordion;
-
+	
 
 /***/ },
 /* 537 */
@@ -8657,28 +8661,28 @@ webpackJsonp([2],[
 	        });
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], ColumnTemplateLoader.prototype, "column", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], ColumnTemplateLoader.prototype, "rowData", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], ColumnTemplateLoader.prototype, "rowIndex", void 0);
 	    ColumnTemplateLoader = __decorate([
 	        core_1.Component({
 	            selector: 'p-columnTemplateLoader',
 	            template: ""
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ViewContainerRef])
 	    ], ColumnTemplateLoader);
 	    return ColumnTemplateLoader;
 	}());
 	exports.ColumnTemplateLoader = ColumnTemplateLoader;
-
+	
 
 /***/ },
 /* 538 */
@@ -8700,36 +8704,36 @@ webpackJsonp([2],[
 	        this.onClick = new core_1.EventEmitter();
 	    }
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SplitButtonItem.prototype, "icon", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SplitButtonItem.prototype, "label", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SplitButtonItem.prototype, "url", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], SplitButtonItem.prototype, "routerLink", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], SplitButtonItem.prototype, "onClick", void 0);
 	    SplitButtonItem = __decorate([
 	        core_1.Component({
 	            selector: 'p-splitButtonItem',
 	            template: "\n        \n    "
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], SplitButtonItem);
 	    return SplitButtonItem;
 	}());
 	exports.SplitButtonItem = SplitButtonItem;
-
+	
 
 /***/ },
 /* 539 */
@@ -8750,48 +8754,48 @@ webpackJsonp([2],[
 	    function TabPanel() {
 	    }
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], TabPanel.prototype, "header", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], TabPanel.prototype, "selected", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], TabPanel.prototype, "disabled", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], TabPanel.prototype, "closable", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], TabPanel.prototype, "headerStyle", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], TabPanel.prototype, "headerStyleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], TabPanel.prototype, "leftIcon", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], TabPanel.prototype, "rightIcon", void 0);
 	    TabPanel = __decorate([
 	        core_1.Component({
 	            selector: 'p-tabPanel',
 	            template: "\n        <div class=\"ui-tabview-panel ui-widget-content\" [style.display]=\"selected ? 'block' : 'none'\" *ngIf=\"!closed\">\n            <ng-content></ng-content>\n        </div>\n    ",
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], TabPanel);
 	    return TabPanel;
 	}());
 	exports.TabPanel = TabPanel;
-
+	
 
 /***/ },
 /* 540 */
@@ -8875,47 +8879,47 @@ webpackJsonp([2],[
 	        return this.selectionMode && this.selectionMode == 'multiple';
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Tree.prototype, "value", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Tree.prototype, "selectionMode", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Tree.prototype, "selection", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Tree.prototype, "selectionChange", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Tree.prototype, "onNodeSelect", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Tree.prototype, "onNodeUnselect", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Tree.prototype, "onNodeExpand", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Tree.prototype, "onNodeCollapse", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Tree.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Tree.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef),
+	        core_1.ContentChild(core_1.TemplateRef), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], Tree.prototype, "template", void 0);
 	    Tree = __decorate([
@@ -8923,13 +8927,13 @@ webpackJsonp([2],[
 	            selector: 'p-tree',
 	            template: "\n        <div [ngClass]=\"'ui-tree ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul class=\"ui-tree-container\">\n                <p-treeNode *ngFor=\"let node of value\" [node]=\"node\"></p-treeNode>\n            </ul>\n        </div>\n    ",
 	            directives: [uitreenode_1.UITreeNode]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], Tree);
 	    return Tree;
 	}());
 	exports.Tree = Tree;
-
+	
 
 /***/ },
 /* 541 */
@@ -9027,55 +9031,55 @@ webpackJsonp([2],[
 	        return false;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], TreeTable.prototype, "value", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], TreeTable.prototype, "selectionMode", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], TreeTable.prototype, "selection", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], TreeTable.prototype, "selectionChange", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], TreeTable.prototype, "onNodeSelect", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], TreeTable.prototype, "onNodeUnselect", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], TreeTable.prototype, "onNodeExpand", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], TreeTable.prototype, "onNodeCollapse", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], TreeTable.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], TreeTable.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.ContentChild(common_1.Header),
+	        core_1.ContentChild(common_1.Header), 
 	        __metadata('design:type', Object)
 	    ], TreeTable.prototype, "header", void 0);
 	    __decorate([
-	        core_1.ContentChild(common_2.Footer),
+	        core_1.ContentChild(common_2.Footer), 
 	        __metadata('design:type', Object)
 	    ], TreeTable.prototype, "footer", void 0);
 	    __decorate([
-	        core_1.ContentChildren(column_1.Column),
+	        core_1.ContentChildren(column_1.Column), 
 	        __metadata('design:type', core_1.QueryList)
 	    ], TreeTable.prototype, "columns", void 0);
 	    TreeTable = __decorate([
@@ -9083,13 +9087,13 @@ webpackJsonp([2],[
 	            selector: 'p-treeTable',
 	            template: "\n        <div [ngClass]=\"'ui-treetable ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-treetable-header ui-widget-header\" *ngIf=\"header\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <div class=\"ui-treetable-tablewrapper\">\n                <table class=\"ui-widget-content\" style=\"border:0 0 1px 0px\">\n                    <thead>\n                        <tr class=\"ui-state-default\">\n                            <th #headerCell *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" \n                                [ngClass]=\"'ui-state-default ui-unselectable-text'\">\n                                <span class=\"ui-column-title\">{{col.header}}</span>\n                            </th>\n                        </tr>\n                    </thead>\n                    <tfoot *ngIf=\"hasFooter()\">\n                        <tr>\n                            <td *ngFor=\"let col of columns\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\" [ngClass]=\"{'ui-state-default':true}\">{{col.footer}}</td>\n                        </tr>\n                    </tfoot>\n                    <tbody pTreeRow *ngFor=\"let node of value\" [node]=\"node\" [level]=\"0\"></tbody>\n                </table>\n            </div>\n            <div class=\"ui-treetable-footer ui-widget-header\" *ngIf=\"footer\">\n                <ng-content select=\"footer\"></ng-content>\n            </div>\n        </div>\n    ",
 	            directives: [uitreerow_1.UITreeRow]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], TreeTable);
 	    return TreeTable;
 	}());
 	exports.TreeTable = TreeTable;
-
+	
 
 /***/ },
 /* 542 */,
@@ -9269,13 +9273,13 @@ webpackJsonp([2],[
 	                article_1.ArticleService,
 	                chat_1.ChatService
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], AppComponent);
 	    return AppComponent;
 	}());
 	exports.AppComponent = AppComponent;
-
+	
 
 /***/ },
 /* 655 */
@@ -9323,11 +9327,11 @@ webpackJsonp([2],[
 	        });
 	    };
 	    __decorate([
-	        core_1.Input('kId'),
+	        core_1.Input('kId'), 
 	        __metadata('design:type', String)
 	    ], CreateSubCategoryComponent.prototype, "kId", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], CreateSubCategoryComponent.prototype, "knowledges", void 0);
 	    CreateSubCategoryComponent = __decorate([
@@ -9335,14 +9339,14 @@ webpackJsonp([2],[
 	            selector: 'sub-create',
 	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/sub-knowledge-create.html',
 	            directives: [common_1.FORM_DIRECTIVES, primeng_1.Dialog, private_chat_1.PrivateChatComponent]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object])
 	    ], CreateSubCategoryComponent);
 	    return CreateSubCategoryComponent;
 	    var _a, _b;
 	}());
 	exports.CreateSubCategoryComponent = CreateSubCategoryComponent;
-
+	
 
 /***/ },
 /* 656 */
@@ -9397,7 +9401,7 @@ webpackJsonp([2],[
 	        $('#messageModal').closeModal();
 	    };
 	    __decorate([
-	        core_1.Input('receiver'),
+	        core_1.Input('receiver'), 
 	        __metadata('design:type', String)
 	    ], MessageComponent.prototype, "receiver", void 0);
 	    MessageComponent = __decorate([
@@ -9407,14 +9411,14 @@ webpackJsonp([2],[
 	            directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES],
 	            providers: [report_1.ReportService],
 	            pipes: [filter_1.StringFilterPipe]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof report_1.ReportService !== 'undefined' && report_1.ReportService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _d) || Object, (typeof (_e = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _e) || Object])
 	    ], MessageComponent);
 	    return MessageComponent;
 	    var _a, _b, _c, _d, _e;
 	}());
 	exports.MessageComponent = MessageComponent;
-
+	
 
 /***/ },
 /* 657 */
@@ -9437,7 +9441,7 @@ webpackJsonp([2],[
 	    function SidebarComponent() {
 	    }
 	    __decorate([
-	        core_2.Input(),
+	        core_2.Input(), 
 	        __metadata('design:type', String)
 	    ], SidebarComponent.prototype, "pageTitle", void 0);
 	    SidebarComponent = __decorate([
@@ -9446,13 +9450,13 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/back-end/shared/templates/side-bar.html',
 	            styleUrls: ['client/dev/asserts/css/admin.css'],
 	            directives: [router_1.ROUTER_DIRECTIVES]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], SidebarComponent);
 	    return SidebarComponent;
 	}());
 	exports.SidebarComponent = SidebarComponent;
-
+	
 
 /***/ },
 /* 658 */
@@ -9511,15 +9515,15 @@ webpackJsonp([2],[
 	        this.isEditing = true;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], commentComponent.prototype, "comment", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], commentComponent.prototype, "author", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', (typeof (_a = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _a) || Object)
 	    ], commentComponent.prototype, "sendDataToP", void 0);
 	    commentComponent = __decorate([
@@ -9531,14 +9535,14 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES
 	            ],
 	            providers: [article_1.ArticleService]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object, (typeof (_d = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _d) || Object])
 	    ], commentComponent);
 	    return commentComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.commentComponent = commentComponent;
-
+	
 
 /***/ },
 /* 659 */
@@ -9590,7 +9594,7 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'ck-editor',
 	            template: ""
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object, (typeof (_b = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
 	    ], CKEditor);
 	    return CKEditor;
@@ -9784,14 +9788,14 @@ webpackJsonp([2],[
 	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
 	            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
 	            providers: [article_1.ArticleService, tag_1.TagService]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
 	    ], EditArticleComponent);
 	    return EditArticleComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.EditArticleComponent = EditArticleComponent;
-
+	
 
 /***/ },
 /* 660 */
@@ -10091,11 +10095,11 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], ChalkBoardComponent.prototype, "id", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], ChalkBoardComponent.prototype, "lecturer", void 0);
 	    ChalkBoardComponent = __decorate([
@@ -10103,13 +10107,13 @@ webpackJsonp([2],[
 	            selector: 'chalkboard',
 	            template: "\n  <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let board of boards\">\n          <a *ngIf=\"isLect\" (click)=\"changeBoard(board.json, board.boardNumber)\">\n             B\u1EA3ng {{board.boardNumber}}\n          </a></li>\n        </ul>\n      </div>\n    </div>\n    <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n    <div id=\"draw-tools\">\n        <p id=\"new-page\"  (click)=\"openModal()\"  class=\"tool-btn modal-trigger\">\n            <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n        <select id=\"color-picker\" class=\"tool-btn\">\n            <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n        </select>\n        <hr>\n        <select id=\"brush-size\" class=\"tool-btn\">\n            <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n        </select>\n        <hr>\n        <p id=\"eraser\">\n            <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n    </div>\n      <div class=\"wrapper-chalkboard\">\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n      </div>\n      <!--Modal nh\u1EADp th\u00F4ng tin-->\n      <div id=\"modal1\" class=\"modal modal-fixed-footer\">\n        <div class=\"modal-content\">\n          <h4>Nh\u1EADp th\u00F4ng tin</h4>\n          <form>\n            <div class=\"row\">\n              <div class=\"input-field col s12\">\n                <input class=\"form-control\" type=\"text\" required=\"required\" id=\"title\" name=\"title\"/>\n                <label for=\"title\">Ti\u00EAu \u0111\u1EC1</label>\n              </div>\n            </div>\n            <div class=\"row\">\n              <button type=\"submit\" class=\"btn-floating btn-large modal-close waves-effect waves-light blue\" (click)=\"newPage()\"><i class=\"material-icons\">done</i></button>\n            </div>\n          </form>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"modal-action modal-close waves-effect waves-green btn-flat \">Tho\u00E1t</a>\n        </div>\n      </div>\n    ",
 	            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], ChalkBoardComponent);
 	    return ChalkBoardComponent;
 	}());
 	exports.ChalkBoardComponent = ChalkBoardComponent;
-
+	
 
 /***/ },
 /* 661 */
@@ -10181,7 +10185,7 @@ webpackJsonp([2],[
 	    return WebRCTService;
 	}());
 	exports.WebRCTService = WebRCTService;
-
+	
 
 /***/ },
 /* 662 */
@@ -10332,14 +10336,14 @@ webpackJsonp([2],[
 	                private_chat_1.PrivateChatComponent,
 	                tag_1.listTagComponent
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
 	    ], NewsFeedComponent);
 	    return NewsFeedComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.NewsFeedComponent = NewsFeedComponent;
-
+	
 
 /***/ },
 /* 663 */
@@ -10397,11 +10401,11 @@ webpackJsonp([2],[
 	        });
 	    };
 	    __decorate([
-	        core_1.Input('rid'),
+	        core_1.Input('rid'), 
 	        __metadata('design:type', String)
 	    ], CreateOfferComponent.prototype, "rid", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', (typeof (_a = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _a) || Object)
 	    ], CreateOfferComponent.prototype, "sendDataToP", void 0);
 	    CreateOfferComponent = __decorate([
@@ -10409,14 +10413,14 @@ webpackJsonp([2],[
 	            selector: 'offer-create',
 	            templateUrl: 'client/dev/app/components/front-end/offer/templates/offer-create.html',
 	            directives: [common_1.FORM_DIRECTIVES, private_chat_1.PrivateChatComponent]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_b = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _b) || Object, (typeof (_c = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object, (typeof (_e = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _e) || Object, (typeof (_f = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _f) || Object])
 	    ], CreateOfferComponent);
 	    return CreateOfferComponent;
 	    var _a, _b, _c, _d, _e, _f;
 	}());
 	exports.CreateOfferComponent = CreateOfferComponent;
-
+	
 
 /***/ },
 /* 664 */
@@ -10444,13 +10448,13 @@ webpackJsonp([2],[
 	            selector: 'footer',
 	            templateUrl: 'client/dev/app/components/front-end/shared/templates/footer.html',
 	            styleUrls: ['client/dev/app/components/front-end/shared/styles/header.css']
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], FooterComponent);
 	    return FooterComponent;
 	}());
 	exports.FooterComponent = FooterComponent;
-
+	
 
 /***/ },
 /* 665 */
@@ -10518,14 +10522,14 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/shared/templates/friend-list.html',
 	            styleUrls: ['client/dev/app/components/front-end/shared/styles/friend-list.css'],
 	            directives: []
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object])
 	    ], FriendListComponent);
 	    return FriendListComponent;
 	    var _a;
 	}());
 	exports.FriendListComponent = FriendListComponent;
-
+	
 
 /***/ },
 /* 666 */
@@ -10589,14 +10593,14 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/shared/templates/side-bar.html',
 	            styleUrls: ['client/dev/app/components/front-end/shared/styles/side-bar.css'],
 	            directives: [router_1.ROUTER_DIRECTIVES]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_2.ActivatedRoute !== 'undefined' && router_2.ActivatedRoute) === 'function' && _c) || Object])
 	    ], SideBarComponent);
 	    return SideBarComponent;
 	    var _a, _b, _c;
 	}());
 	exports.SideBarComponent = SideBarComponent;
-
+	
 
 /***/ },
 /* 667 */
@@ -10683,14 +10687,14 @@ webpackJsonp([2],[
 	            ]
 	        }),
 	        __param(0, core_1.Inject(common_1.FormBuilder)),
-	        __param(1, core_1.Inject(auth_1.AuthService)),
+	        __param(1, core_1.Inject(auth_1.AuthService)), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object, (typeof (_c = typeof common_2.Location !== 'undefined' && common_2.Location) === 'function' && _c) || Object])
 	    ], LoginComponent);
 	    return LoginComponent;
 	    var _a, _b, _c;
 	}());
 	exports.LoginComponent = LoginComponent;
-
+	
 
 /***/ },
 /* 668 */
@@ -10830,14 +10834,14 @@ webpackJsonp([2],[
 	            styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
 	            directives: [primeng_1.AutoComplete, private_chat_1.PrivateChatComponent],
 	            providers: [tag_1.TagService]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object, (typeof (_e = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _e) || Object])
 	    ], RegisterInfoComponent);
 	    return RegisterInfoComponent;
 	    var _a, _b, _c, _d, _e;
 	}());
 	exports.RegisterInfoComponent = RegisterInfoComponent;
-
+	
 
 /***/ },
 /* 669 */
@@ -10948,14 +10952,14 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/user/register/templates/register.html',
 	            styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
 	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof common_2.Location !== 'undefined' && common_2.Location) === 'function' && _d) || Object])
 	    ], RegisterComponent);
 	    return RegisterComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.RegisterComponent = RegisterComponent;
-
+	
 
 /***/ },
 /* 670 */
@@ -11046,14 +11050,14 @@ webpackJsonp([2],[
 	                common_1.FORM_DIRECTIVES,
 	                router_1.ROUTER_DIRECTIVES
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
 	    ], NewPasswordComponent);
 	    return NewPasswordComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.NewPasswordComponent = NewPasswordComponent;
-
+	
 
 /***/ },
 /* 671 */
@@ -11101,14 +11105,14 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES,
 	                common_1.FORM_DIRECTIVES
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object])
 	    ], ResetPasswordComponent);
 	    return ResetPasswordComponent;
 	    var _a;
 	}());
 	exports.ResetPasswordComponent = ResetPasswordComponent;
-
+	
 
 /***/ },
 /* 672 */
@@ -11143,7 +11147,7 @@ webpackJsonp([2],[
 	    ArticleListComponent.prototype.ngOnInit = function () {
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], ArticleListComponent.prototype, "article", void 0);
 	    ArticleListComponent = __decorate([
@@ -11155,14 +11159,14 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES, tag_1.listTagComponent
 	            ],
 	            providers: [article_1.ArticleService]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object])
 	    ], ArticleListComponent);
 	    return ArticleListComponent;
 	    var _a, _b;
 	}());
 	exports.ArticleListComponent = ArticleListComponent;
-
+	
 
 /***/ },
 /* 673 */
@@ -11240,11 +11244,11 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input('friendName'),
+	        core_1.Input('friendName'), 
 	        __metadata('design:type', String)
 	    ], FriendRecordComponent.prototype, "friendName", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', (typeof (_a = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _a) || Object)
 	    ], FriendRecordComponent.prototype, "sendDataToP", void 0);
 	    FriendRecordComponent = __decorate([
@@ -11255,14 +11259,14 @@ webpackJsonp([2],[
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _e) || Object])
 	    ], FriendRecordComponent);
 	    return FriendRecordComponent;
 	    var _a, _b, _c, _d, _e;
 	}());
 	exports.FriendRecordComponent = FriendRecordComponent;
-
+	
 
 /***/ },
 /* 674 */
@@ -11293,7 +11297,7 @@ webpackJsonp([2],[
 	    KspaceListComponent.prototype.ngOnInit = function () {
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], KspaceListComponent.prototype, "kspace", void 0);
 	    KspaceListComponent = __decorate([
@@ -11304,14 +11308,14 @@ webpackJsonp([2],[
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES, tag_1.listTagComponent
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object])
 	    ], KspaceListComponent);
 	    return KspaceListComponent;
 	    var _a, _b;
 	}());
 	exports.KspaceListComponent = KspaceListComponent;
-
+	
 
 /***/ },
 /* 675 */
@@ -11399,15 +11403,15 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input('requestUser'),
+	        core_1.Input('requestUser'), 
 	        __metadata('design:type', String)
 	    ], RequestFriendRecordComponent.prototype, "requestUser", void 0);
 	    __decorate([
-	        core_1.Input('name'),
+	        core_1.Input('name'), 
 	        __metadata('design:type', String)
 	    ], RequestFriendRecordComponent.prototype, "name", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', (typeof (_a = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _a) || Object)
 	    ], RequestFriendRecordComponent.prototype, "sendDataToP", void 0);
 	    RequestFriendRecordComponent = __decorate([
@@ -11418,14 +11422,14 @@ webpackJsonp([2],[
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _e) || Object])
 	    ], RequestFriendRecordComponent);
 	    return RequestFriendRecordComponent;
 	    var _a, _b, _c, _d, _e;
 	}());
 	exports.RequestFriendRecordComponent = RequestFriendRecordComponent;
-
+	
 
 /***/ },
 /* 676 */
@@ -11475,27 +11479,27 @@ webpackJsonp([2],[
 	        });
 	    };
 	    __decorate([
-	        core_1.Input('title'),
+	        core_1.Input('title'), 
 	        __metadata('design:type', String)
 	    ], RequestRecordComponent.prototype, "title", void 0);
 	    __decorate([
-	        core_1.Input('description'),
+	        core_1.Input('description'), 
 	        __metadata('design:type', String)
 	    ], RequestRecordComponent.prototype, "description", void 0);
 	    __decorate([
-	        core_1.Input('createdAt'),
+	        core_1.Input('createdAt'), 
 	        __metadata('design:type', String)
 	    ], RequestRecordComponent.prototype, "createdAt", void 0);
 	    __decorate([
-	        core_1.Input('knowledgeId'),
+	        core_1.Input('knowledgeId'), 
 	        __metadata('design:type', String)
 	    ], RequestRecordComponent.prototype, "knowledgeId", void 0);
 	    __decorate([
-	        core_1.Input('status'),
+	        core_1.Input('status'), 
 	        __metadata('design:type', String)
 	    ], RequestRecordComponent.prototype, "status", void 0);
 	    __decorate([
-	        core_1.Input('requestId'),
+	        core_1.Input('requestId'), 
 	        __metadata('design:type', String)
 	    ], RequestRecordComponent.prototype, "requestId", void 0);
 	    RequestRecordComponent = __decorate([
@@ -11506,14 +11510,14 @@ webpackJsonp([2],[
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES
 	            ]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object])
 	    ], RequestRecordComponent);
 	    return RequestRecordComponent;
 	    var _a, _b, _c, _d;
 	}());
 	exports.RequestRecordComponent = RequestRecordComponent;
-
+	
 
 /***/ },
 /* 677 */
@@ -11555,14 +11559,14 @@ webpackJsonp([2],[
 	            styleUrls: ['client/dev/app/components/shared/styles/404.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object])
 	    ], errorPageComponent);
 	    return errorPageComponent;
 	    var _a, _b, _c, _d, _e, _f;
 	}());
 	exports.errorPageComponent = errorPageComponent;
-
+	
 
 /***/ },
 /* 678 */
@@ -11586,20 +11590,20 @@ webpackJsonp([2],[
 	    function RatingPoint() {
 	    }
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], RatingPoint.prototype, "rate", void 0);
 	    RatingPoint = __decorate([
 	        core_1.Component({
 	            selector: "rating-point",
 	            template: "\n      <div *ngIf=\"!rate\">\n        <div  class=\"ui massive heart rating\">\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n        </div>\n      </div>\n      <div *ngIf=\"rate && rate <= 1\">\n        <div  class=\"ui massive heart rating\">\n          <i class=\"icon active\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n        </div>\n      </div>\n      <div *ngIf=\"rate > 1 && rate <= 2\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rate > 2 && rate <= 3\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rate > 3 && rate <= 4\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rate > 4 && rate <= 5\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n          </div>\n      </div>\n  "
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], RatingPoint);
 	    return RatingPoint;
 	}());
 	exports.RatingPoint = RatingPoint;
-
+	
 
 /***/ },
 /* 679 */
@@ -11688,7 +11692,7 @@ webpackJsonp([2],[
 	        ]
 	    }
 	];
-
+	
 
 /***/ },
 /* 681 */
@@ -11706,7 +11710,7 @@ webpackJsonp([2],[
 	    router_1.provideRouter(exports.routes),
 	    kshare_routes_ts_1.authProviders
 	];
-
+	
 
 /***/ },
 /* 682 */
@@ -11935,7 +11939,7 @@ webpackJsonp([2],[
 	    },
 	    {
 	        path: 'room',
-	        canActivate: auth_1.isLogin,
+	        canActivate: [auth_1.isLogin],
 	        children: [
 	            {
 	                path: ':id/:lecturer',
@@ -11949,7 +11953,7 @@ webpackJsonp([2],[
 	    }
 	];
 	exports.authProviders = [auth_1.AdminAuthGuard, auth_1.isLogin, auth_1.Guest, auth_2.AuthService];
-
+	
 
 /***/ },
 /* 683 */,
@@ -30412,7 +30416,7 @@ webpackJsonp([2],[
 	        core_1.Pipe({
 	            name: 'paginate',
 	            pure: false
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [pagination_service_1.PaginationService])
 	    ], PaginatePipe);
 	    return PaginatePipe;
@@ -30631,27 +30635,27 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], PaginationControlsCmp.prototype, "id", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], PaginationControlsCmp.prototype, "maxSize", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], PaginationControlsCmp.prototype, "directionLinks", null);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], PaginationControlsCmp.prototype, "autoHide", null);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], PaginationControlsCmp.prototype, "pageChange", void 0);
 	    __decorate([
-	        core_1.ViewChild('template'),
+	        core_1.ViewChild('template'), 
 	        __metadata('design:type', Object)
 	    ], PaginationControlsCmp.prototype, "template", void 0);
 	    PaginationControlsCmp = __decorate([
@@ -30660,7 +30664,7 @@ webpackJsonp([2],[
 	            template: template_1.DEFAULT_TEMPLATE,
 	            styles: [template_1.DEFAULT_STYLES],
 	            changeDetection: core_1.ChangeDetectionStrategy.OnPush
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [pagination_service_1.PaginationService, core_1.ChangeDetectorRef])
 	    ], PaginationControlsCmp);
 	    return PaginationControlsCmp;
@@ -30678,7 +30682,7 @@ webpackJsonp([2],[
 	 */
 	"use strict";
 	exports.DEFAULT_TEMPLATE = "\n    <div #template>\n        <ng-content></ng-content>\n    </div>\n    <ul class=\"ng2-pagination\" \n        role=\"navigation\" \n        aria-label=\"Pagination\" \n        *ngIf=\"!hasTemplate && !(autoHide && pages.length <= 1)\">\n\n        <li class=\"pagination-previous\" [class.disabled]=\"isFirstPage()\" *ngIf=\"directionLinks\"> \n            <a *ngIf=\"1 < getCurrent()\" (click)=\"previous()\" aria-label=\"Next page\">\n                Previous <span class=\"show-for-sr\">page</span>\n            </a>\n            <span *ngIf=\"isFirstPage()\">Previous <span class=\"show-for-sr\">page</span></span>\n        </li>\n\n        <li [class.current]=\"getCurrent() === page.value\" *ngFor=\"let page of pages\">\n            <a (click)=\"setCurrent(page.value)\" *ngIf=\"getCurrent() !== page.value\">\n                <span class=\"show-for-sr\">Page</span>\n                <span>{{ page.label }}</span>\n            </a>\n            <div *ngIf=\"getCurrent() === page.value\">\n                <span class=\"show-for-sr\">You're on page</span>\n                <span>{{ page.label }}</span> \n            </div>\n        </li>\n\n        <li class=\"pagination-next\" [class.disabled]=\"isLastPage()\" *ngIf=\"directionLinks\">\n            <a *ngIf=\"!isLastPage()\" (click)=\"next()\" aria-label=\"Next page\">\n                Next <span class=\"show-for-sr\">page</span>\n            </a>\n            <span *ngIf=\"isLastPage()\">Next <span class=\"show-for-sr\">page</span></span>\n        </li>\n\n    </ul>\n    ";
-	exports.DEFAULT_STYLES = "\n.ng2-pagination {\n  margin-left: 0;\n  margin-bottom: 1rem; }\n  .ng2-pagination::before, .ng2-pagination::after {\n    content: ' ';\n    display: table; }\n  .ng2-pagination::after {\n    clear: both; }\n  .ng2-pagination li {\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    -ms-user-select: none;\n    font-size: 20px;\n    margin-right: 0.0625rem;\n    border-radius: 0; }\n  .ng2-pagination li {\n    display: inline-block; }\n  .ng2-pagination a,\n  .ng2-pagination button {\n    color: #0a0a0a; \n    display: block;\n    padding: 0.1875rem 0.625rem;\n    border-radius: 0; }\n    .ng2-pagination a:hover,\n    .ng2-pagination button:hover {\n      background: #e6e6e6; }\n  .ng2-pagination .current {\n    padding: 0.1875rem 0.625rem;\n    background: #2199e8;\n    color: #fefefe;\n    cursor: default; }\n  .ng2-pagination .disabled {\n    padding: 0.1875rem 0.625rem;\n    color: #cacaca;\n    cursor: default; } \n    .ng2-pagination .disabled:hover {\n      background: transparent; }\n  .ng2-pagination .ellipsis::after {\n    content: '\u2026';\n    padding: 0.1875rem 0.625rem;\n    color: #0a0a0a; }\n\n.ng2-pagination .pagination-previous a::before,\n.ng2-pagination .pagination-previous.disabled::before { \n  content: '\u00AB';\n  display: inline-block;\n  margin-right: 0.5rem; }\n\n.ng2-pagination .pagination-next a::after,\n.ng2-pagination .pagination-next.disabled::after {\n  content: '\u00BB';\n  display: inline-block;\n  margin-left: 0.5rem; }\n\n.ng2-pagination .show-for-sr {\n  position: absolute !important;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0); }";
+	exports.DEFAULT_STYLES = "\n.ng2-pagination {\n  margin-left: 0;\n  margin-bottom: 1rem; }\n  .ng2-pagination::before, .ng2-pagination::after {\n    content: ' ';\n    display: table; }\n  .ng2-pagination::after {\n    clear: both; }\n  .ng2-pagination li {\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    -ms-user-select: none;\n    font-size: 0.875rem;\n    margin-right: 0.0625rem;\n    border-radius: 0; }\n  .ng2-pagination li {\n    display: inline-block; }\n  .ng2-pagination a,\n  .ng2-pagination button {\n    color: #0a0a0a; \n    display: block;\n    padding: 0.1875rem 0.625rem;\n    border-radius: 0; }\n    .ng2-pagination a:hover,\n    .ng2-pagination button:hover {\n      background: #e6e6e6; }\n  .ng2-pagination .current {\n    padding: 0.1875rem 0.625rem;\n    background: #2199e8;\n    color: #fefefe;\n    cursor: default; }\n  .ng2-pagination .disabled {\n    padding: 0.1875rem 0.625rem;\n    color: #cacaca;\n    cursor: default; } \n    .ng2-pagination .disabled:hover {\n      background: transparent; }\n  .ng2-pagination .ellipsis::after {\n    content: '\u2026';\n    padding: 0.1875rem 0.625rem;\n    color: #0a0a0a; }\n\n.ng2-pagination .pagination-previous a::before,\n.ng2-pagination .pagination-previous.disabled::before { \n  content: '\u00AB';\n  display: inline-block;\n  margin-right: 0.5rem; }\n\n.ng2-pagination .pagination-next a::after,\n.ng2-pagination .pagination-next.disabled::after {\n  content: '\u00BB';\n  display: inline-block;\n  margin-left: 0.5rem; }\n\n.ng2-pagination .show-for-sr {\n  position: absolute !important;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0); }";
 
 
 /***/ },
@@ -30735,32 +30739,32 @@ webpackJsonp([2],[
 	        return index;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], AccordionTab.prototype, "header", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], AccordionTab.prototype, "selected", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], AccordionTab.prototype, "disabled", void 0);
 	    __decorate([
-	        core_1.ContentChild(common_1.Header),
+	        core_1.ContentChild(common_1.Header), 
 	        __metadata('design:type', Object)
 	    ], AccordionTab.prototype, "headerFacet", void 0);
 	    AccordionTab = __decorate([
 	        core_1.Component({
 	            selector: 'p-accordionTab',
 	            template: "\n        <div class=\"ui-accordion-header ui-helper-reset ui-state-default\" [ngClass]=\"{'ui-state-active': selected,'ui-state-hover':hover&&!disabled,'ui-state-disabled':disabled}\"\n            (click)=\"toggle($event)\" (mouseenter)=\"hover = true\" (mouseleave)=\"hover=false\">\n            <span class=\"fa fa-fw\" [ngClass]=\"{'fa-caret-down': selected, 'fa-caret-right': !selected}\"></span>\n            <a href=\"#\" *ngIf=\"!headerFacet\">{{header}}</a>\n            <a href=\"#\" *ngIf=\"headerFacet\">\n                <ng-content select=\"header\"></ng-content>\n            </a>\n        </div>\n        <div class=\"ui-accordion-content ui-helper-reset ui-widget-content\" [style.display]=\"selected ? 'block' : 'none'\">\n            <ng-content></ng-content>\n        </div>\n    "
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [accordion_1.Accordion])
 	    ], AccordionTab);
 	    return AccordionTab;
 	}());
 	exports.AccordionTab = AccordionTab;
-
+	
 
 /***/ },
 /* 1059 */
@@ -31062,87 +31066,87 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], AutoComplete.prototype, "minLength", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], AutoComplete.prototype, "delay", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], AutoComplete.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], AutoComplete.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], AutoComplete.prototype, "inputStyle", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], AutoComplete.prototype, "inputStyleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], AutoComplete.prototype, "placeholder", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], AutoComplete.prototype, "readonly", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], AutoComplete.prototype, "disabled", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], AutoComplete.prototype, "maxlength", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], AutoComplete.prototype, "size", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], AutoComplete.prototype, "suggestions", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], AutoComplete.prototype, "completeMethod", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], AutoComplete.prototype, "onSelect", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], AutoComplete.prototype, "onUnselect", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], AutoComplete.prototype, "onDropdownClick", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], AutoComplete.prototype, "field", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], AutoComplete.prototype, "scrollHeight", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], AutoComplete.prototype, "dropdown", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], AutoComplete.prototype, "multiple", void 0);
 	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef),
+	        core_1.ContentChild(core_1.TemplateRef), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], AutoComplete.prototype, "itemTemplate", void 0);
 	    AutoComplete = __decorate([
@@ -31151,13 +31155,13 @@ webpackJsonp([2],[
 	            template: "\n        <span [ngClass]=\"{'ui-autocomplete ui-widget':true,'ui-autocomplete-dd':dropdown}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <input *ngIf=\"!multiple\" #in pInputText type=\"text\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\" \n            [value]=\"value ? (field ? resolveFieldData(value)||value : value) : null\" (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (blur)=\"onModelTouched()\"\n            [attr.placeholder]=\"placeholder\" [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.readonly]=\"readonly\" [disabled]=\"disabled\" \n            ><ul *ngIf=\"multiple\" class=\"ui-autocomplete-multiple ui-widget ui-inputtext ui-state-default ui-corner-all\" (click)=\"multiIn.focus()\">\n                <li #token *ngFor=\"let val of value\" class=\"ui-autocomplete-token ui-state-highlight ui-corner-all\">\n                    <span class=\"ui-autocomplete-token-icon fa fa-fw fa-close\" (click)=\"removeItem(token)\"></span>\n                    <span class=\"ui-autocomplete-token-label\">{{field ? val[field] : val}}</span>\n                </li>\n                <li class=\"ui-autocomplete-input-token\">\n                    <input #multiIn type=\"text\" pInputText (input)=\"onInput($event)\" (keydown)=\"onKeydown($event)\" (blur)=\"onModelTouched()\">\n                </li>\n            </ul\n            ><button type=\"button\" pButton icon=\"fa-fw fa-caret-down\" class=\"ui-autocomplete-dropdown\" [disabled]=\"disabled\"\n                (click)=\"handleDropdownClick($event)\" *ngIf=\"dropdown\"></button>\n            <div class=\"ui-autocomplete-panel ui-widget-content ui-corner-all ui-shadow\" [style.display]=\"panelVisible ? 'block' : 'none'\" [style.width]=\"'100%'\" [style.max-height]=\"scrollHeight\">\n                <ul class=\"ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" \n                    (mouseover)=\"onItemMouseover($event)\" (mouseout)=\"onItemMouseout($event)\" (click)=\"onItemClick($event)\" *ngIf=\"!itemTemplate\">\n                    <li class=\"ui-autocomplete-list-item ui-corner-all\" *ngFor=\"let item of suggestions\">{{field ? item[field] : item}}</li>\n                </ul>\n                <ul class=\"ui-autocomplete-items ui-autocomplete-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" \n                    (mouseover)=\"onItemMouseover($event)\" (mouseout)=\"onItemMouseout($event)\" (click)=\"onItemClick($event)\"*ngIf=\"itemTemplate\">\n                    <template ngFor [ngForOf]=\"suggestions\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n        </span>\n    ",
 	            directives: [inputtext_1.InputText, button_1.Button],
 	            providers: [domhandler_1.DomHandler, AUTOCOMPLETE_VALUE_ACCESSOR]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers, core_1.Renderer])
 	    ], AutoComplete);
 	    return AutoComplete;
 	}());
 	exports.AutoComplete = AutoComplete;
-
+	
 
 /***/ },
 /* 1060 */
@@ -31205,28 +31209,28 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Breadcrumb.prototype, "model", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Breadcrumb.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Breadcrumb.prototype, "styleClass", void 0);
 	    Breadcrumb = __decorate([
 	        core_1.Component({
 	            selector: 'p-breadcrumb',
 	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"'ui-breadcrumb ui-widget ui-widget-header ui-helper-clearfix ui-corner-all'\">\n            <ul>\n                <li class=\"fa fa-home\"></li>\n                <template ngFor let-item let-end=\"last\" [ngForOf]=\"model\">\n                    <li role=\"menuitem\">\n                        <a [href]=\"item.url||'#'\" class=\"ui-menuitem-link\" (click)=\"itemClick($event, item)\">\n                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                        </a>\n                    </li>\n                    <li class=\"ui-breadcrumb-chevron fa fa-chevron-right\" *ngIf=\"!end\"></li>\n                </template>\n            </ul>\n        </div>\n    "
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [router_1.Router])
 	    ], Breadcrumb);
 	    return Breadcrumb;
 	}());
 	exports.Breadcrumb = Breadcrumb;
-
+	
 
 /***/ },
 /* 1061 */
@@ -31362,179 +31366,179 @@ webpackJsonp([2],[
 	        input.focus();
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Calendar.prototype, "readonlyInput", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Calendar.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Calendar.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Calendar.prototype, "inputStyle", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Calendar.prototype, "inputStyleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Calendar.prototype, "placeholder", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Calendar.prototype, "inline", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Calendar.prototype, "showAnim", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Calendar.prototype, "dateFormat", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Calendar.prototype, "showButtonPanel", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Calendar.prototype, "monthNavigator", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Calendar.prototype, "yearNavigator", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Calendar.prototype, "numberOfMonths", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Calendar.prototype, "showWeek", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Calendar.prototype, "showOtherMonths", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Calendar.prototype, "selectOtherMonths", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Calendar.prototype, "defaultDate", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Calendar.prototype, "minDate", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Calendar.prototype, "maxDate", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Calendar.prototype, "disabled", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Calendar.prototype, "showIcon", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Calendar.prototype, "timeFormat", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Calendar.prototype, "timeOnly", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Calendar.prototype, "stepHour", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Calendar.prototype, "stepMinute", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Calendar.prototype, "stepSecond", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Calendar.prototype, "hourMin", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Calendar.prototype, "hourMax", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Calendar.prototype, "minuteMin", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Calendar.prototype, "minuteMax", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Calendar.prototype, "secondMin", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Calendar.prototype, "secondMax", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Calendar.prototype, "hourGrid", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Calendar.prototype, "minuteGrid", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Calendar.prototype, "secondGrid", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Calendar.prototype, "timeControlType", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Calendar.prototype, "horizontalTimeControls", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Calendar.prototype, "minTime", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Calendar.prototype, "maxTime", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Calendar.prototype, "timezoneList", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Calendar.prototype, "locale", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Calendar.prototype, "icon", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Calendar.prototype, "onBlur", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Calendar.prototype, "onSelect", void 0);
 	    Calendar = __decorate([
@@ -31543,13 +31547,13 @@ webpackJsonp([2],[
 	            template: "\n        <span [ngStyle]=\"style\" [class]=\"styleClass\" [ngClass]=\"'ui-calendar'\" *ngIf=\"!inline\">\n        <input #in type=\"text\" [attr.placeholder]=\"placeholder\" [ngStyle]=\"inputStyle\" [class]=\"inputStyleClass\"\n                [value]=\"value||''\" (input)=\"onInput($event)\" [readonly]=\"readonlyInput\"\n                [disabled]=\"disabled\" (mouseenter)=\"hovered=true\" (mouseleave)=\"hovered=false\" (focus)=\"focused=true\" (blur)=\"handleBlur($event)\"\n                [ngClass]=\"{'ui-inputtext ui-widget ui-state-default': true, 'ui-corner-all': !showIcon, 'ui-corner-left': showIcon,\n                    'ui-state-hover':hovered,'ui-state-focus':focused,'ui-state-disabled':disabled}\"\n        ><button type=\"button\" [icon]=\"icon\" pButton *ngIf=\"showIcon\" (click)=\"onButtonClick($event,in)\" class=\"ui-datepicker-trigger\"></button></span>\n        <div *ngIf=\"inline\"></div>\n    ",
 	            directives: [button_1.Button],
 	            providers: [CALENDAR_VALUE_ACCESSOR]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.NgZone])
 	    ], Calendar);
 	    return Calendar;
 	}());
 	exports.Calendar = Calendar;
-
+	
 
 /***/ },
 /* 1062 */
@@ -31759,59 +31763,59 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Carousel.prototype, "value", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Carousel.prototype, "numVisible", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Carousel.prototype, "firstVisible", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Carousel.prototype, "headerText", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Carousel.prototype, "circular", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Carousel.prototype, "breakpoint", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Carousel.prototype, "responsive", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Carousel.prototype, "autoplayInterval", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Carousel.prototype, "effectDuration", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Carousel.prototype, "easing", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Carousel.prototype, "pageLinks", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Carousel.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Carousel.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef),
+	        core_1.ContentChild(core_1.TemplateRef), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], Carousel.prototype, "itemTemplate", void 0);
 	    Carousel = __decorate([
@@ -31819,13 +31823,13 @@ webpackJsonp([2],[
 	            selector: 'p-carousel',
 	            template: "\n        <div [ngClass]=\"{'ui-carousel ui-widget ui-widget-content ui-corner-all':true}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-carousel-header ui-widget-header\">\n                <div class=\"ui-carousel-header-title\">{{headerText}}</div>\n                <span class=\"ui-carousel-button ui-carousel-next-button fa fa-arrow-circle-right\" (click)=\"onNextNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === (totalPages-1)) && !circular}\"></span>\n                <span class=\"ui-carousel-button ui-carousel-prev-button fa fa-arrow-circle-left\" (click)=\"onPrevNav()\" \n                        [ngClass]=\"{'ui-state-disabled':(page === 0 && !circular)}\"></span>\n                <div *ngIf=\"displayPageLinks\" class=\"ui-carousel-page-links\">\n                    <a href=\"#\" class=\"ui-carousel-page-link fa fa-circle-o\" *ngFor=\"let links of anchorPageLinks;let i=index\" [ngClass]=\"{'fa-dot-circle-o':page===i}\"></a>\n                </div>\n                <select *ngIf=\"displayPageDropdown\" class=\"ui-carousel-dropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\">\n                    <option *ngFor=\"let option of selectDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n                <select *ngIf=\"responsive\" class=\"ui-carousel-mobiledropdown ui-widget ui-state-default ui-corner-left\" [value]=\"page\" (change)=\"onDropdownChange($event.target.value)\"\n                    [style.display]=\"shrinked ? 'block' : 'none'\">\n                    <option *ngFor=\"let option of mobileDropdownOptions\" [value]=\"option\" [selected]=\"value == option\">{{option+1}}</option>\n                </select>\n            </div>\n            <div class=\"ui-carousel-viewport\">\n                <ul class=\"ui-carousel-items\" [style.left.px]=\"left\" [style.transitionProperty]=\"'left'\" \n                            [style.transitionDuration]=\"effectDuration\" [style.transitionTimingFunction]=\"easing\">\n                    <template ngFor [ngForOf]=\"value\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers, core_1.Renderer])
 	    ], Carousel);
 	    return Carousel;
 	}());
 	exports.Carousel = Carousel;
-
+	
 
 /***/ },
 /* 1063 */
@@ -31891,40 +31895,40 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], UIChart.prototype, "type", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], UIChart.prototype, "data", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], UIChart.prototype, "options", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], UIChart.prototype, "width", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], UIChart.prototype, "height", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], UIChart.prototype, "onDataSelect", void 0);
 	    UIChart = __decorate([
 	        core_1.Component({
 	            selector: 'p-chart',
 	            template: "\n        <div>\n            <canvas [attr.width]=\"width\" [attr.height]=\"height\" (click)=\"onCanvasClick($event)\"></canvas>\n        </div>\n    "
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers])
 	    ], UIChart);
 	    return UIChart;
 	}());
 	exports.UIChart = UIChart;
-
+	
 
 /***/ },
 /* 1064 */
@@ -32020,19 +32024,19 @@ webpackJsonp([2],[
 	        this.onModelTouched = fn;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Checkbox.prototype, "value", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Checkbox.prototype, "name", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Checkbox.prototype, "disabled", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Checkbox.prototype, "onChange", void 0);
 	    Checkbox = __decorate([
@@ -32040,13 +32044,13 @@ webpackJsonp([2],[
 	            selector: 'p-checkbox',
 	            template: "\n        <div class=\"ui-chkbox ui-widget\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #cb type=\"checkbox\" name=\"{{name}}\" value=\"{{value}}\" [checked]=\"checked\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\"\n                [ngClass]=\"{'ui-state-focus':focused}\" (keydown.space)=\"onClick($event,cb,false)\">\n            </div>\n            <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" (click)=\"onClick($event,cb,true)\"\n                        (mouseover)=\"hover=true\" (mouseout)=\"hover=false\" \n                        [ngClass]=\"{'ui-state-hover':hover&&!disabled,'ui-state-active':checked,'ui-state-disabled':disabled,'ui-state-focus':focused}\">\n                <span class=\"ui-chkbox-icon ui-c\" [ngClass]=\"{'fa fa-fw fa-check':checked}\"></span>\n            </div>\n        </div>\n    ",
 	            providers: [CHECKBOX_VALUE_ACCESSOR]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], Checkbox);
 	    return Checkbox;
 	}());
 	exports.Checkbox = Checkbox;
-
+	
 
 /***/ },
 /* 1065 */
@@ -32073,13 +32077,13 @@ webpackJsonp([2],[
 	    CodeHighlighter = __decorate([
 	        core_1.Directive({
 	            selector: '[pCode]'
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef])
 	    ], CodeHighlighter);
 	    return CodeHighlighter;
 	}());
 	exports.CodeHighlighter = CodeHighlighter;
-
+	
 
 /***/ },
 /* 1066 */
@@ -32138,11 +32142,11 @@ webpackJsonp([2],[
 	        this.activeLink = null;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], ContextMenuSub.prototype, "item", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], ContextMenuSub.prototype, "root", void 0);
 	    ContextMenuSub = __decorate([
@@ -32151,7 +32155,7 @@ webpackJsonp([2],[
 	            template: "\n        <ul [ngClass]=\"{'ui-helper-reset':root, 'ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow':!root}\" class=\"ui-menu-list\"\n            (click)=\"listClick($event)\">\n            <template ngFor let-child [ngForOf]=\"(root ? item : item.items)\">\n                <li #item [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':child.items,'ui-menuitem-active':item==activeItem}\"\n                    (mouseenter)=\"onItemMouseEnter($event, item)\" (mouseleave)=\"onItemMouseLeave($event, item)\">\n                    <a #link [href]=\"child.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [ngClass]=\"{'ui-state-hover':link==activeLink}\" (click)=\"itemClick($event, child)\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <p-contextMenuSub class=\"ui-submenu\" [item]=\"child\" *ngIf=\"child.items\"></p-contextMenuSub>\n                </li>\n            </template>\n        </ul>\n    ",
 	            directives: [ContextMenuSub],
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [domhandler_1.DomHandler, router_1.Router])
 	    ], ContextMenuSub);
 	    return ContextMenuSub;
@@ -32211,19 +32215,19 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], ContextMenu.prototype, "model", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], ContextMenu.prototype, "global", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], ContextMenu.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], ContextMenu.prototype, "styleClass", void 0);
 	    ContextMenu = __decorate([
@@ -32232,13 +32236,13 @@ webpackJsonp([2],[
 	            template: "\n        <div [ngClass]=\"'ui-contextmenu ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-dynamic ui-shadow'\" \n            [class]=\"styleClass\" [ngStyle]=\"style\" [style.display]=\"visible ? 'block' : 'none'\" [style.left.px]=\"left\" [style.top.px]=\"top\">\n            <p-contextMenuSub [item]=\"model\" root=\"root\"></p-contextMenuSub>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler],
 	            directives: [ContextMenuSub]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
 	    ], ContextMenu);
 	    return ContextMenu;
 	}());
 	exports.ContextMenu = ContextMenu;
-
+	
 
 /***/ },
 /* 1067 */
@@ -32329,59 +32333,59 @@ webpackJsonp([2],[
 	        };
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], DataGrid.prototype, "value", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataGrid.prototype, "paginator", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], DataGrid.prototype, "rows", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], DataGrid.prototype, "columns", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], DataGrid.prototype, "totalRecords", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], DataGrid.prototype, "pageLinks", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], DataGrid.prototype, "rowsPerPageOptions", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataGrid.prototype, "lazy", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataGrid.prototype, "onLazyLoad", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], DataGrid.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], DataGrid.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.ContentChild(common_1.Header),
+	        core_1.ContentChild(common_1.Header), 
 	        __metadata('design:type', Object)
 	    ], DataGrid.prototype, "header", void 0);
 	    __decorate([
-	        core_1.ContentChild(common_2.Footer),
+	        core_1.ContentChild(common_2.Footer), 
 	        __metadata('design:type', Object)
 	    ], DataGrid.prototype, "footer", void 0);
 	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef),
+	        core_1.ContentChild(core_1.TemplateRef), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], DataGrid.prototype, "itemTemplate", void 0);
 	    DataGrid = __decorate([
@@ -32389,13 +32393,13 @@ webpackJsonp([2],[
 	            selector: 'p-dataGrid',
 	            template: "\n        <div [ngClass]=\"'ui-datagrid ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-datagrid-header ui-widget-header ui-corner-top\" *ngIf=\"header\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <div class=\"ui-datagrid-content ui-widget-content\" [ngClass]=\"'ui-datagrid-col-' + columns\">\n                <template ngFor [ngForOf]=\"dataToRender\" [ngForTemplate]=\"itemTemplate\"></template>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" \n                (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator\"></p-paginator>\n            <div class=\"ui-datagrid-footer ui-widget-header ui-corner-top\" *ngIf=\"footer\">\n                <ng-content select=\"footer\"></ng-content>\n            </div>\n        </div>\n    ",
 	            directives: [paginator_1.Paginator]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers])
 	    ], DataGrid);
 	    return DataGrid;
 	}());
 	exports.DataGrid = DataGrid;
-
+	
 
 /***/ },
 /* 1068 */
@@ -32485,55 +32489,55 @@ webpackJsonp([2],[
 	        };
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], DataList.prototype, "value", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataList.prototype, "paginator", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], DataList.prototype, "rows", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], DataList.prototype, "totalRecords", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], DataList.prototype, "pageLinks", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], DataList.prototype, "rowsPerPageOptions", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataList.prototype, "lazy", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataList.prototype, "onLazyLoad", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], DataList.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], DataList.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.ContentChild(common_1.Header),
+	        core_1.ContentChild(common_1.Header), 
 	        __metadata('design:type', Object)
 	    ], DataList.prototype, "header", void 0);
 	    __decorate([
-	        core_1.ContentChild(common_2.Footer),
+	        core_1.ContentChild(common_2.Footer), 
 	        __metadata('design:type', Object)
 	    ], DataList.prototype, "footer", void 0);
 	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef),
+	        core_1.ContentChild(core_1.TemplateRef), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], DataList.prototype, "itemTemplate", void 0);
 	    DataList = __decorate([
@@ -32541,13 +32545,13 @@ webpackJsonp([2],[
 	            selector: 'p-dataList',
 	            template: "\n        <div [ngClass]=\"'ui-datalist ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-datalist-header ui-widget-header ui-corner-top\" *ngIf=\"header\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <div class=\"ui-datalist-content ui-widget-content\">\n                <ul class=\"ui-datalist-data\">\n                    <template ngFor [ngForOf]=\"dataToRender\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n            <p-paginator [rows]=\"rows\" [first]=\"first\" [totalRecords]=\"totalRecords\" [pageLinkSize]=\"pageLinks\" \n            (onPageChange)=\"paginate($event)\" styleClass=\"ui-paginator-bottom\" [rowsPerPageOptions]=\"rowsPerPageOptions\" *ngIf=\"paginator\"></p-paginator>\n            <div class=\"ui-datalist-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n                <ng-content select=\"footer\"></ng-content>\n            </div>\n        </div>\n    ",
 	            directives: [paginator_1.Paginator]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers])
 	    ], DataList);
 	    return DataList;
 	}());
 	exports.DataList = DataList;
-
+	
 
 /***/ },
 /* 1069 */
@@ -32661,55 +32665,55 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], DataScroller.prototype, "value", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], DataScroller.prototype, "rows", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataScroller.prototype, "lazy", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataScroller.prototype, "onLazyLoad", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], DataScroller.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], DataScroller.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], DataScroller.prototype, "buffer", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataScroller.prototype, "inline", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], DataScroller.prototype, "scrollHeight", void 0);
 	    __decorate([
-	        core_1.ContentChild(common_1.Header),
+	        core_1.ContentChild(common_1.Header), 
 	        __metadata('design:type', Object)
 	    ], DataScroller.prototype, "header", void 0);
 	    __decorate([
-	        core_1.ContentChild(common_2.Footer),
+	        core_1.ContentChild(common_2.Footer), 
 	        __metadata('design:type', Object)
 	    ], DataScroller.prototype, "footer", void 0);
 	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef),
+	        core_1.ContentChild(core_1.TemplateRef), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], DataScroller.prototype, "itemTemplate", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], DataScroller.prototype, "loader", void 0);
 	    DataScroller = __decorate([
@@ -32717,13 +32721,13 @@ webpackJsonp([2],[
 	            selector: 'p-dataScroller',
 	            template: "\n    <div [ngClass]=\"{'ui-datascroller ui-widget': true, 'ui-datascroller-inline': inline}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n        <div class=\"ui-datascroller-header ui-widget-header ui-corner-top\" *ngIf=\"header\">\n            <ng-content select=\"header\"></ng-content>\n        </div>\n        <div class=\"ui-datascroller-content ui-widget-content\" [ngStyle]=\"{'max-height': scrollHeight}\">\n            <ul class=\"ui-datascroller-list\">\n                <template ngFor [ngForOf]=\"dataToRender\" [ngForTemplate]=\"itemTemplate\"></template>\n            </ul>\n        </div>\n        <div class=\"ui-datascroller-footer ui-widget-header ui-corner-bottom\" *ngIf=\"footer\">\n            <ng-content select=\"footer\"></ng-content>\n        </div>\n    </div>\n    ",
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers, core_1.Renderer, domhandler_1.DomHandler])
 	    ], DataScroller);
 	    return DataScroller;
 	}());
 	exports.DataScroller = DataScroller;
-
+	
 
 /***/ },
 /* 1070 */
@@ -33525,7 +33529,7 @@ webpackJsonp([2],[
 	                }
 	            }
 	        }
-	        //body
+	        //body        
 	        this.value.forEach(function (record, i) {
 	            csv += '\n';
 	            for (var i_1 = 0; i_1 < _this.columns.length; i_1++) {
@@ -33557,211 +33561,211 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], DataTable.prototype, "value", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataTable.prototype, "paginator", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], DataTable.prototype, "rows", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], DataTable.prototype, "totalRecords", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], DataTable.prototype, "pageLinks", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], DataTable.prototype, "rowsPerPageOptions", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataTable.prototype, "responsive", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataTable.prototype, "stacked", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], DataTable.prototype, "selectionMode", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], DataTable.prototype, "selection", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "selectionChange", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataTable.prototype, "editable", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onRowClick", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onRowSelect", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onRowUnselect", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onRowDblclick", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onContextMenuSelect", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], DataTable.prototype, "filterDelay", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataTable.prototype, "lazy", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onLazyLoad", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataTable.prototype, "resizableColumns", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], DataTable.prototype, "columnResizeMode", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onColResize", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataTable.prototype, "reorderableColumns", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onColReorder", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataTable.prototype, "scrollable", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], DataTable.prototype, "scrollHeight", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], DataTable.prototype, "scrollWidth", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], DataTable.prototype, "headerRows", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], DataTable.prototype, "footerRows", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], DataTable.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], DataTable.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], DataTable.prototype, "globalFilter", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], DataTable.prototype, "sortMode", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], DataTable.prototype, "sortField", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], DataTable.prototype, "sortOrder", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], DataTable.prototype, "multiSortMeta", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], DataTable.prototype, "contextMenu", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], DataTable.prototype, "csvSeparator", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onEditInit", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onEditComplete", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onEdit", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onEditCancel", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onPage", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onSort", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onFilter", void 0);
 	    __decorate([
-	        core_1.ContentChild(common_1.Header),
+	        core_1.ContentChild(common_1.Header), 
 	        __metadata('design:type', Object)
 	    ], DataTable.prototype, "header", void 0);
 	    __decorate([
-	        core_1.ContentChild(common_2.Footer),
+	        core_1.ContentChild(common_2.Footer), 
 	        __metadata('design:type', Object)
 	    ], DataTable.prototype, "footer", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], DataTable.prototype, "expandableRows", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onRowExpand", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], DataTable.prototype, "onRowCollapse", void 0);
 	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef),
+	        core_1.ContentChild(core_1.TemplateRef), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], DataTable.prototype, "rowExpansionTemplate", void 0);
 	    DataTable = __decorate([
@@ -33771,13 +33775,13 @@ webpackJsonp([2],[
 	            directives: [paginator_1.Paginator, inputtext_1.InputText, columntemplateloader_1.ColumnTemplateLoader, rowexpansionloader_1.RowExpansionLoader],
 	            providers: [domhandler_1.DomHandler]
 	        }),
-	        __param(3, core_1.Query(column_1.Column)),
+	        __param(3, core_1.Query(column_1.Column)), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers, core_1.QueryList, core_1.Renderer, core_1.ChangeDetectorRef])
 	    ], DataTable);
 	    return DataTable;
 	}());
 	exports.DataTable = DataTable;
-
+	
 
 /***/ },
 /* 1071 */
@@ -33804,24 +33808,24 @@ webpackJsonp([2],[
 	        });
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], RowExpansionLoader.prototype, "template", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], RowExpansionLoader.prototype, "rowData", void 0);
 	    RowExpansionLoader = __decorate([
 	        core_1.Component({
 	            selector: 'p-rowExpansionLoader',
 	            template: ""
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ViewContainerRef])
 	    ], RowExpansionLoader);
 	    return RowExpansionLoader;
 	}());
 	exports.RowExpansionLoader = RowExpansionLoader;
-
+	
 
 /***/ },
 /* 1072 */
@@ -34029,83 +34033,83 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Dialog.prototype, "header", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Dialog.prototype, "draggable", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Dialog.prototype, "resizable", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Dialog.prototype, "minWidth", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Dialog.prototype, "minHeight", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Dialog.prototype, "width", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Dialog.prototype, "height", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Dialog.prototype, "contentHeight", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Dialog.prototype, "modal", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Dialog.prototype, "showEffect", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Dialog.prototype, "closeOnEscape", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Dialog.prototype, "rtl", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Dialog.prototype, "closable", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Dialog.prototype, "responsive", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Dialog.prototype, "onBeforeShow", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Dialog.prototype, "onAfterShow", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Dialog.prototype, "onBeforeHide", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Dialog.prototype, "onAfterHide", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Dialog.prototype, "visibleChange", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Dialog.prototype, "visible", null);
 	    Dialog = __decorate([
@@ -34113,13 +34117,13 @@ webpackJsonp([2],[
 	            selector: 'p-dialog',
 	            template: "\n        <div [ngClass]=\"{'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl,'ui-dialog-draggable':draggable}\" \n            [style.display]=\"visible ? 'block' : 'none'\" [style.width.px]=\"width\" [style.height.px]=\"height\" (mousedown)=\"moveOnTop()\">\n            <div class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\"\n                (mousedown)=\"initDrag($event)\" (mouseup)=\"endDrag($event)\">\n                <span class=\"ui-dialog-title\">{{header}}</span>\n                <a [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true,'ui-state-hover':hoverCloseIcon}\" href=\"#\" role=\"button\" *ngIf=\"closable\" \n                    (click)=\"hide($event)\" (mouseenter)=\"hoverCloseIcon=true\" (mouseleave)=\"hoverCloseIcon=false\">\n                    <span class=\"fa fa-fw fa-close\"></span>\n                </a>\n            </div>\n            <div class=\"ui-dialog-content ui-widget-content\" [style.height.px]=\"contentHeight\">\n                <ng-content></ng-content>\n            </div>\n            <ng-content select=\"footer\"></ng-content>\n            <div *ngIf=\"resizable\" class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"\n                (mousedown)=\"initResize($event)\"></div>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
 	    ], Dialog);
 	    return Dialog;
 	}());
 	exports.Dialog = Dialog;
-
+	
 
 /***/ },
 /* 1073 */
@@ -34176,57 +34180,57 @@ webpackJsonp([2],[
 	            return true;
 	    };
 	    __decorate([
-	        core_1.Input('pDraggable'),
+	        core_1.Input('pDraggable'), 
 	        __metadata('design:type', String)
 	    ], Draggable.prototype, "scope", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Draggable.prototype, "dragEffect", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Draggable.prototype, "dragHandle", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Draggable.prototype, "onDragStart", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Draggable.prototype, "onDragEnd", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Draggable.prototype, "onDrag", void 0);
 	    __decorate([
-	        core_1.HostListener('dragstart', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('dragstart', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Draggable.prototype, "dragStart", null);
 	    __decorate([
-	        core_1.HostListener('drag', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('drag', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Draggable.prototype, "drag", null);
 	    __decorate([
-	        core_1.HostListener('dragend', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('dragend', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Draggable.prototype, "dragEnd", null);
 	    __decorate([
-	        core_1.HostListener('mouseover', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('mouseover', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Draggable.prototype, "mouseover", null);
 	    __decorate([
-	        core_1.HostListener('mouseleave', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('mouseleave', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Draggable.prototype, "mouseleave", null);
 	    Draggable = __decorate([
@@ -34236,13 +34240,13 @@ webpackJsonp([2],[
 	                '[draggable]': 'true'
 	            },
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
 	    ], Draggable);
 	    return Draggable;
 	}());
 	exports.Draggable = Draggable;
-
+	
 
 /***/ },
 /* 1074 */
@@ -34304,64 +34308,64 @@ webpackJsonp([2],[
 	        return allow;
 	    };
 	    __decorate([
-	        core_1.Input('pDroppable'),
+	        core_1.Input('pDroppable'), 
 	        __metadata('design:type', String)
 	    ], Droppable.prototype, "scope", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Droppable.prototype, "dropEffect", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Droppable.prototype, "onDragEnter", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Droppable.prototype, "onDragLeave", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Droppable.prototype, "onDrop", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Droppable.prototype, "onDragOver", void 0);
 	    __decorate([
-	        core_1.HostListener('drop', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('drop', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Droppable.prototype, "drop", null);
 	    __decorate([
-	        core_1.HostListener('dragenter', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('dragenter', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Droppable.prototype, "dragEnter", null);
 	    __decorate([
-	        core_1.HostListener('dragleave', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('dragleave', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Droppable.prototype, "dragLeave", null);
 	    __decorate([
-	        core_1.HostListener('dragover', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('dragover', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Droppable.prototype, "dragOver", null);
 	    Droppable = __decorate([
 	        core_1.Directive({
 	            selector: '[pDroppable]',
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
 	    ], Droppable);
 	    return Droppable;
 	}());
 	exports.Droppable = Droppable;
-
+	
 
 /***/ },
 /* 1075 */
@@ -34656,43 +34660,43 @@ webpackJsonp([2],[
 	        this.initialized = false;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Dropdown.prototype, "options", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Dropdown.prototype, "onChange", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Dropdown.prototype, "scrollHeight", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Dropdown.prototype, "filter", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Dropdown.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Dropdown.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Dropdown.prototype, "disabled", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Dropdown.prototype, "autoWidth", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Dropdown.prototype, "required", void 0);
 	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef),
+	        core_1.ContentChild(core_1.TemplateRef), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], Dropdown.prototype, "itemTemplate", void 0);
 	    Dropdown = __decorate([
@@ -34700,13 +34704,13 @@ webpackJsonp([2],[
 	            selector: 'p-dropdown',
 	            template: "\n        <div [ngClass]=\"{'ui-dropdown ui-widget ui-state-default ui-corner-all ui-helper-clearfix':true,'ui-state-hover':hover&&!disabled,'ui-state-focus':focus,'ui-state-disabled':disabled}\" \n            (mouseenter)=\"onMouseenter($event)\" (mouseleave)=\"onMouseleave($event)\" (click)=\"onMouseclick($event,in)\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <select [required]=\"required\" tabindex=\"-1\">\n                    <option *ngFor=\"let option of options\" [value]=\"option.value\" [selected]=\"value == option.value\">{{option.label}}</option>\n                </select>\n            </div>\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in type=\"text\" readonly (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" (keydown)=\"onKeydown($event)\">\n            </div>\n            <label class=\"ui-dropdown-label ui-inputtext ui-corner-all\" [innerHTML]=\"label\"></label>\n            <div class=\"ui-dropdown-trigger ui-state-default ui-corner-right\" [ngClass]=\"{'ui-state-hover':hover&&!disabled,'ui-state-focus':focus}\">\n                <span class=\"fa fa-fw fa-caret-down\"></span>\n            </div>\n            <div class=\"ui-dropdown-panel ui-widget-content ui-corner-all ui-helper-hidden ui-shadow\" \n                [style.display]=\"panelVisible ? 'block' : 'none'\">\n                <div *ngIf=\"filter\" class=\"ui-dropdown-filter-container\" (input)=\"onFilter($event)\" (click)=\"$event.stopPropagation()\">\n                    <input type=\"text\" autocomplete=\"off\" class=\"ui-dropdown-filter ui-inputtext ui-widget ui-state-default ui-corner-all\">\n                    <span class=\"fa fa-search\"></span>\n                </div>\n                <div class=\"ui-dropdown-items-wrapper\" [style.max-height]=\"scrollHeight||'auto'\">\n                    <ul *ngIf=\"!itemTemplate\" class=\"ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\"\n                        (mouseover)=\"onListMouseover($event)\" (mouseout)=\"onListMouseout($event)\">\n                        <li *ngFor=\"let option of optionsToDisplay;let i=index\" [attr.data-label]=\"option.label\" [attr.data-value]=\"option.value\" (click)=\"onListClick($event)\"\n                            class=\"ui-dropdown-item ui-corner-all\">{{option.label}}</li>\n                    </ul>\n                    <ul *ngIf=\"itemTemplate\" class=\"ui-dropdown-items ui-dropdown-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\"\n                        (mouseover)=\"onListMouseover($event)\" (mouseout)=\"onListMouseout($event)\" (click)=\"onListClick($event)\">\n                        <template ngFor [ngForOf]=\"optionsToDisplay\" [ngForTemplate]=\"itemTemplate\"></template>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler, DROPDOWN_VALUE_ACCESSOR]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer, core_1.IterableDiffers])
 	    ], Dropdown);
 	    return Dropdown;
 	}());
 	exports.Dropdown = Dropdown;
-
+	
 
 /***/ },
 /* 1076 */
@@ -34790,27 +34794,27 @@ webpackJsonp([2],[
 	        this.onModelTouched = fn;
 	    };
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Editor.prototype, "onTextChange", void 0);
 	    __decorate([
-	        core_1.ContentChild(common_1.Header),
+	        core_1.ContentChild(common_1.Header), 
 	        __metadata('design:type', Object)
 	    ], Editor.prototype, "toolbar", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Editor.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Editor.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Editor.prototype, "placeholder", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Editor.prototype, "readOnly", void 0);
 	    Editor = __decorate([
@@ -34819,13 +34823,13 @@ webpackJsonp([2],[
 	            template: "\n        <div [ngClass]=\"'ui-widget ui-editor-container ui-corner-all'\" [class]=\"styleClass\">\n            <div class=\"ui-editor-toolbar ui-widget-header ui-corner-top\" *ngIf=\"toolbar\">\n                <ng-content select=\"header\"></ng-content>\n            </div>\n            <div class=\"ui-editor-toolbar ui-widget-header ui-corner-top\" *ngIf=\"!toolbar\">\n                <span class=\"ql-formats\">\n                    <select class=\"ql-header\">\n                      <option value=\"1\">Heading</option>\n                      <option value=\"2\">Subheading</option>\n                      <option selected>Normal</option>\n                    </select>\n                    <select class=\"ql-font\">\n                      <option selected>Sans Serif</option>\n                      <option value=\"serif\">Serif</option>\n                      <option value=\"monospace\">Monospace</option>\n                    </select>\n                </span>\n                <span class=\"ql-formats\">\n                    <button class=\"ql-bold\"></button>\n                    <button class=\"ql-italic\"></button>\n                    <button class=\"ql-underline\"></button>\n                </span>\n                <span class=\"ql-formats\">\n                    <select class=\"ql-color\"></select>\n                    <select class=\"ql-background\"></select>\n                </span>\n                <span class=\"ql-formats\">\n                    <button class=\"ql-list\" value=\"ordered\"></button>\n                    <button class=\"ql-list\" value=\"bullet\"></button>\n                    <select class=\"ql-align\">\n                        <option selected></option>\n                        <option value=\"center\"></option>\n                        <option value=\"right\"></option>\n                        <option value=\"justify\"></option>\n                    </select>\n                </span>\n                <span class=\"ql-formats\">\n                    <button class=\"ql-link\"></button>\n                    <button class=\"ql-image\"></button>\n                    <button class=\"ql-code-block\"></button>\n                </span>\n                <span class=\"ql-formats\">\n                    <button class=\"ql-clean\"></button>\n                </span>\n            </div>\n            <div class=\"ui-editor-content\" [ngStyle]=\"style\"></div>\n        </div>\n    ",
 	            directives: [common_1.Header],
 	            providers: [domhandler_1.DomHandler, EDITOR_VALUE_ACCESSOR]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
 	    ], Editor);
 	    return Editor;
 	}());
 	exports.Editor = Editor;
-
+	
 
 /***/ },
 /* 1077 */
@@ -34875,44 +34879,44 @@ webpackJsonp([2],[
 	        this.collapsed = true;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Fieldset.prototype, "legend", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Fieldset.prototype, "toggleable", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Fieldset.prototype, "collapsed", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Fieldset.prototype, "onBeforeToggle", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Fieldset.prototype, "onAfterToggle", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Fieldset.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Fieldset.prototype, "styleClass", void 0);
 	    Fieldset = __decorate([
 	        core_1.Component({
 	            selector: 'p-fieldset',
 	            template: "\n        <fieldset [ngClass]=\"{'ui-fieldset ui-widget ui-widget-content ui-corner-all': true, 'ui-fieldset-toggleable': toggleable}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <legend class=\"ui-fieldset-legend ui-corner-all ui-state-default ui-unselectable-text\" \n                (mouseenter)=\"onLegendMouseenter($event)\" (mouseleave)=\"onLegendMouseleave($event)\" (click)=\"toggle($event)\" [ngClass]=\"{'ui-state-hover':hover}\">\n                <span *ngIf=\"toggleable\" class=\"ui-fieldset-toggler fa fa-w\" [ngClass]=\"{'fa-minus': !collapsed,'fa-plus':collapsed}\"></span>\n                {{legend}}\n            </legend>\n            <div class=\"ui-fieldset-content\" [style.display]=\"collapsed ? 'none' : 'block'\">\n                <ng-content></ng-content>\n            </div>\n        </fieldset>\n    ",
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], Fieldset);
 	    return Fieldset;
 	}());
 	exports.Fieldset = Fieldset;
-
+	
 
 /***/ },
 /* 1078 */
@@ -35059,55 +35063,55 @@ webpackJsonp([2],[
 	        this.stopSlideshow();
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Galleria.prototype, "images", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Galleria.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Galleria.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Galleria.prototype, "panelWidth", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Galleria.prototype, "panelHeight", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Galleria.prototype, "frameWidth", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Galleria.prototype, "frameHeight", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Galleria.prototype, "activeIndex", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Galleria.prototype, "showFilmstrip", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Galleria.prototype, "autoPlay", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Galleria.prototype, "transitionInterval", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Galleria.prototype, "showCaption", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', Object)
 	    ], Galleria.prototype, "onImageClicked", void 0);
 	    Galleria = __decorate([
@@ -35115,13 +35119,13 @@ webpackJsonp([2],[
 	            selector: 'p-galleria',
 	            template: "\n        <div [ngClass]=\"{'ui-galleria ui-widget ui-widget-content ui-corner-all':true}\" [ngStyle]=\"style\" [class]=\"styleClass\" [style.width.px]=\"panelWidth\">\n            <ul class=\"ui-galleria-panel-wrapper\" [style.width.px]=\"panelWidth\" [style.height.px]=\"panelHeight\">\n                <li *ngFor=\"let image of images;let i=index\" class=\"ui-galleria-panel\" [ngClass]=\"{'ui-helper-hidden':i!=activeIndex}\"\n                    [style.width.px]=\"panelWidth\" [style.height.px]=\"panelHeight\" (click)=\"clickImage($event,image,i)\">\n                    <img class=\"ui-panel-images\" [src]=\"image.source\" [alt]=\"image.alt\" [title]=\"image.title\"/>\n                </li>\n            </ul>\n            <div [ngClass]=\"{'ui-galleria-filmstrip-wrapper':true}\" *ngIf=\"showFilmstrip\">\n                <ul class=\"ui-galleria-filmstrip\" style=\"transition:left 1s\" [style.left.px]=\"stripLeft\">\n                    <li #frame *ngFor=\"let image of images;let i=index\" [ngClass]=\"{'ui-galleria-frame-active':i==activeIndex}\" class=\"ui-galleria-frame\" (click)=\"frameClick(frame)\"\n                        [style.width.px]=\"frameWidth\" [style.height.px]=\"frameHeight\" [style.transition]=\"'opacity 0.75s ease'\">\n                        <div class=\"ui-galleria-frame-content\">\n                            <img [src]=\"image.source\" [alt]=\"image.alt\" [title]=\"image.title\" class=\"ui-galleria-frame-image\"\n                                [style.width.px]=\"frameWidth\" [style.height.px]=\"frameHeight\">\n                        </div>\n                    </li>\n                </ul>\n            </div>\n            <div class=\"ui-galleria-nav-prev fa fa-fw fa-chevron-circle-left\" (click)=\"clickNavLeft()\" [style.bottom.px]=\"frameHeight/2\" *ngIf=\"activeIndex !== 0\"></div>\n            <div class=\"ui-galleria-nav-next fa fa-fw fa-chevron-circle-right\" (click)=\"clickNavRight()\" [style.bottom.px]=\"frameHeight/2\"></div>\n            <div class=\"ui-galleria-caption\" *ngIf=\"showCaption&&images\" style=\"display:block\">\n                <h4>{{images[activeIndex]?.title}}</h4><p>{{images[activeIndex]?.alt}}</p>\n            </div>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers])
 	    ], Galleria);
 	    return Galleria;
 	}());
 	exports.Galleria = Galleria;
-
+	
 
 /***/ },
 /* 1079 */
@@ -35237,52 +35241,52 @@ webpackJsonp([2],[
 	        return this.map;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], GMap.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], GMap.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], GMap.prototype, "options", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], GMap.prototype, "overlays", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], GMap.prototype, "onMapClick", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], GMap.prototype, "onOverlayClick", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], GMap.prototype, "onOverlayDragStart", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], GMap.prototype, "onOverlayDrag", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], GMap.prototype, "onOverlayDragEnd", void 0);
 	    GMap = __decorate([
 	        core_1.Component({
 	            selector: 'p-gmap',
 	            template: "<div [ngStyle]=\"style\" [class]=\"styleClass\"></div>"
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers, core_1.ChangeDetectorRef, core_1.NgZone])
 	    ], GMap);
 	    return GMap;
 	}());
 	exports.GMap = GMap;
-
+	
 
 /***/ },
 /* 1080 */
@@ -35369,15 +35373,15 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Growl.prototype, "sticky", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Growl.prototype, "life", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Growl.prototype, "value", void 0);
 	    Growl = __decorate([
@@ -35385,13 +35389,13 @@ webpackJsonp([2],[
 	            selector: 'p-growl',
 	            template: "\n        <div class=\"ui-growl ui-widget\" [style.zIndex]=\"zIndex\">\n            <div #msgel *ngFor=\"let msg of value\" class=\"ui-growl-item-container ui-state-highlight ui-corner-all ui-shadow\" aria-live=\"polite\"\n                [ngClass]=\"{'ui-growl-message-info ':msg.severity == 'info','ui-growl-message-warn':msg.severity == 'warn','ui-growl-message-error':msg.severity == 'error'}\">\n                <div class=\"ui-growl-item\">\n                     <div class=\"ui-growl-icon-close fa fa-close\" (click)=\"remove(msg,msgel)\"></div>\n                     <span class=\"ui-growl-image fa fa-2x ui-growl-image-info\"\n                        [ngClass]=\"{'fa-info-circle':msg.severity == 'info','fa-warning':msg.severity == 'warn','fa-close':msg.severity == 'error'}\"></span>\n                     <div class=\"ui-growl-message\">\n                        <span class=\"ui-growl-title\">{{msg.summary}}</span>\n                        <p>{{msg.detail}}</p>\n                     </div>\n                     <div style=\"clear: both;\"></div>\n                </div>\n            </div>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers])
 	    ], Growl);
 	    return Growl;
 	}());
 	exports.Growl = Growl;
-
+	
 
 /***/ },
 /* 1081 */
@@ -35511,27 +35515,27 @@ webpackJsonp([2],[
 	        this.onModelTouched = fn;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], InputSwitch.prototype, "onLabel", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], InputSwitch.prototype, "offLabel", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], InputSwitch.prototype, "disabled", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], InputSwitch.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], InputSwitch.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], InputSwitch.prototype, "onChange", void 0);
 	    InputSwitch = __decorate([
@@ -35539,13 +35543,13 @@ webpackJsonp([2],[
 	            selector: 'p-inputSwitch',
 	            template: "\n        <div [ngClass]=\"{'ui-inputswitch ui-widget ui-widget-content ui-corner-all': true,\n            'ui-state-disabled': disabled}\" (click)=\"toggle($event, in)\"\n            [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-inputswitch-off\">\n                <span class=\"ui-inputswitch-offlabel\">{{offLabel}}</span>\n            </div>\n            <div class=\"ui-inputswitch-on\">\n                <span class=\"ui-inputswitch-onlabel\">{{onLabel}}</span>\n            </div>\n            <div [ngClass]=\"{'ui-inputswitch-handle ui-state-default':true, 'ui-state-focus':focused}\"></div>\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in type=\"checkbox\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\" readonly=\"readonly\"/>\n            </div>\n        </div>\n    ",
 	            providers: [INPUTSWITCH_VALUE_ACCESSOR, domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
 	    ], InputSwitch);
 	    return InputSwitch;
 	}());
 	exports.InputSwitch = InputSwitch;
-
+	
 
 /***/ },
 /* 1082 */
@@ -35604,45 +35608,45 @@ webpackJsonp([2],[
 	        this.rows = (linesCount >= this.rowsDefault) ? (linesCount + 1) : this.rowsDefault;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], InputTextarea.prototype, "autoResize", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], InputTextarea.prototype, "rows", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], InputTextarea.prototype, "cols", void 0);
 	    __decorate([
-	        core_1.HostListener('mouseover', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('mouseover', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], InputTextarea.prototype, "onMouseover", null);
 	    __decorate([
-	        core_1.HostListener('mouseout', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('mouseout', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], InputTextarea.prototype, "onMouseout", null);
 	    __decorate([
-	        core_1.HostListener('focus', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('focus', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], InputTextarea.prototype, "onFocus", null);
 	    __decorate([
-	        core_1.HostListener('blur', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('blur', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], InputTextarea.prototype, "onBlur", null);
 	    __decorate([
-	        core_1.HostListener('keyup', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('keyup', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], InputTextarea.prototype, "onKeyup", null);
 	    InputTextarea = __decorate([
@@ -35659,13 +35663,13 @@ webpackJsonp([2],[
 	                '[attr.rows]': 'rows',
 	                '[attr.cols]': 'cols'
 	            }
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef])
 	    ], InputTextarea);
 	    return InputTextarea;
 	}());
 	exports.InputTextarea = InputTextarea;
-
+	
 
 /***/ },
 /* 1083 */
@@ -35815,27 +35819,27 @@ webpackJsonp([2],[
 	        this.documentClickListener();
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Lightbox.prototype, "images", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Lightbox.prototype, "type", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Lightbox.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Lightbox.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Lightbox.prototype, "easing", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Lightbox.prototype, "effectDuration", void 0);
 	    Lightbox = __decorate([
@@ -35843,13 +35847,13 @@ webpackJsonp([2],[
 	            selector: 'p-lightbox',
 	            template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\" *ngIf=\"(type == 'image')\">\n            <a *ngFor=\"let image of images; let i = index;\" [href]=\"image.source\" (click)=\"onImageClick($event,image,i,content)\">\n                <img [src]=\"image.thumbnail\" [title]=\"image.title\" [alt]=\"image.alt\">\n            </a>\n        </div>\n        <span [ngStyle]=\"style\" [class]=\"styleClass\" *ngIf=\"(type == 'content')\" (click)=\"onLinkClick($event,content)\">\n            <ng-content select=\"a\"></ng-content>\n        </span>\n        <div class=\"ui-lightbox ui-widget ui-helper-hidden ui-corner-all ui-shadow\" [style.display]=\"visible ? 'block' : 'none'\" [style.zIndex]=\"zindex\"\n            [style.transitionProperty]=\"'all'\" [style.transitionDuration]=\"effectDuration\" [style.transitionTimingFunction]=\"easing\" (click)=\"preventDocumentClickListener=true\">\n           <div class=\"ui-lightbox-content-wrapper\">\n              <a class=\"ui-state-default ui-lightbox-nav-left ui-corner-right\" [style.zIndex]=\"zindex + 1\" (click)=\"prev(img)\"\n                [ngClass]=\"{'ui-helper-hidden':!leftVisible}\"><span class=\"fa fa-fw fa-caret-left\"></span></a>\n              <div #content class=\"ui-lightbox-content ui-corner-all\" #content [ngClass]=\"{'ui-lightbox-loading': loading}\" \n                [style.transitionProperty]=\"'width,height'\" [style.transitionDuration]=\"effectDuration\" [style.transitionTimingFunction]=\"easing\">\n                <img #img [src]=\"currentImage ? currentImage.source||'' : ''\" (load)=\"onImageLoad($event,content)\" style=\"display:none\">\n                <ng-content></ng-content>\n              </div>\n              <a class=\"ui-state-default ui-lightbox-nav-right ui-corner-left ui-helper-hidden\" [style.zIndex]=\"zindex + 1\" (click)=\"next(img)\"\n                [ngClass]=\"{'ui-helper-hidden':!rightVisible}\"><span class=\"fa fa-fw fa-caret-right\"></span></a>\n           </div>\n           <div class=\"ui-lightbox-caption ui-widget-header\" [style.display]=\"captionText ? 'block' : 'none'\">\n              <span class=\"ui-lightbox-caption-text\">{{captionText}}</span><a class=\"ui-lightbox-close ui-corner-all\" href=\"#\" (click)=\"hide($event)\"><span class=\"fa fa-fw fa-close\"></span></a>\n              <div style=\"clear:both\"></div>\n           </div>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
 	    ], Lightbox);
 	    return Lightbox;
 	}());
 	exports.Lightbox = Lightbox;
-
+	
 
 /***/ },
 /* 1084 */
@@ -36031,31 +36035,31 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Listbox.prototype, "options", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Listbox.prototype, "multiple", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Listbox.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Listbox.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Listbox.prototype, "disabled", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Listbox.prototype, "onChange", void 0);
 	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef),
+	        core_1.ContentChild(core_1.TemplateRef), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], Listbox.prototype, "itemTemplate", void 0);
 	    Listbox = __decorate([
@@ -36063,13 +36067,13 @@ webpackJsonp([2],[
 	            selector: 'p-listbox',
 	            template: "\n        <div [ngClass]=\"{'ui-listbox ui-inputtext ui-widget ui-widget-content ui-corner-all':true,'ui-state-disabled':disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul class=\"ui-listbox-list\" *ngIf=\"!itemTemplate\" (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                <li *ngFor=\"let option of options\" class=\"ui-listbox-item ui-corner-all\">\n                    {{option.label}}\n                </li>\n            </ul>\n            <ul class=\"ui-listbox-list\" *ngIf=\"itemTemplate\" (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                <template ngFor [ngForOf]=\"options\" [ngForTemplate]=\"itemTemplate\"></template>\n            </ul>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler, LISTBOX_VALUE_ACCESSOR]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.IterableDiffers])
 	    ], Listbox);
 	    return Listbox;
 	}());
 	exports.Listbox = Listbox;
-
+	
 
 /***/ },
 /* 1085 */
@@ -36175,19 +36179,19 @@ webpackJsonp([2],[
 	        return columnClass;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], MegaMenu.prototype, "model", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], MegaMenu.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], MegaMenu.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], MegaMenu.prototype, "orientation", void 0);
 	    MegaMenu = __decorate([
@@ -36195,13 +36199,13 @@ webpackJsonp([2],[
 	            selector: 'p-megaMenu',
 	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\"\n            [ngClass]=\"{'ui-menu ui-menubar ui-megamenu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix':true,'ui-megamenu-vertical': orientation == 'vertical'}\">\n            <ul class=\"ui-menu-list ui-helper-reset\">\n                <template ngFor let-category [ngForOf]=\"model\">\n                    <li #item [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':category.items,'ui-menuitem-active':item==activeItem}\"\n                        (mouseenter)=\"onItemMouseEnter($event, item)\" (mouseleave)=\"onItemMouseLeave($event, item)\">\n                        <a #link class=\"ui-menuitem-link ui-corner-all ui-submenu-link\" [ngClass]=\"{'ui-state-hover':link==activeLink}\">\n                            <span class=\"ui-submenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-down':orientation=='horizontal','fa-caret-right':orientation=='vertical'}\"></span>\n                            <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"category.icon\"></span>\n                            {{category.label}}\n                        </a>\n                        <div class=\"ui-megamenu-panel ui-widget-content ui-menu-list ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow\">\n                            <div class=\"ui-grid\">\n                                <div class=\"ui-grid-row\">\n                                    <template ngFor let-column [ngForOf]=\"category.items\">\n                                        <div [class]=\"getColumnClass(category)\">\n                                            <template ngFor let-submenu [ngForOf]=\"column\">\n                                                <ul class=\"ui-menu-list ui-helper-reset\">\n                                                    <li class=\"ui-widget-header ui-corner-all\"><h3>{{submenu.label}}</h3></li>\n                                                    <li *ngFor=\"let item of submenu.items\" class=\"ui-menuitem ui-widget ui-corner-all\">\n                                                        <a #link [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [ngClass]=\"{'ui-state-hover':link==hoveredItem}\"\n                                                            (mouseenter)=\"hoveredItem=$event.target\" (mouseleave)=\"hoveredItem=null\" (click)=\"itemClick($event, item)\">\n                                                            <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"item.icon\" [ngClass]=\"item.icon\"></span>\n                                                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                                                        </a>\n                                                    </li>\n                                                </ul>\n                                            </template>\n                                        </div>\n                                    </template>\n                                </div>\n                            </div>\n                        </div>\n                    </li>\n                </template>\n            </ul>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer, router_1.Router])
 	    ], MegaMenu);
 	    return MegaMenu;
 	}());
 	exports.MegaMenu = MegaMenu;
-
+	
 
 /***/ },
 /* 1086 */
@@ -36306,19 +36310,19 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Menu.prototype, "model", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Menu.prototype, "popup", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Menu.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Menu.prototype, "styleClass", void 0);
 	    Menu = __decorate([
@@ -36326,13 +36330,13 @@ webpackJsonp([2],[
 	            selector: 'p-menu',
 	            template: "\n        <div [ngClass]=\"{'ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix':true,'ui-menu-dynamic ui-shadow':popup}\" \n            [class]=\"styleClass\" [ngStyle]=\"style\" (click)=\"preventDocumentDefault=true\">\n            <ul class=\"ui-menu-list ui-helper-reset\">\n                <template ngFor let-submenu [ngForOf]=\"model\" *ngIf=\"hasSubMenu()\">\n                    <li class=\"ui-widget-header ui-corner-all\"><h3>{{submenu.label}}</h3></li>\n                    <li *ngFor=\"let item of submenu.items\" class=\"ui-menuitem ui-widget ui-corner-all\">\n                        <a #link [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [ngClass]=\"{'ui-state-hover':link==hoveredItem}\"\n                            (mouseenter)=\"hoveredItem=$event.target\" (mouseleave)=\"hoveredItem=null\" (click)=\"itemClick($event, item)\">\n                            <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"item.icon\" [ngClass]=\"item.icon\"></span>\n                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                        </a>\n                    </li>\n                </template>\n                <template ngFor let-item [ngForOf]=\"model\" *ngIf=\"!hasSubMenu()\">\n                    <li class=\"ui-menuitem ui-widget ui-corner-all\">\n                        <a #link [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [ngClass]=\"{'ui-state-hover':link==hoveredItem}\"\n                            (mouseenter)=\"hoveredItem=$event.target\" (mouseleave)=\"hoveredItem=null\" (click)=\"itemClick($event, item)\">\n                            <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"item.icon\" [ngClass]=\"item.icon\"></span>\n                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                        </a>\n                    </li>\n                </template>\n            </ul>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer, router_1.Router])
 	    ], Menu);
 	    return Menu;
 	}());
 	exports.Menu = Menu;
-
+	
 
 /***/ },
 /* 1087 */
@@ -36399,11 +36403,11 @@ webpackJsonp([2],[
 	        this.activeLink = null;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], MenubarSub.prototype, "item", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], MenubarSub.prototype, "root", void 0);
 	    MenubarSub = __decorate([
@@ -36412,7 +36416,7 @@ webpackJsonp([2],[
 	            template: "\n        <ul [ngClass]=\"{'ui-helper-reset':root, 'ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow':!root}\" class=\"ui-menu-list\"\n            (click)=\"listClick($event)\">\n            <template ngFor let-child [ngForOf]=\"(root ? item : item.items)\">\n                <li #item [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':child.items,'ui-menuitem-active':item==activeItem}\"\n                    (mouseenter)=\"onItemMouseEnter($event, item)\" (mouseleave)=\"onItemMouseLeave($event, item)\">\n                    <a #link [href]=\"child.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [ngClass]=\"{'ui-state-hover':link==activeLink}\" (click)=\"itemClick($event, child)\">\n                        <span class=\"ui-submenu-icon fa fa-fw\" *ngIf=\"child.items\" [ngClass]=\"{'fa-caret-down':root,'fa-caret-right':!root}\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <p-menubarSub class=\"ui-submenu\" [item]=\"child\" *ngIf=\"child.items\"></p-menubarSub>\n                </li>\n            </template>\n        </ul>\n    ",
 	            directives: [MenubarSub],
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [domhandler_1.DomHandler, router_1.Router])
 	    ], MenubarSub);
 	    return MenubarSub;
@@ -36444,15 +36448,15 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Menubar.prototype, "model", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Menubar.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Menubar.prototype, "styleClass", void 0);
 	    Menubar = __decorate([
@@ -36461,13 +36465,13 @@ webpackJsonp([2],[
 	            template: "\n        <div [ngClass]=\"{'ui-menubar ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix':true}\" \n            [class]=\"styleClass\" [ngStyle]=\"style\">\n            <p-menubarSub [item]=\"model\" root=\"root\"></p-menubarSub>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler],
 	            directives: [MenubarSub]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
 	    ], Menubar);
 	    return Menubar;
 	}());
 	exports.Menubar = Menubar;
-
+	
 
 /***/ },
 /* 1088 */
@@ -36499,24 +36503,24 @@ webpackJsonp([2],[
 	        event.preventDefault();
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Messages.prototype, "value", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Messages.prototype, "closable", void 0);
 	    Messages = __decorate([
 	        core_1.Component({
 	            selector: 'p-messages',
 	            template: "\n        <div *ngIf=\"hasMessages()\" class=\"ui-messages ui-widget ui-corner-all\" style=\"display:block\"\n                    [ngClass]=\"{'ui-messages-info':(value[0].severity === 'info'),'ui-messages-warn':(value[0].severity === 'warn'),'ui-messages-error':(value[0].severity === 'error')}\">\n            <a href=\"#\" class=\"ui-messages-close\" (click)=\"clear($event)\" *ngIf=\"closable\">\n                <i class=\"fa fa-close\"></i>\n            </a>\n            <span class=\"ui-messages-icon fa fa-2x fa-info-circle\"></span>\n            <ul>\n                <li *ngFor=\"let msg of value\">\n                    <span class=\"ui-messages-summary\">{{msg.summary}}</span>\n                    <span class=\"ui-messages-detail\">{{msg.detail}}</span>\n                </li>\n            </ul>\n        </div>\n    "
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], Messages);
 	    return Messages;
 	}());
 	exports.Messages = Messages;
-
+	
 
 /***/ },
 /* 1089 */
@@ -36751,35 +36755,35 @@ webpackJsonp([2],[
 	        this.documentClickListener();
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], MultiSelect.prototype, "options", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], MultiSelect.prototype, "onChange", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], MultiSelect.prototype, "scrollHeight", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], MultiSelect.prototype, "defaultLabel", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], MultiSelect.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], MultiSelect.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], MultiSelect.prototype, "disabled", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], MultiSelect.prototype, "overlayVisible", void 0);
 	    MultiSelect = __decorate([
@@ -36787,13 +36791,13 @@ webpackJsonp([2],[
 	            selector: 'p-multiSelect',
 	            template: "\n        <div [ngClass]=\"{'ui-multiselect ui-widget ui-state-default ui-corner-all':true,'ui-state-focus': focus,'ui-state-disabled': disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\"\n            (mouseenter)=\"onMouseenter($event)\" (mouseleave)=\"onMouseleave($event)\" (click)=\"onMouseclick($event,in)\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input #in type=\"text\" readonly=\"readonly\" (focus)=\"onFocus($event)\" (blur)=\"onBlur($event)\">\n            </div>\n            <div class=\"ui-multiselect-label-container\" [title]=\"valuesAsString\">\n                <label [ngClass]=\"{'ui-multiselect-label ui-corner-all':true,'ui-state-hover':hover,'ui-state-focus':focus}\">{{valuesAsString}}</label>\n            </div>\n            <div [ngClass]=\"{'ui-multiselect-trigger ui-state-default ui-corner-right':true,'ui-state-hover':hover,'ui-state-focus':focus}\">\n                <span class=\"fa fa-fw fa-caret-down\"></span>\n            </div>\n            <div class=\"ui-multiselect-panel ui-widget ui-widget-content ui-corner-all ui-shadow\" [style.display]=\"overlayVisible ? 'block' : 'none'\" (click)=\"panelClick=true\">\n                <div class=\"ui-widget-header ui-corner-all ui-multiselect-header ui-helper-clearfix\">\n                    <div class=\"ui-chkbox ui-widget\">\n                        <div class=\"ui-helper-hidden-accessible\">\n                            <input #cb type=\"checkbox\" readonly=\"readonly\" [checked]=\"isAllChecked()\">\n                        </div>\n                        <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" [ngClass]=\"{'ui-state-hover':hoverToggleAll}\"\n                            (mouseenter)=\"hoverToggleAll=true\" (mouseleave)=\"hoverToggleAll=false\" (click)=\"toggleAll($event,cb)\">\n                            <span class=\"ui-chkbox-icon ui-c\" [ngClass]=\"{'fa fa-fw fa-check':isAllChecked()}\"></span>\n                        </div>\n                    </div>\n                    <div class=\"ui-multiselect-filter-container\">\n                        <input type=\"text\" role=\"textbox\" (input)=\"onFilter($event)\"\n                                    class=\"ui-inputtext ui-widget ui-state-default ui-corner-all\">\n                        <span class=\"fa fa-fw fa-search\"></span>\n                    </div>\n                    <a class=\"ui-multiselect-close ui-corner-all\" href=\"#\" (click)=\"close($event)\">\n                        <span class=\"fa fa-close\"></span>\n                    </a>\n                </div>\n                <div class=\"ui-multiselect-items-wrapper\">\n                    <ul class=\"ui-multiselect-items ui-multiselect-list ui-widget-content ui-widget ui-corner-all ui-helper-reset\" [style.max-height]=\"scrollHeight||'auto'\">\n                        <li #item *ngFor=\"let option of options\" class=\"ui-multiselect-item ui-corner-all\" (click)=\"onItemClick($event,option.value)\" \n                            [style.display]=\"isItemVisible(option) ? 'block' : 'none'\"\n                            [ngClass]=\"{'ui-state-highlight':isSelected(option.value),'ui-state-hover':hoveredItem==item}\" (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\">\n                            <div class=\"ui-chkbox ui-widget\">\n                                <div class=\"ui-helper-hidden-accessible\">\n                                    <input type=\"checkbox\" readonly=\"readonly\" [checked]=\"isSelected(option.value)\">\n                                </div>\n                                <div class=\"ui-chkbox-box ui-widget ui-corner-all ui-state-default\" [ngClass]=\"{'ui-state-active':isSelected(option.value)}\">\n                                    <span class=\"ui-chkbox-icon ui-c\" [ngClass]=\"{'fa fa-fw fa-check':isSelected(option.value)}\"></span>\n                                </div>\n                            </div>\n                            <label>{{option.label}}</label>\n                        </li>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler, MULTISELECT_VALUE_ACCESSOR]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer, core_1.IterableDiffers])
 	    ], MultiSelect);
 	    return MultiSelect;
 	}());
 	exports.MultiSelect = MultiSelect;
-
+	
 
 /***/ },
 /* 1090 */
@@ -36952,35 +36956,35 @@ webpackJsonp([2],[
 	        return this.domHandler.find(listElement, 'li.ui-state-highlight');
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], OrderList.prototype, "value", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], OrderList.prototype, "header", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], OrderList.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], OrderList.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], OrderList.prototype, "listStyle", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], OrderList.prototype, "responsive", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], OrderList.prototype, "onReorder", void 0);
 	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef),
+	        core_1.ContentChild(core_1.TemplateRef), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], OrderList.prototype, "itemTemplate", void 0);
 	    OrderList = __decorate([
@@ -36989,13 +36993,13 @@ webpackJsonp([2],[
 	            template: "\n        <div [ngClass]=\"{'ui-orderlist ui-grid ui-widget':true,'ui-grid-responsive':responsive}\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-grid-row\">\n                <div class=\"ui-orderlist-controls ui-grid-col-2\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown($event,listelement)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom($event,listelement)\"></button>\n                </div>\n                <div class=\"ui-grid-col-10\">\n                    <div class=\"ui-orderlist-caption ui-widget-header ui-corner-top\" *ngIf=\"header\">{{header}}</div>\n                    <ul #listelement class=\"ui-widget-content ui-orderlist-list ui-corner-bottom\" [ngStyle]=\"listStyle\" \n                        (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                        <template ngFor [ngForOf]=\"value\" [ngForTemplate]=\"itemTemplate\"></template>\n                    </ul>\n                </div>\n            </div>\n        </div>\n    ",
 	            directives: [button_1.Button],
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
 	    ], OrderList);
 	    return OrderList;
 	}());
 	exports.OrderList = OrderList;
-
+	
 
 /***/ },
 /* 1091 */
@@ -37097,35 +37101,35 @@ webpackJsonp([2],[
 	        this.target = null;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], OverlayPanel.prototype, "dismissable", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], OverlayPanel.prototype, "showCloseIcon", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], OverlayPanel.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], OverlayPanel.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], OverlayPanel.prototype, "onBeforeShow", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], OverlayPanel.prototype, "onAfterShow", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], OverlayPanel.prototype, "onBeforeHide", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], OverlayPanel.prototype, "onAfterHide", void 0);
 	    OverlayPanel = __decorate([
@@ -37133,13 +37137,13 @@ webpackJsonp([2],[
 	            selector: 'p-overlayPanel',
 	            template: "\n        <div [ngClass]=\"'ui-overlaypanel ui-widget ui-widget-content ui-corner-all ui-shadow'\" [ngStyle]=\"style\" [class]=\"styleClass\"\n            [style.display]=\"visible ? 'block' : 'none'\" (click)=\"onPanelClick()\">\n            <div class=\"ui-overlaypanel-content\">\n                <ng-content></ng-content>\n            </div>\n            <a href=\"#\" *ngIf=\"showCloseIcon\" class=\"ui-overlaypanel-close ui-state-default\" [ngClass]=\"{'ui-state-hover':hoverCloseIcon}\"\n                (mouseenter)=\"hoverCloseIcon=true\" (mouseleave)=\"hoverCloseIcon=false\" (click)=\"onCloseClick($event)\"><span class=\"fa fa-fw fa-close\"></span></a>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
 	    ], OverlayPanel);
 	    return OverlayPanel;
 	}());
 	exports.OverlayPanel = OverlayPanel;
-
+	
 
 /***/ },
 /* 1092 */
@@ -37180,44 +37184,44 @@ webpackJsonp([2],[
 	        this.collapsed = true;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Panel.prototype, "toggleable", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Panel.prototype, "header", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Panel.prototype, "collapsed", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Panel.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Panel.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Panel.prototype, "onBeforeToggle", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Panel.prototype, "onAfterToggle", void 0);
 	    Panel = __decorate([
 	        core_1.Component({
 	            selector: 'p-panel',
 	            template: "\n        <div [ngClass]=\"'ui-panel ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div class=\"ui-panel-titlebar ui-widget-header ui-helper-clearfix ui-corner-all\">\n                <span class=\"ui-panel-title\" *ngIf=\"header\">{{header}}</span>\n                <ng-content select=\"header\"></ng-content>\n                <a *ngIf=\"toggleable\" class=\"ui-panel-titlebar-icon ui-panel-titlebar-toggler ui-corner-all ui-state-default\" href=\"#\"\n                    [ngClass]=\"{'ui-state-hover':hoverToggler}\" (mouseenter)=\"hoverToggler=true\" (mouseleave)=\"hoverToggler=false\" (click)=\"toggle($event)\">\n                    <span class=\"fa fa-fw\" [ngClass]=\"{'fa-minus': !collapsed,'fa-plus':collapsed}\"></span>\n                </a>\n            </div>\n            <div class=\"ui-panel-content ui-widget-content\" [style.display]=\"collapsed ? 'none' : 'block'\">\n                <ng-content></ng-content>\n            </div>\n        </div>\n    "
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], Panel);
 	    return Panel;
 	}());
 	exports.Panel = Panel;
-
+	
 
 /***/ },
 /* 1093 */
@@ -37269,11 +37273,11 @@ webpackJsonp([2],[
 	        return this.activeItems.indexOf(item) != -1;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], PanelMenuSub.prototype, "item", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], PanelMenuSub.prototype, "expanded", void 0);
 	    PanelMenuSub = __decorate([
@@ -37281,7 +37285,7 @@ webpackJsonp([2],[
 	            selector: 'p-panelMenuSub',
 	            template: "\n        <ul class=\"ui-menu-list ui-helper-reset\" [style.display]=\"expanded ? 'block' : 'none'\">\n            <li *ngFor=\"let child of item.items\" class=\"ui-menuitem ui-corner-all\" [ngClass]=\"{'ui-menu-parent':child.items}\">\n                <a #link [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" \n                    [ngClass]=\"{'ui-menuitem-link-hasicon':child.icon&&child.items,'ui-state-hover':(hoveredLink==link)}\" (click)=\"onClick($event,child)\"\n                    (mouseenter)=\"hoveredLink=link\" (mouseleave)=\"hoveredLink=null\">\n                    <span class=\"ui-panelmenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-right':!isActive(child),'fa-caret-down':isActive(child)}\" *ngIf=\"child.items\"></span>\n                    <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"child.icon\" *ngIf=\"child.icon\"></span>\n                    <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                </a>\n                <p-panelMenuSub [item]=\"child\" [expanded]=\"isActive(child)\" *ngIf=\"child.items\"></p-panelMenuSub>\n            </li>\n        </ul>\n    ",
 	            directives: [PanelMenuSub]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [router_1.Router])
 	    ], PanelMenuSub);
 	    return PanelMenuSub;
@@ -37323,15 +37327,15 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], PanelMenu.prototype, "model", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], PanelMenu.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], PanelMenu.prototype, "styleClass", void 0);
 	    PanelMenu = __decorate([
@@ -37339,13 +37343,13 @@ webpackJsonp([2],[
 	            selector: 'p-panelMenu',
 	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"'ui-panelmenu ui-widget'\">\n            <div *ngFor=\"let item of model\" class=\"ui-menuitem-panel\">\n                <div tabindex=\"0\" [ngClass]=\"{'ui-widget ui-panelmenu-header ui-state-default':true,'ui-corner-all':!isActive(item),\n                    'ui-state-active ui-corner-top':isActive(item),'ui-state-hover':(item == hoveredItem)}\">\n                    <span class=\"ui-panelmenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-right':!isActive(item),'fa-caret-down':isActive(item)}\"></span>\n                    <a [href]=\"item.url||'#'\" [ngClass]=\"{'ui-panelmenu-headerlink-hasicon':item.icon}\" (click)=\"headerClick($event,item)\"\n                        (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\">\n                        <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"item.icon\" *ngIf=\"item.icon\"></span>\n                        <span>{{item.label}}</span>\n                    </a>\n                </div>\n                <div class=\"ui-panelmenu-content ui-widget-content\" [style.display]=\"isActive(item) ? 'block' : 'none'\">\n                    <p-panelMenuSub [item]=\"item\" [expanded]=\"true\"></p-panelMenuSub>\n                </div>\n            </div>\n        </div>\n    ",
 	            directives: [PanelMenuSub]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef])
 	    ], PanelMenu);
 	    return PanelMenu;
 	}());
 	exports.PanelMenu = PanelMenu;
-
+	
 
 /***/ },
 /* 1094 */
@@ -37457,49 +37461,49 @@ webpackJsonp([2],[
 	        this.info = null;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Password.prototype, "promptLabel", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Password.prototype, "weakLabel", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Password.prototype, "mediumLabel", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Password.prototype, "strongLabel", void 0);
 	    __decorate([
-	        core_1.HostListener('mouseover', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('mouseover', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Password.prototype, "onMouseover", null);
 	    __decorate([
-	        core_1.HostListener('mouseout', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('mouseout', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Password.prototype, "onMouseout", null);
 	    __decorate([
-	        core_1.HostListener('focus', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('focus', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Password.prototype, "onFocus", null);
 	    __decorate([
-	        core_1.HostListener('blur', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('blur', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Password.prototype, "onBlur", null);
 	    __decorate([
-	        core_1.HostListener('keyup', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('keyup', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Password.prototype, "onKeyup", null);
 	    Password = __decorate([
@@ -37515,13 +37519,13 @@ webpackJsonp([2],[
 	                '[class.ui-state-disabled]': 'isDisabled()'
 	            },
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
 	    ], Password);
 	    return Password;
 	}());
 	exports.Password = Password;
-
+	
 
 /***/ },
 /* 1095 */
@@ -37698,43 +37702,43 @@ webpackJsonp([2],[
 	    PickList.prototype.ngOnDestroy = function () {
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], PickList.prototype, "source", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], PickList.prototype, "target", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], PickList.prototype, "sourceHeader", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], PickList.prototype, "targetHeader", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], PickList.prototype, "responsive", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], PickList.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], PickList.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], PickList.prototype, "sourceStyle", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], PickList.prototype, "targetStyle", void 0);
 	    __decorate([
-	        core_1.ContentChild(core_1.TemplateRef),
+	        core_1.ContentChild(core_1.TemplateRef), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], PickList.prototype, "itemTemplate", void 0);
 	    PickList = __decorate([
@@ -37743,13 +37747,13 @@ webpackJsonp([2],[
 	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"{'ui-picklist ui-widget ui-helper-clearfix': true, 'ui-picklist-responsive': responsive}\">\n            <div class=\"ui-picklist-source-controls ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp(sourcelist,source)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop(sourcelist,source)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown(sourcelist,source)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom(sourcelist,source)\"></button>\n                </div>\n            </div>\n            <div class=\"ui-picklist-listwrapper ui-picklist-source-wrapper\">\n                <div class=\"ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr\" *ngIf=\"sourceHeader\">{{sourceHeader}}</div>\n                <ul #sourcelist class=\"ui-widget-content ui-picklist-list ui-picklist-source ui-corner-bottom\" [ngStyle]=\"sourceStyle\"\n                    (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                    <template ngFor [ngForOf]=\"source\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n            <div class=\"ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-right\" (click)=\"moveRight(sourcelist)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-right\" (click)=\"moveAllRight(sourcelist)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-left\" (click)=\"moveLeft(targetlist)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-left\" (click)=\"moveAllLeft(targetlist)\"></button>\n                </div>\n            </div>\n            <div class=\"ui-picklist-listwrapper ui-picklist-target-wrapper\">\n                <div class=\"ui-picklist-caption ui-widget-header ui-corner-tl ui-corner-tr\" *ngIf=\"targetHeader\">{{targetHeader}}</div>\n                <ul #targetlist class=\"ui-widget-content ui-picklist-list ui-picklist-source ui-corner-bottom\" [ngStyle]=\"targetStyle\"\n                    (mouseover)=\"onMouseover($event)\" (mouseout)=\"onMouseout($event)\" (click)=\"onClick($event)\">\n                    <template ngFor [ngForOf]=\"target\" [ngForTemplate]=\"itemTemplate\"></template>\n                </ul>\n            </div>\n            <div class=\"ui-picklist-target-controls ui-picklist-buttons\">\n                <div class=\"ui-picklist-buttons-cell\">\n                    <button type=\"button\" pButton icon=\"fa-angle-up\" (click)=\"moveUp(targetlist,target)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-up\" (click)=\"moveTop(targetlist,target)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-down\" (click)=\"moveDown(targetlist,target)\"></button>\n                    <button type=\"button\" pButton icon=\"fa-angle-double-down\" (click)=\"moveBottom(targetlist,target)\"></button>\n                </div>\n            </div>\n        </div>\n    ",
 	            directives: [button_1.Button],
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
 	    ], PickList);
 	    return PickList;
 	}());
 	exports.PickList = PickList;
-
+	
 
 /***/ },
 /* 1096 */
@@ -37770,20 +37774,20 @@ webpackJsonp([2],[
 	    function ProgressBar() {
 	    }
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], ProgressBar.prototype, "value", void 0);
 	    ProgressBar = __decorate([
 	        core_1.Component({
 	            selector: 'p-progressBar',
 	            template: "\n        <div class=\"ui-progressbar ui-widget ui-widget-content ui-corner-all\" role=\"progressbar\" aria-valuemin=\"0\" [attr.aria-valuenow]=\"value\" aria-valuemax=\"100\">\n            <div class=\"ui-progressbar-value ui-progressbar-value-animate ui-widget-header ui-corner-all\" [style.width]=\"value + '%'\" style=\"display:block\"></div>\n            <div class=\"ui-progressbar-label\" [style.display]=\"value ? 'block' : 'none'\">{{value}}%</div>\n        </div>\n    "
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], ProgressBar);
 	    return ProgressBar;
 	}());
 	exports.ProgressBar = ProgressBar;
-
+	
 
 /***/ },
 /* 1097 */
@@ -37835,19 +37839,19 @@ webpackJsonp([2],[
 	        this.onModelTouched = fn;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], RadioButton.prototype, "value", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], RadioButton.prototype, "name", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], RadioButton.prototype, "disabled", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], RadioButton.prototype, "click", void 0);
 	    RadioButton = __decorate([
@@ -37855,13 +37859,13 @@ webpackJsonp([2],[
 	            selector: 'p-radioButton',
 	            template: "\n        <div class=\"ui-radiobutton ui-widget\">\n            <div class=\"ui-helper-hidden-accessible\">\n                <input type=\"radio\" [attr.name]=\"name\" [attr.value]=\"value\" [checked]=\"checked\" (blur)=\"onModelTouched()\">\n            </div>\n            <div class=\"ui-radiobutton-box ui-widget ui-radiobutton-relative ui-state-default\" (click)=\"onclick()\"\n                        (mouseenter)=\"onMouseEnter()\" (mouseleave)=\"onMouseLeave()\" [ngClass]=\"{'ui-state-hover':hover&&!disabled,'ui-state-active':checked,'ui-state-disabled':disabled}\">\n                <span class=\"ui-radiobutton-icon\" [ngClass]=\"{'fa fa-fw fa-circle':checked}\"></span>\n            </div>\n        </div>\n    ",
 	            providers: [RADIO_VALUE_ACCESSOR]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], RadioButton);
 	    return RadioButton;
 	}());
 	exports.RadioButton = RadioButton;
-
+	
 
 /***/ },
 /* 1098 */
@@ -37927,27 +37931,27 @@ webpackJsonp([2],[
 	        this.onModelTouched = fn;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Rating.prototype, "disabled", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Rating.prototype, "readonly", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Rating.prototype, "stars", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Rating.prototype, "cancel", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Rating.prototype, "onRate", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Rating.prototype, "onCancel", void 0);
 	    Rating = __decorate([
@@ -37955,13 +37959,13 @@ webpackJsonp([2],[
 	            selector: 'p-rating',
 	            template: "\n        <div class=\"ui-rating\" [ngClass]=\"{'ui-state-disabled': disabled}\">\n            <div class=\"ui-rating-cancel\" *ngIf=\"cancel\" (click)=\"clear($event)\" [ngClass]=\"{'ui-rating-cancel-hover':hoverCancel}\"\n             (mouseenter)=\"hoverCancel=true\" (mouseleave)=\"hoverCancel=false\"><a></a></div>\n            <div class=\"ui-rating-star\" *ngFor=\"let star of starsArray;let i=index\" (click)=\"rate($event,i)\"\n             [ngClass]=\"{'ui-rating-star-on':(i < value)}\"><a></a></div>\n        </div>\n    ",
 	            providers: [RATING_VALUE_ACCESSOR]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], Rating);
 	    return Rating;
 	}());
 	exports.Rating = Rating;
-
+	
 
 /***/ },
 /* 1099 */
@@ -38145,196 +38149,196 @@ webpackJsonp([2],[
 	        this.schedule = null;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Schedule.prototype, "events", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "header", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Schedule.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Schedule.prototype, "rtl", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Schedule.prototype, "weekends", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], Schedule.prototype, "hiddenDays", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Schedule.prototype, "fixedWeekCount", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Schedule.prototype, "weekNumbers", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "businessHours", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "height", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "contentHeight", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Schedule.prototype, "aspectRatio", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "eventLimit", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "defaultDate", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Schedule.prototype, "editable", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Schedule.prototype, "eventStartEditable", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Schedule.prototype, "eventDurationEditable", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Schedule.prototype, "defaultView", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Schedule.prototype, "allDaySlot", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "slotDuration", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "slotLabelInterval", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "snapDuration", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "scrollTime", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "minTime", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "maxTime", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Schedule.prototype, "slotEventOverlap", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Schedule.prototype, "nowIndicator", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Schedule.prototype, "dragRevertDuration", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Schedule.prototype, "dragOpacity", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Schedule.prototype, "dragScroll", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "eventOverlap", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "eventConstraint", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Schedule.prototype, "locale", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Schedule.prototype, "onDayClick", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Schedule.prototype, "onEventClick", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Schedule.prototype, "onEventMouseover", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Schedule.prototype, "onEventMouseout", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Schedule.prototype, "onEventDragStart", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Schedule.prototype, "onEventDragStop", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Schedule.prototype, "onEventDrop", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Schedule.prototype, "onEventResizeStart", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Schedule.prototype, "onEventResizeStop", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Schedule.prototype, "onEventResize", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Schedule.prototype, "viewRender", void 0);
 	    Schedule = __decorate([
 	        core_1.Component({
 	            selector: 'p-schedule',
 	            template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\"></div>\n    "
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.IterableDiffers])
 	    ], Schedule);
 	    return Schedule;
 	}());
 	exports.Schedule = Schedule;
-
+	
 
 /***/ },
 /* 1100 */
@@ -38407,27 +38411,27 @@ webpackJsonp([2],[
 	        return index;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], SelectButton.prototype, "options", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], SelectButton.prototype, "tabindex", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], SelectButton.prototype, "multiple", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], SelectButton.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SelectButton.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], SelectButton.prototype, "onChange", void 0);
 	    SelectButton = __decorate([
@@ -38435,13 +38439,13 @@ webpackJsonp([2],[
 	            selector: 'p-selectButton',
 	            template: "\n        <div [ngClass]=\"'ui-selectbutton ui-buttonset ui-widget ui-corner-all ui-buttonset-' + options.length\" (mouseleave)=\"hoveredItem=null\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <div *ngFor=\"let option of options;\" class=\"ui-button ui-widget ui-state-default ui-button-text-only\"\n                [ngClass]=\"{'ui-state-hover': hoveredItem == option,'ui-state-active':isSelected(option)}\"\n                (mouseenter)=\"hoveredItem=option\" (click)=\"onItemClick($event,option)\">\n                <span class=\"ui-button-text ui-c\">{{option.label}}</span>\n            </div>\n        </div>\n    ",
 	            providers: [SELECTBUTTON_VALUE_ACCESSOR]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], SelectButton);
 	    return SelectButton;
 	}());
 	exports.SelectButton = SelectButton;
-
+	
 
 /***/ },
 /* 1101 */
@@ -38495,27 +38499,27 @@ webpackJsonp([2],[
 	        this.activeItem = null;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], SlideMenuSub.prototype, "item", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], SlideMenuSub.prototype, "root", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SlideMenuSub.prototype, "backLabel", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SlideMenuSub.prototype, "menuWidth", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], SlideMenuSub.prototype, "effectDuration", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SlideMenuSub.prototype, "easing", void 0);
 	    SlideMenuSub = __decorate([
@@ -38524,7 +38528,7 @@ webpackJsonp([2],[
 	            template: "\n        <ul [ngClass]=\"{'ui-helper-reset ui-menu-rootlist':root, 'ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-child':!root}\" class=\"ui-menu-list\"\n            [style.width.px]=\"menuWidth\" [style.left.px]=\"root ? slideMenu.left : slideMenu.menuWidth\" \n            [style.transitionProperty]=\"root ? 'left' : 'none'\" [style.transitionDuration]=\"effectDuration\" [style.transitionTimingFunction]=\"easing\">\n            <template ngFor let-child [ngForOf]=\"(root ? item : item.items)\">\n                <li #listitem [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':child.items,'ui-menuitem-active':listitem==activeItem}\">\n                    <a #link [href]=\"child.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [ngClass]=\"{'ui-state-hover':link==hoveredLink,'ui-menuitem-link-parent':child.items}\" \n                        (click)=\"itemClick($event, child, listitem)\" (mouseenter)=\"hoveredLink=link\" (mouseleave)=\"hoveredLink=null\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <p-slideMenuSub class=\"ui-submenu\" [item]=\"child\" [menuWidth]=\"menuWidth\" *ngIf=\"child.items\"></p-slideMenuSub>\n                </li>\n            </template>\n        </ul>\n    ",
 	            directives: [SlideMenuSub]
 	        }),
-	        __param(0, core_1.Inject(core_1.forwardRef(function () { return SlideMenu; }))),
+	        __param(0, core_1.Inject(core_1.forwardRef(function () { return SlideMenu; }))), 
 	        __metadata('design:paramtypes', [SlideMenu, router_1.Router])
 	    ], SlideMenuSub);
 	    return SlideMenuSub;
@@ -38598,39 +38602,39 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], SlideMenu.prototype, "model", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], SlideMenu.prototype, "popup", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], SlideMenu.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SlideMenu.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], SlideMenu.prototype, "menuWidth", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], SlideMenu.prototype, "viewportHeight", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], SlideMenu.prototype, "effectDuration", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SlideMenu.prototype, "easing", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SlideMenu.prototype, "backLabel", void 0);
 	    SlideMenu = __decorate([
@@ -38639,13 +38643,13 @@ webpackJsonp([2],[
 	            template: "\n        <div [ngClass]=\"{'ui-menu ui-slidemenu ui-widget ui-widget-content ui-corner-all':true,'ui-menu-dynamic ui-shadow':popup}\" \n            [class]=\"styleClass\" [ngStyle]=\"style\" (click)=\"onClick($event)\">\n            <div class=\"ui-slidemenu-wrapper\" [style.height.px]=\"viewportHeight\">\n                <div class=\"ui-slidemenu-content\" [style.height.px]=\"viewportHeight - 30\">\n                    <p-slideMenuSub [item]=\"model\" root=\"root\" [menuWidth]=\"menuWidth\" [effectDuration]=\"effectDuration\" [easing]=\"easing\"></p-slideMenuSub>\n                </div>\n                <div class=\"ui-slidemenu-backward ui-widget-header ui-corner-all\" [style.display]=\"left ? 'block' : 'none'\" (click)=\"goBack()\">\n                    <span class=\"fa fa-fw fa-caret-left\"></span>{{backLabel}}\n                </div>\n            </div>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler],
 	            directives: [SlideMenuSub]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
 	    ], SlideMenu);
 	    return SlideMenu;
 	}());
 	exports.SlideMenu = SlideMenu;
-
+	
 
 /***/ },
 /* 1102 */
@@ -38725,43 +38729,43 @@ webpackJsonp([2],[
 	        this.initialized = false;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Slider.prototype, "animate", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Slider.prototype, "disabled", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Slider.prototype, "min", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Slider.prototype, "max", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Slider.prototype, "orientation", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Slider.prototype, "step", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Slider.prototype, "range", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Slider.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Slider.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Slider.prototype, "onChange", void 0);
 	    Slider = __decorate([
@@ -38769,13 +38773,13 @@ webpackJsonp([2],[
 	            selector: 'p-slider',
 	            template: "\n        <div [ngStyle]=\"style\" [class]=\"styleClass\"></div>\n    ",
 	            providers: [SLIDER_VALUE_ACCESSOR]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef])
 	    ], Slider);
 	    return Slider;
 	}());
 	exports.Slider = Slider;
-
+	
 
 /***/ },
 /* 1103 */
@@ -38967,31 +38971,31 @@ webpackJsonp([2],[
 	        this.onModelTouched = fn;
 	    };
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Spinner.prototype, "onChange", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Spinner.prototype, "step", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Spinner.prototype, "min", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Spinner.prototype, "max", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Spinner.prototype, "maxlength", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], Spinner.prototype, "size", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], Spinner.prototype, "disabled", void 0);
 	    Spinner = __decorate([
@@ -39000,13 +39004,13 @@ webpackJsonp([2],[
 	            template: "\n        <span class=\"ui-spinner ui-widget ui-corner-all\">\n            <input #in pInputText type=\"text\" class=\"ui-spinner-input\"\n            [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.readonly]=\"readonly\" [attr.disabled]=\"disabled\"\n            (keydown)=\"onInputKeydown($event,in)\" (input)=\"onInput($event)\" (blur)=\"onBlur(in)\" (change)=\"handleChange($event)\">\n            <a class=\"ui-spinner-button ui-spinner-up ui-corner-tr ui-button ui-widget ui-state-default ui-button-text-only\"\n                [ngClass]=\"{'ui-state-hover':hoverUp,'ui-state-active':activeUp,'ui-state-disabled':disabled}\"\n                (mouseenter)=\"onUpButtonMouseenter($event)\" (mouseleave)=\"onUpButtonMouseleave($event)\" (mousedown)=\"onUpButtonMousedown($event,in)\" (mouseup)=\"onUpButtonMouseup($event)\">\n                <span class=\"ui-button-text\">\n                    <span class=\"fa fa-fw fa-caret-up\"></span>\n                </span>\n            </a>\n            <a class=\"ui-spinner-button ui-spinner-down ui-corner-br ui-button ui-widget ui-state-default ui-button-text-only\"\n                [ngClass]=\"{'ui-state-hover':hoverDown,'ui-state-active':activeDown,'ui-state-disabled':disabled}\"\n                (mouseenter)=\"onDownButtonMouseenter($event)\" (mouseleave)=\"onDownButtonMouseleave($event)\" (mousedown)=\"onDownButtonMousedown($event,in)\" (mouseup)=\"onDownButtonMouseup($event)\">\n                <span class=\"ui-button-text\">\n                    <span class=\"fa fa-fw fa-caret-down\"></span>\n                </span>\n            </a>\n        </span>\n    ",
 	            directives: [inputtext_1.InputText],
 	            providers: [domhandler_1.DomHandler, SPINNER_VALUE_ACCESSOR]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
 	    ], Spinner);
 	    return Spinner;
 	}());
 	exports.Spinner = Spinner;
-
+	
 
 /***/ },
 /* 1104 */
@@ -39065,39 +39069,39 @@ webpackJsonp([2],[
 	        this.documentClickListener();
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SplitButton.prototype, "icon", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SplitButton.prototype, "iconPos", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SplitButton.prototype, "label", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], SplitButton.prototype, "onClick", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], SplitButton.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SplitButton.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], SplitButton.prototype, "menuStyle", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], SplitButton.prototype, "menuStyleClass", void 0);
 	    __decorate([
-	        core_1.ContentChildren(splitbuttonitem_1.SplitButtonItem),
+	        core_1.ContentChildren(splitbuttonitem_1.SplitButtonItem), 
 	        __metadata('design:type', core_1.QueryList)
 	    ], SplitButton.prototype, "items", void 0);
 	    SplitButton = __decorate([
@@ -39106,13 +39110,13 @@ webpackJsonp([2],[
 	            template: "\n        <div #container [ngClass]=\"'ui-splitbutton ui-buttonset ui-widget'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <button #defaultbtn type=\"button\" class=\"ui-button ui-widget ui-state-default ui-corner-left\"\n                [ngClass]=\"{'ui-button-text-only':(!icon&&label),'ui-button-icon-only':(icon&&!label),\n                'ui-button-text-icon-left':(icon&&label&&iconPos=='left'),'ui-button-text-icon-right':(icon&&label&&iconPos=='right'),\n                'ui-state-hover':hoverDefaultBtn,'ui-state-focus':focusDefaultBtn,'ui-state-active':activeDefaultBtn}\"\n                (mouseenter)=\"hoverDefaultBtn=true\" (mouseleave)=\"hoverDefaultBtn=false\"  (focus)=\"focusDefaultBtn=true\" (blur)=\"focusDefaultBtn=false\"\n                (mousedown)=\"activeDefaultBtn=true\" (mouseup)=\"activeDefaultBtn=false\" (click)=\"onDefaultButtonClick($event)\">\n                <span [ngClass]=\"'ui-button-icon-left ui-c fa fa-fw'\" [class]=\"icon\"></span>\n                <span class=\"ui-button-text ui-c\">{{label}}</span>\n            </button>\n            <button class=\"ui-splitbutton-menubutton ui-button ui-widget ui-state-default ui-button-icon-only ui-corner-right\" type=\"button\"\n                [ngClass]=\"{'ui-state-hover':hoverDropdown,'ui-state-focus':focusDropdown,'ui-state-active':activeDropdown}\"\n                (mouseenter)=\"hoverDropdown=true\" (mouseleave)=\"hoverDropdown=false\" (focus)=\"focusDropdown=true\" (blur)=\"focusDropdown=false\"\n                (mousedown)=\"activeDropdown=true\" (mouseup)=\"activeDropdown=false\" (click)=\"onDropdownClick($event,menu,container)\">\n                <span class=\"ui-button-icon-left ui-c fa fa-fw fa-caret-down\"></span>\n                <span class=\"ui-button-text ui-c\">ui-button</span>\n            </button>\n            <div #menu [ngClass]=\"'ui-menu ui-menu-dynamic ui-widget ui-widget-content ui-corner-all ui-helper-clearfix ui-shadow'\" [style.display]=\"menuVisible ? 'block' : 'none'\"\n                    [ngStyle]=\"menuStyle\" [class]=\"menuStyleClass\">\n                <ul class=\"ui-menu-list ui-helper-reset\">\n                    <li class=\"ui-menuitem ui-widget ui-corner-all\" role=\"menuitem\" *ngFor=\"let item of items\"\n                        (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\">\n                        <a [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" (click)=\"onItemClick($event,item)\" [ngClass]=\"{'ui-state-hover':(hoveredItem==item)}\">\n                            <span [ngClass]=\"'ui-menuitem-icon fa fa-fw'\" [class]=\"item.icon\" *ngIf=\"item.icon\"></span>\n                            <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                        </a>\n                    </li>\n                </ul>\n            </div>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler],
 	            directives: [router_1.ROUTER_DIRECTIVES]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer, router_1.Router])
 	    ], SplitButton);
 	    return SplitButton;
 	}());
 	exports.SplitButton = SplitButton;
-
+	
 
 /***/ },
 /* 1105 */
@@ -39176,23 +39180,23 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], TabMenu.prototype, "model", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], TabMenu.prototype, "activeItem", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], TabMenu.prototype, "popup", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], TabMenu.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], TabMenu.prototype, "styleClass", void 0);
 	    TabMenu = __decorate([
@@ -39200,13 +39204,13 @@ webpackJsonp([2],[
 	            selector: 'p-tabMenu',
 	            template: "\n        <div [ngClass]=\"'ui-tabmenu ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul class=\"ui-tabmenu-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\" role=\"tablist\">\n                <li *ngFor=\"let item of model\" \n                    [ngClass]=\"{'ui-tabmenuitem ui-state-default ui-corner-top':true,\n                        'ui-tabmenuitem-hasicon':item.icon,'ui-state-hover':hoveredItem==item,'ui-state-active':activeItem==item}\"\n                    (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\">\n                    <a [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" (click)=\"itemClick($event,item)\">\n                        <span class=\"ui-menuitem-icon fa\" [ngClass]=\"item.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{item.label}}</span>\n                    </a>\n                </li>\n            </ul>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [router_1.Router])
 	    ], TabMenu);
 	    return TabMenu;
 	}());
 	exports.TabMenu = TabMenu;
-
+	
 
 /***/ },
 /* 1106 */
@@ -39298,23 +39302,23 @@ webpackJsonp([2],[
 	        return styleClass;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], TabView.prototype, "orientation", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], TabView.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], TabView.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], TabView.prototype, "onChange", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], TabView.prototype, "onClose", void 0);
 	    TabView = __decorate([
@@ -39322,13 +39326,13 @@ webpackJsonp([2],[
 	            selector: 'p-tabView',
 	            template: "\n        <div [ngClass]=\"'ui-tabview ui-widget ui-widget-content ui-corner-all ui-tabview-' + orientation\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ul class=\"ui-tabview-nav ui-helper-reset ui-helper-clearfix ui-widget-header ui-corner-all\">\n                <template ngFor let-tab [ngForOf]=\"tabs\">\n                    <li [class]=\"getDefaultHeaderClass(tab)\" [ngStyle]=\"tab.headerStyle\"\n                        [ngClass]=\"{'ui-tabview-selected ui-state-active': tab.selected, 'ui-state-hover': tab.hoverHeader&&!tab.disabled, 'ui-state-disabled': tab.disabled}\"\n                        (mouseenter)=\"tab.hoverHeader=true\" (mouseleave)=\"tab.hoverHeader=false\" (click)=\"open($event,tab)\" *ngIf=\"!tab.closed\">\n                        <a href=\"#\">\n                            <span class=\"ui-tabview-left-icon fa\" [ngClass]=\"tab.leftIcon\" *ngIf=\"tab.leftIcon\"></span>\n                            {{tab.header}}\n                            <span class=\"ui-tabview-right-icon fa\" [ngClass]=\"tab.rightIcon\" *ngIf=\"tab.rightIcon\"></span>\n                        </a>\n                        <span *ngIf=\"tab.closable\" class=\"ui-tabview-close fa fa-close\" (click)=\"close($event,tab)\"></span>\n                    </li>\n                </template>\n            </ul>\n            <div class=\"ui-tabview-panels\">\n                <ng-content></ng-content>\n            </div>\n        </div>\n    ",
 	        }),
-	        __param(1, core_1.Query(tabpanel_1.TabPanel)),
+	        __param(1, core_1.Query(tabpanel_1.TabPanel)), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, core_1.QueryList])
 	    ], TabView);
 	    return TabView;
 	}());
 	exports.TabView = TabView;
-
+	
 
 /***/ },
 /* 1107 */
@@ -39384,32 +39388,32 @@ webpackJsonp([2],[
 	        element.focus();
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Terminal.prototype, "welcomeMessage", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Terminal.prototype, "prompt", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Terminal.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Terminal.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Terminal.prototype, "responseChange", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Terminal.prototype, "handler", void 0);
 	    __decorate([
-	        core_1.Input(),
-	        __metadata('design:type', String),
+	        core_1.Input(), 
+	        __metadata('design:type', String), 
 	        __metadata('design:paramtypes', [String])
 	    ], Terminal.prototype, "response", null);
 	    Terminal = __decorate([
@@ -39417,13 +39421,13 @@ webpackJsonp([2],[
 	            selector: 'p-terminal',
 	            template: "\n        <div [ngClass]=\"'ui-terminal ui-widget ui-widget-content ui-corner-all'\" [ngStyle]=\"style\" [class]=\"styleClass\" (click)=\"focus(in)\">\n            <div *ngIf=\"welcomeMessage\">{{welcomeMessage}}</div>\n            <div class=\"ui-terminal-content\">\n                <div *ngFor=\"let command of commands\">\n                    <span>{{prompt}}</span>\n                    <span class=\"ui-terminal-command\">{{command.text}}</span>\n                    <div>{{command.response}}</div>\n                </div>\n            </div>\n            <div>\n                <span class=\"ui-terminal-content-prompt\">{{prompt}}</span>\n                <input #in type=\"text\" [(ngModel)]=\"command\" class=\"ui-terminal-input\" autocomplete=\"off\" (keydown)=\"handleCommand($event,container)\" autofocus>\n            </div>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
 	    ], Terminal);
 	    return Terminal;
 	}());
 	exports.Terminal = Terminal;
-
+	
 
 /***/ },
 /* 1108 */
@@ -39484,11 +39488,11 @@ webpackJsonp([2],[
 	        this.activeLink = null;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], TieredMenuSub.prototype, "item", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], TieredMenuSub.prototype, "root", void 0);
 	    TieredMenuSub = __decorate([
@@ -39497,7 +39501,7 @@ webpackJsonp([2],[
 	            template: "\n        <ul [ngClass]=\"{'ui-helper-reset':root, 'ui-widget-content ui-corner-all ui-helper-clearfix ui-menu-child ui-shadow':!root}\" class=\"ui-menu-list\"\n            (click)=\"listClick($event)\">\n            <template ngFor let-child [ngForOf]=\"(root ? item : item.items)\">\n                <li #item [ngClass]=\"{'ui-menuitem ui-widget ui-corner-all':true,'ui-menu-parent':child.items,'ui-menuitem-active':item==activeItem}\"\n                    (mouseenter)=\"onItemMouseEnter($event, item)\" (mouseleave)=\"onItemMouseLeave($event, item)\">\n                    <a #link [href]=\"child.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" [ngClass]=\"{'ui-state-hover':link==activeLink}\" (click)=\"itemClick($event, child)\">\n                        <span class=\"ui-submenu-icon fa fa-fw fa-caret-right\" *ngIf=\"child.items\"></span>\n                        <span class=\"ui-menuitem-icon fa fa-fw\" *ngIf=\"child.icon\" [ngClass]=\"child.icon\"></span>\n                        <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                    </a>\n                    <p-tieredMenuSub class=\"ui-submenu\" [item]=\"child\" *ngIf=\"child.items\"></p-tieredMenuSub>\n                </li>\n            </template>\n        </ul>\n    ",
 	            directives: [TieredMenuSub],
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [domhandler_1.DomHandler, router_1.Router, common_1.Location])
 	    ], TieredMenuSub);
 	    return TieredMenuSub;
@@ -39559,19 +39563,19 @@ webpackJsonp([2],[
 	        }
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Array)
 	    ], TieredMenu.prototype, "model", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], TieredMenu.prototype, "popup", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], TieredMenu.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], TieredMenu.prototype, "styleClass", void 0);
 	    TieredMenu = __decorate([
@@ -39580,13 +39584,13 @@ webpackJsonp([2],[
 	            template: "\n        <div [ngClass]=\"{'ui-tieredmenu ui-menu ui-widget ui-widget-content ui-corner-all ui-helper-clearfix':true,'ui-menu-dynamic ui-shadow':popup}\" \n            [class]=\"styleClass\" [ngStyle]=\"style\">\n            <p-tieredMenuSub [item]=\"model\" root=\"root\"></p-tieredMenuSub>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler],
 	            directives: [TieredMenuSub]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
 	    ], TieredMenu);
 	    return TieredMenu;
 	}());
 	exports.TieredMenu = TieredMenu;
-
+	
 
 /***/ },
 /* 1109 */
@@ -39642,35 +39646,35 @@ webpackJsonp([2],[
 	        this.onModelTouched = fn;
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], ToggleButton.prototype, "onLabel", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], ToggleButton.prototype, "offLabel", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], ToggleButton.prototype, "onIcon", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], ToggleButton.prototype, "offIcon", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Boolean)
 	    ], ToggleButton.prototype, "disabled", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], ToggleButton.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], ToggleButton.prototype, "styleClass", void 0);
 	    __decorate([
-	        core_1.Output(),
+	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], ToggleButton.prototype, "onChange", void 0);
 	    ToggleButton = __decorate([
@@ -39678,13 +39682,13 @@ webpackJsonp([2],[
 	            selector: 'p-toggleButton',
 	            template: "\n        <div [ngClass]=\"{'ui-button ui-togglebutton ui-widget ui-state-default ui-corner-all': true, 'ui-button-text-only': (!onIcon&&!offIcon), 'ui-button-text-icon-left': (onIcon&&offIcon),\n                'ui-state-active': checked, 'ui-state-hover': hover&&!disabled, 'ui-state-disabled': disabled}\" [ngStyle]=\"style\" [class]=\"styleClass\" \n                (click)=\"toggle($event)\" (mouseenter)=\"hover=true\" (mouseleave)=\"hover=false\">\n            <span *ngIf=\"onIcon||offIcon\" [class]=\"getIconClass()\"></span>\n            <span class=\"ui-button-text ui-unselectable-text\">{{checked ? onLabel : offLabel}}</span>\n        </div>\n    ",
 	            providers: [TOGGLEBUTTON_VALUE_ACCESSOR]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], ToggleButton);
 	    return ToggleButton;
 	}());
 	exports.ToggleButton = ToggleButton;
-
+	
 
 /***/ },
 /* 1110 */
@@ -39705,24 +39709,24 @@ webpackJsonp([2],[
 	    function Toolbar() {
 	    }
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], Toolbar.prototype, "style", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Toolbar.prototype, "styleClass", void 0);
 	    Toolbar = __decorate([
 	        core_1.Component({
 	            selector: 'p-toolbar',
 	            template: "\n        <div [ngClass]=\"'ui-toolbar ui-widget ui-widget-header ui-corner-all ui-helper-clearfix'\" [ngStyle]=\"style\" [class]=\"styleClass\">\n            <ng-content></ng-content>\n        </div>\n    "
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [])
 	    ], Toolbar);
 	    return Toolbar;
 	}());
 	exports.Toolbar = Toolbar;
-
+	
 
 /***/ },
 /* 1111 */
@@ -39818,39 +39822,39 @@ webpackJsonp([2],[
 	        document.body.removeChild(this.container);
 	    };
 	    __decorate([
-	        core_1.Input('pTooltip'),
+	        core_1.Input('pTooltip'), 
 	        __metadata('design:type', String)
 	    ], Tooltip.prototype, "text", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Tooltip.prototype, "tooltipPosition", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], Tooltip.prototype, "tooltipEvent", void 0);
 	    __decorate([
-	        core_1.HostListener('mouseenter', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('mouseenter', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Tooltip.prototype, "onMouseEnter", null);
 	    __decorate([
-	        core_1.HostListener('mouseout', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('mouseout', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Tooltip.prototype, "onMouseLeave", null);
 	    __decorate([
-	        core_1.HostListener('focus', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('focus', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Tooltip.prototype, "onFocus", null);
 	    __decorate([
-	        core_1.HostListener('blur', ['$event']),
-	        __metadata('design:type', Function),
-	        __metadata('design:paramtypes', [Object]),
+	        core_1.HostListener('blur', ['$event']), 
+	        __metadata('design:type', Function), 
+	        __metadata('design:paramtypes', [Object]), 
 	        __metadata('design:returntype', void 0)
 	    ], Tooltip.prototype, "onBlur", null);
 	    Tooltip = __decorate([
@@ -39858,13 +39862,13 @@ webpackJsonp([2],[
 	            selector: '[pTooltip]',
 	            host: {},
 	            providers: [domhandler_1.DomHandler]
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler])
 	    ], Tooltip);
 	    return Tooltip;
 	}());
 	exports.Tooltip = Tooltip;
-
+	
 
 /***/ },
 /* 1112 */
@@ -39891,24 +39895,24 @@ webpackJsonp([2],[
 	        });
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], TreeNodeTemplateLoader.prototype, "node", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', core_1.TemplateRef)
 	    ], TreeNodeTemplateLoader.prototype, "template", void 0);
 	    TreeNodeTemplateLoader = __decorate([
 	        core_1.Component({
 	            selector: 'p-treeNodeTemplateLoader',
 	            template: ""
-	        }),
+	        }), 
 	        __metadata('design:paramtypes', [core_1.ViewContainerRef])
 	    ], TreeNodeTemplateLoader);
 	    return TreeNodeTemplateLoader;
 	}());
 	exports.TreeNodeTemplateLoader = TreeNodeTemplateLoader;
-
+	
 
 /***/ },
 /* 1113 */
@@ -39962,7 +39966,7 @@ webpackJsonp([2],[
 	    };
 	    UITreeNode.ICON_CLASS = 'ui-treenode-icon fa fa-fw';
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], UITreeNode.prototype, "node", void 0);
 	    UITreeNode = __decorate([
@@ -39971,13 +39975,13 @@ webpackJsonp([2],[
 	            template: "\n        <li class=\"ui-treenode\" *ngIf=\"node\">\n            <div class=\"ui-treenode-content\" [ngClass]=\"{'ui-treenode-selectable': tree.selectionMode}\" \n                (mouseenter)=\"hover=true\" (mouseleave)=\"hover=false\" (click)=\"onNodeClick($event)\">\n                <span class=\"ui-tree-toggler fa fa-fw\" [ngClass]=\"{'fa-caret-right':!expanded,'fa-caret-down':expanded}\" *ngIf=\"!isLeaf()\"\n                        (click)=\"toggle($event)\"></span\n                ><span class=\"ui-treenode-leaf-icon\" *ngIf=\"isLeaf()\"></span\n                ><span [class]=\"getIcon()\" *ngIf=\"node.icon||node.expandedIcon||node.collapsedIcon\"></span\n                ><span class=\"ui-treenode-label ui-corner-all\" \n                    [ngClass]=\"{'ui-state-hover':hover&&tree.selectionMode,'ui-state-highlight':isSelected()}\">\n                        <span *ngIf=\"!tree.template\">{{node.label}}</span>\n                        <p-treeNodeTemplateLoader [node]=\"node\" [template]=\"tree.template\" *ngIf=\"tree.template\"></p-treeNodeTemplateLoader>\n                    </span>\n            </div>\n            <ul class=\"ui-treenode-children\" style=\"display: none;\" *ngIf=\"node.children\" [style.display]=\"expanded ? 'block' : 'none'\">\n                <p-treeNode *ngFor=\"let childNode of node.children\" [node]=\"childNode\"></p-treeNode>\n            </ul>\n        </li>\n    ",
 	            directives: [UITreeNode, treenodetemplateloader_1.TreeNodeTemplateLoader]
 	        }),
-	        __param(0, core_1.Inject(core_1.forwardRef(function () { return tree_1.Tree; }))),
+	        __param(0, core_1.Inject(core_1.forwardRef(function () { return tree_1.Tree; }))), 
 	        __metadata('design:paramtypes', [tree_1.Tree])
 	    ], UITreeNode);
 	    return UITreeNode;
 	}());
 	exports.UITreeNode = UITreeNode;
-
+	
 
 /***/ },
 /* 1114 */
@@ -40022,11 +40026,11 @@ webpackJsonp([2],[
 	        this.treeTable.onRowClick(event, this.node);
 	    };
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Object)
 	    ], UITreeRow.prototype, "node", void 0);
 	    __decorate([
-	        core_1.Input(),
+	        core_1.Input(), 
 	        __metadata('design:type', Number)
 	    ], UITreeRow.prototype, "level", void 0);
 	    UITreeRow = __decorate([
@@ -40035,13 +40039,13 @@ webpackJsonp([2],[
 	            template: "\n        <div class=\"ui-treetable-row\" [ngClass]=\"{'ui-state-hover':hover&&treeTable.selectionMode,'ui-state-highlight':isSelected(node)}\">\n            <td *ngFor=\"let col of treeTable.columns; let i=index\" [ngStyle]=\"col.style\" [class]=\"col.styleClass\"\n                (mouseenter)=\"hover=true\" (mouseleave)=\"hover=false\" (click)=\"onRowClick($event)\">\n                <span *ngIf=\"i==0\" class=\"ui-treetable-toggler fa fa-fw ui-c\" [ngClass]=\"{'fa-caret-down':expanded,'fa-caret-right':!expanded}\"\n                    [ngStyle]=\"{'margin-left':level*16 + 'px','visibility': isLeaf() ? 'hidden' : 'visible'}\"\n                    (click)=\"toggle($event)\"></span>\n                <span *ngIf=\"!col.template\">{{node.data[col.field]}}</span>\n                <p-columnTemplateLoader [column]=\"col\" [rowData]=\"node\" *ngIf=\"col.template\"></p-columnTemplateLoader>\n            </td>\n        </div>\n        <div *ngIf=\"node.children\" class=\"ui-treetable-row\" [style.display]=\"expanded ? 'table-row' : 'none'\">\n            <td [attr.colspan]=\"treeTable.columns.length\" class=\"ui-treetable-child-table-container\">\n                <table>\n                    <tbody pTreeRow *ngFor=\"let childNode of node.children\" [node]=\"childNode\" [level]=\"level+1\"></tbody>\n                </table>\n            </td>\n        </div>\n    ",
 	            directives: [UITreeRow, columntemplateloader_1.ColumnTemplateLoader]
 	        }),
-	        __param(0, core_1.Inject(core_1.forwardRef(function () { return treetable_1.TreeTable; }))),
+	        __param(0, core_1.Inject(core_1.forwardRef(function () { return treetable_1.TreeTable; }))), 
 	        __metadata('design:paramtypes', [treetable_1.TreeTable])
 	    ], UITreeRow);
 	    return UITreeRow;
 	}());
 	exports.UITreeRow = UITreeRow;
-
+	
 
 /***/ }
 ]);
