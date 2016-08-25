@@ -20,8 +20,8 @@ import { ReportComponent } from '../../report/report';
 import { User } from '../../../../interface/user';
 import { FriendShip } from '../../../../interface/friendship';
 import { Notification } from '../../../../interface/notification';
-declare var $:any;
-declare var Materialize:any;
+declare var $: any;
+declare var Materialize: any;
 @Component({
   selector: 'user-profile-bar',
   templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile-bar.html',
@@ -84,19 +84,19 @@ export class UserProfileBarComponent {
         this.getFriendList();
       });
     $('ul.tabs').tabs();
-    $('.tooltipped').tooltip({delay: 5});
+    $('.tooltipped').tooltip({ delay: 5 });
   }
 
-  ngAfterViewChecked(){
-
+  openReport():void{
+        $('#myModal').openModal();
   }
 
-  ngOnDestroy(){
-    $( ".material-tooltip" ).remove();
+  ngOnDestroy() {
+    $(".material-tooltip").remove();
   }
 
-  openChooseFile(){
-    $('#chFileImg').trigger( "click" );
+  openChooseFile() {
+    $('#chFileImg').trigger("click");
   }
 
   fileChangeEvent(fileInput: any) {
@@ -106,8 +106,8 @@ export class UserProfileBarComponent {
       this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then((r) => {
         this.linkImg = '/uploads/' + r[0].filename;
         this.userProfile.linkImg = this.linkImg;
+        this.userProfile.username = localStorage.getItem('username');
         this._userService.updateUser(this.userProfile, []).subscribe(r => {
-          console.log("update link profile picture successful");
           $('#loading').hide();
         });
       }, (error) => {
@@ -137,10 +137,11 @@ export class UserProfileBarComponent {
       this._noti.createNotification(title, this.name, link).subscribe(
         (notification) => {
         });
+      this.isFriend = true;
     } else {
       Materialize.toast('Bạn đã gửi kết bạn rồi!', 4000);
     }
-    this.getFriendList();
+    // this.getFriendList();
   }
 
   deleteFriend(): void {

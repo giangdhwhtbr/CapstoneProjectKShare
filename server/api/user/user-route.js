@@ -79,14 +79,17 @@ module.exports = class userRoutes {
       .get(userController.getUserByToken)
       .put(userController.changePassword);
 
-   router
+    router
       .route('/api/is-user-exist/:username')
       .get(userController.checkUserExist);
 
-   router
+    router
       .route('/api/search-user/:username')
       .get(userController.findUsersByUsername);
 
+    router
+      .route('/api/user/avatar/:username')
+      .get(userController.getAvatarByUserName)
   }
 
 }

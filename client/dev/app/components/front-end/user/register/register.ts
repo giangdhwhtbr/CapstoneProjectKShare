@@ -34,7 +34,7 @@ export class RegisterComponent {
     }
     ngOnInit():void {
         this.regForm = this.fb.group({
-            username: ["", Validators.pattern('^[a-zA-Z0-9_.-]*$')],
+            username: ["", Validators.pattern('^[a-zA-Z0-9_.-]{8,30}$')],
             password: ["", Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')],
             copass: [""],
             email: ["", Validators.pattern('^(([a-zA-Z]|[0-9])|([-]|[_]|[.]))+[@](([a-zA-Z0-9])|([-])){2,63}[.](([a-zA-Z0-9]){2,63})+$')]
@@ -42,7 +42,7 @@ export class RegisterComponent {
     }
     register(user:any):void {
         var validateUsername = function(username) {
-            var pattern = new RegExp('^[a-zA-Z0-9_.-]*$');
+            var pattern = new RegExp('^[a-zA-Z0-9_.-]{8,30}$');
             return pattern.test(username);
         };
         var validatePass = function (password) {
@@ -68,7 +68,7 @@ export class RegisterComponent {
                         user = {
                             username: user.username,
                             password: user.password
-                        }
+                        };
                         this._authService
                             .login(user)
                             .subscribe(

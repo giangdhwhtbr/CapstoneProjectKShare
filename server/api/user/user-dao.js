@@ -120,7 +120,17 @@ userSchema.statics.updateUserById = (userinfo) => {
                 : resolve(user);
         });
     });
-}
+};
+
+userSchema.statics.getAvatarByUsername = (user) => {
+    return new Promise((resolve, reject) => {
+      User.findOne({username:user})
+          .select("linkImg")
+          .exec((err,avatar) => {
+            err ? reject(err) : resolve(avatar);
+          })
+    })
+};
 
 userSchema.plugin(relationship, {relationshipPathName: 'ownKnowledgeIds'});
 const User = mongoose.model('User', userSchema);

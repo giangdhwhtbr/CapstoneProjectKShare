@@ -22,7 +22,6 @@ import { PrivateChatComponent } from "./shared/private-chat";
 @Component({
   selector: 'kshare',
   template:`
-  <header></header>
       <sidebar></sidebar>
     <main>
     <router-outlet></router-outlet>

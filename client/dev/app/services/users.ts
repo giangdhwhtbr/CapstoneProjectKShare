@@ -256,6 +256,13 @@ export class UserService {
         });
     }
 
+    loadAva(username: string): Observable<string>{
+      let avaUrl = '/api/user/avatar/:username';
+      return this._http
+        .get(avaUrl.replace(':username',username))
+        .map((r)=>r.json());
+    }
+
     private handleError(error:Response) {
         return Observable.throw(error);
     }

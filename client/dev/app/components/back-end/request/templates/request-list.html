@@ -34,6 +34,13 @@
                                 </template>
                             </p-column>
                             <p-column field="status" header="Trạng thái"[sortable]="true" [filter]="true"></p-column>
+                            <p-column styleClass="col-button" header="Chức năng">
+                                <template let-r="rowData">
+                                    <button type="button" pButton class="btn-floating waves-effect waves-light green"
+                                            (click)="deactivateRequest(r._id)">
+                                        <i class="material-icons">remove</i></button>
+                                </template>
+                            </p-column>
                         </p-dataTable>
                     </div>
                 </div>
@@ -50,20 +57,20 @@
                         </div>
                     </div>
                     <div class="input-field col s6">
-                        <input #gb id="filter1" type="text" pInputText>
+                        <input #gb1 id="filter1" type="text" pInputText>
                         <label for="filter1">Tìm kiếm</label>
                     </div>
                     <div class="row">
-                        <p-dataTable [value]="deactiveRequests" [rows]="10" [paginator]="true" [filter]="true" [globalFilter]="gb">
+                        <p-dataTable [value]="deactiveRequests" [rows]="10" [paginator]="true" [filter]="true" [globalFilter]="gb1">
                             <p-column field="title" header="Yêu cầu"[sortable]="true" [filter]="true">
                                 <template let-col let-r="rowData">
                                     <a [routerLink]="['/requests/' + r._id + '/info']">{{r.title}}</a>
                                 </template>
                             </p-column>
-                            <p-column field="status" header="Trạng thái"[sortable]="true" [filter]="true"></p-column>
+                            <p-column field="status" header="Trạng thái" [sortable]="true" [filter]="true"></p-column>
                             <p-column styleClass="col-button" header="Chức năng">
                                 <template let-r="rowData">
-                                    <button type="button" pButton *ngIf="r.status === 'deactive'" class="btn-floating waves-effect waves-light green"
+                                    <button type="button" class="btn-floating waves-effect waves-light green"
                                             (click)="activateRequest(r)">
                                         <i class="material-icons">done</i></button>
                                 </template>
@@ -85,12 +92,12 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s6">
-                            <input #gb id="filter1" type="text" pInputText>
+                            <input #gb2 id="filter1" type="text" pInputText>
                             <label for="filter1">Tìm kiếm</label>
                         </div>
                     </div>
                     <div class="row">
-                        <p-dataTable [value]="acceptepRequests" [rows]="10" [paginator]="true" [globalFilter]="gb">
+                        <p-dataTable [value]="acceptepRequests" [rows]="10" [paginator]="true" [globalFilter]="gb2">
                             <p-column field="title" header="Yêu cầu"[sortable]="true" [filter]="true">
                                 <template let-col let-r="rowData">
                                     <a [routerLink]="['/requests/' + r._id + '/info']">{{r.title}}</a>

@@ -11,16 +11,11 @@
                      </span>
 
             <div class="row">
-                <p>
+                <p *ngIf="displayName">
                     Tên: {{displayname}}
                 </p>
-
                 <p>
                     Email: {{email}}
-                </p>
-
-                <p>
-                    Cấp độ: {{level}}
                 </p>
             </div>
             <div class="row">

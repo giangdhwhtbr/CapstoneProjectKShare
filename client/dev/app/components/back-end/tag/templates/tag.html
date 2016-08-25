@@ -53,12 +53,12 @@
                     </div>
                     <div class="row">
                         <div class="input-field col s6">
-                            <input #gb id="filter1" type="text" pInputText>
+                            <input #gb1 id="filter1" type="text" pInputText>
                             <label for="filter1">Tìm kiếm</label>
                         </div>
                     </div>
                     <div class="row">
-                        <p-dataTable [value]="tagsDa" [rows]="10" [paginator]="true" [globalFilter]="gb">
+                        <p-dataTable [value]="tagsDa" [rows]="10" [paginator]="true" [globalFilter]="gb1">
                             <p-column field="name" header="Tên"[sortable]="true" [filter]="true"></p-column>
                             <p-column styleClass="col-button" header="Chức năng">
                                 <template let-t="rowData">

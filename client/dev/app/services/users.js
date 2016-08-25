@@ -214,6 +214,12 @@ var UserService = (function () {
             xhr.send(formData);
         });
     };
+    UserService.prototype.loadAva = function (username) {
+        var avaUrl = '/api/user/avatar/:username';
+        return this._http
+            .get(avaUrl.replace(':username', username))
+            .map(function (r) { return r.json(); });
+    };
     UserService.prototype.handleError = function (error) {
         return Observable_1.Observable.throw(error);
     };

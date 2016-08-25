@@ -122,7 +122,7 @@ io.on('connection',  (socket) => {
   //Listening for private chat message
 
   socket.on('private-message', (data) => {
-    ChatRoomCtrl.updateChatRoom(data)
+    ChatRoomCtrl.updateChatLogs(data)
     .then(chatRoom => {
       data.sentAt = new Date();
       data.users = chatRoom.users;
@@ -143,9 +143,5 @@ io.on('connection',  (socket) => {
       console.log(error);
     });
   });
-
-  // socket.on('chatroom-friend', (data) => {
-  //     io.emit('chatroom-friend-return',data);
-  // });
 
 });

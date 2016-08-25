@@ -17,6 +17,24 @@ module.exports = class ArticleController {
             .catch(error => res.status(400).json(error));
     }
 
+    static getAllArticles(req, res) {
+        ArticleDAO
+            .getAllNf(req.body.num)
+            .then(articles => {
+                res.status(200).json(articles);
+            })
+            .catch(error => res.status(400).json(error));
+    }
+
+    static topArticles(req,res) {
+        ArticleDAO
+            .topArticles()
+            .then(articles => {
+                res.status(200).json(articles);
+            })
+            .catch(error => res.status(400).json(error));
+    }
+
     static getArticleByKnwId(req, res) {
         if (req.params && req.params.id) {
             ArticleDAO

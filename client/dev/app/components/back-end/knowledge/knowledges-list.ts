@@ -85,8 +85,7 @@ export class KnowledgeListComponent {
         this._knowledgeService
             .addKnowledge(knowledge)
             .subscribe((m) => {
-                this.knowledges.push(m);
-                this.getAll();
+                this.getAllKnowledgesForAdmin();
                 (<Control>this.knowledgeForm.controls["name"]).updateValue("");
                 (<Control>this.knowledgeForm.controls["description"]).updateValue("");
             });
@@ -106,21 +105,21 @@ export class KnowledgeListComponent {
             }
         });
     }
-    hide():void {
-        $(".collapse").collapse("hide");
-    }
-    getAllKnowledgesForAdmin():void{
+
+    getAllKnowledgesForAdmin():void {
         this._knowledgeService
             .getAllKnowledgesForAdmin()
             .then(knowledge =>{
                 this.knowledgeAdmin = knowledge;
                 for(var i =0;i<this.knowledgeAdmin.length;i++){
                     this.knowledgeAdmin[i].data["num"]=i+1;
+                    if(this.knowledgeAdmin[i].data.status==false){
+                      for(var j = 0;j<this.knowledgeAdmin[i].children.length;j++){
+                        this.knowledgeAdmin[i].children[j].data["visible"]=false;
+                      }
+                    }
                 }
-                console.log(this.knowledgeAdmin);
             } );
     }
-    showDialogToAdd() {
-        this.displayDialog = true;
-    }
+
 }

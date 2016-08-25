@@ -5,6 +5,7 @@ const crypto = require('crypto');
 const transporter = require('./config/nodemailer');
 const mailOptions = require('./config/mail-templates');
 const TagDAO = require('../tags/tag-dao');
+const chatRoomCtrl = require('../chatRoom/chatRoom-controller');
 
 module.exports = class userController {
     static getAll(req, res) {
@@ -26,16 +27,15 @@ module.exports = class userController {
             });
         }
     }
-    static getAvartaByUserNaname(req, res) {
-        let listUserName = req.body.listName;
-        if (req.params && req.params.id) {
+    static getAvatarByUserName(req, res) {
+        if (req.params && req.params.username) {
             userDAO
-                .getAvartaByUserNaname(req.params.id)
+                .getAvatarByUsername(req.params.username)
                 .then(user => res.status(200).json(user))
                 .catch(error => res.status(400).json(error));
         } else {
             res.status(404).json({
-                "message": "No Userid in templates"
+                "message": "User not found"
             });
         }
     }
@@ -84,20 +84,21 @@ module.exports = class userController {
 
             userDAO.getUserById(req.params.id)
                 .then(user => {
+              user.fullName = _data.user.fullName;
+              user.phone = _data.user.phone;
+              user.status = _data.user.status;
+              user.updatedAt = currentDate;
+              user.linkImg = _data.user.linkImg;
+              user.ownKnowledgeIds = _data.user.ownKnowledgeIds;
+              user.birthday = _data.user.birthday;
+              if(_data.user.linkImg){
+                chatRoomCtrl.updateAvatarUserInChatRoom(_data.user.username, _data.user.linkImg);
+              }
 
-          user.fullName = _data.user.fullName;
-          user.displayName = _data.user.displayName;
-          user.phone = _data.user.phone;
-          //user.interestedKnowledgeId = req.body.interestedKnowledgeId;
-          user.status = _data.user.status;
-          user.updatedAt = currentDate;
-          user.ownKnowledgeIds = _data.user.ownKnowledgeIds;
-          user.linkImg = _data.user.linkImg;
-          user.birthday = _data.user.birthday;
-          console.log(user.birthday);
-          userDAO.updateUserById(user)
-            .then((user) => {
-              TagDAO.createArrayTag(_data.newTag).then((tags) => {
+
+              userDAO.updateUserById(user)
+                .then((user) => {
+                  TagDAO.createArrayTag(_data.newTag).then((tags) => {
 
                                 tags.map((e, i) => {
                                     user.ownKnowledgeIds.push(e);

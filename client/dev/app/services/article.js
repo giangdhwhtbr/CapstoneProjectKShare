@@ -162,6 +162,12 @@ var ArticleService = (function () {
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
     };
+    ArticleService.prototype.topArticle = function () {
+        return this._http
+            .get(this._requestsUrl.replace(':id', ''))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
     ArticleService.prototype.getArtById = function (id) {
         return this._http.get(this._requestsUrl.replace(':id', id))
             .map(function (r) { return r.json(); })

@@ -23,6 +23,21 @@ articleSchema.statics.getAll = (x) => {
             });
     });
 }
+
+articleSchema.statics.topArticles = () => {
+    return new Promise((resolve, reject) => {
+
+        Article
+            .find({})
+            .sort({like: -1})
+            .limit(5)
+            .exec((err, articles) => {
+                err ? reject(err)
+                    : resolve(articles);
+            });
+    });
+}
+
 articleSchema.statics.getAllNf = (x) => {
     return new Promise((resolve, reject) => {
 

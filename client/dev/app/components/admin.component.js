@@ -30,7 +30,7 @@ var AdminComponent = (function () {
     AdminComponent = __decorate([
         core_1.Component({
             selector: 'kshare',
-            template: "\n  <header></header>\n      <sidebar></sidebar>\n    <main>\n    <router-outlet></router-outlet>\n    </main>\n  <private-chat></private-chat>\n  ",
+            template: "\n      <sidebar></sidebar>\n    <main>\n    <router-outlet></router-outlet>\n    </main>\n  <private-chat></private-chat>\n  ",
             styleUrls: ['client/dev/asserts/css/admin.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES,
