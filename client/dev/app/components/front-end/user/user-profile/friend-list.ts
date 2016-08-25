@@ -93,6 +93,8 @@ export class FriendListComponent {
       }
 
     }
+    console.log(this.friendNames);
+    for (let a of this.pendingRequests) console.log(a.user1);
   }
 
   action(data: any): void {
@@ -101,7 +103,6 @@ export class FriendListComponent {
       this.acceptedRequest = [];
       this.friendNames = [];
       this.getFriendList();
-
     }
 
   }

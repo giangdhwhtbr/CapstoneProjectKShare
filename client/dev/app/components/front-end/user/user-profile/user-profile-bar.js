@@ -47,7 +47,8 @@ var UserProfileBarComponent = (function () {
         $('ul.tabs').tabs();
         $('.tooltipped').tooltip({ delay: 5 });
     };
-    UserProfileBarComponent.prototype.ngAfterViewChecked = function () {
+    UserProfileBarComponent.prototype.openReport = function () {
+        $('#myModal').openModal();
     };
     UserProfileBarComponent.prototype.ngOnDestroy = function () {
         $(".material-tooltip").remove();
@@ -89,11 +90,12 @@ var UserProfileBarComponent = (function () {
             //save notification to database
             this._noti.createNotification(title, this.name, link).subscribe(function (notification) {
             });
+            this.isFriend = true;
         }
         else {
             Materialize.toast('Bạn đã gửi kết bạn rồi!', 4000);
         }
-        this.getFriendList();
+        // this.getFriendList();
     };
     UserProfileBarComponent.prototype.deleteFriend = function () {
         var r = confirm("Bạn có muốn hủy kết bạn");

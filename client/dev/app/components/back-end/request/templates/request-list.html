@@ -34,6 +34,13 @@
                                 </template>
                             </p-column>
                             <p-column field="status" header="Trạng thái"[sortable]="true" [filter]="true"></p-column>
+                            <p-column styleClass="col-button" header="Chức năng">
+                                <template let-r="rowData">
+                                    <button type="button" pButton class="btn-floating waves-effect waves-light green"
+                                            (click)="deactivateRequest(r._id)">
+                                        <i class="material-icons">remove</i></button>
+                                </template>
+                            </p-column>
                         </p-dataTable>
                     </div>
                 </div>
@@ -60,10 +67,10 @@
                                     <a [routerLink]="['/requests/' + r._id + '/info']">{{r.title}}</a>
                                 </template>
                             </p-column>
-                            <p-column field="status" header="Trạng thái"[sortable]="true" [filter]="true"></p-column>
+                            <p-column field="status" header="Trạng thái" [sortable]="true" [filter]="true"></p-column>
                             <p-column styleClass="col-button" header="Chức năng">
                                 <template let-r="rowData">
-                                    <button type="button" pButton *ngIf="r.status === 'deactive'" class="btn-floating waves-effect waves-light green"
+                                    <button type="button" class="btn-floating waves-effect waves-light green"
                                             (click)="activateRequest(r)">
                                         <i class="material-icons">done</i></button>
                                 </template>

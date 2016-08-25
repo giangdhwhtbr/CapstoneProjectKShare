@@ -68,6 +68,11 @@ var FriendListComponent = (function () {
                 this.friendNames.push(this.acceptedRequest[i].user1);
             }
         }
+        console.log(this.friendNames);
+        for (var _i = 0, _a = this.pendingRequests; _i < _a.length; _i++) {
+            var a = _a[_i];
+            console.log(a.user1);
+        }
     };
     FriendListComponent.prototype.action = function (data) {
         if (data === "accept") {
