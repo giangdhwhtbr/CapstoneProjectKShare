@@ -135,11 +135,9 @@ module.exports = class KnowledgeController {
         KnowledgeDAO
             .getAll()
             .then(knowledges => {
-                var parents = [];
-                var sub = [];
                 var data =  {
                     "data": []
-                }
+                };
                 for(var i=0;i<knowledges.length;i++){
                     if (!knowledges[i].parent) {
                         var d = {

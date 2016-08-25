@@ -2,12 +2,9 @@
 <header [hidden]="isRoom">
     <nav class="indigo" role="navigation">
         <div class="nav-wrapper">
-            <a *ngIf="isFrontend" [routerLink]="['/']" class="brand-logo logoK">Kshare</a>
-            <a *ngIf="!isFrontend" data-activates="slide-out" (click)="open()" class="button-collapse displayPointer">
+            <a *ngIf="isFrontend" [routerLink]="['/']" class="brand-logo logoK hide-on-med-and-down">Kshare</a>
+            <a data-activates="slide-out" (click)="open()" class="button-collapse displayPointer">
                 <i class="medium material-icons">toc</i>
-            </a>
-            <a *ngIf="isFrontend" class="btnOpenNavF right displayPointer" (click)="openKnw()" data-activates="slide-out">
-                <i (click)="openKnw()" class="material-icons">import_contacts</i>
             </a>
             <!--btn group-->
             <ul class="right" [hidden]="!loginToken">

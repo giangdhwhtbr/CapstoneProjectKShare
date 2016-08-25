@@ -13,6 +13,9 @@ const _chatRoomSchema = {
       },
       message: {
         type: String
+      },
+      avatar: {
+        type: String
       }
     }
   ],
@@ -25,6 +28,9 @@ const _chatRoomSchema = {
       newMessages: {
         type: Number,
         default: 0
+      },
+      avatar: {
+        type: String
       }
     }
   ],

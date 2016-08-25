@@ -6,7 +6,7 @@ import { Component, OnInit, OnDestroy, Output, EventEmitter } from '@angular/cor
 import { ChatRoom } from '../../interface/chat-room';
 import { ChatService } from '../../services/chat';
 import { NotificationService } from '../../services/notification';
-
+import { UserService } from '../../services/users';
 import { Subscription } from 'rxjs/Subscription';
 
 declare var io: any;
@@ -27,9 +27,8 @@ export class PrivateChatComponent {
   sub: Subscription;
   currentRoom: string;
   mess:string;
-
-  constructor(private _chatService: ChatService,
-    private _noti: NotificationService) {
+  avatar: string;
+  constructor(private _chatService: ChatService, private _noti: NotificationService, private _userService: UserService) {
     this.username = localStorage.getItem('username');
     this.socket = io('https://localhost:80');
     this.messages = [];
@@ -77,9 +76,19 @@ export class PrivateChatComponent {
         }
       }
     });
+    if(this.username){
+      this.loadAva();
+      this.listAllChatRoom();
+    }
+  }
 
-    this.listAllChatRoom();
-
+  loadAva() {
+    this._userService.loadAva(this.username)
+      .subscribe(res => {
+      this.avatar = res.linkImg;
+    },err => {
+      console.log(err);
+      });
   }
 
   listAllChatRoom() {
@@ -94,7 +103,7 @@ export class PrivateChatComponent {
                 _id: chatRoom._id,
                 chatLogs: chatRoom.chatLogs,
                 newMessages: 0
-              };
+              }
 
               if (chatRoom.chatLogs.length) {
                 room.lastMsg = chatRoom.chatLogs[chatRoom.chatLogs.length - 1].message;
@@ -104,6 +113,7 @@ export class PrivateChatComponent {
               for (var user of chatRoom.users) {
                 if (user.user !== this.username) {
                   room.friendName = user.user;
+                  room.friendAva = user.avatar;
                 }
                 if (user.user === this.username) {
                   room.newMessages = user.newMessages
@@ -147,7 +157,8 @@ export class PrivateChatComponent {
     var data = {
       sender: this.username,
       message: this.mess,
-      receiver: this.receiver
+      receiver: this.receiver,
+      avatar: this.avatar
     };
     this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
     this.socket.emit('private-message', data);

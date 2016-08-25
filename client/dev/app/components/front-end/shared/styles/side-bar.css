@@ -14,9 +14,10 @@ a:hover{
   color: #000!important;
 }
 .side-nav {
-  width: 220px;
+  width: 200px;
   height: 100%;
   overflow-x: hidden;
+  margin-top: 64px;
 }
 .side-nav:hover {
   overflow-y: scroll;
@@ -27,6 +28,6 @@ a:hover{
 @media only screen and (max-width: 992px) {
   .side-nav {
     width: 200px;
-    top:0px;
+    margin-top:0px;
   }
 }

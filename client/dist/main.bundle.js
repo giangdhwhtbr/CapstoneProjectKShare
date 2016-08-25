@@ -49,10 +49,12 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var chat_1 = __webpack_require__(126);
 	var notification_1 = __webpack_require__(62);
+	var users_1 = __webpack_require__(31);
 	var PrivateChatComponent = (function () {
-	    function PrivateChatComponent(_chatService, _noti) {
+	    function PrivateChatComponent(_chatService, _noti, _userService) {
 	        this._chatService = _chatService;
 	        this._noti = _noti;
+	        this._userService = _userService;
 	        this.username = localStorage.getItem('username');
 	        this.socket = io('https://localhost:80');
 	        this.messages = [];
@@ -104,7 +106,19 @@ webpackJsonp([2],[
 	                }
 	            }
 	        });
-	        this.listAllChatRoom();
+	        if (this.username) {
+	            this.loadAva();
+	            this.listAllChatRoom();
+	        }
+	    };
+	    PrivateChatComponent.prototype.loadAva = function () {
+	        var _this = this;
+	        this._userService.loadAva(this.username)
+	            .subscribe(function (res) {
+	            _this.avatar = res.linkImg;
+	        }, function (err) {
+	            console.log(err);
+	        });
 	    };
 	    PrivateChatComponent.prototype.listAllChatRoom = function () {
 	        var _this = this;
@@ -129,6 +143,7 @@ webpackJsonp([2],[
 	                            var user = _b[_a];
 	                            if (user.user !== _this.username) {
 	                                room.friendName = user.user;
+	                                room.friendAva = user.avatar;
 	                            }
 	                            if (user.user === _this.username) {
 	                                room.newMessages = user.newMessages;
@@ -169,7 +184,8 @@ webpackJsonp([2],[
 	        var data = {
 	            sender: this.username,
 	            message: this.mess,
-	            receiver: this.receiver
+	            receiver: this.receiver,
+	            avatar: this.avatar
 	        };
 	        this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
 	        this.socket.emit('private-message', data);
@@ -182,10 +198,10 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/shared/templates/chatbox.html',
 	            styleUrls: ['client/dev/app/components/shared/styles/chatbox.css']
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _a) || Object, (typeof (_b = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _b) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _a) || Object, (typeof (_b = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object])
 	    ], PrivateChatComponent);
 	    return PrivateChatComponent;
-	    var _a, _b;
+	    var _a, _b, _c;
 	}());
 	exports.PrivateChatComponent = PrivateChatComponent;
 	
@@ -761,6 +777,12 @@ webpackJsonp([2],[
 	            xhr.open("POST", url, true);
 	            xhr.send(formData);
 	        });
+	    };
+	    UserService.prototype.loadAva = function (username) {
+	        var avaUrl = '/api/user/avatar/:username';
+	        return this._http
+	            .get(avaUrl.replace(':username', username))
+	            .map(function (r) { return r.json(); });
 	    };
 	    UserService.prototype.handleError = function (error) {
 	        return Observable_1.Observable.throw(error);
@@ -3521,8 +3543,8 @@ webpackJsonp([2],[
 	            this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then(function (r) {
 	                _this.linkImg = '/uploads/' + r[0].filename;
 	                _this.userProfile.linkImg = _this.linkImg;
+	                _this.userProfile.username = localStorage.getItem('username');
 	                _this._userService.updateUser(_this.userProfile, []).subscribe(function (r) {
-	                    console.log("update link profile picture successful");
 	                    $('#loading').hide();
 	                });
 	            }, function (error) {
@@ -4645,7 +4667,7 @@ webpackJsonp([2],[
 	    AdminComponent = __decorate([
 	        core_1.Component({
 	            selector: 'kshare',
-	            template: "\n  <header></header>\n      <sidebar></sidebar>\n    <main>\n    <router-outlet></router-outlet>\n    </main>\n  <private-chat></private-chat>\n  ",
+	            template: "\n      <sidebar></sidebar>\n    <main>\n    <router-outlet></router-outlet>\n    </main>\n  <private-chat></private-chat>\n  ",
 	            styleUrls: ['client/dev/asserts/css/admin.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
@@ -4836,8 +4858,7 @@ webpackJsonp([2],[
 	        this._knowledgeService
 	            .addKnowledge(knowledge)
 	            .subscribe(function (m) {
-	            _this.knowledges.push(m);
-	            _this.getAll();
+	            _this.getAllKnowledgesForAdmin();
 	            _this.knowledgeForm.controls["name"].updateValue("");
 	            _this.knowledgeForm.controls["description"].updateValue("");
 	        });
@@ -4859,9 +4880,6 @@ webpackJsonp([2],[
 	            }
 	        });
 	    };
-	    KnowledgeListComponent.prototype.hide = function () {
-	        $(".collapse").collapse("hide");
-	    };
 	    KnowledgeListComponent.prototype.getAllKnowledgesForAdmin = function () {
 	        var _this = this;
 	        this._knowledgeService
@@ -4870,12 +4888,13 @@ webpackJsonp([2],[
 	            _this.knowledgeAdmin = knowledge;
 	            for (var i = 0; i < _this.knowledgeAdmin.length; i++) {
 	                _this.knowledgeAdmin[i].data["num"] = i + 1;
+	                if (_this.knowledgeAdmin[i].data.status == false) {
+	                    for (var j = 0; j < _this.knowledgeAdmin[i].children.length; j++) {
+	                        _this.knowledgeAdmin[i].children[j].data["visible"] = false;
+	                    }
+	                }
 	            }
-	            console.log(_this.knowledgeAdmin);
 	        });
-	    };
-	    KnowledgeListComponent.prototype.showDialogToAdd = function () {
-	        this.displayDialog = true;
 	    };
 	    __decorate([
 	        core_1.Input(), 
@@ -5629,8 +5648,12 @@ webpackJsonp([2],[
 	        }
 	    };
 	    detailArticleComponent.prototype.ngAfterViewChecked = function () {
+	        var _this = this;
 	        if (this.article != undefined) {
-	            $('.bodyArt').html(this.article.content);
+	            $('.bodyArt').html(function () {
+	                return _this.article.content;
+	            });
+	            $('.bodyArt img').css('max-width', '900px');
 	        }
 	    };
 	    detailArticleComponent.prototype.editArt = function (id) {
@@ -10575,10 +10598,6 @@ webpackJsonp([2],[
 	            accordion: true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
 	        });
 	    };
-	    SideBarComponent.prototype.ngAfterViewChecked = function () {
-	        $('#sidenav-overlay').remove();
-	        $('.drag-target').remove();
-	    };
 	    SideBarComponent.prototype.closeNav = function () {
 	        $('.btnOpenNavF').sideNav({ closeOnClick: "true" });
 	    };
@@ -11097,7 +11116,7 @@ webpackJsonp([2],[
 	    };
 	    ResetPasswordComponent = __decorate([
 	        core_1.Component({
-	            template: "\n      <div class=\"container mg-top-50\">\n        <div class=\"row\">\n          <div class=\"col-md-3\"></div>\n          <!-- /.col-md-3 -->\n          <div class=\"col-md-6\">\n            <div *ngIf=\"errorMessage\" class=\"errmess\">{{errorMessage}}</div>\n\n            <div *ngIf=\"step === 2\">\n              <h3>Ch\u00FAng t\u00F4i \u0111\u00E3 g\u1EEDi m\u1ED9t email kh\u00F4i ph\u1EE5c m\u1EADt  \u0111\u1EBFn \u0111\u1ECBa ch\u1EC9: {{email}} </h3>\n            </div>\n            <div *ngIf=\"step === 1\" class=\"loginPanel\">\n              <div class=\"box-header\">\n                <h2>Ph\u1EE5c h\u1ED3i m\u1EADt kh\u1EA9u </h2>\n              </div>\n              <form  (ngSubmit)=\"sendEmail(email.value)\">\n                <div class=\"form-group\">\n                  <input class=\"form-control form-text\" type=\"email\" required maxlength=\"70\"\n                         placeholder=\"Email ph\u1EE5c h\u1ED3i m\u1EADt kh\u1EA9u \"\n                         name=\"email\"\n                         #email\n                  />\n                </div>\n                <div class=\"row\">\n                  <div class=\"col-sm-6\">\n                    <button class=\"form-control btn btn-success\" type=\"submit\">G\u1EEDi Email </button>\n                  </div>\n                  <!-- /.col-sm-6 -->\n                  <div class=\"col-sm-6\">\n                    <button class=\"form-control btn btn btn-primary\" type=\"reset\" [routerLink]=\"['/reg']\">\u0110\u0103ng k\u00FD</button>\n                  </div>\n                </div>\n                <!-- /.row -->\n\n             </form>\n            </div>\n              <!-- /.loginPanel -->\n            </div>\n          <!-- /.col-md-6 -->\n          <div class=\"col-md-3\"></div>\n          <!-- /.col-md-3 -->\n        </div>\n        <!-- /.row -->\n      </div>",
+	            templateUrl: 'client/dev/app/components/front-end/user/reset-password/templates/reset-password.html',
 	            styleUrls: ['client/dev/app/components/front-end/user/login/styles/login.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,

@@ -1,11 +1,10 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 /**
  * Created by Duc Duong on 8/8/2016.
@@ -76,8 +75,7 @@ var ArtListCtlComponent = (function () {
             templateUrl: 'client/dev/app/components/back-end/article/templates/article-list.html',
             directives: [router_1.ROUTER_DIRECTIVES, primeng_1.Paginator, common_1.FORM_DIRECTIVES, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.Footer, private_chat_1.PrivateChatComponent],
             providers: [article_1.ArticleService, pager_1.PagerService]
-        }), 
-        __metadata('design:paramtypes', [article_1.ArticleService, pager_1.PagerService, router_1.Router])
+        })
     ], ArtListCtlComponent);
     return ArtListCtlComponent;
 })();

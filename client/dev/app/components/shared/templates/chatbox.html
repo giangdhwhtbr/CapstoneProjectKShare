@@ -9,8 +9,7 @@
                 <ul class="friend-list">
                     <li *ngFor="let room of allChatRooms" class="fr-e displayPointer">
                         <a class="clearfix" (click)="getReceiver(room)">
-                            <img src="http://bootdey.com/img/Content/user_1.jpg" alt="" class="circle">
-
+                            <img [src]="room.friendAva" alt="" class="circle">
                             <div class="friend-name">
                                 <strong>{{room.friendName}}</strong>
                             </div>
@@ -30,8 +29,8 @@
                     <ul class="chat">
                         <div *ngFor="let mes of messages">
                             <li *ngIf="mes.sender!=username" class="left clearfix">
-                                <span class="chat-img pull-left">
-                                    <img src="http://bootdey.com/img/Content/user_3.jpg" alt="User Avatar">
+                                  <span class="chat-img pull-left">
+                                    <img [src]="mes.avatar" alt="User Avatar">
                                   </span>
 
                                 <div class="chat-body clearfix">
@@ -46,9 +45,8 @@
                                 </div>
                             </li>
                             <li *ngIf="mes.sender==username" class="right clearfix">
-                                <span class="chat-img pull-right">
-                                                    <img src="http://bootdey.com/img/Content/user_1.jpg"
-                                                         alt="User Avatar">
+                                  <span class="chat-img pull-right" *ngIf="avatar">
+                                    <img [src]="avatar"  alt="User Avatar">
                                   </span>
 
                                 <div class="chat-body clearfix">

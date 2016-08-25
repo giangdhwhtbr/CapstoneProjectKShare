@@ -68,7 +68,7 @@ export class RegisterComponent {
                         user = {
                             username: user.username,
                             password: user.password
-                        }
+                        };
                         this._authService
                             .login(user)
                             .subscribe(

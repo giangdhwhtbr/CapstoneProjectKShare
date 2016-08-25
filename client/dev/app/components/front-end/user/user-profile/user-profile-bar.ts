@@ -106,8 +106,8 @@ export class UserProfileBarComponent {
       this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then((r) => {
         this.linkImg = '/uploads/' + r[0].filename;
         this.userProfile.linkImg = this.linkImg;
+        this.userProfile.username = localStorage.getItem('username');
         this._userService.updateUser(this.userProfile, []).subscribe(r => {
-          console.log("update link profile picture successful");
           $('#loading').hide();
         });
       }, (error) => {
