@@ -9,6 +9,10 @@
 
   }
 }
+
+ul.right {
+  height: 64px;
+}
 #snackbar {
     visibility: hidden;
     min-width: 250px;
@@ -73,6 +77,12 @@
     border-radius: 11px;
     padding-right: 0px;
     padding-left: 16px;
+}
+
+@media only screen and (max-width: 992px) {
+  #searchFriend {
+    margin-left: 50px;
+  }
 }
 
 .logoK{

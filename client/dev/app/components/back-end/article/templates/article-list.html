@@ -61,11 +61,11 @@
                         </div>
                     </div>
                     <div class="input-field col s6">
-                        <input #gb id="filter1" type="text" pInputText>
+                        <input #gb1 id="filter1" type="text" pInputText>
                         <label for="filter1">Tìm kiếm</label>
                     </div>
                     <div class="row">
-                        <p-dataTable [value]="artsDa" [rows]="10" [paginator]="true" [globalFilter]="gb">
+                        <p-dataTable [value]="artsDa" [rows]="10" [paginator]="true" [globalFilter]="gb1">
                             <p-column field="title" header="Tiêu đề" [sortable]="true" [filter]="true">
                                 <template let-a="rowData">
                                     <a [routerLink]="['/article/' , a._id ]">{{a.title}}</a>
@@ -96,11 +96,11 @@
                         </div>
                     </div>
                     <div class="input-field col s6">
-                        <input #gb id="filter2" type="text" pInputText>
+                        <input #gb2 id="filter2" type="text" pInputText>
                         <label for="filter2">Tìm kiếm</label>
                     </div>
                     <div class="row">
-                        <p-dataTable [value]="artsPr" [rows]="10" [paginator]="true" [globalFilter]="gb">
+                        <p-dataTable [value]="artsPr" [rows]="10" [paginator]="true" [globalFilter]="gb2">
                             <p-column field="title" header="Tiêu đề" [sortable]="true" [filter]="true">
                                 <template let-a="rowData">
                                     <a [routerLink]="['/article/' , a._id ]">{{a.title}}</a>

@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -66,8 +67,7 @@ var KnowledgeListComponent = (function () {
         this._knowledgeService
             .addKnowledge(knowledge)
             .subscribe(function (m) {
-            _this.knowledges.push(m);
-            _this.getAll();
+            _this.getAllKnowledgesForAdmin();
             _this.knowledgeForm.controls["name"].updateValue("");
             _this.knowledgeForm.controls["description"].updateValue("");
         });
@@ -89,9 +89,6 @@ var KnowledgeListComponent = (function () {
             }
         });
     };
-    KnowledgeListComponent.prototype.hide = function () {
-        $(".collapse").collapse("hide");
-    };
     KnowledgeListComponent.prototype.getAllKnowledgesForAdmin = function () {
         var _this = this;
         this._knowledgeService
@@ -100,12 +97,13 @@ var KnowledgeListComponent = (function () {
             _this.knowledgeAdmin = knowledge;
             for (var i = 0; i < _this.knowledgeAdmin.length; i++) {
                 _this.knowledgeAdmin[i].data["num"] = i + 1;
+                if (_this.knowledgeAdmin[i].data.status == false) {
+                    for (var j = 0; j < _this.knowledgeAdmin[i].children.length; j++) {
+                        _this.knowledgeAdmin[i].children[j].data["visible"] = false;
+                    }
+                }
             }
-            console.log(_this.knowledgeAdmin);
         });
-    };
-    KnowledgeListComponent.prototype.showDialogToAdd = function () {
-        this.displayDialog = true;
     };
     __decorate([
         core_1.Input(), 
@@ -125,6 +123,6 @@ var KnowledgeListComponent = (function () {
         __metadata('design:paramtypes', [common_1.FormBuilder, core_1.ElementRef, knowledge_1.KnowledgeService, requests_1.RequestService])
     ], KnowledgeListComponent);
     return KnowledgeListComponent;
-})();
+}());
 exports.KnowledgeListComponent = KnowledgeListComponent;
 //# sourceMappingURL=knowledges-list.js.map

@@ -1,3 +1,11 @@
+<nav>
+    <div class="nav-wrapper indigo darken-2">
+        <a style="margin-left: 20px;" class="breadcrumb">Bảng</a>
+        <a class="breadcrumb">Quản lý tri thức</a>
+
+        <div style="margin-right: 20px;" id="timestamp" class="right"></div>
+    </div>
+</nav>
 <div class="row" style="padding-right:0!important;">
     <div class="col s12 m12" style="padding-right:0!important;">
         <ul class="collapsible" data-collapsible="accordion">
@@ -64,7 +72,7 @@
                             <button type="button" *ngIf="knowledge.data.status==true" pButton class="btn-floating waves-effect waves-light orange" [routerLink]="['/admin/knowledges/'+ knowledge.data._id]">
                                 <i class="material-icons">edit</i>
                             </button>
-                            <button type="button" *ngIf="(knowledge.data.status==false&&!knowledge.data.hasOwnProperty('parent'))||(knowledge.data.hasOwnProperty('parent')&&knowledge.data.status==false)" pButton class="btn-floating waves-effect waves-light green" (click)="changeKnowledgeStatus(knowledge.data._id)">
+                            <button type="button" *ngIf="(knowledge.data.status==false&&!knowledge.data.hasOwnProperty('parent'))||(knowledge.data.status==false&&knowledge.data.hasOwnProperty('parent')&&!knowledge.data.hasOwnProperty('visible'))" pButton class="btn-floating waves-effect waves-light green" (click)="changeKnowledgeStatus(knowledge.data._id)">
                                 <i class="material-icons">done</i>
                             </button>
                             <button type="button" *ngIf="knowledge.data.status==true&&!knowledge.data.hasOwnProperty('parent')" pButton class="btn-floating waves-effect waves-light blue modal-trigger" (click)="openModal(knowledge.data._id)">

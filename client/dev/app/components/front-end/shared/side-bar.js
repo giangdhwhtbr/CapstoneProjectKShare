@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -43,10 +44,6 @@ var SideBarComponent = (function () {
             accordion: true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
         });
     };
-    SideBarComponent.prototype.ngAfterViewChecked = function () {
-        $('#sidenav-overlay').remove();
-        $('.drag-target').remove();
-    };
     SideBarComponent.prototype.closeNav = function () {
         $('.btnOpenNavF').sideNav({ closeOnClick: "true" });
     };
@@ -63,6 +60,6 @@ var SideBarComponent = (function () {
         __metadata('design:paramtypes', [knowledge_1.KnowledgeService, router_1.Router, router_2.ActivatedRoute])
     ], SideBarComponent);
     return SideBarComponent;
-})();
+}());
 exports.SideBarComponent = SideBarComponent;
 //# sourceMappingURL=side-bar.js.map

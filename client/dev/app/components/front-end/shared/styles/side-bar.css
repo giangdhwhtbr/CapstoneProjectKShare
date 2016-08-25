@@ -17,6 +17,7 @@ a:hover{
   width: 220px;
   height: 100%;
   overflow-x: hidden;
+  margin-top: 64px;
 }
 .side-nav:hover {
   overflow-y: scroll;

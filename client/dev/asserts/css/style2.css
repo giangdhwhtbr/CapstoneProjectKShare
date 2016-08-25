@@ -2,18 +2,33 @@ header {
     width: 100%;
     position:fixed;
     z-index: 100;
+    height: 64px;
 }
 main{
     padding-top: 64px;
+    overflow-x: hidden;
+    padding-left: 200px;
 }
 .row {
     padding: 10px;
 }
+
 @media only screen and (max-width: 992px) {
     main {
         padding-left: 0px;
         padding-top: 56px;
     }
+    header {
+      height: 56px;
+    }
+}
+@media only screen and (min-width: 993px) {
+    .container {
+      width: 98%;
+    }
+}
+@media only screen and (min-width: 1366px) {
+
 }
 @font-face {
     font-family: 'Material Icons';
@@ -100,10 +115,6 @@ main{
     cursor: pointer;
 }
 
-#sidenav-overlay{
-    background-color: inherit;
-    display: none;
-}
 nav .nav-wrapper{
     padding-left: 20px;
     padding-right: 20px;
@@ -148,4 +159,20 @@ nav .nav-wrapper{
 .ui-inputtext, .ui-widget-content .ui-inputtext, .ui-widget-header .ui-inputtext{
     border-radius: 0px;
     box-shadow: none;
+}
+
+.side-nav {
+  width: 200px;
+  height: 100%;
+  overflow-x: hidden;
+}
+
+.side-nav li {
+  padding: 0;
+}
+@media only screen and (max-width: 992px) {
+  .side-nav {
+    width: 200px;
+    top:0px;
+  }
 }

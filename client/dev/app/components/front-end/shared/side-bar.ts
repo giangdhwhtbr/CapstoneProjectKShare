@@ -47,11 +47,6 @@ export class SideBarComponent {
         });
     }
 
-    ngAfterViewChecked(){
-        $('#sidenav-overlay').remove();
-        $('.drag-target').remove();
-    }
-
     closeNav() {
         $('.btnOpenNavF').sideNav({closeOnClick: "true"});
     }
