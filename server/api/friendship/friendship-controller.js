@@ -46,7 +46,6 @@ module.exports = class FriendShipController {
                 };
                 //create chat room
                 ChatRoomDAO.createChatRoom(chatRoom);
-
                 for (var i = 0; i < friendship.length; i++) {
                   if (friendship[i].user2 === req.params.user2) {
                     friendship[i].status = 'accepted';
@@ -55,7 +54,6 @@ module.exports = class FriendShipController {
                       .catch(error => res.status(400).json(error));
                   }
                 }
-
               });
             })
             .catch(error => res.status(400).json(error));
