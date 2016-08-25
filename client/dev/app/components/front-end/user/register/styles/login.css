@@ -73,4 +73,11 @@ a {
   opacity:0.9;
 }
 
+button {
+  margin-bottom: 15px!important;
+}
+
+h5 {
+  font-weight: lighter;
+}
 /* End Login Modal*/

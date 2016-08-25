@@ -79,6 +79,18 @@ var UserListComponent = (function () {
             console.log(response);
         }, function (error) { });
     };
+    UserListComponent.prototype.deactivateUser = function (user) {
+        console.log(user);
+        user.status = 'deactive';
+        this._userService.updateUser(user, []).subscribe(function (user) {
+        });
+    };
+    UserListComponent.prototype.activateUser = function (user) {
+        user.status = 'active';
+        user.banStatus.status = false;
+        this._userService.updateUser(user, []).subscribe(function (user) {
+        });
+    };
     UserListComponent = __decorate([
         core_1.Component({
             selector: 'user-list',

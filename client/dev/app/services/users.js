@@ -128,6 +128,8 @@ var UserService = (function () {
                 role: user.role,
                 linkImg: user.linkImg,
                 ownKnowledgeIds: user.ownKnowledgeIds,
+                status: user.status,
+                banStatus: user.banStatus
             },
             newTag: _newTag
         });

@@ -46,13 +46,13 @@
                 </div>
             </div>
         </div>
-        <div class="profile-userbuttons">
-            <button *ngIf="userToken!== null &&!checkUser && !checkSentRequestUser && !isFriend && !checkIsRecivedRequest" type="button" class="waves-effect waves-light btn"
+        <div class="profile-userbuttons" *ngIf="userToken !== null">
+            <button *ngIf="!checkUser && !checkSentRequestUser && !isFriend && !checkIsRecivedRequest" type="button" class="waves-effect waves-light btn"
                     (click)="addFriend()">Thêm bạn</button>
             <button *ngIf="!checkUser && checkSentRequestUser" (click)="deleteFriend()" type="button" class="waves-effect waves-light btn">Đã gửi kết bạn</button>
-            <button *ngIf="!checkUser" (click)="openReport()" type="button" class="waves-effect waves-light btn">Báo cáo</button>
             <button *ngIf="!checkUser && isFriend" (click)="deleteFriend()" type="button" class="waves-effect waves-light btn">Đã là bạn bè</button>
             <button *ngIf="!checkUser && checkIsRecivedRequest" [routerLink]="['/user/' + userToken + '/friends']" class="waves-effect waves-light btn blue">Đồng ý kết bạn</button>
+            <button *ngIf="!checkUser && userT" (click)="openReport()" type="button" class="waves-effect waves-light btn">Báo cáo</button>
             <!--<button *ngIf="userToken!== null&&!checkUser" type="button" class="waves-effect waves-light btn red">Gửi tin nhắn</button>-->
         </div>
         <div class="profile-userbuttons">

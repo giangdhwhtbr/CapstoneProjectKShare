@@ -95,7 +95,8 @@ var UserProfileBarComponent = (function () {
         else {
             Materialize.toast('Bạn đã gửi kết bạn rồi!', 4000);
         }
-        // this.getFriendList();
+        this.checkSentRequestUser = true;
+        this.isFriend = false;
     };
     UserProfileBarComponent.prototype.deleteFriend = function () {
         var r = confirm("Bạn có muốn hủy kết bạn");

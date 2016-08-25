@@ -17,6 +17,7 @@ var users_1 = require('../../../services/users');
 var article_1 = require('../../../services/article');
 var private_chat_1 = require('./../../shared/private-chat');
 var tag_1 = require('../tag/tag');
+var topArticle_1 = require('./topArticle');
 var NewsFeedComponent = (function () {
     function NewsFeedComponent(_userService, _requestService, _articleService, router) {
         this._userService = _userService;
@@ -140,7 +141,8 @@ var NewsFeedComponent = (function () {
             directives: [
                 router_1.ROUTER_DIRECTIVES,
                 private_chat_1.PrivateChatComponent,
-                tag_1.listTagComponent
+                tag_1.listTagComponent,
+                topArticle_1.topArticlesComponent
             ]
         }), 
         __metadata('design:paramtypes', [users_1.UserService, requests_1.RequestService, article_1.ArticleService, router_1.Router])

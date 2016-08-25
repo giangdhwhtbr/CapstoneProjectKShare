@@ -1,14 +1,5 @@
-<ul class="collapsible side-nav" data-collapsible="accordion" id="slide-out">
-    <li>
-        <i class="material-icons displayPointer" (click)="closeNav()">close</i>
-    </li>
-    <li class="center">
-        <div class="indigo darken-2 white-text" style="height: 64px;">
-            <div class="row">
-                <h3 (click)="backHome()" class="logo-outter displayPointer">K</h3>
-            </div>
-        </div>
-    </li>
+<ul class="collapsible side-nav fixed" data-collapsible="accordion" id="slide-out">
+
     <li *ngFor="let knowledge of knowledges">
         <div class="collapsible-header">
             <a [routerLink]="['/mix/category/'+ knowledge._id]" routerLinkActive="active">

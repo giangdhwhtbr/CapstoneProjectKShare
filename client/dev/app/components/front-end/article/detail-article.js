@@ -106,8 +106,12 @@ var detailArticleComponent = (function () {
         }
     };
     detailArticleComponent.prototype.ngAfterViewChecked = function () {
+        var _this = this;
         if (this.article != undefined) {
-            $('.bodyArt').html(this.article.content);
+            $('.bodyArt').html(function () {
+                return _this.article.content;
+            });
+            $('.bodyArt img').css('max-width', '900px');
         }
     };
     detailArticleComponent.prototype.editArt = function (id) {
