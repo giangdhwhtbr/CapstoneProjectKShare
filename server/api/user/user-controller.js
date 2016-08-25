@@ -81,17 +81,24 @@ module.exports = class userController {
             var currentDate = new Date();
             let _data = req.body;
 
+
             userDAO.getUserById(req.params.id)
                 .then(user => {
               user.fullName = _data.user.fullName;
-              user.displayName = _data.user.displayName;
               user.phone = _data.user.phone;
               user.status = _data.user.status;
-              user.banStatus.status = _data.user.banStatus.status;
               user.updatedAt = currentDate;
               user.linkImg = _data.user.linkImg;
-              user.ownKnowledgeIds = _data.user.ownKnowledgeIds;
-              user.birthday = _data.user.birthday;
+              var formatDate = function (date) {
+                console.log(date);
+                var day = date.substr(0,2);
+                var month = date.substr(3,2);
+                var year = date.substr(6,4);
+                return new Date(day + '/' + month + '/' + year);
+              };
+              user.birthday = formatDate(_data.user.birthday);
+
+
               if(_data.user.linkImg){
                 chatRoomCtrl.updateAvatarUserInChatRoom(_data.user.username, _data.user.linkImg);
               }
@@ -102,7 +109,6 @@ module.exports = class userController {
                                     user.ownKnowledgeIds.push(e);
                                 });
                                 user.save();
-
                                 res.status(200).json(user);
                             }).catch((error) => res.status(400).json(error));
                         })

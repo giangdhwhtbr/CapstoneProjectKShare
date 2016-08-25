@@ -33,8 +33,7 @@ var RegisterInfoComponent = (function () {
         this.updateUserForm = fb.group({
             fullName: [""],
             birthday: [""],
-            phone: [""],
-            ownKnowledgeIds: [""]
+            phone: [""]
         });
     }
     RegisterInfoComponent.prototype.ngOnInit = function () {
@@ -115,6 +114,8 @@ var RegisterInfoComponent = (function () {
                 birthday: birthday,
                 ownKnowledgeIds: tags[0]
             };
+            console.log(user);
+            console.log(tags[1]);
             this._userService.updateUser(user, tags[1]).subscribe(function (res) {
                 _this.router.navigateByUrl('/');
             }, function (err) {

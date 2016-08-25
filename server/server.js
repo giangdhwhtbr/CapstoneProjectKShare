@@ -126,7 +126,8 @@ io.on('connection',  (socket) => {
     .then(chatRoom => {
       data.sentAt = new Date();
       data.users = chatRoom.users;
-      io.in(chatRoom._id).emit('private-message-return',data);
+      data.id = chatRoom._id;
+      io.in(data.id).emit('private-message-return',data);
       io.emit('new-message-notification',data);
     }).catch(error => {
       console.log(error);
