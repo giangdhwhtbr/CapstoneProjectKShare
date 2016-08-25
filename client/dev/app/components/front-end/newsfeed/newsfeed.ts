@@ -8,6 +8,7 @@ import { UserService } from '../../../services/users';
 import { ArticleService } from '../../../services/article';
 import { PrivateChatComponent } from './../../shared/private-chat';
 import { listTagComponent } from '../tag/tag';
+import { topArticlesComponent } from './topArticle';
 
 declare var $:any;
 
@@ -18,7 +19,8 @@ declare var $:any;
     directives: [
         ROUTER_DIRECTIVES,
         PrivateChatComponent,
-        listTagComponent
+        listTagComponent,
+        topArticlesComponent
     ]
 })
 

@@ -141,7 +141,8 @@ export class UserProfileBarComponent {
     } else {
       Materialize.toast('Bạn đã gửi kết bạn rồi!', 4000);
     }
-    // this.getFriendList();
+    this.checkSentRequestUser = true;
+    this.isFriend = false;
   }
 
   deleteFriend(): void {

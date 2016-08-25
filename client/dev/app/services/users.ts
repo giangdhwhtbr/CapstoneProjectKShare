@@ -130,7 +130,6 @@ export class UserService {
             .map((r) => r.json());
     }
 
-
     updateUser(user:any, _newTag:any[]):Observable<any> {
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
@@ -151,6 +150,8 @@ export class UserService {
                 role: user.role,
                 linkImg: user.linkImg,
                 ownKnowledgeIds: user.ownKnowledgeIds,
+                status: user.status,
+                banStatus: user.banStatus 
             },
             newTag: _newTag
         });
@@ -159,7 +160,6 @@ export class UserService {
             .put(this._usersUrl.replace(':id', user._id), _data, options)
             .map((r) => r.json());
     }
-
 
     banUser(id:string):Observable<any> {
         let headers = new Headers({'Content-Type': 'application/json'});

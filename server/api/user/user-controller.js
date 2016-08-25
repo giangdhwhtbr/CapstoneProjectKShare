@@ -81,23 +81,23 @@ module.exports = class userController {
             var currentDate = new Date();
             let _data = req.body;
 
-
             userDAO.getUserById(req.params.id)
                 .then(user => {
-
-          user.fullName = _data.user.fullName;
-          user.displayName = _data.user.displayName;
-          user.phone = _data.user.phone;
-          //user.interestedKnowledgeId = req.body.interestedKnowledgeId;
-          user.status = _data.user.status;
-          user.updatedAt = currentDate;
-          user.ownKnowledgeIds = _data.user.ownKnowledgeIds;
-          user.linkImg = _data.user.linkImg;
-          user.birthday = _data.user.birthday;
-          console.log(user.birthday);
-          userDAO.updateUserById(user)
-            .then((user) => {
-              TagDAO.createArrayTag(_data.newTag).then((tags) => {
+                    console.log(user);
+                    console.log(_data.user);
+                    user.fullName = _data.user.fullName;
+                    user.displayName = _data.user.displayName;
+                    user.phone = _data.user.phone;
+                    user.status = _data.user.status;
+                    user.updatedAt = currentDate;
+                    user.ownKnowledgeIds = _data.user.ownKnowledgeIds;
+                    user.linkImg = _data.user.linkImg;
+                    user.birthday = _data.user.birthday;
+                    user.status = _data.user.status;
+                    user.banStatus.status = _data.user.banStatus.status;
+                    userDAO.updateUserById(user)
+                        .then((user) => {
+                            TagDAO.createArrayTag(_data.newTag).then((tags) => {
 
                                 tags.map((e, i) => {
                                     user.ownKnowledgeIds.push(e);
@@ -158,8 +158,8 @@ module.exports = class userController {
                 .then((user) => {
                     user.password = req.body.password;
                     userDAO.updateUserById(user)
-                        .then((user) => res.status(200).json({status: 'success'}))
-                        .catch((error) => res.status(400).json({status: 'failure'}));
+                        .then((user) => res.status(200).json({ status: 'success' }))
+                        .catch((error) => res.status(400).json({ status: 'failure' }));
                 })
                 .catch((error) => {
                     res.status(400).json(error);
@@ -179,9 +179,9 @@ module.exports = class userController {
                         .then((user) => {
                             transporter.sendMail(mailOptions(user.email, user.username, user.resetPasswordToken).resetPass, function (errors, info) {
                                 if (errors) {
-                                    res.status(400).json({status: 'failed'});
+                                    res.status(400).json({ status: 'failed' });
                                 }
-                                res.status(200).json({status: 'success'});
+                                res.status(200).json({ status: 'success' });
                             });
                         })
                         .catch((err) => {
@@ -189,8 +189,8 @@ module.exports = class userController {
                         });
 
                 }).catch(error => {
-                res.status(400).json(error);
-            });
+                    res.status(400).json(error);
+                });
         } else {
             res.status(404).json('There is no email');
         }

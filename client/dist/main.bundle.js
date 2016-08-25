@@ -673,6 +673,8 @@ webpackJsonp([2],[
 	                role: user.role,
 	                linkImg: user.linkImg,
 	                ownKnowledgeIds: user.ownKnowledgeIds,
+	                status: user.status,
+	                banStatus: user.banStatus
 	            },
 	            newTag: _newTag
 	        });
@@ -3550,7 +3552,8 @@ webpackJsonp([2],[
 	        else {
 	            Materialize.toast('Bạn đã gửi kết bạn rồi!', 4000);
 	        }
-	        // this.getFriendList();
+	        this.checkSentRequestUser = true;
+	        this.isFriend = false;
 	    };
 	    UserProfileBarComponent.prototype.deleteFriend = function () {
 	        var r = confirm("Bạn có muốn hủy kết bạn");
@@ -5271,6 +5274,18 @@ webpackJsonp([2],[
 	            $("#" + userid).hide();
 	            console.log(response);
 	        }, function (error) { });
+	    };
+	    UserListComponent.prototype.deactivateUser = function (user) {
+	        console.log(user);
+	        user.status = 'deactive';
+	        this._userService.updateUser(user, []).subscribe(function (user) {
+	        });
+	    };
+	    UserListComponent.prototype.activateUser = function (user) {
+	        user.status = 'active';
+	        user.banStatus.status = false;
+	        this._userService.updateUser(user, []).subscribe(function (user) {
+	        });
 	    };
 	    UserListComponent = __decorate([
 	        core_1.Component({
@@ -10188,6 +10203,7 @@ webpackJsonp([2],[
 	var article_1 = __webpack_require__(52);
 	var private_chat_1 = __webpack_require__(11);
 	var tag_1 = __webpack_require__(73);
+	var topArticle_1 = __webpack_require__(1120);
 	var NewsFeedComponent = (function () {
 	    function NewsFeedComponent(_userService, _requestService, _articleService, router) {
 	        this._userService = _userService;
@@ -10311,7 +10327,8 @@ webpackJsonp([2],[
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                private_chat_1.PrivateChatComponent,
-	                tag_1.listTagComponent
+	                tag_1.listTagComponent,
+	                topArticle_1.topArticlesComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
@@ -40027,6 +40044,58 @@ webpackJsonp([2],[
 	    return UITreeRow;
 	}());
 	exports.UITreeRow = UITreeRow;
+	
+
+/***/ },
+/* 1116 */,
+/* 1117 */,
+/* 1118 */,
+/* 1119 */,
+/* 1120 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 5/18/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var article_1 = __webpack_require__(52);
+	var topArticlesComponent = (function () {
+	    function topArticlesComponent(_articleService, router) {
+	        this._articleService = _articleService;
+	        this.router = router;
+	    }
+	    topArticlesComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._articleService.topArticle().subscribe(function (articles) {
+	            _this.articles = articles;
+	        });
+	    };
+	    topArticlesComponent = __decorate([
+	        core_1.Component({
+	            selector: 'top-articles',
+	            templateUrl: 'client/dev/app/components/front-end/newsfeed/templates/topArticles.html',
+	            styleUrls: ['client/dev/app/components/front-end/newsfeed/styles/newsfeed.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
+	    ], topArticlesComponent);
+	    return topArticlesComponent;
+	    var _a, _b;
+	}());
+	exports.topArticlesComponent = topArticlesComponent;
 	
 
 /***/ }

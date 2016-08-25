@@ -17,4 +17,5 @@ export interface User {
   updatedAt: string;
   level:string;
   linkImg:string;
+  status:string;
 }
