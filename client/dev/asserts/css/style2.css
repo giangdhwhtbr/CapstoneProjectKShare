@@ -149,3 +149,22 @@ nav .nav-wrapper{
     border-radius: 0px;
     box-shadow: none;
 }
+
+.img-leaderboard{
+
+}
+
+.cnt-lb{
+    padding: 7px !important;
+}
+
+.img-leaderboard{
+    max-width: 25px;
+}
+.artTop{
+    display: inline-flex;
+}
+.tit-art{
+    color: white;
+    font-size: initial;
+}
