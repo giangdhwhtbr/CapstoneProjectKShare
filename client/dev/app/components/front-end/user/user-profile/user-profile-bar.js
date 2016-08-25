@@ -64,8 +64,8 @@ var UserProfileBarComponent = (function () {
             this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then(function (r) {
                 _this.linkImg = '/uploads/' + r[0].filename;
                 _this.userProfile.linkImg = _this.linkImg;
+                _this.userProfile.username = localStorage.getItem('username');
                 _this._userService.updateUser(_this.userProfile, []).subscribe(function (r) {
-                    console.log("update link profile picture successful");
                     $('#loading').hide();
                 });
             }, function (error) {

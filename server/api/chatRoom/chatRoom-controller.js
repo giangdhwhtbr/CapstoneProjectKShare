@@ -64,7 +64,7 @@ module.exports = class ChatRoomController {
       .catch(error => { return res.status(400).json(error) });
   }
 
-  static updateChatRoom(data) {
+  static updateChatLogs(data) {
     var users = {
       user1: data.sender,
       user2: data.receiver
@@ -93,6 +93,26 @@ module.exports = class ChatRoomController {
       .catch(error => { return error });
 
   };
+
+  static updateAvatarUserInChatRoom(username, linkImg){
+      console.log(username, linkImg);
+      ChatRoomDAO.getAllChatRoomOfUser(username)
+        .then(chatRooms => {
+          for (var room of chatRooms){
+            for (var user of room.users){
+              if(user.user === username){
+                user.avatar = linkImg;
+              }
+              for (var log of room.chatLogs){
+                if (log.sender === username){
+                  log.avatar = linkImg;
+                }
+              }
+            }
+            ChatRoomDAO.updateChatRoom(room);
+          }
+        })
+  }
 
   static deactivateChatRoom(req, res) {
     return ChatRoomDAO
