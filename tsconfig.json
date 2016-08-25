@@ -62,7 +62,6 @@
     "client/dev/app/components/front-end/user/login/login.ts",
     "client/dev/app/components/front-end/user/register/info.ts",
     "client/dev/app/components/front-end/user/register/register.ts",
-    "client/dev/app/components/front-end/user/register/success.ts",
     "client/dev/app/components/front-end/user/reset-password/new-pass.ts",
     "client/dev/app/components/front-end/user/reset-password/reset-pass.ts",
     "client/dev/app/components/front-end/user/search/rs-search-user.ts",
