@@ -106,10 +106,8 @@ var KSpaceInfoComponent = (function () {
         this.ratePoint = event;
     };
     KSpaceInfoComponent.prototype.accessRoom = function () {
-        var specs = 'resizable=yes, fullscreen=yes';
-        var name = '_blank';
         var url = '/room/' + this.kspaceId + '/' + this.lecturer;
-        window.open(url, name, specs);
+        this.router.navigateByUrl(url);
     };
     KSpaceInfoComponent.prototype.finishKp = function () {
         var _this = this;

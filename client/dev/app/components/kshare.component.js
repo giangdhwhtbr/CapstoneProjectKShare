@@ -39,6 +39,7 @@ var detail_article_1 = require("./front-end/article/detail-article");
 var list_article_1 = require("./front-end/article/list-article");
 var displayArtByTag_1 = require("./front-end/tag/displayArtByTag");
 var request_create_1 = require("./back-end/request/request-create");
+var public_kspace_1 = require("./front-end/kspace/public-kspace");
 /**
  * Page components
  */
@@ -72,7 +73,8 @@ var KshareComponent = (function () {
                 displayArtByTag_1.displayArtByTagComponent,
                 request_create_1.CreateRequestComponent,
                 rs_search_user_1.userSearchRsComponent,
-                user_info_update_1.UpdateUserComponent
+                user_info_update_1.UpdateUserComponent,
+                public_kspace_1.CreatePublicKspace
             ]
         }), 
         __metadata('design:paramtypes', [])

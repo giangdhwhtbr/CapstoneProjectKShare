@@ -34,6 +34,8 @@ import { errorPageComponent } from "../components/shared/404";
 import { AdminAuthGuard, isLogin, Guest }          from './auth';
 import { AuthService }        from '../services/auth';
 
+import { CreatePublicKspace } from '../components/front-end/kspace/public-kspace';
+
 export const KShareRoutes: RouterConfig = [
 
     {
@@ -140,7 +142,7 @@ export const KShareRoutes: RouterConfig = [
                     },
                   {
                     path: '**',
-                    redirectTo: '/'
+                    redirectTo: '/error'
                   }
                 ]
             },
@@ -156,7 +158,7 @@ export const KShareRoutes: RouterConfig = [
                           },
                           {
                             path: '**',
-                            redirectTo: '/'
+                            redirectTo: '/error'
                           }
                         ]
                     },
@@ -166,7 +168,7 @@ export const KShareRoutes: RouterConfig = [
                     },
                     {
                       path: '**',
-                      redirectTo: '/'
+                      redirectTo: '/error'
                     }
                 ]
             },
@@ -188,11 +190,11 @@ export const KShareRoutes: RouterConfig = [
                             {
                                 path: 'update',
                                 component: UpdateRequestComponent,
-                                canActivate: isLogin
+                                canActivate: [isLogin]
                             },
                             {
                               path: '**',
-                              redirectTo: '/'
+                              redirectTo: '/error'
                             }
                         ]
                     },
@@ -202,7 +204,7 @@ export const KShareRoutes: RouterConfig = [
                     },
                     {
                       path: '**',
-                      redirectTo: '/'
+                      redirectTo: '/error'
                     }
                 ]
             },
@@ -228,7 +230,7 @@ export const KShareRoutes: RouterConfig = [
     },
     {
         path: 'room',
-        canActivate: isLogin,
+        canActivate: [isLogin],
         children: [
           {
             path: ':id/:lecturer',
@@ -236,11 +238,20 @@ export const KShareRoutes: RouterConfig = [
           },
           {
             path: '**',
-            redirectTo: '/'
+            redirectTo: '/error'
+          }
+        ]
+    },
+    {
+        path: 'public-kspace',
+        children: [
+          {
+            path: '',
+            component: CreatePublicKspace
           }
         ]
     }
 ];
 
 
-export const authProviders = [AdminAuthGuard,isLogin,Guest, AuthService];
+export const authProviders = [AdminAuthGuard, isLogin ,Guest, AuthService];

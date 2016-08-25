@@ -6,6 +6,7 @@ import { Http } from '@angular/http';
 import {CanActivate, Router, ActivatedRouteSnapshot, RouterStateSnapshot}  from '@angular/router';
 
 import { AuthService } from '../services/auth';
+import { KSpaceService } from '../services/kspace';
 import {stat} from "fs";
 import {Location} from '@angular/common';
 
@@ -59,4 +60,9 @@ export class Guest implements  CanActivate {
     this._location.back();
     return false;
   }
+}
+
+@Injectable()
+export class isKspaceUser implements CanActivate {
+  constructor(private router: Router, private )
 }

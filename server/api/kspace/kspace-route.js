@@ -22,5 +22,12 @@ module.exports = class KSpaceRoutes {
     router
       .route('/api/kspace/:id/review')
       .post(KSpaceController.createReview);
+
+    router
+      .route('/api/public-kspace')
+      .post(KSpaceController.createPublicKspace);
+    router
+      .route('/api/public-kspace/:id')
+      .get(KSpaceController.checkExist)
   }
-}
+};

@@ -87,4 +87,14 @@ var Guest = (function () {
     return Guest;
 })();
 exports.Guest = Guest;
+var isKspaceUser = (function () {
+    function isKspaceUser() {
+    }
+    isKspaceUser = __decorate([
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [])
+    ], isKspaceUser);
+    return isKspaceUser;
+})();
+exports.isKspaceUser = isKspaceUser;
 //# sourceMappingURL=auth.js.map
