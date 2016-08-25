@@ -162,17 +162,13 @@ nav .nav-wrapper{
 }
 
 .side-nav {
-  width: 200px;
   height: 100%;
   overflow-x: hidden;
 }
 
+ul.tabs {
+  overflow-x: hidden;
+}
 .side-nav li {
   padding: 0;
-}
-@media only screen and (max-width: 992px) {
-  .side-nav {
-    width: 200px;
-    top:0px;
-  }
 }
