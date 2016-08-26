@@ -1,7 +1,7 @@
 import {
     Component,
     Inject,
-    Input,Output
+    Input,Output,EventEmitter
 } from '@angular/core';
 import {
     FORM_DIRECTIVES,
@@ -10,10 +10,12 @@ import {
     Control,
     AbstractControl
 } from '@angular/common';
+import {ROUTER_DIRECTIVES,Router} from '@angular/router';
 import { KnowledgeService } from '../../../services/knowledge';
 import { Knowledge } from '../../../interface/knowledge';
 import {Dialog} from 'primeng/primeng';
 import {PrivateChatComponent} from '../../shared/private-chat';
+import {TreeNode} from 'primeng/primeng';
 declare var $:any
 @Component({
     selector: 'sub-create',
@@ -22,7 +24,9 @@ declare var $:any
 })
 export class CreateSubCategoryComponent {
     @Input('kId') kId: string;
-    @Input() knowledges: Knowledge[];
+    @Input() knowledges: TreeNode[];
+    @Output() knowledge: EventEmitter<Knowledge> = new EventEmitter<Knowledge>();
+    router:Router;
     subCategoryForm: ControlGroup;
     constructor(fb: FormBuilder, private _knowledgeService: KnowledgeService) {
         this.subCategoryForm = fb.group({
@@ -32,20 +36,14 @@ export class CreateSubCategoryComponent {
         });
     }
     ngOnInit(): void {
+
     }
     addKnowledge(knowledge) {
         this._knowledgeService.addKnowledge(knowledge).subscribe((knowledge)=> {
                 (<Control>this.subCategoryForm.controls["name"]).updateValue("");
                 (<Control>this.subCategoryForm.controls["description"]).updateValue("");
-                for(var i=0;i<this.knowledges.length;i++){
-                    var a = this.knowledges[i]["subCategory"];
-                    console.log(a);
-                    if(this.knowledges[i]._id===knowledge.parent){
-                        a.push(knowledge);
-                        this.knowledges[i]["subCategory"]=a;
-                    }
-                }
             }
         );
+        this.knowledge.emit(knowledge);
     }
 }

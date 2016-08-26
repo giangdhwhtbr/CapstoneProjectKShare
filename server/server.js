@@ -122,7 +122,6 @@ io.on('connection',  (socket) => {
   //Listening for private chat message
 
   socket.on('private-message', (data) => {
-    console.log(data);
     ChatRoomCtrl.updateChatLogs(data)
     .then(chatRoom => {
       data.sentAt = new Date();
