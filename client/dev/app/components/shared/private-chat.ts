@@ -44,7 +44,7 @@ export class PrivateChatComponent {
         }
       }
       for (var room of this.allChatRooms) {
-        if (room.friendName === data.sender) {
+        if (room._id === data.id) {
           room.lastSent = data.sentAt;
           room.lastMsg = data.message;
           room.newMessages = news;

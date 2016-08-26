@@ -18,7 +18,7 @@
                     <a aria-label="Các bài viết" [routerLink]="['/article']" routerLinkActive="active"><i class="material-icons">book</i></a>
                 </li>
                 <!--toggle notifications-->
-                <li [hidden]="!isFrontend">
+                <li>
                     <a class='right dropdown-button' (click)="changeStatusNotification()" data-activates='noti_dropdown'><i class=' material-icons'>add_alert</i><span *ngIf="countUnReadNoti>0" class="new badge red">{{countUnReadNoti}}</span></a>
                     <ul class="dropdown-content noti-liss" id="noti_dropdown">
                         <li *ngFor="let notification of notifications">

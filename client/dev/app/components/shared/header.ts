@@ -38,9 +38,7 @@ export class HeaderComponent {
 
     notifications: Notification[];
     isFrontend: boolean = false;
-
     isRoom: boolean = false;
-    sub: Subscription;
     constructor(private _auth: AuthService, public router: Router, public _noti: NotificationService,
         private _userService: UserService, private _chatService: ChatService) {
         this.userToken = localStorage.getItem('username');
@@ -71,11 +69,6 @@ export class HeaderComponent {
         this.socket = io('https://localhost:80');
         this.socket.on('receive notification', (data) => {
             if (localStorage.getItem('username') === data.data.user) {
-                //audio of notification
-                var audio = new Audio();
-                // audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
-                audio.load();
-                audio.play();
                 this.getNotificationByUser();
 
             }
@@ -99,7 +92,7 @@ export class HeaderComponent {
     ngAfterViewChecked() {
         //$('#sidenav-overlay').remove();
         //$('.drag-target').remove();
-        $("body").css("overflow","scroll");
+        $("body").css("overflow", "scroll");
     }
 
     openChat() {
@@ -144,12 +137,14 @@ export class HeaderComponent {
     }
 
     changeStatusNotification(): void {
-        this.countUnReadNoti = 0;
-        this._noti.changeStatusNotification(this.userToken).subscribe(
-            (notifications) => {
-                console.log('change status notification successful');
-            }
-        )
+        if (this.countUnReadNoti > 0) {
+            this.countUnReadNoti = 0;
+            this._noti.changeStatusNotification(this.userToken).subscribe(
+                (notifications) => {
+                    console.log('change status notification successful');
+                }
+            )
+        }
     }
 
     action(data): void {
