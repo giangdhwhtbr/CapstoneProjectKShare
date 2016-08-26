@@ -33,6 +33,7 @@ userSchema.statics.getUserById = (id) => {
             });
     });
 }
+
 userSchema.statics.getAvartaByUserNaname = (arrName) => {
 
     return new Promise((resolve, reject) => {

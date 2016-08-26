@@ -77,17 +77,25 @@ webpackJsonp([2],[
 	                    room.lastMsg = data.message;
 	                    room.newMessages = news;
 	                }
+	                for (var _d = 0, _e = _this.allChatRooms; _d < _e.length; _d++) {
+	                    var room = _e[_d];
+	                    if (room._id === data.id) {
+	                        room.lastSent = data.sentAt;
+	                        room.lastMsg = data.message;
+	                        room.newMessages = news;
+	                    }
+	                }
+	                _this.allChatRooms.sort(function (a, b) {
+	                    if (a.lastSent > b.lastSent) {
+	                        return -1;
+	                    }
+	                    else if (a.lastSent < b.lastSent) {
+	                        return 1;
+	                    }
+	                    return 0;
+	                });
+	                _this.messages.push(data);
 	            }
-	            _this.allChatRooms.sort(function (a, b) {
-	                if (a.lastSent > b.lastSent) {
-	                    return -1;
-	                }
-	                else if (a.lastSent < b.lastSent) {
-	                    return 1;
-	                }
-	                return 0;
-	            });
-	            _this.messages.push(data);
 	        });
 	        this.socket.on('private-message-reset', function (data) {
 	            var news = 0;
@@ -1354,8 +1362,7 @@ webpackJsonp([2],[
 	            .map(function (r) { return r.json(); });
 	    };
 	    NotificationService.prototype.changeStatusNotification = function (user) {
-	        return this._http.get(this._statusNotificationUrl.replace(':user', user))
-	            .map(function (r) { return r.json(); });
+	        return this._http.get(this._statusNotificationUrl.replace(':user', user));
 	    };
 	    NotificationService = __decorate([
 	        core_1.Injectable(), 
@@ -7535,11 +7542,6 @@ webpackJsonp([2],[
 	        this.socket = io('https://localhost:80');
 	        this.socket.on('receive notification', function (data) {
 	            if (localStorage.getItem('username') === data.data.user) {
-	                //audio of notification
-	                var audio = new Audio();
-	                // audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
-	                audio.load();
-	                audio.play();
 	                _this.getNotificationByUser();
 	            }
 	        });
@@ -7600,10 +7602,12 @@ webpackJsonp([2],[
 	        });
 	    };
 	    HeaderComponent.prototype.changeStatusNotification = function () {
-	        this.countUnReadNoti = 0;
-	        this._noti.changeStatusNotification(this.userToken).subscribe(function (notifications) {
-	            console.log('change status notification successful');
-	        });
+	        if (this.countUnReadNoti > 0) {
+	            this.countUnReadNoti = 0;
+	            this._noti.changeStatusNotification(this.userToken).subscribe(function (notifications) {
+	                console.log('change status notification successful');
+	            });
+	        }
 	    };
 	    HeaderComponent.prototype.action = function (data) {
 	        if (this.userToken === data[0]) {
@@ -10572,23 +10576,22 @@ webpackJsonp([2],[
 	        }
 	    }
 	    NewsFeedComponent.prototype.ngOnInit = function () {
-	        var _this = this;
 	        this.countA1 = 5;
 	        this.countR1 = 5;
 	        this.countA2 = 5;
 	        this.countR2 = 5;
 	        this.records = [];
 	        this.getRequests();
-	        $(window).on("scroll", function () {
-	            var scrollHeight = $(document).height();
-	            var scrollPosition = $(window).height() + $(window).scrollTop();
-	            if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-	                setTimeout(function () {
-	                    _this.seeMore();
-	                }, 1000);
-	                _this.height += 30;
-	            }
-	        });
+	        // $(window).on("scroll", () => {
+	        //     var scrollHeight = $(document).height();
+	        //     var scrollPosition = $(window).height() + $(window).scrollTop();
+	        //     if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+	        //         setTimeout(() => {
+	        //             this.seeMore();
+	        //         }, 1000);
+	        //         this.height += 30;
+	        //     }
+	        // });
 	        $('.parallax').parallax();
 	    };
 	    NewsFeedComponent.prototype.seeMore = function () {
@@ -10605,17 +10608,22 @@ webpackJsonp([2],[
 	                //if there is no request which has tagid same as onwknowledgeId
 	                if (requests.length === 0 || user.ownKnowledgeIds.length === 0) {
 	                    _this._requestService.getRequestExceptUserTags(user.ownKnowledgeIds, _this.countR2).subscribe(function (requests) {
-	                        for (var i = 0; i < requests.length; i++) {
-	                            //get summary
-	                            var html = requests[i].description;
-	                            var div = document.createElement("div");
-	                            div.innerHTML = html;
-	                            var text = div.textContent || div.innerText || "";
-	                            requests[i].description = text;
-	                            // push each records to records array
-	                            _this.records.push(requests[i]);
+	                        if (requests.length <= 0) {
+	                            alert("Không còn bài viết nào");
 	                        }
-	                        _this.countR2 = _this.countR2 + 5;
+	                        else {
+	                            for (var i = 0; i < requests.length; i++) {
+	                                //get summary
+	                                var html = requests[i].description;
+	                                var div = document.createElement("div");
+	                                div.innerHTML = html;
+	                                var text = div.textContent || div.innerText || "";
+	                                requests[i].description = text;
+	                                // push each records to records array
+	                                _this.records.push(requests[i]);
+	                            }
+	                            _this.countR2 = _this.countR2 + 5;
+	                        }
 	                    });
 	                }
 	                else {
@@ -10641,7 +10649,9 @@ webpackJsonp([2],[
 	                //if there is no articles which has tagid same as onwknowledgeId
 	                if (articles.length === 0 || user.ownKnowledgeIds.length === 0) {
 	                    _this._articleService.getArticleExceptUserTags(user.ownKnowledgeIds, _this.countA2).subscribe(function (articles) {
-	                        if (articles.length > 0) {
+	                        if (articles.length <= 0) {
+	                        }
+	                        else {
 	                            for (var i = 0; i < articles.length; i++) {
 	                                //get summary
 	                                var html = articles[i].content;
@@ -10654,7 +10664,6 @@ webpackJsonp([2],[
 	                            }
 	                            _this.countA2 = _this.countA2 + 5;
 	                        }
-	                        ;
 	                    });
 	                }
 	                else {
