@@ -37,33 +37,32 @@ export class PrivateChatComponent {
 
   ngOnInit(): void {
     this.socket.on('private-message-return', data => {
-      var news = 0;
-      for (var user of data.users) {
-        if (user.user === this.username) {
-          news = user.newMessages;
+        var news = 0;
+        for (var user of data.users) {
+          if (user.user === this.username) {
+            news = user.newMessages;
+          }
         }
-      }
-      for (var room of this.allChatRooms) {
-        if (room.friendName === data.sender) {
-          room.lastSent = data.sentAt;
-          room.lastMsg = data.message;
-          room.newMessages = news;
+        for (var room of this.allChatRooms) {
+          if (room._id === data.id) {
+            room.lastSent = data.sentAt;
+            room.lastMsg = data.message;
+            room.newMessages = news;
+          }
         }
-      }
-      this.allChatRooms.sort(function (a, b) {
-        if (a.lastSent > b.lastSent) {
-          return -1;
-        } else if (a.lastSent < b.lastSent) {
-          return 1;
-        }
-        return 0;
-      });
-      this.messages.push(data);
+        this.allChatRooms.sort(function (a, b) {
+          if (a.lastSent > b.lastSent) {
+            return -1;
+          } else if (a.lastSent < b.lastSent) {
+            return 1;
+          }
+          return 0;
+        });
+        this.messages.push(data);
     });
 
     this.socket.on('private-message-reset', data => {
       var news = 0;
-      console.log('12');
       for (var user of data.users) {
         if (user.user === this.username) {
           news = user.newMessages;

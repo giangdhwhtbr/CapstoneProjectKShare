@@ -118,7 +118,8 @@
     "webpack": "1.13.1",
     "webpack-dev-server": "1.14.1",
     "webpack-md5-hash": "0.0.5",
-    "webpack-merge": "0.14.0"
+    "webpack-merge": "0.14.0",
+    "ng-semantic": "1.0.36"
   },
   "repository": {
     "type": "git",

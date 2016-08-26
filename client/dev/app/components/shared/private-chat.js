@@ -32,7 +32,7 @@ var PrivateChatComponent = (function () {
             }
             for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
                 var room = _c[_b];
-                if (room.friendName === data.sender) {
+                if (room._id === data.id) {
                     room.lastSent = data.sentAt;
                     room.lastMsg = data.message;
                     room.newMessages = news;
@@ -51,7 +51,6 @@ var PrivateChatComponent = (function () {
         });
         this.socket.on('private-message-reset', function (data) {
             var news = 0;
-            console.log('12');
             for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
                 var user = _a[_i];
                 if (user.user === _this.username) {
