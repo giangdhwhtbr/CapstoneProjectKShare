@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -15,6 +16,7 @@ var private_chat_1 = require('../../shared/private-chat');
 var CreateSubCategoryComponent = (function () {
     function CreateSubCategoryComponent(fb, _knowledgeService) {
         this._knowledgeService = _knowledgeService;
+        this.knowledge = new core_1.EventEmitter();
         this.subCategoryForm = fb.group({
             "name": [""],
             "description": [""],
@@ -28,15 +30,8 @@ var CreateSubCategoryComponent = (function () {
         this._knowledgeService.addKnowledge(knowledge).subscribe(function (knowledge) {
             _this.subCategoryForm.controls["name"].updateValue("");
             _this.subCategoryForm.controls["description"].updateValue("");
-            for (var i = 0; i < _this.knowledges.length; i++) {
-                var a = _this.knowledges[i]["subCategory"];
-                console.log(a);
-                if (_this.knowledges[i]._id === knowledge.parent) {
-                    a.push(knowledge);
-                    _this.knowledges[i]["subCategory"] = a;
-                }
-            }
         });
+        this.knowledge.emit(knowledge);
     };
     __decorate([
         core_1.Input('kId'), 
@@ -46,6 +41,10 @@ var CreateSubCategoryComponent = (function () {
         core_1.Input(), 
         __metadata('design:type', Array)
     ], CreateSubCategoryComponent.prototype, "knowledges", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], CreateSubCategoryComponent.prototype, "knowledge", void 0);
     CreateSubCategoryComponent = __decorate([
         core_1.Component({
             selector: 'sub-create',
@@ -55,6 +54,6 @@ var CreateSubCategoryComponent = (function () {
         __metadata('design:paramtypes', [common_1.FormBuilder, knowledge_1.KnowledgeService])
     ], CreateSubCategoryComponent);
     return CreateSubCategoryComponent;
-})();
+}());
 exports.CreateSubCategoryComponent = CreateSubCategoryComponent;
 //# sourceMappingURL=sub-knowledge-create.js.map
