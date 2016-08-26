@@ -10,7 +10,7 @@ import { PrivateChatComponent } from './../../shared/private-chat';
 import { listTagComponent } from '../tag/tag';
 import { topArticlesComponent } from './topArticle';
 
-declare var $:any;
+declare var $: any;
 
 @Component({
     selector: 'news-feed',
@@ -25,24 +25,24 @@ declare var $:any;
 })
 
 export class NewsFeedComponent implements OnInit {
-    roleToken:string;
-    userToken:string;
-    pageTitle:string = 'Welcome to Knowledge Sharing Network';
-    records:any;
+    roleToken: string;
+    userToken: string;
+    pageTitle: string = 'Welcome to Knowledge Sharing Network';
+    records: any;
 
     //count for request
-    countR1:number;
-    countR2:number;
+    countR1: number;
+    countR2: number;
 
     //count for articles
-    countA1:number;
-    countA2:number;
-    height:number = 400;
+    countA1: number;
+    countA2: number;
+    height: number = 400;
 
-    constructor(private _userService:UserService,
-                private _requestService:RequestService,
-                private _articleService:ArticleService,
-                private router:Router) {
+    constructor(private _userService: UserService,
+        private _requestService: RequestService,
+        private _articleService: ArticleService,
+        private router: Router) {
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
         if (this.userToken === null) {
@@ -51,7 +51,7 @@ export class NewsFeedComponent implements OnInit {
 
     }
 
-    ngOnInit():void {
+    ngOnInit(): void {
         this.countA1 = 5;
         this.countR1 = 5;
         this.countA2 = 5;
@@ -59,20 +59,20 @@ export class NewsFeedComponent implements OnInit {
         this.records = [];
         this.getRequests();
 
-        $(window).on("scroll", () => {
-            var scrollHeight = $(document).height();
-            var scrollPosition = $(window).height() + $(window).scrollTop();
-            if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-                setTimeout(() => {
-                    this.seeMore();
-                }, 1000);
-                this.height += 30;
-            }
-        });
+        // $(window).on("scroll", () => {
+        //     var scrollHeight = $(document).height();
+        //     var scrollPosition = $(window).height() + $(window).scrollTop();
+        //     if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+        //         setTimeout(() => {
+        //             this.seeMore();
+        //         }, 1000);
+        //         this.height += 30;
+        //     }
+        // });
         $('.parallax').parallax();
     }
 
-    seeMore():void {
+    seeMore(): void {
         this.countR1 = this.countR1 + 5;
         this.countA1 = this.countA1 + 5;
         this.getRequests();
@@ -86,20 +86,24 @@ export class NewsFeedComponent implements OnInit {
                 //if there is no request which has tagid same as onwknowledgeId
                 if (requests.length === 0 || user.ownKnowledgeIds.length === 0) {
                     this._requestService.getRequestExceptUserTags(user.ownKnowledgeIds, this.countR2).subscribe((requests) => {
-                        for (var i = 0; i < requests.length; i++) {
+                        if (requests.length <= 0) {
+                            alert("Không còn bài viết nào");
+                        } else {
+                            for (var i = 0; i < requests.length; i++) {
 
-                            //get summary
-                            let html = requests[i].description;
-                            let div = document.createElement("div");
-                            div.innerHTML = html;
-                            let text = div.textContent || div.innerText || "";
+                                //get summary
+                                let html = requests[i].description;
+                                let div = document.createElement("div");
+                                div.innerHTML = html;
+                                let text = div.textContent || div.innerText || "";
 
-                            requests[i].description=text;
+                                requests[i].description = text;
 
-                            // push each records to records array
-                            this.records.push(requests[i]);
+                                // push each records to records array
+                                this.records.push(requests[i]);
+                            }
+                            this.countR2 = this.countR2 + 5;
                         }
-                        this.countR2 = this.countR2 + 5;
                     });
                 } else {
                     for (var i = 0; i < requests.length; i++) {
@@ -108,7 +112,7 @@ export class NewsFeedComponent implements OnInit {
                         let div = document.createElement("div");
                         div.innerHTML = html;
                         let text = div.textContent || div.innerText || "";
-                        requests[i].description=text;
+                        requests[i].description = text;
 
                         // push each records to records array
                         this.records.push(requests[i]);
@@ -125,21 +129,22 @@ export class NewsFeedComponent implements OnInit {
                 //if there is no articles which has tagid same as onwknowledgeId
                 if (articles.length === 0 || user.ownKnowledgeIds.length === 0) {
                     this._articleService.getArticleExceptUserTags(user.ownKnowledgeIds, this.countA2).subscribe((articles) => {
-                        if (articles.length > 0) {
+                        if (articles.length <= 0) {
+
+                        } else {
                             for (var i = 0; i < articles.length; i++) {
                                 //get summary
                                 let html = articles[i].content;
                                 let div = document.createElement("div");
                                 div.innerHTML = html;
                                 let text = div.textContent || div.innerText || "";
-                                articles[i].content=text;
+                                articles[i].content = text;
 
                                 // push each records to records array
                                 this.records.push(articles[i]);
                             }
                             this.countA2 = this.countA2 + 5;
                         }
-                        ;
                     });
                 } else {
                     for (var i = 0; i < articles.length; i++) {
@@ -148,7 +153,7 @@ export class NewsFeedComponent implements OnInit {
                         let div = document.createElement("div");
                         div.innerHTML = html;
                         let text = div.textContent || div.innerText || "";
-                        articles[i].content=text;
+                        articles[i].content = text;
                         // push each records to records array
                         this.records.push(articles[i]);
                     }
