@@ -83,7 +83,7 @@ const KSpaceSchema = new mongoose.Schema({
         required: true
     },
     finishedAt: {
-        type: Date,
+        type: Date
     },
     articleIds: [{type: String}],
     tags: [{
@@ -91,5 +91,5 @@ const KSpaceSchema = new mongoose.Schema({
     }]
 
 });
-
 module.exports = KSpaceSchema;
+

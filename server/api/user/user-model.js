@@ -109,7 +109,8 @@ const userSchema = new mongoose.Schema({
             type: Date
         },
         status: {
-            type: Boolean
+            type: Boolean,
+            default: false
         }
     },
     salt: {
@@ -128,7 +129,11 @@ const userSchema = new mongoose.Schema({
         type: String,
         default: 'uploads/images.jpg'
     },
-    lastAccessedAt: {type: Date}
+    lastAccessedAt: {type: Date},
+    status: {
+        type: String,
+        default: 'active'
+    }
 });
 
 /**

@@ -1,0 +1,13 @@
+<div class="card  blue darken-1">
+            <div class="card-content cnt-lb white-text contain-text">
+                <center><span class="card-title">Top kiến thức</span></center>
+                <div class="row artTop" *ngFor="let article of articles">
+                    <div>
+                        <img alt="Hạng nhất" class="img-leaderboard" src="/client/dev/asserts/images/king.png">
+                    </div>&nbsp;
+                    <div>
+                        <a  [routerLink]="" class="tit-art">{{article.title}}</a>
+                    </div>
+                </div>
+            </div>
+        </div>

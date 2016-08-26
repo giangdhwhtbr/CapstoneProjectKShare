@@ -126,7 +126,9 @@ var UserService = (function () {
                 email: user.email,
                 role: user.role,
                 linkImg: user.linkImg,
-                ownKnowledgeIds: user.ownKnowledgeIds
+                ownKnowledgeIds: user.ownKnowledgeIds,
+                status: user.status,
+                banStatus: user.banStatus
             },
             newTag: _newTag
         });

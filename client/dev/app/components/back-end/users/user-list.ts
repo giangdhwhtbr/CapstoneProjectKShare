@@ -95,4 +95,18 @@ export class UserListComponent {
             console.log(response);
         },error => {});
     }
+
+    deactivateUser(user: User){
+        console.log(user);
+        user.status = 'deactive';
+        this._userService.updateUser(user,[]).subscribe((user) => {
+        });
+    }
+
+    activateUser(user: any){
+        user.status = 'active';
+        user.banStatus.status = false;
+        this._userService.updateUser(user,[]).subscribe((user) => {
+        });
+    }
 }

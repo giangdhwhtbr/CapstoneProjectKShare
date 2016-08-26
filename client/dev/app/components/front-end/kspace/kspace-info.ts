@@ -132,10 +132,8 @@ export class KSpaceInfoComponent implements OnInit {
     }
 
     accessRoom():void {
-        var specs = 'resizable=yes, fullscreen=yes';
-        var name = '_blank';
         var url = '/room/' + this.kspaceId + '/' + this.lecturer;
-        window.open(url, name, specs);
+        this.router.navigateByUrl(url);
     }
     finishKp(){
         this._kspaceService.finish(this.kspaceId).subscribe((kspace)=>{

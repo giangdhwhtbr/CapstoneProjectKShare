@@ -28,6 +28,7 @@ var displayArtByTag_1 = require("../components/front-end/tag/displayArtByTag");
 var _404_1 = require("../components/shared/404");
 var auth_1 = require('./auth');
 var auth_2 = require('../services/auth');
+var public_kspace_1 = require('../components/front-end/kspace/public-kspace');
 exports.KShareRoutes = [
     {
         path: '',
@@ -133,7 +134,7 @@ exports.KShareRoutes = [
                     },
                     {
                         path: '**',
-                        redirectTo: '/'
+                        redirectTo: '/error'
                     }
                 ]
             },
@@ -149,7 +150,7 @@ exports.KShareRoutes = [
                             },
                             {
                                 path: '**',
-                                redirectTo: '/'
+                                redirectTo: '/error'
                             }
                         ]
                     },
@@ -159,7 +160,7 @@ exports.KShareRoutes = [
                     },
                     {
                         path: '**',
-                        redirectTo: '/'
+                        redirectTo: '/error'
                     }
                 ]
             },
@@ -181,11 +182,11 @@ exports.KShareRoutes = [
                             {
                                 path: 'update',
                                 component: request_update_1.UpdateRequestComponent,
-                                canActivate: auth_1.isLogin
+                                canActivate: [auth_1.isLogin]
                             },
                             {
                                 path: '**',
-                                redirectTo: '/'
+                                redirectTo: '/error'
                             }
                         ]
                     },
@@ -195,7 +196,7 @@ exports.KShareRoutes = [
                     },
                     {
                         path: '**',
-                        redirectTo: '/'
+                        redirectTo: '/error'
                     }
                 ]
             },
@@ -228,7 +229,16 @@ exports.KShareRoutes = [
             },
             {
                 path: '**',
-                redirectTo: '/'
+                redirectTo: '/error'
+            }
+        ]
+    },
+    {
+        path: 'public-kspace',
+        children: [
+            {
+                path: '',
+                component: public_kspace_1.CreatePublicKspace
             }
         ]
     }
