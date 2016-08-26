@@ -69,7 +69,6 @@ export class KSpaceInfoComponent implements OnInit {
                     this.kspace=kspace;
                     this.title = kspace.requestTitle;
                     this.reviews = kspace.reviews;
-                  console.log(this.reviews);
                     this.rateAve = parseInt(kspace.rateAve);
                     for (var log of kspace.chatlog) {
                         if (log.dataURL) {
@@ -85,7 +84,8 @@ export class KSpaceInfoComponent implements OnInit {
                         if (board._id) {
                             var data = {
                                 id: board._id,
-                                des: board.boardNumber,
+                                name: board.name,
+                                des: board.description,
                                 url: board.dataURL
                             }
                             this.boards.push(data);
@@ -132,8 +132,10 @@ export class KSpaceInfoComponent implements OnInit {
     }
 
     accessRoom():void {
+        var specs = 'width=1024, resizable=no';
+        var name = '_blank';
         var url = '/room/' + this.kspaceId + '/' + this.lecturer;
-        this.router.navigateByUrl(url);
+        window.open(url,name,specs);
     }
     finishKp(){
         this._kspaceService.finish(this.kspaceId).subscribe((kspace)=>{

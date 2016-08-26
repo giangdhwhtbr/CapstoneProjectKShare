@@ -28,6 +28,7 @@ var displayArtByTag_1 = require("../components/front-end/tag/displayArtByTag");
 var _404_1 = require("../components/shared/404");
 var auth_1 = require('./auth');
 var auth_2 = require('../services/auth');
+var public_room_1 = require('../components/front-end/kspace/public-room');
 var public_kspace_1 = require('../components/front-end/kspace/public-kspace');
 exports.KShareRoutes = [
     {
@@ -239,6 +240,10 @@ exports.KShareRoutes = [
             {
                 path: '',
                 component: public_kspace_1.CreatePublicKspace
+            },
+            {
+                path: ':id',
+                component: public_room_1.PublicKspaceComponent
             }
         ]
     }

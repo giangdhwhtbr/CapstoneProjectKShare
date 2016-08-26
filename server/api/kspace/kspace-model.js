@@ -34,7 +34,8 @@ const KSpaceSchema = new mongoose.Schema({
             createdAt: {type: Date},
             boardJson: {type: String},
             dataURL: {type: String},
-            boardNumber: {type: Number}
+            name: {type: String},
+            description: {type:String}
         }
     ],
     reviews: [

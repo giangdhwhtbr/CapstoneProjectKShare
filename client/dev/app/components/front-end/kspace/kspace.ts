@@ -45,6 +45,7 @@ export class KSpaceComponent {
     messages:Array<any>;
     mess:String;
     socket:any;
+    boards: any;
 
     constructor(public router:Router,
                 private route:ActivatedRoute,
@@ -57,7 +58,7 @@ export class KSpaceComponent {
         this.username = localStorage.getItem('username');
         this.messages = [];
         this.socket = io('https://localhost:80');
-        this.socket.emit('subscribe', this.id);
+        this.socket.emit('subscribe', {room:this.id});
         this.socket.on("chat_message", (dataReturn) => {
             var isSender:boolean = false;
 
@@ -70,7 +71,7 @@ export class KSpaceComponent {
                 msg: dataReturn.msg,
                 url: dataReturn.url,
                 sender: isSender
-            }
+            };
             this.messages.push(msgObject);
         });
     }
@@ -122,7 +123,7 @@ export class KSpaceComponent {
         this._kspaceService
             .getKSpaceById(this.id)
             .subscribe(kspace => {
-              console.log(kspace);
+              this.boards = kspace.boards;
                     var chatlog = kspace.chatlog;
                     var isSender:boolean = false;
                     for (var log of chatlog) {

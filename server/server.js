@@ -91,7 +91,8 @@ io.on('connection',  (socket) => {
     .then(kspace => {
       var dataReturn = {
         lecturer: data.lecturer,
-        boardNumber: data.boardNumber,
+        name: data.name,
+        des: data.des,
         json: data.json
       };
       socket.in(data.room).broadcast.emit('newBoard',(dataReturn));

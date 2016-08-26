@@ -235,31 +235,26 @@ var ChalkBoardComponent = (function () {
     /*
      * Lecturer create new page
      * */
-    ChalkBoardComponent.prototype.newPage = function () {
+    ChalkBoardComponent.prototype.newPage = function (name, des) {
         if (this.isLect) {
             var json = paper.exportJSON(paper.project.activeLayer);
             var socket = this.socket;
-            var boardNumber;
             var chalkboard = document.getElementById("chalkboard");
             var dataURL = chalkboard.toDataURL();
             paper.project.clear();
             var newLayer = new paper.Layer();
             newLayer.activate();
-            if (!this.boards.length) {
-                boardNumber = 1;
-            }
-            else {
-                boardNumber = this.boards.length + 1;
-            }
+            //config data to save to server
             var data = {
                 room: this.id,
                 lecturer: this.lecturer,
-                boardNumber: boardNumber,
+                name: name,
+                des: des,
                 json: json,
                 dataURL: dataURL
             };
             var board = {
-                boardNumber: data.boardNumber,
+                name: data.name,
                 json: data.json
             };
             this.boards.push(board);
@@ -296,12 +291,16 @@ var ChalkBoardComponent = (function () {
     ], ChalkBoardComponent.prototype, "id", void 0);
     __decorate([
         core_1.Input(), 
+        __metadata('design:type', Object)
+    ], ChalkBoardComponent.prototype, "boards", void 0);
+    __decorate([
+        core_1.Input(), 
         __metadata('design:type', String)
     ], ChalkBoardComponent.prototype, "lecturer", void 0);
     ChalkBoardComponent = __decorate([
         core_1.Component({
             selector: 'chalkboard',
-            template: "\n  <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let board of boards\">\n          <a *ngIf=\"isLect\" (click)=\"changeBoard(board.json, board.boardNumber)\">\n             B\u1EA3ng {{board.boardNumber}}\n          </a></li>\n        </ul>\n      </div>\n    </div>\n    <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n    <div id=\"draw-tools\">\n        <p id=\"new-page\"  (click)=\"openModal()\"  class=\"tool-btn modal-trigger\">\n            <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n        <select id=\"color-picker\" class=\"tool-btn\">\n            <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n        </select>\n        <hr>\n        <select id=\"brush-size\" class=\"tool-btn\">\n            <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n        </select>\n        <hr>\n        <p id=\"eraser\">\n            <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n    </div>\n      <div class=\"wrapper-chalkboard\">\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n      </div>\n      <!--Modal nh\u1EADp th\u00F4ng tin-->\n      <div id=\"modal1\" class=\"modal modal-fixed-footer\">\n        <div class=\"modal-content\">\n          <h4>Nh\u1EADp th\u00F4ng tin</h4>\n          <form>\n            <div class=\"row\">\n              <div class=\"input-field col s12\">\n                <input class=\"form-control\" type=\"text\" required=\"required\" id=\"title\" name=\"title\"/>\n                <label for=\"title\">Ti\u00EAu \u0111\u1EC1</label>\n              </div>\n            </div>\n            <div class=\"row\">\n              <button type=\"submit\" class=\"btn-floating btn-large modal-close waves-effect waves-light blue\" (click)=\"newPage()\"><i class=\"material-icons\">done</i></button>\n            </div>\n          </form>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"modal-action modal-close waves-effect waves-green btn-flat \">Tho\u00E1t</a>\n        </div>\n      </div>\n    ",
+            template: "\n  <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let board of boards\">\n          <a *ngIf=\"isLect\" (click)=\"changeBoard(board.json, board.name)\">\n            {{board.name}}\n          </a></li>\n        </ul>\n      </div>\n    </div>\n    <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n    <div id=\"draw-tools\">\n        <p id=\"new-page\"  (click)=\"openModal()\"  class=\"tool-btn modal-trigger\">\n            <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n        <select id=\"color-picker\" class=\"tool-btn\">\n            <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n        </select>\n        <hr>\n        <select id=\"brush-size\" class=\"tool-btn\">\n            <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n        </select>\n        <hr>\n        <p id=\"eraser\">\n            <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n    </div>\n      <div class=\"wrapper-chalkboard\">\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n      </div>\n      <!--Modal nh\u1EADp th\u00F4ng tin-->\n      <div id=\"modal1\" class=\"modal modal-fixed-footer\">\n        <div class=\"modal-content\">\n          <h4>M\u00F4 t\u1EA3 th\u00F4ng tin b\u1EA3ng</h4>\n          <form (ngSubmit)=\"newPage(name,des)\">\n              <div class=\"row\">\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"name\"  required=\"required\" id=\"title\"/>\n                  <label for=\"title\">Ti\u00EAu \u0111\u1EC1</label>\n                </div>\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"des\"  required=\"required\" id=\"des\"/>\n                  <label for=\"des\">M\u00F4 t\u1EA3</label>\n                </div>\n              </div>\n              <div class=\"row\">\n                <button type=\"submit\" class=\"btn-floating btn-large modal-close waves-effect waves-light blue\"><i class=\"material-icons\">done</i></button>\n              </div>\n            </form>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"modal-action modal-close waves-effect waves-green btn-flat \">Tho\u00E1t</a>\n        </div>\n      </div>\n    ",
             styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
         }), 
         __metadata('design:paramtypes', [])

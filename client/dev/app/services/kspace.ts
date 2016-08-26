@@ -6,7 +6,6 @@ import { Observable } from 'rxjs/Observable';
 @Injectable()
 export class KSpaceService {
     private _kspaceUrl = '/api/kspace/:id';
-
     private _kspace_profile='/api/kspace-profile/:name';
 
     constructor(private _http:Http) {
@@ -62,6 +61,22 @@ export class KSpaceService {
         var api = '/api/kspace/:id/review';
         return this._http.post(api.replace(':id', data.id), data, options)
             .map((r) => r.json());
+    }
+
+    createPublicKspace(guest:string): Observable <any> {
+      let headers = new Headers({'Content-Type': 'application/json'});
+      let options = new RequestOptions({headers: headers});
+      var api = '/api/public-kspace';
+
+      return this._http.post(api,{name:guest}, options)
+        .map((r) => r.json());
+    }
+
+    checkPublicKspace(id: string) :Observable <any> {
+      var api = '/api/public-kspace/:id';
+      return this._http.get(api.replace(':id',id))
+        .map((r) => r.json())
+        .catch(this.handleError);
     }
 
     private handleError(error:Response) {

@@ -42,6 +42,7 @@ var PrivateChatComponent = (function () {
             if (data.id === _this.currentRoom.id) {
                 _this.currentRoom.messages.push(data);
             }
+            // update room last message
             for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
                 var room = _c[_b];
                 if (room._id === data.id) {
@@ -61,6 +62,7 @@ var PrivateChatComponent = (function () {
                 return 0;
             });
         });
+        // Reset news notification
         this.socket.on('private-message-reset', function (data) {
             var news = 0;
             for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
@@ -72,7 +74,6 @@ var PrivateChatComponent = (function () {
             for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
                 var room = _c[_b];
                 if (room.friendName === data.receiver) {
-                    room.lastMsg = data.message;
                     room.newMessages = news;
                 }
             }
@@ -131,7 +132,6 @@ var PrivateChatComponent = (function () {
                             return 0;
                         });
                         _this.receiver = _this.allChatRooms[0].friendName;
-                        //this.messages = this.allChatRooms[0].chatLogs;
                         _this.currentRoom.id = _this.allChatRooms[0]._id;
                         _this.currentRoom.messages = _this.allChatRooms[0].chatLogs;
                     }
@@ -140,9 +140,6 @@ var PrivateChatComponent = (function () {
         }
     };
     PrivateChatComponent.prototype.getReceiver = function (slRoom) {
-        //Click on friend
-        this.messages = [];
-        // this.news = 0;
         this.currentRoom.id = slRoom._id;
         this.receiver = slRoom.friendName;
         this.currentRoom.messages = slRoom.chatLogs;
@@ -152,17 +149,19 @@ var PrivateChatComponent = (function () {
         };
         this.socket.emit('reset-new-message', data);
     };
-    PrivateChatComponent.prototype.sendMessage = function () {
-        var data = {
-            sender: this.username,
-            message: this.mess,
-            receiver: this.receiver,
-            avatar: this.avatar
-        };
-        this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
-        this.socket.emit('private-message', data);
-        this.socket.emit('reset-new-message', data);
-        this.mess = "";
+    PrivateChatComponent.prototype.sendMessage = function (mess) {
+        if (mess) {
+            var data = {
+                sender: this.username,
+                message: this.mess,
+                receiver: this.receiver,
+                avatar: this.avatar
+            };
+            this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
+            this.socket.emit('private-message', data);
+            this.socket.emit('reset-new-message', data);
+            this.mess = "";
+        }
     };
     PrivateChatComponent = __decorate([
         core_1.Component({

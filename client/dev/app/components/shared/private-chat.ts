@@ -51,6 +51,7 @@ export class PrivateChatComponent {
         if(data.id === this.currentRoom.id){
           this.currentRoom.messages.push(data);
         }
+        // update room last message
         for (var room of this.allChatRooms) {
           if (room._id === data.id) {
             room.lastSent = data.sentAt;
@@ -68,7 +69,7 @@ export class PrivateChatComponent {
           return 0;
         });
     });
-
+  // Reset news notification
     this.socket.on('private-message-reset', data => {
       var news = 0;
       for (var user of data.users) {
@@ -78,7 +79,6 @@ export class PrivateChatComponent {
       }
       for (var room of this.allChatRooms) {
         if (room.friendName === data.receiver) {
-          room.lastMsg = data.message;
           room.newMessages = news;
         }
       }
@@ -138,7 +138,6 @@ export class PrivateChatComponent {
                 return 0;
               });
               this.receiver = this.allChatRooms[0].friendName;
-              //this.messages = this.allChatRooms[0].chatLogs;
               this.currentRoom.id = this.allChatRooms[0]._id;
               this.currentRoom.messages = this.allChatRooms[0].chatLogs;
             }
@@ -148,9 +147,6 @@ export class PrivateChatComponent {
   }
 
   getReceiver(slRoom: ChatRoom): void {
-    //Click on friend
-    this.messages = [];
-    // this.news = 0;
     this.currentRoom.id = slRoom._id;
     this.receiver = slRoom.friendName;
     this.currentRoom.messages = slRoom.chatLogs;
@@ -161,17 +157,19 @@ export class PrivateChatComponent {
     this.socket.emit('reset-new-message', data);
   }
 
-  sendMessage() {
-    var data = {
-      sender: this.username,
-      message: this.mess,
-      receiver: this.receiver,
-      avatar: this.avatar
-    };
-    this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
-    this.socket.emit('private-message', data);
-    this.socket.emit('reset-new-message', data);
-    this.mess="";
+  sendMessage(mess: string) {
+    if(mess){
+      var data = {
+        sender: this.username,
+        message: this.mess,
+        receiver: this.receiver,
+        avatar: this.avatar
+      };
+      this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
+      this.socket.emit('private-message', data);
+      this.socket.emit('reset-new-message', data);
+      this.mess="";
+    }
   }
 
 }

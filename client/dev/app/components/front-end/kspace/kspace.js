@@ -28,7 +28,7 @@ var KSpaceComponent = (function () {
         this.username = localStorage.getItem('username');
         this.messages = [];
         this.socket = io('https://localhost:80');
-        this.socket.emit('subscribe', this.id);
+        this.socket.emit('subscribe', { room: this.id });
         this.socket.on("chat_message", function (dataReturn) {
             var isSender = false;
             if (dataReturn.user == _this.username) {
@@ -83,7 +83,7 @@ var KSpaceComponent = (function () {
         this._kspaceService
             .getKSpaceById(this.id)
             .subscribe(function (kspace) {
-            console.log(kspace);
+            _this.boards = kspace.boards;
             var chatlog = kspace.chatlog;
             var isSender = false;
             for (var _i = 0; _i < chatlog.length; _i++) {

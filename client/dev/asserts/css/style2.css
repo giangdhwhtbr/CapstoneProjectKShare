@@ -195,3 +195,16 @@ ul.tabs {
 .box-ldb-top{
     position: fixed;
 }
+.videoContainer {
+  position: relative;
+  height: 208px;
+}
+.videoContainer video {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+}
+
+#localScreen {
+  height: 208px;
+}
