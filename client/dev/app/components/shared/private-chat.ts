@@ -41,6 +41,7 @@ export class PrivateChatComponent {
         for (var user of data.users) {
           if (user.user === this.username) {
             news = user.newMessages;
+            this.messages.push(data);
           }
         }
         for (var room of this.allChatRooms) {
@@ -58,7 +59,6 @@ export class PrivateChatComponent {
           }
           return 0;
         });
-        this.messages.push(data);
     });
 
     this.socket.on('private-message-reset', data => {

@@ -32,6 +32,7 @@ var PrivateChatComponent = (function () {
                 var user = _a[_i];
                 if (user.user === _this.username) {
                     news = user.newMessages;
+                    _this.messages.push(data);
                 }
             }
             for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
@@ -51,7 +52,6 @@ var PrivateChatComponent = (function () {
                 }
                 return 0;
             });
-            _this.messages.push(data);
         });
         this.socket.on('private-message-reset', function (data) {
             var news = 0;
