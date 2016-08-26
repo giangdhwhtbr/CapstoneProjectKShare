@@ -77,21 +77,28 @@ webpackJsonp([2],[
 	                    room.lastMsg = data.message;
 	                    room.newMessages = news;
 	                }
+	                for (var _d = 0, _e = _this.allChatRooms; _d < _e.length; _d++) {
+	                    var room = _e[_d];
+	                    if (room._id === data.id) {
+	                        room.lastSent = data.sentAt;
+	                        room.lastMsg = data.message;
+	                        room.newMessages = news;
+	                    }
+	                }
+	                _this.allChatRooms.sort(function (a, b) {
+	                    if (a.lastSent > b.lastSent) {
+	                        return -1;
+	                    }
+	                    else if (a.lastSent < b.lastSent) {
+	                        return 1;
+	                    }
+	                    return 0;
+	                });
+	                _this.messages.push(data);
 	            }
-	            _this.allChatRooms.sort(function (a, b) {
-	                if (a.lastSent > b.lastSent) {
-	                    return -1;
-	                }
-	                else if (a.lastSent < b.lastSent) {
-	                    return 1;
-	                }
-	                return 0;
-	            });
-	            _this.messages.push(data);
 	        });
 	        this.socket.on('private-message-reset', function (data) {
 	            var news = 0;
-	            console.log('12');
 	            for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
 	                var user = _a[_i];
 	                if (user.user === _this.username) {
@@ -6015,10 +6022,8 @@ webpackJsonp([2],[
 	        this.ratePoint = event;
 	    };
 	    KSpaceInfoComponent.prototype.accessRoom = function () {
-	        var specs = 'resizable=yes, fullscreen=yes';
-	        var name = '_blank';
 	        var url = '/room/' + this.kspaceId + '/' + this.lecturer;
-	        window.open(url, name, specs);
+	        this.router.navigateByUrl(url);
 	    };
 	    KSpaceInfoComponent.prototype.finishKp = function () {
 	        var _this = this;
@@ -6228,19 +6233,18 @@ webpackJsonp([2],[
 	     *
 	     * */
 	    KSpaceComponent.prototype.ngOnInit = function () {
-	        // DOM elements
 	        var _this = this;
+	        // DOM elements
+	        console.log('hell');
 	        var shareScreenBtn = $('#sharescreen-btn');
 	        var chalkBoardBtn = $('#chalkboard-btn');
-	        var videoCallBtn = $('#videocall-btn');
 	        var localVideo = $('#localVideo');
 	        var remoteVideos = $('#remoteVideos');
 	        var kspacePanel = $('#kspace-panel');
-	        var chatBox = $('#chat-box-panel');
-	        var drawTools = $('#draw-tools-panel');
 	        this._kspaceService
 	            .getKSpaceById(this.id)
 	            .subscribe(function (kspace) {
+	            console.log(kspace);
 	            var chatlog = kspace.chatlog;
 	            var isSender = false;
 	            for (var _i = 0, chatlog_1 = chatlog; _i < chatlog_1.length; _i++) {
@@ -7394,6 +7398,7 @@ webpackJsonp([2],[
 	var list_article_1 = __webpack_require__(433);
 	var displayArtByTag_1 = __webpack_require__(440);
 	var request_create_1 = __webpack_require__(289);
+	var public_kspace_1 = __webpack_require__(1121);
 	/**
 	 * Page components
 	 */
@@ -7427,7 +7432,8 @@ webpackJsonp([2],[
 	                displayArtByTag_1.displayArtByTagComponent,
 	                request_create_1.CreateRequestComponent,
 	                rs_search_user_1.userSearchRsComponent,
-	                user_info_update_1.UpdateUserComponent
+	                user_info_update_1.UpdateUserComponent,
+	                public_kspace_1.CreatePublicKspace
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -7685,6 +7691,16 @@ webpackJsonp([2],[
 	    var _a, _b, _c;
 	}());
 	exports.Guest = Guest;
+	var isKspaceUser = (function () {
+	    function isKspaceUser() {
+	    }
+	    isKspaceUser = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [])
+	    ], isKspaceUser);
+	    return isKspaceUser;
+	}());
+	exports.isKspaceUser = isKspaceUser;
 	
 
 /***/ },
@@ -10820,8 +10836,7 @@ webpackJsonp([2],[
 	        this.updateUserForm = fb.group({
 	            fullName: [""],
 	            birthday: [""],
-	            phone: [""],
-	            ownKnowledgeIds: [""]
+	            phone: [""]
 	        });
 	    }
 	    RegisterInfoComponent.prototype.ngOnInit = function () {
@@ -10902,6 +10917,8 @@ webpackJsonp([2],[
 	                birthday: birthday,
 	                ownKnowledgeIds: tags[0]
 	            };
+	            console.log(user);
+	            console.log(tags[1]);
 	            this._userService.updateUser(user, tags[1]).subscribe(function (res) {
 	                _this.router.navigateByUrl('/');
 	            }, function (err) {
@@ -11831,6 +11848,7 @@ webpackJsonp([2],[
 	var _404_1 = __webpack_require__(678);
 	var auth_1 = __webpack_require__(447);
 	var auth_2 = __webpack_require__(45);
+	var public_kspace_1 = __webpack_require__(1121);
 	exports.KShareRoutes = [
 	    {
 	        path: '',
@@ -11936,7 +11954,7 @@ webpackJsonp([2],[
 	                    },
 	                    {
 	                        path: '**',
-	                        redirectTo: '/'
+	                        redirectTo: '/error'
 	                    }
 	                ]
 	            },
@@ -11952,7 +11970,7 @@ webpackJsonp([2],[
 	                            },
 	                            {
 	                                path: '**',
-	                                redirectTo: '/'
+	                                redirectTo: '/error'
 	                            }
 	                        ]
 	                    },
@@ -11962,7 +11980,7 @@ webpackJsonp([2],[
 	                    },
 	                    {
 	                        path: '**',
-	                        redirectTo: '/'
+	                        redirectTo: '/error'
 	                    }
 	                ]
 	            },
@@ -11984,11 +12002,11 @@ webpackJsonp([2],[
 	                            {
 	                                path: 'update',
 	                                component: request_update_1.UpdateRequestComponent,
-	                                canActivate: auth_1.isLogin
+	                                canActivate: [auth_1.isLogin]
 	                            },
 	                            {
 	                                path: '**',
-	                                redirectTo: '/'
+	                                redirectTo: '/error'
 	                            }
 	                        ]
 	                    },
@@ -11998,7 +12016,7 @@ webpackJsonp([2],[
 	                    },
 	                    {
 	                        path: '**',
-	                        redirectTo: '/'
+	                        redirectTo: '/error'
 	                    }
 	                ]
 	            },
@@ -12023,7 +12041,7 @@ webpackJsonp([2],[
 	    },
 	    {
 	        path: 'room',
-	        canActivate: auth_1.isLogin,
+	        canActivate: [auth_1.isLogin],
 	        children: [
 	            {
 	                path: ':id/:lecturer',
@@ -12031,7 +12049,16 @@ webpackJsonp([2],[
 	            },
 	            {
 	                path: '**',
-	                redirectTo: '/'
+	                redirectTo: '/error'
+	            }
+	        ]
+	    },
+	    {
+	        path: 'public-kspace',
+	        children: [
+	            {
+	                path: '',
+	                component: public_kspace_1.CreatePublicKspace
 	            }
 	        ]
 	    }
@@ -40130,6 +40157,44 @@ webpackJsonp([2],[
 	    return UITreeRow;
 	}());
 	exports.UITreeRow = UITreeRow;
+	
+
+/***/ },
+/* 1117 */,
+/* 1118 */,
+/* 1119 */,
+/* 1120 */,
+/* 1121 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/25/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var CreatePublicKspace = (function () {
+	    function CreatePublicKspace() {
+	        this.hello = 'hello';
+	    }
+	    CreatePublicKspace = __decorate([
+	        core_1.Component({
+	            selector: 'public-kspace',
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/public-kspace.html',
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], CreatePublicKspace);
+	    return CreatePublicKspace;
+	}());
+	exports.CreatePublicKspace = CreatePublicKspace;
 	
 
 /***/ }
