@@ -42,8 +42,6 @@ export class KSpaceComponent {
     username:string;
     kspace:any;
     lecturer:string;
-    learner:string;
-
     messages:Array<any>;
     mess:String;
     socket:any;
@@ -114,21 +112,17 @@ export class KSpaceComponent {
 
     ngOnInit():void {
         // DOM elements
-
+        console.log('hell');
         var shareScreenBtn = $('#sharescreen-btn');
         var chalkBoardBtn = $('#chalkboard-btn');
-        var videoCallBtn = $('#videocall-btn');
-
         var localVideo = $('#localVideo');
         var remoteVideos = $('#remoteVideos');
         var kspacePanel = $('#kspace-panel');
 
-        var chatBox = $('#chat-box-panel');
-        var drawTools = $('#draw-tools-panel');
-
         this._kspaceService
             .getKSpaceById(this.id)
             .subscribe(kspace => {
+              console.log(kspace);
                     var chatlog = kspace.chatlog;
                     var isSender:boolean = false;
                     for (var log of chatlog) {
@@ -143,7 +137,7 @@ export class KSpaceComponent {
                             msg: log.message,
                             sender: isSender,
                             url: log.dataURL
-                        }
+                        };
                         this.messages.push(msgObject);
                     }
 
@@ -196,6 +190,6 @@ export class KSpaceComponent {
                 },
                 (error) => {
                     this.router.navigateByUrl('/');
-                });
+        });
     }
 }

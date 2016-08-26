@@ -16,8 +16,8 @@ import { AuthService } from '../../../services/auth';
 import { PrivateChatComponent } from './../../shared/private-chat';
 
 declare var $:any;
-declare var CKEDITOR: any;
-declare var Materialize: any;
+declare var CKEDITOR:any;
+declare var Materialize:any;
 
 @Component({
     selector: 'ck-editor',
@@ -76,7 +76,7 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
     roleToken:string;
     userToken:string;
 
-    stt:string="public";
+    stt:string = "public";
 
     constructor(private _articleService:ArticleService, private _tagService:TagService, public router:Router, private route:ActivatedRoute) {
         this.filesToUpload = [];
@@ -110,9 +110,9 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
                 $('#preLoad').hide();
             }
 
-        },(error)=>{
-            if(error.status==400){
-                window.location.href="/error";
+        }, (error)=> {
+            if (error.status == 400) {
+                window.location.href = "/error";
             }
         });
 
@@ -123,7 +123,7 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
 
     filterONTag() {
         let oldTag:any[] = [];
-        if(this.tags.length>0){
+        if (this.tags.length > 0) {
             for (let e of this.tagsEx) {
                 for (let e1 of this.tags) {
                     if (e.name == e1) {
@@ -147,7 +147,7 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
             if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
                 this.filteredKnw.push(this.tagsEx[i].name);
             }
-            if(this.filteredKnw.indexOf(query.trim())<0){
+            if (this.filteredKnw.indexOf(query.trim()) < 0) {
                 this.filteredKnw.unshift(query.trim());
             }
         }
@@ -162,18 +162,17 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
     }
 
 
-
     // ckeditor
 
     insertLinkToBox(link:string) {
         CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
     }
 
-    insertYoutubeToBox(link:string){
+    insertYoutubeToBox(link:string) {
         //https://www.youtube.com/watch?v=mraul5-1TBE
         let i = link.indexOf("=");
-        link = link.substring(i+1,link.length);
-        let s = '<p><iframe frameborder="0" height="315" scrolling="no" src="https://www.youtube.com/embed/'+link+'" width="500"></iframe></p>';
+        link = link.substring(i + 1, link.length);
+        let s = '<p><iframe frameborder="0" height="315" scrolling="no" src="https://www.youtube.com/embed/' + link + '" width="500"></iframe></p>';
         CKEDITOR.instances.editor1.insertHtml(s);
     }
 
@@ -190,6 +189,7 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
                 icon: '/client/dev/asserts/images/icon-img-ck.png'
             });
     }
+
     CreateYoutubeBtnCkeditor() {
         CKEDITOR.instances.editor1.ui.addButton('youtube',
             {
@@ -240,29 +240,38 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
     openModalImg() {
         $("#bdOpenModal").trigger("click");
     }
+
     openModalYoutube() {
         $("#youtubeOpenModal").trigger("click");
     }
 
     editArticle() {
-        $('#preLoad').show();
         this.art.content = CKEDITOR.instances.editor1.getData();
         let tags:any[] = [];
         tags = this.filterONTag();
         this.art.tags = tags[0];
         this.art.title = this.titelArticle;
         this.art.status = this.stt;
-        if(this.titelArticle.length<10){
-            Materialize.toast('Tiêu đề quá ngắn', 4000);
-        }else if(this.art.content.length<50){
+        if (this.titelArticle.length < 5 || this.titelArticle.length > 220) {
+            Materialize.toast('Tiêu đề quá ngắn hoặc quá dài', 4000);
+        } else if (this.art.content.length < 50) {
             Materialize.toast('Nội dung phải trên 50 ký tự', 4000);
-        }else {
+        } else {
+            $('#preLoad').show();
             this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe((article)=> {
                     Materialize.toast('Đã sửa xong', 4000);
                     this.router.navigateByUrl('/article/' + article._id);
                 },
                 (error) => {
-                    console.log(error.text());
+                    $('#preLoad').hide();
+                    if (error._body.includes('arrDe')) {
+                        var arrayTags = error._body.replace("arrDe", "").replace(":", "").replace("}", "").replace("{", "").replace("]", "").replace("[", "").replace('"', '').replace('""', '').split(',');
+                        let s = "";
+                        for (let e of arrayTags) {
+                            s += e;
+                        }
+                        Materialize.toast('Từ khoá ' + s + ' đã bị đóng', 10000);
+                    }
                 }
             );
         }

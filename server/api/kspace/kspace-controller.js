@@ -1,10 +1,9 @@
 //long
 
 "use strict";
-const mongoose = require('mongoose');
-const KSpaceDAO = require('./KSpace-dao');
+const KSpaceDAO = require('./kspace-dao');
+const PKSpaceDAO = require('./public-dao');
 const UserDAO = require('../user/user-dao');
-const Promise = require('bluebird');
 module.exports = class KSpaceController {
   //get all KSpaces controller
   static getAll(req, res) {
@@ -57,6 +56,25 @@ module.exports = class KSpaceController {
       });
   }
 
+  static createPublicKspace (req,res) {
+    var name = req.body.name;
+    var kspace = {
+      users : []
+    };
+    kspace.users.push(name);
+    PKSpaceDAO.createNew(kspace)
+      .then(kspace => res.status(200).json({success: true}))
+      .catch(err => res.status(400).json({success: false}));
+  }
+
+  static checkExist (req, res) {
+    if(req.params && req.params.id){
+      PKSpaceDAO.getById(req.params.id)
+        .then(kspace => res.status(200).json({exist: true}))
+        .catch(err => res.status(400).json({exist: false}))
+    }
+  }
+
   static updateChatLogs(data) {
 
     var log = {
@@ -64,7 +82,7 @@ module.exports = class KSpaceController {
       createdUser: data.createdUser,
       message: data.message,
       dataURL: data.dataURL
-    }
+    };
 
 
     return KSpaceDAO.getKSpaceById(data.id)
@@ -236,4 +254,4 @@ module.exports = class KSpaceController {
     }
   }
 
-}
+};

@@ -169,21 +169,30 @@ var CreateArticleComponent = (function () {
     //finish control Ckeditor
     CreateArticleComponent.prototype.postArticle = function (stt) {
         var _this = this;
-        $('#preLoad').show();
         this.contentCk = CKEDITOR.instances.editor1.getData();
         var tags = [];
         tags = this.filterONTag();
-        if (this.titelArticle.length < 5) {
-            Materialize.toast('Tiêu đề quá ngắn', 4000);
+        if (this.titelArticle.length < 5 || this.titelArticle.length > 220) {
+            Materialize.toast('Tiêu đề quá ngắn hoặc quá dài', 4000);
         }
         else if (this.contentCk.length < 50) {
             Materialize.toast('Nội dung bài viết phải trên 50 ký tự', 4000);
         }
         else {
+            $('#preLoad').show();
             this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (articleId) {
                 _this.router.navigateByUrl('/article/' + articleId);
             }, function (error) {
-                console.log(error.text());
+                $('#preLoad').hide();
+                if (error._body.includes('arrDe')) {
+                    var arrayTags = error._body.replace("arrDe", "").replace(":", "").replace("}", "").replace("{", "").replace("]", "").replace("[", "").replace('"', '').replace('""', '').split(',');
+                    var s = "";
+                    for (var _i = 0; _i < arrayTags.length; _i++) {
+                        var e = arrayTags[_i];
+                        s += e;
+                    }
+                    Materialize.toast('Từ khoá ' + s + ' đã bị đóng', 10000);
+                }
             });
         }
     };

@@ -70,19 +70,18 @@ var KSpaceComponent = (function () {
      *
      * */
     KSpaceComponent.prototype.ngOnInit = function () {
-        // DOM elements
         var _this = this;
+        // DOM elements
+        console.log('hell');
         var shareScreenBtn = $('#sharescreen-btn');
         var chalkBoardBtn = $('#chalkboard-btn');
-        var videoCallBtn = $('#videocall-btn');
         var localVideo = $('#localVideo');
         var remoteVideos = $('#remoteVideos');
         var kspacePanel = $('#kspace-panel');
-        var chatBox = $('#chat-box-panel');
-        var drawTools = $('#draw-tools-panel');
         this._kspaceService
             .getKSpaceById(this.id)
             .subscribe(function (kspace) {
+            console.log(kspace);
             var chatlog = kspace.chatlog;
             var isSender = false;
             for (var _i = 0; _i < chatlog.length; _i++) {

@@ -33,6 +33,7 @@ import { detailArticleComponent } from "./front-end/article/detail-article";
 import { listArticleComponent } from "./front-end/article/list-article";
 import { displayArtByTagComponent } from "./front-end/tag/displayArtByTag";
 import { CreateRequestComponent } from "./back-end/request/request-create";
+import { CreatePublicKspace } from "./front-end/kspace/public-kspace";
 
 /**
  * Page components
@@ -71,7 +72,8 @@ import { CreateRequestComponent } from "./back-end/request/request-create";
         displayArtByTagComponent,
         CreateRequestComponent,
         userSearchRsComponent,
-        UpdateUserComponent
+        UpdateUserComponent,
+        CreatePublicKspace
     ]
 })
 export class KshareComponent {

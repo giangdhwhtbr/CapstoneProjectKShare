@@ -46,8 +46,7 @@ export class RegisterInfoComponent implements OnInit{
         this.updateUserForm = fb.group({
             fullName: [""],
             birthday: [""],
-            phone: [""],
-            ownKnowledgeIds: [""]
+            phone: [""]
         });
     }
     ngOnInit(){
@@ -112,7 +111,6 @@ export class RegisterInfoComponent implements OnInit{
     }
 
     //end control tags
-
     update(user:any):void {
       var birthday = $(".datepicker").val();
       let pattern = new RegExp("^[0-9]{1,13}$");
@@ -128,6 +126,8 @@ export class RegisterInfoComponent implements OnInit{
             birthday: birthday,
             ownKnowledgeIds: tags[0]
           };
+        console.log(user);
+        console.log(tags[1]);
           this._userService.updateUser(user, tags[1]).subscribe(
             res => {
               this.router.navigateByUrl('/');
