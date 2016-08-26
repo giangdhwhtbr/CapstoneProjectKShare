@@ -1,13 +1,54 @@
-<div class="card  blue darken-1">
-            <div class="card-content cnt-lb white-text contain-text">
-                <center><span class="card-title">Top kiến thức</span></center>
-                <div class="row artTop" *ngFor="let article of articles">
-                    <div>
-                        <img alt="Hạng nhất" class="img-leaderboard" src="/client/dev/asserts/images/king.png">
-                    </div>&nbsp;
-                    <div>
-                        <a  [routerLink]="" class="tit-art">{{article.title}}</a>
-                    </div>
-                </div>
+<div *ngIf="articles" class="card  blue darken-1 box-ldb-top">
+    <div class="card-content cnt-lb white-text contain-text">
+        <center><span class="card-title">Top kiến thức</span></center>
+        <div class="row artTop">
+            <div>
+                <img alt="Hạng nhất" class="img-leaderboard" src="/client/dev/asserts/images/king.png">
+            </div>
+            &nbsp;
+            <div>
+                <a [routerLink]="" class="tit-art">{{articles[0].title.substring(0.70)}}...</a>
             </div>
         </div>
+        <div class="divider"></div>
+        <div class="row artTop">
+            <div>
+                <img alt="Hạng hai" class="img-leaderboard" src="/client/dev/asserts/images/2.png">
+            </div>
+            &nbsp;
+            <div>
+                <a [routerLink]="" class="tit-art">{{articles[1].title}}</a>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="row artTop">
+            <div>
+                <img alt="Hạng ba" class="img-leaderboard" src="/client/dev/asserts/images/3.png">
+            </div>
+            &nbsp;
+            <div>
+                <a [routerLink]="" class="tit-art">{{articles[2].title}}</a>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="row artTop">
+            <div>
+                <img alt="Hạng bốn" class="img-leaderboard" src="/client/dev/asserts/images/4.png">
+            </div>
+            &nbsp;
+            <div>
+                <a [routerLink]="" class="tit-art">{{articles[3].title}}</a>
+            </div>
+        </div>
+        <div class="divider"></div>
+        <div class="row artTop">
+            <div>
+                <img alt="Hạng năm" class="img-leaderboard" src="/client/dev/asserts/images/5.png">
+            </div>
+            &nbsp;
+            <div>
+                <a [routerLink]="" class="tit-art">{{articles[4].title}}</a>
+            </div>
+        </div>
+    </div>
+</div>

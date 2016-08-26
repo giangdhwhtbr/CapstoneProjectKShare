@@ -205,25 +205,34 @@ var EditArticleComponent = (function () {
     };
     EditArticleComponent.prototype.editArticle = function () {
         var _this = this;
-        $('#preLoad').show();
         this.art.content = CKEDITOR.instances.editor1.getData();
         var tags = [];
         tags = this.filterONTag();
         this.art.tags = tags[0];
         this.art.title = this.titelArticle;
         this.art.status = this.stt;
-        if (this.titelArticle.length < 10) {
-            Materialize.toast('Tiêu đề quá ngắn', 4000);
+        if (this.titelArticle.length < 5 || this.titelArticle.length > 220) {
+            Materialize.toast('Tiêu đề quá ngắn hoặc quá dài', 4000);
         }
         else if (this.art.content.length < 50) {
             Materialize.toast('Nội dung phải trên 50 ký tự', 4000);
         }
         else {
+            $('#preLoad').show();
             this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe(function (article) {
                 Materialize.toast('Đã sửa xong', 4000);
                 _this.router.navigateByUrl('/article/' + article._id);
             }, function (error) {
-                console.log(error.text());
+                $('#preLoad').hide();
+                if (error._body.includes('arrDe')) {
+                    var arrayTags = error._body.replace("arrDe", "").replace(":", "").replace("}", "").replace("{", "").replace("]", "").replace("[", "").replace('"', '').replace('""', '').split(',');
+                    var s = "";
+                    for (var _i = 0; _i < arrayTags.length; _i++) {
+                        var e = arrayTags[_i];
+                        s += e;
+                    }
+                    Materialize.toast('Từ khoá ' + s + ' đã bị đóng', 10000);
+                }
             });
         }
     };
