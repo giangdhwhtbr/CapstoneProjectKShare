@@ -25,38 +25,31 @@ export class PrivateChatComponent {
   receiver: string;
   allChatRooms: Array<ChatRoom>;
   sub: Subscription;
-  currentRoom: string;
+  currentRoom: any;
   mess:string;
   avatar: string;
   constructor(private _chatService: ChatService, private _noti: NotificationService, private _userService: UserService) {
+    this.currentRoom = {
+      id: '',
+      messages: []
+    };
     this.username = localStorage.getItem('username');
     this.socket = io('https://localhost:80');
-    this.messages = [];
     this.allChatRooms = [];
   }
 
   ngOnInit(): void {
     this.socket.on('private-message-return', data => {
-<<<<<<< HEAD
-      var news = 0;
-      for (var user of data.users) {
-        if (user.user === this.username) {
-          news = user.newMessages;
-        }
-      }
-      for (var room of this.allChatRooms) {
-        if (room._id === data.id) {
-          room.lastSent = data.sentAt;
-          room.lastMsg = data.message;
-          room.newMessages = news;
-=======
         var news = 0;
+        // New message token
         for (var user of data.users) {
           if (user.user === this.username) {
             news = user.newMessages;
-            this.messages.push(data);
           }
->>>>>>> 5d0c81a7c218eadae9853c0bbc3c1f102cb0d929
+        }
+        // Enter message to the current room
+        if(data.id === this.currentRoom.id){
+          this.currentRoom.messages.push(data);
         }
         for (var room of this.allChatRooms) {
           if (room._id === data.id) {
@@ -65,6 +58,7 @@ export class PrivateChatComponent {
             room.newMessages = news;
           }
         }
+        // Sort chat room by the newest
         this.allChatRooms.sort(function (a, b) {
           if (a.lastSent > b.lastSent) {
             return -1;
@@ -144,8 +138,9 @@ export class PrivateChatComponent {
                 return 0;
               });
               this.receiver = this.allChatRooms[0].friendName;
-              this.messages = this.allChatRooms[0].chatLogs;
-              this.currentRoom = this.allChatRooms[0]._id;
+              //this.messages = this.allChatRooms[0].chatLogs;
+              this.currentRoom.id = this.allChatRooms[0]._id;
+              this.currentRoom.messages = this.allChatRooms[0].chatLogs;
             }
           }
         });
@@ -156,9 +151,9 @@ export class PrivateChatComponent {
     //Click on friend
     this.messages = [];
     // this.news = 0;
-    this.currentRoom = slRoom._id;
+    this.currentRoom.id = slRoom._id;
     this.receiver = slRoom.friendName;
-    this.messages = slRoom.chatLogs;
+    this.currentRoom.messages = slRoom.chatLogs;
     var data = {
       sender: this.username,
       receiver: this.receiver
