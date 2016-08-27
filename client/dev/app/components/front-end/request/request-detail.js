@@ -59,10 +59,11 @@ var RequestDetailClientComponent = (function () {
             .subscribe(function (request) {
             //translate status
             if (request.status === 'accepted') {
-                if (_this.userToken === request.user || request.subscribers.indexOf(_this.userToken) > 0 || _this.userToken !== null) {
-                    _this._requestService.getKspaceByRId(request._id).subscribe(function (k) {
-                        _this.link = "/kspace/info/" + k._id + '/' + _this.userToken;
-                    });
+                _this._requestService.getKspaceByRId(request._id).subscribe(function (k) {
+                    _this.link = "/kspace/info/" + k._id + '/' + _this.userToken;
+                    _this.ks = k;
+                });
+                if (_this.userToken === request.user || request.subscribers.indexOf(_this.userToken) > 0 || _this.userToken !== null || _this.userToken === _this.ks.lecturer) {
                 }
                 else {
                     _this.router.navigateByUrl('/');
