@@ -76,7 +76,7 @@ export class KSpaceInfoComponent implements OnInit {
                                 id:log._id,
                                 des: log.message,
                                 url: log.dataURL
-                            }
+                            };
                             this.images.push(data);
                         }
                     }
@@ -87,7 +87,7 @@ export class KSpaceInfoComponent implements OnInit {
                                 name: board.name,
                                 des: board.description,
                                 url: board.dataURL
-                            }
+                            };
                             this.boards.push(data);
                         }
                     }

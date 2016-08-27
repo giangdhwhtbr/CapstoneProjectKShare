@@ -1401,7 +1401,6 @@ webpackJsonp([2],[
 	        this._searchRequetsUrl = '/api/requests-search/:id';
 	        this._statusSubcriberUrl = '/api/requests-subcriber/:id';
 	        this._requestStatusUrl = '/api/requests-status/:id';
-	        this._kspaceUrl = '/api/kspace/:rid';
 	    }
 	    RequestService.prototype.getAllRequests = function (num) {
 	        var header = new http_1.Headers;
@@ -1413,10 +1412,6 @@ webpackJsonp([2],[
 	        return this._http.put(this._requestUserUrl.replace(':id', ''), _data, options)
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
-	    };
-	    RequestService.prototype.getKspaceByRId = function (id) {
-	        return this._http.get(this._kspaceUrl.replace(':rid', id))
-	            .map(function (kspace) { return kspace.json(); });
 	    };
 	    //get all request which user's ownknowledgeIds same with tagid of request
 	    RequestService.prototype.getRequestByUserTags = function (tags, num) {
@@ -3361,7 +3356,6 @@ webpackJsonp([2],[
 	var article_1 = __webpack_require__(44);
 	var ng2_pagination_1 = __webpack_require__(131);
 	var private_chat_1 = __webpack_require__(11);
-	var info_hover_1 = __webpack_require__(1126);
 	var tag_1 = __webpack_require__(73);
 	var RequestCategoryComponent = (function () {
 	    function RequestCategoryComponent(_requestService, _articleService, router, route) {
@@ -3404,6 +3398,15 @@ webpackJsonp([2],[
 	            var type = params['type'];
 	            var id = params['id'];
 	            _this._articleService.getArtByKnwId(id).subscribe(function (arts) {
+	                for (var _i = 0, arts_1 = arts; _i < arts_1.length; _i++) {
+	                    var e = arts_1[_i];
+	                    //get summary
+	                    var html = e.content;
+	                    var div = document.createElement("div");
+	                    div.innerHTML = html;
+	                    var text = div.textContent || div.innerText || "";
+	                    e.content = text;
+	                }
 	                _this.arts = arts;
 	            });
 	            //get templates from children category
@@ -3418,6 +3421,12 @@ webpackJsonp([2],[
 	                    for (var i = 0; i < requests.length; i++) {
 	                        requests[i].createdAt = new Date(requests[i].createdAt);
 	                        requests[i].modifiedDate = new Date(requests[i].modifiedDate);
+	                        //get summary
+	                        var html = requests[i].description;
+	                        var div = document.createElement("div");
+	                        div.innerHTML = html;
+	                        var text = div.textContent || div.innerText || "";
+	                        requests[i].description = text;
 	                    }
 	                    _this.requests = requests;
 	                });
@@ -3439,6 +3448,12 @@ webpackJsonp([2],[
 	                                if (requests[i].status === 'pending') {
 	                                    requests[i].status = 'Đang chờ';
 	                                }
+	                                //get summary
+	                                var html = e.description;
+	                                var div = document.createElement("div");
+	                                div.innerHTML = html;
+	                                var text = div.textContent || div.innerText || "";
+	                                requests[i].description = text;
 	                            }
 	                            if (a.length == 0) {
 	                                _this.isExistRecord = true;
@@ -3464,7 +3479,7 @@ webpackJsonp([2],[
 	            selector: 'request-category-cli',
 	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-category.html',
 	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
-	            directives: [router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, tag_1.listTagComponent, private_chat_1.PrivateChatComponent, info_hover_1.infoHover],
+	            directives: [router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, tag_1.listTagComponent, private_chat_1.PrivateChatComponent],
 	            providers: [article_1.ArticleService, ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe]
 	        }), 
@@ -5581,7 +5596,6 @@ webpackJsonp([2],[
 	var report_1 = __webpack_require__(291);
 	var comment_1 = __webpack_require__(660);
 	var tag_1 = __webpack_require__(73);
-	var info_hover_1 = __webpack_require__(1126);
 	var detailArticleComponent = (function () {
 	    function detailArticleComponent(fb, router, route, _articleService, _noti) {
 	        var _this = this;
@@ -5735,7 +5749,7 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
 	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES, comment_1.commentComponent, tag_1.listTagComponent, private_chat_1.PrivateChatComponent, info_hover_1.infoHover
+	                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES, comment_1.commentComponent, tag_1.listTagComponent, private_chat_1.PrivateChatComponent
 	            ],
 	            providers: [article_1.ArticleService]
 	        }), 
@@ -5769,7 +5783,6 @@ webpackJsonp([2],[
 	var article_1 = __webpack_require__(44);
 	var private_chat_1 = __webpack_require__(11);
 	var tag_1 = __webpack_require__(73);
-	var info_hover_1 = __webpack_require__(1126);
 	var listArticleComponent = (function () {
 	    function listArticleComponent(router, route, _artService) {
 	        this.router = router;
@@ -5809,6 +5822,12 @@ webpackJsonp([2],[
 	            }
 	            else {
 	                for (var i = 0; i < arts.length; i++) {
+	                    //get summary
+	                    var html = arts[i].content;
+	                    var div = document.createElement("div");
+	                    div.innerHTML = html;
+	                    var text = div.textContent || div.innerText || "";
+	                    arts[i].content = text;
 	                    _this.listArt.push(arts[i]);
 	                }
 	            }
@@ -5831,6 +5850,12 @@ webpackJsonp([2],[
 	            this._artService.searchArticle(this.text).subscribe(function (arts) {
 	                console.log(arts.length);
 	                for (var i = 0; i < arts.length; i++) {
+	                    //get summary
+	                    var html = arts[i].content;
+	                    var div = document.createElement("div");
+	                    div.innerHTML = html;
+	                    var text = div.textContent || div.innerText || "";
+	                    arts[i].content = text;
 	                    _this.listArt.push(arts[i]);
 	                }
 	                if (arts.length <= 0) {
@@ -5850,8 +5875,7 @@ webpackJsonp([2],[
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                private_chat_1.PrivateChatComponent,
-	                tag_1.listTagComponent,
-	                info_hover_1.infoHover
+	                tag_1.listTagComponent
 	            ],
 	            providers: [article_1.ArticleService]
 	        }), 
@@ -6180,6 +6204,7 @@ webpackJsonp([2],[
 	        this.route = route;
 	        this._kspaceService = _kspaceService;
 	        this.rtcService = rtcService;
+	        this.hiddenShareScreen = true;
 	        this.route.params.subscribe(function (params) {
 	            _this.id = params['id'];
 	            _this.lecturer = params['lecturer'];
@@ -6233,7 +6258,6 @@ webpackJsonp([2],[
 	    KSpaceComponent.prototype.ngOnInit = function () {
 	        var _this = this;
 	        // DOM elements
-	        console.log('hell');
 	        var shareScreenBtn = $('#sharescreen-btn');
 	        var chalkBoardBtn = $('#chalkboard-btn');
 	        var localVideo = $('#localVideo');
@@ -6242,6 +6266,9 @@ webpackJsonp([2],[
 	        this._kspaceService
 	            .getKSpaceById(this.id)
 	            .subscribe(function (kspace) {
+	            if (kspace.lecturer === _this.username) {
+	                _this.hiddenShareScreen = false;
+	            }
 	            _this.boards = kspace.boards;
 	            var chatlog = kspace.chatlog;
 	            var isSender = false;
@@ -6295,6 +6322,7 @@ webpackJsonp([2],[
 	                rtc.rtcSetting(webrtc, room, kspace.lecturer);
 	                var sharescreenToken = false;
 	                shareScreenBtn.click(function () {
+	                    console.log(sharescreenToken);
 	                    sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);
 	                });
 	                chalkBoardBtn.click(function () {
@@ -6408,7 +6436,6 @@ webpackJsonp([2],[
 	var report_1 = __webpack_require__(291);
 	var tag_1 = __webpack_require__(73);
 	var private_chat_1 = __webpack_require__(11);
-	var info_hover_1 = __webpack_require__(1126);
 	var RequestDetailClientComponent = (function () {
 	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
 	        var _this = this;
@@ -6418,6 +6445,7 @@ webpackJsonp([2],[
 	        this._knowledgeService = _knowledgeService;
 	        this._kspaceService = _kspaceService;
 	        this.route = route;
+	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
 	        this.num = 5;
 	        this.height = 400;
 	        //check if request is accepted
@@ -6450,14 +6478,6 @@ webpackJsonp([2],[
 	            .subscribe(function (request) {
 	            //translate status
 	            if (request.status === 'accepted') {
-	                if (_this.userToken === request.user || request.subscribers.indexOf(_this.userToken) > 0 || _this.userToken !== null) {
-	                    _this._requestService.getKspaceByRId(request._id).subscribe(function (k) {
-	                        _this.link = "/kspace/info/" + k._id + '/' + _this.userToken;
-	                    });
-	                }
-	                else {
-	                    _this.router.navigateByUrl('/');
-	                }
 	                request.status = 'Đã được chấp nhận';
 	                _this.checkIsAcceped = true;
 	            }
@@ -6465,7 +6485,7 @@ webpackJsonp([2],[
 	                request.status = 'Đã kết thúc';
 	                _this.checkDeactive = true;
 	            }
-	            else if (request.status === 'pending' || request.status === 'active') {
+	            else {
 	                request.status = 'Đang chờ';
 	            }
 	            request.userlink = '/user/' + request.user;
@@ -6517,14 +6537,12 @@ webpackJsonp([2],[
 	        var _this = this;
 	        //get front.offer of the templates when load the page
 	        this._offerService.getOfferByRequestId(this._id, this.num).subscribe(function (offers) {
-	            console.log(offers);
 	            if (offers) {
 	                for (var i = 0; i < offers.length; i++) {
 	                    if (offers[i].status === 'pending') {
 	                        offers[i].status = 'Đang chờ';
 	                    }
-	                    else if (offers[i].status === 'accepted') {
-	                        console.log(offers[i]);
+	                    else {
 	                        offers[i].status = 'Được chấp nhận';
 	                    }
 	                    _this.offers.push(offers[i]);
@@ -6636,8 +6654,7 @@ webpackJsonp([2],[
 	                offer_create_1.CreateOfferComponent,
 	                report_1.ReportComponent,
 	                private_chat_1.PrivateChatComponent,
-	                tag_1.listTagComponent,
-	                info_hover_1.infoHover
+	                tag_1.listTagComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object])
@@ -6673,7 +6690,6 @@ webpackJsonp([2],[
 	var auth_1 = __webpack_require__(45);
 	var router_2 = __webpack_require__(4);
 	var tag_2 = __webpack_require__(73);
-	var info_hover_1 = __webpack_require__(1126);
 	var RequestListClientComponent = (function () {
 	    function RequestListClientComponent(_requestService, _tagService, _auth, router, route) {
 	        this._requestService = _requestService;
@@ -6797,8 +6813,7 @@ webpackJsonp([2],[
 	                request_create_1.CreateRequestComponent,
 	                request_category_1.RequestCategoryComponent,
 	                tag_2.listTagComponent,
-	                private_chat_1.PrivateChatComponent,
-	                info_hover_1.infoHover
+	                private_chat_1.PrivateChatComponent
 	            ],
 	            providers: [tag_1.TagService]
 	        }), 
@@ -6831,7 +6846,6 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var tag_1 = __webpack_require__(64);
 	var tag_2 = __webpack_require__(73);
-	var info_hover_1 = __webpack_require__(1126);
 	var ng2_pagination_1 = __webpack_require__(131);
 	var private_chat_1 = __webpack_require__(11);
 	var displayArtByTagComponent = (function () {
@@ -6871,8 +6885,26 @@ webpackJsonp([2],[
 	            .subscribe(function (params) {
 	            _this.id = params['id'];
 	            _this._tagService.getArtByTag(_this.id).subscribe(function (arts) {
+	                for (var _i = 0, arts_1 = arts; _i < arts_1.length; _i++) {
+	                    var e = arts_1[_i];
+	                    //get summary
+	                    var html = e.content;
+	                    var div = document.createElement("div");
+	                    div.innerHTML = html;
+	                    var text = div.textContent || div.innerText || "";
+	                    e.content = text;
+	                }
 	                _this.listArt = arts;
 	                _this._tagService.getReqByTag(_this.id).subscribe(function (reqs) {
+	                    for (var _i = 0, reqs_1 = reqs; _i < reqs_1.length; _i++) {
+	                        var e = reqs_1[_i];
+	                        //get summary
+	                        var html = e.description;
+	                        var div = document.createElement("div");
+	                        div.innerHTML = html;
+	                        var text = div.textContent || div.innerText || "";
+	                        e.description = text;
+	                    }
 	                    _this.listReq = reqs;
 	                });
 	            }, function (error) {
@@ -6890,7 +6922,7 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/tag/templates/display-article-by-tag.html',
 	            styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES, tag_2.listTagComponent, ng2_pagination_1.PaginationControlsCmp, private_chat_1.PrivateChatComponent, info_hover_1.infoHover
+	                router_1.ROUTER_DIRECTIVES, tag_2.listTagComponent, ng2_pagination_1.PaginationControlsCmp, private_chat_1.PrivateChatComponent
 	            ],
 	            providers: [tag_1.TagService, ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe]
@@ -7223,7 +7255,7 @@ webpackJsonp([2],[
 	//Component
 	var request_record_1 = __webpack_require__(680);
 	var kspace_list_1 = __webpack_require__(678);
-	var article_list_1 = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./article-list\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
+	var article_list_1 = __webpack_require__(676);
 	var user_profile_bar_1 = __webpack_require__(293);
 	var private_chat_1 = __webpack_require__(11);
 	//services
@@ -7568,6 +7600,11 @@ webpackJsonp([2],[
 	            }
 	        });
 	        $('.dropdown-button').dropdown();
+	    };
+	    HeaderComponent.prototype.ngAfterViewChecked = function () {
+	        //$('#sidenav-overlay').remove();
+	        //$('.drag-target').remove();
+	        $("body").css("overflow", "scroll");
 	    };
 	    HeaderComponent.prototype.openChat = function () {
 	        $('#chatBoxK').openModal();
@@ -9820,7 +9857,6 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var article_1 = __webpack_require__(44);
-	var info_hover_1 = __webpack_require__(1126);
 	var commentComponent = (function () {
 	    function commentComponent(router, route, _artService) {
 	        this.router = router;
@@ -9875,7 +9911,7 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/article/templates/comment.html',
 	            styleUrls: ['client/dev/app/components/front-end/article/styles/comment.css'],
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES, info_hover_1.infoHover
+	                router_1.ROUTER_DIRECTIVES
 	            ],
 	            providers: [article_1.ArticleService]
 	        }), 
@@ -10456,7 +10492,7 @@ webpackJsonp([2],[
 	    ChalkBoardComponent = __decorate([
 	        core_1.Component({
 	            selector: 'chalkboard',
-	            template: "\n  <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let board of boards\">\n          <a *ngIf=\"isLect\" (click)=\"changeBoard(board.json, board.name)\">\n            {{board.name}}\n          </a></li>\n        </ul>\n      </div>\n    </div>\n    <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n    <div id=\"draw-tools\">\n        <p id=\"new-page\"  (click)=\"openModal()\"  class=\"tool-btn modal-trigger\">\n            <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n        <select id=\"color-picker\" class=\"tool-btn\">\n            <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n        </select>\n        <hr>\n        <select id=\"brush-size\" class=\"tool-btn\">\n            <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n        </select>\n        <hr>\n        <p id=\"eraser\">\n            <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n    </div>\n      <div class=\"wrapper-chalkboard\">\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n      </div>\n      <!--Modal nh\u1EADp th\u00F4ng tin-->\n      <div id=\"modal1\" class=\"modal modal-fixed-footer\">\n        <div class=\"modal-content\">\n          <h4>M\u00F4 t\u1EA3 th\u00F4ng tin b\u1EA3ng</h4>\n          <form (ngSubmit)=\"newPage(name,des)\">\n              <div class=\"row\">\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"name\"  required=\"required\" id=\"title\"/>\n                  <label for=\"title\">Ti\u00EAu \u0111\u1EC1</label>\n                </div>\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"des\"  required=\"required\" id=\"des\"/>\n                  <label for=\"des\">M\u00F4 t\u1EA3</label>\n                </div>\n              </div>\n              <div class=\"row\">\n                <button type=\"submit\" class=\"btn-floating btn-large modal-close waves-effect waves-light blue\"><i class=\"material-icons\">done</i></button>\n              </div>\n            </form>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"modal-action modal-close waves-effect waves-green btn-flat \">Tho\u00E1t</a>\n        </div>\n      </div>\n    ",
+	            template: "\n  <div id=\"kspace-container\">\n    <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let board of boards\">\n          <a *ngIf=\"isLect\" (click)=\"changeBoard(board.json, board.name)\">\n            {{board.name}}\n          </a></li>\n        </ul>\n      </div>\n    </div>\n    <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n    <div id=\"draw-tools\">\n        <p id=\"new-page\"  (click)=\"openModal()\"  class=\"tool-btn modal-trigger\">\n            <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n        <select id=\"color-picker\" class=\"tool-btn\">\n            <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n        </select>\n        <hr>\n        <select id=\"brush-size\" class=\"tool-btn\">\n            <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n        </select>\n        <hr>\n        <p id=\"eraser\">\n            <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n    </div>\n      <div class=\"wrapper-chalkboard\">\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n      </div>\n      <!--Modal nh\u1EADp th\u00F4ng tin-->\n      <div id=\"modal1\" class=\"modal modal-fixed-footer\">\n        <div class=\"modal-content\">\n          <h4>M\u00F4 t\u1EA3 th\u00F4ng tin b\u1EA3ng</h4>\n          <form (ngSubmit)=\"newPage(name,des)\">\n              <div class=\"row\">\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"name\"  required=\"required\" id=\"title\"/>\n                  <label for=\"title\">Ti\u00EAu \u0111\u1EC1</label>\n                </div>\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"des\"  required=\"required\" id=\"des\"/>\n                  <label for=\"des\">M\u00F4 t\u1EA3</label>\n                </div>\n              </div>\n              <div class=\"row\">\n                <button type=\"submit\" class=\"btn-floating btn-large modal-close waves-effect waves-light blue\"><i class=\"material-icons\">done</i></button>\n              </div>\n            </form>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"modal-action modal-close waves-effect waves-green btn-flat \">Tho\u00E1t</a>\n        </div>\n    </div>\n  </div>\n    ",
 	            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -10524,9 +10560,6 @@ webpackJsonp([2],[
 /* 664 */
 /***/ function(module, exports) {
 
-	/**
-	 * Created by GiangDH on 7/12/16.
-	 */
 	"use strict";
 	var WebRCTService = (function () {
 	    function WebRCTService() {
@@ -10534,44 +10567,54 @@ webpackJsonp([2],[
 	    WebRCTService.prototype.rtcSetting = function (webrtc, room, lecturer) {
 	        // If there is a peer join room, add Remote Video
 	        webrtc.on('videoAdded', function (video, peer) {
-	            // if(lecturer === peer.nick){
-	            console.log('video added', peer);
-	            var remotes = document.getElementById('remoteVideos');
-	            if (remotes) {
-	                var container = document.createElement('div');
-	                container.className = 'videoContainer';
-	                container.id = 'container_' + webrtc.getDomId(peer);
-	                container.appendChild(video);
-	                // suppress contextmenu
-	                video.oncontextmenu = function () {
-	                    return false;
-	                };
-	                remotes.appendChild(container);
-	                var kspacePanel = $('#kspace-panel');
-	                var v = webrtc.getDomId(peer);
-	                var vid = document.getElementById(v);
-	                vid.setAttribute("control", "");
-	                $('#' + v).click(function () {
-	                    var chalkboard = document.getElementById('chalkboard');
-	                    var ctx = chalkboard.getContext('2d');
-	                    ctx.drawImage(vid, 5, 5, chalkboard.clientWidth, chalkboard.clientHeight);
-	                });
+	            if (lecturer === peer.nick) {
+	                var remotes = document.getElementById('remoteVideos');
+	                var kspace = document.getElementById('kspace');
+	                var peerId = webrtc.getDomId(peer);
+	                if (peerId.indexOf('video') !== -1) {
+	                    var container = document.createElement('div');
+	                    container.className = 'videoContainer';
+	                    container.id = 'container_' + peerId;
+	                    container.appendChild(video);
+	                    // suppress contextmenu
+	                    video.oncontextmenu = function () {
+	                        return false;
+	                    };
+	                    remotes.appendChild(container);
+	                }
+	                else if (peerId.indexOf('screen') !== -1) {
+	                    $('#kspace-container').hide();
+	                    var container = document.createElement('div');
+	                    container.className = 'videoContainer';
+	                    container.id = 'container_' + peerId;
+	                    container.appendChild(video);
+	                    container.style.width = kspace.clientWidth + 'px';
+	                    container.style.height = kspace.clientHeight + 'px';
+	                    // suppress contextmenu
+	                    video.oncontextmenu = function () {
+	                        return false;
+	                    };
+	                    kspace.appendChild(container);
+	                }
 	            }
-	            // }
 	        });
 	        // a peer video was removed
 	        webrtc.on('videoRemoved', function (video, peer) {
-	            console.log('video removed ', peer);
 	            $('#kspace-panel').find('video').remove();
 	            var remotes = document.getElementById('remoteVideos');
+	            var kspace = document.getElementById('kspace');
 	            var el = document.getElementById(peer ? 'container_' + webrtc.getDomId(peer) : 'localScreenContainer');
-	            if (remotes && el) {
+	            var peerId = webrtc.getDomId(peer);
+	            if (peerId.indexOf('video') !== -1) {
 	                remotes.removeChild(el);
+	            }
+	            else if (peerId.indexOf('screen') !== -1) {
+	                kspace.removeChild(el);
+	                $('#kspace-container').show();
 	            }
 	        });
 	        webrtc.on('readyToCall', function () {
 	            if (room) {
-	                console.log("Join " + room + " success!");
 	                webrtc.joinRoom(room);
 	            }
 	        });
@@ -10617,7 +10660,6 @@ webpackJsonp([2],[
 	var private_chat_1 = __webpack_require__(11);
 	var tag_1 = __webpack_require__(73);
 	var topArticle_1 = __webpack_require__(666);
-	var info_hover_1 = __webpack_require__(1126);
 	var NewsFeedComponent = (function () {
 	    function NewsFeedComponent(_userService, _requestService, _articleService, router) {
 	        this._userService = _userService;
@@ -10666,6 +10708,7 @@ webpackJsonp([2],[
 	                if (requests.length === 0 || user.ownKnowledgeIds.length === 0) {
 	                    _this._requestService.getRequestExceptUserTags(user.ownKnowledgeIds, _this.countR2).subscribe(function (requests) {
 	                        if (requests.length <= 0) {
+	                            alert("Không còn bài viết nào");
 	                        }
 	                        else {
 	                            for (var i = 0; i < requests.length; i++) {
@@ -10746,8 +10789,7 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES,
 	                private_chat_1.PrivateChatComponent,
 	                tag_1.listTagComponent,
-	                topArticle_1.topArticlesComponent,
-	                info_hover_1.infoHover
+	                topArticle_1.topArticlesComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
@@ -11577,7 +11619,60 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 676 */,
+/* 676 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 8/19/2016.
+	 */
+	/**
+	 * Created by Duc Duong on 8/19/2016.
+	 */
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var article_1 = __webpack_require__(44);
+	var tag_1 = __webpack_require__(73);
+	var ArticleListComponent = (function () {
+	    function ArticleListComponent(router, route) {
+	        this.router = router;
+	        this.route = route;
+	    }
+	    ArticleListComponent.prototype.ngOnInit = function () {
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], ArticleListComponent.prototype, "article", void 0);
+	    ArticleListComponent = __decorate([
+	        core_1.Component({
+	            selector: 'article-list',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/list-article.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES, tag_1.listTagComponent
+	            ],
+	            providers: [article_1.ArticleService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object])
+	    ], ArticleListComponent);
+	    return ArticleListComponent;
+	    var _a, _b;
+	}());
+	exports.ArticleListComponent = ArticleListComponent;
+	
+
+/***/ },
 /* 677 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -11871,10 +11966,10 @@ webpackJsonp([2],[
 	        //this.createdAt = this.formatDate(createdAt);
 	        this.id = this.knowledgeId;
 	        this.getKnowledgeNameOfRequest();
-	        if (this.status === 'pending' || this.status === 'active' || this.status === 'Đang chờ') {
+	        if (this.status === 'pending') {
 	            this.status = 'Đang chờ';
 	        }
-	        else if (this.status = 'accepted') {
+	        else {
 	            this.status = 'Đã được chấp nhận';
 	        }
 	    };
@@ -12033,7 +12128,6 @@ webpackJsonp([2],[
 	var request_update_1 = __webpack_require__(189);
 	var user_list_1 = __webpack_require__(430);
 	var reports_list_1 = __webpack_require__(427);
-	var dashboard_1 = __webpack_require__(1125);
 	var tag_list_control_1 = __webpack_require__(429);
 	var article_list_clt_1 = __webpack_require__(425);
 	var auth_1 = __webpack_require__(448);
@@ -12096,17 +12190,8 @@ webpackJsonp([2],[
 	                ]
 	            },
 	            {
-	                path: 'dashboard',
-	                children: [
-	                    {
-	                        path: '',
-	                        component: dashboard_1.DashboardComponent
-	                    }
-	                ]
-	            },
-	            {
 	                path: '',
-	                redirectTo: 'dashboard'
+	                redirectTo: 'knowledges'
 	            }
 	        ]
 	    }
@@ -40489,186 +40574,6 @@ webpackJsonp([2],[
 	    return UITreeRow;
 	}());
 	exports.UITreeRow = UITreeRow;
-	
-
-/***/ },
-/* 1121 */,
-/* 1122 */,
-/* 1123 */,
-/* 1124 */,
-/* 1125 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var ng2_charts_1 = __webpack_require__(1059);
-	var knowledge_1 = __webpack_require__(55);
-	var requests_1 = __webpack_require__(63);
-	var users_1 = __webpack_require__(29);
-	var kspace_1 = __webpack_require__(88);
-	var article_1 = __webpack_require__(44);
-	var DashboardComponent = (function () {
-	    function DashboardComponent(_knowledgeService, _articleService, _requestService, _userService, _kspaceService) {
-	        this._knowledgeService = _knowledgeService;
-	        this._articleService = _articleService;
-	        this._requestService = _requestService;
-	        this._userService = _userService;
-	        this._kspaceService = _kspaceService;
-	        this.visible = false;
-	        this.numOfActiveRequest = 0;
-	        this.numOfFinishedRequest = 0;
-	        this.numOfActiveKspace = 0;
-	        this.numOfFinishedKspace = 0;
-	    }
-	    DashboardComponent.prototype.ngOnInit = function () {
-	        this.getAllKnowledges();
-	        this.getAllUsers();
-	        this.getAllRequests();
-	        this.getAllKSpaces();
-	        this.getAllArticles();
-	    };
-	    DashboardComponent.prototype.getAllKnowledges = function () {
-	        var _this = this;
-	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
-	            _this.knowledges = knowledges;
-	        });
-	    };
-	    DashboardComponent.prototype.getAllUsers = function () {
-	        var _this = this;
-	        this._userService.getAllUsers().subscribe(function (users) {
-	            _this.users = users;
-	        });
-	    };
-	    DashboardComponent.prototype.getAllArticles = function () {
-	        var _this = this;
-	        this._articleService.getAllArtAdmin().subscribe(function (articles) {
-	            _this.articles = articles;
-	        });
-	    };
-	    DashboardComponent.prototype.getAllRequests = function () {
-	        var _this = this;
-	        this._requestService.getAllRequestAdmin().subscribe(function (requests) {
-	            _this.requests = requests;
-	            for (var i = 0; i < _this.requests.length; i++) {
-	                if (_this.requests[i].status == "pending")
-	                    _this.numOfActiveRequest++;
-	                if (_this.requests[i].status == "accepted")
-	                    _this.numOfFinishedRequest++;
-	            }
-	        });
-	    };
-	    DashboardComponent.prototype.getAllKSpaces = function () {
-	        var _this = this;
-	        this._kspaceService.getAllKSpace().subscribe(function (kspaces) {
-	            _this.kspaces = kspaces;
-	            console.log(_this.kspaces);
-	            for (var i = 0; i < _this.kspaces.length; i++) {
-	                if (!_this.kspaces[i].hasOwnProperty("finishedAt")) {
-	                    _this.numOfActiveKspace++;
-	                }
-	                if (_this.kspaces[i].hasOwnProperty("finishedAt")) {
-	                    _this.numOfFinishedKspace++;
-	                }
-	            }
-	        });
-	    };
-	    DashboardComponent.prototype.draw = function () {
-	        this.polarAreaChartLabels = ['Số tri thức', 'Số người sử dụng', 'Số yêu cầu đã tạo', 'Số KSpace đã tạo', 'Số bài viết'];
-	        this.polarAreaChartData = [this.knowledges.length, this.users.length, this.requests.length, this.kspaces.length, this.articles.length];
-	        this.polarAreaLegend = true;
-	        this.polarAreaChartType = 'polarArea';
-	        if (this.visible == false)
-	            this.visible = true;
-	        else
-	            this.visible = false;
-	    };
-	    // events
-	    DashboardComponent.prototype.chartClicked = function (e) {
-	        console.log(e);
-	    };
-	    DashboardComponent.prototype.chartHovered = function (e) {
-	        console.log(e);
-	    };
-	    DashboardComponent = __decorate([
-	        core_1.Component({
-	            selector: 'dashboard',
-	            templateUrl: 'client/dev/app/components/back-end/dashboard/templates/dashboard.html',
-	            styleUrls: ['client/dev/app/components/back-end/dashboard/styles/dashboard.css'],
-	            directives: [ng2_charts_1.CHART_DIRECTIVES],
-	            providers: [knowledge_1.KnowledgeService, requests_1.RequestService, users_1.UserService, kspace_1.KSpaceService]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _a) || Object, (typeof (_b = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _b) || Object, (typeof (_c = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object])
-	    ], DashboardComponent);
-	    return DashboardComponent;
-	    var _a, _b, _c, _d, _e;
-	}());
-	exports.DashboardComponent = DashboardComponent;
-	
-
-/***/ },
-/* 1126 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	/**
-	 * Created by Duc Duong on 8/27/2016.
-	 */
-	var core_1 = __webpack_require__(1);
-	var users_1 = __webpack_require__(29);
-	var router_1 = __webpack_require__(4);
-	var ratingPoint_1 = __webpack_require__(682);
-	var infoHover = (function () {
-	    function infoHover(router, route, _userService) {
-	        this.router = router;
-	        this.route = route;
-	        this._userService = _userService;
-	    }
-	    infoHover.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this._userService.getUserByUserName(this.username).subscribe(function (user) {
-	            _this.user = user;
-	        }, function (error) {
-	            console.log(error);
-	        });
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], infoHover.prototype, "username", void 0);
-	    infoHover = __decorate([
-	        core_1.Component({
-	            selector: 'hover-info-user',
-	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/info-hover.html',
-	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES, ratingPoint_1.RatingPoint
-	            ],
-	            providers: [users_1.UserService]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object])
-	    ], infoHover);
-	    return infoHover;
-	    var _a, _b, _c;
-	}());
-	exports.infoHover = infoHover;
 	
 
 /***/ }
