@@ -21,6 +21,7 @@ var KSpaceComponent = (function () {
         this.route = route;
         this._kspaceService = _kspaceService;
         this.rtcService = rtcService;
+        this.hiddenShareScreen = true;
         this.route.params.subscribe(function (params) {
             _this.id = params['id'];
             _this.lecturer = params['lecturer'];
@@ -74,7 +75,6 @@ var KSpaceComponent = (function () {
     KSpaceComponent.prototype.ngOnInit = function () {
         var _this = this;
         // DOM elements
-        console.log('hell');
         var shareScreenBtn = $('#sharescreen-btn');
         var chalkBoardBtn = $('#chalkboard-btn');
         var localVideo = $('#localVideo');
@@ -83,6 +83,9 @@ var KSpaceComponent = (function () {
         this._kspaceService
             .getKSpaceById(this.id)
             .subscribe(function (kspace) {
+            if (kspace.lecturer === _this.username) {
+                _this.hiddenShareScreen = false;
+            }
             _this.boards = kspace.boards;
             var chatlog = kspace.chatlog;
             var isSender = false;
@@ -136,6 +139,7 @@ var KSpaceComponent = (function () {
                 rtc.rtcSetting(webrtc, room, kspace.lecturer);
                 var sharescreenToken = false;
                 shareScreenBtn.click(function () {
+                    console.log(sharescreenToken);
                     sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);
                 });
                 chalkBoardBtn.click(function () {

@@ -33,22 +33,11 @@
     right: 0;
     box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
 }
-/*#chat {
-    position: absolute;
-    margin-left: 95%;
-    display: block;
-    background: #ffffff;
-    border-color: white;
-    border-radius: 50%;
-}*/
-#chat-panel {
-    /*position: fixed;*/
-}
 .chat-box {
     position: fixed;
     width: 16.67%;
     height: 100%;
-    box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
+    /*box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);*/
 }
 #chat-box-output{
     overflow: scroll;

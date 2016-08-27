@@ -2,22 +2,16 @@
     <div class="col m2 local-panel">
         <p class="peerName">{{username}}</p>
         <video id="localVideo"></video>
-        <div id="rtcTools">
-            <button id="chalkboard-btn" class="kspace-btn waves-effect waves-green btn-flat">
-                <i class="material-icons">create</i>
-            </button>
-            <button id="videocall-btn" class="kspace-btn waves-effect waves-green btn-flat">
-                <i class="material-icons">video_call</i>
-            </button>
-            <button id="sharescreen-btn" class="kspace-btn waves-effect waves-green btn-flat">
-                <i class="material-icons">tablet</i>
+        <div [hidden]="hiddenShareScreen" id="rtcTools" class="row center">
+            <button id="sharescreen-btn" class="white-text waves-effect waves-green btn-flat blue lighten-1">
+                Chia sẻ màn hình
             </button>
         </div>
         <div id="remoteVideos"></div>
         <!-- /#remotes -->
     </div>
     <!-- /.md-2 -->
-    <div class="col m8 kspace-panel">
+    <div class="col m8 kspace-panel" id="kspace">
         <div class="row">
             <div class="col s1"></div>
             <div class="col s10 mg-top-50">

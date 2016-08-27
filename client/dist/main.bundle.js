@@ -5996,7 +5996,6 @@ webpackJsonp([2],[
 	            }
 	            for (var _b = 0, _c = kspace.boards; _b < _c.length; _b++) {
 	                var board = _c[_b];
-	                console.log(board);
 	                if (board._id) {
 	                    var data = {
 	                        id: board._id,
@@ -6205,6 +6204,7 @@ webpackJsonp([2],[
 	        this.route = route;
 	        this._kspaceService = _kspaceService;
 	        this.rtcService = rtcService;
+	        this.hiddenShareScreen = true;
 	        this.route.params.subscribe(function (params) {
 	            _this.id = params['id'];
 	            _this.lecturer = params['lecturer'];
@@ -6258,7 +6258,6 @@ webpackJsonp([2],[
 	    KSpaceComponent.prototype.ngOnInit = function () {
 	        var _this = this;
 	        // DOM elements
-	        console.log('hell');
 	        var shareScreenBtn = $('#sharescreen-btn');
 	        var chalkBoardBtn = $('#chalkboard-btn');
 	        var localVideo = $('#localVideo');
@@ -6267,6 +6266,9 @@ webpackJsonp([2],[
 	        this._kspaceService
 	            .getKSpaceById(this.id)
 	            .subscribe(function (kspace) {
+	            if (kspace.lecturer === _this.username) {
+	                _this.hiddenShareScreen = false;
+	            }
 	            _this.boards = kspace.boards;
 	            var chatlog = kspace.chatlog;
 	            var isSender = false;
@@ -6320,6 +6322,7 @@ webpackJsonp([2],[
 	                rtc.rtcSetting(webrtc, room, kspace.lecturer);
 	                var sharescreenToken = false;
 	                shareScreenBtn.click(function () {
+	                    console.log(sharescreenToken);
 	                    sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);
 	                });
 	                chalkBoardBtn.click(function () {
@@ -10489,7 +10492,7 @@ webpackJsonp([2],[
 	    ChalkBoardComponent = __decorate([
 	        core_1.Component({
 	            selector: 'chalkboard',
-	            template: "\n  <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let board of boards\">\n          <a *ngIf=\"isLect\" (click)=\"changeBoard(board.json, board.name)\">\n            {{board.name}}\n          </a></li>\n        </ul>\n      </div>\n    </div>\n    <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n    <div id=\"draw-tools\">\n        <p id=\"new-page\"  (click)=\"openModal()\"  class=\"tool-btn modal-trigger\">\n            <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n        <select id=\"color-picker\" class=\"tool-btn\">\n            <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n        </select>\n        <hr>\n        <select id=\"brush-size\" class=\"tool-btn\">\n            <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n        </select>\n        <hr>\n        <p id=\"eraser\">\n            <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n    </div>\n      <div class=\"wrapper-chalkboard\">\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n      </div>\n      <!--Modal nh\u1EADp th\u00F4ng tin-->\n      <div id=\"modal1\" class=\"modal modal-fixed-footer\">\n        <div class=\"modal-content\">\n          <h4>M\u00F4 t\u1EA3 th\u00F4ng tin b\u1EA3ng</h4>\n          <form (ngSubmit)=\"newPage(name,des)\">\n              <div class=\"row\">\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"name\"  required=\"required\" id=\"title\"/>\n                  <label for=\"title\">Ti\u00EAu \u0111\u1EC1</label>\n                </div>\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"des\"  required=\"required\" id=\"des\"/>\n                  <label for=\"des\">M\u00F4 t\u1EA3</label>\n                </div>\n              </div>\n              <div class=\"row\">\n                <button type=\"submit\" class=\"btn-floating btn-large modal-close waves-effect waves-light blue\"><i class=\"material-icons\">done</i></button>\n              </div>\n            </form>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"modal-action modal-close waves-effect waves-green btn-flat \">Tho\u00E1t</a>\n        </div>\n      </div>\n    ",
+	            template: "\n  <div id=\"kspace-container\">\n    <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let board of boards\">\n          <a *ngIf=\"isLect\" (click)=\"changeBoard(board.json, board.name)\">\n            {{board.name}}\n          </a></li>\n        </ul>\n      </div>\n    </div>\n    <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n    <div id=\"draw-tools\">\n        <p id=\"new-page\"  (click)=\"openModal()\"  class=\"tool-btn modal-trigger\">\n            <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n        <select id=\"color-picker\" class=\"tool-btn\">\n            <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n        </select>\n        <hr>\n        <select id=\"brush-size\" class=\"tool-btn\">\n            <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n        </select>\n        <hr>\n        <p id=\"eraser\">\n            <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n    </div>\n      <div class=\"wrapper-chalkboard\">\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n      </div>\n      <!--Modal nh\u1EADp th\u00F4ng tin-->\n      <div id=\"modal1\" class=\"modal modal-fixed-footer\">\n        <div class=\"modal-content\">\n          <h4>M\u00F4 t\u1EA3 th\u00F4ng tin b\u1EA3ng</h4>\n          <form (ngSubmit)=\"newPage(name,des)\">\n              <div class=\"row\">\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"name\"  required=\"required\" id=\"title\"/>\n                  <label for=\"title\">Ti\u00EAu \u0111\u1EC1</label>\n                </div>\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"des\"  required=\"required\" id=\"des\"/>\n                  <label for=\"des\">M\u00F4 t\u1EA3</label>\n                </div>\n              </div>\n              <div class=\"row\">\n                <button type=\"submit\" class=\"btn-floating btn-large modal-close waves-effect waves-light blue\"><i class=\"material-icons\">done</i></button>\n              </div>\n            </form>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"modal-action modal-close waves-effect waves-green btn-flat \">Tho\u00E1t</a>\n        </div>\n    </div>\n  </div>\n    ",
 	            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -10557,9 +10560,6 @@ webpackJsonp([2],[
 /* 664 */
 /***/ function(module, exports) {
 
-	/**
-	 * Created by GiangDH on 7/12/16.
-	 */
 	"use strict";
 	var WebRCTService = (function () {
 	    function WebRCTService() {
@@ -10567,44 +10567,54 @@ webpackJsonp([2],[
 	    WebRCTService.prototype.rtcSetting = function (webrtc, room, lecturer) {
 	        // If there is a peer join room, add Remote Video
 	        webrtc.on('videoAdded', function (video, peer) {
-	            // if(lecturer === peer.nick){
-	            console.log('video added', peer);
-	            var remotes = document.getElementById('remoteVideos');
-	            if (remotes) {
-	                var container = document.createElement('div');
-	                container.className = 'videoContainer';
-	                container.id = 'container_' + webrtc.getDomId(peer);
-	                container.appendChild(video);
-	                // suppress contextmenu
-	                video.oncontextmenu = function () {
-	                    return false;
-	                };
-	                remotes.appendChild(container);
-	                var kspacePanel = $('#kspace-panel');
-	                var v = webrtc.getDomId(peer);
-	                var vid = document.getElementById(v);
-	                vid.setAttribute("control", "");
-	                $('#' + v).click(function () {
-	                    var chalkboard = document.getElementById('chalkboard');
-	                    var ctx = chalkboard.getContext('2d');
-	                    ctx.drawImage(vid, 5, 5, chalkboard.clientWidth, chalkboard.clientHeight);
-	                });
+	            if (lecturer === peer.nick) {
+	                var remotes = document.getElementById('remoteVideos');
+	                var kspace = document.getElementById('kspace');
+	                var peerId = webrtc.getDomId(peer);
+	                if (peerId.indexOf('video') !== -1) {
+	                    var container = document.createElement('div');
+	                    container.className = 'videoContainer';
+	                    container.id = 'container_' + peerId;
+	                    container.appendChild(video);
+	                    // suppress contextmenu
+	                    video.oncontextmenu = function () {
+	                        return false;
+	                    };
+	                    remotes.appendChild(container);
+	                }
+	                else if (peerId.indexOf('screen') !== -1) {
+	                    $('#kspace-container').hide();
+	                    var container = document.createElement('div');
+	                    container.className = 'videoContainer';
+	                    container.id = 'container_' + peerId;
+	                    container.appendChild(video);
+	                    container.style.width = kspace.clientWidth + 'px';
+	                    container.style.height = kspace.clientHeight + 'px';
+	                    // suppress contextmenu
+	                    video.oncontextmenu = function () {
+	                        return false;
+	                    };
+	                    kspace.appendChild(container);
+	                }
 	            }
-	            // }
 	        });
 	        // a peer video was removed
 	        webrtc.on('videoRemoved', function (video, peer) {
-	            console.log('video removed ', peer);
 	            $('#kspace-panel').find('video').remove();
 	            var remotes = document.getElementById('remoteVideos');
+	            var kspace = document.getElementById('kspace');
 	            var el = document.getElementById(peer ? 'container_' + webrtc.getDomId(peer) : 'localScreenContainer');
-	            if (remotes && el) {
+	            var peerId = webrtc.getDomId(peer);
+	            if (peerId.indexOf('video') !== -1) {
 	                remotes.removeChild(el);
+	            }
+	            else if (peerId.indexOf('screen') !== -1) {
+	                kspace.removeChild(el);
+	                $('#kspace-container').show();
 	            }
 	        });
 	        webrtc.on('readyToCall', function () {
 	            if (room) {
-	                console.log("Join " + room + " success!");
 	                webrtc.joinRoom(room);
 	            }
 	        });

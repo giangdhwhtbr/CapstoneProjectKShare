@@ -46,6 +46,7 @@ export class KSpaceComponent {
     mess:String;
     socket:any;
     boards: any;
+    hiddenShareScreen: boolean = true;
 
     constructor(public router:Router,
                 private route:ActivatedRoute,
@@ -54,7 +55,7 @@ export class KSpaceComponent {
         this.route.params.subscribe(params => {
             this.id = params['id'];
             this.lecturer = params['lecturer'];
-        })
+        });
         this.username = localStorage.getItem('username');
         this.messages = [];
         this.socket = io('https://localhost:80');
@@ -113,7 +114,6 @@ export class KSpaceComponent {
 
     ngOnInit():void {
         // DOM elements
-        console.log('hell');
         var shareScreenBtn = $('#sharescreen-btn');
         var chalkBoardBtn = $('#chalkboard-btn');
         var localVideo = $('#localVideo');
@@ -123,6 +123,10 @@ export class KSpaceComponent {
         this._kspaceService
             .getKSpaceById(this.id)
             .subscribe(kspace => {
+              if(kspace.lecturer === this.username){
+                this.hiddenShareScreen = false;
+              }
+
               this.boards = kspace.boards;
                     var chatlog = kspace.chatlog;
                     var isSender:boolean = false;
@@ -178,6 +182,7 @@ export class KSpaceComponent {
                         rtc.rtcSetting(webrtc, room, kspace.lecturer);
                         var sharescreenToken:boolean = false;
                         shareScreenBtn.click(function () {
+                            console.log(sharescreenToken);
                             sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);
                         });
                         chalkBoardBtn.click(function () {
