@@ -1401,6 +1401,7 @@ webpackJsonp([2],[
 	        this._searchRequetsUrl = '/api/requests-search/:id';
 	        this._statusSubcriberUrl = '/api/requests-subcriber/:id';
 	        this._requestStatusUrl = '/api/requests-status/:id';
+	        this._kspaceUrl = '/api/kspace/:rid';
 	    }
 	    RequestService.prototype.getAllRequests = function (num) {
 	        var header = new http_1.Headers;
@@ -1412,6 +1413,10 @@ webpackJsonp([2],[
 	        return this._http.put(this._requestUserUrl.replace(':id', ''), _data, options)
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
+	    };
+	    RequestService.prototype.getKspaceByRId = function (id) {
+	        return this._http.get(this._kspaceUrl.replace(':rid', id))
+	            .map(function (kspace) { return kspace.json(); });
 	    };
 	    //get all request which user's ownknowledgeIds same with tagid of request
 	    RequestService.prototype.getRequestByUserTags = function (tags, num) {
@@ -3398,15 +3403,6 @@ webpackJsonp([2],[
 	            var type = params['type'];
 	            var id = params['id'];
 	            _this._articleService.getArtByKnwId(id).subscribe(function (arts) {
-	                for (var _i = 0, arts_1 = arts; _i < arts_1.length; _i++) {
-	                    var e = arts_1[_i];
-	                    //get summary
-	                    var html = e.content;
-	                    var div = document.createElement("div");
-	                    div.innerHTML = html;
-	                    var text = div.textContent || div.innerText || "";
-	                    e.content = text;
-	                }
 	                _this.arts = arts;
 	            });
 	            //get templates from children category
@@ -3421,12 +3417,6 @@ webpackJsonp([2],[
 	                    for (var i = 0; i < requests.length; i++) {
 	                        requests[i].createdAt = new Date(requests[i].createdAt);
 	                        requests[i].modifiedDate = new Date(requests[i].modifiedDate);
-	                        //get summary
-	                        var html = requests[i].description;
-	                        var div = document.createElement("div");
-	                        div.innerHTML = html;
-	                        var text = div.textContent || div.innerText || "";
-	                        requests[i].description = text;
 	                    }
 	                    _this.requests = requests;
 	                });
@@ -3448,12 +3438,6 @@ webpackJsonp([2],[
 	                                if (requests[i].status === 'pending') {
 	                                    requests[i].status = 'Đang chờ';
 	                                }
-	                                //get summary
-	                                var html = e.description;
-	                                var div = document.createElement("div");
-	                                div.innerHTML = html;
-	                                var text = div.textContent || div.innerText || "";
-	                                requests[i].description = text;
 	                            }
 	                            if (a.length == 0) {
 	                                _this.isExistRecord = true;
@@ -6429,7 +6413,6 @@ webpackJsonp([2],[
 	        this._knowledgeService = _knowledgeService;
 	        this._kspaceService = _kspaceService;
 	        this.route = route;
-	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
 	        this.num = 5;
 	        this.height = 400;
 	        //check if request is accepted
@@ -6460,10 +6443,12 @@ webpackJsonp([2],[
 	        //get templates when load the page
 	        this._requestService.getRequestById(this.id)
 	            .subscribe(function (request) {
-	            console.log(request);
 	            //translate status
 	            if (request.status === 'accepted') {
 	                if (_this.userToken === request.user || request.subscribers.indexOf(_this.userToken) > 0 || _this.userToken !== null) {
+	                    _this._requestService.getKspaceByRId(request._id).subscribe(function (k) {
+	                        _this.link = "/kspace/info/" + k._id + '/' + _this.userToken;
+	                    });
 	                }
 	                else {
 	                    _this.router.navigateByUrl('/');
@@ -6877,26 +6862,8 @@ webpackJsonp([2],[
 	            .subscribe(function (params) {
 	            _this.id = params['id'];
 	            _this._tagService.getArtByTag(_this.id).subscribe(function (arts) {
-	                for (var _i = 0, arts_1 = arts; _i < arts_1.length; _i++) {
-	                    var e = arts_1[_i];
-	                    //get summary
-	                    var html = e.content;
-	                    var div = document.createElement("div");
-	                    div.innerHTML = html;
-	                    var text = div.textContent || div.innerText || "";
-	                    e.content = text;
-	                }
 	                _this.listArt = arts;
 	                _this._tagService.getReqByTag(_this.id).subscribe(function (reqs) {
-	                    for (var _i = 0, reqs_1 = reqs; _i < reqs_1.length; _i++) {
-	                        var e = reqs_1[_i];
-	                        //get summary
-	                        var html = e.description;
-	                        var div = document.createElement("div");
-	                        div.innerHTML = html;
-	                        var text = div.textContent || div.innerText || "";
-	                        e.description = text;
-	                    }
 	                    _this.listReq = reqs;
 	                });
 	            }, function (error) {
@@ -12107,6 +12074,7 @@ webpackJsonp([2],[
 	var request_update_1 = __webpack_require__(189);
 	var user_list_1 = __webpack_require__(430);
 	var reports_list_1 = __webpack_require__(427);
+	var dashboard_1 = __webpack_require__(1125);
 	var tag_list_control_1 = __webpack_require__(429);
 	var article_list_clt_1 = __webpack_require__(425);
 	var auth_1 = __webpack_require__(448);
@@ -12169,8 +12137,17 @@ webpackJsonp([2],[
 	                ]
 	            },
 	            {
+	                path: 'dashboard',
+	                children: [
+	                    {
+	                        path: '',
+	                        component: dashboard_1.DashboardComponent
+	                    }
+	                ]
+	            },
+	            {
 	                path: '',
-	                redirectTo: 'knowledges'
+	                redirectTo: 'dashboard'
 	            }
 	        ]
 	    }
@@ -40553,6 +40530,129 @@ webpackJsonp([2],[
 	    return UITreeRow;
 	}());
 	exports.UITreeRow = UITreeRow;
+	
+
+/***/ },
+/* 1121 */,
+/* 1122 */,
+/* 1123 */,
+/* 1124 */,
+/* 1125 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var ng2_charts_1 = __webpack_require__(1059);
+	var knowledge_1 = __webpack_require__(55);
+	var requests_1 = __webpack_require__(63);
+	var users_1 = __webpack_require__(29);
+	var kspace_1 = __webpack_require__(88);
+	var article_1 = __webpack_require__(44);
+	var DashboardComponent = (function () {
+	    function DashboardComponent(_knowledgeService, _articleService, _requestService, _userService, _kspaceService) {
+	        this._knowledgeService = _knowledgeService;
+	        this._articleService = _articleService;
+	        this._requestService = _requestService;
+	        this._userService = _userService;
+	        this._kspaceService = _kspaceService;
+	        this.visible = false;
+	        this.numOfActiveRequest = 0;
+	        this.numOfFinishedRequest = 0;
+	        this.numOfActiveKspace = 0;
+	        this.numOfFinishedKspace = 0;
+	    }
+	    DashboardComponent.prototype.ngOnInit = function () {
+	        this.getAllKnowledges();
+	        this.getAllUsers();
+	        this.getAllRequests();
+	        this.getAllKSpaces();
+	        this.getAllArticles();
+	    };
+	    DashboardComponent.prototype.getAllKnowledges = function () {
+	        var _this = this;
+	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            _this.knowledges = knowledges;
+	        });
+	    };
+	    DashboardComponent.prototype.getAllUsers = function () {
+	        var _this = this;
+	        this._userService.getAllUsers().subscribe(function (users) {
+	            _this.users = users;
+	        });
+	    };
+	    DashboardComponent.prototype.getAllArticles = function () {
+	        var _this = this;
+	        this._articleService.getAllArtAdmin().subscribe(function (articles) {
+	            _this.articles = articles;
+	        });
+	    };
+	    DashboardComponent.prototype.getAllRequests = function () {
+	        var _this = this;
+	        this._requestService.getAllRequestAdmin().subscribe(function (requests) {
+	            _this.requests = requests;
+	            for (var i = 0; i < _this.requests.length; i++) {
+	                if (_this.requests[i].status == "pending")
+	                    _this.numOfActiveRequest++;
+	                if (_this.requests[i].status == "accepted")
+	                    _this.numOfFinishedRequest++;
+	            }
+	        });
+	    };
+	    DashboardComponent.prototype.getAllKSpaces = function () {
+	        var _this = this;
+	        this._kspaceService.getAllKSpace().subscribe(function (kspaces) {
+	            _this.kspaces = kspaces;
+	            console.log(_this.kspaces);
+	            for (var i = 0; i < _this.kspaces.length; i++) {
+	                if (!_this.kspaces[i].hasOwnProperty("finishedAt")) {
+	                    _this.numOfActiveKspace++;
+	                }
+	                if (_this.kspaces[i].hasOwnProperty("finishedAt")) {
+	                    _this.numOfFinishedKspace++;
+	                }
+	            }
+	        });
+	    };
+	    DashboardComponent.prototype.draw = function () {
+	        this.polarAreaChartLabels = ['Số tri thức', 'Số người sử dụng', 'Số yêu cầu đã tạo', 'Số KSpace đã tạo', 'Số bài viết'];
+	        this.polarAreaChartData = [this.knowledges.length, this.users.length, this.requests.length, this.kspaces.length, this.articles.length];
+	        this.polarAreaLegend = true;
+	        this.polarAreaChartType = 'polarArea';
+	        if (this.visible == false)
+	            this.visible = true;
+	        else
+	            this.visible = false;
+	    };
+	    // events
+	    DashboardComponent.prototype.chartClicked = function (e) {
+	        console.log(e);
+	    };
+	    DashboardComponent.prototype.chartHovered = function (e) {
+	        console.log(e);
+	    };
+	    DashboardComponent = __decorate([
+	        core_1.Component({
+	            selector: 'dashboard',
+	            templateUrl: 'client/dev/app/components/back-end/dashboard/templates/dashboard.html',
+	            styleUrls: ['client/dev/app/components/back-end/dashboard/styles/dashboard.css'],
+	            directives: [ng2_charts_1.CHART_DIRECTIVES],
+	            providers: [knowledge_1.KnowledgeService, requests_1.RequestService, users_1.UserService, kspace_1.KSpaceService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _a) || Object, (typeof (_b = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _b) || Object, (typeof (_c = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object])
+	    ], DashboardComponent);
+	    return DashboardComponent;
+	    var _a, _b, _c, _d, _e;
+	}());
+	exports.DashboardComponent = DashboardComponent;
 	
 
 /***/ }

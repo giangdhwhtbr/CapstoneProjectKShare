@@ -44,9 +44,7 @@ declare var Materialize:any;
 
 
 export class RequestDetailClientComponent implements AfterViewChecked {
-
-    pageTitle:string = 'Welcome to Knowledge Sharing Network';
-
+    link:string;
     id:string;
     _id:string;
     updateLink:string;
@@ -101,11 +99,12 @@ export class RequestDetailClientComponent implements AfterViewChecked {
         //get templates when load the page
         this._requestService.getRequestById(this.id)
             .subscribe(request => {
-                console.log(request);
                 //translate status
                 if (request.status === 'accepted') {
                     if(this.userToken === request.user || request.subscribers.indexOf(this.userToken)>0 || this.userToken !== null){
-                        
+                        this._requestService.getKspaceByRId(request._id).subscribe((k) => {
+                            this.link = "/kspace/info/" + k._id + '/' + this.userToken;
+                        }); 
                     }else {
                         this.router.navigateByUrl('/');
                     }
