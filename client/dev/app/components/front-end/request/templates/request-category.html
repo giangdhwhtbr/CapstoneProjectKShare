@@ -55,13 +55,13 @@
                         (pageChange)="onPageChangeArt($event)"></pagination-controls>
                 </div>
             </div>
-            <div *ngIf="arts.length==0">
+            <div [hidden]="arts.length!=0">
                 <h5 class="center-align">Không có bài viết liên quan</h5>
             </div>
         </div>
         <div id="tabReq" *ngIf="requests">
             <div class="row">
-                <div *ngIf="isExistRecord">
+                <div [hidden]="!isExistRecord">
                     <h5>Kết quả tìm kiếm</h5>
                     <div class="valign-wrapper">
                         <h5 class="valign">Rất tiếc không tìm thấy dữ liệu phù hợp</h5>
