@@ -18,6 +18,7 @@ var request_category_1 = require('./request-category');
 var auth_1 = require('../../../services/auth');
 var router_2 = require("@angular/router");
 var tag_2 = require('../tag/tag');
+var info_hover_1 = require('../user/user-profile/info-hover');
 var RequestListClientComponent = (function () {
     function RequestListClientComponent(_requestService, _tagService, _auth, router, route) {
         this._requestService = _requestService;
@@ -141,7 +142,8 @@ var RequestListClientComponent = (function () {
                 request_create_1.CreateRequestComponent,
                 request_category_1.RequestCategoryComponent,
                 tag_2.listTagComponent,
-                private_chat_1.PrivateChatComponent
+                private_chat_1.PrivateChatComponent,
+                info_hover_1.infoHover
             ],
             providers: [tag_1.TagService]
         }), 

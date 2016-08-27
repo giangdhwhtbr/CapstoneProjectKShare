@@ -1,0 +1,14 @@
+<div *ngIf="user" class="dropdown-info-user">
+    <a [routerLink]="['/user',username]">{{username}}</a>
+    <div class="dropdown-content-info-user">
+        <div class="row main-div-hover-info">
+            <div class="col s4">
+                <img src="{{user.linkImg}}" alt="" class="img-user-hover-div responsive-img">
+            </div>
+            <div class="col s8">
+                <span class="black-text">Số bài viết : {{user.totalArt}}</span>
+                <rating-point [rate]="user.rateAve"></rating-point>
+            </div>
+        </div>
+    </div>
+</div>

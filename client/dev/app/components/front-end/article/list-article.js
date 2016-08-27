@@ -15,6 +15,7 @@ var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
 var private_chat_1 = require('./../../shared/private-chat');
 var tag_1 = require('../tag/tag');
+var info_hover_1 = require('../user/user-profile/info-hover');
 var listArticleComponent = (function () {
     function listArticleComponent(router, route, _artService) {
         this.router = router;
@@ -54,12 +55,6 @@ var listArticleComponent = (function () {
             }
             else {
                 for (var i = 0; i < arts.length; i++) {
-                    //get summary
-                    var html = arts[i].content;
-                    var div = document.createElement("div");
-                    div.innerHTML = html;
-                    var text = div.textContent || div.innerText || "";
-                    arts[i].content = text;
                     _this.listArt.push(arts[i]);
                 }
             }
@@ -82,12 +77,6 @@ var listArticleComponent = (function () {
             this._artService.searchArticle(this.text).subscribe(function (arts) {
                 console.log(arts.length);
                 for (var i = 0; i < arts.length; i++) {
-                    //get summary
-                    var html = arts[i].content;
-                    var div = document.createElement("div");
-                    div.innerHTML = html;
-                    var text = div.textContent || div.innerText || "";
-                    arts[i].content = text;
                     _this.listArt.push(arts[i]);
                 }
                 if (arts.length <= 0) {
@@ -107,7 +96,8 @@ var listArticleComponent = (function () {
             directives: [
                 router_1.ROUTER_DIRECTIVES,
                 private_chat_1.PrivateChatComponent,
-                tag_1.listTagComponent
+                tag_1.listTagComponent,
+                info_hover_1.infoHover
             ],
             providers: [article_1.ArticleService]
         }), 

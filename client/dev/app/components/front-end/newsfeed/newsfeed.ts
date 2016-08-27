@@ -9,6 +9,7 @@ import { ArticleService } from '../../../services/article';
 import { PrivateChatComponent } from './../../shared/private-chat';
 import { listTagComponent } from '../tag/tag';
 import { topArticlesComponent } from './topArticle';
+import { infoHover } from '../user/user-profile/info-hover';
 
 declare var $: any;
 
@@ -20,7 +21,8 @@ declare var $: any;
         ROUTER_DIRECTIVES,
         PrivateChatComponent,
         listTagComponent,
-        topArticlesComponent
+        topArticlesComponent,
+        infoHover
     ]
 })
 
@@ -87,7 +89,6 @@ export class NewsFeedComponent implements OnInit {
                 if (requests.length === 0 || user.ownKnowledgeIds.length === 0) {
                     this._requestService.getRequestExceptUserTags(user.ownKnowledgeIds, this.countR2).subscribe((requests) => {
                         if (requests.length <= 0) {
-                            alert("Không còn bài viết nào");
                         } else {
                             for (var i = 0; i < requests.length; i++) {
 

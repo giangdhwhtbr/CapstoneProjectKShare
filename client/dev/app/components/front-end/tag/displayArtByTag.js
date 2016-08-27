@@ -14,6 +14,7 @@ var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var tag_1 = require('../../../services/tag');
 var tag_2 = require('../tag/tag');
+var info_hover_1 = require('../user/user-profile/info-hover');
 var ng2_pagination_1 = require('ng2-pagination');
 var private_chat_1 = require('../../shared/private-chat');
 var displayArtByTagComponent = (function () {
@@ -53,26 +54,8 @@ var displayArtByTagComponent = (function () {
             .subscribe(function (params) {
             _this.id = params['id'];
             _this._tagService.getArtByTag(_this.id).subscribe(function (arts) {
-                for (var _i = 0; _i < arts.length; _i++) {
-                    var e = arts[_i];
-                    //get summary
-                    var html = e.content;
-                    var div = document.createElement("div");
-                    div.innerHTML = html;
-                    var text = div.textContent || div.innerText || "";
-                    e.content = text;
-                }
                 _this.listArt = arts;
                 _this._tagService.getReqByTag(_this.id).subscribe(function (reqs) {
-                    for (var _i = 0; _i < reqs.length; _i++) {
-                        var e = reqs[_i];
-                        //get summary
-                        var html = e.description;
-                        var div = document.createElement("div");
-                        div.innerHTML = html;
-                        var text = div.textContent || div.innerText || "";
-                        e.description = text;
-                    }
                     _this.listReq = reqs;
                 });
             }, function (error) {
@@ -90,7 +73,7 @@ var displayArtByTagComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/tag/templates/display-article-by-tag.html',
             styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES, tag_2.listTagComponent, ng2_pagination_1.PaginationControlsCmp, private_chat_1.PrivateChatComponent
+                router_1.ROUTER_DIRECTIVES, tag_2.listTagComponent, ng2_pagination_1.PaginationControlsCmp, private_chat_1.PrivateChatComponent, info_hover_1.infoHover
             ],
             providers: [tag_1.TagService, ng2_pagination_1.PaginationService],
             pipes: [ng2_pagination_1.PaginatePipe]

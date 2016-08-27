@@ -15,7 +15,7 @@ import { ArticleService } from '../../../services/article';
 import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance } from 'ng2-pagination';
 import { Subscription } from 'rxjs/Subscription';
 import { PrivateChatComponent } from './../../shared/private-chat';
-
+import { infoHover } from '../user/user-profile/info-hover';
 
 import {listTagComponent} from '../tag/tag';
 declare var $:any;
@@ -23,7 +23,7 @@ declare var $:any;
     selector: 'request-category-cli',
     templateUrl: 'client/dev/app/components/front-end/request/templates/request-category.html',
     styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
-    directives: [ROUTER_DIRECTIVES,PaginationControlsCmp,listTagComponent,PrivateChatComponent],
+    directives: [ROUTER_DIRECTIVES,PaginationControlsCmp,listTagComponent,PrivateChatComponent,infoHover],
     providers:[ArticleService,PaginationService],
     pipes: [PaginatePipe]
 })
@@ -77,17 +77,6 @@ export class RequestCategoryComponent {
                 let id = params['id'];
 
                 this._articleService.getArtByKnwId(id).subscribe((arts)=>{
-
-                    for(let e of arts){
-                        //get summary
-                        let html = e.content;
-                        let div = document.createElement("div");
-                        div.innerHTML = html;
-                        let text = div.textContent || div.innerText || "";
-
-                        e.content = text;
-                    }
-
                     this.arts=arts;
                 });
 
@@ -104,14 +93,6 @@ export class RequestCategoryComponent {
                             for (var i = 0; i < requests.length; i++) {
                                 requests[i].createdAt = new Date(requests[i].createdAt);
                                 requests[i].modifiedDate = new Date(requests[i].modifiedDate);
-
-                                //get summary
-                                let html = requests[i].description;
-                                let div = document.createElement("div");
-                                div.innerHTML = html;
-                                let text = div.textContent || div.innerText || "";
-
-                                requests[i].description = text;
                             }
                             this.requests = requests;
                         });
@@ -138,13 +119,6 @@ export class RequestCategoryComponent {
                                             if (requests[i].status === 'pending') {
                                                 requests[i].status = 'Đang chờ';
                                             }
-                                            //get summary
-                                            let html = e.description;
-                                            let div = document.createElement("div");
-                                            div.innerHTML = html;
-                                            let text = div.textContent || div.innerText || "";
-
-                                            requests[i].description = text;
                                         }
                                         if (a.length == 0) {
                                             this.isExistRecord = true;

@@ -24,6 +24,7 @@ import { CreateOfferComponent } from '../offer/offer-create';
 import { ReportComponent } from '../report/report';
 import { listTagComponent } from '../tag/tag';
 import { PrivateChatComponent } from './../../shared/private-chat';
+import { infoHover } from '../user/user-profile/info-hover';
 
 import { Subscription } from 'rxjs/Subscription';
 declare var $:any;
@@ -38,15 +39,14 @@ declare var Materialize:any;
         CreateOfferComponent,
         ReportComponent,
         PrivateChatComponent,
-        listTagComponent
+        listTagComponent,
+        infoHover
     ]
 })
 
 
 export class RequestDetailClientComponent implements AfterViewChecked {
-
-    pageTitle:string = 'Welcome to Knowledge Sharing Network';
-
+    link:string;
     id:string;
     _id:string;
     updateLink:string;
@@ -103,12 +103,19 @@ export class RequestDetailClientComponent implements AfterViewChecked {
             .subscribe(request => {
                 //translate status
                 if (request.status === 'accepted') {
+                    if(this.userToken === request.user || request.subscribers.indexOf(this.userToken)>0 || this.userToken !== null){
+                        this._requestService.getKspaceByRId(request._id).subscribe((k) => {
+                            this.link = "/kspace/info/" + k._id + '/' + this.userToken;
+                        }); 
+                    }else {
+                        this.router.navigateByUrl('/');
+                    }
                     request.status = 'Đã được chấp nhận';
                     this.checkIsAcceped = true;
                 } else if (request.status === 'deactive' || request.status === undefined) {
                     request.status = 'Đã kết thúc';
                     this.checkDeactive = true;
-                } else {
+                } else if(request.status === 'pending' || request.status=== 'active') {
                     request.status = 'Đang chờ';
                 }
 
@@ -169,11 +176,13 @@ export class RequestDetailClientComponent implements AfterViewChecked {
         //get front.offer of the templates when load the page
         this._offerService.getOfferByRequestId(this._id, this.num).subscribe(
             (offers) => {
+                console.log(offers);
                 if (offers) {
                     for (var i = 0; i < offers.length; i++) {
                         if (offers[i].status === 'pending') {
                             offers[i].status = 'Đang chờ';
-                        } else {
+                        } else if(offers[i].status ==='accepted') {
+                            console.log(offers[i]);
                             offers[i].status = 'Được chấp nhận';
                         }
                         this.offers.push(offers[i]);

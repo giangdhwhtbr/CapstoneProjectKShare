@@ -51,9 +51,9 @@ export class RequestRecordComponent {
     //this.createdAt = this.formatDate(createdAt);
     this.id = this.knowledgeId;
     this.getKnowledgeNameOfRequest();
-    if (this.status === 'pending'){
+    if (this.status === 'pending' || this.status==='active' || this.status ==='Đang chờ' ){
       this.status = 'Đang chờ';
-    }else{
+    }else if(this.status = 'accepted'){
       this.status = 'Đã được chấp nhận';
     }
   }

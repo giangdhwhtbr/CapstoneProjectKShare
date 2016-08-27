@@ -15,7 +15,7 @@ module.exports = class KSpaceController {
 
   static getKspaceProfile(req, res) {
     if (req.params && req.params.name) {
-      KSpaceDAO.getKspaceProfile(req.params.name).then((kspaces)=> {
+      KSpaceDAO.getKspaceProfile(req.params.name).then((kspaces) => {
         res.status(200).json(kspaces)
       }).catch(error => res.status(400).json(error));
     }
@@ -32,6 +32,15 @@ module.exports = class KSpaceController {
       res.status(404).json({
         "message": "No KSpace ID in templates"
       });
+    }
+  }
+
+  static getKSpaceByRId(req, res) {
+    if (req.params && req.params.rid) {
+      KSpaceDAO
+        .getKspaceByRId(req.params.rid)
+        .then(KSpace => res.status(200).json(KSpace))
+        .catch(error => res.status(400).json(error));
     }
   }
 
@@ -56,22 +65,22 @@ module.exports = class KSpaceController {
       });
   }
 
-  static createPublicKspace (req,res) {
+  static createPublicKspace(req, res) {
     var name = req.body.name;
     var kspace = {
-      users : []
+      users: []
     };
     kspace.users.push(name);
     PKSpaceDAO.createNew(kspace)
-      .then(kspace => res.status(200).json({success: true, id:kspace._id}))
-      .catch(err => res.status(400).json({success: false}));
+      .then(kspace => res.status(200).json({ success: true, id: kspace._id }))
+      .catch(err => res.status(400).json({ success: false }));
   }
 
-  static checkExist (req, res) {
-    if(req.params && req.params.id){
+  static checkExist(req, res) {
+    if (req.params && req.params.id) {
       PKSpaceDAO.getById(req.params.id)
-        .then(kspace => res.status(200).json({exist: true}))
-        .catch(err => res.status(400).json({exist: false}))
+        .then(kspace => res.status(200).json({ exist: true }))
+        .catch(err => res.status(400).json({ exist: false }))
     }
   }
 
@@ -147,9 +156,9 @@ module.exports = class KSpaceController {
             return false;
           }
           //check if user is kspace leaners
-          function  isLearner() {
-            for (var learner of kspace.learners){
-              if(username === learner){
+          function isLearner() {
+            for (var learner of kspace.learners) {
+              if (username === learner) {
                 return true;
               } else {
                 return false;
@@ -157,7 +166,7 @@ module.exports = class KSpaceController {
             }
           }
           //review successfull conditions
-          if(isLearner()){
+          if (isLearner()) {
             if (!hasReviewed()) {
               var _review = {
                 createdAt: currentDate,
@@ -190,7 +199,7 @@ module.exports = class KSpaceController {
                       if (user.rates.length) {
                         var sum = 0;
                         for (var rate of user.rates) {
-                          if(rate.kspaceId === kspace._id){
+                          if (rate.kspaceId === kspace._id) {
                             rate.ratePoint = kspace.rateAve;
                           }
                           sum += rate.ratePoint;
@@ -206,8 +215,8 @@ module.exports = class KSpaceController {
                           res.status(400).json(error);
                         });
                     }).catch(error => {
-                    res.status(400).json(error);
-                  });
+                      res.status(400).json(error);
+                    });
                 })
                 .catch(error => {
                   res.status(400).json(error);
@@ -218,14 +227,14 @@ module.exports = class KSpaceController {
                 ' nút cập nhật '
               });
             }
-          }else {
+          } else {
             res.status(400).json({
               message: 'Xin lỗi bạn không có quyền đánh giá kspace này'
             });
           }
         }).catch(error => {
-        res.status(400).json(error);
-      });
+          res.status(400).json(error);
+        });
     } else {
       res.status(404).json({
         "message": "No KSpace ID"

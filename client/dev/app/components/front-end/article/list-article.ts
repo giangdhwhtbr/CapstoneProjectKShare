@@ -8,6 +8,7 @@ import { ArticleService } from '../../../services/article';
 import { AuthService } from '../../../services/auth';
 import { PrivateChatComponent } from './../../shared/private-chat';
 import { listTagComponent } from '../tag/tag';
+import { infoHover } from '../user/user-profile/info-hover';
 
 declare var $:any;
 
@@ -18,7 +19,8 @@ declare var $:any;
     directives: [
         ROUTER_DIRECTIVES,
         PrivateChatComponent,
-        listTagComponent
+        listTagComponent,
+        infoHover
     ],
     providers: [ArticleService]
 })
@@ -64,14 +66,6 @@ export class listArticleComponent implements OnInit {
             if (arts.length==0) {
             }else{
                 for (let i = 0; i < arts.length; i++) {
-                    //get summary
-                    let html = arts[i].content;
-                    let div = document.createElement("div");
-                    div.innerHTML = html;
-                    let text = div.textContent || div.innerText || "";
-
-                    arts[i].content=text;
-
                     this.listArt.push(arts[i]);
                 }
             }
@@ -94,15 +88,6 @@ export class listArticleComponent implements OnInit {
             this._artService.searchArticle(this.text).subscribe((arts) => {
                 console.log(arts.length);
                 for (var i = 0; i < arts.length; i++) {
-
-                    //get summary
-                    let html = arts[i].content;
-                    let div = document.createElement("div");
-                    div.innerHTML = html;
-                    let text = div.textContent || div.innerText || "";
-
-                    arts[i].content=text;
-
                     this.listArt.push(arts[i]);
                 }
                 if (arts.length <= 0) {

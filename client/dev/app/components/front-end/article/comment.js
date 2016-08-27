@@ -13,6 +13,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var article_1 = require('../../../services/article');
+var info_hover_1 = require('../user/user-profile/info-hover');
 var commentComponent = (function () {
     function commentComponent(router, route, _artService) {
         this.router = router;
@@ -67,7 +68,7 @@ var commentComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/article/templates/comment.html',
             styleUrls: ['client/dev/app/components/front-end/article/styles/comment.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES
+                router_1.ROUTER_DIRECTIVES, info_hover_1.infoHover
             ],
             providers: [article_1.ArticleService]
         }), 

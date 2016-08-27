@@ -18,6 +18,7 @@ var article_1 = require('../../../services/article');
 var private_chat_1 = require('./../../shared/private-chat');
 var tag_1 = require('../tag/tag');
 var topArticle_1 = require('./topArticle');
+var info_hover_1 = require('../user/user-profile/info-hover');
 var NewsFeedComponent = (function () {
     function NewsFeedComponent(_userService, _requestService, _articleService, router) {
         this._userService = _userService;
@@ -66,7 +67,6 @@ var NewsFeedComponent = (function () {
                 if (requests.length === 0 || user.ownKnowledgeIds.length === 0) {
                     _this._requestService.getRequestExceptUserTags(user.ownKnowledgeIds, _this.countR2).subscribe(function (requests) {
                         if (requests.length <= 0) {
-                            alert("Không còn bài viết nào");
                         }
                         else {
                             for (var i = 0; i < requests.length; i++) {
@@ -147,7 +147,8 @@ var NewsFeedComponent = (function () {
                 router_1.ROUTER_DIRECTIVES,
                 private_chat_1.PrivateChatComponent,
                 tag_1.listTagComponent,
-                topArticle_1.topArticlesComponent
+                topArticle_1.topArticlesComponent,
+                info_hover_1.infoHover
             ]
         }), 
         __metadata('design:paramtypes', [users_1.UserService, requests_1.RequestService, article_1.ArticleService, router_1.Router])
