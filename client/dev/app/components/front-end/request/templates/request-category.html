@@ -61,14 +61,14 @@
         </div>
         <div id="tabReq" *ngIf="requests">
             <div class="row">
+                <div *ngIf="isExistRecord">
+                    <h5>Kết quả tìm kiếm</h5>
+                    <div class="valign-wrapper">
+                        <h5 class="valign">Rất tiếc không tìm thấy dữ liệu phù hợp</h5>
+                    </div>
+                </div>
                 <div class="col s12" *ngFor="let request of requests| paginate: configReq">
                     <div class="card">
-                        <div *ngIf="isExistRecord">
-                            <h5>Kết quả tìm kiếm</h5>
-                            <div class="valign-wrapper">
-                                <h5 class="valign">Rất tiếc không tìm thấy dữ liệu phù hợp</h5>
-                            </div>
-                        </div>
                         <div class="card-content" *ngIf="request">
                             <div class="row">
                                 <span class="card-title">

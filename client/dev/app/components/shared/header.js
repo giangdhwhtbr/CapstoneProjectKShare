@@ -66,11 +66,6 @@ var HeaderComponent = (function () {
         });
         $('.dropdown-button').dropdown();
     };
-    HeaderComponent.prototype.ngAfterViewChecked = function () {
-        //$('#sidenav-overlay').remove();
-        //$('.drag-target').remove();
-        $("body").css("overflow", "scroll");
-    };
     HeaderComponent.prototype.openChat = function () {
         $('#chatBoxK').openModal();
         this.isNewMessage = false;
