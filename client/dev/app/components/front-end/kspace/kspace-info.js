@@ -1,16 +1,18 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 /**
  * Created by GiangDH on 7/9/16.
  */
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var kspace_1 = require('../../../services/kspace');
 var article_1 = require('../../../services/article');
 var private_chat_1 = require('./../../shared/private-chat');
 var ratingPoint_1 = require('../../shared/ratingPoint');
@@ -44,7 +46,6 @@ var KSpaceInfoComponent = (function () {
             _this.kspace = kspace;
             _this.title = kspace.requestTitle;
             _this.reviews = kspace.reviews;
-            console.log(_this.reviews);
             _this.rateAve = parseInt(kspace.rateAve);
             for (var _i = 0, _a = kspace.chatlog; _i < _a.length; _i++) {
                 var log = _a[_i];
@@ -62,7 +63,8 @@ var KSpaceInfoComponent = (function () {
                 if (board._id) {
                     var data = {
                         id: board._id,
-                        des: board.boardNumber,
+                        name: board.name,
+                        des: board.description,
                         url: board.dataURL
                     };
                     _this.boards.push(data);
@@ -104,8 +106,10 @@ var KSpaceInfoComponent = (function () {
         this.ratePoint = event;
     };
     KSpaceInfoComponent.prototype.accessRoom = function () {
+        var specs = 'width=1024, resizable=no';
+        var name = '_blank';
         var url = '/room/' + this.kspaceId + '/' + this.lecturer;
-        this.router.navigateByUrl(url);
+        window.open(url, name, specs);
     };
     KSpaceInfoComponent.prototype.finishKp = function () {
         var _this = this;
@@ -169,7 +173,8 @@ var KSpaceInfoComponent = (function () {
             ],
             providers: [article_1.ArticleService],
             styles: ["\n      button#submitReview {\n          margin-top: 50px;\n      }\n    "]
-        })
+        }), 
+        __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, kspace_1.KSpaceService, article_1.ArticleService])
     ], KSpaceInfoComponent);
     return KSpaceInfoComponent;
 })();

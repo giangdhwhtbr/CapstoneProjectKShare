@@ -10,6 +10,7 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
+var ng2_charts_1 = require('ng2-charts/ng2-charts');
 var primeng_1 = require('primeng/primeng');
 var knowledge_1 = require('../../../services/knowledge');
 var requests_1 = require('../../../services/requests');
@@ -63,6 +64,9 @@ var KnowledgeListComponent = (function () {
     };
     KnowledgeListComponent.prototype.addKnowledge = function (knowledge) {
         var _this = this;
+        if (this.knowledgeForm.controls["name"].value.trim() == 0) {
+            Materialize.toast('Tri thức không được để trống', 3000);
+        }
         this._knowledgeService
             .addKnowledge(knowledge)
             .subscribe(function (m) {
@@ -104,6 +108,9 @@ var KnowledgeListComponent = (function () {
             }
         });
     };
+    KnowledgeListComponent.prototype.onChange = function () {
+        this.getAllKnowledgesForAdmin();
+    };
     __decorate([
         core_1.Input(), 
         __metadata('design:type', Object)
@@ -113,7 +120,7 @@ var KnowledgeListComponent = (function () {
             selector: 'knowledge-list',
             templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-list.html',
             directives: [
-                knowledge_update_1.UpdateKnowledgeComponent,
+                knowledge_update_1.UpdateKnowledgeComponent, ng2_charts_1.CHART_DIRECTIVES,
                 sub_knowledge_create_1.CreateSubCategoryComponent,
                 router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, primeng_2.TreeTable, primeng_3.Dialog, private_chat_1.PrivateChatComponent],
             providers: [knowledge_1.KnowledgeService, ng2_pagination_1.PaginationService],

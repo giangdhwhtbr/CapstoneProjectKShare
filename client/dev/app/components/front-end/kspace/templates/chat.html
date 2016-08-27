@@ -1,6 +1,0 @@
-<div id="chatboxid">
-    <div *ngFor="let message of messages ">
-        {{message.user}} : {{message.content}}
-    </div>
-    <input #content /><button (click)="sendMessage(content.value)">Send</button>
-</div>

@@ -1,35 +1,48 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 /**
  * Created by GiangDH on 8/12/16.
  */
 var core_1 = require('@angular/core');
+var chat_1 = require('../../services/chat');
+var notification_1 = require('../../services/notification');
+var users_1 = require('../../services/users');
 var PrivateChatComponent = (function () {
     function PrivateChatComponent(_chatService, _noti, _userService) {
         this._chatService = _chatService;
         this._noti = _noti;
         this._userService = _userService;
+        this.currentRoom = {
+            id: '',
+            messages: []
+        };
         this.username = localStorage.getItem('username');
         this.socket = io('https://localhost:80');
-        this.messages = [];
         this.allChatRooms = [];
     }
     PrivateChatComponent.prototype.ngOnInit = function () {
         var _this = this;
         this.socket.on('private-message-return', function (data) {
             var news = 0;
+            // New message token
             for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
                 var user = _a[_i];
                 if (user.user === _this.username) {
                     news = user.newMessages;
                 }
             }
+            // Enter message to the current room
+            if (data.id === _this.currentRoom.id) {
+                _this.currentRoom.messages.push(data);
+            }
+            // update room last message
             for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
                 var room = _c[_b];
                 if (room._id === data.id) {
@@ -38,6 +51,7 @@ var PrivateChatComponent = (function () {
                     room.newMessages = news;
                 }
             }
+            // Sort chat room by the newest
             _this.allChatRooms.sort(function (a, b) {
                 if (a.lastSent > b.lastSent) {
                     return -1;
@@ -47,8 +61,8 @@ var PrivateChatComponent = (function () {
                 }
                 return 0;
             });
-            _this.messages.push(data);
         });
+        // Reset news notification
         this.socket.on('private-message-reset', function (data) {
             var news = 0;
             for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
@@ -60,7 +74,6 @@ var PrivateChatComponent = (function () {
             for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
                 var room = _c[_b];
                 if (room.friendName === data.receiver) {
-                    room.lastMsg = data.message;
                     room.newMessages = news;
                 }
             }
@@ -119,44 +132,44 @@ var PrivateChatComponent = (function () {
                             return 0;
                         });
                         _this.receiver = _this.allChatRooms[0].friendName;
-                        _this.messages = _this.allChatRooms[0].chatLogs;
-                        _this.currentRoom = _this.allChatRooms[0]._id;
+                        _this.currentRoom.id = _this.allChatRooms[0]._id;
+                        _this.currentRoom.messages = _this.allChatRooms[0].chatLogs;
                     }
                 }
             });
         }
     };
     PrivateChatComponent.prototype.getReceiver = function (slRoom) {
-        //Click on friend
-        this.messages = [];
-        // this.news = 0;
-        this.currentRoom = slRoom._id;
+        this.currentRoom.id = slRoom._id;
         this.receiver = slRoom.friendName;
-        this.messages = slRoom.chatLogs;
+        this.currentRoom.messages = slRoom.chatLogs;
         var data = {
             sender: this.username,
             receiver: this.receiver
         };
         this.socket.emit('reset-new-message', data);
     };
-    PrivateChatComponent.prototype.sendMessage = function () {
-        var data = {
-            sender: this.username,
-            message: this.mess,
-            receiver: this.receiver,
-            avatar: this.avatar
-        };
-        this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
-        this.socket.emit('private-message', data);
-        this.socket.emit('reset-new-message', data);
-        this.mess = "";
+    PrivateChatComponent.prototype.sendMessage = function (mess) {
+        if (mess) {
+            var data = {
+                sender: this.username,
+                message: this.mess,
+                receiver: this.receiver,
+                avatar: this.avatar
+            };
+            this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
+            this.socket.emit('private-message', data);
+            this.socket.emit('reset-new-message', data);
+            this.mess = "";
+        }
     };
     PrivateChatComponent = __decorate([
         core_1.Component({
             selector: 'private-chat',
             templateUrl: 'client/dev/app/components/shared/templates/chatbox.html',
             styleUrls: ['client/dev/app/components/shared/styles/chatbox.css']
-        })
+        }), 
+        __metadata('design:paramtypes', [chat_1.ChatService, notification_1.NotificationService, users_1.UserService])
     ], PrivateChatComponent);
     return PrivateChatComponent;
 })();

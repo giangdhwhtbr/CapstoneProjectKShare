@@ -8,7 +8,8 @@
                 <!-- member list -->
                 <ul class="friend-list">
                     <li *ngFor="let room of allChatRooms" class="fr-e displayPointer">
-                        <a class="clearfix" (click)="getReceiver(room)">
+                        <a *ngIf="currentRoom.id === room._id" class="clearfix active"
+                           (click)="getReceiver(room)">
                             <img [src]="room.friendAva" alt="" class="circle">
                             <div class="friend-name">
                                 <strong>{{room.friendName}}</strong>
@@ -16,6 +17,16 @@
                             <div class="last-message text-muted">{{room.lastMsg}}</div>
                             <span class="new badge" data-badge-caption="tin nhắn mới" *ngIf="room.newMessages > 0">{{room.newMessages}}</span>
                             <!--<small class="chat-alert label label-danger">1</small>-->
+                        </a>
+                        <a *ngIf="currentRoom.id !== room._id" class="clearfix"
+                           (click)="getReceiver(room)">
+                          <img [src]="room.friendAva" alt="" class="circle">
+                          <div class="friend-name">
+                            <strong>{{room.friendName}}</strong>
+                          </div>
+                          <div class="last-message text-muted">{{room.lastMsg}}</div>
+                          <span class="new badge" data-badge-caption="tin nhắn mới" *ngIf="room.newMessages > 0">{{room.newMessages}}</span>
+                          <!--<small class="chat-alert label label-danger">1</small>-->
                         </a>
                     </li>
                 </ul>
@@ -25,9 +36,9 @@
             <!-- selected chat -->
             <div id="listMess" class="col s8 m8 l8 bg-white box-text">
                 <!--<div class="col s8 m8 l8">-->
-                <div class="chat-message row" id="cntAllText">
+                <div *ngIf="currentRoom" class="chat-message row" id="cntAllText">
                     <ul class="chat">
-                        <div *ngFor="let mes of messages">
+                        <div *ngFor="let mes of currentRoom.messages">
                             <li *ngIf="mes.sender!=username" class="left clearfix">
                                   <span class="chat-img pull-left">
                                     <img [src]="mes.avatar" alt="User Avatar">
@@ -67,12 +78,13 @@
                 <div class="chat-box bg-white row" *ngIf="allChatRooms.length > 0">
                     <!--<div class="  row">-->
                     <div class="input-group">
-                        <input id="textboxmess" [(ngModel)]="mess" class="form-control border no-shadow no-rounded" placeholder="Type your message here">
+                      <form (ngSubmit)="sendMessage(mess)">
+                        <input id="textboxmess" [(ngModel)]="mess" autofocus class="form-control border no-shadow no-rounded"
+                               placeholder="Type your message here">
                         <span class="input-group-btn">
-                                <button class="btn btn-success no-rounded" (click)="sendMessage()"
-                                        type="button">Gửi
-                                </button>
-                            </span>
+                            <button class="btn btn-success no-rounded" type="submit">Gửi</button>
+                        </span>
+                      </form>
                     </div>
                     <!-- /input-group -->
                 </div>

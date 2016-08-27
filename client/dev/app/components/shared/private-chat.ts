@@ -25,24 +25,33 @@ export class PrivateChatComponent {
   receiver: string;
   allChatRooms: Array<ChatRoom>;
   sub: Subscription;
-  currentRoom: string;
+  currentRoom: any;
   mess:string;
   avatar: string;
   constructor(private _chatService: ChatService, private _noti: NotificationService, private _userService: UserService) {
+    this.currentRoom = {
+      id: '',
+      messages: []
+    };
     this.username = localStorage.getItem('username');
     this.socket = io('https://localhost:80');
-    this.messages = [];
     this.allChatRooms = [];
   }
 
   ngOnInit(): void {
     this.socket.on('private-message-return', data => {
         var news = 0;
+        // New message token
         for (var user of data.users) {
           if (user.user === this.username) {
             news = user.newMessages;
           }
         }
+        // Enter message to the current room
+        if(data.id === this.currentRoom.id){
+          this.currentRoom.messages.push(data);
+        }
+        // update room last message
         for (var room of this.allChatRooms) {
           if (room._id === data.id) {
             room.lastSent = data.sentAt;
@@ -50,6 +59,7 @@ export class PrivateChatComponent {
             room.newMessages = news;
           }
         }
+        // Sort chat room by the newest
         this.allChatRooms.sort(function (a, b) {
           if (a.lastSent > b.lastSent) {
             return -1;
@@ -58,9 +68,8 @@ export class PrivateChatComponent {
           }
           return 0;
         });
-        this.messages.push(data);
     });
-
+  // Reset news notification
     this.socket.on('private-message-reset', data => {
       var news = 0;
       for (var user of data.users) {
@@ -70,7 +79,6 @@ export class PrivateChatComponent {
       }
       for (var room of this.allChatRooms) {
         if (room.friendName === data.receiver) {
-          room.lastMsg = data.message;
           room.newMessages = news;
         }
       }
@@ -130,8 +138,8 @@ export class PrivateChatComponent {
                 return 0;
               });
               this.receiver = this.allChatRooms[0].friendName;
-              this.messages = this.allChatRooms[0].chatLogs;
-              this.currentRoom = this.allChatRooms[0]._id;
+              this.currentRoom.id = this.allChatRooms[0]._id;
+              this.currentRoom.messages = this.allChatRooms[0].chatLogs;
             }
           }
         });
@@ -139,12 +147,9 @@ export class PrivateChatComponent {
   }
 
   getReceiver(slRoom: ChatRoom): void {
-    //Click on friend
-    this.messages = [];
-    // this.news = 0;
-    this.currentRoom = slRoom._id;
+    this.currentRoom.id = slRoom._id;
     this.receiver = slRoom.friendName;
-    this.messages = slRoom.chatLogs;
+    this.currentRoom.messages = slRoom.chatLogs;
     var data = {
       sender: this.username,
       receiver: this.receiver
@@ -152,17 +157,19 @@ export class PrivateChatComponent {
     this.socket.emit('reset-new-message', data);
   }
 
-  sendMessage() {
-    var data = {
-      sender: this.username,
-      message: this.mess,
-      receiver: this.receiver,
-      avatar: this.avatar
-    };
-    this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
-    this.socket.emit('private-message', data);
-    this.socket.emit('reset-new-message', data);
-    this.mess="";
+  sendMessage(mess: string) {
+    if(mess){
+      var data = {
+        sender: this.username,
+        message: this.mess,
+        receiver: this.receiver,
+        avatar: this.avatar
+      };
+      this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
+      this.socket.emit('private-message', data);
+      this.socket.emit('reset-new-message', data);
+      this.mess="";
+    }
   }
 
 }

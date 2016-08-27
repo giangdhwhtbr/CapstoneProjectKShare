@@ -55,21 +55,30 @@ webpackJsonp([2],[
 	        this._chatService = _chatService;
 	        this._noti = _noti;
 	        this._userService = _userService;
+	        this.currentRoom = {
+	            id: '',
+	            messages: []
+	        };
 	        this.username = localStorage.getItem('username');
 	        this.socket = io('https://localhost:80');
-	        this.messages = [];
 	        this.allChatRooms = [];
 	    }
 	    PrivateChatComponent.prototype.ngOnInit = function () {
 	        var _this = this;
 	        this.socket.on('private-message-return', function (data) {
 	            var news = 0;
+	            // New message token
 	            for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
 	                var user = _a[_i];
 	                if (user.user === _this.username) {
 	                    news = user.newMessages;
 	                }
 	            }
+	            // Enter message to the current room
+	            if (data.id === _this.currentRoom.id) {
+	                _this.currentRoom.messages.push(data);
+	            }
+	            // update room last message
 	            for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
 	                var room = _c[_b];
 	                if (room._id === data.id) {
@@ -78,6 +87,7 @@ webpackJsonp([2],[
 	                    room.newMessages = news;
 	                }
 	            }
+	            // Sort chat room by the newest
 	            _this.allChatRooms.sort(function (a, b) {
 	                if (a.lastSent > b.lastSent) {
 	                    return -1;
@@ -87,8 +97,8 @@ webpackJsonp([2],[
 	                }
 	                return 0;
 	            });
-	            _this.messages.push(data);
 	        });
+	        // Reset news notification
 	        this.socket.on('private-message-reset', function (data) {
 	            var news = 0;
 	            for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
@@ -100,7 +110,6 @@ webpackJsonp([2],[
 	            for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
 	                var room = _c[_b];
 	                if (room.friendName === data.receiver) {
-	                    room.lastMsg = data.message;
 	                    room.newMessages = news;
 	                }
 	            }
@@ -159,37 +168,36 @@ webpackJsonp([2],[
 	                            return 0;
 	                        });
 	                        _this.receiver = _this.allChatRooms[0].friendName;
-	                        _this.messages = _this.allChatRooms[0].chatLogs;
-	                        _this.currentRoom = _this.allChatRooms[0]._id;
+	                        _this.currentRoom.id = _this.allChatRooms[0]._id;
+	                        _this.currentRoom.messages = _this.allChatRooms[0].chatLogs;
 	                    }
 	                }
 	            });
 	        }
 	    };
 	    PrivateChatComponent.prototype.getReceiver = function (slRoom) {
-	        //Click on friend
-	        this.messages = [];
-	        // this.news = 0;
-	        this.currentRoom = slRoom._id;
+	        this.currentRoom.id = slRoom._id;
 	        this.receiver = slRoom.friendName;
-	        this.messages = slRoom.chatLogs;
+	        this.currentRoom.messages = slRoom.chatLogs;
 	        var data = {
 	            sender: this.username,
 	            receiver: this.receiver
 	        };
 	        this.socket.emit('reset-new-message', data);
 	    };
-	    PrivateChatComponent.prototype.sendMessage = function () {
-	        var data = {
-	            sender: this.username,
-	            message: this.mess,
-	            receiver: this.receiver,
-	            avatar: this.avatar
-	        };
-	        this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
-	        this.socket.emit('private-message', data);
-	        this.socket.emit('reset-new-message', data);
-	        this.mess = "";
+	    PrivateChatComponent.prototype.sendMessage = function (mess) {
+	        if (mess) {
+	            var data = {
+	                sender: this.username,
+	                message: this.mess,
+	                receiver: this.receiver,
+	                avatar: this.avatar
+	            };
+	            this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
+	            this.socket.emit('private-message', data);
+	            this.socket.emit('reset-new-message', data);
+	            this.mess = "";
+	        }
 	    };
 	    PrivateChatComponent = __decorate([
 	        core_1.Component({
@@ -1864,6 +1872,19 @@ webpackJsonp([2],[
 	        var api = '/api/kspace/:id/review';
 	        return this._http.post(api.replace(':id', data.id), data, options)
 	            .map(function (r) { return r.json(); });
+	    };
+	    KSpaceService.prototype.createPublicKspace = function (guest) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var api = '/api/public-kspace';
+	        return this._http.post(api, { name: guest }, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    KSpaceService.prototype.checkPublicKspace = function (id) {
+	        var api = '/api/public-kspace/:id';
+	        return this._http.get(api.replace(':id', id))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
 	    };
 	    KSpaceService.prototype.handleError = function (error) {
 	        console.error(error);
@@ -5954,7 +5975,6 @@ webpackJsonp([2],[
 	            _this.kspace = kspace;
 	            _this.title = kspace.requestTitle;
 	            _this.reviews = kspace.reviews;
-	            console.log(_this.reviews);
 	            _this.rateAve = parseInt(kspace.rateAve);
 	            for (var _i = 0, _a = kspace.chatlog; _i < _a.length; _i++) {
 	                var log = _a[_i];
@@ -5972,7 +5992,8 @@ webpackJsonp([2],[
 	                if (board._id) {
 	                    var data = {
 	                        id: board._id,
-	                        des: board.boardNumber,
+	                        name: board.name,
+	                        des: board.description,
 	                        url: board.dataURL
 	                    };
 	                    _this.boards.push(data);
@@ -6014,8 +6035,10 @@ webpackJsonp([2],[
 	        this.ratePoint = event;
 	    };
 	    KSpaceInfoComponent.prototype.accessRoom = function () {
+	        var specs = 'width=1024, resizable=no';
+	        var name = '_blank';
 	        var url = '/room/' + this.kspaceId + '/' + this.lecturer;
-	        this.router.navigateByUrl(url);
+	        window.open(url, name, specs);
 	    };
 	    KSpaceInfoComponent.prototype.finishKp = function () {
 	        var _this = this;
@@ -6181,7 +6204,7 @@ webpackJsonp([2],[
 	        this.username = localStorage.getItem('username');
 	        this.messages = [];
 	        this.socket = io('https://localhost:80');
-	        this.socket.emit('subscribe', this.id);
+	        this.socket.emit('subscribe', { room: this.id });
 	        this.socket.on("chat_message", function (dataReturn) {
 	            var isSender = false;
 	            if (dataReturn.user == _this.username) {
@@ -6236,7 +6259,7 @@ webpackJsonp([2],[
 	        this._kspaceService
 	            .getKSpaceById(this.id)
 	            .subscribe(function (kspace) {
-	            console.log(kspace);
+	            _this.boards = kspace.boards;
 	            var chatlog = kspace.chatlog;
 	            var isSender = false;
 	            for (var _i = 0, chatlog_1 = chatlog; _i < chatlog_1.length; _i++) {
@@ -6342,18 +6365,38 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 8/25/16.
 	 */
 	var core_1 = __webpack_require__(1);
+	var kspace_1 = __webpack_require__(127);
+	var router_1 = __webpack_require__(4);
 	var CreatePublicKspace = (function () {
-	    function CreatePublicKspace() {
-	        this.hello = 'hello';
+	    function CreatePublicKspace(_kspaceService, router) {
+	        this._kspaceService = _kspaceService;
+	        this.router = router;
 	    }
+	    CreatePublicKspace.prototype.createRoom = function (guest) {
+	        if (guest) {
+	            this._kspaceService.createPublicKspace(guest)
+	                .subscribe(function (res) {
+	                if (res.success) {
+	                    var specs = "width=1024,height=768";
+	                    var name = '_blank';
+	                    var url = '/public-kspace/' + res.id;
+	                    window.open(url, name, specs);
+	                }
+	            });
+	        }
+	        else {
+	            this.errorMessage = "Vui lòng nhập tên hiển thị của bạn trong kspace";
+	        }
+	    };
 	    CreatePublicKspace = __decorate([
 	        core_1.Component({
 	            selector: 'public-kspace',
 	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/public-kspace.html',
 	        }), 
-	        __metadata('design:paramtypes', [])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
 	    ], CreatePublicKspace);
 	    return CreatePublicKspace;
+	    var _a, _b;
 	}());
 	exports.CreatePublicKspace = CreatePublicKspace;
 	
@@ -10110,31 +10153,26 @@ webpackJsonp([2],[
 	    /*
 	     * Lecturer create new page
 	     * */
-	    ChalkBoardComponent.prototype.newPage = function () {
+	    ChalkBoardComponent.prototype.newPage = function (name, des) {
 	        if (this.isLect) {
 	            var json = paper.exportJSON(paper.project.activeLayer);
 	            var socket = this.socket;
-	            var boardNumber;
 	            var chalkboard = document.getElementById("chalkboard");
 	            var dataURL = chalkboard.toDataURL();
 	            paper.project.clear();
 	            var newLayer = new paper.Layer();
 	            newLayer.activate();
-	            if (!this.boards.length) {
-	                boardNumber = 1;
-	            }
-	            else {
-	                boardNumber = this.boards.length + 1;
-	            }
+	            //config data to save to server
 	            var data = {
 	                room: this.id,
 	                lecturer: this.lecturer,
-	                boardNumber: boardNumber,
+	                name: name,
+	                des: des,
 	                json: json,
 	                dataURL: dataURL
 	            };
 	            var board = {
-	                boardNumber: data.boardNumber,
+	                name: data.name,
 	                json: data.json
 	            };
 	            this.boards.push(board);
@@ -10171,12 +10209,16 @@ webpackJsonp([2],[
 	    ], ChalkBoardComponent.prototype, "id", void 0);
 	    __decorate([
 	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], ChalkBoardComponent.prototype, "boards", void 0);
+	    __decorate([
+	        core_1.Input(), 
 	        __metadata('design:type', String)
 	    ], ChalkBoardComponent.prototype, "lecturer", void 0);
 	    ChalkBoardComponent = __decorate([
 	        core_1.Component({
 	            selector: 'chalkboard',
-	            template: "\n  <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let board of boards\">\n          <a *ngIf=\"isLect\" (click)=\"changeBoard(board.json, board.boardNumber)\">\n             B\u1EA3ng {{board.boardNumber}}\n          </a></li>\n        </ul>\n      </div>\n    </div>\n    <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n    <div id=\"draw-tools\">\n        <p id=\"new-page\"  (click)=\"openModal()\"  class=\"tool-btn modal-trigger\">\n            <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n        <select id=\"color-picker\" class=\"tool-btn\">\n            <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n        </select>\n        <hr>\n        <select id=\"brush-size\" class=\"tool-btn\">\n            <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n        </select>\n        <hr>\n        <p id=\"eraser\">\n            <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n    </div>\n      <div class=\"wrapper-chalkboard\">\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n      </div>\n      <!--Modal nh\u1EADp th\u00F4ng tin-->\n      <div id=\"modal1\" class=\"modal modal-fixed-footer\">\n        <div class=\"modal-content\">\n          <h4>Nh\u1EADp th\u00F4ng tin</h4>\n          <form>\n            <div class=\"row\">\n              <div class=\"input-field col s12\">\n                <input class=\"form-control\" type=\"text\" required=\"required\" id=\"title\" name=\"title\"/>\n                <label for=\"title\">Ti\u00EAu \u0111\u1EC1</label>\n              </div>\n            </div>\n            <div class=\"row\">\n              <button type=\"submit\" class=\"btn-floating btn-large modal-close waves-effect waves-light blue\" (click)=\"newPage()\"><i class=\"material-icons\">done</i></button>\n            </div>\n          </form>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"modal-action modal-close waves-effect waves-green btn-flat \">Tho\u00E1t</a>\n        </div>\n      </div>\n    ",
+	            template: "\n  <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let board of boards\">\n          <a *ngIf=\"isLect\" (click)=\"changeBoard(board.json, board.name)\">\n            {{board.name}}\n          </a></li>\n        </ul>\n      </div>\n    </div>\n    <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n    <div id=\"draw-tools\">\n        <p id=\"new-page\"  (click)=\"openModal()\"  class=\"tool-btn modal-trigger\">\n            <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n        <select id=\"color-picker\" class=\"tool-btn\">\n            <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n        </select>\n        <hr>\n        <select id=\"brush-size\" class=\"tool-btn\">\n            <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n        </select>\n        <hr>\n        <p id=\"eraser\">\n            <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n    </div>\n      <div class=\"wrapper-chalkboard\">\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n      </div>\n      <!--Modal nh\u1EADp th\u00F4ng tin-->\n      <div id=\"modal1\" class=\"modal modal-fixed-footer\">\n        <div class=\"modal-content\">\n          <h4>M\u00F4 t\u1EA3 th\u00F4ng tin b\u1EA3ng</h4>\n          <form (ngSubmit)=\"newPage(name,des)\">\n              <div class=\"row\">\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"name\"  required=\"required\" id=\"title\"/>\n                  <label for=\"title\">Ti\u00EAu \u0111\u1EC1</label>\n                </div>\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"des\"  required=\"required\" id=\"des\"/>\n                  <label for=\"des\">M\u00F4 t\u1EA3</label>\n                </div>\n              </div>\n              <div class=\"row\">\n                <button type=\"submit\" class=\"btn-floating btn-large modal-close waves-effect waves-light blue\"><i class=\"material-icons\">done</i></button>\n              </div>\n            </form>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"modal-action modal-close waves-effect waves-green btn-flat \">Tho\u00E1t</a>\n        </div>\n      </div>\n    ",
 	            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -11874,6 +11916,7 @@ webpackJsonp([2],[
 	var _404_1 = __webpack_require__(679);
 	var auth_1 = __webpack_require__(448);
 	var auth_2 = __webpack_require__(45);
+	var public_room_1 = __webpack_require__(1122);
 	var public_kspace_1 = __webpack_require__(438);
 	exports.KShareRoutes = [
 	    {
@@ -12085,6 +12128,10 @@ webpackJsonp([2],[
 	            {
 	                path: '',
 	                component: public_kspace_1.CreatePublicKspace
+	            },
+	            {
+	                path: ':id',
+	                component: public_room_1.PublicKspaceComponent
 	            }
 	        ]
 	    }
@@ -40183,6 +40230,64 @@ webpackJsonp([2],[
 	    return UITreeRow;
 	}());
 	exports.UITreeRow = UITreeRow;
+	
+
+/***/ },
+/* 1118 */,
+/* 1119 */,
+/* 1120 */,
+/* 1121 */,
+/* 1122 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/25/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var kspace_1 = __webpack_require__(127);
+	var router_1 = __webpack_require__(4);
+	var PublicKspaceComponent = (function () {
+	    function PublicKspaceComponent(_kspaceService, router, _route) {
+	        var _this = this;
+	        this._kspaceService = _kspaceService;
+	        this.router = router;
+	        this._route = _route;
+	        this.sub = this._route.params.subscribe(function (params) {
+	            _this.room = params['id'];
+	            _this._kspaceService.checkPublicKspace(_this.room)
+	                .subscribe(function (res) {
+	                console.log(res);
+	            }, function (err) {
+	                _this.router.navigate(['/error']);
+	            });
+	        });
+	    }
+	    PublicKspaceComponent.prototype.ngOnInit = function () {
+	    };
+	    PublicKspaceComponent.prototype.ngOnDestroy = function () {
+	        this.sub.unsubscribe();
+	    };
+	    PublicKspaceComponent = __decorate([
+	        core_1.Component({
+	            selector: 'public-kspace',
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/public-kspace.html',
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object])
+	    ], PublicKspaceComponent);
+	    return PublicKspaceComponent;
+	    var _a, _b, _c;
+	}());
+	exports.PublicKspaceComponent = PublicKspaceComponent;
 	
 
 /***/ }

@@ -91,7 +91,8 @@ io.on('connection',  (socket) => {
     .then(kspace => {
       var dataReturn = {
         lecturer: data.lecturer,
-        boardNumber: data.boardNumber,
+        name: data.name,
+        des: data.des,
         json: data.json
       };
       socket.in(data.room).broadcast.emit('newBoard',(dataReturn));
@@ -127,7 +128,6 @@ io.on('connection',  (socket) => {
       data.sentAt = new Date();
       data.users = chatRoom.users;
       data.id = chatRoom._id;
-
       io.in(data.id).emit('private-message-return',data);
       io.emit('new-message-notification',data);
     }).catch(error => {

@@ -15,6 +15,7 @@ var private_chat_1 = require('../../shared/private-chat');
 var CreateSubCategoryComponent = (function () {
     function CreateSubCategoryComponent(fb, _knowledgeService) {
         this._knowledgeService = _knowledgeService;
+        this.knowledge = new core_1.EventEmitter();
         this.subCategoryForm = fb.group({
             "name": [""],
             "description": [""],
@@ -28,15 +29,8 @@ var CreateSubCategoryComponent = (function () {
         this._knowledgeService.addKnowledge(knowledge).subscribe(function (knowledge) {
             _this.subCategoryForm.controls["name"].updateValue("");
             _this.subCategoryForm.controls["description"].updateValue("");
-            for (var i = 0; i < _this.knowledges.length; i++) {
-                var a = _this.knowledges[i]["subCategory"];
-                console.log(a);
-                if (_this.knowledges[i]._id === knowledge.parent) {
-                    a.push(knowledge);
-                    _this.knowledges[i]["subCategory"] = a;
-                }
-            }
         });
+        this.knowledge.emit(knowledge);
     };
     __decorate([
         core_1.Input('kId'), 
@@ -46,6 +40,10 @@ var CreateSubCategoryComponent = (function () {
         core_1.Input(), 
         __metadata('design:type', Array)
     ], CreateSubCategoryComponent.prototype, "knowledges", void 0);
+    __decorate([
+        core_1.Output(), 
+        __metadata('design:type', core_1.EventEmitter)
+    ], CreateSubCategoryComponent.prototype, "knowledge", void 0);
     CreateSubCategoryComponent = __decorate([
         core_1.Component({
             selector: 'sub-create',

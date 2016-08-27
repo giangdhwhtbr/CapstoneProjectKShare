@@ -63,7 +63,7 @@ module.exports = class KSpaceController {
     };
     kspace.users.push(name);
     PKSpaceDAO.createNew(kspace)
-      .then(kspace => res.status(200).json({success: true}))
+      .then(kspace => res.status(200).json({success: true, id:kspace._id}))
       .catch(err => res.status(400).json({success: false}));
   }
 
@@ -104,7 +104,8 @@ module.exports = class KSpaceController {
 
   static updateBoards(data) {
     var board = {
-      boardNumber: data.boardNumber,
+      name: data.name,
+      description: data.des,
       boardJson: data.json,
       dataURL: data.dataURL,
       createdAt: new Date()

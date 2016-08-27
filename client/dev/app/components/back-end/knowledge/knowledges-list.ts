@@ -12,6 +12,7 @@ import {
     ControlGroup,
     Control
 } from '@angular/common';
+import {CHART_DIRECTIVES} from 'ng2-charts/ng2-charts';
 import {DataTable,Column, Header, MultiSelect, Footer, InputText} from 'primeng/primeng';
 import { Knowledge } from '../../../interface/knowledge';
 import { Request } from '../../../interface/request';
@@ -26,12 +27,13 @@ import {TreeTable} from 'primeng/primeng';
 import {TreeNode} from 'primeng/primeng';
 import {Dialog} from 'primeng/primeng';
 import {PrivateChatComponent} from '../../shared/private-chat';
-declare var $:any
+declare var $:any;
+declare var Materialize:any;
 @Component({
     selector: 'knowledge-list',
     templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-list.html',
     directives: [
-        UpdateKnowledgeComponent,
+        UpdateKnowledgeComponent,CHART_DIRECTIVES,
         CreateSubCategoryComponent,
         ROUTER_DIRECTIVES, PaginationControlsCmp,DataTable,Column,Header,Footer,TreeTable,Dialog,PrivateChatComponent],
     providers: [KnowledgeService, PaginationService],
@@ -82,6 +84,9 @@ export class KnowledgeListComponent {
             })
     }
     addKnowledge(knowledge):void {
+        if((<Control>this.knowledgeForm.controls["name"]).value.trim()==0){
+          Materialize.toast('Tri thức không được để trống', 3000);
+        }
         this._knowledgeService
             .addKnowledge(knowledge)
             .subscribe((m) => {
@@ -121,5 +126,10 @@ export class KnowledgeListComponent {
                 }
             } );
     }
+
+    onChange():void {
+      this.getAllKnowledgesForAdmin();
+    }
+    
 
 }
