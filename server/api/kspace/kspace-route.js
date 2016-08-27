@@ -12,7 +12,7 @@ module.exports = class KSpaceRoutes {
       .post(KSpaceController.createNew);
 
       router
-      .route('/api/kspace/:rid')
+      .route('/api/kspace-request/:rid')
       .get(KSpaceController.getKSpaceByRId);
 
     router

@@ -12,7 +12,7 @@ export class RequestService {
     private _searchRequetsUrl = '/api/requests-search/:id';
     private _statusSubcriberUrl = '/api/requests-subcriber/:id';
     private _requestStatusUrl = '/api/requests-status/:id';
-    private _kspaceUrl = '/api/kspace/:rid';
+    private _kspaceUrl = '/api/kspace-request/:rid';
 
     constructor(private _http: Http) {
     }
