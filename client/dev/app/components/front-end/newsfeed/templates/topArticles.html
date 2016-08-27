@@ -7,8 +7,9 @@
             </div>
             &nbsp;
             <div>
-                <a [routerLink]="['/article',articles[0]._id]" class="tit-art">{{articles[0].title.substring(0.70)}}...</a>
-                <span class="new badge red">4</span>
+                <a *ngIf="articles[0].title.length>35" [routerLink]="['/article',articles[0]._id]" class="tit-art">{{articles[0].title.substring(0,35)}}...</a>
+                <a *ngIf="articles[0].title.length<=35" [routerLink]="['/article',articles[0]._id]" class="tit-art">{{articles[0].title}}</a>
+                <span class="new badge white black-text"><i class="tiny material-icons">insert_chart</i>4 like</span>
             </div>
         </div>
         <div class="divider"></div>
@@ -18,7 +19,8 @@
             </div>
             &nbsp;
             <div>
-                <a [routerLink]="['/article',articles[1]._id]" class="tit-art">{{articles[1].title}}</a>
+                <a *ngIf="articles[1].title.length>35" [routerLink]="['/article',articles[1]._id]" class="tit-art">{{articles[1].title.substring(0,35)}}...</a>
+                <a *ngIf="articles[1].title.length<=35" [routerLink]="['/article',articles[1]._id]" class="tit-art">{{articles[1].title}}</a>
             </div>
         </div>
         <div class="divider"></div>
@@ -28,7 +30,8 @@
             </div>
             &nbsp;
             <div>
-                <a [routerLink]="['/article',articles[2]._id]" class="tit-art">{{articles[2].title}}</a>
+                <a *ngIf="articles[2].title.length>35" [routerLink]="['/article',articles[2]._id]" class="tit-art">{{articles[2].title.substring(0,35)}}...</a>
+                <a *ngIf="articles[2].title.length<=35" [routerLink]="['/article',articles[2]._id]" class="tit-art">{{articles[2].title}}</a>
             </div>
         </div>
         <div class="divider"></div>
@@ -38,7 +41,8 @@
             </div>
             &nbsp;
             <div>
-                <a [routerLink]="['/article',articles[3]._id]" class="tit-art">{{articles[3].title}}</a>
+                <a *ngIf="articles[3].title.length>35" [routerLink]="['/article',articles[3]._id]" class="tit-art">{{articles[3].title.substring(0,35)}}...</a>
+                <a *ngIf="articles[3].title.length<=35" [routerLink]="['/article',articles[3]._id]" class="tit-art">{{articles[3].title}}</a>
             </div>
         </div>
         <div class="divider"></div>
@@ -48,7 +52,8 @@
             </div>
             &nbsp;
             <div>
-                <a [routerLink]="['/article',articles[4]._id]" class="tit-art">{{articles[4].title}}</a>
+                <a *ngIf="articles[4].title.length>35" [routerLink]="['/article',articles[4]._id]" class="tit-art">{{articles[4].title.substring(0,35)}}...</a>
+                <a *ngIf="articles[4].title.length<=35" [routerLink]="['/article',articles[4]._id]" class="tit-art">{{articles[4].title}}</a>
             </div>
         </div>
     </div>

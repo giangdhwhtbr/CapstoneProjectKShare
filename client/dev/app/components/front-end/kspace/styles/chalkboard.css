@@ -43,6 +43,7 @@
     border-radius: 2px;
     width: 65px;
     background: white;
+    float: right;
 }
 .tool-btn {
     text-indent: 7px;
@@ -54,9 +55,7 @@
     border: solid 1px gray;
     border-radius: 2px;
     font-size: small;
-    -webkit-appearance:none;
-    -moz-appearance:none;
-    display: -webkit-box;
+    display: inline-block;
 }
 #eraser{
     padding: 0px 10px;

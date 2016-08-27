@@ -34,6 +34,8 @@ import { errorPageComponent } from "../components/shared/404";
 import { AdminAuthGuard, isLogin, Guest }          from './auth';
 import { AuthService }        from '../services/auth';
 
+import { PublicKspaceComponent } from '../components/front-end/kspace/public-room';
+
 import { CreatePublicKspace } from '../components/front-end/kspace/public-kspace';
 
 export const KShareRoutes: RouterConfig = [
@@ -248,6 +250,10 @@ export const KShareRoutes: RouterConfig = [
           {
             path: '',
             component: CreatePublicKspace
+          },
+          {
+            path:':id',
+            component: PublicKspaceComponent
           }
         ]
     }

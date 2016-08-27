@@ -47,11 +47,6 @@ var HeaderComponent = (function () {
         this.socket = io('https://localhost:80');
         this.socket.on('receive notification', function (data) {
             if (localStorage.getItem('username') === data.data.user) {
-                //audio of notification
-                var audio = new Audio();
-                // audio.src = "https://localhost:80/client/dev/asserts/gets-in-the-way.mp3";
-                audio.load();
-                audio.play();
                 _this.getNotificationByUser();
             }
         });
@@ -112,10 +107,12 @@ var HeaderComponent = (function () {
         });
     };
     HeaderComponent.prototype.changeStatusNotification = function () {
-        this.countUnReadNoti = 0;
-        this._noti.changeStatusNotification(this.userToken).subscribe(function (notifications) {
-            console.log('change status notification successful');
-        });
+        if (this.countUnReadNoti > 0) {
+            this.countUnReadNoti = 0;
+            this._noti.changeStatusNotification(this.userToken).subscribe(function (notifications) {
+                console.log('change status notification successful');
+            });
+        }
     };
     HeaderComponent.prototype.action = function (data) {
         if (this.userToken === data[0]) {

@@ -16,23 +16,23 @@
                         <form class="col s12" role="form" [ngFormModel]="knowledgeForm" (ngSubmit)="addKnowledge(knowledgeForm.value)">
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col s6">
+                                    <div class="input-field col s6">
                                         <input class="form-control"
                                                type="text"
                                                required="required"
                                                id="name" name="name"
-                                               placeholder="Tri thức"
                                                [ngFormControl]="knowledgeForm.controls['name']"/>
+                                        <label for="name">Tri thức</label>
                                     </div>
                                 </div>
                                 <div class="row">
-                                    <div class="col s6">
+                                    <div class="input-field col s6">
                                         <input class="form-control"
                                                type="text"
                                                required="required"
                                                id="description" name="description"
-                                               placeholder="Nội dung"
                                                [ngFormControl]="knowledgeForm.controls['description']"/>
+                                        <label for="description">Nội dung</label>
                                     </div>
                                 </div>
                                 <button type="submit" class="waves-effect waves-light btn">Hoàn thành</button>
@@ -78,7 +78,7 @@
                             <button type="button" *ngIf="knowledge.data.status==true&&!knowledge.data.hasOwnProperty('parent')" pButton class="btn-floating waves-effect waves-light blue modal-trigger" (click)="openModal(knowledge.data._id)">
                                 <i class="material-icons">add</i>
                             </button>
-                            <sub-create [knowledges]="knowledge.data" kId="{{knowledge.data._id}}"></sub-create>
+                            <sub-create [knowledges]="knowledge" (knowledge)="onChange($event)" kId="{{knowledge.data._id}}"></sub-create>
                         </template>
                     </p-column>
                 </p-treeTable>

@@ -44,7 +44,6 @@ var KSpaceInfoComponent = (function () {
             _this.kspace = kspace;
             _this.title = kspace.requestTitle;
             _this.reviews = kspace.reviews;
-            console.log(_this.reviews);
             _this.rateAve = parseInt(kspace.rateAve);
             for (var _i = 0, _a = kspace.chatlog; _i < _a.length; _i++) {
                 var log = _a[_i];
@@ -62,7 +61,8 @@ var KSpaceInfoComponent = (function () {
                 if (board._id) {
                     var data = {
                         id: board._id,
-                        des: board.boardNumber,
+                        name: board.name,
+                        des: board.description,
                         url: board.dataURL
                     };
                     _this.boards.push(data);
@@ -104,8 +104,10 @@ var KSpaceInfoComponent = (function () {
         this.ratePoint = event;
     };
     KSpaceInfoComponent.prototype.accessRoom = function () {
+        var specs = 'width=1024, resizable=no';
+        var name = '_blank';
         var url = '/room/' + this.kspaceId + '/' + this.lecturer;
-        this.router.navigateByUrl(url);
+        window.open(url, name, specs);
     };
     KSpaceInfoComponent.prototype.finishKp = function () {
         var _this = this;

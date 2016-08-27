@@ -55,8 +55,7 @@ var NotificationService = (function () {
             .map(function (r) { return r.json(); });
     };
     NotificationService.prototype.changeStatusNotification = function (user) {
-        return this._http.get(this._statusNotificationUrl.replace(':user', user))
-            .map(function (r) { return r.json(); });
+        return this._http.get(this._statusNotificationUrl.replace(':user', user));
     };
     NotificationService = __decorate([
         core_1.Injectable()

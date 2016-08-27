@@ -58,8 +58,7 @@ export class NotificationService {
     }
 
     changeStatusNotification(user: string): Observable<any> {
-        return this._http.get(this._statusNotificationUrl.replace(':user', user))
-            .map((r) => r.json());
+        return this._http.get(this._statusNotificationUrl.replace(':user', user));
     }
 
 }

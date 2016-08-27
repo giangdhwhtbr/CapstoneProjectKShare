@@ -60,6 +60,19 @@ var KSpaceService = (function () {
         return this._http.post(api.replace(':id', data.id), data, options)
             .map(function (r) { return r.json(); });
     };
+    KSpaceService.prototype.createPublicKspace = function (guest) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var api = '/api/public-kspace';
+        return this._http.post(api, { name: guest }, options)
+            .map(function (r) { return r.json(); });
+    };
+    KSpaceService.prototype.checkPublicKspace = function (id) {
+        var api = '/api/public-kspace/:id';
+        return this._http.get(api.replace(':id', id))
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
+    };
     KSpaceService.prototype.handleError = function (error) {
         console.error(error);
         return Observable_1.Observable.throw(error || 'server error');

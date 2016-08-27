@@ -3,9 +3,25 @@
     <div class="col s3"></div>
     <div class="col s6">
       <br>
-      <h1>Trài nghiệm Kspace</h1>
-      <form>
-        <input>
+      <h1>Trải nghiệm Kspace</h1>
+      <form (ngSubmit)="createRoom(guest)">
+          <div class="row">
+            <div *ngIf="errorMessage" class="card-panel orange darken-1">
+                  <span class="white-text">
+                    <i class="material-icons left">report_problem</i>{{errorMessage}}
+                  </span>
+            </div>
+            <div class="input-field col s9">
+              <i class="material-icons prefix">account_circle</i>
+              <input autofocus id="guest-name" [(ngModel)]="guest" type="text" class="validate">
+              <label for="guest-name">Tên của bạn</label>
+            </div>
+            <div class="col s3">
+              <button class="btn waves-effect waves-light" type="submit">Tạo phòng
+                <i class="material-icons right">send</i>
+              </button>
+            </div>
+          </div>
       </form>
     </div>
     <div class="col s3"></div>

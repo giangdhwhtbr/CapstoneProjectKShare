@@ -21,7 +21,8 @@
         <div class="row">
             <div class="col s1"></div>
             <div class="col s10 mg-top-50">
-                <chalkboard [lecturer]="lecturer" [id]="id"></chalkboard>
+              <chalkboard *ngIf="boards && id && lecturer" [lecturer]="lecturer" [boards]="boards"
+                          [id]="id"></chalkboard>
             </div>
             <div class="col s1"></div>
         </div>

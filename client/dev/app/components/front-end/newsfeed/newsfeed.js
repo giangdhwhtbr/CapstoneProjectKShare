@@ -29,23 +29,22 @@ var NewsFeedComponent = (function () {
         }
     }
     NewsFeedComponent.prototype.ngOnInit = function () {
-        var _this = this;
         this.countA1 = 5;
         this.countR1 = 5;
         this.countA2 = 5;
         this.countR2 = 5;
         this.records = [];
         this.getRequests();
-        $(window).on("scroll", function () {
-            var scrollHeight = $(document).height();
-            var scrollPosition = $(window).height() + $(window).scrollTop();
-            if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-                setTimeout(function () {
-                    _this.seeMore();
-                }, 1000);
-                _this.height += 30;
-            }
-        });
+        // $(window).on("scroll", () => {
+        //     var scrollHeight = $(document).height();
+        //     var scrollPosition = $(window).height() + $(window).scrollTop();
+        //     if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+        //         setTimeout(() => {
+        //             this.seeMore();
+        //         }, 1000);
+        //         this.height += 30;
+        //     }
+        // });
         $('.parallax').parallax();
     };
     NewsFeedComponent.prototype.seeMore = function () {
@@ -62,17 +61,22 @@ var NewsFeedComponent = (function () {
                 //if there is no request which has tagid same as onwknowledgeId
                 if (requests.length === 0 || user.ownKnowledgeIds.length === 0) {
                     _this._requestService.getRequestExceptUserTags(user.ownKnowledgeIds, _this.countR2).subscribe(function (requests) {
-                        for (var i = 0; i < requests.length; i++) {
-                            //get summary
-                            var html = requests[i].description;
-                            var div = document.createElement("div");
-                            div.innerHTML = html;
-                            var text = div.textContent || div.innerText || "";
-                            requests[i].description = text;
-                            // push each records to records array
-                            _this.records.push(requests[i]);
+                        if (requests.length <= 0) {
+                            alert("Không còn bài viết nào");
                         }
-                        _this.countR2 = _this.countR2 + 5;
+                        else {
+                            for (var i = 0; i < requests.length; i++) {
+                                //get summary
+                                var html = requests[i].description;
+                                var div = document.createElement("div");
+                                div.innerHTML = html;
+                                var text = div.textContent || div.innerText || "";
+                                requests[i].description = text;
+                                // push each records to records array
+                                _this.records.push(requests[i]);
+                            }
+                            _this.countR2 = _this.countR2 + 5;
+                        }
                     });
                 }
                 else {
@@ -98,7 +102,9 @@ var NewsFeedComponent = (function () {
                 //if there is no articles which has tagid same as onwknowledgeId
                 if (articles.length === 0 || user.ownKnowledgeIds.length === 0) {
                     _this._articleService.getArticleExceptUserTags(user.ownKnowledgeIds, _this.countA2).subscribe(function (articles) {
-                        if (articles.length > 0) {
+                        if (articles.length <= 0) {
+                        }
+                        else {
                             for (var i = 0; i < articles.length; i++) {
                                 //get summary
                                 var html = articles[i].content;
@@ -111,7 +117,6 @@ var NewsFeedComponent = (function () {
                             }
                             _this.countA2 = _this.countA2 + 5;
                         }
-                        ;
                     });
                 }
                 else {

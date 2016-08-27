@@ -30,7 +30,6 @@
     </div>
     <hr>
     <h4>Các bảng đã lưu</h4>
-
     <div class="row">
         <div *ngFor="let board of boards" class="col s4 m4 l4">
                     <span [hidden]="!isCreatingArt">
@@ -39,10 +38,11 @@
                             <i class="material-icons">close</i>
                         </a>
                     </span>
-            <h5>Bảng {{board.des}}</h5>
+            <h5>{{board.name}}</h5>
             <img src="{{board.url}}" width="300" height="200"
                  style="background-color: whitesmoke; border:black; border-weight:1px ;                                                                      border-radius: 10px;"
                  alt="kspace">
+            <h6>{{board.des}}</h6>
         </div>
     </div>
         <span [hidden]="!isCreatingArt">

@@ -10,8 +10,8 @@ declare var io:any;
         <ul class="tabs">
           <li class="tab col s1"><a class="active" (click)="changeBoard(currentPage)">Bảng chính</a></li>
           <li class="tab col s1" *ngFor="let board of boards">
-          <a *ngIf="isLect" (click)="changeBoard(board.json, board.boardNumber)">
-             Bảng {{board.boardNumber}}
+          <a *ngIf="isLect" (click)="changeBoard(board.json, board.name)">
+            {{board.name}}
           </a></li>
         </ul>
       </div>
@@ -39,18 +39,22 @@ declare var io:any;
       <!--Modal nhập thông tin-->
       <div id="modal1" class="modal modal-fixed-footer">
         <div class="modal-content">
-          <h4>Nhập thông tin</h4>
-          <form>
-            <div class="row">
-              <div class="input-field col s12">
-                <input class="form-control" type="text" required="required" id="title" name="title"/>
-                <label for="title">Tiêu đề</label>
+          <h4>Mô tả thông tin bảng</h4>
+          <form (ngSubmit)="newPage(name,des)">
+              <div class="row">
+                <div class="input-field col s12">
+                  <input class="form-control" type="text" [(ngModel)]="name"  required="required" id="title"/>
+                  <label for="title">Tiêu đề</label>
+                </div>
+                <div class="input-field col s12">
+                  <input class="form-control" type="text" [(ngModel)]="des"  required="required" id="des"/>
+                  <label for="des">Mô tả</label>
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <button type="submit" class="btn-floating btn-large modal-close waves-effect waves-light blue" (click)="newPage()"><i class="material-icons">done</i></button>
-            </div>
-          </form>
+              <div class="row">
+                <button type="submit" class="btn-floating btn-large modal-close waves-effect waves-light blue"><i class="material-icons">done</i></button>
+              </div>
+            </form>
         </div>
         <div class="modal-footer">
           <a class="modal-action modal-close waves-effect waves-green btn-flat ">Thoát</a>
@@ -68,8 +72,11 @@ export class ChalkBoardComponent {
     socket:any;
     username: string;
     isLect: boolean;
+    name: string;
+    des: string;
     @Input() id:string;
-    @Input() lecturer:string;
+    @Input() boards:any;
+    @Input() lecturer: string;
     constructor() {
         this.username = localStorage.getItem('username');
         this.boards = [];
@@ -293,32 +300,28 @@ export class ChalkBoardComponent {
     /*
      * Lecturer create new page
      * */
-    newPage():void {
+    newPage(name, des):void {
         if(this.isLect){
             var json = paper.exportJSON(paper.project.activeLayer);
             var socket = this.socket;
-            var boardNumber:number;
             var chalkboard = document.getElementById("chalkboard");
             var dataURL = chalkboard.toDataURL();
             paper.project.clear();
             var newLayer = new paper.Layer();
             newLayer.activate();
-            if (!this.boards.length) {
-                boardNumber = 1;
-            } else {
-                boardNumber = this.boards.length + 1;
-            }
+            //config data to save to server
             var data = {
                 room: this.id,
                 lecturer: this.lecturer,
-                boardNumber: boardNumber,
+                name: name,
+                des: des,
                 json: json,
                 dataURL: dataURL
             };
             var board = {
-                boardNumber: data.boardNumber,
+                name: data.name,
                 json: data.json
-            }
+            };
             this.boards.push(board);
             socket.emit('newBoard',data)
         }
