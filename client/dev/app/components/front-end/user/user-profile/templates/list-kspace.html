@@ -6,10 +6,10 @@
         <div class="card-action">
             <div class="row">
                 <div class="col s12 m12">
-                    <p>Người dạy : <a [routerLink]="['/user/'+kspace.lecturer]">{{kspace.lecturer}}</a></p>
+                    <p>Người dạy : <hover-info-user [username]="kspace.lecturer"></hover-info-user></p>
                 </div>
                 <div class="col s12 m12">
-                    <p>Người học : <a *ngFor="let u of kspace.learners" [routerLink]="['/user/'+u]">{{u}},</a></p>
+                    <p>Người học : <hover-info-user *ngFor="let u of kspace.learners" [username]="u"></hover-info-user> ,</p>
                 </div>
                 <div class="col s12 m12">
                     <p>Ngày tạo : {{kspace.createdAt | date:"dd/MM/yyyy"}}</p>

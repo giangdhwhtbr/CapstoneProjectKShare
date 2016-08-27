@@ -8,6 +8,7 @@ import { ArticleService } from '../../../services/article';
 import { AuthService } from '../../../services/auth';
 import { PrivateChatComponent } from './../../shared/private-chat';
 import { listTagComponent } from '../tag/tag';
+import { infoHover } from '../user/user-profile/info-hover';
 
 declare var $:any;
 
@@ -18,7 +19,8 @@ declare var $:any;
     directives: [
         ROUTER_DIRECTIVES,
         PrivateChatComponent,
-        listTagComponent
+        listTagComponent,
+        infoHover
     ],
     providers: [ArticleService]
 })

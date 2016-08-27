@@ -12,6 +12,7 @@ var offer_create_1 = require('../offer/offer-create');
 var report_1 = require('../report/report');
 var tag_1 = require('../tag/tag');
 var private_chat_1 = require('./../../shared/private-chat');
+var info_hover_1 = require('../user/user-profile/info-hover');
 var RequestDetailClientComponent = (function () {
     function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
         var _this = this;
@@ -234,7 +235,8 @@ var RequestDetailClientComponent = (function () {
                 offer_create_1.CreateOfferComponent,
                 report_1.ReportComponent,
                 private_chat_1.PrivateChatComponent,
-                tag_1.listTagComponent
+                tag_1.listTagComponent,
+                info_hover_1.infoHover
             ]
         })
     ], RequestDetailClientComponent);

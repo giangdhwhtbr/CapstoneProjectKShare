@@ -3356,6 +3356,7 @@ webpackJsonp([2],[
 	var article_1 = __webpack_require__(44);
 	var ng2_pagination_1 = __webpack_require__(131);
 	var private_chat_1 = __webpack_require__(11);
+	var info_hover_1 = __webpack_require__(1126);
 	var tag_1 = __webpack_require__(73);
 	var RequestCategoryComponent = (function () {
 	    function RequestCategoryComponent(_requestService, _articleService, router, route) {
@@ -3458,7 +3459,7 @@ webpackJsonp([2],[
 	            selector: 'request-category-cli',
 	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-category.html',
 	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
-	            directives: [router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, tag_1.listTagComponent, private_chat_1.PrivateChatComponent],
+	            directives: [router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, tag_1.listTagComponent, private_chat_1.PrivateChatComponent, info_hover_1.infoHover],
 	            providers: [article_1.ArticleService, ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe]
 	        }), 
@@ -5575,6 +5576,7 @@ webpackJsonp([2],[
 	var report_1 = __webpack_require__(291);
 	var comment_1 = __webpack_require__(660);
 	var tag_1 = __webpack_require__(73);
+	var info_hover_1 = __webpack_require__(1126);
 	var detailArticleComponent = (function () {
 	    function detailArticleComponent(fb, router, route, _articleService, _noti) {
 	        var _this = this;
@@ -5728,7 +5730,7 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
 	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES, comment_1.commentComponent, tag_1.listTagComponent, private_chat_1.PrivateChatComponent
+	                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES, comment_1.commentComponent, tag_1.listTagComponent, private_chat_1.PrivateChatComponent, info_hover_1.infoHover
 	            ],
 	            providers: [article_1.ArticleService]
 	        }), 
@@ -5762,6 +5764,7 @@ webpackJsonp([2],[
 	var article_1 = __webpack_require__(44);
 	var private_chat_1 = __webpack_require__(11);
 	var tag_1 = __webpack_require__(73);
+	var info_hover_1 = __webpack_require__(1126);
 	var listArticleComponent = (function () {
 	    function listArticleComponent(router, route, _artService) {
 	        this.router = router;
@@ -5842,7 +5845,8 @@ webpackJsonp([2],[
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                private_chat_1.PrivateChatComponent,
-	                tag_1.listTagComponent
+	                tag_1.listTagComponent,
+	                info_hover_1.infoHover
 	            ],
 	            providers: [article_1.ArticleService]
 	        }), 
@@ -6399,6 +6403,7 @@ webpackJsonp([2],[
 	var report_1 = __webpack_require__(291);
 	var tag_1 = __webpack_require__(73);
 	var private_chat_1 = __webpack_require__(11);
+	var info_hover_1 = __webpack_require__(1126);
 	var RequestDetailClientComponent = (function () {
 	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
 	        var _this = this;
@@ -6621,7 +6626,8 @@ webpackJsonp([2],[
 	                offer_create_1.CreateOfferComponent,
 	                report_1.ReportComponent,
 	                private_chat_1.PrivateChatComponent,
-	                tag_1.listTagComponent
+	                tag_1.listTagComponent,
+	                info_hover_1.infoHover
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object])
@@ -6657,6 +6663,7 @@ webpackJsonp([2],[
 	var auth_1 = __webpack_require__(45);
 	var router_2 = __webpack_require__(4);
 	var tag_2 = __webpack_require__(73);
+	var info_hover_1 = __webpack_require__(1126);
 	var RequestListClientComponent = (function () {
 	    function RequestListClientComponent(_requestService, _tagService, _auth, router, route) {
 	        this._requestService = _requestService;
@@ -6780,7 +6787,8 @@ webpackJsonp([2],[
 	                request_create_1.CreateRequestComponent,
 	                request_category_1.RequestCategoryComponent,
 	                tag_2.listTagComponent,
-	                private_chat_1.PrivateChatComponent
+	                private_chat_1.PrivateChatComponent,
+	                info_hover_1.infoHover
 	            ],
 	            providers: [tag_1.TagService]
 	        }), 
@@ -6813,6 +6821,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var tag_1 = __webpack_require__(64);
 	var tag_2 = __webpack_require__(73);
+	var info_hover_1 = __webpack_require__(1126);
 	var ng2_pagination_1 = __webpack_require__(131);
 	var private_chat_1 = __webpack_require__(11);
 	var displayArtByTagComponent = (function () {
@@ -6871,7 +6880,7 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/tag/templates/display-article-by-tag.html',
 	            styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES, tag_2.listTagComponent, ng2_pagination_1.PaginationControlsCmp, private_chat_1.PrivateChatComponent
+	                router_1.ROUTER_DIRECTIVES, tag_2.listTagComponent, ng2_pagination_1.PaginationControlsCmp, private_chat_1.PrivateChatComponent, info_hover_1.infoHover
 	            ],
 	            providers: [tag_1.TagService, ng2_pagination_1.PaginationService],
 	            pipes: [ng2_pagination_1.PaginatePipe]
@@ -7204,7 +7213,7 @@ webpackJsonp([2],[
 	//Component
 	var request_record_1 = __webpack_require__(680);
 	var kspace_list_1 = __webpack_require__(678);
-	var article_list_1 = __webpack_require__(676);
+	var article_list_1 = __webpack_require__(!(function webpackMissingModule() { var e = new Error("Cannot find module \"./article-list\""); e.code = 'MODULE_NOT_FOUND'; throw e; }()));
 	var user_profile_bar_1 = __webpack_require__(293);
 	var private_chat_1 = __webpack_require__(11);
 	//services
@@ -9801,6 +9810,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var article_1 = __webpack_require__(44);
+	var info_hover_1 = __webpack_require__(1126);
 	var commentComponent = (function () {
 	    function commentComponent(router, route, _artService) {
 	        this.router = router;
@@ -9855,7 +9865,7 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/article/templates/comment.html',
 	            styleUrls: ['client/dev/app/components/front-end/article/styles/comment.css'],
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES
+	                router_1.ROUTER_DIRECTIVES, info_hover_1.infoHover
 	            ],
 	            providers: [article_1.ArticleService]
 	        }), 
@@ -10597,6 +10607,7 @@ webpackJsonp([2],[
 	var private_chat_1 = __webpack_require__(11);
 	var tag_1 = __webpack_require__(73);
 	var topArticle_1 = __webpack_require__(666);
+	var info_hover_1 = __webpack_require__(1126);
 	var NewsFeedComponent = (function () {
 	    function NewsFeedComponent(_userService, _requestService, _articleService, router) {
 	        this._userService = _userService;
@@ -10725,7 +10736,8 @@ webpackJsonp([2],[
 	                router_1.ROUTER_DIRECTIVES,
 	                private_chat_1.PrivateChatComponent,
 	                tag_1.listTagComponent,
-	                topArticle_1.topArticlesComponent
+	                topArticle_1.topArticlesComponent,
+	                info_hover_1.infoHover
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
@@ -11555,60 +11567,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 676 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	/**
-	 * Created by Duc Duong on 8/19/2016.
-	 */
-	/**
-	 * Created by Duc Duong on 8/19/2016.
-	 */
-	//cores
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(4);
-	var article_1 = __webpack_require__(44);
-	var tag_1 = __webpack_require__(73);
-	var ArticleListComponent = (function () {
-	    function ArticleListComponent(router, route) {
-	        this.router = router;
-	        this.route = route;
-	    }
-	    ArticleListComponent.prototype.ngOnInit = function () {
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], ArticleListComponent.prototype, "article", void 0);
-	    ArticleListComponent = __decorate([
-	        core_1.Component({
-	            selector: 'article-list',
-	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/list-article.html',
-	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES, tag_1.listTagComponent
-	            ],
-	            providers: [article_1.ArticleService]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object])
-	    ], ArticleListComponent);
-	    return ArticleListComponent;
-	    var _a, _b;
-	}());
-	exports.ArticleListComponent = ArticleListComponent;
-	
-
-/***/ },
+/* 676 */,
 /* 677 */
 /***/ function(module, exports, __webpack_require__) {
 
@@ -40643,6 +40602,63 @@ webpackJsonp([2],[
 	    var _a, _b, _c, _d, _e;
 	}());
 	exports.DashboardComponent = DashboardComponent;
+	
+
+/***/ },
+/* 1126 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 8/27/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var users_1 = __webpack_require__(29);
+	var router_1 = __webpack_require__(4);
+	var ratingPoint_1 = __webpack_require__(682);
+	var infoHover = (function () {
+	    function infoHover(router, route, _userService) {
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	    }
+	    infoHover.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._userService.getUserByUserName(this.username).subscribe(function (user) {
+	            _this.user = user;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], infoHover.prototype, "username", void 0);
+	    infoHover = __decorate([
+	        core_1.Component({
+	            selector: 'hover-info-user',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/info-hover.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES, ratingPoint_1.RatingPoint
+	            ],
+	            providers: [users_1.UserService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object])
+	    ], infoHover);
+	    return infoHover;
+	    var _a, _b, _c;
+	}());
+	exports.infoHover = infoHover;
 	
 
 /***/ }

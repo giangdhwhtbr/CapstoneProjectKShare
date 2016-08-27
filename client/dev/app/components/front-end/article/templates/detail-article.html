@@ -4,7 +4,7 @@
             <h5 class="valign">{{article.title}}</h5>
             <hr>
             <!--<span class="titleArtDe"> </span>-->
-            <span *ngIf="article.author" class="byAu">viết bởi <a [routerLink]="['/user',article.author]">{{article.author}}</a></span>
+            <span *ngIf="article.author" class="byAu">viết bởi <hover-info-user [username]="article.author"></hover-info-user></span>
             <span *ngIf="!article.author" class="byAu">viết bởi <a [routerLink]="['/user',article.ofUser]">{{article.ofUser}}</a></span>
             <span class="dateCreate">
                 vào {{article.createdAt | date:"dd/MM/yyyy"}}
@@ -65,7 +65,7 @@
                 </button>
             </div>
             <div class="row">
-                <div *ngFor="let cmt of article.comments" class="col s12 m10 l10">
+                <div *ngFor="let cmt of article.comments" class="col s7 m7 l7">
                     <comment [comment]="cmt" [author]="article.author" (sendDataToP)="actionComment($event)"></comment>
                 </div>
             </div>

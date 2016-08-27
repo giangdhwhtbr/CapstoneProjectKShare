@@ -9,6 +9,7 @@ import { ArticleService } from '../../../services/article';
 import { PrivateChatComponent } from './../../shared/private-chat';
 import { listTagComponent } from '../tag/tag';
 import { topArticlesComponent } from './topArticle';
+import { infoHover } from '../user/user-profile/info-hover';
 
 declare var $: any;
 
@@ -20,7 +21,8 @@ declare var $: any;
         ROUTER_DIRECTIVES,
         PrivateChatComponent,
         listTagComponent,
-        topArticlesComponent
+        topArticlesComponent,
+        infoHover
     ]
 })
 

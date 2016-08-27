@@ -6,6 +6,7 @@
 const ArticleDAO = require('./article-dao');
 const TagDAO = require('../tags/tag-dao');
 const KnwDAO = require('../knowledge/knowledge-dao');
+const userDAO = require('../user/user-dao');
 
 module.exports = class ArticleController {
     static getAllArticles(req, res) {
@@ -196,8 +197,13 @@ module.exports = class ArticleController {
                             });
                             //pour full data of tag to article
                             article.tagsFD = ts;
-                            article.save();
-                            res.status(200).json(article._id);
+                            userDAO.addTotalArtUser(article.author).then((mess)=>{
+
+                                article.save();
+
+                                res.status(200).json(article._id);
+                            }).catch(err=>res.status(400).json(err));
+
                         }).catch((err)=>res.status(400).json(err));
 
 

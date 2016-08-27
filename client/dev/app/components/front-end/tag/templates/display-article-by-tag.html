@@ -63,7 +63,7 @@
                                     [routerLink]="['/requests/'+r._id+'/info']">{{r.title}}</a></span>
                             <div class="row">
                                 <div class="col s4">
-                                    Người tạo : <a [routerLink]="['/user/' + r.user]">{{r.user}}</a>
+                                    Người tạo : <hover-info-user [username]="r.user"></hover-info-user>
                                 </div>
                                 <div class="col s4">
                                     Trạng thái : {{r.status}}

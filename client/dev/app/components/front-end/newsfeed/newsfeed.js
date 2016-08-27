@@ -14,6 +14,7 @@ var router_1 = require('@angular/router');
 var private_chat_1 = require('./../../shared/private-chat');
 var tag_1 = require('../tag/tag');
 var topArticle_1 = require('./topArticle');
+var info_hover_1 = require('../user/user-profile/info-hover');
 var NewsFeedComponent = (function () {
     function NewsFeedComponent(_userService, _requestService, _articleService, router) {
         this._userService = _userService;
@@ -142,7 +143,8 @@ var NewsFeedComponent = (function () {
                 router_1.ROUTER_DIRECTIVES,
                 private_chat_1.PrivateChatComponent,
                 tag_1.listTagComponent,
-                topArticle_1.topArticlesComponent
+                topArticle_1.topArticlesComponent,
+                info_hover_1.infoHover
             ]
         })
     ], NewsFeedComponent);

@@ -14,6 +14,7 @@ import { ReportComponent } from '../report/report';
 import {commentComponent} from './comment';
 
 import {listTagComponent} from '../tag/tag';
+import { infoHover } from '../user/user-profile/info-hover';
 
 declare var $:any;
 declare var io:any;
@@ -24,7 +25,7 @@ declare var Materialize:any;
     templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
     directives: [
-        ROUTER_DIRECTIVES, ReportComponent, FORM_DIRECTIVES, commentComponent, listTagComponent, PrivateChatComponent
+        ROUTER_DIRECTIVES, ReportComponent, FORM_DIRECTIVES, commentComponent, listTagComponent, PrivateChatComponent,infoHover
     ],
     providers: [ArticleService]
 })

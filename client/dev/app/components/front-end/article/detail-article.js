@@ -17,6 +17,7 @@ var article_1 = require('../../../services/article');
 var report_1 = require('../report/report');
 var comment_1 = require('./comment');
 var tag_1 = require('../tag/tag');
+var info_hover_1 = require('../user/user-profile/info-hover');
 var detailArticleComponent = (function () {
     function detailArticleComponent(fb, router, route, _articleService, _noti) {
         var _this = this;
@@ -170,7 +171,7 @@ var detailArticleComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
             styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES, comment_1.commentComponent, tag_1.listTagComponent, private_chat_1.PrivateChatComponent
+                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES, comment_1.commentComponent, tag_1.listTagComponent, private_chat_1.PrivateChatComponent, info_hover_1.infoHover
             ],
             providers: [article_1.ArticleService]
         })

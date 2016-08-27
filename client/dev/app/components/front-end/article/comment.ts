@@ -5,6 +5,7 @@ import { Component, OnInit, Pipe, PipeTransform ,Input,Output,EventEmitter ,Afte
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { ArticleService } from '../../../services/article';
 import { AuthService } from '../../../services/auth';
+import { infoHover } from '../user/user-profile/info-hover';
 declare var $: any;
 declare var Materialize: any;
 
@@ -13,7 +14,7 @@ declare var Materialize: any;
     templateUrl: 'client/dev/app/components/front-end/article/templates/comment.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/comment.css'],
     directives: [
-        ROUTER_DIRECTIVES
+        ROUTER_DIRECTIVES,infoHover
     ],
     providers: [ArticleService]
 })

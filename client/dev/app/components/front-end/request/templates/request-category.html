@@ -29,7 +29,8 @@
 
                                 <div class="col s4">
                                     <span *ngIf="a.author" class="author">viết bởi :
-                                        <a [routerLink]="['/user',a.author]">{{a.author}}</a> </span>
+                                        <hover-info-user [username]="a.author"></hover-info-user>
+                                    </span>
                                 </div>
                             </div>
                         </div>
@@ -67,7 +68,7 @@
                                 </span>
 
                                 <div class="col s4">
-                                    Người tạo : <a [routerLink]="['/user/' + request.user]">{{request.user}}</a>
+                                    Người tạo : <hover-info-user [username]="request.user"></hover-info-user>
                                 </div>
                                 <div class="col s4">
                                     Trạng thái : {{request.status}}
