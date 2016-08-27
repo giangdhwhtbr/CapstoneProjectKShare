@@ -8,6 +8,9 @@
         </div>
     </li>
     <li routerLinkActive="active">
+        <a [routerLink]="['/admin/dashboard']" class="waves-effect">Thống kê</a>
+    </li>
+    <li routerLinkActive="active">
         <a [routerLink]="['/admin/users']" class="waves-effect">
             Người dùng </a>
     </li>
@@ -17,10 +20,10 @@
     <li routerLinkActive="active">
         <a [routerLink]="['/admin/requests']" class="waves-effect"> Yêu cầu</a>
     </li>
-    <li>
+    <li routerLinkActive="active">
         <a [routerLink]="['/admin/tags']" class="waves-effect"> Quản lý Tag</a>
     </li>
-    <li>
+    <li routerLinkActive="active">
         <a [routerLink]="['/admin/articles']" class="waves-effect">Quản lý bài viết</a>
     </li>
     <!--<li>
@@ -30,4 +33,3 @@
         <a [routerLink]="['/admin/reports']" class="waves-effect"> Báo cáo vi phạm</a>
     </li>
 </ul>
-

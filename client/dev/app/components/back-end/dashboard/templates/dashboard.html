@@ -1,0 +1,40 @@
+<nav>
+    <div class="nav-wrapper indigo darken-2">
+        <a style="margin-left: 20px;" class="breadcrumb">Quản lý</a>
+        <a class="breadcrumb">Thống kê</a>
+        <div style="margin-right: 20px;" id="timestamp" class="right"></div>
+    </div>
+</nav>
+<div class="row">
+  <div class="col s12">
+    <button (click)="draw()" *ngIf="visible==false" class="waves-effect waves-light btn">Vẽ đồ thị</button>
+    <button (click)="draw()" *ngIf="visible==true" class="waves-effect waves-light btn">Ẩn đồ thị</button>
+    <base-chart class="chart" *ngIf="visible==true"
+                [data]="polarAreaChartData"
+                [labels]="polarAreaChartLabels"
+                [legend]="polarAreaLegend"
+                [chartType]="polarAreaChartType"
+                (chartHover)="chartHovered($event)"
+                (chartClick)="chartClicked($event)"></base-chart>
+
+  </div>
+</div>
+<div class="row">
+    <div class="col s12 m12">
+        <div style="padding: 35px;" align="left" class="card">
+            <div class="row">
+                <div class="left card-title">
+                    <b>Thông tin</b>
+                </div>
+            </div>
+            <div class="row">
+                <h5>Số yêu cầu đang hoạt động: {{numOfActiveRequest}}</h5>
+                <h5>Số yêu cầu đã chấp thuận: {{numOfFinishedRequest}}</h5>
+            </div>
+            <div class="row">
+                <h5>Số KSpace đang hoạt động: {{numOfActiveKspace}}</h5>
+                <h5>Số KSpace đã đóng: {{numOfFinishedKspace}}</h5>
+            </div>
+        </div>
+    </div>
+</div>
