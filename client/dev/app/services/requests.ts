@@ -12,6 +12,7 @@ export class RequestService {
     private _searchRequetsUrl = '/api/requests-search/:id';
     private _statusSubcriberUrl = '/api/requests-subcriber/:id';
     private _requestStatusUrl = '/api/requests-status/:id';
+    private _kspaceUrl = '/api/kspace/:rid';
 
     constructor(private _http: Http) {
     }
@@ -29,6 +30,11 @@ export class RequestService {
             .catch(this.handleError);
     }
 
+    getKspaceByRId(id: string): Observable<Request[]> {
+        return this._http.get(this._kspaceUrl.replace(':rid', id))
+            .map(kspace => kspace.json());
+    }
+
     //get all request which user's ownknowledgeIds same with tagid of request
     getRequestByUserTags(tags: string[], num: number): Observable<Request[]> {
         let header = new Headers;
@@ -40,7 +46,7 @@ export class RequestService {
             x: num
         });
 
-        return this._http.put(this._requestsUrl.replace(':id', ''),_data,options )
+        return this._http.put(this._requestsUrl.replace(':id', ''), _data, options)
             .map((r) => r.json())
             .catch(this.handleError);
     }
@@ -56,7 +62,7 @@ export class RequestService {
             x: num
         });
 
-        return this._http.post(this._requestUserUrl,_data,options )
+        return this._http.post(this._requestUserUrl, _data, options)
             .map((r) => r.json())
             .catch(this.handleError);
     }
@@ -67,7 +73,7 @@ export class RequestService {
             .catch(this.handleError);
     }
 
-    addRequest(request:Request ,content:string, oldTag:any[], newTag:any[]):Observable<any> {
+    addRequest(request: Request, content: string, oldTag: any[], newTag: any[]): Observable<any> {
 
         let header = new Headers;
         let headers = new Headers({ 'Content-Type': 'application/json' });

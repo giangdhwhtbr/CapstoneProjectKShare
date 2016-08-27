@@ -1401,6 +1401,7 @@ webpackJsonp([2],[
 	        this._searchRequetsUrl = '/api/requests-search/:id';
 	        this._statusSubcriberUrl = '/api/requests-subcriber/:id';
 	        this._requestStatusUrl = '/api/requests-status/:id';
+	        this._kspaceUrl = '/api/kspace/:rid';
 	    }
 	    RequestService.prototype.getAllRequests = function (num) {
 	        var header = new http_1.Headers;
@@ -1412,6 +1413,10 @@ webpackJsonp([2],[
 	        return this._http.put(this._requestUserUrl.replace(':id', ''), _data, options)
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
+	    };
+	    RequestService.prototype.getKspaceByRId = function (id) {
+	        return this._http.get(this._kspaceUrl.replace(':rid', id))
+	            .map(function (kspace) { return kspace.json(); });
 	    };
 	    //get all request which user's ownknowledgeIds same with tagid of request
 	    RequestService.prototype.getRequestByUserTags = function (tags, num) {
@@ -6413,7 +6418,6 @@ webpackJsonp([2],[
 	        this._knowledgeService = _knowledgeService;
 	        this._kspaceService = _kspaceService;
 	        this.route = route;
-	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
 	        this.num = 5;
 	        this.height = 400;
 	        //check if request is accepted
@@ -6444,10 +6448,14 @@ webpackJsonp([2],[
 	        //get templates when load the page
 	        this._requestService.getRequestById(this.id)
 	            .subscribe(function (request) {
-	            console.log(request);
 	            //translate status
 	            if (request.status === 'accepted') {
-	                if (_this.userToken !== request.user || request.subscribers.indexOf(_this.userToken) < 0) {
+	                if (_this.userToken === request.user || request.subscribers.indexOf(_this.userToken) > 0 || _this.userToken !== null) {
+	                    _this._requestService.getKspaceByRId(request._id).subscribe(function (k) {
+	                        _this.link = "/kspace/info/" + k._id + '/' + _this.userToken;
+	                    });
+	                }
+	                else {
 	                    _this.router.navigateByUrl('/');
 	                }
 	                request.status = 'Đã được chấp nhận';
@@ -6509,12 +6517,14 @@ webpackJsonp([2],[
 	        var _this = this;
 	        //get front.offer of the templates when load the page
 	        this._offerService.getOfferByRequestId(this._id, this.num).subscribe(function (offers) {
+	            console.log(offers);
 	            if (offers) {
 	                for (var i = 0; i < offers.length; i++) {
 	                    if (offers[i].status === 'pending') {
 	                        offers[i].status = 'Đang chờ';
 	                    }
-	                    else if (offers[i].status === 'deactive') {
+	                    else if (offers[i].status === 'accepted') {
+	                        console.log(offers[i]);
 	                        offers[i].status = 'Được chấp nhận';
 	                    }
 	                    _this.offers.push(offers[i]);

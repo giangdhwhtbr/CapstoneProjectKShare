@@ -41,6 +41,17 @@ KSpaceSchema.statics.getKspaceProfile = (name) => {
 
 };
 
+KSpaceSchema.statics.getKspaceByRId = (rid) => {
+    return new Promise((resolve,reject) => {
+        KSpace
+            .findOne({"requestId":rid})
+            .exec((err, KSpace) => {
+                err ? reject(err)
+                    : resolve(KSpace);
+            });
+    });
+}
+
 //function get front.KSpace by ID  dao
 KSpaceSchema.statics.getKSpaceById = (id) => {
 
