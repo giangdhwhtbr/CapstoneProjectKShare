@@ -75,10 +75,7 @@
                     </div>
                 </div>
             </div>
-
-        </div>
-        </div>
-        <a *ngIf="userToken" (click)="seeMore()">Xem thêm</a>
+            <a *ngIf="userToken!==null" (click)="seeMore()">Xem thêm</a>
         </div>
         <div class="col s4 m4">
             <top-articles></top-articles>

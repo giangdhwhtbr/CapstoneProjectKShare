@@ -89,11 +89,6 @@ export class HeaderComponent {
         $('.dropdown-button').dropdown();
     }
 
-    ngAfterViewChecked() {
-        //$('#sidenav-overlay').remove();
-        //$('.drag-target').remove();
-        $("body").css("overflow", "scroll");
-    }
 
     openChat() {
         $('#chatBoxK').openModal();
