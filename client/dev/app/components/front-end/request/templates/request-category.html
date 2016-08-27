@@ -8,7 +8,7 @@
             </ul>
         </div>
         <div id="tabArt">
-            <div class="row" *ngIf="arts">
+            <div class="row">
 
 
                 <div class="col s12" *ngFor="let a of arts| paginate: configArt">
@@ -50,25 +50,22 @@
                         </div>
                     </div>
                 </div>
-                <div *ngIf="arts.length!=0">
+                <div [hidden]="arts.length===0">
                     <pagination-controls [id]="configArt.id" [maxSize]="maxSizeArt" [directionLinks]="directionLinksArt" [autoHide]="autoHideArt"
                         (pageChange)="onPageChangeArt($event)"></pagination-controls>
                 </div>
             </div>
-            <div *ngIf="arts.length==0">
+            <div [hidden]="arts.length!=0">
                 <h5 class="center-align">Không có bài viết liên quan</h5>
             </div>
         </div>
-        <div id="tabReq" *ngIf="requests">
+        <div id="tabReq">
             <div class="row">
+                <div [hidden]="requests.length!==0">
+                    <h5 class="center-align">không có yêu cầu liên quan</h5>
+                </div>
                 <div class="col s12" *ngFor="let request of requests| paginate: configReq">
                     <div class="card">
-                        <div *ngIf="isExistRecord">
-                            <h5>Kết quả tìm kiếm</h5>
-                            <div class="valign-wrapper">
-                                <h5 class="valign">Rất tiếc không tìm thấy dữ liệu phù hợp</h5>
-                            </div>
-                        </div>
                         <div class="card-content" *ngIf="request">
                             <div class="row">
                                 <span class="card-title">

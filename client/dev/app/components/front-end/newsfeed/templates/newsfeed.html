@@ -75,12 +75,10 @@
                     </div>
                 </div>
             </div>
-
+            <a *ngIf="userToken!==null" (click)="seeMore()">Xem thêm</a>
         </div>
-      </div>
-      <a (click)="seeMore()">Xem thêm</a>
-    </div>
-    <div class="col s4 m4">
-        <top-articles></top-articles>
+        <div class="col s4 m4">
+            <top-articles></top-articles>
+        </div>
     </div>
 <private-chat></private-chat>

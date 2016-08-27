@@ -7,7 +7,9 @@
             </div>
             &nbsp;
             <div>
-                <a [routerLink]="" class="tit-art">{{articles[0].title.substring(0.70)}}...</a>
+                <a *ngIf="articles[0].title.length>35" [routerLink]="['/article',articles[0]._id]" class="tit-art">{{articles[0].title.substring(0,35)}}...</a>
+                <a *ngIf="articles[0].title.length<=35" [routerLink]="['/article',articles[0]._id]" class="tit-art">{{articles[0].title}}</a>
+                <span class=" badge white blue-text darken-1"><i class="tiny material-icons">favorite</i>{{articles[0].like}}</span>
             </div>
         </div>
         <div class="divider"></div>
@@ -17,7 +19,9 @@
             </div>
             &nbsp;
             <div>
-                <a [routerLink]="" class="tit-art">{{articles[1].title}}</a>
+                <a *ngIf="articles[1].title.length>35" [routerLink]="['/article',articles[1]._id]" class="tit-art">{{articles[1].title.substring(0,35)}}...</a>
+                <a *ngIf="articles[1].title.length<=35" [routerLink]="['/article',articles[1]._id]" class="tit-art">{{articles[1].title}}</a>
+                <span class=" badge white blue-text darken-1"><i class="tiny material-icons">favorite</i>{{articles[1].like}}</span>
             </div>
         </div>
         <div class="divider"></div>
@@ -27,7 +31,9 @@
             </div>
             &nbsp;
             <div>
-                <a [routerLink]="" class="tit-art">{{articles[2].title}}</a>
+                <a *ngIf="articles[2].title.length>35" [routerLink]="['/article',articles[2]._id]" class="tit-art">{{articles[2].title.substring(0,35)}}...</a>
+                <a *ngIf="articles[2].title.length<=35" [routerLink]="['/article',articles[2]._id]" class="tit-art">{{articles[2].title}}</a>
+                <span class=" badge white blue-text darken-1"><i class="tiny material-icons">favorite</i>{{articles[2].like}}</span>
             </div>
         </div>
         <div class="divider"></div>
@@ -37,7 +43,9 @@
             </div>
             &nbsp;
             <div>
-                <a [routerLink]="" class="tit-art">{{articles[3].title}}</a>
+                <a *ngIf="articles[3].title.length>35" [routerLink]="['/article',articles[3]._id]" class="tit-art">{{articles[3].title.substring(0,35)}}...</a>
+                <a *ngIf="articles[3].title.length<=35" [routerLink]="['/article',articles[3]._id]" class="tit-art">{{articles[3].title}}</a>
+                <span class=" badge white blue-text darken-1"><i class="tiny material-icons">favorite</i>{{articles[3].like}}</span>
             </div>
         </div>
         <div class="divider"></div>
@@ -47,7 +55,9 @@
             </div>
             &nbsp;
             <div>
-                <a [routerLink]="" class="tit-art">{{articles[4].title}}</a>
+                <a *ngIf="articles[4].title.length>35" [routerLink]="['/article',articles[4]._id]" class="tit-art">{{articles[4].title.substring(0,35)}}...</a>
+                <a *ngIf="articles[4].title.length<=35" [routerLink]="['/article',articles[4]._id]" class="tit-art">{{articles[4].title}}</a>
+                <span class=" badge white blue-text darken-1"><i class="tiny material-icons">favorite</i>{{articles[4].like}}</span>
             </div>
         </div>
     </div>
