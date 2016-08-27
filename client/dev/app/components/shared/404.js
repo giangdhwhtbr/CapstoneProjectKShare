@@ -28,7 +28,7 @@ var errorPageComponent = (function () {
     }
     errorPageComponent = __decorate([
         core_1.Component({
-            selector: 'header',
+            selector: 'error',
             templateUrl: 'client/dev/app/components/shared/templates/404.html',
             styleUrls: ['client/dev/app/components/shared/styles/404.css'],
             directives: [

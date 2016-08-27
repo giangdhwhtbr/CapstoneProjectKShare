@@ -20,7 +20,7 @@ var RequestService = (function () {
         this._searchRequetsUrl = '/api/requests-search/:id';
         this._statusSubcriberUrl = '/api/requests-subcriber/:id';
         this._requestStatusUrl = '/api/requests-status/:id';
-        this._kspaceUrl = '/api/kspace/:rid';
+        this._kspaceUrl = '/api/kspace-request/:rid';
     }
     RequestService.prototype.getAllRequests = function (num) {
         var header = new http_1.Headers;
