@@ -101,14 +101,18 @@ export class RequestDetailClientComponent implements AfterViewChecked {
         //get templates when load the page
         this._requestService.getRequestById(this.id)
             .subscribe(request => {
+                console.log(request);
                 //translate status
                 if (request.status === 'accepted') {
+                    if(this.userToken !== request.user || request.subscribers.indexOf(this.userToken)<0){
+                        this.router.navigateByUrl('/');
+                    }
                     request.status = 'Đã được chấp nhận';
                     this.checkIsAcceped = true;
                 } else if (request.status === 'deactive' || request.status === undefined) {
                     request.status = 'Đã kết thúc';
                     this.checkDeactive = true;
-                } else {
+                } else if(request.status === 'pending' || request.status=== 'active') {
                     request.status = 'Đang chờ';
                 }
 
@@ -173,7 +177,7 @@ export class RequestDetailClientComponent implements AfterViewChecked {
                     for (var i = 0; i < offers.length; i++) {
                         if (offers[i].status === 'pending') {
                             offers[i].status = 'Đang chờ';
-                        } else {
+                        } else if(offers[i].status ==='deactive') {
                             offers[i].status = 'Được chấp nhận';
                         }
                         this.offers.push(offers[i]);

@@ -6472,8 +6472,12 @@ webpackJsonp([2],[
 	        //get templates when load the page
 	        this._requestService.getRequestById(this.id)
 	            .subscribe(function (request) {
+	            console.log(request);
 	            //translate status
 	            if (request.status === 'accepted') {
+	                if (_this.userToken !== request.user || request.subscribers.indexOf(_this.userToken) < 0) {
+	                    _this.router.navigateByUrl('/');
+	                }
 	                request.status = 'Đã được chấp nhận';
 	                _this.checkIsAcceped = true;
 	            }
@@ -6481,7 +6485,7 @@ webpackJsonp([2],[
 	                request.status = 'Đã kết thúc';
 	                _this.checkDeactive = true;
 	            }
-	            else {
+	            else if (request.status === 'pending' || request.status === 'active') {
 	                request.status = 'Đang chờ';
 	            }
 	            request.userlink = '/user/' + request.user;
@@ -6538,7 +6542,7 @@ webpackJsonp([2],[
 	                    if (offers[i].status === 'pending') {
 	                        offers[i].status = 'Đang chờ';
 	                    }
-	                    else {
+	                    else if (offers[i].status === 'deactive') {
 	                        offers[i].status = 'Được chấp nhận';
 	                    }
 	                    _this.offers.push(offers[i]);
@@ -11955,10 +11959,10 @@ webpackJsonp([2],[
 	        //this.createdAt = this.formatDate(createdAt);
 	        this.id = this.knowledgeId;
 	        this.getKnowledgeNameOfRequest();
-	        if (this.status === 'pending') {
+	        if (this.status === 'pending' || this.status === 'active' || this.status === 'Đang chờ') {
 	            this.status = 'Đang chờ';
 	        }
-	        else {
+	        else if (this.status = 'accepted') {
 	            this.status = 'Đã được chấp nhận';
 	        }
 	    };
