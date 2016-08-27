@@ -65,6 +65,7 @@ module.exports = class userController {
             role: req.body.role,
             rateAve: 0
         };
+        console(req.body);
         if (!req.body.role) {
             user.role = "normal";
         }

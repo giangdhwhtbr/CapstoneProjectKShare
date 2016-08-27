@@ -15,7 +15,7 @@ import { ChatService } from '../../services/chat';
 import { PrivateChatComponent } from '../../components/shared/private-chat';
 
 @Component({
-    selector: 'header',
+    selector: 'error',
     templateUrl: 'client/dev/app/components/shared/templates/404.html',
     styleUrls: ['client/dev/app/components/shared/styles/404.css'],
     directives: [
@@ -27,4 +27,3 @@ export class errorPageComponent {
                 private _userService:UserService, private _chatService:ChatService,private routerCh :ActivatedRoute) {
     }
 }
-
