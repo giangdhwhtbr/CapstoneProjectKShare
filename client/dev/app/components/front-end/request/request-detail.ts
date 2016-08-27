@@ -73,6 +73,7 @@ export class RequestDetailClientComponent implements AfterViewChecked {
     offers:Offer[] = [];
     kspace:KSpace = {};
     isSubscriberd: boolean = false;
+    ks: any;
 
     constructor(private _requestService:RequestService, private _offerService:OfferService, public router:Router,
                 private _knowledgeService:KnowledgeService, private _kspaceService:KSpaceService, private route:ActivatedRoute) {
@@ -103,10 +104,12 @@ export class RequestDetailClientComponent implements AfterViewChecked {
             .subscribe(request => {
                 //translate status
                 if (request.status === 'accepted') {
-                    if(this.userToken === request.user || request.subscribers.indexOf(this.userToken)>0 || this.userToken !== null){
-                        this._requestService.getKspaceByRId(request._id).subscribe((k) => {
+                    this._requestService.getKspaceByRId(request._id).subscribe((k) => {
                             this.link = "/kspace/info/" + k._id + '/' + this.userToken;
-                        }); 
+                            this.ks = k;
+                        });
+                    if(this.userToken === request.user || request.subscribers.indexOf(this.userToken)>0 || this.userToken !== null || this.userToken === this.ks.lecturer){
+                         
                     }else {
                         this.router.navigateByUrl('/');
                     }

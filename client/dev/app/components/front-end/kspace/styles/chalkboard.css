@@ -73,3 +73,71 @@ hr{
     color: black;
     background-color: white;
 }
+.tool-div-kp{
+    background-color: #66BEFF;
+    margin-right: 34rem;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    display: inline-flex;
+}
+.tabs-bd{
+    margin-bottom: 2px;
+}
+.slc-tl{
+    padding-top: 9px;
+}
+
+.dropdown-tl-kp {
+    position: relative;
+    display: inline-block;
+    margin-top: 9px;
+    margin-left: 6px;
+    border: solid 1px gray;
+}
+
+.dropdown-tl-kp .dropdown-menu-tl-kp {
+    position: absolute;
+    top: 100%;
+    display: none;
+    margin: 0;
+
+    /****************
+     ** NEW STYLES **
+     ****************/
+
+    list-style: none; /** Remove list bullets */
+    width: 100%; /** Set the width to 100% of it's parent */
+    padding: 0;
+}
+
+.dropdown-tl-kp:hover .dropdown-menu-tl-kp {
+    display: block;
+}
+
+/** Button Styles **/
+.dropdown-tl-kp span {
+    background: white;
+    color: black;
+    border: none;
+    margin: 0;
+    padding: 0.4em 0.8em;
+    font-size: 1em;
+}
+
+/** List Item Styles **/
+.dropdown-tl-kp a {
+    display: block;
+    padding: 0.2em 0.8em;
+    text-decoration: none;
+    background: #CCCCCC;
+    color: #333333;
+}
+
+/** List Item Hover Styles **/
+.dropdown-tl-kp a:hover {
+    background: #BBBBBB;
+}
+
+.dropdown-tl-kp ul li {
+    cursor: pointer;
+}
