@@ -6475,7 +6475,9 @@ webpackJsonp([2],[
 	            console.log(request);
 	            //translate status
 	            if (request.status === 'accepted') {
-	                if (_this.userToken !== request.user || request.subscribers.indexOf(_this.userToken) < 0) {
+	                if (_this.userToken === request.user || request.subscribers.indexOf(_this.userToken) > 0 || _this.userToken !== null) {
+	                }
+	                else {
 	                    _this.router.navigateByUrl('/');
 	                }
 	                request.status = 'Đã được chấp nhận';
@@ -6537,12 +6539,14 @@ webpackJsonp([2],[
 	        var _this = this;
 	        //get front.offer of the templates when load the page
 	        this._offerService.getOfferByRequestId(this._id, this.num).subscribe(function (offers) {
+	            console.log(offers);
 	            if (offers) {
 	                for (var i = 0; i < offers.length; i++) {
 	                    if (offers[i].status === 'pending') {
 	                        offers[i].status = 'Đang chờ';
 	                    }
-	                    else if (offers[i].status === 'deactive') {
+	                    else if (offers[i].status === 'accepted') {
+	                        console.log(offers[i]);
 	                        offers[i].status = 'Được chấp nhận';
 	                    }
 	                    _this.offers.push(offers[i]);

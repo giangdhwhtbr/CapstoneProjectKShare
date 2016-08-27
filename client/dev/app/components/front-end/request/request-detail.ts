@@ -104,7 +104,9 @@ export class RequestDetailClientComponent implements AfterViewChecked {
                 console.log(request);
                 //translate status
                 if (request.status === 'accepted') {
-                    if(this.userToken !== request.user || request.subscribers.indexOf(this.userToken)<0){
+                    if(this.userToken === request.user || request.subscribers.indexOf(this.userToken)>0 || this.userToken !== null){
+                        
+                    }else {
                         this.router.navigateByUrl('/');
                     }
                     request.status = 'Đã được chấp nhận';
@@ -173,11 +175,13 @@ export class RequestDetailClientComponent implements AfterViewChecked {
         //get front.offer of the templates when load the page
         this._offerService.getOfferByRequestId(this._id, this.num).subscribe(
             (offers) => {
+                console.log(offers);
                 if (offers) {
                     for (var i = 0; i < offers.length; i++) {
                         if (offers[i].status === 'pending') {
                             offers[i].status = 'Đang chờ';
-                        } else if(offers[i].status ==='deactive') {
+                        } else if(offers[i].status ==='accepted') {
+                            console.log(offers[i]);
                             offers[i].status = 'Được chấp nhận';
                         }
                         this.offers.push(offers[i]);
