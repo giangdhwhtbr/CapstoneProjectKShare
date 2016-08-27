@@ -24,7 +24,7 @@
                     <div class="card-action">
                         <div class="row">
                             <div class="col s4 m4">
-                                <span>Tạo bởi : <hover-info-user [username]="record.user"></hover-info-user></span>
+                                <span>Tạo bởi : <hover-info-user *ngIf="record.user" [username]="record.user"></hover-info-user></span>
                             </div>
                             <div class="col s4 m4">
                                 <span class="dateArt">{{record.createdAt | date:"dd/MM/yyyy"}}</span>
@@ -50,7 +50,7 @@
                     <div class="card-action">
                         <div class="row">
                             <div class="col s4 m4">
-                                <span>Tạo bởi :<hover-info-user [username]="record.author"></hover-info-user></span>
+                                <span>Tạo bởi :<hover-info-user *ngIf="record.author" [username]="record.author"></hover-info-user></span>
                             </div>
                             <div class="col s4 m4">
                                 <span>Trạng thái : {{record.status}}</span>
