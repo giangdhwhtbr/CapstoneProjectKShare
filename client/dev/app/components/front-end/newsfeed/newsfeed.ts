@@ -45,9 +45,6 @@ export class NewsFeedComponent implements OnInit {
         private router: Router) {
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
-        if (this.userToken === null) {
-            this.router.navigateByUrl('/');
-        }
 
     }
 
@@ -57,18 +54,12 @@ export class NewsFeedComponent implements OnInit {
         this.countA2 = 5;
         this.countR2 = 5;
         this.records = [];
-        this.getRequests();
-
-        // $(window).on("scroll", () => {
-        //     var scrollHeight = $(document).height();
-        //     var scrollPosition = $(window).height() + $(window).scrollTop();
-        //     if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-        //         setTimeout(() => {
-        //             this.seeMore();
-        //         }, 1000);
-        //         this.height += 30;
-        //     }
-        // });
+        if(this.userToken === null){
+            this.getArts();
+        } else {
+            this.getRequests();
+        }
+       
         $('.parallax').parallax();
     }
 
@@ -77,6 +68,25 @@ export class NewsFeedComponent implements OnInit {
         this.countA1 = this.countA1 + 5;
         this.getRequests();
         this.getArticles();
+    }
+
+    getArts(){
+        this._articleService.getAllArts(this.countA1).subscribe((arts) => {
+            console.log(arts);
+            for (let a of arts){
+                this.records.push(a);
+            }
+            this.getReqs();
+        });
+    }
+
+    getReqs(){
+        this._requestService.getAllRequests(this.countR1).subscribe((reqs) => {
+            console.log(reqs);
+            for (let r of reqs){
+                this.records.push(r);
+            }
+        })
     }
 
     getRequests() {

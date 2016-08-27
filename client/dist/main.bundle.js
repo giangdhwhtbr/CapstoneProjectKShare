@@ -6445,10 +6445,11 @@ webpackJsonp([2],[
 	            .subscribe(function (request) {
 	            //translate status
 	            if (request.status === 'accepted') {
-	                if (_this.userToken === request.user || request.subscribers.indexOf(_this.userToken) > 0 || _this.userToken !== null) {
-	                    _this._requestService.getKspaceByRId(request._id).subscribe(function (k) {
-	                        _this.link = "/kspace/info/" + k._id + '/' + _this.userToken;
-	                    });
+	                _this._requestService.getKspaceByRId(request._id).subscribe(function (k) {
+	                    _this.link = "/kspace/info/" + k._id + '/' + _this.userToken;
+	                    _this.ks = k;
+	                });
+	                if (_this.userToken === request.user || request.subscribers.indexOf(_this.userToken) > 0 || _this.userToken !== null || _this.userToken === _this.ks.lecturer) {
 	                }
 	                else {
 	                    _this.router.navigateByUrl('/');
@@ -10617,9 +10618,6 @@ webpackJsonp([2],[
 	        this.height = 400;
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
-	        if (this.userToken === null) {
-	            this.router.navigateByUrl('/');
-	        }
 	    }
 	    NewsFeedComponent.prototype.ngOnInit = function () {
 	        this.countA1 = 5;
@@ -10627,17 +10625,12 @@ webpackJsonp([2],[
 	        this.countA2 = 5;
 	        this.countR2 = 5;
 	        this.records = [];
-	        this.getRequests();
-	        // $(window).on("scroll", () => {
-	        //     var scrollHeight = $(document).height();
-	        //     var scrollPosition = $(window).height() + $(window).scrollTop();
-	        //     if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-	        //         setTimeout(() => {
-	        //             this.seeMore();
-	        //         }, 1000);
-	        //         this.height += 30;
-	        //     }
-	        // });
+	        if (this.userToken === null) {
+	            this.getArts();
+	        }
+	        else {
+	            this.getRequests();
+	        }
 	        $('.parallax').parallax();
 	    };
 	    NewsFeedComponent.prototype.seeMore = function () {
@@ -10645,6 +10638,27 @@ webpackJsonp([2],[
 	        this.countA1 = this.countA1 + 5;
 	        this.getRequests();
 	        this.getArticles();
+	    };
+	    NewsFeedComponent.prototype.getArts = function () {
+	        var _this = this;
+	        this._articleService.getAllArts(this.countA1).subscribe(function (arts) {
+	            console.log(arts);
+	            for (var _i = 0, arts_1 = arts; _i < arts_1.length; _i++) {
+	                var a = arts_1[_i];
+	                _this.records.push(a);
+	            }
+	            _this.getReqs();
+	        });
+	    };
+	    NewsFeedComponent.prototype.getReqs = function () {
+	        var _this = this;
+	        this._requestService.getAllRequests(this.countR1).subscribe(function (reqs) {
+	            console.log(reqs);
+	            for (var _i = 0, reqs_1 = reqs; _i < reqs_1.length; _i++) {
+	                var r = reqs_1[_i];
+	                _this.records.push(r);
+	            }
+	        });
 	    };
 	    NewsFeedComponent.prototype.getRequests = function () {
 	        var _this = this;
