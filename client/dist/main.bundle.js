@@ -185,8 +185,8 @@ webpackJsonp([2],[
 	        };
 	        this.socket.emit('reset-new-message', data);
 	    };
-	    PrivateChatComponent.prototype.sendMessage = function (mess) {
-	        if (mess) {
+	    PrivateChatComponent.prototype.sendMessage = function () {
+	        if (this.mess) {
 	            var data = {
 	                sender: this.username,
 	                message: this.mess,
@@ -198,6 +198,8 @@ webpackJsonp([2],[
 	            this.socket.emit('reset-new-message', data);
 	            this.mess = "";
 	        }
+	        var numItems = $('.text-message').length;
+	        $("#cntAllText").animate({ scrollTop: 200 * numItems }, "slow");
 	    };
 	    PrivateChatComponent = __decorate([
 	        core_1.Component({
@@ -1369,7 +1371,7 @@ webpackJsonp([2],[
 	        this._searchRequetsUrl = '/api/requests-search/:id';
 	        this._statusSubcriberUrl = '/api/requests-subcriber/:id';
 	        this._requestStatusUrl = '/api/requests-status/:id';
-	        this._kspaceUrl = '/api/kspace/:rid';
+	        this._kspaceUrl = '/api/kspace-request/:rid';
 	    }
 	    RequestService.prototype.getAllRequests = function (num) {
 	        var header = new http_1.Headers;
@@ -10729,7 +10731,7 @@ webpackJsonp([2],[
 	    ChalkBoardComponent = __decorate([
 	        core_1.Component({
 	            selector: 'chalkboard',
-	            template: "\n  <div id=\"kspace-container\">\n    <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let board of boards\">\n          <a *ngIf=\"isLect\" (click)=\"changeBoard(board.json, board.name)\">\n            {{board.name}}\n          </a></li>\n        </ul>\n      </div>\n    </div>\n    <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n    <div id=\"draw-tools\">\n        <p id=\"new-page\"  (click)=\"openModal()\"  class=\"tool-btn modal-trigger\">\n            <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n        <select id=\"color-picker\" class=\"tool-btn\">\n            <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n        </select>\n        <hr>\n        <select id=\"brush-size\" class=\"tool-btn\">\n            <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n        </select>\n        <hr>\n        <p id=\"eraser\">\n            <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n    </div>\n      <div class=\"wrapper-chalkboard\">\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n      </div>\n      <!--Modal nh\u1EADp th\u00F4ng tin-->\n      <div id=\"modal1\" class=\"modal modal-fixed-footer\">\n        <div class=\"modal-content\">\n          <h4>M\u00F4 t\u1EA3 th\u00F4ng tin b\u1EA3ng</h4>\n          <form (ngSubmit)=\"newPage(name,des)\">\n              <div class=\"row\">\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"name\"  required=\"required\" id=\"title\"/>\n                  <label for=\"title\">Ti\u00EAu \u0111\u1EC1</label>\n                </div>\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"des\"  required=\"required\" id=\"des\"/>\n                  <label for=\"des\">M\u00F4 t\u1EA3</label>\n                </div>\n              </div>\n              <div class=\"row\">\n                <button type=\"submit\" class=\"btn-floating btn-large modal-close waves-effect waves-light blue\"><i class=\"material-icons\">done</i></button>\n              </div>\n            </form>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"modal-action modal-close waves-effect waves-green btn-flat \">Tho\u00E1t</a>\n        </div>\n    </div>\n  </div>\n    ",
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/chalkboard.html',
 	            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -12308,7 +12310,7 @@ webpackJsonp([2],[
 	    }
 	    errorPageComponent = __decorate([
 	        core_1.Component({
-	            selector: 'header',
+	            selector: 'error',
 	            templateUrl: 'client/dev/app/components/shared/templates/404.html',
 	            styleUrls: ['client/dev/app/components/shared/styles/404.css'],
 	            directives: [

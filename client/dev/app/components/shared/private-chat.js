@@ -145,8 +145,8 @@ var PrivateChatComponent = (function () {
         };
         this.socket.emit('reset-new-message', data);
     };
-    PrivateChatComponent.prototype.sendMessage = function (mess) {
-        if (mess) {
+    PrivateChatComponent.prototype.sendMessage = function () {
+        if (this.mess) {
             var data = {
                 sender: this.username,
                 message: this.mess,
@@ -158,6 +158,8 @@ var PrivateChatComponent = (function () {
             this.socket.emit('reset-new-message', data);
             this.mess = "";
         }
+        var numItems = $('.text-message').length;
+        $("#cntAllText").animate({ scrollTop: 200 * numItems }, "slow");
     };
     PrivateChatComponent = __decorate([
         core_1.Component({
