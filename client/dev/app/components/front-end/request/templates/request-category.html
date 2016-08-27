@@ -61,11 +61,8 @@
         </div>
         <div id="tabReq">
             <div class="row">
-                <div [hidden]="!isExistRecord">
-                    <h5>Kết quả tìm kiếm</h5>
-                    <div class="valign-wrapper">
-                        <h5 class="center-align">không có bài viết liên quan</h5>
-                    </div>
+                <div [hidden]="requests.length!==0">
+                    <h5 class="center-align">không có yêu cầu liên quan</h5>
                 </div>
                 <div class="col s12" *ngFor="let request of requests| paginate: configReq">
                     <div class="card">
