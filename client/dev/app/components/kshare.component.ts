@@ -25,6 +25,7 @@ import { KSpaceComponent } from "./front-end/kspace/kspace";
 import { KSpaceListComponent } from "./front-end/kspace/kspace-list";
 import { KSpaceInfoComponent } from "./front-end/kspace/kspace-info";
 import { FriendListComponent } from "./front-end/user/user-profile/friend-list";
+import { infoHover } from "./front-end/user/user-profile/info-hover";
 import { userSearchRsComponent } from "./front-end/user/search/rs-search-user";
 import { UserProfileBarComponent } from "./front-end/user/user-profile/user-profile-bar";
 import { UpdateUserComponent } from "./front-end/user/user-profile/user-info-update";
