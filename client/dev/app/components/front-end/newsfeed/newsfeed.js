@@ -62,7 +62,6 @@ var NewsFeedComponent = (function () {
                 if (requests.length === 0 || user.ownKnowledgeIds.length === 0) {
                     _this._requestService.getRequestExceptUserTags(user.ownKnowledgeIds, _this.countR2).subscribe(function (requests) {
                         if (requests.length <= 0) {
-                            alert("Không còn bài viết nào");
                         }
                         else {
                             for (var i = 0; i < requests.length; i++) {

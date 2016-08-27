@@ -52,8 +52,12 @@ var RequestDetailClientComponent = (function () {
         //get templates when load the page
         this._requestService.getRequestById(this.id)
             .subscribe(function (request) {
+            console.log(request);
             //translate status
             if (request.status === 'accepted') {
+                if (_this.userToken !== request.user || request.subscribers.indexOf(_this.userToken) < 0) {
+                    _this.router.navigateByUrl('/');
+                }
                 request.status = 'Đã được chấp nhận';
                 _this.checkIsAcceped = true;
             }
@@ -61,7 +65,7 @@ var RequestDetailClientComponent = (function () {
                 request.status = 'Đã kết thúc';
                 _this.checkDeactive = true;
             }
-            else {
+            else if (request.status === 'pending' || request.status === 'active') {
                 request.status = 'Đang chờ';
             }
             request.userlink = '/user/' + request.user;
@@ -118,7 +122,7 @@ var RequestDetailClientComponent = (function () {
                     if (offers[i].status === 'pending') {
                         offers[i].status = 'Đang chờ';
                     }
-                    else {
+                    else if (offers[i].status === 'deactive') {
                         offers[i].status = 'Được chấp nhận';
                     }
                     _this.offers.push(offers[i]);

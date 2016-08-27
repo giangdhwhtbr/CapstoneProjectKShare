@@ -6439,8 +6439,12 @@ webpackJsonp([2],[
 	        //get templates when load the page
 	        this._requestService.getRequestById(this.id)
 	            .subscribe(function (request) {
+	            console.log(request);
 	            //translate status
 	            if (request.status === 'accepted') {
+	                if (_this.userToken !== request.user || request.subscribers.indexOf(_this.userToken) < 0) {
+	                    _this.router.navigateByUrl('/');
+	                }
 	                request.status = 'Đã được chấp nhận';
 	                _this.checkIsAcceped = true;
 	            }
@@ -6448,7 +6452,7 @@ webpackJsonp([2],[
 	                request.status = 'Đã kết thúc';
 	                _this.checkDeactive = true;
 	            }
-	            else {
+	            else if (request.status === 'pending' || request.status === 'active') {
 	                request.status = 'Đang chờ';
 	            }
 	            request.userlink = '/user/' + request.user;
@@ -6505,7 +6509,7 @@ webpackJsonp([2],[
 	                    if (offers[i].status === 'pending') {
 	                        offers[i].status = 'Đang chờ';
 	                    }
-	                    else {
+	                    else if (offers[i].status === 'deactive') {
 	                        offers[i].status = 'Được chấp nhận';
 	                    }
 	                    _this.offers.push(offers[i]);
@@ -10641,7 +10645,6 @@ webpackJsonp([2],[
 	                if (requests.length === 0 || user.ownKnowledgeIds.length === 0) {
 	                    _this._requestService.getRequestExceptUserTags(user.ownKnowledgeIds, _this.countR2).subscribe(function (requests) {
 	                        if (requests.length <= 0) {
-	                            alert("Không còn bài viết nào");
 	                        }
 	                        else {
 	                            for (var i = 0; i < requests.length; i++) {
@@ -11899,10 +11902,10 @@ webpackJsonp([2],[
 	        //this.createdAt = this.formatDate(createdAt);
 	        this.id = this.knowledgeId;
 	        this.getKnowledgeNameOfRequest();
-	        if (this.status === 'pending') {
+	        if (this.status === 'pending' || this.status === 'active' || this.status === 'Đang chờ') {
 	            this.status = 'Đang chờ';
 	        }
-	        else {
+	        else if (this.status = 'accepted') {
 	            this.status = 'Đã được chấp nhận';
 	        }
 	    };
@@ -12061,6 +12064,7 @@ webpackJsonp([2],[
 	var request_update_1 = __webpack_require__(189);
 	var user_list_1 = __webpack_require__(430);
 	var reports_list_1 = __webpack_require__(427);
+	var dashboard_1 = __webpack_require__(1125);
 	var tag_list_control_1 = __webpack_require__(429);
 	var article_list_clt_1 = __webpack_require__(425);
 	var auth_1 = __webpack_require__(448);
@@ -12123,8 +12127,17 @@ webpackJsonp([2],[
 	                ]
 	            },
 	            {
+	                path: 'dashboard',
+	                children: [
+	                    {
+	                        path: '',
+	                        component: dashboard_1.DashboardComponent
+	                    }
+	                ]
+	            },
+	            {
 	                path: '',
-	                redirectTo: 'knowledges'
+	                redirectTo: 'dashboard'
 	            }
 	        ]
 	    }
@@ -40507,6 +40520,129 @@ webpackJsonp([2],[
 	    return UITreeRow;
 	}());
 	exports.UITreeRow = UITreeRow;
+	
+
+/***/ },
+/* 1121 */,
+/* 1122 */,
+/* 1123 */,
+/* 1124 */,
+/* 1125 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var ng2_charts_1 = __webpack_require__(1059);
+	var knowledge_1 = __webpack_require__(55);
+	var requests_1 = __webpack_require__(63);
+	var users_1 = __webpack_require__(29);
+	var kspace_1 = __webpack_require__(88);
+	var article_1 = __webpack_require__(44);
+	var DashboardComponent = (function () {
+	    function DashboardComponent(_knowledgeService, _articleService, _requestService, _userService, _kspaceService) {
+	        this._knowledgeService = _knowledgeService;
+	        this._articleService = _articleService;
+	        this._requestService = _requestService;
+	        this._userService = _userService;
+	        this._kspaceService = _kspaceService;
+	        this.visible = false;
+	        this.numOfActiveRequest = 0;
+	        this.numOfFinishedRequest = 0;
+	        this.numOfActiveKspace = 0;
+	        this.numOfFinishedKspace = 0;
+	    }
+	    DashboardComponent.prototype.ngOnInit = function () {
+	        this.getAllKnowledges();
+	        this.getAllUsers();
+	        this.getAllRequests();
+	        this.getAllKSpaces();
+	        this.getAllArticles();
+	    };
+	    DashboardComponent.prototype.getAllKnowledges = function () {
+	        var _this = this;
+	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            _this.knowledges = knowledges;
+	        });
+	    };
+	    DashboardComponent.prototype.getAllUsers = function () {
+	        var _this = this;
+	        this._userService.getAllUsers().subscribe(function (users) {
+	            _this.users = users;
+	        });
+	    };
+	    DashboardComponent.prototype.getAllArticles = function () {
+	        var _this = this;
+	        this._articleService.getAllArtAdmin().subscribe(function (articles) {
+	            _this.articles = articles;
+	        });
+	    };
+	    DashboardComponent.prototype.getAllRequests = function () {
+	        var _this = this;
+	        this._requestService.getAllRequestAdmin().subscribe(function (requests) {
+	            _this.requests = requests;
+	            for (var i = 0; i < _this.requests.length; i++) {
+	                if (_this.requests[i].status == "pending")
+	                    _this.numOfActiveRequest++;
+	                if (_this.requests[i].status == "accepted")
+	                    _this.numOfFinishedRequest++;
+	            }
+	        });
+	    };
+	    DashboardComponent.prototype.getAllKSpaces = function () {
+	        var _this = this;
+	        this._kspaceService.getAllKSpace().subscribe(function (kspaces) {
+	            _this.kspaces = kspaces;
+	            console.log(_this.kspaces);
+	            for (var i = 0; i < _this.kspaces.length; i++) {
+	                if (!_this.kspaces[i].hasOwnProperty("finishedAt")) {
+	                    _this.numOfActiveKspace++;
+	                }
+	                if (_this.kspaces[i].hasOwnProperty("finishedAt")) {
+	                    _this.numOfFinishedKspace++;
+	                }
+	            }
+	        });
+	    };
+	    DashboardComponent.prototype.draw = function () {
+	        this.polarAreaChartLabels = ['Số tri thức', 'Số người sử dụng', 'Số yêu cầu đã tạo', 'Số KSpace đã tạo', 'Số bài viết'];
+	        this.polarAreaChartData = [this.knowledges.length, this.users.length, this.requests.length, this.kspaces.length, this.articles.length];
+	        this.polarAreaLegend = true;
+	        this.polarAreaChartType = 'polarArea';
+	        if (this.visible == false)
+	            this.visible = true;
+	        else
+	            this.visible = false;
+	    };
+	    // events
+	    DashboardComponent.prototype.chartClicked = function (e) {
+	        console.log(e);
+	    };
+	    DashboardComponent.prototype.chartHovered = function (e) {
+	        console.log(e);
+	    };
+	    DashboardComponent = __decorate([
+	        core_1.Component({
+	            selector: 'dashboard',
+	            templateUrl: 'client/dev/app/components/back-end/dashboard/templates/dashboard.html',
+	            styleUrls: ['client/dev/app/components/back-end/dashboard/styles/dashboard.css'],
+	            directives: [ng2_charts_1.CHART_DIRECTIVES],
+	            providers: [knowledge_1.KnowledgeService, requests_1.RequestService, users_1.UserService, kspace_1.KSpaceService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _a) || Object, (typeof (_b = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _b) || Object, (typeof (_c = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object])
+	    ], DashboardComponent);
+	    return DashboardComponent;
+	    var _a, _b, _c, _d, _e;
+	}());
+	exports.DashboardComponent = DashboardComponent;
 	
 
 /***/ }

@@ -87,7 +87,6 @@ export class NewsFeedComponent implements OnInit {
                 if (requests.length === 0 || user.ownKnowledgeIds.length === 0) {
                     this._requestService.getRequestExceptUserTags(user.ownKnowledgeIds, this.countR2).subscribe((requests) => {
                         if (requests.length <= 0) {
-                            alert("Không còn bài viết nào");
                         } else {
                             for (var i = 0; i < requests.length; i++) {
 

@@ -130,6 +130,6 @@ export class KnowledgeListComponent {
     onChange():void {
       this.getAllKnowledgesForAdmin();
     }
-    
+
 
 }
