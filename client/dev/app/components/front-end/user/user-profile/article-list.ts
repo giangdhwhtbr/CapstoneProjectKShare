@@ -29,7 +29,7 @@ import { Knowledge } from '../../../../interface/knowledge';
 import { KSpace } from '../../../../interface/kspace';
 
 import {listTagComponent} from '../../tag/tag';
-import { infoHover } from '../user/user-profile/info-hover';
+import { infoHover } from './info-hover';
 
 @Component({
     selector: 'article-list',

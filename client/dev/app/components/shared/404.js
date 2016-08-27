@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -28,7 +29,7 @@ var errorPageComponent = (function () {
     }
     errorPageComponent = __decorate([
         core_1.Component({
-            selector: 'header',
+            selector: 'error',
             templateUrl: 'client/dev/app/components/shared/templates/404.html',
             styleUrls: ['client/dev/app/components/shared/styles/404.css'],
             directives: [
@@ -37,6 +38,6 @@ var errorPageComponent = (function () {
         __metadata('design:paramtypes', [auth_1.AuthService, router_1.Router, notification_1.NotificationService, users_1.UserService, chat_1.ChatService, router_1.ActivatedRoute])
     ], errorPageComponent);
     return errorPageComponent;
-})();
+}());
 exports.errorPageComponent = errorPageComponent;
 //# sourceMappingURL=404.js.map

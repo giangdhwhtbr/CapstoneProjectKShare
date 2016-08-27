@@ -72,6 +72,7 @@
     "client/dev/app/components/front-end/user/user-profile/article-list.ts",
     "client/dev/app/components/front-end/user/user-profile/friend-list.ts",
     "client/dev/app/components/front-end/user/user-profile/friend-record.ts",
+    "client/dev/app/components/front-end/user/user-profile/info-hover.ts",
     "client/dev/app/components/front-end/user/user-profile/kspace-list.ts",
     "client/dev/app/components/front-end/user/user-profile/request-friend-record.ts",
     "client/dev/app/components/front-end/user/user-profile/request-record.ts",
