@@ -9,7 +9,7 @@ import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from '@angular/router';
 import { TagService } from '../../../services/tag';
 
 import {listTagComponent} from '../tag/tag';
-
+import { infoHover } from '../user/user-profile/info-hover';
 
 import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance } from 'ng2-pagination';
 import { Subscription }       from 'rxjs/Subscription';
@@ -21,7 +21,7 @@ declare var $:any;
     templateUrl: 'client/dev/app/components/front-end/tag/templates/display-article-by-tag.html',
     styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
     directives: [
-        ROUTER_DIRECTIVES,listTagComponent,PaginationControlsCmp,PrivateChatComponent
+        ROUTER_DIRECTIVES,listTagComponent,PaginationControlsCmp,PrivateChatComponent,infoHover
     ],
     providers: [TagService,PaginationService],
     pipes: [PaginatePipe]

@@ -26,13 +26,14 @@ import { Knowledge } from '../../../../interface/knowledge';
 import { KSpace } from '../../../../interface/kspace';
 
 import {listTagComponent} from '../../tag/tag';
+import {infoHover} from '../../user/user-profile/info-hover';
 
 @Component({
     selector: 'kspace-list',
     templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/list-kspace.html',
     styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
     directives: [
-        ROUTER_DIRECTIVES,listTagComponent
+        ROUTER_DIRECTIVES,listTagComponent,infoHover
     ]
 })
 

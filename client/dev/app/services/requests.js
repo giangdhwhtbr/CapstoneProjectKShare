@@ -19,6 +19,7 @@ var RequestService = (function () {
         this._searchRequetsUrl = '/api/requests-search/:id';
         this._statusSubcriberUrl = '/api/requests-subcriber/:id';
         this._requestStatusUrl = '/api/requests-status/:id';
+        this._kspaceUrl = '/api/kspace/:rid';
     }
     RequestService.prototype.getAllRequests = function (num) {
         var header = new http_1.Headers;
@@ -30,6 +31,10 @@ var RequestService = (function () {
         return this._http.put(this._requestUserUrl.replace(':id', ''), _data, options)
             .map(function (r) { return r.json(); })
             .catch(this.handleError);
+    };
+    RequestService.prototype.getKspaceByRId = function (id) {
+        return this._http.get(this._kspaceUrl.replace(':rid', id))
+            .map(function (kspace) { return kspace.json(); });
     };
     //get all request which user's ownknowledgeIds same with tagid of request
     RequestService.prototype.getRequestByUserTags = function (tags, num) {

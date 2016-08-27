@@ -133,6 +133,10 @@ const userSchema = new mongoose.Schema({
     status: {
         type: String,
         default: 'active'
+    },
+    totalArt:{
+        type:Number,
+        default:0
     }
 });
 

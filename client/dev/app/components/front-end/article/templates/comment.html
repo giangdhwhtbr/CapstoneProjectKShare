@@ -1,14 +1,10 @@
 <div *ngIf="comment" class="card-panel grey lighten-5 z-depth-1 hoverable">
     <div class="row valign-wrapper">
-        <div class="col s2">
-            <img src="http://materializecss.com/images/yuna.jpg" alt=""
-                 class="circle responsive-img">
-            <!-- notice the "circle" class -->
-        </div>
-        <div class="col s10">
+        <div class="col s12">
             <div class="col s12">
-                                    <span class="blue-text user-cmt"><a
-                                            [routerLink]="['/user',comment.user]">{{comment.user}}</a></span>
+                                    <span class="blue-text user-cmt">
+                                        <hover-info-user [username]="comment.user"></hover-info-user>
+                                    </span>
             </div>
             <div [hidden]="isEditing" class="col s12">
                 <span class="black-text content-cmt">{{comment.content}}</span>

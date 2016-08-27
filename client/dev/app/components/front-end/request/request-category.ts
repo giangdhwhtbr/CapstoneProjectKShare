@@ -15,7 +15,7 @@ import { ArticleService } from '../../../services/article';
 import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInstance } from 'ng2-pagination';
 import { Subscription } from 'rxjs/Subscription';
 import { PrivateChatComponent } from './../../shared/private-chat';
-
+import { infoHover } from '../user/user-profile/info-hover';
 
 import {listTagComponent} from '../tag/tag';
 declare var $:any;
@@ -23,7 +23,7 @@ declare var $:any;
     selector: 'request-category-cli',
     templateUrl: 'client/dev/app/components/front-end/request/templates/request-category.html',
     styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
-    directives: [ROUTER_DIRECTIVES,PaginationControlsCmp,listTagComponent,PrivateChatComponent],
+    directives: [ROUTER_DIRECTIVES,PaginationControlsCmp,listTagComponent,PrivateChatComponent,infoHover],
     providers:[ArticleService,PaginationService],
     pipes: [PaginatePipe]
 })

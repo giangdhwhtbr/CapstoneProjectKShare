@@ -12,6 +12,7 @@ var offer_create_1 = require('../offer/offer-create');
 var report_1 = require('../report/report');
 var tag_1 = require('../tag/tag');
 var private_chat_1 = require('./../../shared/private-chat');
+var info_hover_1 = require('../user/user-profile/info-hover');
 var RequestDetailClientComponent = (function () {
     function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
         var _this = this;
@@ -21,7 +22,6 @@ var RequestDetailClientComponent = (function () {
         this._knowledgeService = _knowledgeService;
         this._kspaceService = _kspaceService;
         this.route = route;
-        this.pageTitle = 'Welcome to Knowledge Sharing Network';
         this.num = 5;
         this.height = 400;
         //check if request is accepted
@@ -52,10 +52,14 @@ var RequestDetailClientComponent = (function () {
         //get templates when load the page
         this._requestService.getRequestById(this.id)
             .subscribe(function (request) {
-            console.log(request);
             //translate status
             if (request.status === 'accepted') {
-                if (_this.userToken !== request.user || request.subscribers.indexOf(_this.userToken) < 0) {
+                if (_this.userToken === request.user || request.subscribers.indexOf(_this.userToken) > 0 || _this.userToken !== null) {
+                    _this._requestService.getKspaceByRId(request._id).subscribe(function (k) {
+                        _this.link = "/kspace/info/" + k._id + '/' + _this.userToken;
+                    });
+                }
+                else {
                     _this.router.navigateByUrl('/');
                 }
                 request.status = 'Đã được chấp nhận';
@@ -117,12 +121,14 @@ var RequestDetailClientComponent = (function () {
         var _this = this;
         //get front.offer of the templates when load the page
         this._offerService.getOfferByRequestId(this._id, this.num).subscribe(function (offers) {
+            console.log(offers);
             if (offers) {
                 for (var i = 0; i < offers.length; i++) {
                     if (offers[i].status === 'pending') {
                         offers[i].status = 'Đang chờ';
                     }
-                    else if (offers[i].status === 'deactive') {
+                    else if (offers[i].status === 'accepted') {
+                        console.log(offers[i]);
                         offers[i].status = 'Được chấp nhận';
                     }
                     _this.offers.push(offers[i]);
@@ -234,7 +240,8 @@ var RequestDetailClientComponent = (function () {
                 offer_create_1.CreateOfferComponent,
                 report_1.ReportComponent,
                 private_chat_1.PrivateChatComponent,
-                tag_1.listTagComponent
+                tag_1.listTagComponent,
+                info_hover_1.infoHover
             ]
         })
     ], RequestDetailClientComponent);

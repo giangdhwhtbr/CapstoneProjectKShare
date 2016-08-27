@@ -30,6 +30,7 @@ var kspace_1 = require("./front-end/kspace/kspace");
 var kspace_list_1 = require("./front-end/kspace/kspace-list");
 var kspace_info_1 = require("./front-end/kspace/kspace-info");
 var friend_list_1 = require("./front-end/user/user-profile/friend-list");
+var info_hover_1 = require("./front-end/user/user-profile/info-hover");
 var rs_search_user_1 = require("./front-end/user/search/rs-search-user");
 var user_profile_bar_1 = require("./front-end/user/user-profile/user-profile-bar");
 var user_info_update_1 = require("./front-end/user/user-profile/user-info-update");
@@ -73,7 +74,8 @@ var KshareComponent = (function () {
                 request_create_1.CreateRequestComponent,
                 rs_search_user_1.userSearchRsComponent,
                 user_info_update_1.UpdateUserComponent,
-                public_kspace_1.CreatePublicKspace
+                public_kspace_1.CreatePublicKspace,
+                info_hover_1.infoHover
             ]
         })
     ], KshareComponent);

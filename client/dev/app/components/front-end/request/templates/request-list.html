@@ -34,7 +34,7 @@
                 <div class="card-action">
                     <div class="row">
                         <div class="col s4 m4">
-                            <p>Người tạo :<a [routerLink]="['/user/',e.req.user]"> {{e.req.user}}</a></p>
+                            <p>Người tạo :<hover-info-user [username]="e.req.user"></hover-info-user></p>
                         </div>
                         <div class="col s4 m4">
                             <p>Trạng thái : {{e.req.status}}</p>

@@ -91,3 +91,32 @@ body {
   background: #fff;
   min-height: 460px;
 }
+
+.dropdown-info-user {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-content-info-user {
+  display: none;
+  position: absolute;
+  background-color: #f9f9f9;
+  min-width: 160px;
+  box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+}
+
+.dropdown-content-info-user a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+
+.dropdown-info-user:hover .dropdown-content-info-user {
+  display: block;
+  z-index: 1;
+}
+.main-div-hover-info{
+  margin-right: 68px;
+}

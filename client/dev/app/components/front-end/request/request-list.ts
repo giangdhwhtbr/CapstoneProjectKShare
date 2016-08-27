@@ -19,6 +19,7 @@ import { AuthService } from '../../../services/auth';
 import { Router } from "@angular/router";
 import { Subscription } from 'rxjs/Subscription';
 import {listTagComponent} from '../tag/tag';
+import { infoHover } from '../user/user-profile/info-hover';
 
 declare var $: any;
 
@@ -32,7 +33,8 @@ declare var $: any;
         CreateRequestComponent,
         RequestCategoryComponent,
         listTagComponent,
-        PrivateChatComponent
+        PrivateChatComponent,
+        infoHover
     ],
     providers: [TagService]
 })

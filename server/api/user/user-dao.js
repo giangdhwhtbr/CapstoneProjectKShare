@@ -33,6 +33,23 @@ userSchema.statics.getUserById = (id) => {
             });
     });
 }
+userSchema.statics.addTotalArtUser = (username) => {
+
+    return new Promise((resolve, reject) => {
+        User
+            .findOne({'username': username})
+            .select("-username -password -role -salt")
+            .exec((err, user) => {
+                if(err){
+                    reject(err);
+                } else{
+                    user.totalArt+=1;
+                    user.save();
+                    resolve("ok");
+                }
+            });
+    });
+}
 
 userSchema.statics.getAvartaByUserNaname = (arrName) => {
 

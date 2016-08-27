@@ -24,6 +24,7 @@ import { CreateOfferComponent } from '../offer/offer-create';
 import { ReportComponent } from '../report/report';
 import { listTagComponent } from '../tag/tag';
 import { PrivateChatComponent } from './../../shared/private-chat';
+import { infoHover } from '../user/user-profile/info-hover';
 
 import { Subscription } from 'rxjs/Subscription';
 declare var $:any;
@@ -38,7 +39,8 @@ declare var Materialize:any;
         CreateOfferComponent,
         ReportComponent,
         PrivateChatComponent,
-        listTagComponent
+        listTagComponent,
+        infoHover
     ]
 })
 

@@ -13,6 +13,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var tag_1 = require('../../tag/tag');
+var info_hover_1 = require('../../user/user-profile/info-hover');
 var KspaceListComponent = (function () {
     function KspaceListComponent(router, route) {
         this.router = router;
@@ -29,7 +30,7 @@ var KspaceListComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/list-kspace.html',
             styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES, tag_1.listTagComponent
+                router_1.ROUTER_DIRECTIVES, tag_1.listTagComponent, info_hover_1.infoHover
             ]
         })
     ], KspaceListComponent);

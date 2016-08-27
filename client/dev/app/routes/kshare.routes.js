@@ -45,12 +45,12 @@ exports.KShareRoutes = [
                     {
                         path: '',
                         component: register_1.RegisterComponent,
-                        canActivate: [auth_1.Guest]
+                        canActivate: [auth_1.Guest],
                     },
                     {
                         path: 'info/:id',
                         component: info_1.RegisterInfoComponent,
-                        canActivate: [auth_1.isLogin]
+                        canActivate: [auth_1.isLogin],
                     }
                 ]
             },
@@ -214,7 +214,7 @@ exports.KShareRoutes = [
                 path: '',
                 component: home_1.HomeComponent
             }
-        ]
+        ],
     },
     {
         path: 'error',
