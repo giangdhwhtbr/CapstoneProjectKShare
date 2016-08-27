@@ -10,7 +10,7 @@ var validateEmail = function (email) {
 };
 
 var validateRole = function (role) {
-    if (role == "admin" || role == "normal") {
+    if (role == "admin" || role == "normal" || role == "mod") {
         return true;
     } else {
         return false;

@@ -37,11 +37,8 @@ var LoginComponent = (function () {
             .login(user)
             .subscribe(function (res) {
             localStorage.setItem('username', res.username);
-            if (res.role == 'admin') {
+            if (res.role) {
                 localStorage.setItem('userrole', res.role);
-            }
-            else {
-                localStorage.setItem('userrole', 'normal');
             }
             if (localStorage.getItem('redirectUrl')) {
                 var redirectUrl = localStorage.getItem('redirectUrl');

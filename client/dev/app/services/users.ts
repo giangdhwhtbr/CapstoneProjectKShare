@@ -109,25 +109,16 @@ export class UserService {
     addUser(user:User):Observable<any> {
         let headers = new Headers({'Content-Type': 'application/json', 'Connection': 'keep-alive'});
         let options = new RequestOptions({headers: headers});
-        var formatDate = function (date) {
-            if (date) {
-                var newDate, day, month, year;
-                year = date.substr(6, 4);
-                day = date.substr(3, 2);
-                month = date.substr(0, 2);
-                return newDate = year + '-' + month + '-' + day;
-            }
-        }
         let _user = JSON.stringify({
             username: user.username,
             password: user.password,
             email: user.email,
             role: user.role
         });
-
         return this._http
             .post(this._usersUrl.replace(':id', ''), _user, options)
-            .map((r) => r.json());
+            .map((r) => r.json())
+            .catch(this.handleError);
     }
 
     updateUser(user:any, _newTag:any[]):Observable<any> {
@@ -151,7 +142,7 @@ export class UserService {
                 linkImg: user.linkImg,
                 ownKnowledgeIds: user.ownKnowledgeIds,
                 status: user.status,
-                banStatus: user.banStatus 
+                banStatus: user.banStatus
             },
             newTag: _newTag
         });

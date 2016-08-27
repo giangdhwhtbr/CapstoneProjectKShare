@@ -49,12 +49,9 @@ export class LoginComponent {
       .subscribe(
         res => {
             localStorage.setItem('username', res.username);
-            if(res.role == 'admin'){
+            if(res.role){
               localStorage.setItem('userrole', res.role);
-            }else {
-              localStorage.setItem('userrole', 'normal');
             }
-
             if(localStorage.getItem('redirectUrl')){
               let redirectUrl = localStorage.getItem('redirectUrl');
               localStorage.removeItem('redirectUrl');
