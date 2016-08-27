@@ -29,9 +29,6 @@ var NewsFeedComponent = (function () {
         this.height = 400;
         this.roleToken = localStorage.getItem('role');
         this.userToken = localStorage.getItem('username');
-        if (this.userToken === null) {
-            this.router.navigateByUrl('/');
-        }
     }
     NewsFeedComponent.prototype.ngOnInit = function () {
         this.countA1 = 5;
@@ -39,17 +36,12 @@ var NewsFeedComponent = (function () {
         this.countA2 = 5;
         this.countR2 = 5;
         this.records = [];
-        this.getRequests();
-        // $(window).on("scroll", () => {
-        //     var scrollHeight = $(document).height();
-        //     var scrollPosition = $(window).height() + $(window).scrollTop();
-        //     if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
-        //         setTimeout(() => {
-        //             this.seeMore();
-        //         }, 1000);
-        //         this.height += 30;
-        //     }
-        // });
+        if (this.userToken === null) {
+            this.getArts();
+        }
+        else {
+            this.getRequests();
+        }
         $('.parallax').parallax();
     };
     NewsFeedComponent.prototype.seeMore = function () {
@@ -57,6 +49,27 @@ var NewsFeedComponent = (function () {
         this.countA1 = this.countA1 + 5;
         this.getRequests();
         this.getArticles();
+    };
+    NewsFeedComponent.prototype.getArts = function () {
+        var _this = this;
+        this._articleService.getAllArts(this.countA1).subscribe(function (arts) {
+            console.log(arts);
+            for (var _i = 0; _i < arts.length; _i++) {
+                var a = arts[_i];
+                _this.records.push(a);
+            }
+            _this.getReqs();
+        });
+    };
+    NewsFeedComponent.prototype.getReqs = function () {
+        var _this = this;
+        this._requestService.getAllRequests(this.countR1).subscribe(function (reqs) {
+            console.log(reqs);
+            for (var _i = 0; _i < reqs.length; _i++) {
+                var r = reqs[_i];
+                _this.records.push(r);
+            }
+        });
     };
     NewsFeedComponent.prototype.getRequests = function () {
         var _this = this;
