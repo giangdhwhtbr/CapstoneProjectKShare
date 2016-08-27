@@ -29,7 +29,7 @@ articleSchema.statics.topArticles = () => {
 
         Article
             .find({})
-            .select('-content')
+            .select('-content -tags -comments -userUnLiked -knowledge -userLiked -tagsFD')
             .sort({like: -1})
             .limit(5)
             .exec((err, articles) => {
