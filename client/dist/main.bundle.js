@@ -3398,15 +3398,6 @@ webpackJsonp([2],[
 	            var type = params['type'];
 	            var id = params['id'];
 	            _this._articleService.getArtByKnwId(id).subscribe(function (arts) {
-	                for (var _i = 0, arts_1 = arts; _i < arts_1.length; _i++) {
-	                    var e = arts_1[_i];
-	                    //get summary
-	                    var html = e.content;
-	                    var div = document.createElement("div");
-	                    div.innerHTML = html;
-	                    var text = div.textContent || div.innerText || "";
-	                    e.content = text;
-	                }
 	                _this.arts = arts;
 	            });
 	            //get templates from children category
@@ -3421,12 +3412,6 @@ webpackJsonp([2],[
 	                    for (var i = 0; i < requests.length; i++) {
 	                        requests[i].createdAt = new Date(requests[i].createdAt);
 	                        requests[i].modifiedDate = new Date(requests[i].modifiedDate);
-	                        //get summary
-	                        var html = requests[i].description;
-	                        var div = document.createElement("div");
-	                        div.innerHTML = html;
-	                        var text = div.textContent || div.innerText || "";
-	                        requests[i].description = text;
 	                    }
 	                    _this.requests = requests;
 	                });
@@ -3448,12 +3433,6 @@ webpackJsonp([2],[
 	                                if (requests[i].status === 'pending') {
 	                                    requests[i].status = 'Đang chờ';
 	                                }
-	                                //get summary
-	                                var html = e.description;
-	                                var div = document.createElement("div");
-	                                div.innerHTML = html;
-	                                var text = div.textContent || div.innerText || "";
-	                                requests[i].description = text;
 	                            }
 	                            if (a.length == 0) {
 	                                _this.isExistRecord = true;
@@ -5822,12 +5801,6 @@ webpackJsonp([2],[
 	            }
 	            else {
 	                for (var i = 0; i < arts.length; i++) {
-	                    //get summary
-	                    var html = arts[i].content;
-	                    var div = document.createElement("div");
-	                    div.innerHTML = html;
-	                    var text = div.textContent || div.innerText || "";
-	                    arts[i].content = text;
 	                    _this.listArt.push(arts[i]);
 	                }
 	            }
@@ -5850,12 +5823,6 @@ webpackJsonp([2],[
 	            this._artService.searchArticle(this.text).subscribe(function (arts) {
 	                console.log(arts.length);
 	                for (var i = 0; i < arts.length; i++) {
-	                    //get summary
-	                    var html = arts[i].content;
-	                    var div = document.createElement("div");
-	                    div.innerHTML = html;
-	                    var text = div.textContent || div.innerText || "";
-	                    arts[i].content = text;
 	                    _this.listArt.push(arts[i]);
 	                }
 	                if (arts.length <= 0) {
@@ -6881,26 +6848,8 @@ webpackJsonp([2],[
 	            .subscribe(function (params) {
 	            _this.id = params['id'];
 	            _this._tagService.getArtByTag(_this.id).subscribe(function (arts) {
-	                for (var _i = 0, arts_1 = arts; _i < arts_1.length; _i++) {
-	                    var e = arts_1[_i];
-	                    //get summary
-	                    var html = e.content;
-	                    var div = document.createElement("div");
-	                    div.innerHTML = html;
-	                    var text = div.textContent || div.innerText || "";
-	                    e.content = text;
-	                }
 	                _this.listArt = arts;
 	                _this._tagService.getReqByTag(_this.id).subscribe(function (reqs) {
-	                    for (var _i = 0, reqs_1 = reqs; _i < reqs_1.length; _i++) {
-	                        var e = reqs_1[_i];
-	                        //get summary
-	                        var html = e.description;
-	                        var div = document.createElement("div");
-	                        div.innerHTML = html;
-	                        var text = div.textContent || div.innerText || "";
-	                        e.description = text;
-	                    }
 	                    _this.listReq = reqs;
 	                });
 	            }, function (error) {

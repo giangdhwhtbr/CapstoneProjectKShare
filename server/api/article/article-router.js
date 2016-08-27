@@ -37,12 +37,6 @@ module.exports = class ArticleRoutes {
         router.route('/api/art/de/:id')
             .get(ArticleController.activeArt);
 
-        router.route('/api/page/article/:start/:stt')
-            .get(ArticleController.getAPage);
-
-        router.route('/api/page/articletot/:stt')
-            .get(ArticleController.getTot);
-
         router.route('/api/comment/article')
             .post(ArticleController.addComment);
 

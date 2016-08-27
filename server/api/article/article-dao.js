@@ -46,6 +46,7 @@ articleSchema.statics.getAllNf = (x) => {
             .find({status: 'public'})
             .skip(x - 5)
             .limit(5)
+            .select('-content -comments -userUnLiked -knowledge -userLiked -tagsFD')
             .sort({ updatedAt: -1 })
             .exec((err, articles) => {
                 err ? reject(err)
@@ -75,6 +76,7 @@ articleSchema.statics.getArticlesByTagsOfUser = (userTags, x) => {
                     { tags: { $in: userTags } }
                 ]
             })
+            .select('-content -comments -userUnLiked -knowledge -userLiked -tagsFD')
             .skip(x - 5)
             .limit(5)
             .exec((err, articles) => {
@@ -94,6 +96,7 @@ articleSchema.statics.getArticlesExceptTagsOfUser = (userTags, x) => {
                     { tags: { $nin: userTags } }
                 ]
             })
+            .select('-content -comments -userUnLiked -knowledge -userLiked -tagsFD')
             .skip(x - 5)
             .limit(5)
             .exec((err, article) => {
@@ -125,6 +128,7 @@ articleSchema.statics.getArticleByTagId = (idTag) => {
         }
         Article
             .find({ 'tags': idTag })
+            .select('-content -comments -userUnLiked -knowledge -userLiked -tagsFD')
             .exec((err, article) => {
                 err ? reject(err)
                     : resolve(article);

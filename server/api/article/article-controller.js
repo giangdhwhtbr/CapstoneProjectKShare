@@ -17,14 +17,6 @@ module.exports = class ArticleController {
             .catch(error => res.status(400).json(error));
     }
 
-    static getAllArticles(req, res) {
-        ArticleDAO
-            .getAllNf(req.body.num)
-            .then(articles => {
-                res.status(200).json(articles);
-            })
-            .catch(error => res.status(400).json(error));
-    }
 
     static topArticles(req,res) {
         ArticleDAO
@@ -100,32 +92,6 @@ module.exports = class ArticleController {
             .fullTextSearchArticle(req.body.text)
             .then(article => res.status(200).json(article))
             .catch(error => res.status(400).json(error));
-    }
-
-    static getAPage(req, res) {
-
-        if (req.params && req.params.start) {
-            let start = req.params.start;
-            ArticleDAO.getAPage(start, req.params.stt).then((arts)=> {
-                if (arts.length == 0 && start != 0) {
-                    ArticleDAO.getAPage(start - 10, req.params.stt).then((artsBU)=> {
-                        res.status(200).json(artsBU);
-                    }).catch(err=> res.status(400).json(err));
-                } else {
-                    res.status(200).json(arts);
-                }
-
-            }).catch(err=>res.status(400).json(err));
-        }
-    }
-
-    static getTot(req, res) {
-
-        if (req.params && req.params.stt) {
-            ArticleDAO.getTot(req.params.stt).then((num)=> {
-                res.status(200).json(num);
-            }).catch(err=> res.status(400).json(err));
-        }
     }
 
     static getDeArticle(req, res) {

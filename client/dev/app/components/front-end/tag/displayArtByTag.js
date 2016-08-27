@@ -52,26 +52,8 @@ var displayArtByTagComponent = (function () {
             .subscribe(function (params) {
             _this.id = params['id'];
             _this._tagService.getArtByTag(_this.id).subscribe(function (arts) {
-                for (var _i = 0; _i < arts.length; _i++) {
-                    var e = arts[_i];
-                    //get summary
-                    var html = e.content;
-                    var div = document.createElement("div");
-                    div.innerHTML = html;
-                    var text = div.textContent || div.innerText || "";
-                    e.content = text;
-                }
                 _this.listArt = arts;
                 _this._tagService.getReqByTag(_this.id).subscribe(function (reqs) {
-                    for (var _i = 0; _i < reqs.length; _i++) {
-                        var e = reqs[_i];
-                        //get summary
-                        var html = e.description;
-                        var div = document.createElement("div");
-                        div.innerHTML = html;
-                        var text = div.textContent || div.innerText || "";
-                        e.description = text;
-                    }
                     _this.listReq = reqs;
                 });
             }, function (error) {
