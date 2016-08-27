@@ -66,7 +66,7 @@ export class KSpaceInfoComponent implements OnInit {
             .getKSpaceById(this.kspaceId)
             .subscribe(
                 kspace => {
-                    this.kspace=kspace;
+                    this.kspace = kspace;
                     this.title = kspace.requestTitle;
                     this.reviews = kspace.reviews;
                     this.rateAve = parseInt(kspace.rateAve);

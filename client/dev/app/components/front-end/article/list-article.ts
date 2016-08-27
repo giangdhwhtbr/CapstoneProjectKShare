@@ -81,7 +81,7 @@ export class listArticleComponent implements OnInit {
     searchArticle() {
         this.num = 5;
         this.listArt = [];
-        if (!this.text) { 
+        if (!this.text) {
             this.getAllArticles();
             this.isExist = true;
         } else {

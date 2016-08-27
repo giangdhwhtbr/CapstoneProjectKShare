@@ -74,7 +74,8 @@ import { CreatePublicKspace } from "./front-end/kspace/public-kspace";
         CreateRequestComponent,
         userSearchRsComponent,
         UpdateUserComponent,
-        CreatePublicKspace
+        CreatePublicKspace,
+        infoHover
     ]
 })
 export class KshareComponent {

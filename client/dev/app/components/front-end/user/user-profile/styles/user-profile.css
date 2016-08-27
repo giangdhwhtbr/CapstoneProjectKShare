@@ -115,6 +115,7 @@ body {
 
 .dropdown-info-user:hover .dropdown-content-info-user {
   display: block;
+  z-index: 1;
 }
 .main-div-hover-info{
   margin-right: 68px;
