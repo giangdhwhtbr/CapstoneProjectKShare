@@ -12,6 +12,7 @@ requestSchema.statics.getAll = (x) => {
 
         Request
             .find({ status: { $nin: ['deactive', 'accepted'] } })
+            .select('-description -subscribers')
             .skip(x - 5)
             .limit(5)
             .exec((err, requests) => {
@@ -32,6 +33,7 @@ requestSchema.statics.getRequestsByTagsOfUser = (userTags, x) => {
                 ]
             })
             .skip(x - 5)
+            .select('-description -subscribers')
             .limit(5)
             .exec((err, requests) => {
                 err ? reject(err)
@@ -52,6 +54,7 @@ requestSchema.statics.getRequestsExceptTagsOfUser = (userTags, x) => {
             })
             .skip(x - 5)
             .limit(5)
+            .select('-description -subscribers')
             .exec((err, requests) => {
                 err ? reject(err)
                     : resolve(requests);
@@ -69,6 +72,7 @@ requestSchema.statics.getReqByTagId = (idTag) => {
 
         Request
             .find({'tags': idTag})
+            .select('-description -subscribers')
             .exec((err, reqs) => {
                 err ? reject(err)
                     : resolve(reqs);

@@ -31,14 +31,6 @@
                                     <span *ngIf="a.author" class="author">viết bởi :
                                         <a [routerLink]="['/user',a.author]">{{a.author}}</a> </span>
                                 </div>
-                                <div class="col s12">
-                                    <span *ngIf="a.content.length<=70">
-                                        {{a.content}}
-                                    </span>
-                                    <span *ngIf="a.content.length>70">
-                                        {{a.content.substring(0,150)}} ...
-                                    </span>
-                                </div>
                             </div>
                         </div>
                         <div class="row">
@@ -82,15 +74,6 @@
                                 </div>
                                 <div class="col s4" *ngIf="request.createdAt">
                                     Ngày tạo : {{request.createdAt | date:"dd/MM/yyyy"}}
-                                </div>
-
-                                <div class="col s12">
-                                    <span *ngIf="request.description.length<=70">
-                                        {{request.description}}
-                                    </span>
-                                    <span *ngIf="request.description.length>70">
-                                        {{request.description.substring(0,150)}} ...
-                                    </span>
                                 </div>
                             </div>
                             <div class="row">

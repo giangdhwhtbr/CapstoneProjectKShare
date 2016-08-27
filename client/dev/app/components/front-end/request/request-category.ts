@@ -77,17 +77,6 @@ export class RequestCategoryComponent {
                 let id = params['id'];
 
                 this._articleService.getArtByKnwId(id).subscribe((arts)=>{
-
-                    for(let e of arts){
-                        //get summary
-                        let html = e.content;
-                        let div = document.createElement("div");
-                        div.innerHTML = html;
-                        let text = div.textContent || div.innerText || "";
-
-                        e.content = text;
-                    }
-
                     this.arts=arts;
                 });
 
@@ -104,14 +93,6 @@ export class RequestCategoryComponent {
                             for (var i = 0; i < requests.length; i++) {
                                 requests[i].createdAt = new Date(requests[i].createdAt);
                                 requests[i].modifiedDate = new Date(requests[i].modifiedDate);
-
-                                //get summary
-                                let html = requests[i].description;
-                                let div = document.createElement("div");
-                                div.innerHTML = html;
-                                let text = div.textContent || div.innerText || "";
-
-                                requests[i].description = text;
                             }
                             this.requests = requests;
                         });
@@ -138,13 +119,6 @@ export class RequestCategoryComponent {
                                             if (requests[i].status === 'pending') {
                                                 requests[i].status = 'Đang chờ';
                                             }
-                                            //get summary
-                                            let html = e.description;
-                                            let div = document.createElement("div");
-                                            div.innerHTML = html;
-                                            let text = div.textContent || div.innerText || "";
-
-                                            requests[i].description = text;
                                         }
                                         if (a.length == 0) {
                                             this.isExistRecord = true;

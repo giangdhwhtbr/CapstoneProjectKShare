@@ -53,15 +53,6 @@ var RequestCategoryComponent = (function () {
             var type = params['type'];
             var id = params['id'];
             _this._articleService.getArtByKnwId(id).subscribe(function (arts) {
-                for (var _i = 0; _i < arts.length; _i++) {
-                    var e = arts[_i];
-                    //get summary
-                    var html = e.content;
-                    var div = document.createElement("div");
-                    div.innerHTML = html;
-                    var text = div.textContent || div.innerText || "";
-                    e.content = text;
-                }
                 _this.arts = arts;
             });
             //get templates from children category
@@ -76,12 +67,6 @@ var RequestCategoryComponent = (function () {
                     for (var i = 0; i < requests.length; i++) {
                         requests[i].createdAt = new Date(requests[i].createdAt);
                         requests[i].modifiedDate = new Date(requests[i].modifiedDate);
-                        //get summary
-                        var html = requests[i].description;
-                        var div = document.createElement("div");
-                        div.innerHTML = html;
-                        var text = div.textContent || div.innerText || "";
-                        requests[i].description = text;
                     }
                     _this.requests = requests;
                 });
@@ -103,12 +88,6 @@ var RequestCategoryComponent = (function () {
                                 if (requests[i].status === 'pending') {
                                     requests[i].status = 'Đang chờ';
                                 }
-                                //get summary
-                                var html = e.description;
-                                var div = document.createElement("div");
-                                div.innerHTML = html;
-                                var text = div.textContent || div.innerText || "";
-                                requests[i].description = text;
                             }
                             if (a.length == 0) {
                                 _this.isExistRecord = true;

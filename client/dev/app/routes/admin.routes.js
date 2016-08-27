@@ -5,6 +5,7 @@ var requests_list_1 = require("../components/back-end/request/requests-list");
 var request_update_1 = require("../components/back-end/request/request-update");
 var user_list_1 = require("../components/back-end/users/user-list");
 var reports_list_1 = require("../components/back-end/report/reports-list");
+var dashboard_1 = require("../components/back-end/dashboard/dashboard");
 var tag_list_control_1 = require("../components/back-end/tag/tag-list-control");
 var article_list_clt_1 = require("../components/back-end/article/article-list-clt");
 var auth_1 = require('./auth');
@@ -67,8 +68,17 @@ exports.AdminRoutes = [
                 ]
             },
             {
+                path: 'dashboard',
+                children: [
+                    {
+                        path: '',
+                        component: dashboard_1.DashboardComponent
+                    }
+                ]
+            },
+            {
                 path: '',
-                redirectTo: 'knowledges'
+                redirectTo: 'dashboard'
             }
         ]
     }

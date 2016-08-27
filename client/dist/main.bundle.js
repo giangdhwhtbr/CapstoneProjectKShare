@@ -5822,12 +5822,6 @@ webpackJsonp([2],[
 	            }
 	            else {
 	                for (var i = 0; i < arts.length; i++) {
-	                    //get summary
-	                    var html = arts[i].content;
-	                    var div = document.createElement("div");
-	                    div.innerHTML = html;
-	                    var text = div.textContent || div.innerText || "";
-	                    arts[i].content = text;
 	                    _this.listArt.push(arts[i]);
 	                }
 	            }
@@ -5850,12 +5844,6 @@ webpackJsonp([2],[
 	            this._artService.searchArticle(this.text).subscribe(function (arts) {
 	                console.log(arts.length);
 	                for (var i = 0; i < arts.length; i++) {
-	                    //get summary
-	                    var html = arts[i].content;
-	                    var div = document.createElement("div");
-	                    div.innerHTML = html;
-	                    var text = div.textContent || div.innerText || "";
-	                    arts[i].content = text;
 	                    _this.listArt.push(arts[i]);
 	                }
 	                if (arts.length <= 0) {

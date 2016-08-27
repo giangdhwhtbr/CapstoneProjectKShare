@@ -12,6 +12,7 @@ import { RequestListComponent } from "../components/back-end/request/requests-li
 import { UpdateRequestComponent } from "../components/back-end/request/request-update";
 import { UserListComponent } from "../components/back-end/users/user-list";
 import { ReportListComponent } from "../components/back-end/report/reports-list";
+import { DashboardComponent } from "../components/back-end/dashboard/dashboard";
 import { TagListCtlComponent } from "../components/back-end/tag/tag-list-control";
 import { ArtListCtlComponent } from "../components/back-end/article/article-list-clt";
 
@@ -77,8 +78,17 @@ export const AdminRoutes:RouterConfig = [
                 ]
             },
             {
+                path: 'dashboard',
+                children: [
+                    {
+                        path: '',
+                        component: DashboardComponent
+                    }
+                ]
+            },
+            {
                 path: '',
-                redirectTo: 'knowledges'
+                redirectTo: 'dashboard'
             }
         ]
     }
