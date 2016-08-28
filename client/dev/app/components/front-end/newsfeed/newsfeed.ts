@@ -89,7 +89,6 @@ export class NewsFeedComponent implements OnInit {
 
     getReqs() {
         this._requestService.getAllRequests(this.countR1).subscribe((reqs) => {
-            console.log(reqs);
             for (let r of reqs) {
                 this.records.push(r);
             }
