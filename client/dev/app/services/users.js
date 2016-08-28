@@ -91,15 +91,6 @@ var UserService = (function () {
     UserService.prototype.addUser = function (user) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
         var options = new http_1.RequestOptions({ headers: headers });
-        var formatDate = function (date) {
-            if (date) {
-                var newDate, day, month, year;
-                year = date.substr(6, 4);
-                day = date.substr(3, 2);
-                month = date.substr(0, 2);
-                return newDate = year + '-' + month + '-' + day;
-            }
-        };
         var _user = JSON.stringify({
             username: user.username,
             password: user.password,
@@ -108,7 +99,8 @@ var UserService = (function () {
         });
         return this._http
             .post(this._usersUrl.replace(':id', ''), _user, options)
-            .map(function (r) { return r.json(); });
+            .map(function (r) { return r.json(); })
+            .catch(this.handleError);
     };
     UserService.prototype.updateUser = function (user, _newTag) {
         var headers = new http_1.Headers({ 'Content-Type': 'application/json' });

@@ -46,12 +46,12 @@
                     </ul>
                 </li>
             </ul>
-            <ul [hidden]="!isFrontend" class="right" *ngIf="loginToken&&roleToken=='admin'">
+            <ul [hidden]="!isFrontend" class="right" *ngIf="roleToken=='admin' || roleToken =='mod'">
                 <li>
                     <a class="waves-effect waves-light btn btLogin" href="/admin">Quản lý</a>
                 </li>
             </ul>
-            <ul [hidden]="isFrontend" class="right" *ngIf="loginToken&&roleToken=='admin'">
+            <ul [hidden]="isFrontend" class="right" *ngIf="roleToken=='admin'|| roleToken =='mod'">
                 <li>
                     <a class="waves-effect waves-light btn btLogin" href="/">Thoát</a>
                 </li>

@@ -185,8 +185,8 @@ webpackJsonp([2],[
 	        };
 	        this.socket.emit('reset-new-message', data);
 	    };
-	    PrivateChatComponent.prototype.sendMessage = function (mess) {
-	        if (mess) {
+	    PrivateChatComponent.prototype.sendMessage = function () {
+	        if (this.mess) {
 	            var data = {
 	                sender: this.username,
 	                message: this.mess,
@@ -198,6 +198,8 @@ webpackJsonp([2],[
 	            this.socket.emit('reset-new-message', data);
 	            this.mess = "";
 	        }
+	        var numItems = $('.text-message').length;
+	        $("#cntAllText").animate({ scrollTop: 200 * numItems }, "slow");
 	    };
 	    PrivateChatComponent = __decorate([
 	        core_1.Component({
@@ -581,15 +583,6 @@ webpackJsonp([2],[
 	    UserService.prototype.addUser = function (user) {
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
 	        var options = new http_1.RequestOptions({ headers: headers });
-	        var formatDate = function (date) {
-	            if (date) {
-	                var newDate, day, month, year;
-	                year = date.substr(6, 4);
-	                day = date.substr(3, 2);
-	                month = date.substr(0, 2);
-	                return newDate = year + '-' + month + '-' + day;
-	            }
-	        };
 	        var _user = JSON.stringify({
 	            username: user.username,
 	            password: user.password,
@@ -598,7 +591,8 @@ webpackJsonp([2],[
 	        });
 	        return this._http
 	            .post(this._usersUrl.replace(':id', ''), _user, options)
-	            .map(function (r) { return r.json(); });
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
 	    };
 	    UserService.prototype.updateUser = function (user, _newTag) {
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -5310,6 +5304,9 @@ webpackJsonp([2],[
 	        this.pageTitle = 'users';
 	        this.filter = '';
 	        this.numOfUser = 0;
+	        this.createHid = true;
+	        this.userrole = localStorage.getItem('userrole');
+	        this.userrole === 'admin' ? this.createHid = false : this.createHid = true;
 	        this.userForm = fb.group({
 	            username: ["", common_1.Validators.required],
 	            password: ["", common_1.Validators.required],
@@ -5322,7 +5319,6 @@ webpackJsonp([2],[
 	        this._userService
 	            .getAllUsers()
 	            .subscribe(function (users) {
-	            console.log(users);
 	            for (var i = 0; i < users.length; i++) {
 	                if (users[i].birthday) {
 	                    users[i].birthday = new Date(users[i].birthday);
@@ -5347,13 +5343,54 @@ webpackJsonp([2],[
 	    };
 	    UserListComponent.prototype.addUser = function (user) {
 	        var _this = this;
-	        this._userService
-	            .addUser(user)
-	            .subscribe(function (response) {
-	            _this.users.push(response);
-	        }, function (error) {
-	            console.log(error.text());
-	        });
+	        user.role = $('#role').val();
+	        var validateUsername = function (username) {
+	            var pattern = new RegExp('^[a-zA-Z0-9_.-]{8,30}$');
+	            return pattern.test(username);
+	        };
+	        var validatePass = function (password) {
+	            var pattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
+	            return pattern.test(password);
+	        };
+	        if (!validateUsername(user.username)) {
+	            this.errorMessage = 'Vui lòng nhập tên đăng nhập trong khoảng từ 8-30 kí tự, không dấu và không' +
+	                ' chứa kí' +
+	                ' tự' +
+	                ' đặc' +
+	                ' biệt! ';
+	        }
+	        else if (!validatePass(user.password)) {
+	            this.errorMessage = 'Mât khẩu phải có ít nhất 8 kí tự, bao gồm 1 kí tự viết hoa, 1 kí tự viết thường, 1 kí' +
+	                ' tự đặc biệt và 1 số';
+	        }
+	        else {
+	            this._userService
+	                .addUser(user)
+	                .subscribe(function (response) {
+	                _this.users.push(response);
+	            }, function (error) {
+	                if (error.errors) {
+	                    var errors = error.errors;
+	                    if (errors.username) {
+	                        _this.errorMessage = errors.username.message;
+	                    }
+	                    else if (errors.password) {
+	                        _this.errorMessage = errors.password.message;
+	                    }
+	                    else if (errors.email) {
+	                        _this.errorMessage = errors.email.message;
+	                    }
+	                }
+	                if (error.errmsg) {
+	                    if (error.errmsg.includes('username')) {
+	                        _this.errorMessage = 'tên đăng nhập đã tồn tại';
+	                    }
+	                    else if (error.errmsg.includes('email')) {
+	                        _this.errorMessage = 'email đã tồn tại!';
+	                    }
+	                }
+	            });
+	        }
 	    };
 	    UserListComponent.prototype.banUser = function (userid) {
 	        this._userService.banUser(userid).subscribe(function (response) {
@@ -10694,7 +10731,7 @@ webpackJsonp([2],[
 	    ChalkBoardComponent = __decorate([
 	        core_1.Component({
 	            selector: 'chalkboard',
-	            template: "\n  <div id=\"kspace-container\">\n    <div class=\"row\">\n      <div class=\"col s12\">\n        <ul class=\"tabs\">\n          <li class=\"tab col s1\"><a class=\"active\" (click)=\"changeBoard(currentPage)\">B\u1EA3ng ch\u00EDnh</a></li>\n          <li class=\"tab col s1\" *ngFor=\"let board of boards\">\n          <a *ngIf=\"isLect\" (click)=\"changeBoard(board.json, board.name)\">\n            {{board.name}}\n          </a></li>\n        </ul>\n      </div>\n    </div>\n    <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n    <div id=\"draw-tools\">\n        <p id=\"new-page\"  (click)=\"openModal()\"  class=\"tool-btn modal-trigger\">\n            <i class=\"fa fa-file-o fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n        <select id=\"color-picker\" class=\"tool-btn\">\n            <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n        </select>\n        <hr>\n        <select id=\"brush-size\" class=\"tool-btn\">\n            <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n        </select>\n        <hr>\n        <p id=\"eraser\">\n            <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n        </p>\n    </div>\n      <div class=\"wrapper-chalkboard\">\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n      </div>\n      <!--Modal nh\u1EADp th\u00F4ng tin-->\n      <div id=\"modal1\" class=\"modal modal-fixed-footer\">\n        <div class=\"modal-content\">\n          <h4>M\u00F4 t\u1EA3 th\u00F4ng tin b\u1EA3ng</h4>\n          <form (ngSubmit)=\"newPage(name,des)\">\n              <div class=\"row\">\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"name\"  required=\"required\" id=\"title\"/>\n                  <label for=\"title\">Ti\u00EAu \u0111\u1EC1</label>\n                </div>\n                <div class=\"input-field col s12\">\n                  <input class=\"form-control\" type=\"text\" [(ngModel)]=\"des\"  required=\"required\" id=\"des\"/>\n                  <label for=\"des\">M\u00F4 t\u1EA3</label>\n                </div>\n              </div>\n              <div class=\"row\">\n                <button type=\"submit\" class=\"btn-floating btn-large modal-close waves-effect waves-light blue\"><i class=\"material-icons\">done</i></button>\n              </div>\n            </form>\n        </div>\n        <div class=\"modal-footer\">\n          <a class=\"modal-action modal-close waves-effect waves-green btn-flat \">Tho\u00E1t</a>\n        </div>\n    </div>\n  </div>\n    ",
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/chalkboard.html',
 	            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -11371,11 +11408,8 @@ webpackJsonp([2],[
 	            .login(user)
 	            .subscribe(function (res) {
 	            localStorage.setItem('username', res.username);
-	            if (res.role == 'admin') {
+	            if (res.role) {
 	                localStorage.setItem('userrole', res.role);
-	            }
-	            else {
-	                localStorage.setItem('userrole', 'normal');
 	            }
 	            if (localStorage.getItem('redirectUrl')) {
 	                var redirectUrl = localStorage.getItem('redirectUrl');
@@ -12281,7 +12315,7 @@ webpackJsonp([2],[
 	    }
 	    errorPageComponent = __decorate([
 	        core_1.Component({
-	            selector: 'header',
+	            selector: 'error',
 	            templateUrl: 'client/dev/app/components/shared/templates/404.html',
 	            styleUrls: ['client/dev/app/components/shared/styles/404.css'],
 	            directives: [

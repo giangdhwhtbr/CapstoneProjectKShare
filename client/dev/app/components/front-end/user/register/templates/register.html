@@ -14,6 +14,7 @@
                          type="text"
                          required maxlength="30"
                          name="username"
+                         id="username"
                          #username
                          [ngFormControl]="regForm.controls['username']"
                     >
@@ -24,6 +25,7 @@
                          type="password"
                          required maxlength="30"
                          name="password"
+                         id="password"
                          [ngFormControl]="regForm.controls['password']"
                     >
                     <label for="password">Mật khẩu</label>
@@ -33,18 +35,20 @@
                          type="password"
                          required maxlength="30"
                          name="copass"
+                         id="copass"
                          [ngFormControl]="regForm.controls['copass']"
                     >
-                    <label for="password">Xác nhận mật khẩu</label>
+                    <label for="copass">Xác nhận mật khẩu</label>
                 </div>
                 <div class="input-field col s12">
                   <input class="form-control form-text"
                          type="email"
                          required maxlength="50"
                          name="email"
+                         id = "email"
                          [ngFormControl]="regForm.controls['email']"
                     >
-                    <label for="password">Địa chỉ Email</label>
+                    <label for="email">Địa chỉ Email</label>
                 </div>
                 <div class="input-field col s6">
                     <button class="btn waves-effect waves-light col s12 blue" type="submit">Đăng ký</button>

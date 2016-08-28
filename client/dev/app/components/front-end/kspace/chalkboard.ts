@@ -4,65 +4,7 @@ declare var paper:any;
 declare var io:any;
 @Component({
   selector: 'chalkboard',
-  template: `
-  <div id="kspace-container">
-    <div class="row">
-      <div class="col s12">
-        <ul class="tabs">
-          <li class="tab col s1"><a class="active" (click)="changeBoard(currentPage)">Bảng chính</a></li>
-          <li class="tab col s1" *ngFor="let board of boards">
-          <a *ngIf="isLect" (click)="changeBoard(board.json, board.name)">
-            {{board.name}}
-          </a></li>
-        </ul>
-      </div>
-    </div>
-    <button id="draw-option"><i class="fa fa-bars fa-2x" aria-hidden="true"></i></button>
-    <div id="draw-tools">
-        <p id="new-page"  (click)="openModal()"  class="tool-btn modal-trigger">
-            <i class="fa fa-file-o fa-2x" aria-hidden="true"></i>
-        </p>
-        <select id="color-picker" class="tool-btn">
-            <option *ngFor="let color of colors" value="{{color.value}}">{{color.label}}</option>
-        </select>
-        <hr>
-        <select id="brush-size" class="tool-btn">
-            <option *ngFor="let size of brushSizes" value="{{size.value}}">{{size.label}}</option>
-        </select>
-        <hr>
-        <p id="eraser">
-            <i class="fa fa-eraser fa-2x" aria-hidden="true"></i>
-        </p>
-    </div>
-      <div class="wrapper-chalkboard">
-        <canvas id="chalkboard" resize=true keepalive=true></canvas>
-      </div>
-      <!--Modal nhập thông tin-->
-      <div id="modal1" class="modal modal-fixed-footer">
-        <div class="modal-content">
-          <h4>Mô tả thông tin bảng</h4>
-          <form (ngSubmit)="newPage(name,des)">
-              <div class="row">
-                <div class="input-field col s12">
-                  <input class="form-control" type="text" [(ngModel)]="name"  required="required" id="title"/>
-                  <label for="title">Tiêu đề</label>
-                </div>
-                <div class="input-field col s12">
-                  <input class="form-control" type="text" [(ngModel)]="des"  required="required" id="des"/>
-                  <label for="des">Mô tả</label>
-                </div>
-              </div>
-              <div class="row">
-                <button type="submit" class="btn-floating btn-large modal-close waves-effect waves-light blue"><i class="material-icons">done</i></button>
-              </div>
-            </form>
-        </div>
-        <div class="modal-footer">
-          <a class="modal-action modal-close waves-effect waves-green btn-flat ">Thoát</a>
-        </div>
-    </div>
-  </div>
-    `,
+  templateUrl: 'client/dev/app/components/front-end/kspace/templates/chalkboard.html',
   styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
 })
 export class ChalkBoardComponent {

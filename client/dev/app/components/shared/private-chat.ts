@@ -157,8 +157,8 @@ export class PrivateChatComponent {
     this.socket.emit('reset-new-message', data);
   }
 
-  sendMessage(mess: string) {
-    if(mess){
+  sendMessage() {
+    if(this.mess){
       var data = {
         sender: this.username,
         message: this.mess,
@@ -169,7 +169,11 @@ export class PrivateChatComponent {
       this.socket.emit('private-message', data);
       this.socket.emit('reset-new-message', data);
       this.mess="";
+
+
     }
+    var numItems = $('.text-message').length;
+    $("#cntAllText").animate({ scrollTop: 200*numItems }, "slow");
   }
 
 }

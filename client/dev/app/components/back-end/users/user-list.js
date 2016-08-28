@@ -1,11 +1,10 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
@@ -15,7 +14,6 @@ var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
 var pager_1 = require('../../../services/pager');
 var users_1 = require('../../../services/users');
-var auth_1 = require('../../../services/auth');
 var primeng_1 = require('primeng/primeng');
 var primeng_2 = require('primeng/primeng');
 var private_chat_1 = require('../../shared/private-chat');
@@ -27,6 +25,9 @@ var UserListComponent = (function () {
         this.pageTitle = 'users';
         this.filter = '';
         this.numOfUser = 0;
+        this.createHid = true;
+        this.userrole = localStorage.getItem('userrole');
+        this.userrole === 'admin' ? this.createHid = false : this.createHid = true;
         this.userForm = fb.group({
             username: ["", common_1.Validators.required],
             password: ["", common_1.Validators.required],
@@ -39,7 +40,6 @@ var UserListComponent = (function () {
         this._userService
             .getAllUsers()
             .subscribe(function (users) {
-            console.log(users);
             for (var i = 0; i < users.length; i++) {
                 if (users[i].birthday) {
                     users[i].birthday = new Date(users[i].birthday);
@@ -64,13 +64,54 @@ var UserListComponent = (function () {
     };
     UserListComponent.prototype.addUser = function (user) {
         var _this = this;
-        this._userService
-            .addUser(user)
-            .subscribe(function (response) {
-            _this.users.push(response);
-        }, function (error) {
-            console.log(error.text());
-        });
+        user.role = $('#role').val();
+        var validateUsername = function (username) {
+            var pattern = new RegExp('^[a-zA-Z0-9_.-]{8,30}$');
+            return pattern.test(username);
+        };
+        var validatePass = function (password) {
+            var pattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
+            return pattern.test(password);
+        };
+        if (!validateUsername(user.username)) {
+            this.errorMessage = 'Vui lòng nhập tên đăng nhập trong khoảng từ 8-30 kí tự, không dấu và không' +
+                ' chứa kí' +
+                ' tự' +
+                ' đặc' +
+                ' biệt! ';
+        }
+        else if (!validatePass(user.password)) {
+            this.errorMessage = 'Mât khẩu phải có ít nhất 8 kí tự, bao gồm 1 kí tự viết hoa, 1 kí tự viết thường, 1 kí' +
+                ' tự đặc biệt và 1 số';
+        }
+        else {
+            this._userService
+                .addUser(user)
+                .subscribe(function (response) {
+                _this.users.push(response);
+            }, function (error) {
+                if (error.errors) {
+                    var errors = error.errors;
+                    if (errors.username) {
+                        _this.errorMessage = errors.username.message;
+                    }
+                    else if (errors.password) {
+                        _this.errorMessage = errors.password.message;
+                    }
+                    else if (errors.email) {
+                        _this.errorMessage = errors.email.message;
+                    }
+                }
+                if (error.errmsg) {
+                    if (error.errmsg.includes('username')) {
+                        _this.errorMessage = 'tên đăng nhập đã tồn tại';
+                    }
+                    else if (error.errmsg.includes('email')) {
+                        _this.errorMessage = 'email đã tồn tại!';
+                    }
+                }
+            });
+        }
     };
     UserListComponent.prototype.banUser = function (userid) {
         this._userService.banUser(userid).subscribe(function (response) {
@@ -96,10 +137,9 @@ var UserListComponent = (function () {
             selector: 'user-list',
             templateUrl: 'client/dev/app/components/back-end/users/templates/user-list.html',
             directives: [router_1.ROUTER_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, private_chat_1.PrivateChatComponent],
-            providers: [users_1.UserService, pager_1.PagerService],
+            providers: [users_1.UserService, pager_1.PagerService]
         }),
-        __param(0, core_1.Inject(common_1.FormBuilder)), 
-        __metadata('design:paramtypes', [common_1.FormBuilder, users_1.UserService, auth_1.AuthService, router_1.Router])
+        __param(0, core_1.Inject(common_1.FormBuilder))
     ], UserListComponent);
     return UserListComponent;
 })();

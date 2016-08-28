@@ -4,7 +4,7 @@
             <div class="card" *ngIf="request && knowledge">
                 <div class="card-content">
                     <p class="card-title">{{request.title}}</p>
-                    <div class="col s3 m3">
+                    <div *ngIf="link" class="col s3 m3">
                         <p><a [routerLink]="[link]">Vào Kspace</a></p>
                     </div>
                 </div>
