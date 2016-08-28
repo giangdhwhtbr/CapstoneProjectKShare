@@ -65,6 +65,8 @@ webpackJsonp([2],[
 	    }
 	    PrivateChatComponent.prototype.ngOnInit = function () {
 	        var _this = this;
+	        var numItems = $('.text-message').length;
+	        $("#cntAllText").animate({ scrollTop: 200 * numItems });
 	        this.socket.on('private-message-return', function (data) {
 	            var news = 0;
 	            // New message token
@@ -72,6 +74,8 @@ webpackJsonp([2],[
 	                var user = _a[_i];
 	                if (user.user === _this.username) {
 	                    news = user.newMessages;
+	                    var numItems = $('.text-message').length;
+	                    $("#cntAllText").animate({ scrollTop: 200 * numItems });
 	                }
 	            }
 	            // Enter message to the current room
@@ -176,6 +180,8 @@ webpackJsonp([2],[
 	        }
 	    };
 	    PrivateChatComponent.prototype.getReceiver = function (slRoom) {
+	        var numItems = $('.text-message').length;
+	        $("#cntAllText").animate({ scrollTop: 200 * numItems });
 	        this.currentRoom.id = slRoom._id;
 	        this.receiver = slRoom.friendName;
 	        this.currentRoom.messages = slRoom.chatLogs;
@@ -199,7 +205,7 @@ webpackJsonp([2],[
 	            this.mess = "";
 	        }
 	        var numItems = $('.text-message').length;
-	        $("#cntAllText").animate({ scrollTop: 200 * numItems }, "slow");
+	        $("#cntAllText").animate({ scrollTop: 200 * numItems });
 	    };
 	    PrivateChatComponent = __decorate([
 	        core_1.Component({
@@ -597,7 +603,6 @@ webpackJsonp([2],[
 	    UserService.prototype.updateUser = function (user, _newTag) {
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
-	        var ownk, ink;
 	        var _data = JSON.stringify({
 	            user: {
 	                _id: user._id,
@@ -623,11 +628,8 @@ webpackJsonp([2],[
 	    UserService.prototype.banUser = function (id) {
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
-	        var data = JSON.stringify({
-	            admin: localStorage.getItem('username')
-	        });
 	        return this._http
-	            .put(this._banUrl.replace(':id', id), data, options);
+	            .put(this._banUrl.replace(':id', id), options);
 	    };
 	    //add friend service
 	    UserService.prototype.addFriend = function (requestUser, acceptUser) {
@@ -1829,6 +1831,13 @@ webpackJsonp([2],[
 	        var options = new http_1.RequestOptions({ headers: headers });
 	        var api = '/api/public-kspace';
 	        return this._http.post(api, { name: guest }, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    KSpaceService.prototype.joinPublicKspace = function (guest, room) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var api = '/api/public-kspace/:id';
+	        return this._http.put(api.replace(':id', room), { name: guest }, options)
 	            .map(function (r) { return r.json(); });
 	    };
 	    KSpaceService.prototype.checkPublicKspace = function (id) {
@@ -3548,6 +3557,7 @@ webpackJsonp([2],[
 	var users_1 = __webpack_require__(26);
 	var notification_1 = __webpack_require__(64);
 	var report_1 = __webpack_require__(292);
+	var ratingPoint_1 = __webpack_require__(449);
 	var UserProfileBarComponent = (function () {
 	    function UserProfileBarComponent(router, route, _userService, _noti) {
 	        this.router = router;
@@ -3566,7 +3576,9 @@ webpackJsonp([2],[
 	            _this.name = params['name'];
 	            _this.linkImg = '';
 	            _this._userService.getUserByUserName(_this.name).subscribe(function (user) {
+	                var localeDate = new Date(user.createdAt);
 	                _this.userProfile = user;
+	                _this.userProfile.createdAt = localeDate.toLocaleDateString();
 	                _this.linkImg = user.linkImg;
 	                $('#loading').hide();
 	            }, function (error) {
@@ -3694,7 +3706,8 @@ webpackJsonp([2],[
 	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
-	                report_1.ReportComponent
+	                report_1.ReportComponent,
+	                ratingPoint_1.RatingPoint
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
@@ -5302,6 +5315,7 @@ webpackJsonp([2],[
 	        this._auth = _auth;
 	        this.router = router;
 	        this.pageTitle = 'users';
+	        this.users = [];
 	        this.filter = '';
 	        this.numOfUser = 0;
 	        this.createHid = true;
@@ -5328,12 +5342,13 @@ webpackJsonp([2],[
 	                    users[i].updatedAt = new Date(users[i].updatedAt);
 	                }
 	                users[i]["num"] = i + 1;
+	                if (users[i].role !== 'admin') {
+	                    _this.users.push(users[i]);
+	                }
 	            }
-	            _this.users = users;
 	            _this.numOfUser = i;
 	        }, function (error) {
 	            _this.errorMessage = error.message;
-	            console.log(error);
 	        });
 	        $(document).ready(function () {
 	            $('select').material_select();
@@ -5367,7 +5382,9 @@ webpackJsonp([2],[
 	            this._userService
 	                .addUser(user)
 	                .subscribe(function (response) {
-	                _this.users.push(response);
+	                if (response.role !== 'admin') {
+	                    _this.users.push(response);
+	                }
 	            }, function (error) {
 	                if (error.errors) {
 	                    var errors = error.errors;
@@ -5392,15 +5409,20 @@ webpackJsonp([2],[
 	            });
 	        }
 	    };
-	    UserListComponent.prototype.banUser = function (userid) {
-	        this._userService.banUser(userid).subscribe(function (response) {
+	    UserListComponent.prototype.banUser = function (user) {
+	        if (user.role === 'admin') {
+	            this.errMsg = 'Bạn không thể ban một admin';
+	        }
+	        this._userService.banUser(user._id).subscribe(function (response) {
 	            Materialize.toast('Khoá người dùng này trong vòng 1 ngày!', 6000);
-	            $("#" + userid).hide();
-	            console.log(response);
+	            $("#" + user._id).hide();
+	            user.banStatus.status = true;
 	        }, function (error) { });
 	    };
 	    UserListComponent.prototype.deactivateUser = function (user) {
-	        console.log(user);
+	        if (user.role === 'admin') {
+	            this.errMsg = 'Bạn không thể khoá tài khoản của admin';
+	        }
 	        user.status = 'deactive';
 	        this._userService.updateUser(user, []).subscribe(function (user) {
 	        });
@@ -6140,7 +6162,8 @@ webpackJsonp([2],[
 	                contentArt += '<img class="responsive-img" src="' + this.images[i].url + '" style="background-color: black; border-radius: 10px;"><br>';
 	            }
 	            for (var i = 0; i < this.boards.length; i++) {
-	                contentArt += "<h5>bảng " + this.boards[i].des + "</h5><br>";
+	                contentArt += "<p><h5>bảng " + this.boards[i].name + "</h5></p>";
+	                contentArt += "<p><h6>bảng " + this.boards[i].des + "</h6></p>";
 	                contentArt += '<img class="responsive-img" src="' + this.boards[i].url + '" style="background-color: whitesmoke; border-radius: 10px;" ><br>';
 	            }
 	            var dateKs = new Date(this.kspace.createdAt);
@@ -6262,106 +6285,35 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var kspace_1 = __webpack_require__(75);
-	var rtc_services_1 = __webpack_require__(668);
 	var router_1 = __webpack_require__(4);
-	var common_1 = __webpack_require__(6);
-	//import { ChatComponent } from './chat';
+	var webrtc_component_1 = __webpack_require__(1128);
+	var kspace_chat_1 = __webpack_require__(1127);
 	var chalkboard_1 = __webpack_require__(666);
 	var KSpaceComponent = (function () {
-	    function KSpaceComponent(router, route, _kspaceService, rtcService) {
+	    function KSpaceComponent(router, route, _kspaceService) {
 	        var _this = this;
 	        this.router = router;
 	        this.route = route;
 	        this._kspaceService = _kspaceService;
-	        this.rtcService = rtcService;
-	        this.hiddenShareScreen = true;
 	        this.route.params.subscribe(function (params) {
 	            _this.id = params['id'];
 	            _this.lecturer = params['lecturer'];
 	        });
 	        this.username = localStorage.getItem('username');
-	        this.messages = [];
-	        this.socket = io('https://localhost:80');
-	        this.socket.emit('subscribe', { room: this.id });
-	        this.socket.on("chat_message", function (dataReturn) {
-	            var isSender = false;
-	            if (dataReturn.user == _this.username) {
-	                isSender = true;
-	            }
-	            var msgObject = {
-	                user: dataReturn.user,
-	                msg: dataReturn.msg,
-	                url: dataReturn.url,
-	                sender: isSender
-	            };
-	            _this.messages.push(msgObject);
-	        });
 	    }
-	    KSpaceComponent.prototype.send = function (message, img) {
-	        if (img) {
-	            var chalkboard = document.getElementById("chalkboard");
-	            var ctx = chalkboard.getContext("2d");
-	            var dataURL = chalkboard.toDataURL();
-	            var data = {
-	                id: this.id,
-	                createdUser: this.username,
-	                message: message,
-	                dataURL: dataURL
-	            };
-	            this.socket.emit("chat_message", data);
-	            this.mess = "";
-	        }
-	        else {
-	            var data = {
-	                id: this.id,
-	                createdUser: this.username,
-	                message: message
-	            };
-	            this.socket.emit("chat_message", data);
-	            this.mess = "";
-	        }
-	    };
 	    /*
 	     * Init when the component is initiated
-	     *
 	     * */
 	    KSpaceComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        // DOM elements
-	        var shareScreenBtn = $('#sharescreen-btn');
-	        var chalkBoardBtn = $('#chalkboard-btn');
-	        var localVideo = $('#localVideo');
-	        var remoteVideos = $('#remoteVideos');
-	        var kspacePanel = $('#kspace-panel');
 	        this._kspaceService
 	            .getKSpaceById(this.id)
 	            .subscribe(function (kspace) {
-	            if (kspace.lecturer === _this.username) {
-	                _this.hiddenShareScreen = false;
-	            }
 	            _this.boards = kspace.boards;
-	            var chatlog = kspace.chatlog;
-	            var isSender = false;
-	            for (var _i = 0, chatlog_1 = chatlog; _i < chatlog_1.length; _i++) {
-	                var log = chatlog_1[_i];
-	                var msg = log.createdUser + ': ' + log.message;
-	                if (log.createdUser == _this.username) {
-	                    isSender = true;
-	                }
-	                else {
-	                    isSender = false;
-	                }
-	                var msgObject = {
-	                    user: log.createdUser,
-	                    msg: log.message,
-	                    sender: isSender,
-	                    url: log.dataURL
-	                };
-	                _this.messages.push(msgObject);
-	            }
-	            var room = kspace._id;
+	            _this.chatlogs = kspace.chatlog;
+	            _this.room = kspace._id;
 	            var username = _this.username;
-	            var rtc = _this.rtcService;
+	            _this.learners = kspace.learners;
 	            var isKspaceUser = function () {
 	                for (var _i = 0, _a = kspace.learners; _i < _a.length; _i++) {
 	                    var learner = _a[_i];
@@ -6374,32 +6326,7 @@ webpackJsonp([2],[
 	                }
 	                return false;
 	            };
-	            if (isKspaceUser()) {
-	                // initiate webrtc
-	                var webrtc = new SimpleWebRTC({
-	                    localVideoEl: 'localVideo',
-	                    remoteVideosEl: '',
-	                    autoRequestMedia: true,
-	                    nick: username,
-	                    localVideo: {
-	                        autoplay: true,
-	                        mirror: true,
-	                        muted: true // mute local video stream to prevent echo
-	                    },
-	                    log: true,
-	                    debug: false
-	                });
-	                rtc.rtcSetting(webrtc, room, kspace.lecturer);
-	                var sharescreenToken = false;
-	                shareScreenBtn.click(function () {
-	                    console.log(sharescreenToken);
-	                    sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);
-	                });
-	                chalkBoardBtn.click(function () {
-	                    kspacePanel.find('video').remove();
-	                });
-	            }
-	            else {
+	            if (!isKspaceUser()) {
 	                _this.router.navigateByUrl('/');
 	            }
 	        }, function (error) {
@@ -6413,17 +6340,15 @@ webpackJsonp([2],[
 	            styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
-	                common_1.FORM_DIRECTIVES,
-	                chalkboard_1.ChalkBoardComponent
-	            ],
-	            providers: [
-	                rtc_services_1.WebRCTService
+	                chalkboard_1.ChalkBoardComponent,
+	                kspace_chat_1.ChatComponent,
+	                webrtc_component_1.RTCComponent
 	            ]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _c) || Object, (typeof (_d = typeof rtc_services_1.WebRCTService !== 'undefined' && rtc_services_1.WebRCTService) === 'function' && _d) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _c) || Object])
 	    ], KSpaceComponent);
 	    return KSpaceComponent;
-	    var _a, _b, _c, _d;
+	    var _a, _b, _c;
 	}());
 	exports.KSpaceComponent = KSpaceComponent;
 	
@@ -6442,44 +6367,30 @@ webpackJsonp([2],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	/**
-	 * Created by GiangDH on 8/25/16.
-	 */
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(75);
 	var router_1 = __webpack_require__(4);
-	var CreatePublicKspace = (function () {
-	    function CreatePublicKspace(_kspaceService, router) {
-	        this._kspaceService = _kspaceService;
-	        this.router = router;
+	var create_kspace_1 = __webpack_require__(1129);
+	var join_room_1 = __webpack_require__(1130);
+	var public_room_1 = __webpack_require__(667);
+	var PublicKspace = (function () {
+	    function PublicKspace() {
 	    }
-	    CreatePublicKspace.prototype.createRoom = function (guest) {
-	        if (guest) {
-	            this._kspaceService.createPublicKspace(guest)
-	                .subscribe(function (res) {
-	                if (res.success) {
-	                    var specs = "width=1024,height=768";
-	                    var name = '_blank';
-	                    var url = '/public-kspace/' + res.id;
-	                    window.open(url, name, specs);
-	                }
-	            });
-	        }
-	        else {
-	            this.errorMessage = "Vui lòng nhập tên hiển thị của bạn trong kspace";
-	        }
-	    };
-	    CreatePublicKspace = __decorate([
+	    PublicKspace = __decorate([
 	        core_1.Component({
 	            selector: 'public-kspace',
-	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/public-kspace.html',
+	            template: '<router-outlet></router-outlet>',
+	            precompile: [
+	                create_kspace_1.CreatePublicKspace,
+	                join_room_1.JoinPublicKspace,
+	                public_room_1.PublicKspaceComponent
+	            ],
+	            directives: [router_1.ROUTER_DIRECTIVES]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
-	    ], CreatePublicKspace);
-	    return CreatePublicKspace;
-	    var _a, _b;
+	        __metadata('design:paramtypes', [])
+	    ], PublicKspace);
+	    return PublicKspace;
 	}());
-	exports.CreatePublicKspace = CreatePublicKspace;
+	exports.PublicKspace = PublicKspace;
 	
 
 /***/ },
@@ -7553,7 +7464,7 @@ webpackJsonp([2],[
 	var list_article_1 = __webpack_require__(434);
 	var displayArtByTag_1 = __webpack_require__(442);
 	var request_create_1 = __webpack_require__(290);
-	var public_kspace_1 = __webpack_require__(439);
+	var create_kspace_1 = __webpack_require__(1129);
 	/**
 	 * Page components
 	 */
@@ -7588,7 +7499,7 @@ webpackJsonp([2],[
 	                request_create_1.CreateRequestComponent,
 	                rs_search_user_1.userSearchRsComponent,
 	                user_info_update_1.UpdateUserComponent,
-	                public_kspace_1.CreatePublicKspace,
+	                create_kspace_1.CreatePublicKspace,
 	                info_hover_1.infoHover
 	            ]
 	        }), 
@@ -7679,6 +7590,8 @@ webpackJsonp([2],[
 	    };
 	    HeaderComponent.prototype.openChat = function () {
 	        $('#chatBoxK').openModal();
+	        var numItems = $('.text-message').length;
+	        $("#cntAllText").animate({ scrollTop: 200 * numItems });
 	        this.isNewMessage = false;
 	    };
 	    HeaderComponent.prototype.open = function () {
@@ -10450,11 +10363,15 @@ webpackJsonp([2],[
 	    function ChalkBoardComponent() {
 	        this.initToken = true;
 	        this.username = localStorage.getItem('username');
+	        this.guest = localStorage.getItem('guest');
 	        this.boards = [];
 	        this.colors = [
-	            { label: '#000000', value: '#000000' },
-	            { label: '#de3535', value: '#DE3535' },
-	            { label: '#03a9f4', value: '#03a9f4' }
+	            { label: 'đen', value: '#000000' },
+	            { label: 'đỏ', value: '#DE3535' },
+	            { label: 'lục', value: '#03a9f4' },
+	            { label: 'lam', value: '#4caf50' },
+	            { label: 'vàng ', value: '#ffeb3b' },
+	            { label: 'cam', value: '#ff5722' }
 	        ];
 	        this.brushSizes = [
 	            { label: '1', value: '1' },
@@ -10493,8 +10410,15 @@ webpackJsonp([2],[
 	                return false;
 	            }
 	        }
+	        if (this.lecturer) {
+	            this.isGuest = false;
+	        }
+	        else if (!this.lecturer && this.guest) {
+	            this.isGuest = true;
+	        }
 	        this.isLect = isLecturer(this.username, this.lecturer);
 	        var isLect = this.isLect;
+	        var isGuest = this.isGuest;
 	        if (!this.isLect) {
 	            $('#draw-option').hide();
 	        }
@@ -10520,12 +10444,13 @@ webpackJsonp([2],[
 	                }
 	            }
 	        });
+	        // if logged in user is not lecturer => import board
 	        socket.on('shareBoard', function (board) {
-	            // if logged in user is not lecturer => import board
 	            if (!isLecturer(localStorage.getItem('username'), data.lecturer)) {
 	                paper.importJSON(board.json);
 	            }
 	        });
+	        // if lecturer create new board => learners import board
 	        socket.on('newBoard', function (data) {
 	            paper.project.clear();
 	            var newLayer = new paper.Layer();
@@ -10538,14 +10463,17 @@ webpackJsonp([2],[
 	                _this.boards.push(board);
 	            }
 	        });
+	        // if lecturer change board => learners change board
 	        socket.on('changeBoard', function (board) {
 	            if (!isLecturer(localStorage.getItem('username'), board.lecturer)) {
 	                paper.project.clear();
 	                paper.importJSON(board.json);
 	            }
 	        });
+	        /*
+	        * Init new chalk board
+	        * */
 	        var chalkboard = document.getElementById('chalkboard');
-	        // Initiate the paper at canvas id="chalkboard"
 	        paper.setup(chalkboard);
 	        //initiate setting
 	        var drawToolShow = false;
@@ -10580,13 +10508,13 @@ webpackJsonp([2],[
 	        });
 	        //Catch event when mouse down, create new path, emit start point
 	        $('#chalkboard').mousedown(function (event) {
-	            if (isLect) {
+	            if (isLect || isGuest) {
 	                drawing = true;
 	                path = new paper.Path();
 	                path.strokeColor = strokeColor;
 	                path.strokeWidth = strokeWidth;
-	                var x = event.pageX - 0.249 * $(window).width();
-	                var y = event.pageY - 120;
+	                var x = event.pageX - 0.22 * $(window).width();
+	                var y = event.pageY - 70;
 	                path.add(new paper.Point(x, y));
 	                emitStartPoint(x, y, strokeColor, strokeWidth);
 	            }
@@ -10594,9 +10522,9 @@ webpackJsonp([2],[
 	        //Catch event when mouse move and drawing token is true
 	        //Then call function draw (x,y) Emit the points of the path to server
 	        $('#chalkboard').mousemove(function (event) {
-	            if (drawing && isLect) {
-	                var x = event.pageX - 0.249 * $(window).width();
-	                var y = event.pageY - 120;
+	            if (drawing && (isLect || isGuest)) {
+	                var x = event.pageX - 0.22 * $(window).width();
+	                var y = event.pageY - 70;
 	                draw(x, y);
 	                emitPathPoint(x, y);
 	            }
@@ -10768,31 +10696,53 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var kspace_1 = __webpack_require__(75);
 	var router_1 = __webpack_require__(4);
+	var kspace_chat_1 = __webpack_require__(1127);
+	var webrtc_component_1 = __webpack_require__(1128);
+	var chalkboard_1 = __webpack_require__(666);
 	var PublicKspaceComponent = (function () {
 	    function PublicKspaceComponent(_kspaceService, router, _route) {
-	        var _this = this;
 	        this._kspaceService = _kspaceService;
 	        this.router = router;
 	        this._route = _route;
+	        this.isUser = false;
+	        this.guest = localStorage.getItem('guest');
+	    }
+	    PublicKspaceComponent.prototype.ngOnInit = function () {
+	        var _this = this;
 	        this.sub = this._route.params.subscribe(function (params) {
 	            _this.room = params['id'];
 	            _this._kspaceService.checkPublicKspace(_this.room)
 	                .subscribe(function (res) {
-	                console.log(res);
+	                if (res.users) {
+	                    for (var _i = 0, _a = res.users; _i < _a.length; _i++) {
+	                        var user = _a[_i];
+	                        if (user === _this.guest) {
+	                            _this.welcomeMsg = 'Chào mừng bạn đến với Kspace, chúc bạn có những trải nghiệm tuyệt vời';
+	                            _this.isUser = true;
+	                        }
+	                    }
+	                }
+	                if (_this.isUser === false) {
+	                    _this.router.navigateByUrl('/public-kspace/' + _this.room + '/join');
+	                }
 	            }, function (err) {
 	                _this.router.navigate(['/error']);
 	            });
 	        });
-	    }
-	    PublicKspaceComponent.prototype.ngOnInit = function () {
 	    };
 	    PublicKspaceComponent.prototype.ngOnDestroy = function () {
 	        this.sub.unsubscribe();
 	    };
 	    PublicKspaceComponent = __decorate([
 	        core_1.Component({
-	            selector: 'public-kspace',
-	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/public-kspace.html',
+	            selector: 'public-room',
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/public-room.html',
+	            styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
+	            directives: [
+	                chalkboard_1.ChalkBoardComponent,
+	                kspace_chat_1.ChatComponent,
+	                webrtc_component_1.RTCComponent
+	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object])
 	    ], PublicKspaceComponent);
@@ -11413,6 +11363,7 @@ webpackJsonp([2],[
 	        this._authService
 	            .login(user)
 	            .subscribe(function (res) {
+	            localStorage.removeItem('guest');
 	            localStorage.setItem('username', res.username);
 	            if (res.role) {
 	                localStorage.setItem('userrole', res.role);
@@ -12487,8 +12438,10 @@ webpackJsonp([2],[
 	var _404_1 = __webpack_require__(685);
 	var auth_1 = __webpack_require__(450);
 	var auth_2 = __webpack_require__(45);
-	var public_room_1 = __webpack_require__(667);
 	var public_kspace_1 = __webpack_require__(439);
+	var public_room_1 = __webpack_require__(667);
+	var create_kspace_1 = __webpack_require__(1129);
+	var join_room_1 = __webpack_require__(1130);
 	exports.KShareRoutes = [
 	    {
 	        path: '',
@@ -12695,14 +12648,20 @@ webpackJsonp([2],[
 	    },
 	    {
 	        path: 'public-kspace',
+	        canActivate: [auth_1.Guest],
+	        component: public_kspace_1.PublicKspace,
 	        children: [
 	            {
-	                path: '',
-	                component: public_kspace_1.CreatePublicKspace
+	                path: 'create',
+	                component: create_kspace_1.CreatePublicKspace
 	            },
 	            {
-	                path: ':id',
+	                path: ':id/room',
 	                component: public_room_1.PublicKspaceComponent
+	            },
+	            {
+	                path: ':id/join',
+	                component: join_room_1.JoinPublicKspace
 	            }
 	        ]
 	    }
@@ -40792,6 +40751,347 @@ webpackJsonp([2],[
 	    return UITreeRow;
 	}());
 	exports.UITreeRow = UITreeRow;
+	
+
+/***/ },
+/* 1123 */,
+/* 1124 */,
+/* 1125 */,
+/* 1126 */,
+/* 1127 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/28/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var ChatComponent = (function () {
+	    function ChatComponent() {
+	        this.messages = [];
+	        this.username = localStorage.getItem('username');
+	        this.guest = localStorage.getItem('guest');
+	    }
+	    ChatComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.socket = io('https://localhost:80');
+	        this.socket.emit('subscribe', { room: this.room });
+	        this.socket.on("chat_message", function (dataReturn) {
+	            var isSender = false;
+	            if (dataReturn.user == _this.username || dataReturn.user == _this.guest) {
+	                isSender = true;
+	            }
+	            var msgObject = {
+	                user: dataReturn.user,
+	                msg: dataReturn.msg,
+	                url: dataReturn.url,
+	                sender: isSender
+	            };
+	            _this.messages.push(msgObject);
+	        });
+	        if (this.lecturer) {
+	            var isSender = false;
+	            for (var _i = 0, _a = this.chatlogs; _i < _a.length; _i++) {
+	                var log = _a[_i];
+	                if (log.createdUser == this.username) {
+	                    isSender = true;
+	                }
+	                else {
+	                    isSender = false;
+	                }
+	                var msgObject = {
+	                    user: log.createdUser,
+	                    msg: log.message,
+	                    sender: isSender,
+	                    url: log.dataURL
+	                };
+	                this.messages.push(msgObject);
+	            }
+	        }
+	    };
+	    ChatComponent.prototype.send = function (message, img) {
+	        if (message) {
+	            if (img && this.lecturer) {
+	                var chalkboard = document.getElementById("chalkboard");
+	                var dataURL = chalkboard.toDataURL();
+	                var data = {
+	                    id: this.room,
+	                    createdUser: this.username,
+	                    message: message,
+	                    dataURL: dataURL
+	                };
+	                this.socket.emit("chat_message", data);
+	                this.mess = "";
+	            }
+	            else {
+	                var data = {
+	                    id: this.room,
+	                    createdUser: this.username,
+	                    message: message
+	                };
+	                if (this.guest) {
+	                    data = {
+	                        id: this.room,
+	                        guest: this.guest,
+	                        message: message
+	                    };
+	                }
+	                this.socket.emit("chat_message", data);
+	                this.mess = "";
+	            }
+	        }
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], ChatComponent.prototype, "chatlogs", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], ChatComponent.prototype, "room", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], ChatComponent.prototype, "lecturer", void 0);
+	    ChatComponent = __decorate([
+	        core_1.Component({
+	            selector: 'kspace-chat',
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/kspace-chat.html',
+	            styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css']
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], ChatComponent);
+	    return ChatComponent;
+	}());
+	exports.ChatComponent = ChatComponent;
+	
+
+/***/ },
+/* 1128 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/28/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var rtc_services_1 = __webpack_require__(668);
+	var RTCComponent = (function () {
+	    function RTCComponent(rtcService) {
+	        this.rtcService = rtcService;
+	        this.hiddenShareScreen = true;
+	        this.username = localStorage.getItem('username');
+	        this.guest = localStorage.getItem('guest');
+	    }
+	    RTCComponent.prototype.ngOnInit = function () {
+	        //private kspace
+	        if (this.lecturer && this.learners) {
+	            if (this.lecturer === this.username) {
+	                this.hiddenShareScreen = false;
+	            }
+	            // DOM elements
+	            var shareScreenBtn = $('#sharescreen-btn');
+	            // initiate webrtc
+	            var webrtc = new SimpleWebRTC({
+	                localVideoEl: 'localVideo',
+	                remoteVideosEl: '',
+	                autoRequestMedia: true,
+	                nick: this.username,
+	                localVideo: {
+	                    autoplay: true,
+	                    mirror: true,
+	                    muted: true // mute local video stream to prevent echo
+	                },
+	                log: true,
+	                debug: false
+	            });
+	            var rtc = this.rtcService;
+	            rtc.rtcSetting(webrtc, this.room, this.lecturer);
+	            var sharescreenToken = false;
+	            shareScreenBtn.click(function () {
+	                sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);
+	            });
+	        }
+	        else {
+	            // initiate webrtc
+	            var webrtc = new SimpleWebRTC({
+	                localVideoEl: 'localVideo',
+	                remoteVideosEl: '',
+	                autoRequestMedia: true,
+	                nick: this.username,
+	                localVideo: {
+	                    autoplay: true,
+	                    mirror: true,
+	                    muted: true // mute local video stream to prevent echo
+	                },
+	                log: true,
+	                debug: false
+	            });
+	            var rtc = this.rtcService;
+	            rtc.rtcSetting(webrtc, this.room, this.lecturer);
+	        }
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], RTCComponent.prototype, "lecturer", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], RTCComponent.prototype, "learners", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], RTCComponent.prototype, "room", void 0);
+	    RTCComponent = __decorate([
+	        core_1.Component({
+	            selector: 'kspace-webrtc',
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/webrtc.html',
+	            styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
+	            providers: [
+	                rtc_services_1.WebRCTService
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof rtc_services_1.WebRCTService !== 'undefined' && rtc_services_1.WebRCTService) === 'function' && _a) || Object])
+	    ], RTCComponent);
+	    return RTCComponent;
+	    var _a;
+	}());
+	exports.RTCComponent = RTCComponent;
+	
+
+/***/ },
+/* 1129 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/25/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var kspace_1 = __webpack_require__(75);
+	var router_1 = __webpack_require__(4);
+	var CreatePublicKspace = (function () {
+	    function CreatePublicKspace(_kspaceService, router) {
+	        this._kspaceService = _kspaceService;
+	        this.router = router;
+	    }
+	    CreatePublicKspace.prototype.createRoom = function (guest) {
+	        var _this = this;
+	        if (guest) {
+	            this._kspaceService.createPublicKspace(guest)
+	                .subscribe(function (res) {
+	                if (res.success) {
+	                    localStorage.setItem('guest', guest);
+	                    var url = '/public-kspace/' + res.id + '/room';
+	                    _this.router.navigateByUrl(url);
+	                }
+	            });
+	        }
+	        else {
+	            this.errorMessage = "Vui lòng nhập tên hiển thị của bạn trong kspace";
+	        }
+	    };
+	    CreatePublicKspace = __decorate([
+	        core_1.Component({
+	            selector: 'public-kspace',
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/public-kspace.html',
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
+	    ], CreatePublicKspace);
+	    return CreatePublicKspace;
+	    var _a, _b;
+	}());
+	exports.CreatePublicKspace = CreatePublicKspace;
+	
+
+/***/ },
+/* 1130 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/25/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var kspace_1 = __webpack_require__(75);
+	var router_1 = __webpack_require__(4);
+	var JoinPublicKspace = (function () {
+	    function JoinPublicKspace(_kspaceService, router, _route) {
+	        var _this = this;
+	        this._kspaceService = _kspaceService;
+	        this.router = router;
+	        this._route = _route;
+	        this.sub = this._route.params.subscribe(function (params) {
+	            _this.room = params['id'];
+	        });
+	    }
+	    JoinPublicKspace.prototype.joinRoom = function (guest) {
+	        var _this = this;
+	        if (guest) {
+	            this._kspaceService.joinPublicKspace(guest, this.room)
+	                .subscribe(function (res) {
+	                if (res.success) {
+	                    localStorage.setItem('guest', guest);
+	                    var url = '/public-kspace/' + _this.room + '/room';
+	                    _this.router.navigateByUrl(url);
+	                }
+	            });
+	        }
+	        else {
+	            this.errorMessage = "Vui lòng nhập tên hiển thị của bạn trong kspace";
+	        }
+	    };
+	    JoinPublicKspace.prototype.ngOnDestroy = function () {
+	        this.sub.unsubscribe();
+	    };
+	    JoinPublicKspace = __decorate([
+	        core_1.Component({
+	            selector: 'public-kspace',
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/join-room.html',
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object])
+	    ], JoinPublicKspace);
+	    return JoinPublicKspace;
+	    var _a, _b, _c;
+	}());
+	exports.JoinPublicKspace = JoinPublicKspace;
 	
 
 /***/ }

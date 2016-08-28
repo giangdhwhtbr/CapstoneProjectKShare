@@ -1,0 +1,30 @@
+<div class="col m2" style="height:100%;left:83.3%!important;position:fixed;">
+  <div id="chat-panel">
+    <div id="chat-box-output" class="panel panel-default chat-box">
+      <div *ngFor="let msg of messages ">
+        <div *ngIf="!msg.sender">
+          <div class="msg-box other-msg-box">
+            <p><b>{{msg.user}} :</b>{{msg.msg}}</p>
+            <p *ngIf="msg.url" class="bg-white"><img src="{{msg.url}}"
+                                                     class="responsive-img" alt=""></p>
+          </div>
+        </div>
+        <div *ngIf="msg.sender" class="own-msg">
+          <div class="msg-box own-msg-box right">
+            <p> {{msg.msg}}</p>
+            <p *ngIf="msg.url" class="bg-white"><img src="{{msg.url}}" class="responsive-img" alt=""></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <form id="chat-form" (ngSubmit)="send(mess,img)" >
+    <div class="col s1">
+      <input *ngIf="lecturer" type="checkbox" id="img" name="img" [(ngModel)]="img" />
+      <label for="img"></label>
+    </div>
+    <div class="col s11">
+      <input type="text" id="chat-input" [(ngModel)]="mess" class="panel panel-default" placeholder="chat here">
+    </div>
+  </form>
+</div>

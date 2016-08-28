@@ -22,10 +22,6 @@
                     <a [routerLink]="['/user/'+name]" data-position="right" data-delay="5" data-tooltip="Trang cá nhân" class="waves-effect waves-light btn-floating tooltipped blue">
                         <i class="material-icons">face</i>
                     </a>
-                    <!--<div class="col s4">-->
-                        <!---->
-                    <!--</div>-->
-
                     <div [hidden]="true" class="file-field input-field" *ngIf="  checkUser">
                         <div>
                             <i class="material-icons">people</i>
@@ -37,11 +33,12 @@
                     </div>
                 </div>
                 <div class="row" *ngIf="userProfile">
-                    <p *ngIf="userProfile.displayName">
-                        Tên: {{userProfile.displayName}}
-                    </p>
+                    <rating-point *ngIf="userProfile.rateAve" [rate]="userProfile.rateAve"></rating-point>
                     <p>
                         Email: {{userProfile.email}}
+                    </p>
+                    <p>
+                        Tham gia từ: {{userProfile.createdAt}}
                     </p>
                 </div>
             </div>

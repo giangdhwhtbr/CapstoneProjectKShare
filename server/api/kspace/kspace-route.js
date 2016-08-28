@@ -33,5 +33,6 @@ module.exports = class KSpaceRoutes {
     router
       .route('/api/public-kspace/:id')
       .get(KSpaceController.checkExist)
+      .put(KSpaceController.joinPublicKspace);
   }
 };

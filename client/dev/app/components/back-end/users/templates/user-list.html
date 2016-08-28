@@ -106,9 +106,9 @@
                     </p-column>
                     <p-column styleClass="col-button">
                         <template let-user="rowData">
-                            <button id="{{user._id}}" *ngIf="!user.banStatus.status" type="button" pButton class="btn-floating waves-effect waves-light blue" (click)="banUser(user._id)"><i class="material-icons">remove</i></button>
-                            <button *ngIf="user.status==='active'" id="{{user._id}}" type="button" pButton class="btn-floating" (click)="deactivateUser(user)"><i class="material-icons">not_interested</i></button>
-                            <button *ngIf="user.status==='deactive' || user.banStatus.status===true" id="{{user._id}}" type="button" pButton class="btn-floating" (click)="activateUser(user)"><i class="material-icons">lock_open</i></button>
+                            <button id="{{user._id}}" *ngIf="!user.banStatus.status" type="button" pButton class="btn-floating waves-effect waves-light blue" (click)="banUser(user)"><i class="material-icons">remove</i></button>
+                            <button *ngIf="user.status==='active'" id="lock{{user._id}}" type="button" pButton class="btn-floating" (click)="deactivateUser(user)"><i class="material-icons">not_interested</i></button>
+                            <button *ngIf="user.status==='deactive' || user.banStatus.status===true" id="open{{user._id}}" type="button" pButton class="btn-floating" (click)="activateUser(user)"><i class="material-icons">lock_open</i></button>
                         </template>
                     </p-column>
                 </p-dataTable>

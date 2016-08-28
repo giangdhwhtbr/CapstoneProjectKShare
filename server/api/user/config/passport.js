@@ -28,13 +28,22 @@ module.exports = function(passport){
         if(user.banStatus.status) {
           var currentDate = new Date();
           var difftime = currentDate.getTime() - user.banStatus.bannedAt.getTime();
-
+          var localDate = new Date(user.banStatus.bannedAt);
+          localDate = localDate.toLocaleDateString();
           if (difftime < user.banStatus.time){
-            return done(null, false, { message: 'Tài khoản của bạn đang bị khoá trong 1 ngày kể từ '+user.banStatus.bannedAt+', vui lòng đăng' +
-            ' nhập' +
-            ' lại' +
-            ' sau'})
+            return done(null, false, {
+              message: 'Bạn đã vi phạm điều khoản sử dụng chúng tôi quyết định khoá tài khoản của bạn trong vòng 1' +
+              ' ngày kể từ ' + localDate+', vui lòng đăng nhập lại sau'}
+            )
           }
+        }
+
+        if(user.status === 'deactive') {
+          return done(null, false, {
+            message: 'Bạn đã vi phạm điều khoản sử dụng nghiêm trọng chúng tôi quyết định khoá tài khoản của' +
+            ' bạn' +
+            ' vĩnh viễn. Nếu có điều gì không đúng, vui lòng liên lạc với quản trị viên'}
+          )
         }
 
         return done(null,user);

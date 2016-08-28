@@ -69,19 +69,27 @@ io.on('connection',  (socket) => {
   });
   //Listening for the event "user send message"
   socket.on("chat_message", (data) => {
-        KSpaceCtrl.updateChatLogs(data)
+    if(data.guest){
+      var dataReturn = {
+        user: data.guest,
+        msg: data.message,
+      };
+      console.log(dataReturn);
+      io.in(data.id).emit("chat_message", dataReturn);
+    }else {
+      KSpaceCtrl.updateChatLogs(data)
         .then(kspace => {
           var dataReturn = {
             user: data.createdUser,
             msg: data.message,
             url: data.dataURL
-          }
+          };
           io.in(data.id).emit("chat_message", dataReturn);
         })
         .catch(error => {
           console.log('Server error at saving chatlog!');
-        });
-
+      });
+    }
   });
 
   //Listening for the event "Lecturer create new board"

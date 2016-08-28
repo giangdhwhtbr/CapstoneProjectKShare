@@ -23,5 +23,13 @@ PublicKspaceSchema.statics.getById = (id) => {
   })
 };
 
+PublicKspaceSchema.statics.updatePKspace = (kspace) => {
+  return new Promise((resolve, reject) => {
+    kspace.save((err,saved) => {
+      err ? reject(err) : resolve (saved);
+    });
+  });
+};
+
 const PKspace = mongoose.model('PKspace', PublicKspaceSchema);
 module.exports = PKspace;

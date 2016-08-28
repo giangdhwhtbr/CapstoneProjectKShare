@@ -193,7 +193,7 @@ ul.tabs {
     font-size: initial;
 }
 .box-ldb-top{
-    position: fixed;
+    /*position: fixed;*/
 }
 .videoContainer {
   position: relative;

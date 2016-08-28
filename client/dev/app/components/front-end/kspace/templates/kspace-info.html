@@ -24,7 +24,7 @@
                 <a (click)="deleteElement(img.id)" class="btn-floating waves-effect waves-light red left"><i class="material-icons">close</i></a>
             </span>
             <h5>{{img.des}}</h5>
-            <img src="{{img.url}}" style="background-color: black; border-radius: 10px;" width="300" height="200"
+            <img src="{{img.url}}" style="background-color: whitesmoke; border-radius: 10px;" width="300" height="200"
                  alt="kspace">
         </div>
     </div>
@@ -39,10 +39,10 @@
                         </a>
                     </span>
             <h5>{{board.name}}</h5>
+            <h6>{{board.des}}</h6>
             <img src="{{board.url}}" width="300" height="200"
                  style="background-color: whitesmoke; border:black; border-weight:1px ;                                                                      border-radius: 10px;"
                  alt="kspace">
-            <h6>{{board.des}}</h6>
         </div>
     </div>
         <span [hidden]="!isCreatingArt">

@@ -99,9 +99,6 @@ const userSchema = new mongoose.Schema({
         type: Number
     },
     banStatus: {
-        admin: {
-            type: String
-        },
         time: {
             type: String
         },

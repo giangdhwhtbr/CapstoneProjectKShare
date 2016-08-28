@@ -4,36 +4,93 @@
     height: 100%;
     background: white;
 }
+#color-picker {
+  width: 70px;
+}
+.bg-white {
+  background-color: white;
+}
  /*Dành cho máy tính bảng chiều dọc */
 @media all and (min-width: 600px) {
 
 }
 
-/*/ Dành cho máy tính bảng chiều ngang !**/
-@media all and (min-width: 1024px) {
-
+/* Ipad mini landscape */
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)
+and (orientation : landscape)
+and (-webkit-min-device-pixel-ratio: 1)  {
+  .wrapper-chalkboard {
+    width: 39rem;
+    overflow: scroll;
+    height: 42rem;
+  }
+  #chalkboard {
+    cursor: crosshair;
+    width: 68rem;
+    height: 60rem;
+    background: white;
+  }
 }
 
-/*/ Dành cho màn hình desktop !**/
+/*/ Dành cho máy tính bảng chiều ngang && máy chiếu  !**/
+@media all and (min-width: 1024px) {
+    .wrapper-chalkboard {
+      width: 39rem;
+      overflow: scroll;
+      height: 42rem;
+    }
+    #chalkboard {
+      cursor: crosshair;
+      width: 68rem;
+      height: 60rem;
+      background: white;
+    }
+}
+
+/*/ Dành cho màn hình desktop crt !**/
 @media all and (min-width: 1280px) {
     .wrapper-chalkboard {
-        width: 55rem;
+        width: 47rem;
         overflow: scroll;
-        height: 37rem;
+        height: 42rem;
     }
     #chalkboard {
         cursor: crosshair;
-        width: 87rem;
-        height: 100%;
+        width: 68rem;
+        height: 60rem;
         background: white;
     }
 }
+
+/*/ Dành cho màn hình laptop !**/
+@media all and (min-width: 1366px) {
+    .wrapper-chalkboard {
+        width: 50rem;
+        overflow: scroll;
+        height: 42rem;
+    }
+    #chalkboard {
+        cursor: crosshair;
+        width: 68rem;
+        height: 60rem;
+        background: white;
+    }
+}
+
+/* Màn hình giang đại ca */
 @media screen and (min-width: 1680px) {
     #chalkboard {
         cursor: crosshair;
-        width: 83rem;
-        height: 100%;
+        width: 68rem;
+        height: 60rem;
         background: white;
+    }
+    .wrapper-chalkboard {
+      width: 68rem;
+      overflow: scroll;
+      height: 60rem;
     }
 }
 

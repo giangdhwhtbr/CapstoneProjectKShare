@@ -20,6 +20,8 @@ import { ReportComponent } from '../../report/report';
 import { User } from '../../../../interface/user';
 import { FriendShip } from '../../../../interface/friendship';
 import { Notification } from '../../../../interface/notification';
+
+import { RatingPoint } from '../../../shared/ratingPoint';
 declare var $: any;
 declare var Materialize: any;
 @Component({
@@ -28,7 +30,8 @@ declare var Materialize: any;
   styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
   directives: [
     ROUTER_DIRECTIVES,
-    ReportComponent
+    ReportComponent,
+    RatingPoint
   ]
 })
 
@@ -39,7 +42,6 @@ export class UserProfileBarComponent {
   filesToUpload: Array<File>;
   linkImg: string;
   isFriend: boolean;
-
   roleToken: string;
   userToken: string;
   private sub: Subscription;
@@ -69,7 +71,9 @@ export class UserProfileBarComponent {
         this.linkImg = '';
         this._userService.getUserByUserName(this.name).subscribe(
           (user) => {
+            let localeDate = new Date(user.createdAt);
             this.userProfile = user;
+            this.userProfile.createdAt = localeDate.toLocaleDateString();
             this.linkImg = user.linkImg;
             $('#loading').hide();
           }, (error) => {

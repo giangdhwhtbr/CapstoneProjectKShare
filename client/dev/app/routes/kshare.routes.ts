@@ -34,9 +34,10 @@ import { errorPageComponent } from "../components/shared/404";
 import { AdminAuthGuard, isLogin, Guest }          from './auth';
 import { AuthService }        from '../services/auth';
 
+import { PublicKspace } from '../components/front-end/kspace/public-kspace';
 import { PublicKspaceComponent } from '../components/front-end/kspace/public-room';
-
-import { CreatePublicKspace } from '../components/front-end/kspace/public-kspace';
+import { CreatePublicKspace } from '../components/front-end/kspace/create-kspace';
+import { JoinPublicKspace } from '../components/front-end/kspace/join-room';
 
 export const KShareRoutes: RouterConfig = [
 
@@ -246,14 +247,20 @@ export const KShareRoutes: RouterConfig = [
     },
     {
         path: 'public-kspace',
+        canActivate:[Guest],
+        component: PublicKspace,
         children: [
           {
-            path: '',
+            path: 'create',
             component: CreatePublicKspace
           },
           {
-            path:':id',
+            path:':id/room',
             component: PublicKspaceComponent
+          },
+          {
+            path: ':id/join',
+            component: JoinPublicKspace
           }
         ]
     }

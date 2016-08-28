@@ -76,11 +76,24 @@ module.exports = class KSpaceController {
       .catch(err => res.status(400).json({ success: false }));
   }
 
+  static joinPublicKspace(req, res) {
+    var name = req.body.name;
+    var room = req.params.id;
+    PKSpaceDAO.getById(room)
+      .then(kspace => {
+        kspace.users.push(name);
+        PKSpaceDAO.updatePKspace(kspace)
+        .then(kspace => res.status(200).json({success: true}))
+        .catch(error => res.status(400).json({success: false}));
+      })
+      .catch (error => res.status(400).json(error));
+  }
+
   static checkExist(req, res) {
     if (req.params && req.params.id) {
       PKSpaceDAO.getById(req.params.id)
-        .then(kspace => res.status(200).json({ exist: true }))
-        .catch(err => res.status(400).json({ exist: false }))
+        .then(kspace => res.status(200).json(kspace))
+        .catch(err => res.status(400).json(err))
     }
   }
 

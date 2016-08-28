@@ -34,6 +34,7 @@ var LoginComponent = (function () {
         this._authService
             .login(user)
             .subscribe(function (res) {
+            localStorage.removeItem('guest');
             localStorage.setItem('username', res.username);
             if (res.role) {
                 localStorage.setItem('userrole', res.role);
@@ -41,7 +42,6 @@ var LoginComponent = (function () {
             if (localStorage.getItem('redirectUrl')) {
                 var redirectUrl = localStorage.getItem('redirectUrl');
                 localStorage.removeItem('redirectUrl');
-                console.log(redirectUrl);
                 window.location.href = redirectUrl;
             }
             else {

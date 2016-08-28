@@ -92,6 +92,8 @@ export class HeaderComponent {
 
     openChat() {
         $('#chatBoxK').openModal();
+        var numItems = $('.text-message').length;
+        $("#cntAllText").animate({ scrollTop: 200*numItems });
         this.isNewMessage = false;
     }
     open(): void {
