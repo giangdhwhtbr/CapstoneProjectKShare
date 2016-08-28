@@ -28,7 +28,7 @@ articleSchema.statics.topArticles = () => {
     return new Promise((resolve, reject) => {
 
         Article
-            .find({})
+            .find({"status":"public"})
             .select('-content -tags -comments -userUnLiked -knowledge -userLiked -tagsFD')
             .sort({like: -1})
             .limit(5)
