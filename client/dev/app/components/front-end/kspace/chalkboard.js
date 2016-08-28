@@ -71,6 +71,9 @@ var ChalkBoardComponent = (function () {
         if (!this.isLect) {
             $('#draw-option').hide();
         }
+        if (!this.lecturer) {
+            $('#new-page').hide();
+        }
         // Prepare data for identify the subscriber is lecturer or not
         var data = {
             room: room,
@@ -163,7 +166,7 @@ var ChalkBoardComponent = (function () {
                 path.strokeColor = strokeColor;
                 path.strokeWidth = strokeWidth;
                 var x = event.pageX - 0.22 * $(window).width();
-                var y = event.pageY - 70;
+                var y = event.pageY - 105;
                 path.add(new paper.Point(x, y));
                 emitStartPoint(x, y, strokeColor, strokeWidth);
             }
@@ -173,7 +176,7 @@ var ChalkBoardComponent = (function () {
         $('#chalkboard').mousemove(function (event) {
             if (drawing && (isLect || isGuest)) {
                 var x = event.pageX - 0.22 * $(window).width();
-                var y = event.pageY - 70;
+                var y = event.pageY - 105;
                 draw(x, y);
                 emitPathPoint(x, y);
             }
