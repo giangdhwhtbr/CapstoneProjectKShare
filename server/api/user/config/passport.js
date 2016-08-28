@@ -28,7 +28,8 @@ module.exports = function(passport){
         if(user.banStatus.status) {
           var currentDate = new Date();
           var difftime = currentDate.getTime() - user.banStatus.bannedAt.getTime();
-          var localDate = user.banStatus.bannedAt.toLocaleDateString;
+          var localDate = new Date(user.banStatus.bannedAt);
+          localDate = localDate.toLocaleDateString();
           if (difftime < user.banStatus.time){
             return done(null, false, {
               message: 'Bạn đã vi phạm điều khoản sử dụng chúng tôi quyết định khoá tài khoản của bạn trong vòng 1' +

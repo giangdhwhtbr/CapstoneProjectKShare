@@ -14,6 +14,7 @@ var router_1 = require('@angular/router');
 var users_1 = require('../../../../services/users');
 var notification_1 = require('../../../../services/notification');
 var report_1 = require('../../report/report');
+var ratingPoint_1 = require('../../../shared/ratingPoint');
 var UserProfileBarComponent = (function () {
     function UserProfileBarComponent(router, route, _userService, _noti) {
         this.router = router;
@@ -32,7 +33,9 @@ var UserProfileBarComponent = (function () {
             _this.name = params['name'];
             _this.linkImg = '';
             _this._userService.getUserByUserName(_this.name).subscribe(function (user) {
+                var localeDate = new Date(user.createdAt);
                 _this.userProfile = user;
+                _this.userProfile.createdAt = localeDate.toLocaleDateString();
                 _this.linkImg = user.linkImg;
                 $('#loading').hide();
             }, function (error) {
@@ -160,7 +163,8 @@ var UserProfileBarComponent = (function () {
             styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES,
-                report_1.ReportComponent
+                report_1.ReportComponent,
+                ratingPoint_1.RatingPoint
             ]
         }), 
         __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, users_1.UserService, notification_1.NotificationService])
