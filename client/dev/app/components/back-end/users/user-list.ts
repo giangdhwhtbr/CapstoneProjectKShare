@@ -34,12 +34,14 @@ declare var Materialize:any;
 export class UserListComponent {
     pageTitle: string = 'users';
     errorMessage: string;
+    errMsg: string;
     roleToken:string;
-    users: User[];
+    users: User[] = [];
     public filter: string = '';
     numOfUser: number = 0;
     userForm: ControlGroup;
     userrole: string;
+    banStatus: boolean;
     createHid: boolean = true;
     constructor(@Inject(FormBuilder) fb:FormBuilder,private _userService: UserService, private _auth:AuthService, private router: Router){
         this.userrole = localStorage.getItem('userrole');
@@ -57,21 +59,22 @@ export class UserListComponent {
             .subscribe(
                 (users) => {
                     for (var i = 0; i < users.length; i++) {
-                        if (users[i].birthday) {
-                            users[i].birthday = new Date(users[i].birthday);
-                        }
-                        users[i].createdAt = new Date(users[i].createdAt);
-                        if (users[i].updatedAt) {
-                            users[i].updatedAt = new Date(users[i].updatedAt);
-                        }
-                        users[i]["num"]=i+1;
+                      if (users[i].birthday) {
+                        users[i].birthday = new Date(users[i].birthday);
+                      }
+                      users[i].createdAt = new Date(users[i].createdAt);
+                      if (users[i].updatedAt) {
+                        users[i].updatedAt = new Date(users[i].updatedAt);
+                      }
+                      users[i]["num"] = i + 1;
+                      if(users[i].role !== 'admin'){
+                        this.users.push(users[i]);
+                      }
                     }
-                    this.users = users;
                     this.numOfUser = i;
                 },
                 (error) => {
                     this.errorMessage = error.message;
-                    console.log(error);
                 }
             );
         $(document).ready(function() {
@@ -105,7 +108,9 @@ export class UserListComponent {
           .addUser(user)
           .subscribe(
             response => {
-              this.users.push(response);
+              if(response.role !== 'admin'){
+                this.users.push(response);
+              }
             },
             error => {
               if(error.errors) {
@@ -129,16 +134,21 @@ export class UserListComponent {
           );
       }
     }
-    banUser(userid: string): void  {
-        this._userService.banUser(userid).subscribe(response => {
+    banUser(user): void  {
+        if(user.role === 'admin'){
+          this.errMsg = 'Bạn không thể ban một admin';
+        }
+        this._userService.banUser(user._id).subscribe(response => {
             Materialize.toast('Khoá người dùng này trong vòng 1 ngày!', 6000);
-            $("#"+userid).hide();
-            console.log(response);
+            $("#"+user._id).hide();
+            user.banStatus.status = true;
         },error => {});
     }
 
     deactivateUser(user: User){
-        console.log(user);
+        if(user.role === 'admin'){
+          this.errMsg = 'Bạn không thể khoá tài khoản của admin';
+        }
         user.status = 'deactive';
         this._userService.updateUser(user,[]).subscribe((user) => {
         });

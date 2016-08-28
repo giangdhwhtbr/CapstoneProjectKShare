@@ -28,8 +28,10 @@ var displayArtByTag_1 = require("../components/front-end/tag/displayArtByTag");
 var _404_1 = require("../components/shared/404");
 var auth_1 = require('./auth');
 var auth_2 = require('../services/auth');
-var public_room_1 = require('../components/front-end/kspace/public-room');
 var public_kspace_1 = require('../components/front-end/kspace/public-kspace');
+var public_room_1 = require('../components/front-end/kspace/public-room');
+var create_kspace_1 = require('../components/front-end/kspace/create-kspace');
+var join_room_1 = require('../components/front-end/kspace/join-room');
 exports.KShareRoutes = [
     {
         path: '',
@@ -236,14 +238,20 @@ exports.KShareRoutes = [
     },
     {
         path: 'public-kspace',
+        canActivate: [auth_1.Guest],
+        component: public_kspace_1.PublicKspace,
         children: [
             {
-                path: '',
-                component: public_kspace_1.CreatePublicKspace
+                path: 'create',
+                component: create_kspace_1.CreatePublicKspace
             },
             {
-                path: ':id',
+                path: ':id/room',
                 component: public_room_1.PublicKspaceComponent
+            },
+            {
+                path: ':id/join',
+                component: join_room_1.JoinPublicKspace
             }
         ]
     }

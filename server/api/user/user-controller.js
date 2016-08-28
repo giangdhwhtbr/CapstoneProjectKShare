@@ -88,6 +88,9 @@ module.exports = class userController {
               user.fullName = _data.user.fullName;
               user.phone = _data.user.phone;
               user.status = _data.user.status;
+              if(user.banStatus && _data.user.banStatus){
+                user.banStatus.status = _data.user.banStatus.status;
+              }
               user.updatedAt = currentDate;
               user.linkImg = _data.user.linkImg;
               var formatDate = function (date) {
@@ -98,8 +101,6 @@ module.exports = class userController {
                 return new Date(day + '/' + month + '/' + year);
               };
               user.birthday = formatDate(_data.user.birthday);
-
-
               if(_data.user.linkImg){
                 chatRoomCtrl.updateAvatarUserInChatRoom(_data.user.username, _data.user.linkImg);
               }
@@ -129,7 +130,6 @@ module.exports = class userController {
             userDAO.getUserById(req.params.id)
                 .then(user => {
                     user.banStatus = {
-                        admin: req.admin,
                         time: '86400000',
                         bannedAt: currentDate,
                         status: true

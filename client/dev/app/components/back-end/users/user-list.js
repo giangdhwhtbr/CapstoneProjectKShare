@@ -1,10 +1,11 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var __param = (this && this.__param) || function (paramIndex, decorator) {
     return function (target, key) { decorator(target, key, paramIndex); }
@@ -14,6 +15,7 @@ var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
 var pager_1 = require('../../../services/pager');
 var users_1 = require('../../../services/users');
+var auth_1 = require('../../../services/auth');
 var primeng_1 = require('primeng/primeng');
 var primeng_2 = require('primeng/primeng');
 var private_chat_1 = require('../../shared/private-chat');
@@ -23,6 +25,7 @@ var UserListComponent = (function () {
         this._auth = _auth;
         this.router = router;
         this.pageTitle = 'users';
+        this.users = [];
         this.filter = '';
         this.numOfUser = 0;
         this.createHid = true;
@@ -49,12 +52,13 @@ var UserListComponent = (function () {
                     users[i].updatedAt = new Date(users[i].updatedAt);
                 }
                 users[i]["num"] = i + 1;
+                if (users[i].role !== 'admin') {
+                    _this.users.push(users[i]);
+                }
             }
-            _this.users = users;
             _this.numOfUser = i;
         }, function (error) {
             _this.errorMessage = error.message;
-            console.log(error);
         });
         $(document).ready(function () {
             $('select').material_select();
@@ -88,7 +92,9 @@ var UserListComponent = (function () {
             this._userService
                 .addUser(user)
                 .subscribe(function (response) {
-                _this.users.push(response);
+                if (response.role !== 'admin') {
+                    _this.users.push(response);
+                }
             }, function (error) {
                 if (error.errors) {
                     var errors = error.errors;
@@ -113,15 +119,20 @@ var UserListComponent = (function () {
             });
         }
     };
-    UserListComponent.prototype.banUser = function (userid) {
-        this._userService.banUser(userid).subscribe(function (response) {
+    UserListComponent.prototype.banUser = function (user) {
+        if (user.role === 'admin') {
+            this.errMsg = 'Bạn không thể ban một admin';
+        }
+        this._userService.banUser(user._id).subscribe(function (response) {
             Materialize.toast('Khoá người dùng này trong vòng 1 ngày!', 6000);
-            $("#" + userid).hide();
-            console.log(response);
+            $("#" + user._id).hide();
+            user.banStatus.status = true;
         }, function (error) { });
     };
     UserListComponent.prototype.deactivateUser = function (user) {
-        console.log(user);
+        if (user.role === 'admin') {
+            this.errMsg = 'Bạn không thể khoá tài khoản của admin';
+        }
         user.status = 'deactive';
         this._userService.updateUser(user, []).subscribe(function (user) {
         });
@@ -137,9 +148,10 @@ var UserListComponent = (function () {
             selector: 'user-list',
             templateUrl: 'client/dev/app/components/back-end/users/templates/user-list.html',
             directives: [router_1.ROUTER_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, private_chat_1.PrivateChatComponent],
-            providers: [users_1.UserService, pager_1.PagerService]
+            providers: [users_1.UserService, pager_1.PagerService],
         }),
-        __param(0, core_1.Inject(common_1.FormBuilder))
+        __param(0, core_1.Inject(common_1.FormBuilder)), 
+        __metadata('design:paramtypes', [common_1.FormBuilder, users_1.UserService, auth_1.AuthService, router_1.Router])
     ], UserListComponent);
     return UserListComponent;
 })();

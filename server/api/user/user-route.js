@@ -40,7 +40,7 @@ module.exports = class userRoutes {
             var data = {
               username : user.username,
               role: user.role
-            }
+            };
             return res.status(200).send(data);
           });
         })(req, res, next);

@@ -1,201 +1,73 @@
 import { Component, OnInit, Inject} from '@angular/core';
-import { Request } from '../../../interface/request';
-import { RequestService } from '../../../services/requests';
-import { AuthService } from '../../../services/auth';
 import { KSpaceService } from '../../../services/kspace';
-import { WebRCTService } from './rtc-services';
-
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from'@angular/router';
-
-import {
-    Validators,
-    FormBuilder,
-    ControlGroup,
-    Control,
-    FORM_DIRECTIVES,
-} from '@angular/common';
-
-//import { ChatComponent } from './chat';
+import { RTCComponent } from './webrtc-component';
+import { ChatComponent } from './kspace-chat';
 import { ChalkBoardComponent } from './chalkboard';
-
-declare var SimpleWebRTC:any;
 declare var $:any;
 declare var io:any;
 
-@Component ({
-    selector: 'kspace',
-    templateUrl: 'client/dev/app/components/front-end/kspace/templates/kspace.html',
-    styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
-    directives: [
-        ROUTER_DIRECTIVES,
-        FORM_DIRECTIVES,
-        ChalkBoardComponent
-    ],
-    providers: [
-        WebRCTService
-    ]
+@Component({
+  selector: 'kspace',
+  templateUrl: 'client/dev/app/components/front-end/kspace/templates/kspace.html',
+  styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
+  directives: [
+    ROUTER_DIRECTIVES,
+    ChalkBoardComponent,
+    ChatComponent,
+    RTCComponent
+  ]
 })
 
 export class KSpaceComponent {
-    id:string;
-    user:string;
-    username:string;
-    kspace:any;
-    lecturer:string;
-    messages:Array<any>;
-    mess:String;
-    socket:any;
-    boards: any;
-    hiddenShareScreen: boolean = true;
+  id:string;
+  username:string;
+  lecturer:string;
+  learners: any;
+  boards:any;
+  chatlogs: any;
+  room: string;
 
-    constructor(public router:Router,
-                private route:ActivatedRoute,
-                private _kspaceService:KSpaceService,
-                private rtcService:WebRCTService) {
-        this.route.params.subscribe(params => {
-            this.id = params['id'];
-            this.lecturer = params['lecturer'];
-        });
-        this.username = localStorage.getItem('username');
-        this.messages = [];
-        this.socket = io('https://localhost:80');
-        this.socket.emit('subscribe', {room:this.id});
-        this.socket.on("chat_message", (dataReturn) => {
-            var isSender:boolean = false;
+  constructor(public router:Router,
+              private route:ActivatedRoute,
+              private _kspaceService:KSpaceService) {
+    this.route.params.subscribe(params => {
+      this.id = params['id'];
+      this.lecturer = params['lecturer'];
+    });
+    this.username = localStorage.getItem('username');
+  }
 
-            if (dataReturn.user == this.username) {
-                isSender = true;
-            }
+  /*
+   * Init when the component is initiated
+   * */
 
-            var msgObject = {
-                user: dataReturn.user,
-                msg: dataReturn.msg,
-                url: dataReturn.url,
-                sender: isSender
-            };
-            this.messages.push(msgObject);
-        });
-    }
-
-    send(message:string, img:any) {
-        if (img) {
-
-            var chalkboard = document.getElementById("chalkboard");
-            var ctx = chalkboard.getContext("2d");
-            var dataURL = chalkboard.toDataURL();
-
-            var data = {
-                id: this.id,
-                createdUser: this.username,
-                message: message,
-                dataURL: dataURL
-            }
-            this.socket.emit("chat_message", data);
-            this.mess = "";
-
-        } else {
-
-            var data = {
-                id: this.id,
-                createdUser: this.username,
-                message: message
-            }
-            this.socket.emit("chat_message", data);
-            this.mess = "";
-
-        }
-
-    }
-
-    /*
-     * Init when the component is initiated
-     *
-     * */
-
-    ngOnInit():void {
-        // DOM elements
-        var shareScreenBtn = $('#sharescreen-btn');
-        var chalkBoardBtn = $('#chalkboard-btn');
-        var localVideo = $('#localVideo');
-        var remoteVideos = $('#remoteVideos');
-        var kspacePanel = $('#kspace-panel');
-
-        this._kspaceService
-            .getKSpaceById(this.id)
-            .subscribe(kspace => {
-              if(kspace.lecturer === this.username){
-                this.hiddenShareScreen = false;
+  ngOnInit():void {
+    this._kspaceService
+      .getKSpaceById(this.id)
+      .subscribe(kspace => {
+          this.boards = kspace.boards;
+          this.chatlogs = kspace.chatlog;
+          this.room = kspace._id;
+          var username = this.username;
+          this.learners = kspace.learners;
+          var isKspaceUser = function () {
+            for (var learner of kspace.learners) {
+              if (username === learner) {
+                return true;
               }
-
-              this.boards = kspace.boards;
-                    var chatlog = kspace.chatlog;
-                    var isSender:boolean = false;
-                    for (var log of chatlog) {
-                        var msg = log.createdUser + ': ' + log.message;
-                        if (log.createdUser == this.username) {
-                            isSender = true;
-                        } else {
-                            isSender = false;
-                        }
-                        var msgObject = {
-                            user: log.createdUser,
-                            msg: log.message,
-                            sender: isSender,
-                            url: log.dataURL
-                        };
-                        this.messages.push(msgObject);
-                    }
-
-                    var room = kspace._id;
-                    var username = this.username;
-                    var rtc = this.rtcService;
-
-                    var isKspaceUser = function () {
-                        for (var learner of kspace.learners) {
-                            if (username === learner) {
-                                return true
-                            }
-                        }
-                        if (username === kspace.lecturer) {
-                            return true;
-                        }
-                        return false;
-                    };
-                    if (isKspaceUser()) {
-
-                        // initiate webrtc
-
-                      var webrtc = new SimpleWebRTC({
-                                localVideoEl: 'localVideo',
-                                remoteVideosEl: '',
-                                autoRequestMedia: true,
-                                nick: username,
-                                localVideo: {
-                                    autoplay: true, // automatically play the video stream on the page
-                                    mirror: true, // flip the local video to mirror mode (for UX)
-                                    muted: true // mute local video stream to prevent echo
-                                },
-                                log: true,
-                                debug: false
-                      });
-
-                        rtc.rtcSetting(webrtc, room, kspace.lecturer);
-                        var sharescreenToken:boolean = false;
-                        shareScreenBtn.click(function () {
-                            console.log(sharescreenToken);
-                            sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);
-                        });
-                        chalkBoardBtn.click(function () {
-                            kspacePanel.find('video').remove();
-                        });
-
-
-                    } else {
-                        this.router.navigateByUrl('/');
-                    }
-                },
-                (error) => {
-                    this.router.navigateByUrl('/');
+            }
+            if(username === kspace.lecturer){
+              return true;
+            }
+            return false;
+          };
+          if (!isKspaceUser()) {
+            this.router.navigateByUrl('/');
+          }
+        },
+        (error) => {
+          this.router.navigateByUrl('/');
         });
-    }
+  }
 }

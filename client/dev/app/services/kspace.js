@@ -68,6 +68,13 @@ var KSpaceService = (function () {
         return this._http.post(api, { name: guest }, options)
             .map(function (r) { return r.json(); });
     };
+    KSpaceService.prototype.joinPublicKspace = function (guest, room) {
+        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+        var options = new http_1.RequestOptions({ headers: headers });
+        var api = '/api/public-kspace/:id';
+        return this._http.put(api.replace(':id', room), { name: guest }, options)
+            .map(function (r) { return r.json(); });
+    };
     KSpaceService.prototype.checkPublicKspace = function (id) {
         var api = '/api/public-kspace/:id';
         return this._http.get(api.replace(':id', id))

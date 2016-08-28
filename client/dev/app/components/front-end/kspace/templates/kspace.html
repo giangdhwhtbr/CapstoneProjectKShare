@@ -1,53 +1,26 @@
 <div class="row room-kspace">
-    <div class="col m2 local-panel">
-        <p class="peerName">{{username}}</p>
-        <video id="localVideo"></video>
-        <div [hidden]="hiddenShareScreen" id="rtcTools" class="row center">
-            <button id="sharescreen-btn" class="white-text waves-effect waves-green btn-flat blue lighten-1">
-                Chia sẻ màn hình
-            </button>
-        </div>
-        <div id="remoteVideos"></div>
-        <!-- /#remotes -->
-    </div>
-    <!-- /.md-2 -->
+    <kspace-webrtc *ngIf="lecturer && learners && room"
+                   [room]="room"
+                   [lecturer]="lecturer"
+                   [learners]="learners">
+    </kspace-webrtc>
     <div class="col m8 kspace-panel" id="kspace">
         <div class="row">
             <div class="col s1"></div>
             <div class="col s10 mg-top-50">
-              <chalkboard *ngIf="boards && id && lecturer" [lecturer]="lecturer" [boards]="boards"
-                          [id]="id"></chalkboard>
+              <chalkboard *ngIf="boards && id && lecturer"
+                          [lecturer]="lecturer"
+                          [boards]="boards"
+                          [id]="id">
+
+              </chalkboard>
             </div>
             <div class="col s1"></div>
         </div>
     </div>
-    <div class="col m2" style="height:100%;left:83.3%!important;position:fixed;">
-        <div id="chat-panel">
-            <div id="chat-box-output" class="panel panel-default chat-box">
-                <div *ngFor="let msg of messages ">
-                    <div *ngIf="!msg.sender">
-                        <div class="msg-box other-msg-box">
-                            <p><b>{{msg.user}} :</b>{{msg.msg}}</p>
-                            <p *ngIf="msg.url"><img src="{{msg.url}}" class="responsive-img" alt=""></p>
-                        </div>
-                    </div>
-                    <div *ngIf="msg.sender" class="own-msg">
-                        <div class="msg-box own-msg-box right">
-                            <p> {{msg.msg}}</p>
-                            <p *ngIf="msg.url"><img src="{{msg.url}}" class="responsive-img" alt=""></p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <form id="chat-form" (ngSubmit)="send(mess,img)" >
-            <div class="col s1">
-                <input type="checkbox" id="img" name="img" [(ngModel)]="img" />
-                <label for="img"></label>
-            </div>
-            <div class="col s11">
-                <input type="text" id="chat-input" [(ngModel)]="mess" class="panel panel-default" placeholder="chat here">
-            </div>
-        </form>
-    </div>
+    <kspace-chat *ngIf="chatlogs && room && lecturer"
+                 [lecturer]="lecturer"
+                 [room]="room"
+                 [chatlogs]="chatlogs">
+    </kspace-chat>
 </div>
