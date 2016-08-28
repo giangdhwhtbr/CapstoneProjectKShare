@@ -65,6 +65,8 @@ webpackJsonp([2],[
 	    }
 	    PrivateChatComponent.prototype.ngOnInit = function () {
 	        var _this = this;
+	        var numItems = $('.text-message').length;
+	        $("#cntAllText").animate({ scrollTop: 200 * numItems });
 	        this.socket.on('private-message-return', function (data) {
 	            var news = 0;
 	            // New message token
@@ -72,6 +74,8 @@ webpackJsonp([2],[
 	                var user = _a[_i];
 	                if (user.user === _this.username) {
 	                    news = user.newMessages;
+	                    var numItems = $('.text-message').length;
+	                    $("#cntAllText").animate({ scrollTop: 200 * numItems });
 	                }
 	            }
 	            // Enter message to the current room
@@ -176,6 +180,8 @@ webpackJsonp([2],[
 	        }
 	    };
 	    PrivateChatComponent.prototype.getReceiver = function (slRoom) {
+	        var numItems = $('.text-message').length;
+	        $("#cntAllText").animate({ scrollTop: 200 * numItems });
 	        this.currentRoom.id = slRoom._id;
 	        this.receiver = slRoom.friendName;
 	        this.currentRoom.messages = slRoom.chatLogs;
@@ -199,7 +205,7 @@ webpackJsonp([2],[
 	            this.mess = "";
 	        }
 	        var numItems = $('.text-message').length;
-	        $("#cntAllText").animate({ scrollTop: 200 * numItems }, "slow");
+	        $("#cntAllText").animate({ scrollTop: 200 * numItems });
 	    };
 	    PrivateChatComponent = __decorate([
 	        core_1.Component({
@@ -7672,6 +7678,8 @@ webpackJsonp([2],[
 	    };
 	    HeaderComponent.prototype.openChat = function () {
 	        $('#chatBoxK').openModal();
+	        var numItems = $('.text-message').length;
+	        $("#cntAllText").animate({ scrollTop: 200 * numItems });
 	        this.isNewMessage = false;
 	    };
 	    HeaderComponent.prototype.open = function () {

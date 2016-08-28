@@ -29,6 +29,7 @@ export class PrivateChatComponent {
   mess:string;
   avatar: string;
   constructor(private _chatService: ChatService, private _noti: NotificationService, private _userService: UserService) {
+
     this.currentRoom = {
       id: '',
       messages: []
@@ -39,12 +40,16 @@ export class PrivateChatComponent {
   }
 
   ngOnInit(): void {
+    var numItems = $('.text-message').length;
+    $("#cntAllText").animate({ scrollTop: 200*numItems });
     this.socket.on('private-message-return', data => {
         var news = 0;
         // New message token
         for (var user of data.users) {
           if (user.user === this.username) {
             news = user.newMessages;
+            var numItems = $('.text-message').length;
+            $("#cntAllText").animate({ scrollTop: 200*numItems });
           }
         }
         // Enter message to the current room
@@ -147,6 +152,8 @@ export class PrivateChatComponent {
   }
 
   getReceiver(slRoom: ChatRoom): void {
+    var numItems = $('.text-message').length;
+    $("#cntAllText").animate({ scrollTop: 200*numItems });
     this.currentRoom.id = slRoom._id;
     this.receiver = slRoom.friendName;
     this.currentRoom.messages = slRoom.chatLogs;
@@ -173,7 +180,7 @@ export class PrivateChatComponent {
 
     }
     var numItems = $('.text-message').length;
-    $("#cntAllText").animate({ scrollTop: 200*numItems }, "slow");
+    $("#cntAllText").animate({ scrollTop: 200*numItems });
   }
 
 }
