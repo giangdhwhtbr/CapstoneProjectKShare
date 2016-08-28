@@ -138,3 +138,7 @@ li>img {
 .room-kspace{
     margin-top: -67px;
 }
+
+.local-panel{
+    overflow-y:scroll ;
+}

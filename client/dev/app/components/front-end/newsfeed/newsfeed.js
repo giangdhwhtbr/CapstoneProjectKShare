@@ -70,7 +70,6 @@ var NewsFeedComponent = (function () {
     NewsFeedComponent.prototype.getReqs = function () {
         var _this = this;
         this._requestService.getAllRequests(this.countR1).subscribe(function (reqs) {
-            console.log(reqs);
             for (var _i = 0; _i < reqs.length; _i++) {
                 var r = reqs[_i];
                 _this.records.push(r);

@@ -13,13 +13,14 @@ var requests_1 = require('../../../services/requests');
 var request_offer_1 = require('../../../services/request-offer');
 var knowledge_1 = require('../../../services/knowledge');
 var kspace_1 = require('../../../services/kspace');
+var notification_1 = require('../../../services/notification');
 var offer_create_1 = require('../offer/offer-create');
 var report_1 = require('../report/report');
 var tag_1 = require('../tag/tag');
 var private_chat_1 = require('./../../shared/private-chat');
 var info_hover_1 = require('../user/user-profile/info-hover');
 var RequestDetailClientComponent = (function () {
-    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
+    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route, _noti) {
         var _this = this;
         this._requestService = _requestService;
         this._offerService = _offerService;
@@ -27,6 +28,7 @@ var RequestDetailClientComponent = (function () {
         this._knowledgeService = _knowledgeService;
         this._kspaceService = _kspaceService;
         this.route = route;
+        this._noti = _noti;
         this.num = 5;
         this.height = 400;
         //check if request is accepted
@@ -190,6 +192,11 @@ var RequestDetailClientComponent = (function () {
                 console.log('change status request successfull');
             });
             _this.checkIsAcceped = true;
+            var title = 'Yêu cầu của bạn đã được chấp nhận';
+            var user = lecturer;
+            var link = '/kspace/info/' + r._id + '/' + lecturer;
+            _this._noti.createNotification(title, user, link).subscribe(function (noti) {
+            });
             _this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
         });
     };
@@ -250,7 +257,7 @@ var RequestDetailClientComponent = (function () {
                 info_hover_1.infoHover
             ]
         }), 
-        __metadata('design:paramtypes', [requests_1.RequestService, request_offer_1.OfferService, router_1.Router, knowledge_1.KnowledgeService, kspace_1.KSpaceService, router_1.ActivatedRoute])
+        __metadata('design:paramtypes', [requests_1.RequestService, request_offer_1.OfferService, router_1.Router, knowledge_1.KnowledgeService, kspace_1.KSpaceService, router_1.ActivatedRoute, notification_1.NotificationService])
     ], RequestDetailClientComponent);
     return RequestDetailClientComponent;
 })();

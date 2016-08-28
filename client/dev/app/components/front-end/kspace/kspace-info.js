@@ -134,7 +134,8 @@ var KSpaceInfoComponent = (function () {
                 contentArt += '<img class="responsive-img" src="' + this.images[i].url + '" style="background-color: black; border-radius: 10px;"><br>';
             }
             for (var i = 0; i < this.boards.length; i++) {
-                contentArt += "<h5>bảng " + this.boards[i].des + "</h5><br>";
+                contentArt += "<p><h5>bảng " + this.boards[i].name + "</h5></p>";
+                contentArt += "<p><h6>bảng " + this.boards[i].des + "</h6></p>";
                 contentArt += '<img class="responsive-img" src="' + this.boards[i].url + '" style="background-color: whitesmoke; border-radius: 10px;" ><br>';
             }
             var dateKs = new Date(this.kspace.createdAt);

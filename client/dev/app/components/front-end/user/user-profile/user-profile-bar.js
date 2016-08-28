@@ -1,18 +1,14 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 //cores
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-//services
-var users_1 = require('../../../../services/users');
-var notification_1 = require('../../../../services/notification');
 var report_1 = require('../../report/report');
 var ratingPoint_1 = require('../../../shared/ratingPoint');
 var UserProfileBarComponent = (function () {
@@ -166,8 +162,7 @@ var UserProfileBarComponent = (function () {
                 report_1.ReportComponent,
                 ratingPoint_1.RatingPoint
             ]
-        }), 
-        __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, users_1.UserService, notification_1.NotificationService])
+        })
     ], UserProfileBarComponent);
     return UserProfileBarComponent;
 })();
