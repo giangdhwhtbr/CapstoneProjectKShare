@@ -73,6 +73,8 @@ var HeaderComponent = (function () {
     };
     HeaderComponent.prototype.openChat = function () {
         $('#chatBoxK').openModal();
+        var numItems = $('.text-message').length;
+        $("#cntAllText").animate({ scrollTop: 200 * numItems });
         this.isNewMessage = false;
     };
     HeaderComponent.prototype.open = function () {

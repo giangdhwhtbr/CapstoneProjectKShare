@@ -56,7 +56,6 @@ export class LoginComponent {
             if(localStorage.getItem('redirectUrl')){
               let redirectUrl = localStorage.getItem('redirectUrl');
               localStorage.removeItem('redirectUrl');
-              console.log(redirectUrl);
               window.location.href = redirectUrl;
             }else {
               window.location.href = '/';

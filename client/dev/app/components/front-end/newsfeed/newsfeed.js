@@ -41,14 +41,20 @@ var NewsFeedComponent = (function () {
         }
         else {
             this.getRequests();
+            this.getArticles();
         }
         $('.parallax').parallax();
     };
     NewsFeedComponent.prototype.seeMore = function () {
         this.countR1 = this.countR1 + 5;
         this.countA1 = this.countA1 + 5;
-        this.getRequests();
-        this.getArticles();
+        if (this.userToken === null) {
+            this.getArts();
+        }
+        else {
+            this.getRequests();
+            this.getArticles();
+        }
     };
     NewsFeedComponent.prototype.getArts = function () {
         var _this = this;
