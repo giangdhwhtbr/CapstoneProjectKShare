@@ -105,10 +105,10 @@ main{
     border-left: 1px solid #ffffff;
 }
 ::-webkit-scrollbar-thumb {
-    background-color: #69f0ae ;
+    background-color: #5b5b5b;
 }
 ::-webkit-scrollbar-thumb:hover {
-    background-color: #69f0ae ;
+    background-color: #5b5b5b;
 }
 
 .displayPointer{
