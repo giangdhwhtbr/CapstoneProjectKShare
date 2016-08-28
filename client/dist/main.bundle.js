@@ -6502,13 +6502,14 @@ webpackJsonp([2],[
 	var request_offer_1 = __webpack_require__(295);
 	var knowledge_1 = __webpack_require__(53);
 	var kspace_1 = __webpack_require__(75);
+	var notification_1 = __webpack_require__(64);
 	var offer_create_1 = __webpack_require__(671);
 	var report_1 = __webpack_require__(292);
 	var tag_1 = __webpack_require__(74);
 	var private_chat_1 = __webpack_require__(11);
 	var info_hover_1 = __webpack_require__(56);
 	var RequestDetailClientComponent = (function () {
-	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
+	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route, _noti) {
 	        var _this = this;
 	        this._requestService = _requestService;
 	        this._offerService = _offerService;
@@ -6516,6 +6517,7 @@ webpackJsonp([2],[
 	        this._knowledgeService = _knowledgeService;
 	        this._kspaceService = _kspaceService;
 	        this.route = route;
+	        this._noti = _noti;
 	        this.num = 5;
 	        this.height = 400;
 	        //check if request is accepted
@@ -6679,6 +6681,11 @@ webpackJsonp([2],[
 	                console.log('change status request successfull');
 	            });
 	            _this.checkIsAcceped = true;
+	            var title = 'Yêu cầu của bạn đã được chấp nhận';
+	            var user = lecturer;
+	            var link = '/kspace/info/' + r._id + '/' + lecturer;
+	            _this._noti.createNotification(title, user, link).subscribe(function (noti) {
+	            });
 	            _this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
 	        });
 	    };
@@ -6739,10 +6746,10 @@ webpackJsonp([2],[
 	                info_hover_1.infoHover
 	            ]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object, (typeof (_g = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _g) || Object])
 	    ], RequestDetailClientComponent);
 	    return RequestDetailClientComponent;
-	    var _a, _b, _c, _d, _e, _f;
+	    var _a, _b, _c, _d, _e, _f, _g;
 	}());
 	exports.RequestDetailClientComponent = RequestDetailClientComponent;
 	
