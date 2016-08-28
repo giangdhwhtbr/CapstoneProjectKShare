@@ -56,36 +56,41 @@ export class NewsFeedComponent implements OnInit {
         this.countA2 = 5;
         this.countR2 = 5;
         this.records = [];
-        if(this.userToken === null){
+        if (this.userToken === null) {
             this.getArts();
         } else {
             this.getRequests();
+            this.getArticles();
         }
-       
+
         $('.parallax').parallax();
     }
 
     seeMore(): void {
         this.countR1 = this.countR1 + 5;
         this.countA1 = this.countA1 + 5;
-        this.getRequests();
-        this.getArticles();
+        if (this.userToken === null) {
+            this.getArts();
+        } else {
+            this.getRequests();
+            this.getArticles();
+        }
     }
 
-    getArts(){
+    getArts() {
         this._articleService.getAllArts(this.countA1).subscribe((arts) => {
             console.log(arts);
-            for (let a of arts){
+            for (let a of arts) {
                 this.records.push(a);
             }
             this.getReqs();
         });
     }
 
-    getReqs(){
+    getReqs() {
         this._requestService.getAllRequests(this.countR1).subscribe((reqs) => {
             console.log(reqs);
-            for (let r of reqs){
+            for (let r of reqs) {
                 this.records.push(r);
             }
         })

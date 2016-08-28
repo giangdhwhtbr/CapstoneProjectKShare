@@ -41,7 +41,6 @@ var LoginComponent = (function () {
             if (localStorage.getItem('redirectUrl')) {
                 var redirectUrl = localStorage.getItem('redirectUrl');
                 localStorage.removeItem('redirectUrl');
-                console.log(redirectUrl);
                 window.location.href = redirectUrl;
             }
             else {
