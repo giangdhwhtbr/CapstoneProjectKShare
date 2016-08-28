@@ -7,106 +7,35 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     }
 };
 var core_1 = require('@angular/core');
-var rtc_services_1 = require('./rtc-services');
 var router_1 = require('@angular/router');
-var common_1 = require('@angular/common');
-//import { ChatComponent } from './chat';
+var webrtc_component_1 = require('./webrtc-component');
+var kspace_chat_1 = require('./kspace-chat');
 var chalkboard_1 = require('./chalkboard');
 var KSpaceComponent = (function () {
-    function KSpaceComponent(router, route, _kspaceService, rtcService) {
+    function KSpaceComponent(router, route, _kspaceService) {
         var _this = this;
         this.router = router;
         this.route = route;
         this._kspaceService = _kspaceService;
-        this.rtcService = rtcService;
-        this.hiddenShareScreen = true;
         this.route.params.subscribe(function (params) {
             _this.id = params['id'];
             _this.lecturer = params['lecturer'];
         });
         this.username = localStorage.getItem('username');
-        this.messages = [];
-        this.socket = io('https://localhost:80');
-        this.socket.emit('subscribe', { room: this.id });
-        this.socket.on("chat_message", function (dataReturn) {
-            var isSender = false;
-            if (dataReturn.user == _this.username) {
-                isSender = true;
-            }
-            var msgObject = {
-                user: dataReturn.user,
-                msg: dataReturn.msg,
-                url: dataReturn.url,
-                sender: isSender
-            };
-            _this.messages.push(msgObject);
-        });
     }
-    KSpaceComponent.prototype.send = function (message, img) {
-        if (img) {
-            var chalkboard = document.getElementById("chalkboard");
-            var ctx = chalkboard.getContext("2d");
-            var dataURL = chalkboard.toDataURL();
-            var data = {
-                id: this.id,
-                createdUser: this.username,
-                message: message,
-                dataURL: dataURL
-            };
-            this.socket.emit("chat_message", data);
-            this.mess = "";
-        }
-        else {
-            var data = {
-                id: this.id,
-                createdUser: this.username,
-                message: message
-            };
-            this.socket.emit("chat_message", data);
-            this.mess = "";
-        }
-    };
     /*
      * Init when the component is initiated
-     *
      * */
     KSpaceComponent.prototype.ngOnInit = function () {
         var _this = this;
-        // DOM elements
-        var shareScreenBtn = $('#sharescreen-btn');
-        var chalkBoardBtn = $('#chalkboard-btn');
-        var localVideo = $('#localVideo');
-        var remoteVideos = $('#remoteVideos');
-        var kspacePanel = $('#kspace-panel');
         this._kspaceService
             .getKSpaceById(this.id)
             .subscribe(function (kspace) {
-            if (kspace.lecturer === _this.username) {
-                _this.hiddenShareScreen = false;
-            }
             _this.boards = kspace.boards;
-            var chatlog = kspace.chatlog;
-            var isSender = false;
-            for (var _i = 0; _i < chatlog.length; _i++) {
-                var log = chatlog[_i];
-                var msg = log.createdUser + ': ' + log.message;
-                if (log.createdUser == _this.username) {
-                    isSender = true;
-                }
-                else {
-                    isSender = false;
-                }
-                var msgObject = {
-                    user: log.createdUser,
-                    msg: log.message,
-                    sender: isSender,
-                    url: log.dataURL
-                };
-                _this.messages.push(msgObject);
-            }
-            var room = kspace._id;
+            _this.chatlogs = kspace.chatlog;
+            _this.room = kspace._id;
             var username = _this.username;
-            var rtc = _this.rtcService;
+            _this.learners = kspace.learners;
             var isKspaceUser = function () {
                 for (var _i = 0, _a = kspace.learners; _i < _a.length; _i++) {
                     var learner = _a[_i];
@@ -119,32 +48,7 @@ var KSpaceComponent = (function () {
                 }
                 return false;
             };
-            if (isKspaceUser()) {
-                // initiate webrtc
-                var webrtc = new SimpleWebRTC({
-                    localVideoEl: 'localVideo',
-                    remoteVideosEl: '',
-                    autoRequestMedia: true,
-                    nick: username,
-                    localVideo: {
-                        autoplay: true,
-                        mirror: true,
-                        muted: true // mute local video stream to prevent echo
-                    },
-                    log: true,
-                    debug: false
-                });
-                rtc.rtcSetting(webrtc, room, kspace.lecturer);
-                var sharescreenToken = false;
-                shareScreenBtn.click(function () {
-                    console.log(sharescreenToken);
-                    sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);
-                });
-                chalkBoardBtn.click(function () {
-                    kspacePanel.find('video').remove();
-                });
-            }
-            else {
+            if (!isKspaceUser()) {
                 _this.router.navigateByUrl('/');
             }
         }, function (error) {
@@ -158,11 +62,9 @@ var KSpaceComponent = (function () {
             styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES,
-                common_1.FORM_DIRECTIVES,
-                chalkboard_1.ChalkBoardComponent
-            ],
-            providers: [
-                rtc_services_1.WebRCTService
+                chalkboard_1.ChalkBoardComponent,
+                kspace_chat_1.ChatComponent,
+                webrtc_component_1.RTCComponent
             ]
         })
     ], KSpaceComponent);

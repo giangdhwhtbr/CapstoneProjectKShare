@@ -1,3 +1,20 @@
+@media all and (min-width: 1400px) {
+  #chat-box-output {
+    overflow: scroll;
+    max-height: 68rem;
+  }
+}
+
+@media all and (max-width: 1200px) {
+  #chat-box-output{
+    overflow: scroll;
+    max-height: 46rem;
+  }
+}
+
+#chat-box-output{
+  margin-top: 70px;
+}
 .row {
     padding: 0!important;
 }
@@ -35,14 +52,16 @@
 }
 .chat-box {
     position: fixed;
-    width: 16.67%;
+    width: 15.67%;
     height: 100%;
     /*box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);*/
 }
-#chat-box-output{
-    overflow: scroll;
-    max-height: 46rem;
+
+img.responsive-img {
+  background-color: white;
 }
+
+
 #chat-box-output ul {
     display: -webkit-inline-box;
     padding-left: 10px;
@@ -118,4 +137,8 @@ li>img {
 
 .room-kspace{
     margin-top: -67px;
+}
+
+.local-panel{
+    overflow-y:scroll ;
 }

@@ -48,7 +48,7 @@
     "client/dev/app/components/front-end/kspace/kspace-info.ts",
     "client/dev/app/components/front-end/kspace/kspace-list.ts",
     "client/dev/app/components/front-end/kspace/kspace.ts",
-    "client/dev/app/components/front-end/kspace/public-kspace.ts",
+    "client/dev/app/components/front-end/kspace/create-kspace.ts",
     "client/dev/app/components/front-end/kspace/public-room.ts",
     "client/dev/app/components/front-end/kspace/rtc-services.ts",
     "client/dev/app/components/front-end/newsfeed/newsfeed.ts",

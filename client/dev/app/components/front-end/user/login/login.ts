@@ -48,6 +48,7 @@ export class LoginComponent {
       .login(user)
       .subscribe(
         res => {
+            localStorage.removeItem('guest');
             localStorage.setItem('username', res.username);
             if(res.role){
               localStorage.setItem('userrole', res.role);

@@ -1,0 +1,13 @@
+<div class="row room-kspace">
+  <kspace-webrtc *ngIf="room"[room]="room"></kspace-webrtc>
+  <div class="col m8 kspace-panel" id="kspace">
+    <div class="row">
+      <div class="col s1"></div>
+      <div class="col s10 mg-top-50">
+        <chalkboard [id]="id"></chalkboard>
+      </div>
+      <div class="col s1"></div>
+    </div>
+  </div>
+  <kspace-chat *ngIf="room"[room]="room"></kspace-chat>
+</div>

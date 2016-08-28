@@ -72,6 +72,15 @@ export class KSpaceService {
         .map((r) => r.json());
     }
 
+    joinPublicKspace (guest: string, room: string): Observable <any> {
+      let headers = new Headers({'Content-Type': 'application/json'});
+      let options = new RequestOptions({headers: headers});
+      var api = '/api/public-kspace/:id';
+
+      return this._http.put(api.replace(':id',room),{name:guest}, options)
+        .map((r) => r.json());
+    }
+
     checkPublicKspace(id: string) :Observable <any> {
       var api = '/api/public-kspace/:id';
       return this._http.get(api.replace(':id',id))

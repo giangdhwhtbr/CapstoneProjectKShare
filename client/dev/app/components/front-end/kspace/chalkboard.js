@@ -11,11 +11,15 @@ var ChalkBoardComponent = (function () {
     function ChalkBoardComponent() {
         this.initToken = true;
         this.username = localStorage.getItem('username');
+        this.guest = localStorage.getItem('guest');
         this.boards = [];
         this.colors = [
-            { label: '#000000', value: '#000000' },
-            { label: '#de3535', value: '#DE3535' },
-            { label: '#03a9f4', value: '#03a9f4' }
+            { label: 'đen', value: '#000000' },
+            { label: 'đỏ', value: '#DE3535' },
+            { label: 'lục', value: '#03a9f4' },
+            { label: 'lam', value: '#4caf50' },
+            { label: 'vàng ', value: '#ffeb3b' },
+            { label: 'cam', value: '#ff5722' }
         ];
         this.brushSizes = [
             { label: '1', value: '1' },
@@ -54,8 +58,15 @@ var ChalkBoardComponent = (function () {
                 return false;
             }
         }
+        if (this.lecturer) {
+            this.isGuest = false;
+        }
+        else if (!this.lecturer && this.guest) {
+            this.isGuest = true;
+        }
         this.isLect = isLecturer(this.username, this.lecturer);
         var isLect = this.isLect;
+        var isGuest = this.isGuest;
         if (!this.isLect) {
             $('#draw-option').hide();
         }
@@ -81,12 +92,13 @@ var ChalkBoardComponent = (function () {
                 }
             }
         });
+        // if logged in user is not lecturer => import board
         socket.on('shareBoard', function (board) {
-            // if logged in user is not lecturer => import board
             if (!isLecturer(localStorage.getItem('username'), data.lecturer)) {
                 paper.importJSON(board.json);
             }
         });
+        // if lecturer create new board => learners import board
         socket.on('newBoard', function (data) {
             paper.project.clear();
             var newLayer = new paper.Layer();
@@ -99,14 +111,17 @@ var ChalkBoardComponent = (function () {
                 _this.boards.push(board);
             }
         });
+        // if lecturer change board => learners change board
         socket.on('changeBoard', function (board) {
             if (!isLecturer(localStorage.getItem('username'), board.lecturer)) {
                 paper.project.clear();
                 paper.importJSON(board.json);
             }
         });
+        /*
+        * Init new chalk board
+        * */
         var chalkboard = document.getElementById('chalkboard');
-        // Initiate the paper at canvas id="chalkboard"
         paper.setup(chalkboard);
         //initiate setting
         var drawToolShow = false;
@@ -141,13 +156,13 @@ var ChalkBoardComponent = (function () {
         });
         //Catch event when mouse down, create new path, emit start point
         $('#chalkboard').mousedown(function (event) {
-            if (isLect) {
+            if (isLect || isGuest) {
                 drawing = true;
                 path = new paper.Path();
                 path.strokeColor = strokeColor;
                 path.strokeWidth = strokeWidth;
-                var x = event.pageX - 0.249 * $(window).width();
-                var y = event.pageY - 120;
+                var x = event.pageX - 0.22 * $(window).width();
+                var y = event.pageY - 70;
                 path.add(new paper.Point(x, y));
                 emitStartPoint(x, y, strokeColor, strokeWidth);
             }
@@ -155,9 +170,9 @@ var ChalkBoardComponent = (function () {
         //Catch event when mouse move and drawing token is true
         //Then call function draw (x,y) Emit the points of the path to server
         $('#chalkboard').mousemove(function (event) {
-            if (drawing && isLect) {
-                var x = event.pageX - 0.249 * $(window).width();
-                var y = event.pageY - 120;
+            if (drawing && (isLect || isGuest)) {
+                var x = event.pageX - 0.22 * $(window).width();
+                var y = event.pageY - 70;
                 draw(x, y);
                 emitPathPoint(x, y);
             }

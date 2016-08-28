@@ -4,31 +4,21 @@
             <ul class="tabs">
                 <li class="tab col s1"><a class="active" (click)="changeBoard(currentPage)">Bảng chính</a></li>
                 <li class="tab col s1" *ngFor="let board of boards">
-                    <a *ngIf="isLect" (click)="changeBoard(board.json, board.name)">
+                    <a *ngIf="lecturer && isLect" (click)="changeBoard(board.json, board.name)">
                         {{board.name}}
                     </a>
                 </li>
             </ul>
         </div>
     </div>
-    <div class="tool-div-kp">
+    <div class="tool-div-kp" *ngIf="lecturer && isLect">
         <span id="new-page" (click)="openModal()" class="tool-btn modal-trigger">
             <i class="fa fa-file-o fa-2x displayPointer" aria-hidden="true"></i>
         </span>
-        <!--<select id="color-picker" class="tool-btn slc-tl">-->
-            <!--<option *ngFor="let color of colors" value="{{color.value}}" [style.background-color]="color.value">{{color.label}}</option>-->
-        <!--</select>-->
-        <div class="dropdown-tl-kp">
-            <!-- trigger button -->
-            <span>Màu</span>
-
-            <!-- dropdown menu -->
-            <ul id="color-picker" class="dropdown-menu-tl-kp">
-                <li *ngFor="let color of colors" [style.background-color]="color.value">
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                </li>
-            </ul>
-        </div>
+        <select id="color-picker" class="tool-btn slc-tl">
+            <option disabled >Màu</option>
+            <option *ngFor="let color of colors" value="{{color.value}}" [style.background-color]="color.value">{{color.label}}</option>
+        </select>
         <select id="brush-size" class="tool-btn slc-tl">
             <option *ngFor="let size of brushSizes" value="{{size.value}}">{{size.label}}</option>
         </select>

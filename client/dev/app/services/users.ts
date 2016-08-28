@@ -124,10 +124,6 @@ export class UserService {
     updateUser(user:any, _newTag:any[]):Observable<any> {
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
-        var ownk, ink;
-
-
-
         let _data = JSON.stringify({
             user: {
                 _id: user._id,
@@ -155,12 +151,8 @@ export class UserService {
     banUser(id:string):Observable<any> {
         let headers = new Headers({'Content-Type': 'application/json'});
         let options = new RequestOptions({headers: headers});
-
-        let data = JSON.stringify({
-            admin: localStorage.getItem('username')
-        });
         return this._http
-            .put(this._banUrl.replace(':id', id), data, options);
+            .put(this._banUrl.replace(':id', id),options);
     }
 
     //add friend service

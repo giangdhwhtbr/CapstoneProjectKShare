@@ -23,6 +23,7 @@ var UserListComponent = (function () {
         this._auth = _auth;
         this.router = router;
         this.pageTitle = 'users';
+        this.users = [];
         this.filter = '';
         this.numOfUser = 0;
         this.createHid = true;
@@ -49,12 +50,13 @@ var UserListComponent = (function () {
                     users[i].updatedAt = new Date(users[i].updatedAt);
                 }
                 users[i]["num"] = i + 1;
+                if (users[i].role !== 'admin') {
+                    _this.users.push(users[i]);
+                }
             }
-            _this.users = users;
             _this.numOfUser = i;
         }, function (error) {
             _this.errorMessage = error.message;
-            console.log(error);
         });
         $(document).ready(function () {
             $('select').material_select();
@@ -88,7 +90,9 @@ var UserListComponent = (function () {
             this._userService
                 .addUser(user)
                 .subscribe(function (response) {
-                _this.users.push(response);
+                if (response.role !== 'admin') {
+                    _this.users.push(response);
+                }
             }, function (error) {
                 if (error.errors) {
                     var errors = error.errors;
@@ -113,15 +117,20 @@ var UserListComponent = (function () {
             });
         }
     };
-    UserListComponent.prototype.banUser = function (userid) {
-        this._userService.banUser(userid).subscribe(function (response) {
+    UserListComponent.prototype.banUser = function (user) {
+        if (user.role === 'admin') {
+            this.errMsg = 'Bạn không thể ban một admin';
+        }
+        this._userService.banUser(user._id).subscribe(function (response) {
             Materialize.toast('Khoá người dùng này trong vòng 1 ngày!', 6000);
-            $("#" + userid).hide();
-            console.log(response);
+            $("#" + user._id).hide();
+            user.banStatus.status = true;
         }, function (error) { });
     };
     UserListComponent.prototype.deactivateUser = function (user) {
-        console.log(user);
+        if (user.role === 'admin') {
+            this.errMsg = 'Bạn không thể khoá tài khoản của admin';
+        }
         user.status = 'deactive';
         this._userService.updateUser(user, []).subscribe(function (user) {
         });

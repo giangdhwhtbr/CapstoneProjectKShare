@@ -1,0 +1,16 @@
+<div class="col m2 local-panel">
+  <h2 *ngIf="username" class="peerName">{{username}}</h2>
+  <h2 *ngIf="guest" class="peerName">{{guest}}</h2>
+  <div class="divider"></div>
+  <!-- /.divider -->
+  <video id="localVideo"></video>
+  <div [hidden]="hiddenShareScreen" id="rtcTools" class="row center">
+    <button id="sharescreen-btn" class="white-text waves-effect waves-green btn-flat blue lighten-1">
+      Chia sẻ màn hình
+    </button>
+  </div>
+  <div class="divider"></div>
+  <!-- /.divider -->
+  <div id="remoteVideos"></div>
+  <!-- /#remotes -->
+</div>
