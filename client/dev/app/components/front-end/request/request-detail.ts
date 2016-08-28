@@ -19,6 +19,7 @@ import { RequestService } from '../../../services/requests';
 import { OfferService } from '../../../services/request-offer';
 import { KnowledgeService } from '../../../services/knowledge';
 import { KSpaceService } from '../../../services/kspace';
+import { NotificationService } from '../../../services/notification';
 
 import { CreateOfferComponent } from '../offer/offer-create';
 import { ReportComponent } from '../report/report';
@@ -75,8 +76,13 @@ export class RequestDetailClientComponent implements AfterViewChecked {
     isSubscriberd: boolean = false;
     ks: any;
 
-    constructor(private _requestService:RequestService, private _offerService:OfferService, public router:Router,
-                private _knowledgeService:KnowledgeService, private _kspaceService:KSpaceService, private route:ActivatedRoute) {
+    constructor(private _requestService:RequestService, 
+                private _offerService:OfferService, 
+                public router:Router,
+                private _knowledgeService:KnowledgeService, 
+                private _kspaceService:KSpaceService, 
+                private route:ActivatedRoute,
+                private _noti:NotificationService) {
         this.roleToken = localStorage.getItem('userrole');
         this.userToken = localStorage.getItem('username');
         this.route
@@ -245,7 +251,12 @@ export class RequestDetailClientComponent implements AfterViewChecked {
                         console.log('change status request successfull');
                     });
                 this.checkIsAcceped = true;
-
+                var title = 'Yêu cầu của bạn đã được chấp nhận';
+                var user = lecturer;
+                var link = '/kspace/info/' + r._id + '/' + lecturer;
+                this._noti.createNotification(title, user, link).subscribe((noti) => {
+                    
+                });
 
                 this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
             });

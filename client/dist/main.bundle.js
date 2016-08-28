@@ -10951,7 +10951,6 @@ webpackJsonp([2],[
 	    NewsFeedComponent.prototype.getReqs = function () {
 	        var _this = this;
 	        this._requestService.getAllRequests(this.countR1).subscribe(function (reqs) {
-	            console.log(reqs);
 	            for (var _i = 0, reqs_1 = reqs; _i < reqs_1.length; _i++) {
 	                var r = reqs_1[_i];
 	                _this.records.push(r);
