@@ -27,9 +27,9 @@
         <div class="col s12 m12">
             <div class="card" *ngFor="let e of _data">
                 <div class="card-content">
-                    <a class="card-title" *ngIf="e.req.title.length>70" [routerLink]="['/requests',e.req._id]">{{e.req.title.substring(0,150)}} ...</a>
+                    <a class="card-title" *ngIf="e.req.title.length>70" [routerLink]="['/requests/' + e.req._id + '/info']">{{e.req.title.substring(0,150)}} ...</a>
 
-                    <a class="card-title" *ngIf="e.req.title.length<=70" [routerLink]="['/requests',e.req._id]">{{e.req.title}}</a>
+                    <a class="card-title" *ngIf="e.req.title.length<=70" [routerLink]="['/requests/' + e.req._id + '/info']">{{e.req.title}}</a>
                 </div>
                 <div class="card-action">
                     <div class="row">
