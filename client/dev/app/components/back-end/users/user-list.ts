@@ -67,7 +67,9 @@ export class UserListComponent {
                         users[i].updatedAt = new Date(users[i].updatedAt);
                       }
                       users[i]["num"] = i + 1;
-                      if(users[i].role !== 'admin'){
+                      if(this.userrole!=='admin' && users[i].role !== 'admin'){
+                        this.users.push(users[i]);
+                      }else {
                         this.users.push(users[i]);
                       }
                     }

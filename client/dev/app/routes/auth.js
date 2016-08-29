@@ -1,15 +1,19 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 /**
  * Created by GiangDH on 7/30/16.
  */
 var core_1 = require('@angular/core');
+var router_1 = require('@angular/router');
+var auth_1 = require('../services/auth');
+var common_1 = require('@angular/common');
 var AdminAuthGuard = (function () {
     function AdminAuthGuard(router, auth) {
         this.router = router;
@@ -34,7 +38,8 @@ var AdminAuthGuard = (function () {
         return false;
     };
     AdminAuthGuard = __decorate([
-        core_1.Injectable()
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [router_1.Router, auth_1.AuthService])
     ], AdminAuthGuard);
     return AdminAuthGuard;
 })();
@@ -56,7 +61,8 @@ var isLogin = (function () {
         return false;
     };
     isLogin = __decorate([
-        core_1.Injectable()
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [router_1.Router, auth_1.AuthService])
     ], isLogin);
     return isLogin;
 })();
@@ -75,7 +81,8 @@ var Guest = (function () {
         return false;
     };
     Guest = __decorate([
-        core_1.Injectable()
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [router_1.Router, auth_1.AuthService, common_1.Location])
     ], Guest);
     return Guest;
 })();
@@ -84,7 +91,8 @@ var isKspaceUser = (function () {
     function isKspaceUser() {
     }
     isKspaceUser = __decorate([
-        core_1.Injectable()
+        core_1.Injectable(), 
+        __metadata('design:paramtypes', [])
     ], isKspaceUser);
     return isKspaceUser;
 })();

@@ -50,7 +50,10 @@ var UserListComponent = (function () {
                     users[i].updatedAt = new Date(users[i].updatedAt);
                 }
                 users[i]["num"] = i + 1;
-                if (users[i].role !== 'admin') {
+                if (_this.userrole !== 'admin' && users[i].role !== 'admin') {
+                    _this.users.push(users[i]);
+                }
+                else {
                     _this.users.push(users[i]);
                 }
             }
