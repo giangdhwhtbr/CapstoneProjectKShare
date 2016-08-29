@@ -14,10 +14,6 @@
                 <div class="editor">
                     <ck-editor>ckeditor_inst_1</ck-editor>
                 </div>
-                <button type="button" id="bdOpenModal" class="btn modal-trigger" data-target="ModalUploadImgCkeditor"
-                        data-backdrop="static" data-keyboard="false" style="display: none;"></button>
-                <button type="button" id="youtubeOpenModal" class="btn modal-trigger" data-target="ModalYTCkeditor"
-                        data-backdrop="static" data-keyboard="false" style="display: none;"></button>
                 <div id="ModalUploadImgCkeditor" class="modal">
                     <div class="modal-content">
                         <h4>Chèn ảnh</h4>
@@ -33,7 +29,8 @@
                                                     <label for="linkIsImg">Chèn link vào đây</label>
                                                 </div>
                                                 <div class="input-field col s6">
-                                                    <a  class="btn-floating btn-large waves-effect waves-light modal-close blue" (click)="insertLinkToBox(linkIsImg.value)">
+                                                    <a class="btn-floating btn-large waves-effect waves-light modal-close blue"
+                                                       (click)="insertLinkToBox(linkIsImg.value)">
                                                         <i class="material-icons">add</i>
                                                     </a>
                                                 </div>
@@ -51,7 +48,8 @@
                                                 <div class="file-field input-field col s9 m9">
                                                     <div class="btn">
                                                         <span>File</span>
-                                                        <input #fileInput id="uploadImg" (change)="fileChangeEvent($event)"
+                                                        <input #fileInput id="uploadImg"
+                                                               (change)="fileChangeEvent($event)"
                                                                type="file" accept="image/*">
                                                     </div>
                                                     <div class="file-path-wrapper">
@@ -59,7 +57,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="input-field col s3 m3">
-                                                    <a  class="btn-floating btn-large waves-effect waves-light modal-close blue" (click)="uploadImageCk()">
+                                                    <a class="btn-floating btn-large waves-effect waves-light modal-close blue"
+                                                       (click)="uploadImageCk()">
                                                         <i class="material-icons">add</i>
                                                     </a>
                                                 </div>
@@ -77,6 +76,7 @@
                 <div id="ModalYTCkeditor" class="modal">
                     <div class="modal-content">
                         <h4>Chèn link youtube</h4>
+
                         <div class="row">
                             <div class="col s12 m12">
                                 <div class="row">
@@ -85,7 +85,8 @@
                                         <label for="linkIsYT">Chèn link youtube vào đây</label>
                                     </div>
                                     <div class="input-field col s6">
-                                        <a  class="btn-floating btn-large waves-effect waves-light modal-close blue" (click)="insertYoutubeToBox(linkYT.value)">
+                                        <a class="btn-floating btn-large waves-effect waves-light modal-close blue"
+                                           (click)="insertYoutubeToBox(linkYT.value)">
                                             <i class="material-icons">add</i>
                                         </a>
                                     </div>

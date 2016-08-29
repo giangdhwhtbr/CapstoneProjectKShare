@@ -78,6 +78,8 @@ export class RequestDetailClientComponent implements AfterViewChecked {
     isSubscriberd: boolean = false;
     ks: any;
 
+    isBindData:boolean=false;
+
     constructor(private _requestService:RequestService, 
                 private _offerService:OfferService, 
                 public router:Router,
@@ -170,8 +172,15 @@ export class RequestDetailClientComponent implements AfterViewChecked {
     }
 
     ngAfterViewChecked() {
-        if (this.request != undefined) {
-            $('#bodyReq').html(this.request.description);
+        if (this.request != undefined){
+            if(this.isBindData==false){
+                $('#bodyReq').html(()=> {
+                    this.isBindData=true;
+                    return this.request.description;
+                });
+                $('#bodyReq img').css('max-width','100%');
+                $('#bodyReq iframe').css('max-width','100%');
+            }
         }
     }
 

@@ -30,6 +30,7 @@ var detailArticleComponent = (function () {
         this.isDeAc = false;
         this.textCmt = "";
         this.cmts = [];
+        this.isBindData = false;
         this.route
             .params
             .subscribe(function (params) {
@@ -108,10 +109,14 @@ var detailArticleComponent = (function () {
     detailArticleComponent.prototype.ngAfterViewChecked = function () {
         var _this = this;
         if (this.article != undefined) {
-            $('#bdArticle').html(function () {
-                return _this.article.content;
-            });
-            $('#bdArticle img').css('max-width', '900px');
+            if (this.isBindData == false) {
+                $('#bdArticle').html(function () {
+                    _this.isBindData = true;
+                    return _this.article.content;
+                });
+                $('#bdArticle img').css('max-width', '100%');
+                $('#bdArticle iframe').css('max-width', '100%');
+            }
         }
     };
     detailArticleComponent.prototype.editArt = function (id) {
@@ -119,10 +124,12 @@ var detailArticleComponent = (function () {
     };
     detailArticleComponent.prototype.postCmt = function () {
         var _this = this;
-        this._articleService.addComment(this.id, this.userToken, this.textCmt).subscribe(function (cmts) {
-            _this.textCmt = "";
-            _this.article.comments = cmts;
-        });
+        if (this.textCmt.length != 0) {
+            this._articleService.addComment(this.id, this.userToken, this.textCmt).subscribe(function (cmts) {
+                _this.textCmt = "";
+                _this.article.comments = cmts;
+            });
+        }
     };
     detailArticleComponent.prototype.actionComment = function (data) {
         var _this = this;

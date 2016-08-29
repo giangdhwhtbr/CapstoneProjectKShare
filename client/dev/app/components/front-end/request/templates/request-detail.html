@@ -33,7 +33,7 @@
                             </div>
                             <div class="row" *ngIf="subscribers">
                                 Danh sách theo dõi :
-                                <p *ngFor="let subscriber of subscribers"><a [routerLink]="['/user/' + subscriber]">{{subscriber}}</a></p>
+                                <p><hover-info-user *ngFor="let subscriber of subscribers" [username]="subscriber"></hover-info-user></p>
                             </div>
                         </div>
                     </div>

@@ -31,6 +31,7 @@ var RequestDetailClientComponent = (function () {
         this.offers = [];
         this.kspace = {};
         this.isSubscriberd = false;
+        this.isBindData = false;
         this.roleToken = localStorage.getItem('userrole');
         this.userToken = localStorage.getItem('username');
         this.route
@@ -109,8 +110,16 @@ var RequestDetailClientComponent = (function () {
         $('#modalOfferRequest').openModal();
     };
     RequestDetailClientComponent.prototype.ngAfterViewChecked = function () {
+        var _this = this;
         if (this.request != undefined) {
-            $('#bodyReq').html(this.request.description);
+            if (this.isBindData == false) {
+                $('#bodyReq').html(function () {
+                    _this.isBindData = true;
+                    return _this.request.description;
+                });
+                $('#bodyReq img').css('max-width', '100%');
+                $('#bodyReq iframe').css('max-width', '100%');
+            }
         }
     };
     RequestDetailClientComponent.prototype.action = function (data) {
@@ -192,6 +201,7 @@ var RequestDetailClientComponent = (function () {
             var link = '/kspace/info/' + r._id + '/' + lecturer;
             _this._noti.createNotification(title, user, link).subscribe(function (noti) {
             });
+            _this._noti.alertNotification(title, user, link);
             _this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
         });
     };

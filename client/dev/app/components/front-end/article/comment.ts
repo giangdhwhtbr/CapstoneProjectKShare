@@ -37,6 +37,7 @@ export class commentComponent implements OnInit ,AfterViewChecked{
         this.userToken = localStorage.getItem('username');
     }
     ngOnInit() {
+        this.textEdit=this.comment.content;
         let i = this.comment.userLiked.indexOf(this.userToken);
         if(i>=0){
             this.liked=true;
@@ -46,8 +47,10 @@ export class commentComponent implements OnInit ,AfterViewChecked{
         this.sendDataToP.emit([this.comment._id,"delete"]);
     }
     editCmt(){
-        this.sendDataToP.emit([this.comment._id,"edit",this.textEdit]);
-        this.isEditing=false;
+        if(this.textEdit.length!=0){
+            this.sendDataToP.emit([this.comment._id,"edit",this.textEdit]);
+            this.isEditing=false;
+        }
     }
     likeCmt(){
         this.sendDataToP.emit([this.comment._id,"like"]);
