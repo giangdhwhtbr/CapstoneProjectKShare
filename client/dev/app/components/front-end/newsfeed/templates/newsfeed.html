@@ -19,7 +19,9 @@
                 <!--1--><!--1--><!--1--><!--1--><!--1--><!--1-->
                 <div *ngIf="record.user" class="card">
                     <div class="card-content">
-                        <a [routerLink]="['/requests/' + record._id + '/info']"><h5>{{record.title}}</h5></a>
+                        <i class="material-icons">record_voice_over</i>
+                        <span *ngIf="record.title.length>70" class="card-title"><a [routerLink]="['/requests/' + record._id + '/info']">{{record.title.substring(0,150)}}...</a></span>
+                        <span *ngIf="record.title.length<=70" class="card-title"><a [routerLink]="['/requests/' + record._id + '/info']">{{record.title}}...</a></span>
                     </div>
                     <div class="card-action">
                         <div class="row">
@@ -42,10 +44,9 @@
                 <!--article-->
                 <div *ngIf="record.author || record.ofUser" class="card">
                     <div class="card-content">
-                        <a *ngIf="record.title.length>=70" [routerLink]="['/article/' + record._id]"><h5>
-                            {{record.title.substring(0,150)}} ...</h5></a>
-                        <a *ngIf="record.title.length<70" [routerLink]="['/article/' + record._id]"><h5>
-                            {{record.title}}</h5></a>
+                        <i class="material-icons">library_books</i>
+                        <span *ngIf="record.title.length>70" class="card-title"><a [routerLink]="['/article/' + record._id]">{{record.title.substring(0,150)}}...</a></span>
+                        <span *ngIf="record.title.length<=70" class="card-title"><a [routerLink]="['/article/' + record._id]">{{record.title}}</a></span>
                     </div>
                     <div class="card-action">
                         <div class="row">
