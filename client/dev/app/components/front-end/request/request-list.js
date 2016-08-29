@@ -85,6 +85,7 @@ var RequestListClientComponent = (function () {
     };
     RequestListClientComponent.prototype.search = function () {
         var _this = this;
+        this._data = [];
         this.num = 5;
         if (this.text === '') {
             this.isExistRecord = false;

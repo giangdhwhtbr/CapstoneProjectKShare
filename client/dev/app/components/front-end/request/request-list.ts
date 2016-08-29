@@ -121,6 +121,7 @@ export class RequestListClientComponent implements AfterViewChecked {
     }
 
     search() {
+        this._data = [];
         this.num = 5;
         if (this.text === '') {
             this.isExistRecord = false;

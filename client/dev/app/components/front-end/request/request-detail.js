@@ -201,6 +201,7 @@ var RequestDetailClientComponent = (function () {
             var link = '/kspace/info/' + r._id + '/' + lecturer;
             _this._noti.createNotification(title, user, link).subscribe(function (noti) {
             });
+            _this._noti.alertNotification(title, user, link);
             _this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
         });
     };

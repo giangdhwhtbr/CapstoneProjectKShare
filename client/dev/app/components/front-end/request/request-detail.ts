@@ -268,7 +268,7 @@ export class RequestDetailClientComponent implements AfterViewChecked {
                 this._noti.createNotification(title, user, link).subscribe((noti) => {
                     
                 });
-
+                this._noti.alertNotification(title, user, link);
                 this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
             });
     }
