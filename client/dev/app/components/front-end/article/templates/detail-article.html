@@ -69,7 +69,7 @@
                         </button>
                     </div>
                     <div class="row">
-                        <div *ngFor="let cmt of article.comments" class="col s7 m7 l7">
+                        <div *ngFor="let cmt of article.comments" class="col s12 m12 l12">
                             <comment [comment]="cmt" [author]="article.author" (sendDataToP)="actionComment($event)"></comment>
                         </div>
                     </div>
