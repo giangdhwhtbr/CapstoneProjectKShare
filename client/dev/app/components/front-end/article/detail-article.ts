@@ -15,7 +15,7 @@ import {commentComponent} from './comment';
 
 import {listTagComponent} from '../tag/tag';
 import { infoHover } from '../user/user-profile/info-hover';
-
+import { topArticlesComponent } from '../newsfeed/topArticle';
 declare var $:any;
 declare var io:any;
 declare var Materialize:any;
@@ -25,7 +25,8 @@ declare var Materialize:any;
     templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
     directives: [
-        ROUTER_DIRECTIVES, ReportComponent, FORM_DIRECTIVES, commentComponent, listTagComponent, PrivateChatComponent,infoHover
+        ROUTER_DIRECTIVES, ReportComponent, FORM_DIRECTIVES,
+        commentComponent, listTagComponent, PrivateChatComponent,infoHover,topArticlesComponent
     ],
     providers: [ArticleService]
 })
@@ -143,10 +144,10 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
 
     ngAfterViewChecked() {
         if (this.article != undefined) {
-            $('.bodyArt').html(()=> {
+            $('#bdArticle').html(()=> {
                 return this.article.content;
             });
-            $('.bodyArt img').css('max-width','900px');
+            $('#bdArticle img').css('max-width','900px');
         }
     }
 

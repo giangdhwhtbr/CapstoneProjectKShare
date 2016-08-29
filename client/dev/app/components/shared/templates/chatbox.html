@@ -72,18 +72,18 @@
                                 </div>
                             </li>
                         </div>
-
                     </ul>
                 </div>
                 <div class="chat-box bg-white row" *ngIf="allChatRooms.length > 0">
                     <!--<div class="  row">-->
                     <div class="input-group">
                       <form (ngSubmit)="sendMessage()">
-                        <input id="textboxmess" [(ngModel)]="mess" autofocus class="form-control border no-shadow no-rounded"
-                               placeholder="Type your message here">
-                        <span class="input-group-btn">
-                            <button class="btn btn-success no-rounded" type="submit">Gửi</button>
-                        </span>
+                          <div class="row">
+                              <input id="textboxmess" [(ngModel)]="mess" class="col s10 push-s2"
+                                     placeholder="Type your message here">
+                              <button class="btn-floating btn-large waves-effect waves-light blue col s2 pull-s10"
+                                      type="submit"><i class="small material-icons">send</i></button>
+                          </div>
                       </form>
                     </div>
                     <!-- /input-group -->
