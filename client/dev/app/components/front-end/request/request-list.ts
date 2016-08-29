@@ -128,8 +128,6 @@ export class RequestListClientComponent implements AfterViewChecked {
             this.getAllRequests();
         } else {
             this._requestService.searchRequest(this.text).subscribe((requests) => {
-
-                this._data = [];
                 for (var i = 0; i < requests.length; i++) {
                     this._data.push({
                         req: requests[i],

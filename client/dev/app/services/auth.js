@@ -55,6 +55,7 @@ var AuthService = (function () {
     AuthService.prototype.logoutClient = function () {
         localStorage.removeItem('username');
         localStorage.removeItem('userrole');
+        localStorage.removeItem('linkImg');
     };
     AuthService.prototype.handleError = function (error) {
         return Observable_1.Observable.throw(error.json());
