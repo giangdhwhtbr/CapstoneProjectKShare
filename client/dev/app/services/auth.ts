@@ -57,6 +57,7 @@ export class AuthService {
   logoutClient() {
     localStorage.removeItem('username');
     localStorage.removeItem('userrole');
+    localStorage.removeItem('linkImg');
   }
 
 
