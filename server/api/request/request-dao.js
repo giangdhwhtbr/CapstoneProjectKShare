@@ -13,6 +13,7 @@ requestSchema.statics.getAll = (x) => {
         Request
             .find({ status: { $nin: ['deactive', 'accepted'] } })
             .select('-description -subscribers')
+            .sort({"createdAt":-1})
             .skip(x - 5)
             .limit(5)
             .exec((err, requests) => {
