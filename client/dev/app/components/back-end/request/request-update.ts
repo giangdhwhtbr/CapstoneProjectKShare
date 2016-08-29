@@ -11,7 +11,7 @@ import {PrivateChatComponent} from '../../shared/private-chat'
 
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
-import * as $ from 'jquery';
+declare var $:any;
 
 @Component({
     selector: 'ck-editor',
@@ -20,10 +20,10 @@ import * as $ from 'jquery';
 
 class CKEditor implements OnInit, AfterViewChecked {
 
-    req: any;
-    id: string;
+    req:any;
+    id:string;
 
-    constructor(_elm: ElementRef, private _requestService: RequestService, public router: Router, private route: ActivatedRoute) {
+    constructor(_elm:ElementRef, private _requestService:RequestService, public router:Router, private route:ActivatedRoute) {
         CKEDITOR.replace(_elm.nativeElement);
         this.route
             .params
@@ -34,70 +34,27 @@ class CKEditor implements OnInit, AfterViewChecked {
 
     ngOnInit() {
         this._requestService.getRequestById(this.id).subscribe((request) => {
-            this.req = request
-            console.log(this.req);
+            this.req = request;
             CKEDITOR.instances.editor1.setData(this.req.description + '');
 
-            this.CreateUploadImageCkeditor();
-            this.CreateYoutubeBtnCkeditor();
-            this.addCommandBtnCk();
         });
 
     }
 
-    ngAfterViewChecked(){
-        if(!this.req){
-            this._requestService.getRequestById(this.id).subscribe((request) => {
-                this.req=request;
-                CKEDITOR.instances.editor1.setData(this.req.description + '');
+    //ngAfterViewChecked(){
+    //    if(!this.req){
+    //        this._requestService.getRequestById(this.id).subscribe((request) => {
+    //            this.req=request;
+    //            CKEDITOR.instances.editor1.setData(this.req.description + '');
+    //
+    //            this.CreateUploadImageCkeditor();
+    //            this.CreateYoutubeBtnCkeditor();
+    //            this.addCommandBtnCk();
+    //        });
+    //    }
+    //}
 
-                this.CreateUploadImageCkeditor();
-                this.CreateYoutubeBtnCkeditor();
-                this.addCommandBtnCk();
-            });
-        }
-    }
 
-    openModalImg() {
-        $("#bdOpenModal").trigger("click");
-    }
-    openModalYoutube() {
-        $("#youtubeOpenModal").trigger("click");
-    }
-
-    insertLinkToBox(link: string) {
-        CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
-    }
-
-    insertYoutubeToBox(link: string) {
-        //https://www.youtube.com/watch?v=mraul5-1TBE
-        let i = link.indexOf("=");
-        link = link.substring(i + 1, link.length);
-        let s = '<p><iframe frameborder="0" height="315" scrolling="no" src="https://www.youtube.com/embed/' + link + '" width="500"></iframe></p>';
-        CKEDITOR.instances.editor1.insertHtml(s);
-    }
-
-    addCommandBtnCk() {
-        CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
-        CKEDITOR.instances.editor1.addCommand('youtube', { exec: this.openModalYoutube });
-    }
-
-    CreateUploadImageCkeditor() {
-        CKEDITOR.instances.editor1.ui.addButton('uploadImage',
-            {
-                label: 'Upload Image',
-                command: 'uploadImage',
-                icon: '/client/dev/asserts/images/icon-img-ck.png'
-            });
-    }
-    CreateYoutubeBtnCkeditor() {
-        CKEDITOR.instances.editor1.ui.addButton('youtube',
-            {
-                label: 'Add youtube',
-                command: 'youtube',
-                icon: '/client/dev/asserts/images/icon-youtube.png'
-            });
-    }
 
 
 }
@@ -105,40 +62,40 @@ class CKEditor implements OnInit, AfterViewChecked {
 @Component({
     selector: 'request-update-cli',
     templateUrl: 'client/dev/app/components/back-end/request/templates/request-update.html',
-    directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES, AutoComplete, CKEditor,PrivateChatComponent],
+    directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES, AutoComplete, CKEditor, PrivateChatComponent],
     providers: [TagService]
 })
 
 export class UpdateRequestComponent {
-    updateRequestFormCli: ControlGroup;
+    updateRequestFormCli:ControlGroup;
 
-    knowledges: Knowledge[];
+    knowledges:Knowledge[];
 
-    id: string;
+    id:string;
 
-    request: Request;
-    _id: string;
-    title: string;
-    description: string;
-    knowledgeId: string;
-    status: string;
-    kname: string
+    request:Request;
+    _id:string;
+    title:string;
+    description:string;
+    knowledgeId:string;
+    status:string;
+    kname:string
 
-    filteredKnw: string[];
+    filteredKnw:string[];
 
-    tags: any[];
-    tagsEx: Array<any>;
+    tags:any[];
+    tagsEx:Array<any>;
 
-    filesToUpload: Array<File>;
-    contentCk: string;
+    filesToUpload:Array<File>;
+    contentCk:string;
 
-    constructor( @Inject(FormBuilder) fb: FormBuilder,
-        @Inject(RequestService) private _requestService: RequestService,
-        public router: Router,
-        private route: ActivatedRoute,
-        private _tagService: TagService,
-        @Inject(KnowledgeService)
-        private _knowledgeService: KnowledgeService) {
+    constructor(@Inject(FormBuilder) fb:FormBuilder,
+                @Inject(RequestService) private _requestService:RequestService,
+                public router:Router,
+                private route:ActivatedRoute,
+                private _tagService:TagService,
+                @Inject(KnowledgeService)
+                private _knowledgeService:KnowledgeService) {
 
         this.route
             .params
@@ -155,19 +112,22 @@ export class UpdateRequestComponent {
         });
     }
 
-    ngOnInit(): void {
+    ngOnInit():void {
         //get all back.knowledge
         this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
 
+            this.CreateUploadImageCkeditor();
+            this.CreateYoutubeBtnCkeditor();
+            this.addCommandBtnCk();
 
             this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
             this._requestService.getRequestById(this.id).subscribe(
                 (request) => {
-                    this._knowledgeService.findKnowledgeById(request.knowledgeId).subscribe((knowledge)=>{
+                    this._knowledgeService.findKnowledgeById(request.knowledgeId).subscribe((knowledge)=> {
                         this.kname = knowledge.name;
                         this.knowledgeId = knowledge._id;
                     });
-                    let ids: string[] = [];
+                    let ids:string[] = [];
                     ids = request.tags;
 
                     this._tagService.getTagsByIds(ids).subscribe((tags) => {
@@ -186,6 +146,7 @@ export class UpdateRequestComponent {
 
                         this.loadAllTags();
 
+                        $('.collapsible').collapsible({});
                     });
                 },
                 (error) => {
@@ -195,13 +156,54 @@ export class UpdateRequestComponent {
         });
 
 
+    }
 
+    openModalImg() {
+        $('#ModalUploadImgCkeditor').openModal();
+    }
 
+    openModalYoutube() {
+        $('#ModalYTCkeditor').openModal();
+    }
+
+    insertLinkToBox(link:string) {
+        CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
+    }
+
+    insertYoutubeToBox(link:string) {
+        //https://www.youtube.com/watch?v=mraul5-1TBE
+        let i = link.indexOf("=");
+        link = link.substring(i + 1, link.length);
+        let s = '<p><iframe frameborder="0" height="315" scrolling="no" src="https://www.youtube.com/embed/' + link + '" width="500"></iframe></p>';
+        CKEDITOR.instances.editor1.insertHtml(s);
+    }
+
+    addCommandBtnCk() {
+        CKEDITOR.instances.editor1.addCommand('uploadImage', {exec: this.openModalImg});
+        CKEDITOR.instances.editor1.addCommand('youtube', {exec: this.openModalYoutube});
+    }
+
+    CreateUploadImageCkeditor() {
+        CKEDITOR.instances.editor1.ui.addButton('uploadImage',
+            {
+                label: 'Upload Image',
+                command: 'uploadImage',
+                icon: '/client/dev/asserts/images/icon-img-ck.png'
+            });
+    }
+
+    CreateYoutubeBtnCkeditor() {
+        CKEDITOR.instances.editor1.ui.addButton('youtube',
+            {
+                label: 'Add youtube',
+                command: 'youtube',
+                icon: '/client/dev/asserts/images/icon-youtube.png'
+            });
     }
 
     filterONTag() {
-        let oldTag: any[] = [];
-        if(this.tags.length>0){
+        let oldTag:any[] = [];
+        if (this.tags.length > 0) {
             for (let e of this.tagsEx) {
                 for (let e1 of this.tags) {
                     if (e.name == e1) {
@@ -241,9 +243,9 @@ export class UpdateRequestComponent {
     // ckeditor
 
 
-    makeFileRequest(url: string, params: Array<string>, files: Array<File>) {
+    makeFileRequest(url:string, params:Array<string>, files:Array<File>) {
         return new Promise((resolve, reject) => {
-            var formData: any = new FormData();
+            var formData:any = new FormData();
             var xhr = new XMLHttpRequest();
             for (var i = 0; i < files.length; i++) {
                 formData.append("uploads[]", files[i], files[i].name);
@@ -275,17 +277,17 @@ export class UpdateRequestComponent {
     }
 
     //action button upload
-    fileChangeEvent(fileInput: any) {
+    fileChangeEvent(fileInput:any) {
         this.filesToUpload = <Array<File>>fileInput.target.files;
     }
 
     updateRequest(request) {
-        let tags: any[] = [];
+        let tags:any[] = [];
         tags = this.filterONTag();
-        request.description=CKEDITOR.instances.editor1.getData();
+        request.description = CKEDITOR.instances.editor1.getData();
         this._requestService.updateRequest(request, tags[0], tags[1]).subscribe((request) => {
-            this.router.navigateByUrl('/requests/' + request._id + '/info');
-        },
+                this.router.navigateByUrl('/requests/' + request._id + '/info');
+            },
             (error) => {
                 console.log(error.text());
             }

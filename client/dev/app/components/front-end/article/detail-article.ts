@@ -52,6 +52,8 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
 
     liked:boolean;
 
+    isBindData:boolean=false;
+
     constructor(fb:FormBuilder, public router:Router, private route:ActivatedRoute,
                 private _articleService:ArticleService,
                 private _noti:NotificationService) {
@@ -144,10 +146,15 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
 
     ngAfterViewChecked() {
         if (this.article != undefined) {
-            $('#bdArticle').html(()=> {
-                return this.article.content;
-            });
-            $('#bdArticle img').css('max-width','900px');
+            if(this.isBindData==false){
+                $('#bdArticle').html(()=> {
+                    this.isBindData=true;
+                    return this.article.content;
+                });
+                $('#bdArticle img').css('max-width','100%');
+                $('#bdArticle iframe').css('max-width','100%');
+            }
+
         }
     }
 
@@ -156,10 +163,12 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
     }
 
     postCmt() {
-        this._articleService.addComment(this.id, this.userToken, this.textCmt).subscribe((cmts)=> {
-            this.textCmt = "";
-            this.article.comments = cmts;
-        });
+        if(this.textCmt.length!=0){
+            this._articleService.addComment(this.id, this.userToken, this.textCmt).subscribe((cmts)=> {
+                this.textCmt = "";
+                this.article.comments = cmts;
+            });
+        }
     }
 
     actionComment(data:any):void {

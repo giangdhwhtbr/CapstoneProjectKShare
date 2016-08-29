@@ -108,6 +108,7 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
                 this.loadAllTags();
 
                 $('#preLoad').hide();
+                $('.collapsible').collapsible({});
             }
 
         }, (error)=> {
@@ -238,11 +239,11 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
     }
 
     openModalImg() {
-        $("#bdOpenModal").trigger("click");
+        $('#ModalUploadImgCkeditor').openModal();
     }
 
     openModalYoutube() {
-        $("#youtubeOpenModal").trigger("click");
+        $('#ModalYTCkeditor').openModal();
     }
 
     editArticle() {

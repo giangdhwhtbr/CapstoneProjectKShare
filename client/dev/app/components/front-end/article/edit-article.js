@@ -84,6 +84,7 @@ var EditArticleComponent = (function () {
                 _this.addCommandBtnCk();
                 _this.loadAllTags();
                 $('#preLoad').hide();
+                $('.collapsible').collapsible({});
             }
         }, function (error) {
             if (error.status == 400) {
@@ -198,10 +199,10 @@ var EditArticleComponent = (function () {
         this.filesToUpload = fileInput.target.files;
     };
     EditArticleComponent.prototype.openModalImg = function () {
-        $("#bdOpenModal").trigger("click");
+        $('#ModalUploadImgCkeditor').openModal();
     };
     EditArticleComponent.prototype.openModalYoutube = function () {
-        $("#youtubeOpenModal").trigger("click");
+        $('#ModalYTCkeditor').openModal();
     };
     EditArticleComponent.prototype.editArticle = function () {
         var _this = this;
