@@ -11,8 +11,8 @@
             </ul>
         </div>
     </div>
-    <div class="tool-div-kp" *ngIf="lecturer && isLect">
-        <span id="new-page" (click)="openModal()" class="tool-btn modal-trigger">
+    <div class="tool-div-kp" [hidden]="!isLect">
+        <span id="new-page"  (click)="openModal()" class="tool-btn modal-trigger">
             <i class="fa fa-file-o fa-2x displayPointer" aria-hidden="true"></i>
         </span>
         <select id="color-picker" class="tool-btn slc-tl">

@@ -48,7 +48,7 @@ webpackJsonp([2],[
 	 */
 	var core_1 = __webpack_require__(1);
 	var chat_1 = __webpack_require__(127);
-	var notification_1 = __webpack_require__(65);
+	var notification_1 = __webpack_require__(57);
 	var users_1 = __webpack_require__(27);
 	var PrivateChatComponent = (function () {
 	    function PrivateChatComponent(_chatService, _noti, _userService) {
@@ -1362,6 +1362,81 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var http_1 = __webpack_require__(35);
+	var NotificationService = (function () {
+	    function NotificationService(_http) {
+	        this._http = _http;
+	        this._getNotificationUrl = '/api/getNotification/:id';
+	        this._notificationUrl = '/api/notification';
+	        this._statusNotificationUrl = '/api/change-status-notification/:user';
+	    }
+	    NotificationService.prototype.getNotificationByUser = function (username, num) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _info = JSON.stringify({
+	            user: username,
+	            num: num
+	        });
+	        return this._http.post(this._getNotificationUrl.replace(':id', ''), _info, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    NotificationService.prototype.alertNotification = function (title, user, link) {
+	        var socket = io('https://localhost:80');
+	        socket.emit('send notification', {
+	            title: title,
+	            link: link,
+	            user: user
+	        });
+	    };
+	    NotificationService.prototype.createNotification = function (title, user, link) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _info = JSON.stringify({
+	            title: title,
+	            user: user,
+	            link: link
+	        });
+	        return this._http.post(this._notificationUrl, _info, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    NotificationService.prototype.createNotificationAdmin = function (title, link) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _info = JSON.stringify({
+	            title: title,
+	            link: link
+	        });
+	        return this._http.put(this._notificationUrl, _info, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    NotificationService.prototype.changeStatusNotification = function (user) {
+	        return this._http.get(this._statusNotificationUrl.replace(':user', user));
+	    };
+	    NotificationService = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+	    ], NotificationService);
+	    return NotificationService;
+	    var _a;
+	}());
+	exports.NotificationService = NotificationService;
+	
+
+/***/ },
+/* 58 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var http_1 = __webpack_require__(35);
 	var Observable_1 = __webpack_require__(2);
 	var RequestService = (function () {
 	    function RequestService(_http) {
@@ -1529,13 +1604,13 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 58 */,
 /* 59 */,
 /* 60 */,
 /* 61 */,
 /* 62 */,
 /* 63 */,
-/* 64 */
+/* 64 */,
+/* 65 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1634,81 +1709,6 @@ webpackJsonp([2],[
 	    var _a;
 	}());
 	exports.KSpaceService = KSpaceService;
-	
-
-/***/ },
-/* 65 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(35);
-	var NotificationService = (function () {
-	    function NotificationService(_http) {
-	        this._http = _http;
-	        this._getNotificationUrl = '/api/getNotification/:id';
-	        this._notificationUrl = '/api/notification';
-	        this._statusNotificationUrl = '/api/change-status-notification/:user';
-	    }
-	    NotificationService.prototype.getNotificationByUser = function (username, num) {
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _info = JSON.stringify({
-	            user: username,
-	            num: num
-	        });
-	        return this._http.post(this._getNotificationUrl.replace(':id', ''), _info, options)
-	            .map(function (r) { return r.json(); });
-	    };
-	    NotificationService.prototype.alertNotification = function (title, user, link) {
-	        var socket = io('https://localhost:80');
-	        socket.emit('send notification', {
-	            title: title,
-	            link: link,
-	            user: user
-	        });
-	    };
-	    NotificationService.prototype.createNotification = function (title, user, link) {
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _info = JSON.stringify({
-	            title: title,
-	            user: user,
-	            link: link
-	        });
-	        return this._http.post(this._notificationUrl, _info, options)
-	            .map(function (r) { return r.json(); });
-	    };
-	    NotificationService.prototype.createNotificationAdmin = function (title, link) {
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _info = JSON.stringify({
-	            title: title,
-	            link: link
-	        });
-	        return this._http.put(this._notificationUrl, _info, options)
-	            .map(function (r) { return r.json(); });
-	    };
-	    NotificationService.prototype.changeStatusNotification = function (user) {
-	        return this._http.get(this._statusNotificationUrl.replace(':user', user));
-	    };
-	    NotificationService = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-	    ], NotificationService);
-	    return NotificationService;
-	    var _a;
-	}());
-	exports.NotificationService = NotificationService;
 	
 
 /***/ },
@@ -2213,7 +2213,7 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var requests_1 = __webpack_require__(57);
+	var requests_1 = __webpack_require__(58);
 	var knowledge_1 = __webpack_require__(52);
 	var tag_1 = __webpack_require__(66);
 	var primeng_1 = __webpack_require__(31);
@@ -3078,7 +3078,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(6);
 	var router_1 = __webpack_require__(4);
 	var knowledge_1 = __webpack_require__(52);
-	var requests_1 = __webpack_require__(57);
+	var requests_1 = __webpack_require__(58);
 	var auth_1 = __webpack_require__(45);
 	var tag_1 = __webpack_require__(66);
 	var private_chat_1 = __webpack_require__(11);
@@ -3334,7 +3334,7 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 8/25/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(64);
+	var kspace_1 = __webpack_require__(65);
 	var router_1 = __webpack_require__(4);
 	var CreatePublicKspace = (function () {
 	    function CreatePublicKspace(_kspaceService, router) {
@@ -3387,7 +3387,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var common_1 = __webpack_require__(6);
 	var report_1 = __webpack_require__(192);
-	var notification_1 = __webpack_require__(65);
+	var notification_1 = __webpack_require__(57);
 	var users_1 = __webpack_require__(27);
 	var private_chat_1 = __webpack_require__(11);
 	var ReportComponent = (function () {
@@ -3470,7 +3470,7 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
-	var requests_1 = __webpack_require__(57);
+	var requests_1 = __webpack_require__(58);
 	var article_1 = __webpack_require__(40);
 	var ng2_pagination_1 = __webpack_require__(131);
 	var private_chat_1 = __webpack_require__(11);
@@ -3608,7 +3608,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	//services
 	var users_1 = __webpack_require__(27);
-	var notification_1 = __webpack_require__(65);
+	var notification_1 = __webpack_require__(57);
 	var report_1 = __webpack_require__(292);
 	var ratingPoint_1 = __webpack_require__(295);
 	var UserProfileBarComponent = (function () {
@@ -4963,7 +4963,7 @@ webpackJsonp([2],[
 	var primeng_1 = __webpack_require__(31);
 	var knowledge_1 = __webpack_require__(690);
 	var knowledge_2 = __webpack_require__(52);
-	var requests_1 = __webpack_require__(57);
+	var requests_1 = __webpack_require__(58);
 	var knowledge_update_1 = __webpack_require__(288);
 	var sub_knowledge_create_1 = __webpack_require__(666);
 	var ng2_pagination_1 = __webpack_require__(131);
@@ -5206,7 +5206,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var common_1 = __webpack_require__(6);
 	var knowledge_1 = __webpack_require__(52);
-	var requests_1 = __webpack_require__(57);
+	var requests_1 = __webpack_require__(58);
 	var auth_1 = __webpack_require__(45);
 	var pager_1 = __webpack_require__(191);
 	var request_update_1 = __webpack_require__(190);
@@ -5432,7 +5432,10 @@ webpackJsonp([2],[
 	                    users[i].updatedAt = new Date(users[i].updatedAt);
 	                }
 	                users[i]["num"] = i + 1;
-	                if (users[i].role !== 'admin') {
+	                if (_this.userrole !== 'admin' && users[i].role !== 'admin') {
+	                    _this.users.push(users[i]);
+	                }
+	                else {
 	                    _this.users.push(users[i]);
 	                }
 	            }
@@ -5783,7 +5786,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(6);
 	var private_chat_1 = __webpack_require__(11);
 	var article_1 = __webpack_require__(40);
-	var notification_1 = __webpack_require__(65);
+	var notification_1 = __webpack_require__(57);
 	var report_1 = __webpack_require__(292);
 	var comment_1 = __webpack_require__(669);
 	var tag_1 = __webpack_require__(75);
@@ -6189,6 +6192,9 @@ webpackJsonp([2],[
 	        if (!this.isLect) {
 	            $('#draw-option').hide();
 	        }
+	        if (!this.lecturer) {
+	            $('#new-page').hide();
+	        }
 	        // Prepare data for identify the subscriber is lecturer or not
 	        var data = {
 	            room: room,
@@ -6281,7 +6287,7 @@ webpackJsonp([2],[
 	                path.strokeColor = strokeColor;
 	                path.strokeWidth = strokeWidth;
 	                var x = event.pageX - 0.22 * $(window).width();
-	                var y = event.pageY - 70;
+	                var y = event.pageY - 105;
 	                path.add(new paper.Point(x, y));
 	                emitStartPoint(x, y, strokeColor, strokeWidth);
 	            }
@@ -6291,7 +6297,7 @@ webpackJsonp([2],[
 	        $('#chalkboard').mousemove(function (event) {
 	            if (drawing && (isLect || isGuest)) {
 	                var x = event.pageX - 0.22 * $(window).width();
-	                var y = event.pageY - 70;
+	                var y = event.pageY - 105;
 	                draw(x, y);
 	                emitPathPoint(x, y);
 	            }
@@ -6461,7 +6467,7 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 8/25/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(64);
+	var kspace_1 = __webpack_require__(65);
 	var router_1 = __webpack_require__(4);
 	var JoinPublicKspace = (function () {
 	    function JoinPublicKspace(_kspaceService, router, _route) {
@@ -6642,7 +6648,7 @@ webpackJsonp([2],[
 	 */
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
-	var kspace_1 = __webpack_require__(64);
+	var kspace_1 = __webpack_require__(65);
 	var article_1 = __webpack_require__(40);
 	var private_chat_1 = __webpack_require__(11);
 	var ratingPoint_1 = __webpack_require__(295);
@@ -6831,7 +6837,7 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 7/9/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(64);
+	var kspace_1 = __webpack_require__(65);
 	var router_1 = __webpack_require__(4);
 	var private_chat_1 = __webpack_require__(11);
 	var KSpaceListComponent = (function () {
@@ -6886,7 +6892,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(64);
+	var kspace_1 = __webpack_require__(65);
 	var router_1 = __webpack_require__(4);
 	var webrtc_component_1 = __webpack_require__(444);
 	var kspace_chat_1 = __webpack_require__(439);
@@ -6973,7 +6979,7 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 8/25/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(64);
+	var kspace_1 = __webpack_require__(65);
 	var router_1 = __webpack_require__(4);
 	var kspace_chat_1 = __webpack_require__(439);
 	var webrtc_component_1 = __webpack_require__(444);
@@ -7150,17 +7156,18 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
-	var requests_1 = __webpack_require__(57);
+	var requests_1 = __webpack_require__(58);
 	var request_offer_1 = __webpack_require__(296);
 	var knowledge_1 = __webpack_require__(52);
-	var kspace_1 = __webpack_require__(64);
+	var kspace_1 = __webpack_require__(65);
+	var notification_1 = __webpack_require__(57);
 	var offer_create_1 = __webpack_require__(675);
 	var report_1 = __webpack_require__(292);
 	var tag_1 = __webpack_require__(75);
 	var private_chat_1 = __webpack_require__(11);
 	var info_hover_1 = __webpack_require__(56);
 	var RequestDetailClientComponent = (function () {
-	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
+	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route, _noti) {
 	        var _this = this;
 	        this._requestService = _requestService;
 	        this._offerService = _offerService;
@@ -7168,6 +7175,7 @@ webpackJsonp([2],[
 	        this._knowledgeService = _knowledgeService;
 	        this._kspaceService = _kspaceService;
 	        this.route = route;
+	        this._noti = _noti;
 	        this.num = 5;
 	        this.height = 400;
 	        //check if request is accepted
@@ -7331,6 +7339,11 @@ webpackJsonp([2],[
 	                console.log('change status request successfull');
 	            });
 	            _this.checkIsAcceped = true;
+	            var title = 'Yêu cầu của bạn đã được chấp nhận';
+	            var user = lecturer;
+	            var link = '/kspace/info/' + r._id + '/' + lecturer;
+	            _this._noti.createNotification(title, user, link).subscribe(function (noti) {
+	            });
 	            _this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
 	        });
 	    };
@@ -7391,10 +7404,10 @@ webpackJsonp([2],[
 	                info_hover_1.infoHover
 	            ]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object, (typeof (_g = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _g) || Object])
 	    ], RequestDetailClientComponent);
 	    return RequestDetailClientComponent;
-	    var _a, _b, _c, _d, _e, _f;
+	    var _a, _b, _c, _d, _e, _f, _g;
 	}());
 	exports.RequestDetailClientComponent = RequestDetailClientComponent;
 	
@@ -7416,7 +7429,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var private_chat_1 = __webpack_require__(11);
 	var router_1 = __webpack_require__(4);
-	var requests_1 = __webpack_require__(57);
+	var requests_1 = __webpack_require__(58);
 	var tag_1 = __webpack_require__(66);
 	var friend_list_1 = __webpack_require__(677);
 	var request_create_1 = __webpack_require__(289);
@@ -7980,7 +7993,7 @@ webpackJsonp([2],[
 	//services
 	var users_1 = __webpack_require__(27);
 	var knowledge_1 = __webpack_require__(52);
-	var kspace_1 = __webpack_require__(64);
+	var kspace_1 = __webpack_require__(65);
 	var article_1 = __webpack_require__(40);
 	var ng2_pagination_1 = __webpack_require__(131);
 	var UserProfileComponent = (function () {
@@ -8264,7 +8277,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var auth_1 = __webpack_require__(45);
-	var notification_1 = __webpack_require__(65);
+	var notification_1 = __webpack_require__(57);
 	var users_1 = __webpack_require__(27);
 	var chat_1 = __webpack_require__(127);
 	var private_chat_1 = __webpack_require__(11);
@@ -10357,11 +10370,11 @@ webpackJsonp([2],[
 	 **/
 	var knowledge_1 = __webpack_require__(52);
 	var request_offer_1 = __webpack_require__(296);
-	var requests_1 = __webpack_require__(57);
+	var requests_1 = __webpack_require__(58);
 	var users_1 = __webpack_require__(27);
 	var auth_1 = __webpack_require__(45);
-	var kspace_1 = __webpack_require__(64);
-	var notification_1 = __webpack_require__(65);
+	var kspace_1 = __webpack_require__(65);
+	var notification_1 = __webpack_require__(57);
 	var report_1 = __webpack_require__(192);
 	var article_1 = __webpack_require__(40);
 	var chat_1 = __webpack_require__(127);
@@ -10416,9 +10429,9 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var ng2_charts_1 = __webpack_require__(545);
 	var knowledge_1 = __webpack_require__(52);
-	var requests_1 = __webpack_require__(57);
+	var requests_1 = __webpack_require__(58);
 	var users_1 = __webpack_require__(27);
-	var kspace_1 = __webpack_require__(64);
+	var kspace_1 = __webpack_require__(65);
 	var article_1 = __webpack_require__(40);
 	var DashboardComponent = (function () {
 	    function DashboardComponent(_knowledgeService, _articleService, _requestService, _userService, _kspaceService) {
@@ -10600,7 +10613,7 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(6);
 	var report_1 = __webpack_require__(192);
 	var chat_1 = __webpack_require__(127);
-	var notification_1 = __webpack_require__(65);
+	var notification_1 = __webpack_require__(57);
 	var filter_1 = __webpack_require__(290);
 	var MessageComponent = (function () {
 	    function MessageComponent(fb, _reportService, router, _chatService, _noti) {
@@ -11178,7 +11191,7 @@ webpackJsonp([2],[
 	 */
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
-	var requests_1 = __webpack_require__(57);
+	var requests_1 = __webpack_require__(58);
 	var users_1 = __webpack_require__(27);
 	var article_1 = __webpack_require__(40);
 	var private_chat_1 = __webpack_require__(11);
@@ -11236,7 +11249,6 @@ webpackJsonp([2],[
 	    NewsFeedComponent.prototype.getReqs = function () {
 	        var _this = this;
 	        this._requestService.getAllRequests(this.countR1).subscribe(function (reqs) {
-	            console.log(reqs);
 	            for (var _i = 0, reqs_1 = reqs; _i < reqs_1.length; _i++) {
 	                var r = reqs_1[_i];
 	                _this.records.push(r);
@@ -11410,8 +11422,8 @@ webpackJsonp([2],[
 	var common_1 = __webpack_require__(6);
 	var request_offer_1 = __webpack_require__(296);
 	var auth_1 = __webpack_require__(45);
-	var requests_1 = __webpack_require__(57);
-	var notification_1 = __webpack_require__(65);
+	var requests_1 = __webpack_require__(58);
+	var notification_1 = __webpack_require__(57);
 	var private_chat_1 = __webpack_require__(11);
 	var CreateOfferComponent = (function () {
 	    function CreateOfferComponent(fb, _offerService, _authService, _noti, _requestService) {
@@ -12383,7 +12395,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	//services
 	var users_1 = __webpack_require__(27);
-	var notification_1 = __webpack_require__(65);
+	var notification_1 = __webpack_require__(57);
 	var RequestFriendRecordComponent = (function () {
 	    function RequestFriendRecordComponent(router, route, _userService, _noti) {
 	        var _this = this;
@@ -12586,7 +12598,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var auth_1 = __webpack_require__(45);
-	var notification_1 = __webpack_require__(65);
+	var notification_1 = __webpack_require__(57);
 	var users_1 = __webpack_require__(27);
 	var chat_1 = __webpack_require__(127);
 	var private_chat_1 = __webpack_require__(11);
@@ -21053,7 +21065,7 @@ webpackJsonp([2],[
 	Some credit for this helper goes to http://github.com/YuzuJS/setImmediate
 	*/
 	"use strict";
-	var root_1 = __webpack_require__(58);
+	var root_1 = __webpack_require__(59);
 	var ImmediateDefinition = (function () {
 	    function ImmediateDefinition(root) {
 	        this.root = root;
@@ -21264,7 +21276,7 @@ webpackJsonp([2],[
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(58);
+	var root_1 = __webpack_require__(59);
 	var MapPolyfill_1 = __webpack_require__(898);
 	exports.Map = root_1.root.Map || (function () { return MapPolyfill_1.MapPolyfill; })();
 	//# sourceMappingURL=Map.js.map

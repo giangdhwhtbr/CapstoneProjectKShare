@@ -71,9 +71,14 @@ var NewsFeedComponent = (function () {
     NewsFeedComponent.prototype.getReqs = function () {
         var _this = this;
         this._requestService.getAllRequests(this.countR1).subscribe(function (reqs) {
+<<<<<<< HEAD
             console.log(reqs);
             for (var _i = 0, reqs_1 = reqs; _i < reqs_1.length; _i++) {
                 var r = reqs_1[_i];
+=======
+            for (var _i = 0; _i < reqs.length; _i++) {
+                var r = reqs[_i];
+>>>>>>> 14ad4657fe8946bf52d7e40f152c8621dd0ab4e7
                 _this.records.push(r);
             }
         });
