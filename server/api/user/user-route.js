@@ -39,7 +39,8 @@ module.exports = class userRoutes {
             }
             var data = {
               username : user.username,
-              role: user.role
+              role: user.role,
+              linkImg: user.linkImg
             };
             return res.status(200).send(data);
           });

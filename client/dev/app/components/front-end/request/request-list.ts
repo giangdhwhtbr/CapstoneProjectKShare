@@ -95,6 +95,7 @@ export class RequestListClientComponent implements AfterViewChecked {
     }
 
     getAllRequests() {
+        this._data = [];
         this.text="";
         this._requestService.getAllRequests(this.num).subscribe((requests) => {
             this.requests = requests;
@@ -128,8 +129,6 @@ export class RequestListClientComponent implements AfterViewChecked {
             this.getAllRequests();
         } else {
             this._requestService.searchRequest(this.text).subscribe((requests) => {
-
-                this._data = [];
                 for (var i = 0; i < requests.length; i++) {
                     this._data.push({
                         req: requests[i],

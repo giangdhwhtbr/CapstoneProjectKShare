@@ -18,12 +18,15 @@ export class RTCComponent {
   username: string;
   hiddenShareScreen:boolean = true;
   guest: string;
+  avarta:string;
+  isLearner: boolean = false;
   @Input()lecturer: string;
   @Input()learners: any;
   @Input()room: string;
   constructor(private rtcService : WebRCTService){
     this.username = localStorage.getItem('username');
     this.guest = localStorage.getItem('guest');
+    this.avarta = localStorage.getItem('avarta');
   }
 
   ngOnInit(): void {
@@ -31,6 +34,11 @@ export class RTCComponent {
     if(this.lecturer && this.learners){
       if (this.lecturer === this.username) {
         this.hiddenShareScreen = false;
+      }
+      for (let learner of this.learners){
+        if(this.username === learner){
+          this.isLearner = true;
+        }
       }
       // DOM elements
       var shareScreenBtn = $('#sharescreen-btn');

@@ -7066,14 +7066,22 @@ webpackJsonp([2],[
 	    function RTCComponent(rtcService) {
 	        this.rtcService = rtcService;
 	        this.hiddenShareScreen = true;
+	        this.isLearner = false;
 	        this.username = localStorage.getItem('username');
 	        this.guest = localStorage.getItem('guest');
+	        this.avarta = localStorage.getItem('avarta');
 	    }
 	    RTCComponent.prototype.ngOnInit = function () {
 	        //private kspace
 	        if (this.lecturer && this.learners) {
 	            if (this.lecturer === this.username) {
 	                this.hiddenShareScreen = false;
+	            }
+	            for (var _i = 0, _a = this.learners; _i < _a.length; _i++) {
+	                var learner = _a[_i];
+	                if (this.username === learner) {
+	                    this.isLearner = true;
+	                }
 	            }
 	            // DOM elements
 	            var shareScreenBtn = $('#sharescreen-btn');
@@ -7494,6 +7502,7 @@ webpackJsonp([2],[
 	    };
 	    RequestListClientComponent.prototype.getAllRequests = function () {
 	        var _this = this;
+	        this._data = [];
 	        this.text = "";
 	        this._requestService.getAllRequests(this.num).subscribe(function (requests) {
 	            _this.requests = requests;
@@ -7525,7 +7534,6 @@ webpackJsonp([2],[
 	        }
 	        else {
 	            this._requestService.searchRequest(this.text).subscribe(function (requests) {
-	                _this._data = [];
 	                for (var i = 0; i < requests.length; i++) {
 	                    _this._data.push({
 	                        req: requests[i],
@@ -11715,8 +11723,10 @@ webpackJsonp([2],[
 	        this._authService
 	            .login(user)
 	            .subscribe(function (res) {
+	            console.log(res);
 	            localStorage.removeItem('guest');
 	            localStorage.setItem('username', res.username);
+	            localStorage.setItem('avarta', res.linkImg);
 	            if (res.role) {
 	                localStorage.setItem('userrole', res.role);
 	            }
