@@ -8,9 +8,9 @@
             </a>
             <!--btn group-->
             <ul class="right" [hidden]="!loginToken">
-                <li [hidden]="!isFrontend">
+                <!--<li [hidden]="!isFrontend">
                     <a [routerLink]="['/newsfeed']"><i class="material-icons">today</i></a>
-                </li>
+                </li>-->
                 <li [hidden]="!isFrontend">
                     <a [routerLink]="['/requests']" routerLinkActive="active"><i class="material-icons">receipt</i></a>
                 </li>
@@ -62,12 +62,6 @@
                 </li>
             </ul>
             <ul class="right" *ngIf="!loginToken">
-                <li>
-                    <a [routerLink]="['/']" class="waves-effect waves-light">Giới thiệu </a>
-                </li>
-                <li>
-                    <a [routerLink]="['/public-kspace/create']" class="waves-effect waves-light">Trải nghiệm Kspace </a>
-                </li>
                 <li>
                     <button class="waves-effect waves-light btn btLogin" id="btnShowLogin" [routerLink]="['/login']">Login</button>
                 </li>

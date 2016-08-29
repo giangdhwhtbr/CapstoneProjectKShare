@@ -39,7 +39,7 @@ var NewsFeedComponent = (function () {
             this.getRequests();
             this.getArticles();
         }
-        $('.parallax').parallax();
+        $('.carousel.carousel-slider').carousel({ full_width: true });
     };
     NewsFeedComponent.prototype.seeMore = function () {
         this.countR1 = this.countR1 + 5;
