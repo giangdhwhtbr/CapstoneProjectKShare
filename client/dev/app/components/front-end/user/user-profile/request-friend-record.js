@@ -1,18 +1,14 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 //cores
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-//services
-var users_1 = require('../../../../services/users');
-var notification_1 = require('../../../../services/notification');
 var RequestFriendRecordComponent = (function () {
     function RequestFriendRecordComponent(router, route, _userService, _noti) {
         var _this = this;
@@ -37,7 +33,6 @@ var RequestFriendRecordComponent = (function () {
         var _this = this;
         this._userService.acceptFriendRequest(this.requestUser, this.name).subscribe(function () {
             console.log("accepted successful");
-            Materialize.toast("Bạn đã là bạn bè với " + _this.requestUser, 4000);
             _this.isAdded = true;
             var title = _this.name + ' chấp nhận kết bạn';
             var link = '/user/' + _this.name;
@@ -48,7 +43,6 @@ var RequestFriendRecordComponent = (function () {
                 _this.sendDataToP.emit("accept");
                 // var data = [this.requestUser, this.name];
                 // this.socket.emit('chatroom-friend', data);
-                Materialize.toast('Đã là bạn bè', 4000);
                 _this.router.navigateByUrl('/user/' + _this.requestUser);
             });
         });
@@ -74,22 +68,18 @@ var RequestFriendRecordComponent = (function () {
                 console.log('delete successfull');
                 _this.sendDataToP.emit("accept");
                 _this.isFriend = false;
-                Materialize.toast("bạn đã hủy gửi lời  mời kết bạn", 4000);
             });
         }
     };
     __decorate([
-        core_1.Input('requestUser'), 
-        __metadata('design:type', String)
-    ], RequestFriendRecordComponent.prototype, "requestUser", void 0);
+        core_1.Input('requestUser')
+    ], RequestFriendRecordComponent.prototype, "requestUser");
     __decorate([
-        core_1.Input('name'), 
-        __metadata('design:type', String)
-    ], RequestFriendRecordComponent.prototype, "name", void 0);
+        core_1.Input('name')
+    ], RequestFriendRecordComponent.prototype, "name");
     __decorate([
-        core_1.Output(), 
-        __metadata('design:type', core_1.EventEmitter)
-    ], RequestFriendRecordComponent.prototype, "sendDataToP", void 0);
+        core_1.Output()
+    ], RequestFriendRecordComponent.prototype, "sendDataToP");
     RequestFriendRecordComponent = __decorate([
         core_1.Component({
             selector: 'request-friend-record',
@@ -98,8 +88,7 @@ var RequestFriendRecordComponent = (function () {
             directives: [
                 router_1.ROUTER_DIRECTIVES
             ]
-        }), 
-        __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, users_1.UserService, notification_1.NotificationService])
+        })
     ], RequestFriendRecordComponent);
     return RequestFriendRecordComponent;
 })();
