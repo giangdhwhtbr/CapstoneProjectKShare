@@ -26,6 +26,7 @@ import { ReportComponent } from '../report/report';
 import { listTagComponent } from '../tag/tag';
 import { PrivateChatComponent } from './../../shared/private-chat';
 import { infoHover } from '../user/user-profile/info-hover';
+import { topArticlesComponent } from '../newsfeed/topArticle';
 
 import { Subscription } from 'rxjs/Subscription';
 declare var $:any;
@@ -41,7 +42,8 @@ declare var Materialize:any;
         ReportComponent,
         PrivateChatComponent,
         listTagComponent,
-        infoHover
+        infoHover,
+        topArticlesComponent
     ]
 })
 

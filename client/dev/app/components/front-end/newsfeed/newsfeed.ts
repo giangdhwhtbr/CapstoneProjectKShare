@@ -63,7 +63,7 @@ export class NewsFeedComponent implements OnInit {
             this.getArticles();
         }
 
-        $('.parallax').parallax();
+          $('.carousel.carousel-slider').carousel({full_width: true});
     }
 
     seeMore(): void {

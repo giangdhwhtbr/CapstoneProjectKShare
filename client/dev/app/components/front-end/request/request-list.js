@@ -15,6 +15,7 @@ var request_create_1 = require('../../back-end/request/request-create');
 var request_category_1 = require('./request-category');
 var tag_2 = require('../tag/tag');
 var info_hover_1 = require('../user/user-profile/info-hover');
+var topArticle_1 = require('../newsfeed/topArticle');
 var RequestListClientComponent = (function () {
     function RequestListClientComponent(_requestService, _tagService, _auth, router, route) {
         this._requestService = _requestService;
@@ -139,7 +140,8 @@ var RequestListClientComponent = (function () {
                 request_category_1.RequestCategoryComponent,
                 tag_2.listTagComponent,
                 private_chat_1.PrivateChatComponent,
-                info_hover_1.infoHover
+                info_hover_1.infoHover,
+                topArticle_1.topArticlesComponent
             ],
             providers: [tag_1.TagService]
         })

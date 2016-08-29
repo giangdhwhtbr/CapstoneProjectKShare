@@ -13,8 +13,9 @@ var report_1 = require('../report/report');
 var tag_1 = require('../tag/tag');
 var private_chat_1 = require('./../../shared/private-chat');
 var info_hover_1 = require('../user/user-profile/info-hover');
+var topArticle_1 = require('../newsfeed/topArticle');
 var RequestDetailClientComponent = (function () {
-    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
+    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route, _noti) {
         var _this = this;
         this._requestService = _requestService;
         this._offerService = _offerService;
@@ -22,6 +23,7 @@ var RequestDetailClientComponent = (function () {
         this._knowledgeService = _knowledgeService;
         this._kspaceService = _kspaceService;
         this.route = route;
+        this._noti = _noti;
         this.num = 5;
         this.height = 400;
         //check if request is accepted
@@ -185,6 +187,11 @@ var RequestDetailClientComponent = (function () {
                 console.log('change status request successfull');
             });
             _this.checkIsAcceped = true;
+            var title = 'Yêu cầu của bạn đã được chấp nhận';
+            var user = lecturer;
+            var link = '/kspace/info/' + r._id + '/' + lecturer;
+            _this._noti.createNotification(title, user, link).subscribe(function (noti) {
+            });
             _this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
         });
     };
@@ -242,7 +249,8 @@ var RequestDetailClientComponent = (function () {
                 report_1.ReportComponent,
                 private_chat_1.PrivateChatComponent,
                 tag_1.listTagComponent,
-                info_hover_1.infoHover
+                info_hover_1.infoHover,
+                topArticle_1.topArticlesComponent
             ]
         })
     ], RequestDetailClientComponent);

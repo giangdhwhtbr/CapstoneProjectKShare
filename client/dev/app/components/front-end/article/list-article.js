@@ -15,6 +15,7 @@ var article_1 = require('../../../services/article');
 var private_chat_1 = require('./../../shared/private-chat');
 var tag_1 = require('../tag/tag');
 var info_hover_1 = require('../user/user-profile/info-hover');
+var topArticle_1 = require('../newsfeed/topArticle');
 var listArticleComponent = (function () {
     function listArticleComponent(router, route, _artService) {
         this.router = router;
@@ -96,7 +97,8 @@ var listArticleComponent = (function () {
                 router_1.ROUTER_DIRECTIVES,
                 private_chat_1.PrivateChatComponent,
                 tag_1.listTagComponent,
-                info_hover_1.infoHover
+                info_hover_1.infoHover,
+                topArticle_1.topArticlesComponent
             ],
             providers: [article_1.ArticleService]
         })

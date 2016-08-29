@@ -10,7 +10,7 @@
                 <span class="black-text content-cmt">{{comment.content}}</span>
             </div>
             <div [hidden]="!isEditing" *ngIf="userToken">
-                <div class="col s4 m4 l4">
+                <div class="col s10 m12 l12">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">mode_edit</i>
                         <textarea [(ngModel)]="textEdit" value="{{comment.content}}" class="materialize-textarea"></textarea>

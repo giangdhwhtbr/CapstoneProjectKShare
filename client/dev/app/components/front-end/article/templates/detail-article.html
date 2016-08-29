@@ -1,102 +1,111 @@
-<div class="container article">
-    <div *ngIf="article">
-        <div *ngIf="canSee">
-            <h5 class="valign">{{article.title}}</h5>
-            <hr>
-            <!--<span class="titleArtDe"> </span>-->
-            <span *ngIf="article.author" class="byAu">viết bởi <hover-info-user [username]="article.author"></hover-info-user></span>
-            <span *ngIf="!article.author" class="byAu">viết bởi <a [routerLink]="['/user',article.ofUser]">{{article.ofUser}}</a></span>
+<div class="row">
+    <div class="col s12 m8 l8">
+        <div class="container">
+            <div *ngIf="article">
+                <div *ngIf="canSee">
+                    <h5 class="valign">{{article.title}}</h5>
+                    <hr>
+                    <!--<span class="titleArtDe"> </span>-->
+                    <span *ngIf="article.author" class="byAu">viết bởi <hover-info-user [username]="article.author"></hover-info-user></span>
+                    <span *ngIf="!article.author" class="byAu">viết bởi <a [routerLink]="['/user',article.ofUser]">{{article.ofUser}}</a></span>
             <span class="dateCreate">
                 vào {{article.createdAt | date:"dd/MM/yyyy"}}
             </span>
-            <div class="row">
-                <div class="col-sm-12">
+                    <div class="row">
+                        <div class="col-sm-12">
                 <span *ngIf="article.status=='public'"><i class="fa fa-hand-paper-o"
                                                           aria-hidden="true"></i> Công khai</span>
                 <span *ngIf="article.status=='private'"><i class="fa fa-hand-rock-o"
                                                            aria-hidden="true"></i> Riêng tư</span>
-                    <span *ngIf="article.status=='deactivate'"><i class="fa fa-times-circle-o" aria-hidden="true"></i> Bị đóng</span>
-                    <span *ngIf="article.status=='pending'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chờ</span>
+                            <span *ngIf="article.status=='deactivate'"><i class="fa fa-times-circle-o" aria-hidden="true"></i> Bị đóng</span>
+                            <span *ngIf="article.status=='pending'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chờ</span>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="right">
+                            <a *ngIf="!liked && userToken" (click)="likeArt()" class="waves-effect waves-light btn-flat" >
+                                <i class="material-icons left">favorite_border</i>{{article.like}}
+                            </a>
+                            <a *ngIf="liked && userToken" (click)="unlikeArt()" class="waves-effect waves-light btn-flat" >
+                                <i class="material-icons left">favorite</i>{{article.like}}
+                            </a>
+                            <a *ngIf="(roleToken=='admin' || article.author==userToken) && userToken" class="waves-effect waves-light btn-flat"
+                               href="/article/edit/{{article._id}}"><i class="material-icons left">mode_edit</i>Sửa</a>
+                            <a *ngIf="(roleToken=='admin' || article.author==userToken)&& article.status!='deactivate' && userToken"
+                               type="button" class="waves-effect waves-light btn-flat" (click)="openCloseArt()">
+                                <i class="material-icons left">delete</i> đóng
+                            </a>
+                            <a *ngIf="userToken" class="waves-effect waves-light btn-flat" (click)="openRp()" id="btnRp" >
+                                <i class="material-icons left">feedback</i> báo cáo
+                            </a>
+                        </div>
+                    </div>
+                    <div class="messOff col s12 m12 l12">
+
+                    </div>
+                    <div class="bodyArt col s12 m12 l12" [class.deAc]="isDeAc">
+                        <div id="bdArticle" class="container">
+
+                        </div>
+                    </div>
+                    <div *ngIf="article.tags.length!=0" class="tags">
+                        <tags [listTagId]="article.tags"></tags>
+                    </div>
+                    <div class="row">
+                        <h5 class="valign">Bình luận</h5>
+                        <hr>
+                    </div>
+                    <!--comment box-->
+                    <div *ngIf="userToken" class="row">
+                        <div class="col s12 m12">
+                            <div class="input-field col s6">
+                                <i class="material-icons prefix">mode_edit</i>
+                                <textarea [(ngModel)]="textCmt" id="icon_prefix" class="materialize-textarea"></textarea>
+                                <label for="icon_prefix">Viết bình luận</label>
+                            </div>
+                        </div>
+                        <button (click)="postCmt()"
+                                class="waves-effect waves-light btn col s2 offset-s1 m1 offset-m1 l1 offset-l1">Gửi
+                        </button>
+                    </div>
+                    <div class="row">
+                        <div *ngFor="let cmt of article.comments" class="col s12 m12 l12">
+                            <comment [comment]="cmt" [author]="article.author" (sendDataToP)="actionComment($event)"></comment>
+                        </div>
+                    </div>
+
+                    <!--modal closing article-->
+                    <div id="mdCfClose" class="modal">
+                        <div class="modal-content">
+                            <p>Bài viết sẽ bị đóng không thể khôi phục trừ khi có quyển trị viên can thiệp , bạn có muốn
+                                tiếp tục ?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button id="clsArtBtn"
+                                    *ngIf="(roleToken=='admin' || article.author==userToken)&& article.status!='deactivate'"
+                                    (click)="deactivateArticle(article._id)" type="button" class="btn red"
+                                    data-dismiss="modal">Đóng bài viết
+                            </button>
+                            <a  class=" modal-action modal-close waves-effect waves-green btn-flat">Huỷ</a>
+                        </div>
+                    </div>
+
+                    <report *ngIf="article" reportedUser="{{article.author}}"></report>
                 </div>
             </div>
-            <div class="row">
-                <div class="right">
-                    <a *ngIf="!liked && userToken" (click)="likeArt()" class="waves-effect waves-light btn-flat" >
-                        <i class="material-icons left">favorite_border</i>{{article.like}}
-                    </a>
-                    <a *ngIf="liked && userToken" (click)="unlikeArt()" class="waves-effect waves-light btn-flat" >
-                        <i class="material-icons left">favorite</i>{{article.like}}
-                    </a>
-                    <a *ngIf="(roleToken=='admin' || article.author==userToken) && userToken" class="waves-effect waves-light btn-flat"
-                       href="/article/edit/{{article._id}}"><i class="material-icons left">mode_edit</i>Sửa</a>
-                    <a *ngIf="(roleToken=='admin' || article.author==userToken)&& article.status!='deactivate' && userToken"
-                       type="button" class="waves-effect waves-light btn-flat" (click)="openCloseArt()">
-                        <i class="material-icons left">delete</i> đóng
-                    </a>
-                    <a *ngIf="userToken" class="waves-effect waves-light btn-flat" (click)="openRp()" id="btnRp" >
-                        <i class="material-icons left">feedback</i> báo cáo
-                    </a>
-                </div>
-            </div>
-            <div class="messOff col s12 m12 l12">
 
-            </div>
-            <div id="bdArticle" class="bodyArt col s12 m12 l12" [class.deAc]="isDeAc">
 
-            </div>
-            <div *ngIf="article.tags.length!=0" class="tags">
-                <tags [listTagId]="article.tags"></tags>
-            </div>
-            <div class="row">
-                <h5 class="valign">Bình luận</h5>
-                <hr>
-            </div>
-            <!--comment box-->
-            <div *ngIf="userToken" class="row">
-                <div class="col s12 m12">
-                    <div class="input-field col s6">
-                        <i class="material-icons prefix">mode_edit</i>
-                        <textarea [(ngModel)]="textCmt" id="icon_prefix" class="materialize-textarea"></textarea>
-                        <label for="icon_prefix">Viết bình luận</label>
+            <div *ngIf="!canSee" class="noti-err">
+                <div class="row">
+                    <div class="col-xs-offset-3 col-xs-9">
+                        <i class="fa fa-ban fa-3x" aria-hidden="true"></i><span class="text-noti-err-edit">Nội dung này không khả dụng</span>
                     </div>
                 </div>
-                <button (click)="postCmt()"
-                        class="waves-effect waves-light btn col s2 offset-s1 m1 offset-m1 l1 offset-l1">Gửi
-                </button>
             </div>
-            <div class="row">
-                <div *ngFor="let cmt of article.comments" class="col s7 m7 l7">
-                    <comment [comment]="cmt" [author]="article.author" (sendDataToP)="actionComment($event)"></comment>
-                </div>
-            </div>
-
-            <!--modal closing article-->
-            <div id="mdCfClose" class="modal">
-                <div class="modal-content">
-                    <p>Bài viết sẽ bị đóng không thể khôi phục trừ khi có quyển trị viên can thiệp , bạn có muốn
-                        tiếp tục ?</p>
-                </div>
-                <div class="modal-footer">
-                    <button id="clsArtBtn"
-                            *ngIf="(roleToken=='admin' || article.author==userToken)&& article.status!='deactivate'"
-                            (click)="deactivateArticle(article._id)" type="button" class="btn red"
-                            data-dismiss="modal">Đóng bài viết
-                    </button>
-                    <a  class=" modal-action modal-close waves-effect waves-green btn-flat">Huỷ</a>
-                </div>
-            </div>
-
-            <report *ngIf="article" reportedUser="{{article.author}}"></report>
         </div>
     </div>
-
-
-    <div *ngIf="!canSee" class="noti-err">
-        <div class="row">
-            <div class="col-xs-offset-3 col-xs-9">
-                <i class="fa fa-ban fa-3x" aria-hidden="true"></i><span class="text-noti-err-edit">Nội dung này không khả dụng</span>
-            </div>
-        </div>
+    <div class="col s12 m4 l4">
+        <top-articles></top-articles>
     </div>
 </div>
 <private-chat></private-chat>

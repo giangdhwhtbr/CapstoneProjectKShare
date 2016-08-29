@@ -111,10 +111,10 @@ var CreateArticleComponent = (function () {
         CKEDITOR.instances.editor1.addCommand('youtube', { exec: this.openModalYoutube });
     };
     CreateArticleComponent.prototype.openModalImg = function () {
-        $("#bdOpenModal").trigger("click");
+        $('#ModalUploadImgCkeditor').openModal();
     };
     CreateArticleComponent.prototype.openModalYoutube = function () {
-        $("#youtubeOpenModal").trigger("click");
+        $('#ModalYTCkeditor').openModal();
     };
     CreateArticleComponent.prototype.CreateUploadImageCkeditor = function () {
         CKEDITOR.instances.editor1.ui.addButton('uploadImage', {
