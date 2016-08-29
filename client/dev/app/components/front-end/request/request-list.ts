@@ -95,7 +95,6 @@ export class RequestListClientComponent implements AfterViewChecked {
     }
 
     getAllRequests() {
-        this._data = [];
         this.text="";
         this._requestService.getAllRequests(this.num).subscribe((requests) => {
             this.requests = requests;

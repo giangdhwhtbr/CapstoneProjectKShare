@@ -7497,7 +7497,6 @@ webpackJsonp([2],[
 	    };
 	    RequestListClientComponent.prototype.getAllRequests = function () {
 	        var _this = this;
-	        this._data = [];
 	        this.text = "";
 	        this._requestService.getAllRequests(this.num).subscribe(function (requests) {
 	            _this.requests = requests;
