@@ -1,3 +1,4 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -29,8 +30,13 @@ var CreateSubCategoryComponent = (function () {
         this._knowledgeService.addKnowledge(knowledge).subscribe(function (knowledge) {
             _this.subCategoryForm.controls["name"].updateValue("");
             _this.subCategoryForm.controls["description"].updateValue("");
+            for (var i = 0; i < _this.knowledges.length; i++) {
+                if (knowledge.parent == _this.knowledges[i].data._id) {
+                    _this.knowledges[i].children.push(knowledge);
+                }
+            }
+            _this.knowledge.emit(knowledge);
         });
-        this.knowledge.emit(knowledge);
     };
     __decorate([
         core_1.Input('kId'), 
@@ -53,6 +59,6 @@ var CreateSubCategoryComponent = (function () {
         __metadata('design:paramtypes', [common_1.FormBuilder, knowledge_1.KnowledgeService])
     ], CreateSubCategoryComponent);
     return CreateSubCategoryComponent;
-})();
+}());
 exports.CreateSubCategoryComponent = CreateSubCategoryComponent;
 //# sourceMappingURL=sub-knowledge-create.js.map

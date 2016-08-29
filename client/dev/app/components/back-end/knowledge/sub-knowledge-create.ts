@@ -42,8 +42,14 @@ export class CreateSubCategoryComponent {
         this._knowledgeService.addKnowledge(knowledge).subscribe((knowledge)=> {
                 (<Control>this.subCategoryForm.controls["name"]).updateValue("");
                 (<Control>this.subCategoryForm.controls["description"]).updateValue("");
+                for(var i = 0;i<this.knowledges.length;i++){
+                  if(knowledge.parent==this.knowledges[i].data._id){
+                    this.knowledges[i].children.push(knowledge);
+                  }
+                }
+                this.knowledge.emit(knowledge);
             }
         );
-        this.knowledge.emit(knowledge);
+
     }
 }

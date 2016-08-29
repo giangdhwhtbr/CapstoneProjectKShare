@@ -1,16 +1,23 @@
-<div *ngIf="!userToken" class="row img-nf">
-    <div class="parallax-container intro">
-        <div class="parallax">
-            <img src="/client/dev/asserts/images/intro-bg.jpg">
-        </div>
-        <div class="row">
-            <div class="col s12 m12 l12">
-                <h1 class="grey-text text-lighten-5">Kshare</h1>
-                <h5 clas="grey lighten-4 grey-text text-darken-1">Mạng chia sẻ tri thức không giới hạn</h5><br>
-                <button class="btn-large waves-effect waves-light blue">Đăng ký ngay!</button>
-            </div>
-        </div>
+<div [hidden]="userToken" class="carousel carousel-slider center banner" data-indicators="true">
+  <div class="carousel-item white-text">
+    <img src="client/dev/asserts/images/intro-bg.jpg" class="responsive-img">
+    <div class="carousel-fixed-item center">
+      <h1 class="white-text">KShare</h1>
+      <a class="btn waves-effect blue white-text darken-text-2" [routerLink]="['/public-kspace/create']">Trải nghiệm KSpace</a>
     </div>
+  </div>
+  <div class="carousel-item amber white-text">
+    <h2>Second Panel</h2>
+    <p class="white-text">This is your second panel</p>
+  </div>
+  <div class="carousel-item green white-text">
+    <h2>Third Panel</h2>
+    <p class="white-text">This is your third panel</p>
+  </div>
+  <div class="carousel-item blue white-text">
+    <h2>Fourth Panel</h2>
+    <p class="white-text">This is your fourth panel</p>
+  </div>
 </div>
 <div class="">
     <div class="row">

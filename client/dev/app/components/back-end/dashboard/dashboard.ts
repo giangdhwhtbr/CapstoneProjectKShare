@@ -49,16 +49,10 @@ export class DashboardComponent {
 
   }
   ngOnInit():void {
-    this.getAllKnowledges();
     this.getAllUsers();
     this.getAllRequests();
     this.getAllKSpaces();
     this.getAllArticles();
-  }
-  getAllKnowledges():void {
-      this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
-          this.knowledges = knowledges;
-      });
   }
   getAllUsers():void {
       this._userService.getAllUsers().subscribe((users) => {
@@ -97,8 +91,8 @@ export class DashboardComponent {
   }
 
   draw():void{
-    this.polarAreaChartLabels= ['Số tri thức','Số người sử dụng','Số yêu cầu đã tạo','Số KSpace đã tạo','Số bài viết'];
-    this.polarAreaChartData=[this.knowledges.length,this.users.length,this.requests.length,this.kspaces.length,this.articles.length];
+    this.polarAreaChartLabels= ['Số người sử dụng','Số yêu cầu đã tạo','Số KSpace đã tạo','Số bài viết'];
+    this.polarAreaChartData=[this.users.length,this.requests.length,this.kspaces.length,this.articles.length];
     this.polarAreaLegend= true;
     this.polarAreaChartType = 'polarArea';
     if(this.visible==false)

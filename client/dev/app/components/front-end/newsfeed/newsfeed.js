@@ -1,16 +1,21 @@
+"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
-    switch (arguments.length) {
-        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
-        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
-        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
-    }
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 /**
  * Created by GiangDH on 5/18/16.
  */
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var requests_1 = require('../../../services/requests');
+var users_1 = require('../../../services/users');
+var article_1 = require('../../../services/article');
 var private_chat_1 = require('./../../shared/private-chat');
 var tag_1 = require('../tag/tag');
 var topArticle_1 = require('./topArticle');
@@ -39,7 +44,7 @@ var NewsFeedComponent = (function () {
             this.getRequests();
             this.getArticles();
         }
-        $('.parallax').parallax();
+        $('.carousel.carousel-slider').carousel({ full_width: true });
     };
     NewsFeedComponent.prototype.seeMore = function () {
         this.countR1 = this.countR1 + 5;
@@ -56,8 +61,8 @@ var NewsFeedComponent = (function () {
         var _this = this;
         this._articleService.getAllArts(this.countA1).subscribe(function (arts) {
             console.log(arts);
-            for (var _i = 0; _i < arts.length; _i++) {
-                var a = arts[_i];
+            for (var _i = 0, arts_1 = arts; _i < arts_1.length; _i++) {
+                var a = arts_1[_i];
                 _this.records.push(a);
             }
             _this.getReqs();
@@ -67,8 +72,8 @@ var NewsFeedComponent = (function () {
         var _this = this;
         this._requestService.getAllRequests(this.countR1).subscribe(function (reqs) {
             console.log(reqs);
-            for (var _i = 0; _i < reqs.length; _i++) {
-                var r = reqs[_i];
+            for (var _i = 0, reqs_1 = reqs; _i < reqs_1.length; _i++) {
+                var r = reqs_1[_i];
                 _this.records.push(r);
             }
         });
@@ -165,9 +170,10 @@ var NewsFeedComponent = (function () {
                 topArticle_1.topArticlesComponent,
                 info_hover_1.infoHover
             ]
-        })
+        }), 
+        __metadata('design:paramtypes', [users_1.UserService, requests_1.RequestService, article_1.ArticleService, router_1.Router])
     ], NewsFeedComponent);
     return NewsFeedComponent;
-})();
+}());
 exports.NewsFeedComponent = NewsFeedComponent;
 //# sourceMappingURL=newsfeed.js.map
