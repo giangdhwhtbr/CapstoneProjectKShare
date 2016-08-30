@@ -1,22 +1,21 @@
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") return Reflect.decorate(decorators, target, key, desc);
+    switch (arguments.length) {
+        case 2: return decorators.reduceRight(function(o, d) { return (d && d(o)) || o; }, target);
+        case 3: return decorators.reduceRight(function(o, d) { return (d && d(target, key)), void 0; }, void 0);
+        case 4: return decorators.reduceRight(function(o, d) { return (d && d(target, key, o)) || o; }, desc);
+    }
 };
 /**
  * Created by GiangDH on 7/9/16.
  */
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
-var kspace_1 = require('../../../services/kspace');
 var article_1 = require('../../../services/article');
 var private_chat_1 = require('./../../shared/private-chat');
 var ratingPoint_1 = require('../../shared/ratingPoint');
 var ng_semantic_1 = require("ng-semantic");
+var info_hover_1 = require('../user/user-profile/info-hover');
 var KSpaceInfoComponent = (function () {
     function KSpaceInfoComponent(router, route, _kspaceService, _articleService) {
         var _this = this;
@@ -170,12 +169,12 @@ var KSpaceInfoComponent = (function () {
         core_1.Component({
             templateUrl: 'client/dev/app/components/front-end/kspace/templates/kspace-info.html',
             directives: [
-                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent, ng_semantic_1.SEMANTIC_COMPONENTS, ng_semantic_1.SEMANTIC_DIRECTIVES, ratingPoint_1.RatingPoint
+                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent, ng_semantic_1.SEMANTIC_COMPONENTS,
+                ng_semantic_1.SEMANTIC_DIRECTIVES, ratingPoint_1.RatingPoint, info_hover_1.infoHover
             ],
             providers: [article_1.ArticleService],
             styles: ["\n      button#submitReview {\n          margin-top: 50px;\n      }\n    "]
-        }), 
-        __metadata('design:paramtypes', [router_1.Router, router_1.ActivatedRoute, kspace_1.KSpaceService, article_1.ArticleService])
+        })
     ], KSpaceInfoComponent);
     return KSpaceInfoComponent;
 })();
