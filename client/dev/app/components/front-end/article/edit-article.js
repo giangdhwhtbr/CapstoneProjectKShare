@@ -68,7 +68,7 @@ var EditArticleComponent = (function () {
     EditArticleComponent.prototype.ngOnInit = function () {
         var _this = this;
         this._articleService.getArtById(this.id).subscribe(function (art) {
-            if (art.author != _this.userToken && _this.roleToken != "admin") {
+            if (art.author != _this.userToken && (_this.roleToken != "admin" || _this.roleToken != 'mod')) {
                 _this.isEdited = false;
             }
             else {

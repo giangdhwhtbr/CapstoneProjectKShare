@@ -47,8 +47,8 @@ var detailArticleComponent = (function () {
         var _this = this;
         this._articleService.getArtById(this.id).subscribe(function (art) {
             if ((art.author == _this.userToken && art.status == 'private')
-                || (_this.roleToken == 'admin')
-                || (_this.roleToken != 'admin' && art.status == 'public')) {
+                || (_this.roleToken == 'admin' || _this.roleToken == 'mod')
+                || ((_this.roleToken != 'admin' || _this.roleToken != 'mod') && art.status == 'public')) {
                 //check user liked
                 var i = art.userLiked.indexOf(_this.userToken);
                 if (i >= 0) {
@@ -57,7 +57,6 @@ var detailArticleComponent = (function () {
                 else {
                     _this.liked = false;
                 }
-                console.log(_this.liked);
                 _this.article = art;
                 _this.tags = art.tagsFD;
                 _this.article.createdAt = new Date(_this.article.createdAt);

@@ -33,12 +33,14 @@ export class commentComponent implements OnInit ,AfterViewChecked{
     liked:boolean=false;
 
     constructor(public router: Router, private route: ActivatedRoute, private _artService: ArticleService) {
-        this.roleToken = localStorage.getItem('role');
+        this.roleToken = localStorage.getItem('userrole');
         this.userToken = localStorage.getItem('username');
     }
     ngOnInit() {
         this.textEdit=this.comment.content;
         let i = this.comment.userLiked.indexOf(this.userToken);
+        console.log(this.roleToken);
+        console.log(this.userToken);
         if(i>=0){
             this.liked=true;
         }

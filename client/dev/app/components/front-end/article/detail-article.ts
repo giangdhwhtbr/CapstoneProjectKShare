@@ -75,8 +75,8 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
         this._articleService.getArtById(this.id).subscribe((art) => {
 
             if ((art.author == this.userToken && art.status == 'private')
-                || (this.roleToken == 'admin')
-                || (this.roleToken != 'admin' && art.status == 'public')) {
+                || (this.roleToken == 'admin'||this.roleToken == 'mod' )
+                || ((this.roleToken != 'admin'||this.roleToken != 'mod') && art.status == 'public')) {
                 //check user liked
                 let i = art.userLiked.indexOf(this.userToken);
                 if (i >= 0) {
@@ -85,7 +85,6 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
                     this.liked=false;
                 }
 
-                console.log(this.liked);
 
                 this.article = art;
 

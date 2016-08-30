@@ -22,12 +22,14 @@ var commentComponent = (function () {
         this.textEdit = "";
         this.isEditing = false;
         this.liked = false;
-        this.roleToken = localStorage.getItem('role');
+        this.roleToken = localStorage.getItem('userrole');
         this.userToken = localStorage.getItem('username');
     }
     commentComponent.prototype.ngOnInit = function () {
         this.textEdit = this.comment.content;
         var i = this.comment.userLiked.indexOf(this.userToken);
+        console.log(this.roleToken);
+        console.log(this.userToken);
         if (i >= 0) {
             this.liked = true;
         }
