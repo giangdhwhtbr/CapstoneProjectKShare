@@ -86,6 +86,7 @@ export class UserListComponent {
         });
     }
     addUser(user: any): void {
+      this.errorMessage = '';
       user.role = $('#role').val();
 
       var validateUsername = function(username) {

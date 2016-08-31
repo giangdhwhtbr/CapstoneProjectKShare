@@ -6,7 +6,6 @@ import { RouterConfig }          from '@angular/router';
 //Root Component
 import { KshareComponent } from '../components/kshare.component';
 //Function Components
-import { HomeComponent} from "../components/front-end/home/home";
 import { NewsFeedComponent } from "../components/front-end/newsfeed/newsfeed";
 import { RequestListClientComponent } from "../components/front-end/request/request-list";
 import { RequestDetailClientComponent } from "../components/front-end/request/request-detail";
@@ -222,8 +221,7 @@ export const KShareRoutes: RouterConfig = [
             },
             {
                 path: '',
-                component: HomeComponent
-
+                component: NewsFeedComponent
             }
         ],
     },

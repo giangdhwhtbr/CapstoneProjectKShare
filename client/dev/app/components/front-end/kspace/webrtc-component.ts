@@ -43,19 +43,45 @@ export class RTCComponent {
       // DOM elements
       var shareScreenBtn = $('#sharescreen-btn');
       // initiate webrtc
-      var webrtc = new SimpleWebRTC({
-        localVideoEl: 'localVideo',
-        remoteVideosEl: '',
-        autoRequestMedia: true,
-        nick: this.username,
-        localVideo: {
-          autoplay: true, // automatically play the video stream on the page
-          mirror: true, // flip the local video to mirror mode (for UX)
-          muted: true // mute local video stream to prevent echo
-        },
-        log: true,
-        debug: false
-      });
+
+      if(this.username === this.lecturer){
+        var webrtc = new SimpleWebRTC({
+          localVideoEl: 'localVideo',
+          remoteVideosEl: '',
+          autoRequestMedia: true,
+          nick: this.username,
+          localVideo: {
+            autoplay: true, // automatically play the video stream on the page
+            mirror: true, // flip the local video to mirror mode (for UX)
+            muted: true // mute local video stream to prevent echo
+          },
+          media: {
+            video: true,
+            audio: true
+          },
+          log: true,
+          debug: false
+        });
+      } else {
+        var webrtc = new SimpleWebRTC({
+          localVideoEl: 'localVideo',
+          remoteVideosEl: '',
+          autoRequestMedia: true,
+          nick: this.username,
+          localVideo: {
+            autoplay: true, // automatically play the video stream on the page
+            mirror: true, // flip the local video to mirror mode (for UX)
+            muted: true // mute local video stream to prevent echo
+          },
+          media: {
+            video: false,
+            audio: false
+          },
+          log: true,
+          debug: false
+        });
+      }
+
 
       var rtc = this.rtcService;
 

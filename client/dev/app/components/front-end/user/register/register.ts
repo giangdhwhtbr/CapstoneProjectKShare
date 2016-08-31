@@ -41,6 +41,7 @@ export class RegisterComponent {
         });
     }
     register(user:any):void {
+        this.errorMessage = '';
         var validateUsername = function(username) {
             var pattern = new RegExp('^[a-zA-Z0-9_.-]{8,30}$');
             return pattern.test(username);

@@ -13,7 +13,6 @@ var ChalkBoardComponent = (function () {
         this.initToken = true;
         this.username = localStorage.getItem('username');
         this.guest = localStorage.getItem('guest');
-        this.boards = [];
         this.colors = [
             { label: 'đen', value: '#000000' },
             { label: 'đỏ', value: '#DE3535' },
@@ -279,13 +278,13 @@ var ChalkBoardComponent = (function () {
             socket.emit('newBoard', data);
         }
     };
-    ChalkBoardComponent.prototype.changeBoard = function (json, num) {
+    ChalkBoardComponent.prototype.changeBoard = function (json, name) {
         var socket = this.socket;
         if (this.isLect) {
             if (this.initToken == true) {
                 this.currentPage = paper.exportJSON(paper.project.activeLayer);
             }
-            if (num) {
+            if (name) {
                 paper.project.clear();
                 paper.importJSON(json);
                 this.initToken = false;

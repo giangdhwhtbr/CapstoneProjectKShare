@@ -10,7 +10,6 @@ declare var io:any;
 export class ChalkBoardComponent {
   colors:any[];
   brushSizes:any[];
-  boards:Array<any>;
   currentPage:any;
   initToken:boolean = true;
   socket:any;
@@ -27,7 +26,6 @@ export class ChalkBoardComponent {
   constructor() {
     this.username = localStorage.getItem('username');
     this.guest = localStorage.getItem('guest');
-    this.boards = [];
     this.colors = [
       {label:'đen', value: '#000000'},
       {label:'đỏ', value: '#DE3535'},
@@ -308,13 +306,13 @@ export class ChalkBoardComponent {
     }
   }
 
-  changeBoard(json:any, num:number) {
+  changeBoard(json:any, name:string) {
     var socket = this.socket;
     if (this.isLect) {
       if (this.initToken == true) {
         this.currentPage = paper.exportJSON(paper.project.activeLayer);
       }
-      if (num) {
+      if (name) {
         paper.project.clear();
         paper.importJSON(json);
         this.initToken = false;
@@ -327,7 +325,7 @@ export class ChalkBoardComponent {
         room: this.id,
         json: json,
         lecturer: this.lecturer
-      }
+      };
       socket.emit('changeBoard', data);
     }
   }
