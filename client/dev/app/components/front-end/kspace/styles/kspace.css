@@ -8,7 +8,7 @@
 #chat-box-output {
     margin-top: 70px;
     overflow: scroll;
-    max-height: 47rem;
+    max-height: 42rem;
 }
 
 @media all and (max-width: 1200px) {
@@ -97,6 +97,7 @@ img.responsive-img {
     max-width: 181px;
 }
 #chat-form {
+    background-color: white;
     position: fixed;
     border-radius: 10px;
     bottom: 0px;
