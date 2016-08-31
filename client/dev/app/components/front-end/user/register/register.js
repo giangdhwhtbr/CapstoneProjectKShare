@@ -33,6 +33,7 @@ var RegisterComponent = (function () {
     };
     RegisterComponent.prototype.register = function (user) {
         var _this = this;
+        this.errorMessage = '';
         var validateUsername = function (username) {
             var pattern = new RegExp('^[a-zA-Z0-9_.-]{8,30}$');
             return pattern.test(username);
