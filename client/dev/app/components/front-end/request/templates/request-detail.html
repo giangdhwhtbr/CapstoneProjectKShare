@@ -50,8 +50,8 @@
                     <div [hidden]="checkDeactive" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
                         <button *ngIf="userToken !== null && userToken != request.user" class="btn modal-trigger btn-large waves-effect waves-light blue"
                                 data-target="myModal" (click)="openReport()">Báo cáo</button>
-                        <a href="{{updateLink}}" class="btn-large waves-effect waves-light blue" *ngIf="checkCreatedUser || roleToken==='admin'">Sửa</a>
-                        <a *ngIf="checkCreatedUser || roleToken==='admin'">
+                        <a href="{{updateLink}}" class="btn-large waves-effect waves-light blue" *ngIf="checkCreatedUser || roleToken==='admin' || roleToken==='mod'">Sửa</a>
+                        <a *ngIf="checkCreatedUser || roleToken==='admin' || roleToken==='mod'">
                             <button class=" btn-large waves-effect waves-light blue" (click)="deactivateRequest(_id)">Đóng</button>
                         </a>
                         <a *ngIf="!checkCreatedUser">

@@ -21,6 +21,9 @@
                             <span *ngIf="article.status=='pending'"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Chờ</span>
                         </div>
                     </div>
+                    <div *ngIf="article.tags.length!=0" class="row">
+                        <tags [listTagId]="article.tags"></tags>
+                    </div>
                     <div class="row">
                         <div class="right">
                             <a *ngIf="!liked && userToken" (click)="likeArt()" class="waves-effect waves-light btn-flat" >
@@ -47,9 +50,6 @@
                         <div id="bdArticle" class="container">
 
                         </div>
-                    </div>
-                    <div *ngIf="article.tags.length!=0" class="tags">
-                        <tags [listTagId]="article.tags"></tags>
                     </div>
                     <div class="row">
                         <h5 class="valign">Bình luận</h5>

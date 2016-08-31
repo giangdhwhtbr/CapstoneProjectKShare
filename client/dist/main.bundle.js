@@ -615,7 +615,6 @@ webpackJsonp([2],[
 	                email: user.email,
 	                role: user.role,
 	                linkImg: user.linkImg,
-	                ownKnowledgeIds: user.ownKnowledgeIds,
 	                status: user.status,
 	                banStatus: user.banStatus
 	            },
@@ -1937,6 +1936,7 @@ webpackJsonp([2],[
 	    function topArticlesComponent(_articleService, router) {
 	        this._articleService = _articleService;
 	        this.router = router;
+	        this.articles = [];
 	    }
 	    topArticlesComponent.prototype.ngOnInit = function () {
 	        var _this = this;
@@ -3671,6 +3671,7 @@ webpackJsonp([2],[
 	                _this.userProfile = user;
 	                _this.userProfile.createdAt = localeDate.toLocaleDateString();
 	                _this.linkImg = user.linkImg;
+	                console.log(_this.userProfile);
 	                $('#loading').hide();
 	            }, function (error) {
 	                console.log(error);
@@ -5055,7 +5056,7 @@ webpackJsonp([2],[
 	        this._knowledgeService
 	            .addKnowledge(knowledge)
 	            .subscribe(function (m) {
-	            //this.getAllKnowledgesForAdmin();
+	            _this.getAllKnowledgesForAdmin();
 	            _this.knowledgeForm.controls["name"].updateValue("");
 	            _this.knowledgeForm.controls["description"].updateValue("");
 	        });
@@ -11864,49 +11865,6 @@ webpackJsonp([2],[
 	            max: new Date(2010, 12, 31),
 	            selectYears: 60
 	        });
-	        this.loadAllTags();
-	    };
-	    //tags control
-	    RegisterInfoComponent.prototype.filterONTag = function () {
-	        var oldTag = [];
-	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
-	            var e = _a[_i];
-	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
-	                var e1 = _c[_b];
-	                //catch old tags
-	                if (e.name == e1) {
-	                    oldTag.push(e._id);
-	                    //find out old tags in data tags user
-	                    var index = this.tags.indexOf(e1);
-	                    if (index > -1) {
-	                        //remove old tags to catch new tags
-	                        this.tags.splice(index, 1);
-	                    }
-	                }
-	            }
-	        }
-	        return [oldTag, this.tags];
-	    };
-	    RegisterInfoComponent.prototype.filterKnw = function (event) {
-	        var query = event.query;
-	        this.filteredKnw = [];
-	        for (var i = 0; i < this.tagsEx.length; i++) {
-	            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
-	                this.filteredKnw.push(this.tagsEx[i].name);
-	            }
-	            if (i == this.tagsEx.length - 1) {
-	                this.filteredKnw.unshift(query.trim());
-	            }
-	        }
-	        if (this.filteredKnw.length == 0) {
-	            this.filteredKnw.push(query.trim());
-	        }
-	    };
-	    RegisterInfoComponent.prototype.loadAllTags = function () {
-	        var _this = this;
-	        this._tagService.getAllTag().subscribe(function (tags) {
-	            _this.tagsEx = tags;
-	        });
 	    };
 	    //end control tags
 	    RegisterInfoComponent.prototype.update = function (user) {
@@ -11917,18 +11875,13 @@ webpackJsonp([2],[
 	            this.errorMessage = "Số điện thoại chỉ bao gồm số và không nhiều hơn 13 kí tự";
 	        }
 	        else {
-	            var tags = void 0;
-	            tags = this.filterONTag(); //0 -> oldTags , 1 -> newTags
 	            user = {
 	                _id: this.userId,
 	                fullName: user.fullName,
 	                phone: user.phone,
-	                birthday: birthday,
-	                ownKnowledgeIds: tags[0]
+	                birthday: birthday
 	            };
-	            console.log(user);
-	            console.log(tags[1]);
-	            this._userService.updateUser(user, tags[1]).subscribe(function (res) {
+	            this._userService.updateUser(user, []).subscribe(function (res) {
 	                _this.router.navigateByUrl('/');
 	            }, function (err) {
 	                console.log(err);
@@ -11993,6 +11946,7 @@ webpackJsonp([2],[
 	    };
 	    RegisterComponent.prototype.register = function (user) {
 	        var _this = this;
+	        this.errorMessage = '';
 	        var validateUsername = function (username) {
 	            var pattern = new RegExp('^[a-zA-Z0-9_.-]{8,30}$');
 	            return pattern.test(username);
