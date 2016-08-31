@@ -19,6 +19,7 @@ var auth_1 = require('../../../services/auth');
 var router_2 = require("@angular/router");
 var tag_2 = require('../tag/tag');
 var info_hover_1 = require('../user/user-profile/info-hover');
+var topArticle_1 = require('../newsfeed/topArticle');
 var RequestListClientComponent = (function () {
     function RequestListClientComponent(_requestService, _tagService, _auth, router, route) {
         this._requestService = _requestService;
@@ -88,6 +89,7 @@ var RequestListClientComponent = (function () {
     };
     RequestListClientComponent.prototype.search = function () {
         var _this = this;
+        this._data = [];
         this.num = 5;
         if (this.text === '') {
             this.isExistRecord = false;
@@ -95,7 +97,6 @@ var RequestListClientComponent = (function () {
         }
         else {
             this._requestService.searchRequest(this.text).subscribe(function (requests) {
-                _this._data = [];
                 for (var i = 0; i < requests.length; i++) {
                     _this._data.push({
                         req: requests[i],
@@ -143,7 +144,8 @@ var RequestListClientComponent = (function () {
                 request_category_1.RequestCategoryComponent,
                 tag_2.listTagComponent,
                 private_chat_1.PrivateChatComponent,
-                info_hover_1.infoHover
+                info_hover_1.infoHover,
+                topArticle_1.topArticlesComponent
             ],
             providers: [tag_1.TagService]
         }), 

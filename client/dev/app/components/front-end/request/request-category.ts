@@ -16,14 +16,14 @@ import { PaginationControlsCmp, PaginatePipe, PaginationService,IPaginationInsta
 import { Subscription } from 'rxjs/Subscription';
 import { PrivateChatComponent } from './../../shared/private-chat';
 import { infoHover } from '../user/user-profile/info-hover';
-
+import { topArticlesComponent } from '../newsfeed/topArticle';
 import {listTagComponent} from '../tag/tag';
 declare var $:any;
 @Component({
     selector: 'request-category-cli',
     templateUrl: 'client/dev/app/components/front-end/request/templates/request-category.html',
     styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
-    directives: [ROUTER_DIRECTIVES,PaginationControlsCmp,listTagComponent,PrivateChatComponent,infoHover],
+    directives: [ROUTER_DIRECTIVES,PaginationControlsCmp,listTagComponent,PrivateChatComponent,infoHover,topArticlesComponent],
     providers:[ArticleService,PaginationService],
     pipes: [PaginatePipe]
 })

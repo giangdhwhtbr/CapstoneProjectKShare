@@ -10,7 +10,7 @@
                 <span class="black-text content-cmt">{{comment.content}}</span>
             </div>
             <div [hidden]="!isEditing" *ngIf="userToken">
-                <div class="col s4 m4 l4">
+                <div class="col s10 m12 l12">
                     <div class="input-field col s12">
                         <i class="material-icons prefix">mode_edit</i>
                         <textarea [(ngModel)]="textEdit" value="{{comment.content}}" class="materialize-textarea"></textarea>
@@ -22,8 +22,8 @@
     </div>
 
     <div class="card-action right-align">
-        <i *ngIf="comment.user==userToken || roleToken == 'admin' || author==userToken " class="material-icons btn-ctrl-cmt" (click)="deleteCmt()">delete_sweep</i>
-        <i *ngIf="comment.user==userToken || roleToken == 'admin' || author==userToken " class="material-icons btn-ctrl-cmt" (click)="openEditCmt()">border_color</i>
+        <i *ngIf="comment.user==userToken || roleToken === 'mod'|| roleToken === 'admin' ||  author == userToken " class="material-icons btn-ctrl-cmt" (click)="deleteCmt()">delete_sweep</i>
+        <i *ngIf="comment.user==userToken " class="material-icons btn-ctrl-cmt" (click)="openEditCmt()">border_color</i>
         <a *ngIf="!liked && userToken" (click)="likeCmt()" class="waves-effect waves-light btn" >
             <i class="material-icons left">favorite_border</i>{{comment.like}}
         </a>

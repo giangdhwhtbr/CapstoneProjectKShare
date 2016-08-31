@@ -48,8 +48,10 @@ export class LoginComponent {
       .login(user)
       .subscribe(
         res => {
+          console.log(res);
             localStorage.removeItem('guest');
             localStorage.setItem('username', res.username);
+            localStorage.setItem('avarta', res.linkImg);
             if(res.role){
               localStorage.setItem('userrole', res.role);
             }

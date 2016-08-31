@@ -90,7 +90,7 @@ export class KnowledgeListComponent {
         this._knowledgeService
             .addKnowledge(knowledge)
             .subscribe((m) => {
-                this.getAllKnowledgesForAdmin();
+                //this.getAllKnowledgesForAdmin();
                 (<Control>this.knowledgeForm.controls["name"]).updateValue("");
                 (<Control>this.knowledgeForm.controls["description"]).updateValue("");
             });

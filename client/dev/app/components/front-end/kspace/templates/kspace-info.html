@@ -1,5 +1,6 @@
 <div class="container mg-top-50">
     <h3>{{title}}</h3>
+    <h5>Người dạy :<a [routerLink]="['/user',lecturer]">{{lecturer}}</a></h5>
     <br>
     <rating-point *ngIf="rateAve" [rate]="rateAve"></rating-point>
     <p *ngIf="isFinish" class="flow-text">Lớp học đã kết thúc vào ngày {{finishDate | date:"dd/MM/yyyy"}}</p>

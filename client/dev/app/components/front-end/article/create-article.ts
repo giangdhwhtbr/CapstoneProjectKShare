@@ -138,11 +138,11 @@ export class CreateArticleComponent implements OnInit,OnDestroy {
     }
 
     openModalImg() {
-        $("#bdOpenModal").trigger("click");
+        $('#ModalUploadImgCkeditor').openModal();
     }
 
     openModalYoutube() {
-        $("#youtubeOpenModal").trigger("click");
+        $('#ModalYTCkeditor').openModal();
     }
 
     CreateUploadImageCkeditor() {

@@ -29,8 +29,13 @@ var CreateSubCategoryComponent = (function () {
         this._knowledgeService.addKnowledge(knowledge).subscribe(function (knowledge) {
             _this.subCategoryForm.controls["name"].updateValue("");
             _this.subCategoryForm.controls["description"].updateValue("");
+            for (var i = 0; i < _this.knowledges.length; i++) {
+                if (knowledge.parent == _this.knowledges[i].data._id) {
+                    _this.knowledges[i].children.push(knowledge);
+                }
+            }
+            _this.knowledge.emit(knowledge);
         });
-        this.knowledge.emit(knowledge);
     };
     __decorate([
         core_1.Input('kId'), 

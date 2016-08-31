@@ -63,9 +63,6 @@ var FriendRecordComponent = (function () {
                 .subscribe(function () {
             });
             this.sendDataToP.emit("accept");
-            // var data = [this.userToken, this.friendName];
-            // this.socket.emit('chatroom-friend', data);
-            Materialize.toast('Đã huỷ lời mời kết bạn', 4000);
         }
     };
     __decorate([

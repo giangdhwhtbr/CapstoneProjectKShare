@@ -132,7 +132,6 @@ export class UserProfileBarComponent {
       var title = 'Lời mời kết bạn từ ' + this.userToken;
       var link = '/user/' + this.name + '/friends';
 
-      Materialize.toast('đã gửi lời mời kết bạn thành công', 4000);
 
       //call function using socket io to send notification
       this._noti.alertNotification(title, this.name, link);
@@ -143,7 +142,6 @@ export class UserProfileBarComponent {
         });
       this.isFriend = true;
     } else {
-      Materialize.toast('Bạn đã gửi kết bạn rồi!', 4000);
     }
     this.checkSentRequestUser = true;
     this.isFriend = false;
@@ -168,7 +166,6 @@ export class UserProfileBarComponent {
         });
       this.getFriendList();
       this.isFriend = false;
-      Materialize.toast('bạn đã hủy gửi lời  mời kết bạn', 4000);
     }
   }
 

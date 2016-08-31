@@ -15,7 +15,7 @@ import {commentComponent} from './comment';
 
 import {listTagComponent} from '../tag/tag';
 import { infoHover } from '../user/user-profile/info-hover';
-
+import { topArticlesComponent } from '../newsfeed/topArticle';
 declare var $:any;
 declare var io:any;
 declare var Materialize:any;
@@ -25,7 +25,8 @@ declare var Materialize:any;
     templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
     styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
     directives: [
-        ROUTER_DIRECTIVES, ReportComponent, FORM_DIRECTIVES, commentComponent, listTagComponent, PrivateChatComponent,infoHover
+        ROUTER_DIRECTIVES, ReportComponent, FORM_DIRECTIVES,
+        commentComponent, listTagComponent, PrivateChatComponent,infoHover,topArticlesComponent
     ],
     providers: [ArticleService]
 })
@@ -51,6 +52,8 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
 
     liked:boolean;
 
+    isBindData:boolean=false;
+
     constructor(fb:FormBuilder, public router:Router, private route:ActivatedRoute,
                 private _articleService:ArticleService,
                 private _noti:NotificationService) {
@@ -72,8 +75,8 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
         this._articleService.getArtById(this.id).subscribe((art) => {
 
             if ((art.author == this.userToken && art.status == 'private')
-                || (this.roleToken == 'admin')
-                || (this.roleToken != 'admin' && art.status == 'public')) {
+                || (this.roleToken == 'admin'||this.roleToken == 'mod' )
+                || ((this.roleToken != 'admin'||this.roleToken != 'mod') && art.status == 'public')) {
                 //check user liked
                 let i = art.userLiked.indexOf(this.userToken);
                 if (i >= 0) {
@@ -82,7 +85,6 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
                     this.liked=false;
                 }
 
-                console.log(this.liked);
 
                 this.article = art;
 
@@ -143,10 +145,15 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
 
     ngAfterViewChecked() {
         if (this.article != undefined) {
-            $('.bodyArt').html(()=> {
-                return this.article.content;
-            });
-            $('.bodyArt img').css('max-width','900px');
+            if(this.isBindData==false){
+                $('#bdArticle').html(()=> {
+                    this.isBindData=true;
+                    return this.article.content;
+                });
+                $('#bdArticle img').css('max-width','100%');
+                $('#bdArticle iframe').css('max-width','100%');
+            }
+
         }
     }
 
@@ -155,10 +162,12 @@ export class detailArticleComponent implements OnInit, AfterViewChecked {
     }
 
     postCmt() {
-        this._articleService.addComment(this.id, this.userToken, this.textCmt).subscribe((cmts)=> {
-            this.textCmt = "";
-            this.article.comments = cmts;
-        });
+        if(this.textCmt.length!=0){
+            this._articleService.addComment(this.id, this.userToken, this.textCmt).subscribe((cmts)=> {
+                this.textCmt = "";
+                this.article.comments = cmts;
+            });
+        }
     }
 
     actionComment(data:any):void {

@@ -13,13 +13,13 @@
                     <!--<div class="col s4">-->
                         <!---->
                     <!--</div>-->
-                    <a [routerLink]="['/user/'+name+'/friends/']" data-position="left" data-delay="5" data-tooltip="bạn bè" class="waves-effect waves-light btn-floating tooltipped blue">
+                    <a [routerLink]="['/user/'+name+'/friends/']" data-position="top" data-delay="5" data-tooltip="bạn bè" class="waves-effect waves-light btn-floating tooltipped blue">
                         <i class="material-icons">people</i>
                     </a>
                     <a *ngIf="userToken===name" (click)="openChooseFile()" data-position="top" data-delay="5" data-tooltip="Thay ảnh đại diện" class="waves-effect waves-light btn-floating tooltipped blue">
                         <i class="material-icons">add_a_photo</i>
                     </a>
-                    <a [routerLink]="['/user/'+name]" data-position="right" data-delay="5" data-tooltip="Trang cá nhân" class="waves-effect waves-light btn-floating tooltipped blue">
+                    <a [routerLink]="['/user/'+name]" data-position="top" data-delay="5" data-tooltip="Trang cá nhân" class="waves-effect waves-light btn-floating tooltipped blue">
                         <i class="material-icons">face</i>
                     </a>
                     <div [hidden]="true" class="file-field input-field" *ngIf="  checkUser">

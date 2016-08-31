@@ -70,7 +70,7 @@ var KnowledgeListComponent = (function () {
         this._knowledgeService
             .addKnowledge(knowledge)
             .subscribe(function (m) {
-            _this.getAllKnowledgesForAdmin();
+            //this.getAllKnowledgesForAdmin();
             _this.knowledgeForm.controls["name"].updateValue("");
             _this.knowledgeForm.controls["description"].updateValue("");
         });

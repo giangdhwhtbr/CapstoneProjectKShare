@@ -93,7 +93,7 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
     ngOnInit() {
         this._articleService.getArtById(this.id).subscribe((art)=> {
 
-            if (art.author != this.userToken && this.roleToken != "admin") {
+            if (art.author != this.userToken && (this.roleToken != "admin"||this.roleToken != 'mod')) {
                 this.isEdited = false;
             } else {
                 this.art = art;
@@ -108,6 +108,7 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
                 this.loadAllTags();
 
                 $('#preLoad').hide();
+                $('.collapsible').collapsible({});
             }
 
         }, (error)=> {
@@ -238,11 +239,11 @@ export class EditArticleComponent implements OnInit,AfterViewChecked {
     }
 
     openModalImg() {
-        $("#bdOpenModal").trigger("click");
+        $('#ModalUploadImgCkeditor').openModal();
     }
 
     openModalYoutube() {
-        $("#youtubeOpenModal").trigger("click");
+        $('#ModalYTCkeditor').openModal();
     }
 
     editArticle() {

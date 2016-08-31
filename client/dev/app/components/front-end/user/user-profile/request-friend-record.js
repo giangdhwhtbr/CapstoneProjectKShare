@@ -37,7 +37,6 @@ var RequestFriendRecordComponent = (function () {
         var _this = this;
         this._userService.acceptFriendRequest(this.requestUser, this.name).subscribe(function () {
             console.log("accepted successful");
-            Materialize.toast("Bạn đã là bạn bè với " + _this.requestUser, 4000);
             _this.isAdded = true;
             var title = _this.name + ' chấp nhận kết bạn';
             var link = '/user/' + _this.name;
@@ -48,7 +47,6 @@ var RequestFriendRecordComponent = (function () {
                 _this.sendDataToP.emit("accept");
                 // var data = [this.requestUser, this.name];
                 // this.socket.emit('chatroom-friend', data);
-                Materialize.toast('Đã là bạn bè', 4000);
                 _this.router.navigateByUrl('/user/' + _this.requestUser);
             });
         });
@@ -74,7 +72,6 @@ var RequestFriendRecordComponent = (function () {
                 console.log('delete successfull');
                 _this.sendDataToP.emit("accept");
                 _this.isFriend = false;
-                Materialize.toast("bạn đã hủy gửi lời  mời kết bạn", 4000);
             });
         }
     };

@@ -26,6 +26,7 @@ import { ReportComponent } from '../report/report';
 import { listTagComponent } from '../tag/tag';
 import { PrivateChatComponent } from './../../shared/private-chat';
 import { infoHover } from '../user/user-profile/info-hover';
+import { topArticlesComponent } from '../newsfeed/topArticle';
 
 import { Subscription } from 'rxjs/Subscription';
 declare var $:any;
@@ -41,7 +42,8 @@ declare var Materialize:any;
         ReportComponent,
         PrivateChatComponent,
         listTagComponent,
-        infoHover
+        infoHover,
+        topArticlesComponent
     ]
 })
 
@@ -75,6 +77,8 @@ export class RequestDetailClientComponent implements AfterViewChecked {
     kspace:KSpace = {};
     isSubscriberd: boolean = false;
     ks: any;
+
+    isBindData:boolean=false;
 
     constructor(private _requestService:RequestService, 
                 private _offerService:OfferService, 
@@ -168,8 +172,15 @@ export class RequestDetailClientComponent implements AfterViewChecked {
     }
 
     ngAfterViewChecked() {
-        if (this.request != undefined) {
-            $('#bodyReq').html(this.request.description);
+        if (this.request != undefined){
+            if(this.isBindData==false){
+                $('#bodyReq').html(()=> {
+                    this.isBindData=true;
+                    return this.request.description;
+                });
+                $('#bodyReq img').css('max-width','100%');
+                $('#bodyReq iframe').css('max-width','100%');
+            }
         }
     }
 
@@ -257,7 +268,7 @@ export class RequestDetailClientComponent implements AfterViewChecked {
                 this._noti.createNotification(title, user, link).subscribe((noti) => {
                     
                 });
-
+                this._noti.alertNotification(title, user, link);
                 this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
             });
     }

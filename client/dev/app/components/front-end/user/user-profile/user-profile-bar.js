@@ -87,7 +87,6 @@ var UserProfileBarComponent = (function () {
             //create a notification to user who get accepted a friend request
             var title = 'Lời mời kết bạn từ ' + this.userToken;
             var link = '/user/' + this.name + '/friends';
-            Materialize.toast('đã gửi lời mời kết bạn thành công', 4000);
             //call function using socket io to send notification
             this._noti.alertNotification(title, this.name, link);
             //save notification to database
@@ -96,7 +95,6 @@ var UserProfileBarComponent = (function () {
             this.isFriend = true;
         }
         else {
-            Materialize.toast('Bạn đã gửi kết bạn rồi!', 4000);
         }
         this.checkSentRequestUser = true;
         this.isFriend = false;
@@ -119,7 +117,6 @@ var UserProfileBarComponent = (function () {
             });
             this.getFriendList();
             this.isFriend = false;
-            Materialize.toast('bạn đã hủy gửi lời  mời kết bạn', 4000);
         }
     };
     //get friend list: pending and accepted

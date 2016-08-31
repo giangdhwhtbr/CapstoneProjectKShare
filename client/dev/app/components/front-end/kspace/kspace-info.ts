@@ -9,13 +9,15 @@ import { NgForm }    from '@angular/forms';
 import { PrivateChatComponent } from './../../shared/private-chat';
 import { RatingPoint } from '../../shared/ratingPoint';
 import { SEMANTIC_COMPONENTS, SEMANTIC_DIRECTIVES } from "ng-semantic";
+import { infoHover } from '../user/user-profile/info-hover';
 
 declare var $:any;
 declare var Materialize:any;
 @Component ({
     templateUrl:'client/dev/app/components/front-end/kspace/templates/kspace-info.html',
     directives: [
-        ROUTER_DIRECTIVES,PrivateChatComponent,SEMANTIC_COMPONENTS,SEMANTIC_DIRECTIVES, RatingPoint
+        ROUTER_DIRECTIVES,PrivateChatComponent,SEMANTIC_COMPONENTS,
+        SEMANTIC_DIRECTIVES, RatingPoint,infoHover
     ],
     providers:[ArticleService],
     styles:[`

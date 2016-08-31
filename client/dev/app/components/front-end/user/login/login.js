@@ -36,8 +36,10 @@ var LoginComponent = (function () {
         this._authService
             .login(user)
             .subscribe(function (res) {
+            console.log(res);
             localStorage.removeItem('guest');
             localStorage.setItem('username', res.username);
+            localStorage.setItem('avarta', res.linkImg);
             if (res.role) {
                 localStorage.setItem('userrole', res.role);
             }

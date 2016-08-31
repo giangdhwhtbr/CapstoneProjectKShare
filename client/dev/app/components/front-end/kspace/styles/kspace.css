@@ -5,15 +5,17 @@
   }
 }
 
+#chat-box-output {
+    margin-top: 70px;
+    overflow: scroll;
+    max-height: 47rem;
+}
+
 @media all and (max-width: 1200px) {
   #chat-box-output{
     overflow: scroll;
     max-height: 46rem;
   }
-}
-
-#chat-box-output{
-  margin-top: 70px;
 }
 .row {
     padding: 0!important;

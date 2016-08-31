@@ -20,6 +20,7 @@ var report_1 = require('../report/report');
 var comment_1 = require('./comment');
 var tag_1 = require('../tag/tag');
 var info_hover_1 = require('../user/user-profile/info-hover');
+var topArticle_1 = require('../newsfeed/topArticle');
 var detailArticleComponent = (function () {
     function detailArticleComponent(fb, router, route, _articleService, _noti) {
         var _this = this;
@@ -31,6 +32,7 @@ var detailArticleComponent = (function () {
         this.isDeAc = false;
         this.textCmt = "";
         this.cmts = [];
+        this.isBindData = false;
         this.route
             .params
             .subscribe(function (params) {
@@ -47,8 +49,8 @@ var detailArticleComponent = (function () {
         var _this = this;
         this._articleService.getArtById(this.id).subscribe(function (art) {
             if ((art.author == _this.userToken && art.status == 'private')
-                || (_this.roleToken == 'admin')
-                || (_this.roleToken != 'admin' && art.status == 'public')) {
+                || (_this.roleToken == 'admin' || _this.roleToken == 'mod')
+                || ((_this.roleToken != 'admin' || _this.roleToken != 'mod') && art.status == 'public')) {
                 //check user liked
                 var i = art.userLiked.indexOf(_this.userToken);
                 if (i >= 0) {
@@ -57,7 +59,6 @@ var detailArticleComponent = (function () {
                 else {
                     _this.liked = false;
                 }
-                console.log(_this.liked);
                 _this.article = art;
                 _this.tags = art.tagsFD;
                 _this.article.createdAt = new Date(_this.article.createdAt);
@@ -109,10 +110,14 @@ var detailArticleComponent = (function () {
     detailArticleComponent.prototype.ngAfterViewChecked = function () {
         var _this = this;
         if (this.article != undefined) {
-            $('.bodyArt').html(function () {
-                return _this.article.content;
-            });
-            $('.bodyArt img').css('max-width', '900px');
+            if (this.isBindData == false) {
+                $('#bdArticle').html(function () {
+                    _this.isBindData = true;
+                    return _this.article.content;
+                });
+                $('#bdArticle img').css('max-width', '100%');
+                $('#bdArticle iframe').css('max-width', '100%');
+            }
         }
     };
     detailArticleComponent.prototype.editArt = function (id) {
@@ -120,10 +125,12 @@ var detailArticleComponent = (function () {
     };
     detailArticleComponent.prototype.postCmt = function () {
         var _this = this;
-        this._articleService.addComment(this.id, this.userToken, this.textCmt).subscribe(function (cmts) {
-            _this.textCmt = "";
-            _this.article.comments = cmts;
-        });
+        if (this.textCmt.length != 0) {
+            this._articleService.addComment(this.id, this.userToken, this.textCmt).subscribe(function (cmts) {
+                _this.textCmt = "";
+                _this.article.comments = cmts;
+            });
+        }
     };
     detailArticleComponent.prototype.actionComment = function (data) {
         var _this = this;
@@ -173,7 +180,8 @@ var detailArticleComponent = (function () {
             templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
             styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
             directives: [
-                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES, comment_1.commentComponent, tag_1.listTagComponent, private_chat_1.PrivateChatComponent, info_hover_1.infoHover
+                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES,
+                comment_1.commentComponent, tag_1.listTagComponent, private_chat_1.PrivateChatComponent, info_hover_1.infoHover, topArticle_1.topArticlesComponent
             ],
             providers: [article_1.ArticleService]
         }), 

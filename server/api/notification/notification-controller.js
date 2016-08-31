@@ -41,7 +41,7 @@ module.exports = class NotificationController {
   static createNotificationAdmin(req, res) {
     UserDAO.getAll().then(user => {
       for (var i = 0; i < user.length; i++) {
-        if (user[i].role === 'admin') {
+        if (user[i].role === 'admin' || user[i].role === 'mod') {
           let _notification = req.body;
           _notification.user = user[i].username;
           NotificationDAO

@@ -90,8 +90,8 @@ small, .small {
 
 .chat-message {
     overflow-y: scroll;
-    min-height: 30rem !important;
-    max-height: 30rem;
+    min-height: 22rem !important;
+    max-height: 22rem !important;
     padding: 0px 20px 0px;
 
 }

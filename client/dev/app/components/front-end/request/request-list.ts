@@ -20,6 +20,7 @@ import { Router } from "@angular/router";
 import { Subscription } from 'rxjs/Subscription';
 import {listTagComponent} from '../tag/tag';
 import { infoHover } from '../user/user-profile/info-hover';
+import { topArticlesComponent } from '../newsfeed/topArticle';
 
 declare var $: any;
 
@@ -34,7 +35,8 @@ declare var $: any;
         RequestCategoryComponent,
         listTagComponent,
         PrivateChatComponent,
-        infoHover
+        infoHover,
+        topArticlesComponent
     ],
     providers: [TagService]
 })
@@ -119,14 +121,13 @@ export class RequestListClientComponent implements AfterViewChecked {
     }
 
     search() {
+        this._data = [];
         this.num = 5;
         if (this.text === '') {
             this.isExistRecord = false;
             this.getAllRequests();
         } else {
             this._requestService.searchRequest(this.text).subscribe((requests) => {
-
-                this._data = [];
                 for (var i = 0; i < requests.length; i++) {
                     this._data.push({
                         req: requests[i],

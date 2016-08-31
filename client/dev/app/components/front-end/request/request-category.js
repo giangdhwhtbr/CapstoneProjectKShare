@@ -14,6 +14,7 @@ var article_1 = require('../../../services/article');
 var ng2_pagination_1 = require('ng2-pagination');
 var private_chat_1 = require('./../../shared/private-chat');
 var info_hover_1 = require('../user/user-profile/info-hover');
+var topArticle_1 = require('../newsfeed/topArticle');
 var tag_1 = require('../tag/tag');
 var RequestCategoryComponent = (function () {
     function RequestCategoryComponent(_requestService, _articleService, router, route) {
@@ -116,7 +117,7 @@ var RequestCategoryComponent = (function () {
             selector: 'request-category-cli',
             templateUrl: 'client/dev/app/components/front-end/request/templates/request-category.html',
             styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
-            directives: [router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, tag_1.listTagComponent, private_chat_1.PrivateChatComponent, info_hover_1.infoHover],
+            directives: [router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, tag_1.listTagComponent, private_chat_1.PrivateChatComponent, info_hover_1.infoHover, topArticle_1.topArticlesComponent],
             providers: [article_1.ArticleService, ng2_pagination_1.PaginationService],
             pipes: [ng2_pagination_1.PaginatePipe]
         }), 

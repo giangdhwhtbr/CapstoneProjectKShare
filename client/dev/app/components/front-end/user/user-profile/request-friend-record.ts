@@ -55,7 +55,6 @@ export class RequestFriendRecordComponent {
         this._userService.acceptFriendRequest(this.requestUser, this.name).subscribe(
             () => {
                 console.log("accepted successful");
-                Materialize.toast("Bạn đã là bạn bè với " + this.requestUser, 4000);
                 this.isAdded = true;
 
                 var title = this.name + ' chấp nhận kết bạn';
@@ -69,7 +68,6 @@ export class RequestFriendRecordComponent {
                         this.sendDataToP.emit("accept");
                         // var data = [this.requestUser, this.name];
                         // this.socket.emit('chatroom-friend', data);
-                        Materialize.toast('Đã là bạn bè', 4000);
                         this.router.navigateByUrl('/user/' + this.requestUser);
                     });
             }
@@ -100,7 +98,6 @@ export class RequestFriendRecordComponent {
                     console.log('delete successfull');
                     this.sendDataToP.emit("accept");
                     this.isFriend = false;
-                    Materialize.toast("bạn đã hủy gửi lời  mời kết bạn", 4000)
                 });
         }
     }
