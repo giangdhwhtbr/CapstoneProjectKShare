@@ -33,12 +33,6 @@
                     >
                     <label for="phone" class="center-align">Số điện thoại</label>
                 </div>
-                <div class="input-field col s12">
-                    <p>Lĩnh vực am hiểu:</p><br><!--end editor -->
-                    <p-autoComplete [suggestions]="filteredKnw" (completeMethod)="filterKnw($event)" [minLength]="1"
-                                    [multiple]="true" [(ngModel)]="tags">
-                    </p-autoComplete>
-                </div>
                 <div class="row">
                     <div class="input-field col s6">
                         <button type="submit" class="btn waves-effect waves-light col s12">Cập nhật</button>

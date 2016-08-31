@@ -3,7 +3,7 @@
     <li *ngFor="let knowledge of knowledges">
         <div class="collapsible-header">
             <a [routerLink]="['/mix/category/'+ knowledge._id]" routerLinkActive="active">
-                <span>{{knowledge.name}}</span>
+                <span>{{knowledge.name[0].toUpperCase()+knowledge.name.slice(1)}}</span>
                 <span class="right"><i *ngIf="knowledge.subCategory.length > 0" class="material-icons">arrow_drop_down</i></span>
             </a>
         </div>
@@ -11,7 +11,7 @@
             <ul *ngIf="knowledge.subCategory.length > 0">
                 <li *ngFor="let subCate of knowledge.subCategory">
                     <a [routerLink]="['/mix/subcategory/'+ subCate._id]" routerLinkActive="active">
-                        <span>{{subCate.name}}</span>
+                        <span>{{subCate.name[0].toUpperCase()+subCate.name.slice(1)}}</span>
                     </a>
                 </li>
             </ul>

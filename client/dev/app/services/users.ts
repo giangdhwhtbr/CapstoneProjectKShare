@@ -136,7 +136,6 @@ export class UserService {
                 email: user.email,
                 role: user.role,
                 linkImg: user.linkImg,
-                ownKnowledgeIds: user.ownKnowledgeIds,
                 status: user.status,
                 banStatus: user.banStatus
             },

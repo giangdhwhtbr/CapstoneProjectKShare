@@ -615,7 +615,6 @@ webpackJsonp([2],[
 	                email: user.email,
 	                role: user.role,
 	                linkImg: user.linkImg,
-	                ownKnowledgeIds: user.ownKnowledgeIds,
 	                status: user.status,
 	                banStatus: user.banStatus
 	            },
@@ -3645,7 +3644,6 @@ webpackJsonp([2],[
 	//cores
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
-	var tag_1 = __webpack_require__(65);
 	//services
 	var users_1 = __webpack_require__(26);
 	var notification_1 = __webpack_require__(57);
@@ -3798,8 +3796,7 @@ webpackJsonp([2],[
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                report_1.ReportComponent,
-	                ratingPoint_1.RatingPoint,
-	                tag_1.listTagComponent
+	                ratingPoint_1.RatingPoint
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
@@ -11843,49 +11840,6 @@ webpackJsonp([2],[
 	            max: new Date(2010, 12, 31),
 	            selectYears: 60
 	        });
-	        this.loadAllTags();
-	    };
-	    //tags control
-	    RegisterInfoComponent.prototype.filterONTag = function () {
-	        var oldTag = [];
-	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
-	            var e = _a[_i];
-	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
-	                var e1 = _c[_b];
-	                //catch old tags
-	                if (e.name == e1) {
-	                    oldTag.push(e._id);
-	                    //find out old tags in data tags user
-	                    var index = this.tags.indexOf(e1);
-	                    if (index > -1) {
-	                        //remove old tags to catch new tags
-	                        this.tags.splice(index, 1);
-	                    }
-	                }
-	            }
-	        }
-	        return [oldTag, this.tags];
-	    };
-	    RegisterInfoComponent.prototype.filterKnw = function (event) {
-	        var query = event.query;
-	        this.filteredKnw = [];
-	        for (var i = 0; i < this.tagsEx.length; i++) {
-	            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
-	                this.filteredKnw.push(this.tagsEx[i].name);
-	            }
-	            if (i == this.tagsEx.length - 1) {
-	                this.filteredKnw.unshift(query.trim());
-	            }
-	        }
-	        if (this.filteredKnw.length == 0) {
-	            this.filteredKnw.push(query.trim());
-	        }
-	    };
-	    RegisterInfoComponent.prototype.loadAllTags = function () {
-	        var _this = this;
-	        this._tagService.getAllTag().subscribe(function (tags) {
-	            _this.tagsEx = tags;
-	        });
 	    };
 	    //end control tags
 	    RegisterInfoComponent.prototype.update = function (user) {
@@ -11896,18 +11850,13 @@ webpackJsonp([2],[
 	            this.errorMessage = "Số điện thoại chỉ bao gồm số và không nhiều hơn 13 kí tự";
 	        }
 	        else {
-	            var tags = void 0;
-	            tags = this.filterONTag(); //0 -> oldTags , 1 -> newTags
 	            user = {
 	                _id: this.userId,
 	                fullName: user.fullName,
 	                phone: user.phone,
-	                birthday: birthday,
-	                ownKnowledgeIds: tags[0]
+	                birthday: birthday
 	            };
-	            console.log(user);
-	            console.log(tags[1]);
-	            this._userService.updateUser(user, tags[1]).subscribe(function (res) {
+	            this._userService.updateUser(user, []).subscribe(function (res) {
 	                _this.router.navigateByUrl('/');
 	            }, function (err) {
 	                console.log(err);

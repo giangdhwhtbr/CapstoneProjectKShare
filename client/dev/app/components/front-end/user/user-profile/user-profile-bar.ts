@@ -9,7 +9,6 @@ import {
   AfterViewChecked
 } from '@angular/core'; import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 import { Subscription }       from 'rxjs/Subscription';
-import {listTagComponent} from '../../tag/tag';
 //services
 import { UserService } from '../../../../services/users';
 import { AuthService } from '../../../../services/auth';
@@ -31,8 +30,7 @@ declare var Materialize: any;
   directives: [
     ROUTER_DIRECTIVES,
     ReportComponent,
-    RatingPoint,
-    listTagComponent
+    RatingPoint
   ]
 })
 

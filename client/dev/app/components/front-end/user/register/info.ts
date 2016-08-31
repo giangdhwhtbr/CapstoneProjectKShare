@@ -27,10 +27,8 @@ export class RegisterInfoComponent implements OnInit{
     userId:string = '';
     updateUserForm:ControlGroup;
     errorMessage: string = '';
-    filteredKnw:string[];
 
-    tags:any[];
-    tagsEx:Array<any>;
+
 
     constructor(private fb:FormBuilder,
                 private router:Router,
@@ -65,50 +63,8 @@ export class RegisterInfoComponent implements OnInit{
         max: new Date(2010,12,31),
         selectYears: 60
       });
-        this.loadAllTags();
     }
 
-    //tags control
-    filterONTag() {
-        let oldTag:any[] = [];
-        for (let e of this.tagsEx) {
-            for (let e1 of this.tags) {
-                //catch old tags
-                if (e.name == e1) {
-                    oldTag.push(e._id);
-                    //find out old tags in data tags user
-                    let index = this.tags.indexOf(e1);
-                    if (index > -1) {
-                        //remove old tags to catch new tags
-                        this.tags.splice(index, 1);
-                    }
-                }
-            }
-        }
-        return [oldTag, this.tags];
-    }
-
-    filterKnw(event) {
-        let query = event.query;
-        this.filteredKnw = [];
-        for (let i = 0; i < this.tagsEx.length; i++) {
-            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
-                this.filteredKnw.push(this.tagsEx[i].name);
-            }
-            if (i == this.tagsEx.length - 1) {
-                this.filteredKnw.unshift(query.trim());
-            }
-        }
-        if (this.filteredKnw.length == 0) {
-            this.filteredKnw.push(query.trim());
-        }
-    }
-
-    loadAllTags() {
-        this._tagService.getAllTag().subscribe((tags) => {
-            this.tagsEx = tags;
-        });
-    }
 
     //end control tags
     update(user:any):void {
@@ -117,18 +73,13 @@ export class RegisterInfoComponent implements OnInit{
       if(!pattern.test(user.phone)){
         this.errorMessage = "Số điện thoại chỉ bao gồm số và không nhiều hơn 13 kí tự";
       } else {
-          let tags:any[];
-          tags = this.filterONTag();//0 -> oldTags , 1 -> newTags
           user = {
             _id: this.userId,
             fullName: user.fullName,
             phone: user.phone,
-            birthday: birthday,
-            ownKnowledgeIds: tags[0]
+            birthday: birthday
           };
-        console.log(user);
-        console.log(tags[1]);
-          this._userService.updateUser(user, tags[1]).subscribe(
+          this._userService.updateUser(user,[]).subscribe(
             res => {
               this.router.navigateByUrl('/');
             },
