@@ -71,6 +71,7 @@ var UserListComponent = (function () {
     };
     UserListComponent.prototype.addUser = function (user) {
         var _this = this;
+        this.errorMessage = '';
         user.role = $('#role').val();
         var validateUsername = function (username) {
             var pattern = new RegExp('^[a-zA-Z0-9_.-]{8,30}$');

@@ -42,10 +42,10 @@ var WebRCTService = (function () {
             var kspace = document.getElementById('kspace');
             var el = document.getElementById(peer ? 'container_' + webrtc.getDomId(peer) : 'localScreenContainer');
             var peerId = webrtc.getDomId(peer);
-            if (peerId.indexOf('video') !== -1) {
+            if ((peerId.indexOf('video') !== -1) && remotes.childNodes.length > 0) {
                 remotes.removeChild(el);
             }
-            else if (peerId.indexOf('screen') !== -1) {
+            else if ((peerId.indexOf('screen') !== -1) && kspace.childNodes.length > 0) {
                 kspace.removeChild(el);
                 $('#kspace-container').show();
             }

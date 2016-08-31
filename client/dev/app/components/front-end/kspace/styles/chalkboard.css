@@ -89,7 +89,7 @@ and (-webkit-min-device-pixel-ratio: 1)  {
     }
     .wrapper-chalkboard {
       width: 68rem;
-      overflow: scroll;
+      overflow: hidden;
       height: 60rem;
     }
 }

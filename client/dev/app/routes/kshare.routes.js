@@ -1,7 +1,6 @@
 //Root Component
 var kshare_component_1 = require('../components/kshare.component');
 //Function Components
-var home_1 = require("../components/front-end/home/home");
 var newsfeed_1 = require("../components/front-end/newsfeed/newsfeed");
 var request_list_1 = require("../components/front-end/request/request-list");
 var request_detail_1 = require("../components/front-end/request/request-detail");
@@ -214,7 +213,7 @@ exports.KShareRoutes = [
             },
             {
                 path: '',
-                component: home_1.HomeComponent
+                component: newsfeed_1.NewsFeedComponent
             }
         ],
     },

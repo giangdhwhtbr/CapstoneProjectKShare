@@ -4,7 +4,7 @@
             <ul class="tabs">
                 <li class="tab col s1"><a class="active" (click)="changeBoard(currentPage)">Bảng chính</a></li>
                 <li class="tab col s1" *ngFor="let board of boards">
-                    <a *ngIf="lecturer && isLect" (click)="changeBoard(board.json, board.name)">
+                    <a *ngIf="lecturer && isLect" (click)="changeBoard(board.json, board.boardJson, board.name)">
                         {{board.name}}
                     </a>
                 </li>
