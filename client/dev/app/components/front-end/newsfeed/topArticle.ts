@@ -15,7 +15,7 @@ import { ArticleService } from '../../../services/article';
 })
 
 export class topArticlesComponent {
-    articles: any;
+    articles: any[]=[];
     constructor(private _articleService:ArticleService,
                 private router:Router) {
        

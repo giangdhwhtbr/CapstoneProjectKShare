@@ -9,6 +9,7 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 //cores
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
+var tag_1 = require('../../tag/tag');
 var report_1 = require('../../report/report');
 var ratingPoint_1 = require('../../../shared/ratingPoint');
 var UserProfileBarComponent = (function () {
@@ -33,6 +34,7 @@ var UserProfileBarComponent = (function () {
                 _this.userProfile = user;
                 _this.userProfile.createdAt = localeDate.toLocaleDateString();
                 _this.linkImg = user.linkImg;
+                console.log(_this.userProfile);
                 $('#loading').hide();
             }, function (error) {
                 console.log(error);
@@ -157,7 +159,8 @@ var UserProfileBarComponent = (function () {
             directives: [
                 router_1.ROUTER_DIRECTIVES,
                 report_1.ReportComponent,
-                ratingPoint_1.RatingPoint
+                ratingPoint_1.RatingPoint,
+                tag_1.listTagComponent
             ]
         })
     ], UserProfileBarComponent);

@@ -9,7 +9,7 @@ import {
   AfterViewChecked
 } from '@angular/core'; import { Router, ROUTER_DIRECTIVES, ActivatedRoute} from'@angular/router';
 import { Subscription }       from 'rxjs/Subscription';
-
+import {listTagComponent} from '../../tag/tag';
 //services
 import { UserService } from '../../../../services/users';
 import { AuthService } from '../../../../services/auth';
@@ -31,7 +31,8 @@ declare var Materialize: any;
   directives: [
     ROUTER_DIRECTIVES,
     ReportComponent,
-    RatingPoint
+    RatingPoint,
+    listTagComponent
   ]
 })
 
@@ -75,6 +76,7 @@ export class UserProfileBarComponent {
             this.userProfile = user;
             this.userProfile.createdAt = localeDate.toLocaleDateString();
             this.linkImg = user.linkImg;
+            console.log(this.userProfile);
             $('#loading').hide();
           }, (error) => {
             console.log(error);

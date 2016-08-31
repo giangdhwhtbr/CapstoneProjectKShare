@@ -1624,6 +1624,60 @@ webpackJsonp([2],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	/**
+	 * Created by Duc Duong on 8/15/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var tag_1 = __webpack_require__(67);
+	var listTagComponent = (function () {
+	    function listTagComponent(router, route, _tagService) {
+	        this.router = router;
+	        this.route = route;
+	        this._tagService = _tagService;
+	    }
+	    listTagComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._tagService.getTagsByIds(this.listTagId).subscribe(function (tags) {
+	            _this.tags = tags;
+	        });
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], listTagComponent.prototype, "listTagId", void 0);
+	    listTagComponent = __decorate([
+	        core_1.Component({
+	            selector: 'tags',
+	            templateUrl: 'client/dev/app/components/front-end/tag/templates/tag.html',
+	            styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ],
+	            providers: [tag_1.TagService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _c) || Object])
+	    ], listTagComponent);
+	    return listTagComponent;
+	    var _a, _b, _c;
+	}());
+	exports.listTagComponent = listTagComponent;
+	
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
 	var core_1 = __webpack_require__(1);
 	var http_1 = __webpack_require__(35);
 	var Observable_1 = __webpack_require__(2);
@@ -1713,7 +1767,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 66 */
+/* 67 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1800,7 +1854,6 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 67 */,
 /* 68 */,
 /* 69 */,
 /* 70 */,
@@ -1808,60 +1861,7 @@ webpackJsonp([2],[
 /* 72 */,
 /* 73 */,
 /* 74 */,
-/* 75 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	/**
-	 * Created by Duc Duong on 8/15/2016.
-	 */
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(4);
-	var tag_1 = __webpack_require__(66);
-	var listTagComponent = (function () {
-	    function listTagComponent(router, route, _tagService) {
-	        this.router = router;
-	        this.route = route;
-	        this._tagService = _tagService;
-	    }
-	    listTagComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this._tagService.getTagsByIds(this.listTagId).subscribe(function (tags) {
-	            _this.tags = tags;
-	        });
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], listTagComponent.prototype, "listTagId", void 0);
-	    listTagComponent = __decorate([
-	        core_1.Component({
-	            selector: 'tags',
-	            templateUrl: 'client/dev/app/components/front-end/tag/templates/tag.html',
-	            styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES
-	            ],
-	            providers: [tag_1.TagService]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _c) || Object])
-	    ], listTagComponent);
-	    return listTagComponent;
-	    var _a, _b, _c;
-	}());
-	exports.listTagComponent = listTagComponent;
-	
-
-/***/ },
+/* 75 */,
 /* 76 */,
 /* 77 */,
 /* 78 */,
@@ -1937,6 +1937,7 @@ webpackJsonp([2],[
 	    function topArticlesComponent(_articleService, router) {
 	        this._articleService = _articleService;
 	        this.router = router;
+	        this.articles = [];
 	    }
 	    topArticlesComponent.prototype.ngOnInit = function () {
 	        var _this = this;
@@ -2264,7 +2265,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var requests_1 = __webpack_require__(58);
 	var knowledge_1 = __webpack_require__(54);
-	var tag_1 = __webpack_require__(66);
+	var tag_1 = __webpack_require__(67);
 	var primeng_1 = __webpack_require__(31);
 	var private_chat_1 = __webpack_require__(11);
 	var router_1 = __webpack_require__(4);
@@ -3117,7 +3118,7 @@ webpackJsonp([2],[
 	var knowledge_1 = __webpack_require__(54);
 	var requests_1 = __webpack_require__(58);
 	var auth_1 = __webpack_require__(45);
-	var tag_1 = __webpack_require__(66);
+	var tag_1 = __webpack_require__(67);
 	var private_chat_1 = __webpack_require__(11);
 	var primeng_1 = __webpack_require__(31);
 	var CKEditor = (function () {
@@ -3371,7 +3372,7 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 8/25/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(65);
+	var kspace_1 = __webpack_require__(66);
 	var router_1 = __webpack_require__(4);
 	var CreatePublicKspace = (function () {
 	    function CreatePublicKspace(_kspaceService, router) {
@@ -3513,7 +3514,7 @@ webpackJsonp([2],[
 	var private_chat_1 = __webpack_require__(11);
 	var info_hover_1 = __webpack_require__(53);
 	var topArticle_1 = __webpack_require__(128);
-	var tag_1 = __webpack_require__(75);
+	var tag_1 = __webpack_require__(65);
 	var RequestCategoryComponent = (function () {
 	    function RequestCategoryComponent(_requestService, _articleService, router, route) {
 	        this._requestService = _requestService;
@@ -3644,6 +3645,7 @@ webpackJsonp([2],[
 	//cores
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
+	var tag_1 = __webpack_require__(65);
 	//services
 	var users_1 = __webpack_require__(26);
 	var notification_1 = __webpack_require__(57);
@@ -3671,6 +3673,7 @@ webpackJsonp([2],[
 	                _this.userProfile = user;
 	                _this.userProfile.createdAt = localeDate.toLocaleDateString();
 	                _this.linkImg = user.linkImg;
+	                console.log(_this.userProfile);
 	                $('#loading').hide();
 	            }, function (error) {
 	                console.log(error);
@@ -3795,7 +3798,8 @@ webpackJsonp([2],[
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                report_1.ReportComponent,
-	                ratingPoint_1.RatingPoint
+	                ratingPoint_1.RatingPoint,
+	                tag_1.listTagComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
@@ -5055,7 +5059,7 @@ webpackJsonp([2],[
 	        this._knowledgeService
 	            .addKnowledge(knowledge)
 	            .subscribe(function (m) {
-	            //this.getAllKnowledgesForAdmin();
+	            _this.getAllKnowledgesForAdmin();
 	            _this.knowledgeForm.controls["name"].updateValue("");
 	            _this.knowledgeForm.controls["description"].updateValue("");
 	        });
@@ -5343,7 +5347,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var common_1 = __webpack_require__(6);
-	var tag_1 = __webpack_require__(66);
+	var tag_1 = __webpack_require__(67);
 	var ng2_pagination_1 = __webpack_require__(133);
 	var pager_1 = __webpack_require__(192);
 	var filter_1 = __webpack_require__(292);
@@ -5597,7 +5601,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var article_1 = __webpack_require__(41);
-	var tag_1 = __webpack_require__(66);
+	var tag_1 = __webpack_require__(67);
 	var primeng_1 = __webpack_require__(31);
 	var private_chat_1 = __webpack_require__(11);
 	var CKEditor = (function () {
@@ -5824,7 +5828,7 @@ webpackJsonp([2],[
 	var notification_1 = __webpack_require__(57);
 	var report_1 = __webpack_require__(294);
 	var comment_1 = __webpack_require__(670);
-	var tag_1 = __webpack_require__(75);
+	var tag_1 = __webpack_require__(65);
 	var info_hover_1 = __webpack_require__(53);
 	var topArticle_1 = __webpack_require__(128);
 	var detailArticleComponent = (function () {
@@ -6020,7 +6024,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var article_1 = __webpack_require__(41);
 	var private_chat_1 = __webpack_require__(11);
-	var tag_1 = __webpack_require__(75);
+	var tag_1 = __webpack_require__(65);
 	var info_hover_1 = __webpack_require__(53);
 	var topArticle_1 = __webpack_require__(128);
 	var listArticleComponent = (function () {
@@ -6512,7 +6516,7 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 8/25/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(65);
+	var kspace_1 = __webpack_require__(66);
 	var router_1 = __webpack_require__(4);
 	var JoinPublicKspace = (function () {
 	    function JoinPublicKspace(_kspaceService, router, _route) {
@@ -6693,7 +6697,7 @@ webpackJsonp([2],[
 	 */
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
-	var kspace_1 = __webpack_require__(65);
+	var kspace_1 = __webpack_require__(66);
 	var article_1 = __webpack_require__(41);
 	var private_chat_1 = __webpack_require__(11);
 	var ratingPoint_1 = __webpack_require__(297);
@@ -6884,7 +6888,7 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 7/9/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(65);
+	var kspace_1 = __webpack_require__(66);
 	var router_1 = __webpack_require__(4);
 	var private_chat_1 = __webpack_require__(11);
 	var KSpaceListComponent = (function () {
@@ -6939,7 +6943,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(65);
+	var kspace_1 = __webpack_require__(66);
 	var router_1 = __webpack_require__(4);
 	var webrtc_component_1 = __webpack_require__(446);
 	var kspace_chat_1 = __webpack_require__(441);
@@ -7026,7 +7030,7 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 8/25/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(65);
+	var kspace_1 = __webpack_require__(66);
 	var router_1 = __webpack_require__(4);
 	var kspace_chat_1 = __webpack_require__(441);
 	var webrtc_component_1 = __webpack_require__(446);
@@ -7214,11 +7218,11 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(58);
 	var request_offer_1 = __webpack_require__(298);
 	var knowledge_1 = __webpack_require__(54);
-	var kspace_1 = __webpack_require__(65);
+	var kspace_1 = __webpack_require__(66);
 	var notification_1 = __webpack_require__(57);
 	var offer_create_1 = __webpack_require__(675);
 	var report_1 = __webpack_require__(294);
-	var tag_1 = __webpack_require__(75);
+	var tag_1 = __webpack_require__(65);
 	var private_chat_1 = __webpack_require__(11);
 	var info_hover_1 = __webpack_require__(53);
 	var topArticle_1 = __webpack_require__(128);
@@ -7497,13 +7501,13 @@ webpackJsonp([2],[
 	var private_chat_1 = __webpack_require__(11);
 	var router_1 = __webpack_require__(4);
 	var requests_1 = __webpack_require__(58);
-	var tag_1 = __webpack_require__(66);
+	var tag_1 = __webpack_require__(67);
 	var friend_list_1 = __webpack_require__(677);
 	var request_create_1 = __webpack_require__(291);
 	var request_category_1 = __webpack_require__(295);
 	var auth_1 = __webpack_require__(45);
 	var router_2 = __webpack_require__(4);
-	var tag_2 = __webpack_require__(75);
+	var tag_2 = __webpack_require__(65);
 	var info_hover_1 = __webpack_require__(53);
 	var topArticle_1 = __webpack_require__(128);
 	var RequestListClientComponent = (function () {
@@ -7662,8 +7666,8 @@ webpackJsonp([2],[
 	};
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
-	var tag_1 = __webpack_require__(66);
-	var tag_2 = __webpack_require__(75);
+	var tag_1 = __webpack_require__(67);
+	var tag_2 = __webpack_require__(65);
 	var info_hover_1 = __webpack_require__(53);
 	var ng2_pagination_1 = __webpack_require__(133);
 	var private_chat_1 = __webpack_require__(11);
@@ -7921,7 +7925,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var common_1 = __webpack_require__(6);
 	var users_1 = __webpack_require__(26);
-	var tag_1 = __webpack_require__(66);
+	var tag_1 = __webpack_require__(67);
 	var private_chat_1 = __webpack_require__(11);
 	var primeng_1 = __webpack_require__(31);
 	var UpdateUserComponent = (function () {
@@ -8062,7 +8066,7 @@ webpackJsonp([2],[
 	//services
 	var users_1 = __webpack_require__(26);
 	var knowledge_1 = __webpack_require__(54);
-	var kspace_1 = __webpack_require__(65);
+	var kspace_1 = __webpack_require__(66);
 	var article_1 = __webpack_require__(41);
 	var ng2_pagination_1 = __webpack_require__(133);
 	var UserProfileComponent = (function () {
@@ -10441,7 +10445,7 @@ webpackJsonp([2],[
 	var requests_1 = __webpack_require__(58);
 	var users_1 = __webpack_require__(26);
 	var auth_1 = __webpack_require__(45);
-	var kspace_1 = __webpack_require__(65);
+	var kspace_1 = __webpack_require__(66);
 	var notification_1 = __webpack_require__(57);
 	var report_1 = __webpack_require__(193);
 	var article_1 = __webpack_require__(41);
@@ -10499,7 +10503,7 @@ webpackJsonp([2],[
 	var knowledge_1 = __webpack_require__(54);
 	var requests_1 = __webpack_require__(58);
 	var users_1 = __webpack_require__(26);
-	var kspace_1 = __webpack_require__(65);
+	var kspace_1 = __webpack_require__(66);
 	var article_1 = __webpack_require__(41);
 	var DashboardComponent = (function () {
 	    function DashboardComponent(_knowledgeService, _articleService, _requestService, _userService, _kspaceService) {
@@ -10884,7 +10888,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var article_1 = __webpack_require__(41);
-	var tag_1 = __webpack_require__(66);
+	var tag_1 = __webpack_require__(67);
 	var primeng_1 = __webpack_require__(31);
 	var private_chat_1 = __webpack_require__(11);
 	var CKEditor = (function () {
@@ -11269,7 +11273,7 @@ webpackJsonp([2],[
 	var users_1 = __webpack_require__(26);
 	var article_1 = __webpack_require__(41);
 	var private_chat_1 = __webpack_require__(11);
-	var tag_1 = __webpack_require__(75);
+	var tag_1 = __webpack_require__(65);
 	var topArticle_1 = __webpack_require__(128);
 	var info_hover_1 = __webpack_require__(53);
 	var NewsFeedComponent = (function () {
@@ -11798,7 +11802,7 @@ webpackJsonp([2],[
 	var router_1 = __webpack_require__(4);
 	var common_1 = __webpack_require__(6);
 	var users_1 = __webpack_require__(26);
-	var tag_1 = __webpack_require__(66);
+	var tag_1 = __webpack_require__(67);
 	var primeng_1 = __webpack_require__(31);
 	var private_chat_1 = __webpack_require__(11);
 	var RegisterInfoComponent = (function () {
@@ -12223,7 +12227,7 @@ webpackJsonp([2],[
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
 	var article_1 = __webpack_require__(41);
-	var tag_1 = __webpack_require__(75);
+	var tag_1 = __webpack_require__(65);
 	var info_hover_1 = __webpack_require__(53);
 	var ArticleListComponent = (function () {
 	    function ArticleListComponent(router, route) {
@@ -12371,7 +12375,7 @@ webpackJsonp([2],[
 	//cores
 	var core_1 = __webpack_require__(1);
 	var router_1 = __webpack_require__(4);
-	var tag_1 = __webpack_require__(75);
+	var tag_1 = __webpack_require__(65);
 	var info_hover_1 = __webpack_require__(53);
 	var KspaceListComponent = (function () {
 	    function KspaceListComponent(router, route) {
