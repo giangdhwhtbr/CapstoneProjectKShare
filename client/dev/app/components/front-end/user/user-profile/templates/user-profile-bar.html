@@ -40,6 +40,9 @@
                     <p>
                         Tham gia từ: {{userProfile.createdAt}}
                     </p>
+                    <p *ngIf="userProfile.ownKnowledgeIds.length!=0">
+                        <tags [listTagId]="userProfile.ownKnowledgeIds"></tags>
+                    </p>
                 </div>
             </div>
         </div>

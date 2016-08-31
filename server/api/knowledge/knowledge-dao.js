@@ -53,11 +53,16 @@ knowledgeSchema.statics.getKnowledgeByParent = (id) => {
 knowledgeSchema.statics.getKnwByNames = (names) => {
 
     return new Promise((resolve, reject) => {
+        console.log(names);
         Knowledge.find({
             'name': {$in: names}
         }).exec((err, knws)=> {
-            err ? reject(err)
-                : resolve(knws);
+            if(err){
+                reject(err);
+            }
+            console.log("DAO");
+            console.log(knws);
+            resolve(knws);
         });
 
     });
@@ -71,6 +76,8 @@ knowledgeSchema.statics.createKnowledge = (knowledge) => {
             return reject(new TypeError('Todo is not a valid object.'));
 
         let _knowledge = new Knowledge(knowledge);
+
+        _knowledge.name=_knowledge.name.toLowerCase();
 
         _knowledge.save((err, saved) => {
             err ? reject(err)

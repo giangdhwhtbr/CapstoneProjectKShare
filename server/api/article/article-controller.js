@@ -191,10 +191,12 @@ module.exports = class ArticleController {
                             names.push(e.name);
                         }
                         // insert knowledge (same name with tags) to article
+                        console.log("name tag :"+names);
                         KnwDAO.getKnwByNames(names).then((knws)=> {
                             knws.map((e, i)=> {
                                 article.knowledge.push(e);
                             });
+                            console.log(knws);
                             //pour full data of tag to article
                             article.tagsFD = ts;
                             userDAO.addTotalArtUser(article.author).then((mess)=>{
