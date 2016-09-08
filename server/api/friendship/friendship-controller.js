@@ -1,6 +1,8 @@
 "use strict";
 
 const FriendShipDAO = require('./friendship-dao');
+const ChatRoomDAO = require('./../chatRoom/chatRoom-dao');
+const userDAO = require('../user/user-dao');
 
 module.exports = class FriendShipController {
   static getAll(req, res) {
@@ -24,15 +26,37 @@ module.exports = class FriendShipController {
       FriendShipDAO.getFriendShipByRUserAndAUser(req.params.user1)
         .then(friendship => {
 
-          for (var i = 0; i < friendship.length; i++) {
-            if (friendship[i].user2 === req.params.user2) {
-              friendship[i].status = 'accepted';
-              FriendShipDAO.updateFriendship(friendship[i])
-                .then(friendship => res.status(200).json(friendship))
-                .catch(error => res.status(400).json(error));
-            }
-          }
-          
+          userDAO.getAvatarByUsername(req.params.user1)
+            .then(user1 => {
+              userDAO.getAvatarByUsername(req.params.user2)
+              .then(user2 => {
+                var chatRoom = {
+                  chatLogs: [],
+                  users: [{
+                    user: req.params.user1,
+                    avatar: user1.linkImg,
+                    newMessages: 0
+                  },
+                    {
+                      user: req.params.user2,
+                      avatar: user2.linkImg,
+                      newMessages: 0
+                    }
+                  ]
+                };
+                //create chat room
+                ChatRoomDAO.createChatRoom(chatRoom);
+                for (var i = 0; i < friendship.length; i++) {
+                  if (friendship[i].user2 === req.params.user2) {
+                    friendship[i].status = 'accepted';
+                    FriendShipDAO.updateFriendship(friendship[i])
+                      .then(friendship => res.status(200).json(friendship))
+                      .catch(error => res.status(400).json(error));
+                  }
+                }
+              });
+            })
+            .catch(error => res.status(400).json(error));
         })
         .catch(error => res.status(400).json(error));
     } else {

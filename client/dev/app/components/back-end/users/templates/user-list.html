@@ -1,76 +1,120 @@
-<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-  <div class="row">
-    <ol class="breadcrumb">
-      <li>
-        <a href="#">
-          <svg class="glyph stroked home">
-            <use xlink:href="#stroked-home"></use>
-          </svg>
-        </a>
-      </li>
-      <li class="active">Users</li>
-    </ol>
-  </div>
-  <!--/.row-->
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Users Management</h1>
-    </div>
-    <hr>
-  </div>
-  <!--/.row-->
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="panel panel-default">
-        <div class="panel-body">
 
-          <div class="row">
-            <div class="col-md-3">
-              <button type="button" class="ui-widget-header ui-helper-clearfix" id="createUser" data-toggle="modal"
-                      data-target="#modalCreateUser">
-                Create User
-              </button>
-              <!-- Modal Create User -->
-              <user-create></user-create>
-            </div>
-            <div class="col-md-9"></div>
-            <div class="col-md-3"></div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <div *ngIf="errorMessage">
-                {{errorMessage}}
-              </div>
-              <p-dataTable [value]="users" resizableColumns="true" [rows]="10" [paginator]="true" [globalFilter]="gb">
-                <header>
-                  <h4 style="color:white; font-weight: 500;">User List</h4>
-                </header>
-                <footer>There are {{numOfUser}} users</footer>
-                <p-column field="name.firstName" header="First Name" [sortable]="true"></p-column>
-                <p-column field="name.lastName" header="Last Name"[sortable]="true"></p-column>
-                <p-column field="displayName" header="Display Name"[sortable]="true"></p-column>
-                <p-column field="birthday" header="Birthday"[sortable]="true">
-                  <template let-col let-user="rowData">
-                      {{user[col.field] | date:"dd/MM/yyyy"}}
-                  </template>
-                </p-column>
-                <p-column field="username" header="Username"[sortable]="true"></p-column>
-                <p-column field="email" header="Email"[sortable]="true"></p-column>
-                <p-column field="role" header="Role"[sortable]="true"></p-column>
-                <p-column field="createdAt" header="Created At"[sortable]="true">
-                  <template let-col let-user="rowData">
-                    {{user[col.field] | date:"dd/MM/yyyy"}}
-                  </template>
-                </p-column>
-              </p-dataTable>
-            </div>
-          </div>
-          <!-- /.row -->
-
-        </div>
-      </div>
+<nav>
+    <div class="nav-wrapper indigo darken-2">
+        <a style="margin-left: 20px;" class="breadcrumb">Quản lý</a>
+        <a class="breadcrumb">Quản lý người dùng</a>
+        <div style="margin-right: 20px;" id="timestamp" class="right"></div>
     </div>
-  </div>
-  <!--/.row-->
+</nav>
+<div [hidden]="createHid" class="row">
+    <div class="col s12">
+        <ul class="collapsible" data-collapsible="accordion">
+            <li>
+                <div class="collapsible-header">Tạo</div>
+                <div class="collapsible-body">
+                    <div class="row">
+                      <div *ngIf="errorMessage" class="card-panel orange darken-1">
+                        <span class="white-text">
+                          <i class="material-icons left">report_problem</i>{{errorMessage}}
+                        </span>
+                      </div>
+                        <form class="col s12" role="form" [ngFormModel]="userForm" (ngSubmit)="addUser(userForm.value)">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <input class="form-control"
+                                               type="text"
+                                               required="required"
+                                               id="username"
+                                               name="username"
+                                               [ngFormControl]="userForm.controls['username']"/>
+                                        <label for="username">Tên người dùng</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <input class="form-control"
+                                               type="password"
+                                               required="required"
+                                               id="password"
+                                               name="password"
+                                               [ngFormControl]="userForm.controls['password']"/>
+                                        <label for="password">Mật khẩu</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <input class="form-control"
+                                               type="email"
+                                               required="required"
+                                               id="email"
+                                               name="email"
+                                               [ngFormControl]="userForm.controls['email']"/>
+                                        <label for="email">Email</label>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="input-field col s6">
+                                        <select name="role"
+                                                id="role"
+                                                required="required"
+                                                class="form-control"
+                                                [ngFormControl]="userForm.controls['role']">
+                                            <option selected>Lựa chọn </option>
+                                            <option value="admin">Admin</option>
+                                            <option value="mod" >Mod</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" class="waves-effect waves-light btn">Hoàn thành</button>
+                                <button type="reset" class="waves-effect waves-light btn">Nhập lại</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </li>
+        </ul>
+    </div>
 </div>
-
+<div class="row">
+    <div class="col s12">
+        <div style="padding: 35px;" align="center" class="card">
+            <div class="row">
+                <div class="left card-title">
+                    <b>Quản lý người dùng</b>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s6">
+                    <input #gb id="filter" type="text" pInputText>
+                    <label for="filter">Tìm kiếm</label>
+                </div>
+            </div>
+            <div class="row">
+                <p-dataTable [value]="users" [rows]="10" [paginator]="true" [globalFilter]="gb" [filter]="true">
+                    <p-column field="username" header="Tên"[sortable]="true" [filter]="true">
+                        <template let-user="rowData">
+                            <a [routerLink]="['/user',user.username]">{{user.username}}</a>
+                        </template>
+                    </p-column>
+                    <p-column field="email" header="Email"[sortable]="true" [filter]="true"></p-column>
+                    <p-column field="role" header="Nhiệm"[sortable]="true" [filter]="true"></p-column>
+                    <p-column field="createdAt" header="Tạo ngày"[sortable]="true" [filter]="true">
+                        <template let-col let-user="rowData">
+                            {{user[col.field] | date:"dd/MM/yyyy"}}
+                        </template>
+                    </p-column>
+                    <p-column styleClass="col-button">
+                        <template let-user="rowData">
+                            <button id="{{user._id}}" *ngIf="!user.banStatus.status" type="button" pButton class="btn-floating waves-effect waves-light blue" (click)="banUser(user)"><i class="material-icons">remove</i></button>
+                            <button *ngIf="user.status==='active'" id="lock{{user._id}}" type="button" pButton class="btn-floating" (click)="deactivateUser(user)"><i class="material-icons">not_interested</i></button>
+                            <button *ngIf="user.status==='deactive' || user.banStatus.status===true" id="open{{user._id}}" type="button" pButton class="btn-floating" (click)="activateUser(user)"><i class="material-icons">lock_open</i></button>
+                        </template>
+                    </p-column>
+                </p-dataTable>
+                <footer>Có {{numOfUser}} người dùng</footer>
+            </div>
+        </div>
+    </div>
+</div>
+<private-chat></private-chat>

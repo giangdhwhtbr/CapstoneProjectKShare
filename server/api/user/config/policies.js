@@ -41,9 +41,8 @@ exports.invokeRolesPolicies = function() {
  * Check If Admin Policy Allows
  */
 exports.isAllowed = function (req, res, next) {
-  if(req.session.user){
-    var role = (req.session.user.role) ? req.session.user.role : ['guest'];
-    if(role){
+  if(req.user){
+    var role = (req.user.role) ? req.user.role : ['guest'];
       acl.areAnyRolesAllowed(role, req.route.path, req.method.toLowerCase(), function (err, isAllowed) {
         if (err) {
           // An authorization error occurred.
@@ -59,7 +58,8 @@ exports.isAllowed = function (req, res, next) {
           }
         }
       });
-    }
+  }else {
+    return res.status(500).send('Unexpected authorization error');
   }
 };
 

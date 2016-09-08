@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -15,41 +14,44 @@ var core_1 = require('@angular/core');
 require('rxjs/Rx'); // Load all features
 var router_1 = require('@angular/router');
 // Layout component
-var nav_bar_1 = require('./back-end/shared/nav-bar');
 var side_bar_1 = require('./back-end/shared/side-bar');
 // Functions
 var knowledge_update_1 = require('./back-end/knowledge/knowledge-update');
 var knowledges_list_1 = require('./back-end/knowledge/knowledges-list');
 var requests_list_1 = require("./back-end/request/requests-list");
 var request_update_1 = require("./back-end/request/request-update");
-var badword_update_1 = require("./back-end/badword/badword-update");
-var badword_1 = require("./back-end/badword/badword");
 var user_list_1 = require("./back-end/users/user-list");
+var reports_list_1 = require("./back-end/report/reports-list");
+var tag_list_control_1 = require("./back-end/tag/tag-list-control");
+var article_list_clt_1 = require("./back-end/article/article-list-clt");
+var private_chat_1 = require("./shared/private-chat");
 var AdminComponent = (function () {
     function AdminComponent() {
     }
     AdminComponent = __decorate([
         core_1.Component({
             selector: 'kshare',
-            template: "\n  <nav-bar></nav-bar>\n  <sidebar></sidebar>\n  <router-outlet></router-outlet>\n  ",
+            template: "\n      <sidebar></sidebar>\n    <main>\n    <router-outlet></router-outlet>\n    </main>\n  <private-chat></private-chat>\n  ",
+            styleUrls: ['client/dev/asserts/css/admin.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES,
-                nav_bar_1.NavbarComponent,
-                side_bar_1.SidebarComponent
+                side_bar_1.SidebarComponent,
+                private_chat_1.PrivateChatComponent
             ],
             precompile: [
                 user_list_1.UserListComponent,
                 requests_list_1.RequestListComponent,
                 knowledges_list_1.KnowledgeListComponent,
-                badword_1.BadwordComponent,
-                badword_update_1.UpdateBadwordComponent,
                 knowledge_update_1.UpdateKnowledgeComponent,
                 request_update_1.UpdateRequestComponent,
+                reports_list_1.ReportListComponent,
+                tag_list_control_1.TagListCtlComponent,
+                article_list_clt_1.ArtListCtlComponent
             ]
         }), 
         __metadata('design:paramtypes', [])
     ], AdminComponent);
     return AdminComponent;
-}());
+})();
 exports.AdminComponent = AdminComponent;
 //# sourceMappingURL=admin.component.js.map

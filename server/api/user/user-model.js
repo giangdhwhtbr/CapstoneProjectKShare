@@ -1,156 +1,169 @@
 "use strict";
 
 const mongoose = require('mongoose');
-var validator = require('validator');
-const crypto  = require('crypto');
+const validator = require('validator');
+const crypto = require('crypto');
 
 
-
-var validateEmail = function(email){
-  return validator.isEmail(email);
-}
+var validateEmail = function (email) {
+    return validator.isEmail(email);
+};
 
 var validateRole = function (role) {
-  if(role == "admin" || role == "manager" || role == "instructor" || role == "normal"){
-    return true;
-  }else {
-    return false;
-  }
-}
+    if (role == "admin" || role == "normal" || role == "mod") {
+        return true;
+    } else {
+        return false;
+    }
+};
 
-var validatePass = function(password){
-  var pattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
-  return pattern.test(password);
-}
+var validateUsername = function (username) {
+    var pattern = new RegExp('^[a-zA-Z0-9_.-]*$');
+    return pattern.test(username);
+};
+
+var validatePass = function (password) {
+    var pattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
+    return pattern.test(password);
+};
 const userSchema = new mongoose.Schema({
-  name : {
-    firstName: {
-      type: String,
-      trim: true,
-      default: ''
+    fullName: {
+        type: String,
+        trim: true,
+        default: ''
     },
-    lastName: {
-      type: String,
-      trim: true,
-      default: ''
+    displayName: {
+        type: String,
+        trim: true,
+        default: ''
+    },
+    phone: {
+        type: String,
+        trim: true,
+        default: ''
+    },
+    birthday: {
+        type: Date,
+        default: Date.now
+    },
+    username: {
+        type: String,
+        trim: true,
+        unique: [true, 'Tên đăng nhập đã tồn tại '],
+        lowercase: true,
+        default: '',
+        required: [true, 'vui lòng điền tên đăng nhập '],
+        validate: [validateUsername, 'Tên đăng nhập chỉ được chứa kí tự alphabet và số ']
+    },
+    password: {
+        type: String,
+        trim: true,
+        default: '',
+        required: [true, 'vui lòng nhập mật khẩu '],
+        validate: [validatePass, 'mât khẩu phải có ít nhất 8 kí tự, bao gồm 1 kí tự viết hoa, 1 kí tự viết thường, 1 kí' +
+        ' tự đặc biệt và 1 số']
+    },
+    email: {
+        type: String,
+        trim: true,
+        unique: [true, 'email đã tồn tại '],
+        lowercase: true,
+        default: '',
+        required: [true, 'vui lòng nhập email '],
+        validate: [validateEmail, "vui lòng nhập đúng email"]
+    },
+    role: {
+        type: String,
+        trim: true,
+        default: '',
+        required: true,
+        validate: [validateRole, "Role không tồn tại"]
+    },
+    ownKnowledgeIds: [
+        {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "Tag",
+            childPath: "users"
+        }
+    ],
+    rates: [{
+      ratePoint: {
+        type: Number
+      },
+      kspaceId: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Kspace"
+      }
+    }],
+    rateAve: {
+        type: Number
+    },
+    banStatus: {
+        time: {
+            type: String
+        },
+        bannedAt: {
+            type: Date
+        },
+        status: {
+            type: Boolean,
+            default: false
+        }
+    },
+    salt: {
+        type: String,
+    },
+    createdAt: {type: Date, default: Date.now},
+    updatedAt: {type: Date},
+    /* For reset password */
+    resetPasswordToken: {
+        type: String
+    },
+    sendTokenDate: {
+        type: Date
+    },
+    linkImg: {
+        type: String,
+        default: 'uploads/images.jpg'
+    },
+    lastAccessedAt: {type: Date},
+    status: {
+        type: String,
+        default: 'active'
+    },
+    totalArt:{
+        type:Number,
+        default:0
     }
-  },
-  displayName: {
-    type: String,
-    trim: true,
-    default: ''
-  },
-  birthday:{
-    type: Date
-  },
-  username: {
-    type: String,
-    trim: true,
-    unique: [true, 'Username already exists'],
-    lowercase: true,
-    default: '',
-    required: [true, 'Please fill in your username']
-  },
-  password: {
-    type: String,
-    trim: true,
-    default: '',
-    required: [true, 'Please fill in your password'],
-    validate: [validatePass, 'password must be at least 8 characters including 1 uppercase letter, 1 special character and alphanumeric characters?']
-  },
-  email: {
-    type: String,
-    trim: true,
-    unique: true,
-    lowercase: true,
-    default: '',
-    required: [true, 'Please fill in your email'],
-    validate: [validateEmail, "Email is not in the right form, let check it again!"]
-  },
-  role: {
-    type: String,
-    trim: true,
-    default: '',
-    required: [true, 'Role can not blank'],
-    validate: [validateRole, "Role is not valid, try again!"]
-  },
-  ownKnowledgeId: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Knowledge'
-    }
-  ],
-  interestedKnowledgeId: [
-    {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'Knowledge'
-    }
-  ],
-  onlineTime: [
-    {
-      type: String
-    }
-  ],
-  level:{
-    type: Number,
-    min: 1,
-    max: 10
-  },
-  rateAve:{
-    type: Number,
-    min: 0,
-    max: 5
-  },
-  status:{
-    type: Boolean
-  },
-  salt: {
-    type: String,
-  },
-  createdAt: {type: Date, default: Date.now},
-  updatedAt: {type: Date},
-  /* For reset password */
-  resetPasswordToken: {
-    type: String
-  },
-  resetPasswordExpires: {
-    type: Date
-  },
-  linkImg:{
-    type:String,
-    default: 'uploads/images.jpg'
-  },
-  lastAccessedAt:{type:Date}
 });
 
 /**
  * Hook a pre save method to hash the password
  */
 userSchema.pre('save', function (next) {
-  if (this.password && this.isModified('password')) {
-    this.salt = crypto.randomBytes(16).toString('base64');
-    this.password = this.hashPassword(this.password);
-  }
-
-  next();
+    if (this.password && this.isModified('password')) {
+        this.salt = crypto.randomBytes(16).toString('base64');
+        this.password = this.hashPassword(this.password);
+    }
+    next();
 });
 
 /**
  * Create instance method for hashing a password
  */
 userSchema.methods.hashPassword = function (password) {
-  if (this.salt && password) {
-    return crypto.pbkdf2Sync(password, new Buffer(this.salt, 'base64'), 10000, 64).toString('base64');
-  } else {
-    return password;
-  }
+    if (this.salt && password) {
+        return crypto.pbkdf2Sync(password, new Buffer(this.salt, 'base64'), 10000, 64).toString('base64');
+    } else {
+        return password;
+    }
 };
 
 /**
  * Create instance method for authenticating user
  */
 userSchema.methods.authenticate = function (password) {
-  return this.password === this.hashPassword(password);
+    return this.password === this.hashPassword(password);
 };
 
 

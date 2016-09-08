@@ -12,7 +12,7 @@ import { ROUTER_DIRECTIVES} from '@angular/router';
 
 import { AdminComponent } from "./components/admin.component";
 import { KshareComponent } from "./components/kshare.component";
-//import { UserComponent } from "./user.component";
+import { HeaderComponent } from "./components/shared/header";
 
 /**
  * services
@@ -24,16 +24,22 @@ import {RequestService} from "./services/requests";
 import {UserService} from "./services/users";
 import {AuthService} from "./services/auth";
 import {KSpaceService} from "./services/kspace";
-import {SocketIOService} from "./services/socket.io.services";
 import {NotificationService} from "./services/notification";
+import {ReportService} from "./services/report";
+import {ArticleService} from "./services/article";
+import {ChatService} from "./services/chat";
 
 @Component({
   selector: 'kshare-app',
-  template:'<router-outlet></router-outlet>',
+  template:`
+  <header></header>
+  <router-outlet></router-outlet>
+  `,
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    HeaderComponent
   ],
-  precompile: [KshareComponent],
+  precompile: [KshareComponent,AdminComponent],
   providers: [
     AuthService,
     UserService,
@@ -42,8 +48,10 @@ import {NotificationService} from "./services/notification";
     OfferService,
     KnowledgeService,
     KSpaceService,
-    SocketIOService,
-    NotificationService
+    NotificationService,
+    ReportService,
+    ArticleService,
+    ChatService
   ]
 })
 export class AppComponent {

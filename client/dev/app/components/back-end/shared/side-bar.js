@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -22,12 +21,12 @@ var SidebarComponent = (function () {
         core_1.Component({
             selector: 'sidebar',
             templateUrl: 'client/dev/app/components/back-end/shared/templates/side-bar.html',
-            styleUrls: ['client/dev/asserts/css/backend-styles.css'],
+            styleUrls: ['client/dev/asserts/css/admin.css'],
             directives: [router_1.ROUTER_DIRECTIVES]
         }), 
         __metadata('design:paramtypes', [])
     ], SidebarComponent);
     return SidebarComponent;
-}());
+})();
 exports.SidebarComponent = SidebarComponent;
 //# sourceMappingURL=side-bar.js.map

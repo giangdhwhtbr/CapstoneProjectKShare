@@ -1,0 +1,98 @@
+<div id="chatBoxK" class="modal">
+    <div class="modal-content cnt-chat">
+        <div class="row">
+            <!--<div class="wrap-box row">-->
+            <div class="col s4 m4 l4 bg-white box-list-fr">
+
+                <!-- =============================================================== -->
+                <!-- member list -->
+                <ul class="friend-list">
+                    <li *ngFor="let room of allChatRooms" class="fr-e displayPointer">
+                        <a *ngIf="currentRoom.id === room._id" class="clearfix active"
+                           (click)="getReceiver(room)">
+                            <img [src]="room.friendAva" alt="" class="circle">
+                            <div class="friend-name">
+                                <strong>{{room.friendName}}</strong>
+                            </div>
+                            <div class="last-message text-muted">{{room.lastMsg}}</div>
+                            <span class="new badge" data-badge-caption="tin nhắn mới" *ngIf="room.newMessages > 0">{{room.newMessages}}</span>
+                            <!--<small class="chat-alert label label-danger">1</small>-->
+                        </a>
+                        <a *ngIf="currentRoom.id !== room._id" class="clearfix"
+                           (click)="getReceiver(room)">
+                          <img [src]="room.friendAva" alt="" class="circle">
+                          <div class="friend-name">
+                            <strong>{{room.friendName}}</strong>
+                          </div>
+                          <div class="last-message text-muted">{{room.lastMsg}}</div>
+                          <span class="new badge" data-badge-caption="tin nhắn mới" *ngIf="room.newMessages > 0">{{room.newMessages}}</span>
+                          <!--<small class="chat-alert label label-danger">1</small>-->
+                        </a>
+                    </li>
+                </ul>
+            </div>
+
+            <!--=========================================================-->
+            <!-- selected chat -->
+            <div id="listMess" class="col s8 m8 l8 bg-white box-text">
+                <!--<div class="col s8 m8 l8">-->
+                <div *ngIf="currentRoom" class="chat-message row" id="cntAllText">
+                    <ul class="chat">
+                        <div *ngFor="let mes of currentRoom.messages">
+                            <li *ngIf="mes.sender!=username" class="left clearfix">
+                                  <span class="chat-img pull-left">
+                                    <img [src]="mes.avatar" alt="User Avatar">
+                                  </span>
+
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+                                        <strong class="primary-font">{{mes.sender}}</strong>
+                                        <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 12 mins ago
+                                        </small>
+                                    </div>
+                                    <p class="text-message">
+                                        {{mes.message}}
+                                    </p>
+                                </div>
+                            </li>
+                            <li *ngIf="mes.sender==username" class="right clearfix">
+                                  <span class="chat-img pull-right" *ngIf="avatar">
+                                    <img [src]="avatar"  alt="User Avatar">
+                                  </span>
+
+                                <div class="chat-body clearfix">
+                                    <div class="header">
+                                        <strong class="primary-font">{{mes.sender}}</strong>
+                                        <small class="pull-right text-muted"><i class="fa fa-clock-o"></i> 13 mins ago
+                                        </small>
+                                    </div>
+                                    <p class="text-message">
+                                        {{mes.message}}
+                                    </p>
+                                </div>
+                            </li>
+                        </div>
+                    </ul>
+                </div>
+                <div class="chat-box bg-white row" *ngIf="allChatRooms.length > 0">
+                    <!--<div class="  row">-->
+                    <div class="input-group">
+                      <form (ngSubmit)="sendMessage()">
+                          <div class="row">
+                              <input id="textboxmess" [(ngModel)]="mess" class="col s10 push-s2"
+                                     placeholder="Type your message here">
+                              <button class="btn-floating btn-large waves-effect waves-light blue col s2 pull-s10"
+                                      type="submit"><i class="small material-icons">send</i></button>
+                          </div>
+                      </form>
+                    </div>
+                    <!-- /input-group -->
+                </div>
+                <div *ngIf="allChatRooms.length <= 0">
+                    Bạn chưa có ai để trò chuyện
+                </div>
+            </div>
+        </div>
+    </div>
+
+</div>

@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -19,13 +18,13 @@ var NavbarComponent = (function () {
     NavbarComponent.prototype.logout = function () {
         this._auth.logout();
         this._auth.logoutClient();
-        this.router.navigateByUrl('/kshare');
+        this.router.navigateByUrl('/');
     };
     NavbarComponent = __decorate([
         core_1.Component({
             selector: 'nav-bar',
             templateUrl: 'client/dev/app/components/back-end/shared/templates/nav-bar.html',
-            styleUrls: ['client/dev/asserts/css/backend-styles.css'],
+            styleUrls: ['client/dev/asserts/css/admin.css'],
             directives: [
                 router_1.ROUTER_DIRECTIVES
             ]
@@ -33,6 +32,6 @@ var NavbarComponent = (function () {
         __metadata('design:paramtypes', [auth_1.AuthService, router_1.Router])
     ], NavbarComponent);
     return NavbarComponent;
-}());
+})();
 exports.NavbarComponent = NavbarComponent;
 //# sourceMappingURL=nav-bar.js.map

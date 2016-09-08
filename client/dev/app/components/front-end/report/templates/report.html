@@ -1,0 +1,58 @@
+<div id="myModal" class="modal modal-fixed-footer">
+    <div class="modal-content">
+        <h4>Báo cáo</h4>
+
+        <form role="form" [ngFormModel]="reportForm" (ngSubmit)="addReport(reportForm.value)">
+            <div class="row">
+                <div class="input-field col s12">
+                    <input class="form-control" type="text" required="required" id="title" name="title"
+                           [ngModel]="title" [ngFormControl]="reportForm.controls['title']"/>
+                    <label for="title">Tiêu đề</label>
+                </div>
+            </div>
+            <div class="row">
+                <div class="input-field col s12">
+                    <textarea class="materialize-textarea" type="text" required="required" id="content" name="content"
+                              [ngModel]="content" [ngFormControl]="reportForm.controls['content']"></textarea>
+                    <label for="content">Nội dung</label>
+                </div>
+            </div>
+            <div class="row" hidden>
+                <div class="col s12 m12">
+                    <label for="user">Người tạo</label>
+                    <input class="form-control" type="text" required="required" id="user" name="user" [ngModel]="user"
+                           [ngFormControl]="reportForm.controls['user']"
+                           disabled/>
+                </div>
+            </div>
+            <div class="row" hidden>
+                <div class="col s12 m12">
+                    <label for="reportedUser">Người vi phạm</label>
+                    <input class="form-control" type="text" required="required" id="reportedUser" name="reportedUser"
+                           [ngModel]="reportedUser" [ngFormControl]="reportForm.controls['reportedUser']"
+                           disabled/>
+                </div>
+            </div>
+            <div class="row" hidden>
+                <div class="col s12 m12">
+                    <input class="form-control" type="text" required="required" id="link" name="link" [ngModel]="link"
+                           [ngFormControl]="reportForm.controls['link']"
+                           disabled/>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col 12">
+                    <div id="mess"></div>
+                    <button type="submit" class="btn-floating btn-large waves-effect waves-light blue"
+                            (click)="close()"><i class="material-icons">done</i></button>
+                    <button type="reset" class="btn-floating btn-large waves-effect waves-light orange"><i
+                            class="material-icons">cached</i></button>
+                </div>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a class=" modal-action modal-close waves-effect waves-green btn-flat">Thoát</a>
+    </div>
+</div>
+<private-chat></private-chat>

@@ -5,6 +5,7 @@ import { Component, OnInit, OnDestroy, Pipe, PipeTransform } from '@angular/core
 import { KSpace } from '../../../interface/kspace';
 import { KSpaceService } from '../../../services/kspace';
 import { Router, ROUTER_DIRECTIVES } from '@angular/router';
+import { PrivateChatComponent } from './../../shared/private-chat';
 
 @Component({
   template: `
@@ -23,7 +24,7 @@ import { Router, ROUTER_DIRECTIVES } from '@angular/router';
           <div *ngIf="kspaces" id="kspace-list-component" class="col-md-12">
             <div class="panel panel-default card-rq" *ngFor="let kspace of kspaces">
               <div class="panel-body">
-                <a [routerLink]="['/kspace/info/',kspace._id]" >
+                <a [routerLink]="[kspace.link]" >
                   <p class="lead">{{kspace.requestTitle}}</p>
                 </a>
                 <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
@@ -41,28 +42,30 @@ import { Router, ROUTER_DIRECTIVES } from '@angular/router';
             </div>
           </div>
     </div><!-- /.container -->
+    <private-chat></private-chat>
     `,
   directives: [
-    ROUTER_DIRECTIVES
+    ROUTER_DIRECTIVES,
+    PrivateChatComponent
   ],
   styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace-list.css']
 })
 
 export class KSpaceListComponent{
   kspaces: KSpace[];
+  string;
   errorMessage: string;
   constructor(
     private _kspaceService: KSpaceService,
     private router: Router
   ){}
   ngOnInit():void {
-    console.log('dmc');
     this._kspaceService
       .getAllKSpace()
       .subscribe((kspaces) => {
-        console.log(kspaces);
           for (var i = 0; i < kspaces.length; i++) {
             kspaces[i].createdAt = new Date(kspaces[i].createdAt);
+            kspaces[i].link ='/kspace/info/'+kspaces[i]._id+'/'+kspaces[i].lecturer;
           }
           this.kspaces = kspaces;
         },

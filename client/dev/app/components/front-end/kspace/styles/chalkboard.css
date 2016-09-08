@@ -1,20 +1,107 @@
 #chalkboard {
     cursor: crosshair;
-    width: 100%;
+    width: 60rem;
     height: 100%;
+    background: white;
+}
+#color-picker {
+  width: 70px;
+}
+.bg-white {
+  background-color: white;
+}
+ /*Dành cho máy tính bảng chiều dọc */
+@media all and (min-width: 600px) {
+
+}
+
+/* Ipad mini landscape */
+@media only screen
+and (min-device-width : 768px)
+and (max-device-width : 1024px)
+and (orientation : landscape)
+and (-webkit-min-device-pixel-ratio: 1)  {
+  .wrapper-chalkboard {
+    width: 39rem;
+    overflow: scroll;
+    height: 42rem;
+  }
+  #chalkboard {
+    cursor: crosshair;
+    width: 68rem;
+    height: 60rem;
+    background: white;
+  }
+}
+
+/*/ Dành cho máy tính bảng chiều ngang && máy chiếu  !**/
+@media all and (min-width: 1024px) {
+    .wrapper-chalkboard {
+      width: 39rem;
+      overflow: scroll;
+      height: 42rem;
+    }
+    #chalkboard {
+      cursor: crosshair;
+      width: 68rem;
+      height: 60rem;
+      background: white;
+    }
+}
+
+/*/ Dành cho màn hình desktop crt !**/
+@media all and (min-width: 1280px) {
+    .wrapper-chalkboard {
+        width: 47rem;
+        overflow: scroll;
+        height: 42rem;
+    }
+    #chalkboard {
+        cursor: crosshair;
+        width: 68rem;
+        height: 60rem;
+        background: white;
+    }
+}
+
+/*/ Dành cho màn hình laptop !**/
+@media all and (min-width: 1366px) {
+    .wrapper-chalkboard {
+        width: 50rem;
+        overflow: scroll;
+        height: 42rem;
+    }
+    #chalkboard {
+        cursor: crosshair;
+        width: 68rem;
+        height: 60rem;
+        background: white;
+    }
+}
+
+/* Màn hình giang đại ca */
+@media screen and (min-width: 1680px) {
+    #chalkboard {
+        cursor: crosshair;
+        width: 68rem;
+        height: 60rem;
+        background: white;
+    }
+    .wrapper-chalkboard {
+      width: 68rem;
+      overflow: hidden;
+      height: 60rem;
+    }
 }
 
 #draw-tools {
     cursor: pointer;
-    position: fixed;
-    top: 4%;
-    bottom: 50%;
-    right: 2.5%;
+    position: absolute;
     border-radius: 2px;
     width: 65px;
     background: white;
+    float: right;
 }
-
 .tool-btn {
     text-indent: 7px;
     background-color: #ffffff;
@@ -25,29 +112,89 @@
     border: solid 1px gray;
     border-radius: 2px;
     font-size: small;
-    -webkit-appearance:none; 
-    -moz-appearance:none; 
-    appearance:none;
+    display: inline-block;
 }
 #eraser{
     padding: 0px 10px;
     margin-left: 10px;
 }
-
-
 hr{
     margin-top: 6px;
     margin-bottom: 1px;
     border: 0;
     border-top: 1px solid #eee;
 }
-
 #draw-option {
-    float: right;
-    position: absolute;
     z-index: 10;
-    margin-left: 97.15%;
     border: none;
-    color: white;
-    background-color: black;
+    color: black;
+    background-color: white;
+}
+.tool-div-kp{
+    background-color: #66BEFF;
+    margin-right: 34rem;
+    border-top-left-radius: 14px;
+    border-top-right-radius: 14px;
+    display: inline-flex;
+}
+.tabs-bd{
+    margin-bottom: 2px;
+}
+.slc-tl{
+    padding-top: 9px;
+}
+
+.dropdown-tl-kp {
+    position: relative;
+    display: inline-block;
+    margin-top: 9px;
+    margin-left: 6px;
+    border: solid 1px gray;
+}
+
+.dropdown-tl-kp .dropdown-menu-tl-kp {
+    position: absolute;
+    top: 100%;
+    display: none;
+    margin: 0;
+
+    /****************
+     ** NEW STYLES **
+     ****************/
+
+    list-style: none; /** Remove list bullets */
+    width: 100%; /** Set the width to 100% of it's parent */
+    padding: 0;
+}
+
+.dropdown-tl-kp:hover .dropdown-menu-tl-kp {
+    display: block;
+}
+
+/** Button Styles **/
+.dropdown-tl-kp span {
+    background: white;
+    color: black;
+    border: none;
+    margin: 0;
+    padding: 0.4em 0.8em;
+    font-size: 1em;
+}
+
+/** List Item Styles **/
+.dropdown-tl-kp a {
+    display: block;
+    padding: 0.2em 0.8em;
+    text-decoration: none;
+    background: #CCCCCC;
+    color: #333333;
+}
+
+/** List Item Hover Styles **/
+.dropdown-tl-kp a:hover {
+    background: #BBBBBB;
+}
+
+.dropdown-tl-kp ul li {
+    cursor: pointer;
 }

@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="row">
+        <h5>Kết quả tìm kiếm</h5>
+        <hr>
+        <div *ngIf="users.length==0">
+            <div class="valign-wrapper">
+                <h5 class="valign">Rất tiếc không tìm thấy dữ liệu phù hợp</h5>
+            </div>
+        </div>
+        <div *ngFor="let u of users" class="col s12 m6 l6 contain-text">
+            <div class="card-panel grey lighten-5 z-depth-1">
+                <div class="row">
+                    <div class="col s4">
+                        <img src="{{u.linkImg}}" alt="" class="responsive-img">
+                    </div>
+                    <div class="col s8">
+                        <div class="row">
+                              <span class="blue-text col s12">
+                                  <a [routerLink]="['/user',u.username]">{{u.username}}</a>
+                              </span>
+                            <span class="black-text col s12">
+                                  {{u.email}}
+                              </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<private-chat></private-chat>

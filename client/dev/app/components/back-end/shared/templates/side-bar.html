@@ -1,40 +1,35 @@
-<div id="sidebar-collapse" class="col-sm-3 col-lg-2 sidebar">
-  <form role="search">
-    <div class="form-group">
-      <input type="text" class="form-control" placeholder="Search">
-    </div>
-  </form>
-  <ul class="nav menu">
+
+<ul id="slide-out" class="side-nav fixed z-depth-2">
+    <li class="center no-padding">
+        <div class="indigo darken-2 white-text" style="height: 64px;">
+            <div class="row">
+                <h3 class="logo">K</h3>
+            </div>
+        </div>
+    </li>
+    <li routerLinkActive="active">
+        <a [routerLink]="['/admin/dashboard']" class="waves-effect">Thống kê</a>
+    </li>
+    <li routerLinkActive="active">
+        <a [routerLink]="['/admin/users']" class="waves-effect">
+            Người dùng </a>
+    </li>
+    <li routerLinkActive="active">
+        <a [routerLink]="['/admin/knowledges']" class="waves-effect"> Tri thức</a>
+    </li>
+    <li routerLinkActive="active">
+        <a [routerLink]="['/admin/requests']" class="waves-effect"> Yêu cầu</a>
+    </li>
+    <li routerLinkActive="active">
+        <a [routerLink]="['/admin/tags']" class="waves-effect"> Quản lý Tag</a>
+    </li>
+    <li routerLinkActive="active">
+        <a [routerLink]="['/admin/articles']" class="waves-effect">Quản lý bài viết</a>
+    </li>
+    <!--<li>
+        <a href="ksspaces.html"><i class="fa fa-fw fa-desktop"></i> Kspace</a>
+    </li>-->
     <li>
-      <a href="index.html">
-        <span class="glyphicon glyphicon-home"></span>
-        Dashboard</a>
+        <a [routerLink]="['/admin/reports']" class="waves-effect"> Báo cáo vi phạm</a>
     </li>
-    <li *ngIf="pageTitle && pageTitle == 'user'" class="active">
-      <a [routerLink]="['/admin/users']">
-        <span class="glyphicon glyphicon-user"></span>
-        Users </a>
-    </li>
-    <li *ngIf="!pageTitle">
-      <a [routerLink]="['/admin/users']">
-        <span class="glyphicon glyphicon-user"></span>
-        Users </a>
-    </li>
-    <li><a [routerLink]="['/admin/knowledges']"><span class="glyphicon glyphicon-book"></span> Knowledge </a></li>
-    <li>
-      <a [routerLink]="['/admin/requests']">
-        <span class="glyphicon glyphicon-flag"></span>
-        Requests </a>
-    </li>
-    <li>
-      <a href="ksspaces.html">
-        <span class="glyphicon glyphicon-transfer"></span>
-        KS Space </a>
-    </li>
-    <li>
-      <a [routerLink]="['/admin/badwords']">
-        <span class="glyphicon glyphicon-remove"></span>
-        Bad words</a>
-    </li>
-  </ul>
-</div>
+</ul>

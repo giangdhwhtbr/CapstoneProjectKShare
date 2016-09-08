@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -11,9 +10,12 @@ var __metadata = (this && this.__metadata) || function (k, v) {
 var core_1 = require('@angular/core');
 var router_1 = require('@angular/router');
 var knowledge_1 = require('../../../services/knowledge');
+var router_2 = require('@angular/router');
 var SideBarComponent = (function () {
-    function SideBarComponent(_knowledgeService) {
+    function SideBarComponent(_knowledgeService, router, route) {
         this._knowledgeService = _knowledgeService;
+        this.router = router;
+        this.route = route;
     }
     SideBarComponent.prototype.ngOnInit = function () {
         var _this = this;
@@ -21,21 +23,31 @@ var SideBarComponent = (function () {
             var parent = [];
             var subCate = [];
             for (var i = 0; i < knowledges.length; i++) {
-                if (!knowledges[i].hasOwnProperty('parent')) {
+                if (!knowledges[i].hasOwnProperty('parent') && knowledges[i].status == true) {
                     parent.push(knowledges[i]);
                 }
             }
             for (var i = 0; i < parent.length; i++) {
                 for (var j = 0; j < knowledges.length; j++) {
-                    if ((knowledges[j].hasOwnProperty('parent')) && (knowledges[j].parent === parent[i]._id)) {
+                    if ((knowledges[j].hasOwnProperty('parent')) && (knowledges[j].parent === parent[i]._id) && (knowledges[j].status == true)) {
                         subCate.push(knowledges[j]);
                     }
                 }
                 parent[i]["subCategory"] = subCate;
                 subCate = [];
             }
+            knowledges = parent;
             _this.knowledges = parent;
         });
+        $('.collapsible').collapsible({
+            accordion: true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
+        });
+    };
+    SideBarComponent.prototype.closeNav = function () {
+        $('.btnOpenNavF').sideNav({ closeOnClick: "true" });
+    };
+    SideBarComponent.prototype.backHome = function () {
+        this.router.navigateByUrl('/');
     };
     SideBarComponent = __decorate([
         core_1.Component({
@@ -44,9 +56,9 @@ var SideBarComponent = (function () {
             styleUrls: ['client/dev/app/components/front-end/shared/styles/side-bar.css'],
             directives: [router_1.ROUTER_DIRECTIVES]
         }), 
-        __metadata('design:paramtypes', [knowledge_1.KnowledgeService])
+        __metadata('design:paramtypes', [knowledge_1.KnowledgeService, router_1.Router, router_2.ActivatedRoute])
     ], SideBarComponent);
     return SideBarComponent;
-}());
+})();
 exports.SideBarComponent = SideBarComponent;
 //# sourceMappingURL=side-bar.js.map

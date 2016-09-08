@@ -21,16 +21,10 @@ module.exports = class OfferController {
 
 //get front.offer by templates Id
   static getOfferByRequestId(req,res) {
-    if(req.params && req.params.id) {
       OfferDAO
-        .getOfferByRequestId(req.params.id)
+        .getOfferByRequestId(req.body.id, req.body.num)
         .then(offers => res.status(200).json(offers))
         .catch(error => res.status(400).json(error));
-    }else{
-      res.status(404).json({
-        "message"    :   "No Offer Id in templates"
-      });
-    }
   }
 
 static updateOffer(req, res){
@@ -38,13 +32,7 @@ static updateOffer(req, res){
       var currentDate = new Date();
         OfferDAO.getOfferById(req.params.id)
           .then(offer => {
-            offer.userId = req.body.userId,
-            offer.requestId = req.body.requestId,
-            offer.numOfLecture = req.body.numOfLecture,
-            offer.price = req.body.price,
-            offer.message = req.body.message,
-            offer.modifiedDate = currentDate,
-
+            offer.status = req.body.status;
             // res.status(200).json(templates);
             OfferDAO.updateOfferById(offer)
               .then(offer => res.status(200).json(offer))

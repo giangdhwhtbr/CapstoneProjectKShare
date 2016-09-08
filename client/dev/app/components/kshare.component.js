@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -16,24 +15,32 @@ var router_1 = require('@angular/router');
 /**
  * Shared components
  */
-var header_1 = require("./front-end/shared/header");
 var side_bar_1 = require("./front-end/shared/side-bar");
 var footer_1 = require("./front-end/shared/footer");
-var login_1 = require("./front-end/shared/login");
-var register_1 = require("./front-end/shared/register");
-var user_profile_1 = require("./front-end/user-profile/user-profile");
+var user_profile_1 = require("./front-end/user/user-profile/user-profile");
+var header_1 = require("./shared/header");
+//import { FriendListComponent } from "./front-end/shared/friend-list";
 /**
  * Page components
  */
 var home_1 = require("./front-end/home/home");
 var request_list_1 = require("./front-end/request/request-list");
 var request_detail_1 = require("./front-end/request/request-detail");
-var request_update_1 = require("./front-end/request/request-update");
-var request_search_1 = require("./front-end/request/request-search");
+var request_category_1 = require("./front-end/request/request-category");
 var kspace_1 = require("./front-end/kspace/kspace");
 var kspace_list_1 = require("./front-end/kspace/kspace-list");
 var kspace_info_1 = require("./front-end/kspace/kspace-info");
-var friend_list_1 = require("./front-end/user-profile/friend-list");
+var friend_list_1 = require("./front-end/user/user-profile/friend-list");
+var info_hover_1 = require("./front-end/user/user-profile/info-hover");
+var rs_search_user_1 = require("./front-end/user/search/rs-search-user");
+var user_profile_bar_1 = require("./front-end/user/user-profile/user-profile-bar");
+var user_info_update_1 = require("./front-end/user/user-profile/user-info-update");
+var create_article_1 = require("./front-end/article/create-article");
+var detail_article_1 = require("./front-end/article/detail-article");
+var list_article_1 = require("./front-end/article/list-article");
+var displayArtByTag_1 = require("./front-end/tag/displayArtByTag");
+var request_create_1 = require("./back-end/request/request-create");
+var create_kspace_1 = require("./front-end/kspace/create-kspace");
 /**
  * Page components
  */
@@ -43,31 +50,38 @@ var KshareComponent = (function () {
     KshareComponent = __decorate([
         core_1.Component({
             selector: 'kshare-app',
-            template: "\n    <header></header>\n    <sidebar></sidebar>\n    <router-outlet></router-outlet>\n    <login></login>\n    <register></register>\n    <footer></footer>\n  ",
+            template: "\n    <sidebar></sidebar>\n    <main>\n        <router-outlet></router-outlet>\n    </main>\n  ",
             directives: [
                 router_1.ROUTER_DIRECTIVES,
                 header_1.HeaderComponent,
                 side_bar_1.SideBarComponent,
                 footer_1.FooterComponent,
-                login_1.LoginComponent,
-                register_1.RegisterComponent
             ],
             precompile: [
                 home_1.HomeComponent,
                 request_list_1.RequestListClientComponent,
                 request_detail_1.RequestDetailClientComponent,
-                request_update_1.RequestUpdateClientComponent,
-                request_search_1.RequestCategoryComponent,
+                request_category_1.RequestCategoryComponent,
                 kspace_1.KSpaceComponent,
                 kspace_list_1.KSpaceListComponent,
                 kspace_info_1.KSpaceInfoComponent,
                 user_profile_1.UserProfileComponent,
-                friend_list_1.FriendListComponent
+                friend_list_1.FriendListComponent,
+                user_profile_bar_1.UserProfileBarComponent,
+                create_article_1.CreateArticleComponent,
+                detail_article_1.detailArticleComponent,
+                list_article_1.listArticleComponent,
+                displayArtByTag_1.displayArtByTagComponent,
+                request_create_1.CreateRequestComponent,
+                rs_search_user_1.userSearchRsComponent,
+                user_info_update_1.UpdateUserComponent,
+                create_kspace_1.CreatePublicKspace,
+                info_hover_1.infoHover
             ]
         }), 
         __metadata('design:paramtypes', [])
     ], KshareComponent);
     return KshareComponent;
-}());
+})();
 exports.KshareComponent = KshareComponent;
 //# sourceMappingURL=kshare.component.js.map

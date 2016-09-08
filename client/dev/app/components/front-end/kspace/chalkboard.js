@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -9,47 +8,141 @@ var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
 var core_1 = require('@angular/core');
-var $ = require('jquery');
-var paper = require('paper');
-var io = require('socket.io');
-var primeng_1 = require('primeng/primeng');
-var brushColor = $('#color-picker').val();
 var ChalkBoardComponent = (function () {
     function ChalkBoardComponent() {
+        this.initToken = true;
+        this.username = localStorage.getItem('username');
+        this.guest = localStorage.getItem('guest');
         this.colors = [
-            { label: '#ffffff', value: '#ffffff' },
-            { label: '#de3535', value: '#DE3535' },
-            { label: '#03a9f4', value: '#03a9f4' }
+            { label: 'đen', value: '#000000' },
+            { label: 'đỏ', value: '#DE3535' },
+            { label: 'lục', value: '#03a9f4' },
+            { label: 'lam', value: '#4caf50' },
+            { label: 'vàng ', value: '#ffeb3b' },
+            { label: 'cam', value: '#ff5722' }
         ];
         this.brushSizes = [
-            { label: '1px', value: '1' },
-            { label: '2px', value: '2' },
-            { label: '3px', value: '3' },
-            { label: '4px', value: '4' },
-            { label: '5px', value: '5' },
-            { label: '6px', value: '6' },
-            { label: '7px', value: '7' },
-            { label: '8px', value: '8' },
-            { label: '9px', value: '9' },
-            { label: '10px', value: '10' }
+            { label: '1', value: '1' },
+            { label: '2', value: '3' },
+            { label: '3', value: '5' },
+            { label: '4', value: '10' },
+            { label: '5', value: '20' },
+            { label: '6', value: '30' },
+            { label: '7', value: '50' }
         ];
+        // Socket Config
+        this.socket = io('https://localhost:80');
     }
+    //gọi modal
+    ChalkBoardComponent.prototype.openModal = function () {
+        $('#modal1').openModal({
+            complete: function () {
+            }
+        });
+        $('.lean-overlay').remove();
+    };
     ChalkBoardComponent.prototype.ngOnInit = function () {
-        var socket = io('http://192.168.1.7:3333');
-        var sessionId = socket.sessionid;
+        var _this = this;
         var drawing = false;
-        var mode = 'draw';
         var path;
         var streamPath;
-        var strokeColor = 'white';
+        var strokeColor = 'black';
         var strokeWidth = 1;
-        var colorStore;
+        var room = this.id;
+        var socket = this.socket;
+        function isLecturer(username, lecturer) {
+            if (username === lecturer) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+        if (this.lecturer) {
+            this.isGuest = false;
+        }
+        else if (!this.lecturer && this.guest) {
+            this.isGuest = true;
+        }
+        this.isLect = isLecturer(this.username, this.lecturer);
+        var isLect = this.isLect;
+        var isGuest = this.isGuest;
+        if (!this.isLect) {
+            $('#draw-option').hide();
+        }
+        if (!this.lecturer) {
+            $('#new-page').hide();
+        }
+        // Prepare data for identify the subscriber is lecturer or not
+        var data = {
+            room: room,
+            lecturer: this.lecturer,
+            isLecturer: this.isLect
+        };
+        socket.emit('subscribe', data);
+        socket.on('userSubscribed', function (dataReturn) {
+            // If user subscribe is not the lecturer => lecturer must share board to the new subscriber
+            if (!dataReturn.isLecturer) {
+                //check if logged in user is lecturer
+                if (isLecturer(localStorage.getItem('username'), data.lecturer)) {
+                    var json = paper.exportJSON(paper.project.activeLayer);
+                    var board = {
+                        json: json,
+                        room: data.room,
+                        lecturer: data.lecturer
+                    };
+                    socket.emit('shareBoard', board);
+                }
+            }
+        });
+        // if logged in user is not lecturer => import board
+        socket.on('shareBoard', function (board) {
+            if (!isLecturer(localStorage.getItem('username'), data.lecturer)) {
+                paper.importJSON(board.json);
+            }
+        });
+        // if lecturer create new board => learners import board
+        socket.on('newBoard', function (data) {
+            paper.project.clear();
+            var newLayer = new paper.Layer();
+            newLayer.activate();
+            if (isLecturer(localStorage.getItem('username'), data.lecturer)) {
+                var board = {
+                    boardNumber: data.boardNumber,
+                    json: data.json
+                };
+                _this.boards.push(board);
+            }
+        });
+        // if lecturer change board => learners change board
+        socket.on('changeBoard', function (board) {
+            if (!isLecturer(localStorage.getItem('username'), board.lecturer)) {
+                paper.project.clear();
+                paper.importJSON(board.json);
+            }
+        });
+        /*
+        * Init new chalk board
+        * */
         var chalkboard = document.getElementById('chalkboard');
-        // Initiate the paper at canvas id="chalkboard"
         paper.setup(chalkboard);
+        //initiate setting
+        var drawToolShow = false;
+        $('#draw-tools').hide();
+        //show draw-tools
+        $('#draw-option').click(function () {
+            if (!drawToolShow) {
+                $('#draw-tools').show();
+                drawToolShow = true;
+            }
+            else {
+                $('#draw-tools').hide();
+                drawToolShow = false;
+            }
+        });
         $('#color-picker').change(function () {
-            if ($('#color-picker').val() !== 'white') {
-                $('#color-picker').css('color', 'white');
+            if ($('#color-picker').val() !== 'black') {
+                $('#color-picker').css('color', 'black');
             }
             if ($('#color-picker').val()) {
                 $('#color-picker').css('background-color', $('#color-picker').val());
@@ -62,29 +155,27 @@ var ChalkBoardComponent = (function () {
             }
         });
         $('#eraser').click(function () {
-            strokeColor = '#000000';
+            strokeColor = '#ffffff';
         });
-        /**
-         * Catch event when mouse down, create new path, emit start point
-         */
+        //Catch event when mouse down, create new path, emit start point
         $('#chalkboard').mousedown(function (event) {
-            drawing = true;
-            path = new paper.Path();
-            path.strokeColor = strokeColor;
-            path.strokeWidth = strokeWidth;
-            var x = event.pageX - 0.1879935275 * $(window).width();
-            var y = event.pageY - 0.036667 * $(window).height();
-            path.add(new paper.Point(x, y));
-            emitStartPoint(x, y, strokeColor, strokeWidth);
+            if (isLect || isGuest) {
+                drawing = true;
+                path = new paper.Path();
+                path.strokeColor = strokeColor;
+                path.strokeWidth = strokeWidth;
+                var x = event.pageX - 0.22 * $(window).width();
+                var y = event.pageY - 105;
+                path.add(new paper.Point(x, y));
+                emitStartPoint(x, y, strokeColor, strokeWidth);
+            }
         });
-        /**
-         * Catch event when mouse move and drawing token is true
-         * Then call function draw (x,y) Emit the points of the path to server
-         */
+        //Catch event when mouse move and drawing token is true
+        //Then call function draw (x,y) Emit the points of the path to server
         $('#chalkboard').mousemove(function (event) {
-            if (drawing) {
-                var x = event.pageX - 0.1879935275 * $(window).width();
-                var y = event.pageY - 0.036667 * $(window).height();
+            if (drawing && (isLect || isGuest)) {
+                var x = event.pageX - 0.22 * $(window).width();
+                var y = event.pageY - 105;
                 draw(x, y);
                 emitPathPoint(x, y);
             }
@@ -132,46 +223,106 @@ var ChalkBoardComponent = (function () {
                 x: x,
                 y: y,
                 color: color,
-                width: width
+                width: width,
+                room: room
             };
-            socket.emit('startPoint', data, sessionId);
+            socket.emit('startPoint', data);
         }
         /**
-        * function emitPathPoint(x,y)
-        * Send the path's point (x,y) to the server
-        */
+         * function emitPathPoint(x,y)
+         * Send the path's point (x,y) to the server
+         */
         function emitPathPoint(x, y) {
             var data = {
                 x: x,
-                y: y
+                y: y,
+                room: room
             };
-            socket.emit('pathpoint', data, sessionId);
+            socket.emit('pathpoint', data);
         }
-        /**
-         * When socket receive startPoint, call function streamStartPath(x,y)
-         */
+        //When socket receive startPoint, call function streamStartPath(x,y)
         socket.on('startPoint', function (data) {
-            console.log('Stream Start point', data);
             streamStartPath(data.x, data.y, data.color, data.width);
         });
-        /**
-         * When socket receive pathpoint, call function streamDraw(x,y)
-         */
+        //When socket receive pathpoint, call function streamDraw(x,y)
         socket.on('pathpoint', function (data) {
-            console.log('draw event recieved:', data);
             streamDraw(data.x, data.y);
         });
     };
+    /*
+     * Lecturer create new page
+     * */
+    ChalkBoardComponent.prototype.newPage = function (name, des) {
+        if (this.isLect) {
+            var json = paper.exportJSON(paper.project.activeLayer);
+            var socket = this.socket;
+            var chalkboard = document.getElementById("chalkboard");
+            var dataURL = chalkboard.toDataURL();
+            paper.project.clear();
+            var newLayer = new paper.Layer();
+            newLayer.activate();
+            //config data to save to server
+            var data = {
+                room: this.id,
+                lecturer: this.lecturer,
+                name: name,
+                des: des,
+                json: json,
+                dataURL: dataURL
+            };
+            var board = {
+                name: data.name,
+                json: data.json
+            };
+            this.boards.push(board);
+            socket.emit('newBoard', data);
+        }
+    };
+    ChalkBoardComponent.prototype.changeBoard = function (json, name) {
+        var socket = this.socket;
+        if (this.isLect) {
+            if (this.initToken == true) {
+                this.currentPage = paper.exportJSON(paper.project.activeLayer);
+            }
+            if (name) {
+                paper.project.clear();
+                paper.importJSON(json);
+                this.initToken = false;
+            }
+            else {
+                paper.project.clear();
+                paper.importJSON(json);
+                this.initToken = true;
+            }
+            var data = {
+                room: this.id,
+                json: json,
+                lecturer: this.lecturer
+            };
+            socket.emit('changeBoard', data);
+        }
+    };
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', String)
+    ], ChalkBoardComponent.prototype, "id", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', Object)
+    ], ChalkBoardComponent.prototype, "boards", void 0);
+    __decorate([
+        core_1.Input(), 
+        __metadata('design:type', String)
+    ], ChalkBoardComponent.prototype, "lecturer", void 0);
     ChalkBoardComponent = __decorate([
         core_1.Component({
             selector: 'chalkboard',
-            template: "\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n        <div id=\"draw-tools\">\n            <select id=\"color-picker\" class=\"tool-btn\">\n                <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n            </select>\n            <hr>\n            <select id=\"brush-size\" class=\"tool-btn\">\n                <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n            </select>\n            <hr>\n            <p id=\"eraser\">\n                <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n            </p>\n        </div>\n    ",
-            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"],
-            directives: [primeng_1.Dropdown]
+            templateUrl: 'client/dev/app/components/front-end/kspace/templates/chalkboard.html',
+            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
         }), 
         __metadata('design:paramtypes', [])
     ], ChalkBoardComponent);
     return ChalkBoardComponent;
-}());
+})();
 exports.ChalkBoardComponent = ChalkBoardComponent;
 //# sourceMappingURL=chalkboard.js.map

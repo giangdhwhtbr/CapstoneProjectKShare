@@ -1,72 +1,148 @@
-<br/><br/>
-<div class="container mg-top-50" *ngIf="request && knowledge">
+<div class="row">
+    <div class="col s12 m8 l8">
+        <div class="container" *ngIf="request">
+            <div class="row">
+                <div class="col s12 m12">
+                    <div class="card" *ngIf="request && knowledge">
+                        <div class="card-content">
+                            <p class="card-title">{{request.title}}</p>
+                            <div *ngIf="link" class="col s3 m3">
+                                <p><a [routerLink]="[link]">Vào Kspace</a></p>
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <div class="row">
+                                <div class="col s3 m3">
+                                    <p>Người tạo : <hover-info-user [username]="request.user"></hover-info-user></p>
+                                </div>
 
-  <div class="col-xs-12 col-sm-9 fixEfMenu">
-    <div class="panel panel-default card-rq">
-      <div class="panel-body">
-        <p class="lead">{{request.title}}</p>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-          Người tạo : <a [routerLink]=[request.userlink]>{{request.user}}</a>
-        </div><br>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-          Lĩnh vực : {{knowledge.name}}
-        </div><br>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu" hidden>
-          ID : {{request._id}}
+                                <div class="col s3 m3">
+                                    <p>Lĩnh vực : {{knowledge.name}}</p>
+                                </div>
+                                <div class="col s3 m3" hidden>
+                                    ID : {{request._id}}
+                                </div>
+                                <div class="col s3 m3">
+                                    <p>Trạng thái : {{request.status}}</p>
+                                </div>
+                                <div class="col s3 m3">
+                                    <p>Ngày tạo : {{request.createdAt | date:"dd/MM/yyyy"}}</p>
+                                </div>
+                            </div>
+                            <div id="bodyReq" class="col s12 m12 l12">
+                            </div>
+                            <div class="row" *ngIf="subscribers">
+                                Danh sách theo dõi :
+                                <p><hover-info-user *ngFor="let subscriber of subscribers" [username]="subscriber"></hover-info-user></p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <offer-create rid="{{_id}}" (sendDataToP)="action($event)"></offer-create>
+            <div class="row">
+                <div [hidden]="!checkDeactive" class="col s6 m6 l6">
+                    Yêu cần này đã kết thúc
+                </div>
+            </div>
+            <div class="row">
+                <div class="col s12 m12">
+                    <div [hidden]="checkDeactive" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
+                        <button *ngIf="userToken !== null && userToken != request.user" class="btn modal-trigger btn-large waves-effect waves-light blue"
+                                data-target="myModal" (click)="openReport()">Báo cáo</button>
+                        <a href="{{updateLink}}" class="btn-large waves-effect waves-light blue" *ngIf="checkCreatedUser || roleToken==='admin' || roleToken==='mod'">Sửa</a>
+                        <a *ngIf="checkCreatedUser || roleToken==='admin' || roleToken==='mod'">
+                            <button class=" btn-large waves-effect waves-light blue" (click)="deactivateRequest(_id)">Đóng</button>
+                        </a>
+                        <a *ngIf="!checkCreatedUser">
+                            <button *ngIf="userToken !== null && request.status!=='Đã được chấp nhận'" class="btn modal-trigger btn-large waves-effect waves-light blue"
+                                    (click)="openOffer()" data-target="modalOfferRequest">Đề nghị</button>
+                        </a>
+                        <a *ngIf="!checkCreatedUser || roleToken==='admin' || userToken !== null">
+                            <button *ngIf="userToken !== null && !checkSubcribedUser && userToken !== request.user && request.status!=='Đã được chấp nhận'"
+                                    class="btn-large waves-effect waves-light blue" (click)="addSubcriber(_id)">theo dõi</button>
+                        </a>
+                        <a *ngIf="!checkCreatedUser || userToken !== null">
+                            <button *ngIf="userToken !== null && checkSubcribedUser" class="btn-large waves-effect waves-light blue" (click)="removeSubscriber()">Bỏ theo dõi</button>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="request.status !=='Đã được chấp nhận'">
+                <div class="col s12 m12" *ngIf="offers">
+                    <div class="card" *ngFor="let offer of offers">
+                        <div class="card-action">
+                            <div class="row">
+                                <div class="col s3 m3">
+                                    <p>Người tạo : <hover-info-user [username]="offer.user"></hover-info-user></p>
+                                </div>
+                                <div class="col s3 m3">
+                                    <p>Trạng thái : {{offer.status}}</p>
+                                </div>
+                                <div class="col s3 m3">
+                                    <p>Ngày tạo : {{offer.createdAt | date:"dd/MM/yyyy"}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s10 m10 l10">
+                                    Lời nhắn : {{offer.message}}
+                                </div>
+                                <div class="col s2 m2 l2">
+                                    <a *ngIf="checkCreatedUser && !checkIsAcceped">
+                                        <button class="btn-floating btn waves-effect waves-light blue right" (click)="addKshare(offer.user,offer._id)"><i class="material-icons">done</i>
+                                        </button>
+                                    </a>
+                                    <a *ngIf="checkCreatedUser && checkIsAcceped">
+                                        <button disabled class="btn-floating btn waves-effect waves-light red right"><i class="material-icons">done</i></button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row" *ngIf="request.status ==='Đã được chấp nhận'">
+                <div class="col s12 m12" *ngIf="offers">
+                    <div class="card" *ngFor="let offer of offers">
+                        <div class="card-action" *ngIf="offer.status==='Được chấp nhận'">
+                            <div class="row">
+                                <div class="col s3 m3">
+                                    <p>Người tạo :<hover-info-user [username]="offer.user"></hover-info-user></p>
+                                </div>
+                                <div class="col s3 m3">
+                                    <p>Trạng thái : {{offer.status}}</p>
+                                </div>
+                                <div class="col s3 m3">
+                                    <p>Ngày tạo : {{offer.createdAt | date:"dd/MM/yyyy"}}</p>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col s10 m10 l10">
+                                    Lời nhắn : {{offer.message}}
+                                </div>
+                                <div class="col s2 m2 l2">
+                                    <a *ngIf="checkCreatedUser && !checkIsAcceped">
+                                        <button class="btn-floating btn waves-effect waves-light blue right" (click)="addKshare(offer.user,offer._id)"><i class="material-icons">done</i>
+                                        </button>
+                                    </a>
+                                    <a *ngIf="checkCreatedUser && checkIsAcceped">
+                                        <button disabled class="btn-floating btn waves-effect waves-light red right"><i class="material-icons">done</i></button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-          Trạng thái : {{request.status}}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-          Ngày tạo : {{request.createdAt}}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-          Nội dung : {{request.description}}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-lef fixEfMenu" *ngIf="subscribers">
-          Danh sách theo dõi :
-          <p *ngFor="let subscriber of subscribers"><a [routerLink]="['/user/' + subscriber]">{{subscriber}}</a></p>
-        </div>
-      </div>
     </div>
-  </div>
-
-  <div [hidden]="!checkDeactive" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-    Yêu cần này đã kết thúc
-  </div>
-
-  <div [hidden]="checkDeactive" class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-    <a [routerLink]="[updateLink]" [hidden]="!checkCreatedUser"><span
-       class="btn btn-warning glyphicon glyphicon-pencil" ></span></a>
-    <a [hidden]="!checkCreatedUser"><button class="glyphicon glyphicon-trash btn btn-danger" (click)="deactivateRequest(_id)"></button></a>
-    <a [hidden]="checkCreatedUser"><button class="glyphicon glyphicon-send btn btn-primary" data-toggle="modal" data-target="#modalOfferRequest"></button></a>
-    <a [hidden]="checkCreatedUser"><button class="glyphicon glyphicon-eye-open btn btn-info" (click)="addSubcriber(_id)" ></button></a>
-  </div>
-</div>
-<offer-create rid="{{_id}}"></offer-create>
-<br>
-<!-- List offer of a back.request -->
-<div class="container" style="min-height:437px" id="request-ofer">
-  <div class="col-xs-12 col-sm-9 fixEfMenu" *ngIf="offers">
-    <div class="panel panel-default card-rq" *ngFor="let offer of offers">
-      <div class="panel-body">
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-          Người tạo : <a href="/user/{{offer.user}}">{{offer.user}}</a>
-        </div>
-        <div class="col-xs-12 col-sm-12 col-md-12 col-lg-12 fixEfMenu">
-          Giá : {{offer.price}}
-        </div>
-        <br>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu">
-          Lời nhắn : {{offer.message}}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-          Ngày tạo : {{offer.createdAt}}
-        </div>
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu">
-          <a [hidden]="!checkCreatedUser"><button class="btn btn-sm btn-success" (click)="addKshare(user,offer.user,_id,offer._id)">Chấp thuận</button></a>
-        </div>
-      </div>
+    <div class="col s12 m4 l4">
+        <top-articles></top-articles>
     </div>
-  </div>
 </div>
+
+<report *ngIf="request" reportedUser="{{request.user}}"></report>
+<private-chat></private-chat>

@@ -3,12 +3,11 @@ import { Knowledge } from '../../../interface/knowledge';
 import { KnowledgeService } from '../../../services/knowledge';
 import { Router, ROUTER_DIRECTIVES, ActivatedRoute } from'@angular/router';
 import { FORM_DIRECTIVES, FormBuilder, ControlGroup, Control, AbstractControl  } from '@angular/common';
-
+import {PrivateChatComponent} from '../../shared/private-chat';
 @Component({
   selector: 'knowledge-update',
   templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-update.html',
-  styleUrls: ['client/dev/app/components/back-end/knowledge/styles/knowledge.css'],
-  directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES],
+  directives: [FORM_DIRECTIVES, ROUTER_DIRECTIVES,PrivateChatComponent],
   providers: [KnowledgeService]
 })
 
@@ -64,7 +63,7 @@ export class UpdateKnowledgeComponent {
       console.log(error.text());
     }
     );
-    window.location.href = 'admin/knowledges';
+    this.router.navigateByUrl('admin/knowledges');
   }
 
 }

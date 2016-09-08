@@ -1,0 +1,122 @@
+<nav>
+    <div class="nav-wrapper indigo darken-2">
+        <a style="margin-left: 20px;" class="breadcrumb">Quản lý</a>
+        <a class="breadcrumb">Quản lý báo cáo vi phạm</a>
+
+        <div style="margin-right: 20px;" id="timestamp" class="right"></div>
+    </div>
+</nav>
+<div class="row">
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s3"><a href="#pr" class="active">Chờ xử lí</a></li>
+            <li class="tab col s3"><a href="#hr">Đang xử lí</a></li>
+        </ul>
+    </div>
+    <div id="pr" class="col s12">
+        <div class="row">
+            <div class="col s12">
+                <div style="padding: 35px;" align="center" class="card">
+                    <div class="row">
+                        <div class="left card-title">
+                            <b>Quản lý báo cáo vi phạm</b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input #gb id="filter" type="text" pInputText>
+                            <label for="filter">Tìm kiếm</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p-dataTable [value]="pendingReports" [rows]="10" [paginator]="true" [globalFilter]="gb">
+                            <p-column field="title" styleClass="col-button" header="Báo cáo vi phạm" [filter]="true"
+                                      [sortable]="true">
+                                <template let-r="rowData">
+                                    <a [routerLink]="[r.link]">{{r.title}}</a>
+                                </template>
+                            </p-column>
+                            <p-column field="content" header="Nội dung" [sortable]="true" [filter]="true"></p-column>
+                            <p-column styleClass="col-button" field="user" header="Người báo cáo" [filter]="true"
+                                      [sortable]="true">
+                                <template let-r="rowData">
+                                    <a [routerLink]="['/user/'+r.user]">{{r.user}}</a>
+                                </template>
+                            </p-column>
+                            <p-column styleClass="col-button" field="reportedUser" header="Người vi phạm"
+                                      [filter]="true" [sortable]="true">
+                                <template let-r="rowData">
+                                    <a [routerLink]="['/user/'+r.reportedUser]">{{r.reportedUser}}</a>
+                                </template>
+                            </p-column>
+                            <p-column styleClass="col-button" header="Chức năng">
+                                <template let-r="rowData">
+                                    <button  type="button" pButton (click)="changeStatusHandling(r._id)"
+                                             class="btn-floating waves-effect waves-light red">
+                                        <i class="material-icons">switch_camera</i>
+                                    </button>
+                                    <button type="button" pButton (click)="deactivateReport(r._id)"
+                                            class="btn-floating waves-effect waves-light red"><i class="material-icons">remove</i>
+                                    </button>
+                                </template>
+                            </p-column>
+                        </p-dataTable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="hr" class="col s12">
+      <div class="row">
+          <div class="col s12">
+              <div style="padding: 35px;" align="center" class="card">
+                  <div class="row">
+                      <div class="left card-title">
+                          <b>Quản lý báo cáo vi phạm</b>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <div class="input-field col s6">
+                          <input #gb1 id="filter1" type="text" pInputText>
+                          <label for="filter1">Tìm kiếm</label>
+                      </div>
+                  </div>
+                  <div class="row">
+                      <p-dataTable [value]="handlingReports" [rows]="10" [paginator]="true" [globalFilter]="gb1">
+                          <p-column field="title" styleClass="col-button" header="Báo cáo vi phạm" [filter]="true"
+                                    [sortable]="true">
+                              <template let-r="rowData">
+                                  <a [routerLink]="[r.link]">{{r.title}}</a>
+                              </template>
+                          </p-column>
+                          <p-column field="content" header="Nội dung" [sortable]="true" [filter]="true"></p-column>
+                          <p-column styleClass="col-button" field="user" header="Người báo cáo" [filter]="true"
+                                    [sortable]="true">
+                              <template let-r="rowData">
+                                  <a [routerLink]="['/user/'+r.user]">{{r.user}}</a>
+                              </template>
+                          </p-column>
+                          <p-column styleClass="col-button" field="reportedUser" header="Người vi phạm"
+                                    [filter]="true" [sortable]="true">
+                              <template let-r="rowData">
+                                  <a [routerLink]="['/user/'+r.reportedUser]">{{r.reportedUser}}</a>
+                              </template>
+                          </p-column>
+                          <p-column styleClass="col-button" header="Chức năng">
+                              <template let-r="rowData">
+                                <button type="button" pButton (click)="deactivateReport(r._id)"
+                                        class="btn-floating waves-effect waves-light red"><i class="material-icons">remove</i>
+                                </button>
+                                <button type="button" (click)="createChatRoom(r.reportedUser)" class="btn-floating waves-effect waves-light red">
+                                    <i class="material-icons">message</i>Gửi tin nhắn</button>
+                              </template>
+                          </p-column>
+                      </p-dataTable>
+                  </div>
+              </div>
+          </div>
+      </div>
+    </div>
+</div>
+<message [receiver]="user"></message>
+<private-chat></private-chat>

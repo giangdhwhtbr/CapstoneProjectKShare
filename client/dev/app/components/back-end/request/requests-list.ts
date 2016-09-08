@@ -1,89 +1,93 @@
-import { Component, OnInit } from '@angular/core';
+import {
+    Component,
+    OnInit,
+    Pipe,
+    PipeTransform,
+    Inject,
+    AfterViewChecked
+} from '@angular/core';
 import { ROUTER_DIRECTIVES, Router } from '@angular/router';
-import {FORM_DIRECTIVES, FormBuilder, ControlGroup, Control } from '@angular/common';
-
-
+import {FORM_DIRECTIVES, ControlGroup, Control } from '@angular/common';
 import { Request } from '../../../interface/request';
-import { RequestService } from '../../../services/requests';
+import { KnowledgeService } from '../../../services/knowledge';
+import { RequestService} from '../../../services/requests';
+import { Knowledge } from '../../../interface/knowledge';
 import { AuthService} from '../../../services/auth';
+import { PagerService} from '../../../services/pager';
 import { OfferService } from '../../../services/request-offer';
-
 import { CreateRequestComponent } from './request-create';
 import { CreateOfferComponent  } from '../../front-end/offer/offer-create';
 import { UpdateRequestComponent } from './request-update';
-
+import {DataTable,Column, Header, MultiSelect, Footer, InputText} from 'primeng/primeng';
+import {Paginator} from 'primeng/primeng';
+import {PrivateChatComponent} from '../../shared/private-chat';
+declare var $:any;
 @Component({
-  selector: 'request-list',
-  templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-  styleUrls: [
-    'client/dev/asserts/css/backend-styles.css',
-    'client/dev/app/components/back-end/request/templates/request.css'
-  ],
-  directives: [
-    CreateOfferComponent,
-    UpdateRequestComponent,
-    CreateRequestComponent,
-    CreateOfferComponent,
-    ROUTER_DIRECTIVES
-  ]
+    selector: 'request-list',
+    templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
+    directives: [PrivateChatComponent,UpdateRequestComponent, ROUTER_DIRECTIVES, FORM_DIRECTIVES, Paginator,FORM_DIRECTIVES,DataTable,Column,Header,Footer],
+    providers: [RequestService, PagerService]
 })
+export class RequestListComponent implements AfterViewChecked {
+    pageTitle: string = 'Request List';
+    errorMessage: string;
+    user: string;
+    roleToken: string;
+    requestForm: ControlGroup;
+    public filter: string = '';
+    knowledges: Knowledge[];
+    deactiveRequests: Request[];
+    activeRequests: Request[];
+    acceptepRequests: Request[];
 
-export class RequestListComponent {
-  pageTitle: string = 'Request List';
-  errorMessage: string;
+    constructor(private _requestService: RequestService,
+                private _knowledgeService: KnowledgeService,
+                private _pagerService: PagerService,
+                private _authService: AuthService) {
+        this.user = localStorage.getItem('username');
+        this.roleToken = localStorage.getItem('userrole');
+        this._knowledgeService.getAllKnowledges().subscribe((knowledges) => {
+            this.knowledges = this._knowledgeService.getChildFromParent(knowledges);
+        });
+    }
+    ngOnInit(): void {
+        this.getAllRequest();
+        $('ul.tabs').tabs();
+    }
 
-  requests: Request[];
-
-  constructor(private _requestService: RequestService, private _auth: AuthService, private router: Router) {
-
-  }
-
-  ngOnInit(): void {
-    this._requestService.getAllRequests().subscribe((requests) => {
-      var formatDate = function (date){
-        if(date) {
-          var newDate, day, month, year;
-          year = date.substr(0, 4);
-          month = date.substr(5, 2);
-          day = date.substr(8, 2);
-          return newDate = day + '/' + month + '/' + year;
-        }
-      };
-
-      for (var i = 0; i < requests.length; i++) {
-        requests[i].createdAt = formatDate(requests[i].createdAt);
-        requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
-      }
-      this.requests = requests;
-    });
-  }
-
-  deleteRequest(request: Request) {
-    this._requestService
-      .deleteRequest(request)
-      .subscribe(() => {
-        console.log("delete successful");
-      });
-
-    //refresh page
-    this._requestService.getAllRequests().subscribe((requests) => {
-      var formatDate = function (date) {
-        if (date) {
-          var newDate, day, month, year;
-          year = date.substr(0, 4);
-          month = date.substr(5, 2);
-          day = date.substr(8, 2);
-          return newDate = day + '/' + month + '/' + year;
-        }
-      };
-
-      for (var i = 0; i < requests.length; i++) {
-        requests[i].createdAt = formatDate(requests[i].createdAt);
-        requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
-      }
-      this.requests = requests;
-    });
-
-  }
-
+    getAllRequest() {
+        this.activeRequests = [];
+        this.deactiveRequests = [];
+        this.acceptepRequests = [];
+        this._requestService.getAllRequestAdmin().subscribe((reqs)=> {
+            for(let e of reqs){
+                if(e.status == "pending"){
+                    e.status = "Đang chờ";
+                    this.activeRequests.push(e);
+                }else if(e.status =="deactive"){
+                    e.status = "Đã đóng";
+                    this.deactiveRequests.push(e);
+                }else if(e.status =="accepted"){
+                    e.status = "Được chấp nhận";
+                    this.acceptepRequests.push(e);
+                }
+            }
+        });
+    }
+    deactivateRequest(id: string) {
+        this._requestService
+            .changeStatusRequest(id)
+            .subscribe((r) => {
+                console.log("deactivate sucess");
+                this.getAllRequest();
+            })
+    }
+    activateRequest(request: Request) {
+        request.status = 'pending';
+        this._requestService
+            .updateRequest(request, request.tags, [])
+            .subscribe((r) => {
+                this.getAllRequest();
+            })
+    }
 }

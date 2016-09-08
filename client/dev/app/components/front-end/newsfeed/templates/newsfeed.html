@@ -1,0 +1,94 @@
+<div [hidden]="userToken" class="carousel carousel-slider center banner" data-indicators="true">
+  <div class="carousel-item white-text">
+    <img src="client/dev/asserts/images/intro-bg.jpg" class="responsive-img">
+    <div class="carousel-fixed-item center">
+      <h1 class="white-text">KShare</h1>
+      <a class="btn waves-effect blue white-text darken-text-2" [routerLink]="['/public-kspace/create']">Trải nghiệm KSpace</a>
+    </div>
+  </div>
+  <div class="carousel-item amber white-text">
+    <img src="client/dev/asserts/images/Kspace1.jpg" style="height:400px;" class="responsive-img">
+    <div class="carousel-fixed-item center">
+      <h4 class="black-text">KShare</h4>
+      <h1 class="black-text">Chức năng vẽ bảng</h1>
+      <a class="btn waves-effect blue white-text darken-text-2" [routerLink]="['/public-kspace/create']">Trải nghiệm KSpace</a>
+    </div>
+  </div>
+  <div class="carousel-item amber white-text">
+    <img src="client/dev/asserts/images/Kspace2.jpg" class="responsive-img">
+    <div class="carousel-fixed-item center">
+      <h4 class="white-text">KShare</h4>
+      <h1 class="white-text">Chia sẻ màn hình</h1>
+      <a class="btn waves-effect blue white-text darken-text-2" [routerLink]="['/public-kspace/create']">Trải nghiệm KSpace</a>
+    </div>
+  </div>
+</div>
+<div class="">
+    <div class="row">
+        <div class="col s8 m8">
+            <div *ngFor="let record of records">
+                <!--1--><!--1--><!--1--><!--1--><!--1--><!--1-->
+                <div *ngIf="record.user" class="card">
+                    <div class="card-content">
+                        <i class="material-icons">record_voice_over</i>
+                        <span *ngIf="record.title.length>70" class="card-title"><a [routerLink]="['/requests/' + record._id + '/info']">{{record.title.substring(0,150)}}...</a></span>
+                        <span *ngIf="record.title.length<=70" class="card-title"><a [routerLink]="['/requests/' + record._id + '/info']">{{record.title}}...</a></span>
+                    </div>
+                    <div class="card-action">
+                        <div class="row">
+                            <div class="col s4 m4">
+                                <span>Tạo bởi : <hover-info-user [username]="record.user"></hover-info-user></span>
+                            </div>
+                            <div class="col s4 m4">
+                                <span class="dateArt">{{record.createdAt | date:"dd/MM/yyyy"}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12">
+                                <p *ngIf="record.tags">
+                                    <tags [listTagId]="record.tags"></tags>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--article-->
+                <div *ngIf="record.author || record.ofUser" class="card">
+                    <div class="card-content">
+                        <i class="material-icons">library_books</i>
+                        <span *ngIf="record.title.length>70" class="card-title"><a [routerLink]="['/article/' + record._id]">{{record.title.substring(0,150)}}...</a></span>
+                        <span *ngIf="record.title.length<=70" class="card-title"><a [routerLink]="['/article/' + record._id]">{{record.title}}</a></span>
+                    </div>
+                    <div class="card-action">
+                        <div class="row">
+                            <div *ngIf="record.author" class="col s4 m4">
+                                <span>Tạo bởi :<hover-info-user [username]="record.author"></hover-info-user></span>
+                            </div>
+                            <div *ngIf="record.ofUSer" class="col s4 m4">
+                                <span>Tạo bởi :<hover-info-user [username]="record.ofUser"></hover-info-user></span>
+                            </div>
+                            <div class="col s4 m4">
+                                <span>Trạng thái : {{record.status}}</span>
+                            </div>
+                            <div class="col s4 m4">
+                                <span class="dateArt">{{record.createdAt | date:"dd/MM/yyyy"}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col s12 m12">
+                                <p *ngIf="record.tags">
+                                    <tags [listTagId]="record.tags"></tags>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <a class="displayPointer" (click)="seeMore()">Xem thêm</a>
+        </div>
+        <div class="col s4 m4">
+            <top-articles></top-articles>
+        </div>
+    </div>
+</div>
+<private-chat></private-chat>

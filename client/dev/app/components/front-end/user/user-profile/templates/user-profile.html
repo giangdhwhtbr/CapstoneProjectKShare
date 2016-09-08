@@ -1,0 +1,56 @@
+<!--<push-notification #myNotification title="demo notification" icon="https://goo.gl/3eqeiE" body="demo notification">
+</push-notification>-->
+<div *ngIf="isExist" class="container">
+    <div *ngIf="requests && articleList && kspaceList" class="row profile">
+        <div class="col s4 m4 l4">
+            <!--<button (click)="myNotification.show()" type="button" class="btn btn danger btn-sm">Demo Show Notification</button>-->
+            <user-profile-bar></user-profile-bar>
+        </div>
+        <div class="col s8">
+            <div class="row">
+                <div class="col s12">
+                    <ul class="tabs">
+                        <li class="tab col s4"><a href="#userPage" class="active">Yêu cầu</a></li>
+                        <li class="tab col s4"><a href="#article">Bài viết</a></li>
+                        <li class="tab col s4"><a href="#kspace">Kspace</a></li>
+                    </ul>
+                </div>
+                <div id="userPage" class="col s12">
+                    <div *ngFor="let request of requests| paginate: configReq">
+                        <request-record title="{{request.title}}" requestId="{{request._id}}"
+                                        description="{{request.description}}" status="{{request.status}}"
+                                        createdAt="{{request.createdAt}}" knowledgeId="{{request.knowledgeId}}">
+                        </request-record>
+                    </div>
+                    <pagination-controls [id]="configReq.id" [maxSize]="maxSizeReq" [directionLinks]="directionLinksReq" [autoHide]="autoHideReq"
+                                         (pageChange)="onPageChangeReq($event)"></pagination-controls>
+                </div>
+                <div id="article" class="row">
+                    <div *ngFor="let art of articleList| paginate: configArt">
+                        <article-list [article]="art"></article-list>
+                    </div>
+                    <pagination-controls [id]="configArt.id" [maxSize]="maxSizeArt" [directionLinks]="directionLinksArt" [autoHide]="autoHideArt"
+                                         (pageChange)="onPageChangeArt($event)"></pagination-controls>
+                </div>
+                <div id="kspace" class="row">
+                    <div *ngFor="let kspace of kspaceList| paginate: configKp">
+                        <kspace-list [kspace]="kspace"></kspace-list>
+                    </div>
+                    <pagination-controls [id]="configKp.id" [maxSize]="maxSizeKp" [directionLinks]="directionLinksKp" [autoHide]="autoHideKp"
+                                         (pageChange)="onPageChangeKp($event)"></pagination-controls>
+                </div>
+            </div>
+        </div>
+        <!--<div class="col s8 m8 l8">
+          <div class="profile-content"  [style.height.px]="height+'px'">
+            <!--content of user's wall-->
+        <!--<h3>Danh sách yêu cầu đã tạo</h3>
+        <div *ngFor="let request of requests">
+        <request-record title="{{request.title}}" requestId="{{request._id}}" description="{{request.description}}" status="{{request.status}}"
+        createdAt="{{request.createdAt}}" knowledgeId="{{request.knowledgeId}}">
+      </request-record>
+    </div>
+    <!--content of user's wall-->
+    </div>
+</div>
+<private-chat></private-chat>

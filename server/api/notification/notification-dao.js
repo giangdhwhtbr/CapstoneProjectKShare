@@ -46,13 +46,15 @@ notificationSchema.statics.deleteNotification = (id) => {
 }
 
 //get notification by user 
-notificationSchema.statics.getNotificationByUser = (user) => {
+notificationSchema.statics.getNotificationByUser = (user,num) => {
     return new Promise((resolve, reject) => {
 
         Notification
           .find({
               "user": user
           })
+          .sort({_id:-1})
+          .limit(num + 3)
           .exec((err, notifications) => {
               err ? reject(err)
                   : resolve(notifications);

@@ -1,95 +1,144 @@
 "use strict";
 
 const RequestDAO = require('./request-dao');
+const TagDAO = require('../tags/tag-dao');
 
 module.exports = class RequestController {
   static getAll(req, res) {
-      RequestDAO
-        .getAll()
-        .then(requests => res.status(200).json(requests))
-        .catch(error => res.status(400).json(error));
+    RequestDAO
+      .getAll(req.body.num)
+      .then(requests => res.status(200).json(requests))
+      .catch(error => res.status(400).json(error));
+  }
+
+  static getRequestsByTagsOfUser(req, res) {
+    RequestDAO
+      .getRequestsByTagsOfUser(req.body.userTags, req.body.x)
+      .then(requests => res.status(200).json(requests))
+      .catch(error => res.status(400).json(error));
+  }
+
+  static getRequestsExceptTagsOfUser(req, res) {
+    RequestDAO
+      .getRequestsExceptTagsOfUser(req.body.userTags, req.body.x)
+      .then(requests => res.status(200).json(requests))
+      .catch(error => res.status(400).json(error));
+  }
+
+  static getAllRequestForAdmin(req, res) {
+    RequestDAO
+      .getAllRequestForAdmin()
+      .then(requests => res.status(200).json(requests))
+      .catch(error => res.status(400).json(error));
   }
 
   static createRequest(req, res) {
-      let _request = req.body;
 
-      console.log(_request);
+    let _data = req.body;
+    //create new tags in database
+    TagDAO.createArrayTag(_data.newTag).then((tags) => {
+        console.log(tags);
       RequestDAO
-        .createRequest(_request)
-        .then(request => res.status(201).json(request))
-        .catch(error => res.status(400).json(_request));
+        .createRequest(_data.request)
+        .then((request) => {
+            console.log(request);
+          // push the new tag to the new request
+          for (let e of tags) {
+            request.tags.push(e);
+          }
+          request.save();
+          res.status(201).json(request);
+        }).catch(error => res.status(400).json(error));
+    }).catch((error) => res.status(400).json(error));
+
   }
 
-static updateRequest(req, res){
-    if(req.params && req.params.id) {
+  static updateRequest(req, res) {
+    if (req.params && req.params.id) {
       var currentDate = new Date();
-        RequestDAO.getRequestById(req.params.id)
-          .then(request => {
-            request.userId = req.params.id,
-            request.title  = req.body.title,
-            request.description = req.body.description,
-            request.knowledgeId = req.body.knowledgeId,
-            request.modifiedDate = currentDate;
+      let _data = req.body;
+      console.log(req.body);
+      RequestDAO.getRequestById(req.params.id)
+        .then(request => {
+          request.title = _data.rq.title;
+          request.description = _data.rq.description;
+          request.knowledgeId = _data.rq.knowledgeId;
+          request.modifiedDate = currentDate;
+          request.status = _data.rq.status;
+          request.tags = _data.rq.tags;
+          request.status = _data.rq.status;
+          request.updatedAt = new Date();
+          request.subscribers = _data.rq.subscribers;
+          console.log(request);
+          TagDAO.createArrayTag(_data.newTag).then((tags) => {
 
-            // res.status(200).json(templates);
-            RequestDAO.updateRequestById(request)
-              .then(request => res.status(200).json(request))
-              .catch(error => res.status(400).json(error));
-          })
-          .catch(error => res.status(400).json(error));
-    }else{
+            RequestDAO.updateRequestById(request).then(request => {
+              if (tags.length > 0) {
+                tags.map((e, i) => {
+                  request.tags.push(e);
+                });
+                console.log(request.subscribers);
+                request.save();
+              }else{
+                console.log(request.subscribers);
+                request.save();
+              }
+              res.status(200).json(request);
+            }).catch(error => res.status(400).json(error));
+          }).catch((error) => res.status(400).json(error));
+        }).catch(error => res.status(400).json(error));
+    } else {
       res.status(404).json({
-        "message"    :   "No Request id in templates"
+        "message": "No Request id in templates"
       });
+
     }
   }
 
-  static getRequestById(req,res) {
-    if(req.params && req.params.id) {
+  static getRequestById(req, res) {
+    if (req.params && req.params.id) {
       RequestDAO
         .getRequestById(req.params.id)
         .then(request => res.status(200).json(request))
         .catch(error => res.status(400).json(error));
-    }else{
+    } else {
       res.status(404).json({
-        "message"    :   "No Requestid in templates"
+        "message": "No Requestid in templates"
       });
     }
   }
 
   //controler relate to full-text search function DAO
-  static fullTextSearchRequest(req,res) {
+  static fullTextSearchRequest(req, res) {
 
-        RequestDAO
-        .fullTextSearchRequest(req.body.text)
-        .then(request => res.status(200).json(request))
-        .catch(error => res.status(400).json(error));
-
+    RequestDAO
+      .fullTextSearchRequest(req.body.text)
+      .then(request => res.status(200).json(request))
+      .catch(error => res.status(400).json(error));
   }
 
-  static getRequestByKnowledgeId(req,res) {
-    if(req.params && req.params.id) {
+  static getRequestByKnowledgeId(req, res) {
+    if (req.params && req.params.id) {
       RequestDAO
         .getRequestByKnowledgeId(req.params.id)
         .then(requests => res.status(200).json(requests))
         .catch(error => res.status(400).json(error));
-    }else{
+    } else {
       res.status(404).json({
-        "message"    :   "No Knowledge Id in templates"
+        "message": "No Knowledge Id in templates"
       });
     }
   }
 
-    static getRequestByUser(req,res) {
-    if(req.params) {
-      console.log('123');
+  static getRequestByUser(req, res) {
+    if (req.params) {
       RequestDAO
-        .getRequestByUser(req.params.user)
+        .getRequestByUser(req.params.user, req.params.num)
         .then(requests => res.status(200).json(requests))
         .catch(error => res.status(400).json(error));
-    }else{
+    } else {
       res.status(404).json({
-        "message"    :   "No Knowledge Id in templates"
+        "message": "No Knowledge Id in templates"
       });
     }
   }
@@ -104,44 +153,69 @@ static updateRequest(req, res){
   }
 
   //change status of a templates to deactive
-  static changeStatusRequest(req, res){
+  static changeStatusRequest(req, res) {
     var currentDate = new Date();
-    if(req.params && req.params.id) {
-        RequestDAO.getRequestById(req.params.id)
-          .then(request => {
-            request.modifiedDate = currentDate;
-            request.status = "deactive"
+    if (req.params && req.params.id) {
+      RequestDAO.getRequestById(req.params.id)
+        .then(request => {
+          request.modifiedDate = currentDate;
+          request.status = "deactive"
 
-            RequestDAO.updateRequestById(request)
-              .then(request => res.status(200).json(request))
-              .catch(error => res.status(400).json(error));
-          })
-          .catch(error => res.status(400).json(error));
-    }else{
+          RequestDAO.updateRequestById(request)
+            .then(request => res.status(200).json(request))
+            .catch(error => res.status(400).json(error));
+        })
+        .catch(error => res.status(400).json(error));
+    } else {
       res.status(404).json({
-        "message"    :   "No Request id in templates"
+        "message": "No Request id in templates"
       });
     }
   }
 
   //change status of a templates to deactive
-  static addSubcriber(req, res){
+  static addSubcriber(req, res) {
     var currentDate = new Date();
-    if(req.params && req.params.id) {
-        RequestDAO.getRequestById(req.params.id)
-          .then(request => {
-            request.subcribers.push(req.body.subcriber);
+    if (req.params && req.params.id) {
+      RequestDAO.getRequestById(req.params.id)
+        .then(request => {
+          request.subscribers.push(req.body.subcriber);
 
-            RequestDAO.updateRequestById(request)
-              .then(request => res.status(200).json(request))
-              .catch(error => res.status(400).json(error));
-          })
-          .catch(error => res.status(400).json(error));
-    }else{
+          RequestDAO.updateRequestById(request)
+            .then(request => res.status(200).json(request))
+            .catch(error => res.status(400).json(error));
+        })
+        .catch(error => res.status(400).json(error));
+    } else {
       res.status(404).json({
-        "message"    :   "No Request id in templates"
+        "message": "No Request id in templates"
       });
     }
   }
+
+    //paging on server
+
+    static getAPage(req,res){
+        if (req.params && req.params.start) {
+            let start = req.params.start;
+            RequestDAO.getAPage(start,req.params.stt).then((reqs)=>{
+                if(reqs.length==0&&start!=0){
+                    RequestDAO.getAPage(start-10,req.params.stt).then((reqsBU)=>{
+                        res.status(200).json(reqsBU);
+                    }).catch(err=> res.status(400).json(err));
+                }else{
+                    res.status(200).json(reqs);
+                }
+            }).catch(err=> res.status(400).json(err));
+        }
+    }
+    static getTot(req,res){
+
+        if (req.params && req.params.stt) {
+            RequestDAO.getTot(req.params.stt).then((num)=>{
+                res.status(200).json(num);
+            }).catch(err=> res.status(400).json(err));
+        }
+    }
 
 }

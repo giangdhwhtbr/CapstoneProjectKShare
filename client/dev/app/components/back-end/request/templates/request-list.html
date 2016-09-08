@@ -1,55 +1,114 @@
-<div class="col-sm-9 col-sm-offset-3 col-lg-10 col-lg-offset-2 main">
-  <br>
-  <br>
-  <!--/.row-->
-  <div class="row">
-    <div class="col-lg-12">
-      <h1 class="page-header">Requests Management</h1>
+<nav>
+    <div class="nav-wrapper indigo darken-2">
+        <a style="margin-left: 20px;" class="breadcrumb">Quản lý</a>
+        <a class="breadcrumb">Quản lý yêu cầu</a>
+        <div style="margin-right: 20px;" id="timestamp" class="right"></div>
     </div>
-  </div>
-  <request-create></request-create>
-  <!--/.row-->
-  <div class="row">
-    <div class="col-lg-12">
-      <div class="panel panel-default">
-        <div class="panel-body">
-          <div class="row">
-            <div class="col-md-3">
-              <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalCreateRequest">
-                Create Request
-              </button>
+</nav>
+<div class="row">
+    <div class="col s12">
+        <ul class="tabs">
+            <li class="tab col s3"><a href="#ar" class="active">Hoạt động</a></li>
+            <li class="tab col s3"><a href="#dr">Ngừng hoạt động</a></li>
+            <li class="tab col s3"><a href="#accr">Được chấp thuận</a></li>
+        </ul>
+    </div>
+    <div id="ar" class="col s12">
+        <div class="row">
+            <div class="col s12">
+                <div style="padding: 35px;" align="center" class="card">
+                    <div class="row">
+                        <div class="left card-title">
+                            <b>Quản lý yêu cầu</b>
+                        </div>
+                    </div>
+                    <div class="input-field col s6">
+                        <input #gb id="filter" type="text" pInputText>
+                        <label for="filter">Tìm kiếm</label>
+                    </div>
+                    <div class="row">
+                        <p-dataTable [value]="activeRequests" [rows]="10" [paginator]="true" [globalFilter]="gb">
+                            <p-column field="title" header="Yêu cầu"[sortable]="true" [filter]="true">
+                                <template let-col let-r="rowData">
+                                    <a [routerLink]="['/requests/' + r._id + '/info']">{{r.title}}</a>
+                                </template>
+                            </p-column>
+                            <p-column field="status" header="Trạng thái"[sortable]="true" [filter]="true"></p-column>
+                            <p-column styleClass="col-button" header="Chức năng">
+                                <template let-r="rowData">
+                                    <button type="button" pButton class="btn-floating waves-effect waves-light green"
+                                            (click)="deactivateRequest(r._id)">
+                                        <i class="material-icons">remove</i></button>
+                                </template>
+                            </p-column>
+                        </p-dataTable>
+                    </div>
+                </div>
             </div>
-            <div class="col-md-9"></div>
-            <div class="col-md-3"></div>
-          </div>
-          <div class="row">
-            <div class="col-md-12">
-              <table class="table table-striped mg-top-15px" align="center">
-                <thead>
-                  <tr class="tb-header">
-                    <th>Title</th>
-                    <th>Description</th>
-                    <th>Status</th>
-                    <th></th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr *ngFor="let request of requests">
-                    <td>{{request.title}}</td>
-                    <td>{{request.description}}</td>
-                    <td>{{request.status}}</td>
-                    <td>
-                      <button class="glyphicon glyphicon-trash btn btn-danger" (click)="deleteRequest(request)"></button>
-                      <a [routerLink]="['/admin/requests/'+ request._id]"><span class="btn btn-warning glyphicon glyphicon-pencil"></span></a>
-                    </td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
         </div>
-      </div>
     </div>
-  </div>
-  <!--/.row-->
+    <div id="dr" class="col s12">
+        <div class="row">
+            <div class="col s12">
+                <div style="padding: 35px;" align="center" class="card">
+                    <div class="row">
+                        <div class="left card-title">
+                            <b>Quản lý yêu cầu</b>
+                        </div>
+                    </div>
+                    <div class="input-field col s6">
+                        <input #gb1 id="filter1" type="text" pInputText>
+                        <label for="filter1">Tìm kiếm</label>
+                    </div>
+                    <div class="row">
+                        <p-dataTable [value]="deactiveRequests" [rows]="10" [paginator]="true" [filter]="true" [globalFilter]="gb1">
+                            <p-column field="title" header="Yêu cầu"[sortable]="true" [filter]="true">
+                                <template let-col let-r="rowData">
+                                    <a [routerLink]="['/requests/' + r._id + '/info']">{{r.title}}</a>
+                                </template>
+                            </p-column>
+                            <p-column field="status" header="Trạng thái" [sortable]="true" [filter]="true"></p-column>
+                            <p-column styleClass="col-button" header="Chức năng">
+                                <template let-r="rowData">
+                                    <button type="button" class="btn-floating waves-effect waves-light green"
+                                            (click)="activateRequest(r)">
+                                        <i class="material-icons">done</i></button>
+                                </template>
+                            </p-column>
+                        </p-dataTable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="accr" class="col s12">
+        <div class="row">
+            <div class="col s12">
+                <div style="padding: 35px;" align="center" class="card">
+                    <div class="row">
+                        <div class="left card-title">
+                            <b>Quản lý yêu cầu</b>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="input-field col s6">
+                            <input #gb2 id="filter1" type="text" pInputText>
+                            <label for="filter1">Tìm kiếm</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <p-dataTable [value]="acceptepRequests" [rows]="10" [paginator]="true" [globalFilter]="gb2">
+                            <p-column field="title" header="Yêu cầu"[sortable]="true" [filter]="true">
+                                <template let-col let-r="rowData">
+                                    <a [routerLink]="['/requests/' + r._id + '/info']">{{r.title}}</a>
+                                </template>
+                            </p-column>
+                            <p-column field="status" header="Trạng thái"[sortable]="true" [filter]="true"></p-column>
+                        </p-dataTable>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
+<private-chat></private-chat>

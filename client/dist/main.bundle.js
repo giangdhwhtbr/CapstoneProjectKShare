@@ -6,15 +6,17 @@ webpackJsonp([2],[
 	/*
 	 * Angular
 	 */
-	var platform_browser_dynamic_1 = __webpack_require__(397);
-	var app_routes_1 = __webpack_require__(615);
+	var platform_browser_dynamic_1 = __webpack_require__(412);
+	var app_routes_ts_1 = __webpack_require__(692);
+	var http_1 = __webpack_require__(35);
 	/*
 	 * components
 	 */
-	var app_component_1 = __webpack_require__(614);
-	platform_browser_dynamic_1.bootstrap(app_component_1.AppComponent, app_routes_1.APP_ROUTER_PROVIDERS).catch(function (err) { return console.error(err); });
-	// import {DemoPaper} from './demo/demo-paper';
-	// bootstrap(DemoPaper);
+	var app_component_1 = __webpack_require__(664);
+	platform_browser_dynamic_1.bootstrap(app_component_1.AppComponent, [
+	    app_routes_ts_1.APP_ROUTER_PROVIDERS,
+	    http_1.HTTP_PROVIDERS
+	]).catch(function (err) { return console.error(err); });
 	
 
 /***/ },
@@ -27,7 +29,200 @@ webpackJsonp([2],[
 /* 7 */,
 /* 8 */,
 /* 9 */,
-/* 10 */
+/* 10 */,
+/* 11 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/12/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var chat_1 = __webpack_require__(129);
+	var notification_1 = __webpack_require__(57);
+	var users_1 = __webpack_require__(26);
+	var PrivateChatComponent = (function () {
+	    function PrivateChatComponent(_chatService, _noti, _userService) {
+	        this._chatService = _chatService;
+	        this._noti = _noti;
+	        this._userService = _userService;
+	        this.currentRoom = {
+	            id: '',
+	            messages: []
+	        };
+	        this.username = localStorage.getItem('username');
+	        this.socket = io('https://localhost:80');
+	        this.allChatRooms = [];
+	    }
+	    PrivateChatComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        var numItems = $('.text-message').length;
+	        $("#cntAllText").animate({ scrollTop: 200 * numItems });
+	        this.socket.on('private-message-return', function (data) {
+	            var news = 0;
+	            // New message token
+	            for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
+	                var user = _a[_i];
+	                if (user.user === _this.username) {
+	                    news = user.newMessages;
+	                    var numItems = $('.text-message').length;
+	                    $("#cntAllText").animate({ scrollTop: 200 * numItems });
+	                }
+	            }
+	            // Enter message to the current room
+	            if (data.id === _this.currentRoom.id) {
+	                _this.currentRoom.messages.push(data);
+	            }
+	            // update room last message
+	            for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
+	                var room = _c[_b];
+	                if (room._id === data.id) {
+	                    room.lastSent = data.sentAt;
+	                    room.lastMsg = data.message;
+	                    room.newMessages = news;
+	                }
+	            }
+	            // Sort chat room by the newest
+	            _this.allChatRooms.sort(function (a, b) {
+	                if (a.lastSent > b.lastSent) {
+	                    return -1;
+	                }
+	                else if (a.lastSent < b.lastSent) {
+	                    return 1;
+	                }
+	                return 0;
+	            });
+	        });
+	        // Reset news notification
+	        this.socket.on('private-message-reset', function (data) {
+	            var news = 0;
+	            for (var _i = 0, _a = data.users; _i < _a.length; _i++) {
+	                var user = _a[_i];
+	                if (user.user === _this.username) {
+	                    news = user.newMessages;
+	                }
+	            }
+	            for (var _b = 0, _c = _this.allChatRooms; _b < _c.length; _b++) {
+	                var room = _c[_b];
+	                if (room.friendName === data.receiver) {
+	                    room.newMessages = news;
+	                }
+	            }
+	        });
+	        if (this.username) {
+	            this.loadAva();
+	            this.listAllChatRoom();
+	        }
+	    };
+	    PrivateChatComponent.prototype.loadAva = function () {
+	        var _this = this;
+	        this._userService.loadAva(this.username)
+	            .subscribe(function (res) {
+	            _this.avatar = res.linkImg;
+	        }, function (err) {
+	            console.log(err);
+	        });
+	    };
+	    PrivateChatComponent.prototype.listAllChatRoom = function () {
+	        var _this = this;
+	        this.allChatRooms = [];
+	        if (localStorage.getItem('username')) {
+	            this.sub = this._chatService.getAllChatRoomOfUser(this.username)
+	                .subscribe(function (chatRooms) {
+	                if (chatRooms) {
+	                    for (var _i = 0, chatRooms_1 = chatRooms; _i < chatRooms_1.length; _i++) {
+	                        var chatRoom = chatRooms_1[_i];
+	                        _this.socket.emit('subscribe-private-chat', chatRoom._id);
+	                        var room = {
+	                            _id: chatRoom._id,
+	                            chatLogs: chatRoom.chatLogs,
+	                            newMessages: 0
+	                        };
+	                        if (chatRoom.chatLogs.length) {
+	                            room.lastMsg = chatRoom.chatLogs[chatRoom.chatLogs.length - 1].message;
+	                            room.lastSent = chatRoom.chatLogs[chatRoom.chatLogs.length - 1].sentAt;
+	                        }
+	                        for (var _a = 0, _b = chatRoom.users; _a < _b.length; _a++) {
+	                            var user = _b[_a];
+	                            if (user.user !== _this.username) {
+	                                room.friendName = user.user;
+	                                room.friendAva = user.avatar;
+	                            }
+	                            if (user.user === _this.username) {
+	                                room.newMessages = user.newMessages;
+	                            }
+	                        }
+	                        _this.allChatRooms.push(room);
+	                        _this.allChatRooms.sort(function (a, b) {
+	                            if (a.lastSent > b.lastSent) {
+	                                return -1;
+	                            }
+	                            if (a.lastSent < b.lastSent) {
+	                                return 1;
+	                            }
+	                            return 0;
+	                        });
+	                        _this.receiver = _this.allChatRooms[0].friendName;
+	                        _this.currentRoom.id = _this.allChatRooms[0]._id;
+	                        _this.currentRoom.messages = _this.allChatRooms[0].chatLogs;
+	                    }
+	                }
+	            });
+	        }
+	    };
+	    PrivateChatComponent.prototype.getReceiver = function (slRoom) {
+	        var numItems = $('.text-message').length;
+	        $("#cntAllText").animate({ scrollTop: 200 * numItems });
+	        this.currentRoom.id = slRoom._id;
+	        this.receiver = slRoom.friendName;
+	        this.currentRoom.messages = slRoom.chatLogs;
+	        var data = {
+	            sender: this.username,
+	            receiver: this.receiver
+	        };
+	        this.socket.emit('reset-new-message', data);
+	    };
+	    PrivateChatComponent.prototype.sendMessage = function () {
+	        if (this.mess) {
+	            var data = {
+	                sender: this.username,
+	                message: this.mess,
+	                receiver: this.receiver,
+	                avatar: this.avatar
+	            };
+	            this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
+	            this.socket.emit('private-message', data);
+	            this.socket.emit('reset-new-message', data);
+	            this.mess = "";
+	        }
+	        var numItems = $('.text-message').length;
+	        $("#cntAllText").animate({ scrollTop: 200 * numItems });
+	    };
+	    PrivateChatComponent = __decorate([
+	        core_1.Component({
+	            selector: 'private-chat',
+	            templateUrl: 'client/dev/app/components/shared/templates/chatbox.html',
+	            styleUrls: ['client/dev/app/components/shared/styles/chatbox.css']
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _a) || Object, (typeof (_b = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object])
+	    ], PrivateChatComponent);
+	    return PrivateChatComponent;
+	    var _a, _b, _c;
+	}());
+	exports.PrivateChatComponent = PrivateChatComponent;
+	
+
+/***/ },
+/* 12 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -283,8 +478,6 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 11 */,
-/* 12 */,
 /* 13 */,
 /* 14 */,
 /* 15 */,
@@ -298,13 +491,323 @@ webpackJsonp([2],[
 /* 23 */,
 /* 24 */,
 /* 25 */,
-/* 26 */,
+/* 26 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by GiangDH on 5/8/16.
+	 */
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var http_1 = __webpack_require__(35);
+	var Observable_1 = __webpack_require__(2);
+	var UserService = (function () {
+	    function UserService(_http) {
+	        this._http = _http;
+	        this._usersUrl = '/api/user/:id';
+	        this._profilePictureUrl = '/api/user-picture';
+	        this._friendUrl = '/api/friendship/:id';
+	        this._getFriendUrl = '/api/getFriendship';
+	        this._getRequestByUserUrl = '/api/requests-user/:user/:num';
+	        this._isUserExistUrl = '/api/is-user-exist/:username';
+	        this._friendshipStatusUrl = '/api/friendship-status/:user1/:user2';
+	        this._banUrl = '/api/ban/:id';
+	        this._emailResetPass = '/api/email-reset-pass/:email';
+	        this._changePass = '/api/new-pass/:token';
+	        this._chatRoomUrl = 'api/chat-rooms';
+	        this._searchUrl = '/api/search-user/:username';
+	    }
+	    UserService.prototype.getUserByToken = function (token) {
+	        return this._http.get(this._changePass.replace(':token', token))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    UserService.prototype.searchUserByUsername = function (name) {
+	        return this._http.get(this._searchUrl.replace(':username', name))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    UserService.prototype.updateNewPassword = function (password, token) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var data = {
+	            password: password,
+	            token: token
+	        };
+	        return this._http.put(this._changePass.replace(':token', token), data, options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    UserService.prototype.sendEmailResetPassword = function (email) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        return this._http.get(this._emailResetPass.replace(':email', email), options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    UserService.prototype.deactivateChatRoom = function (user1, user2) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var data = JSON.stringify({
+	            user1: user1,
+	            user2: user2
+	        });
+	        return this._http.put(this._chatRoomUrl, data, options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    UserService.prototype.getAllUsers = function () {
+	        return this._http.get(this._usersUrl.replace(':id', ''))
+	            .map(function (res) { return res.json(); })
+	            .catch(this.handleError);
+	    };
+	    UserService.prototype.getUserById = function (id) {
+	        return this._http.get(this._usersUrl.replace(':id', id))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    //get user informations by username
+	    UserService.prototype.getUserByUserName = function (user) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _search = JSON.stringify({
+	            username: user
+	        });
+	        return this._http.put(this._usersUrl.replace(':id', ''), _search, options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    UserService.prototype.addUser = function (user) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _user = JSON.stringify({
+	            username: user.username,
+	            password: user.password,
+	            email: user.email,
+	            role: user.role
+	        });
+	        return this._http
+	            .post(this._usersUrl.replace(':id', ''), _user, options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    UserService.prototype.updateUser = function (user, _newTag) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            user: {
+	                _id: user._id,
+	                fullName: user.fullName,
+	                displayName: user.displayName,
+	                birthday: user.birthday,
+	                phone: user.phone,
+	                username: user.username,
+	                password: user.password,
+	                email: user.email,
+	                role: user.role,
+	                linkImg: user.linkImg,
+	                status: user.status,
+	                banStatus: user.banStatus
+	            },
+	            newTag: _newTag
+	        });
+	        return this._http
+	            .put(this._usersUrl.replace(':id', user._id), _data, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    UserService.prototype.banUser = function (id) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        return this._http
+	            .put(this._banUrl.replace(':id', id), options);
+	    };
+	    //add friend service
+	    UserService.prototype.addFriend = function (requestUser, acceptUser) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _friendship = JSON.stringify({
+	            user1: requestUser,
+	            user2: acceptUser
+	        });
+	        return this._http
+	            .post(this._friendUrl.replace(':id', ''), _friendship, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    //select friend of logined user
+	    UserService.prototype.getFriendList = function (currentUser) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _friendship = JSON.stringify({
+	            user: currentUser
+	        });
+	        return this._http
+	            .post(this._getFriendUrl, _friendship, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    //get request of an user
+	    UserService.prototype.getRequestByUser = function (user, num) {
+	        return this._http
+	            .get(this._getRequestByUserUrl.replace(':user', user).replace(':num', num))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    //delete friend request
+	    UserService.prototype.deleteFriendRequest = function (user1, user2) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _friendship = JSON.stringify({
+	            requestUser: user1,
+	            acceptUser: user2
+	        });
+	        return this._http
+	            .put(this._friendUrl.replace(':id', ''), _friendship, options);
+	    };
+	    //if user is exist, return 1, else return 0
+	    UserService.prototype.checkUserExist = function (username) {
+	        return this._http
+	            .get(this._isUserExistUrl.replace(':username', username));
+	    };
+	    UserService.prototype.acceptFriendRequest = function (user1, user2) {
+	        return this._http
+	            .get(this._friendshipStatusUrl.replace(':user1', user1).replace(':user2', user2));
+	    };
+	    UserService.prototype.makeFileRequest = function (url, params, files) {
+	        return new Promise(function (resolve, reject) {
+	            var formData = new FormData();
+	            var xhr = new XMLHttpRequest();
+	            for (var i = 0; i < files.length; i++) {
+	                formData.append("uploads[]", files[i], files[i].name);
+	            }
+	            xhr.onreadystatechange = function () {
+	                if (xhr.readyState == 4) {
+	                    if (xhr.status == 200) {
+	                        resolve(JSON.parse(xhr.response));
+	                    }
+	                    else {
+	                        reject(xhr.response);
+	                    }
+	                }
+	            };
+	            xhr.open("POST", url, true);
+	            xhr.send(formData);
+	        });
+	    };
+	    UserService.prototype.loadAva = function (username) {
+	        var avaUrl = '/api/user/avatar/:username';
+	        return this._http
+	            .get(avaUrl.replace(':username', username))
+	            .map(function (r) { return r.json(); });
+	    };
+	    UserService.prototype.handleError = function (error) {
+	        return Observable_1.Observable.throw(error);
+	    };
+	    UserService = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+	    ], UserService);
+	    return UserService;
+	    var _a;
+	}());
+	exports.UserService = UserService;
+	
+
+/***/ },
 /* 27 */,
 /* 28 */,
 /* 29 */,
 /* 30 */,
-/* 31 */,
-/* 32 */
+/* 31 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	__export(__webpack_require__(39));
+	__export(__webpack_require__(546));
+	__export(__webpack_require__(1069));
+	__export(__webpack_require__(1070));
+	__export(__webpack_require__(1071));
+	__export(__webpack_require__(153));
+	__export(__webpack_require__(1072));
+	__export(__webpack_require__(1073));
+	__export(__webpack_require__(1076));
+	__export(__webpack_require__(1077));
+	__export(__webpack_require__(1074));
+	__export(__webpack_require__(1075));
+	__export(__webpack_require__(332));
+	__export(__webpack_require__(39));
+	__export(__webpack_require__(39));
+	__export(__webpack_require__(1078));
+	__export(__webpack_require__(1079));
+	__export(__webpack_require__(1080));
+	__export(__webpack_require__(1081));
+	__export(__webpack_require__(1083));
+	__export(__webpack_require__(1084));
+	__export(__webpack_require__(1085));
+	__export(__webpack_require__(1086));
+	__export(__webpack_require__(1087));
+	__export(__webpack_require__(1088));
+	__export(__webpack_require__(1089));
+	__export(__webpack_require__(1090));
+	__export(__webpack_require__(1091));
+	__export(__webpack_require__(1092));
+	__export(__webpack_require__(218));
+	__export(__webpack_require__(1093));
+	__export(__webpack_require__(1094));
+	__export(__webpack_require__(1095));
+	__export(__webpack_require__(1096));
+	__export(__webpack_require__(1097));
+	__export(__webpack_require__(1098));
+	__export(__webpack_require__(1099));
+	__export(__webpack_require__(1100));
+	__export(__webpack_require__(1101));
+	__export(__webpack_require__(1102));
+	__export(__webpack_require__(219));
+	__export(__webpack_require__(1103));
+	__export(__webpack_require__(1104));
+	__export(__webpack_require__(1105));
+	__export(__webpack_require__(1106));
+	__export(__webpack_require__(1107));
+	__export(__webpack_require__(1108));
+	__export(__webpack_require__(1109));
+	__export(__webpack_require__(1110));
+	__export(__webpack_require__(1111));
+	__export(__webpack_require__(1112));
+	__export(__webpack_require__(1113));
+	__export(__webpack_require__(1114));
+	__export(__webpack_require__(1115));
+	__export(__webpack_require__(548));
+	__export(__webpack_require__(1117));
+	__export(__webpack_require__(549));
+	__export(__webpack_require__(1116));
+	__export(__webpack_require__(1118));
+	__export(__webpack_require__(1119));
+	__export(__webpack_require__(1120));
+	__export(__webpack_require__(1121));
+	__export(__webpack_require__(1122));
+	__export(__webpack_require__(550));
+	__export(__webpack_require__(551));
+	
+
+/***/ },
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
+/* 37 */,
+/* 38 */,
+/* 39 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -347,22 +850,374 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 33 */,
-/* 34 */,
-/* 35 */,
-/* 36 */,
-/* 37 */,
-/* 38 */,
-/* 39 */,
 /* 40 */,
-/* 41 */,
+/* 41 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 7/13/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var http_1 = __webpack_require__(35);
+	var Observable_1 = __webpack_require__(2);
+	var ArticleService = (function () {
+	    function ArticleService(_http) {
+	        this._http = _http;
+	        this._requestsUrl = '/api/article/:id';
+	        this._requestsGetDeArtUrl = '/api/art/de/:id';
+	        this._articleUserUrl = '/api/articles-user';
+	        this._searchArticleUrl = '/api/full-search-article';
+	        this._artKnw = '/api/art/knw/:id';
+	        this._cmtUrl = "/api/comment/article/:artId/:cmtId";
+	        this._cmtLike = "/api/comment/like/:artId/:cmtId/:user";
+	        this._cmtUnLike = "/api/comment/unlike/:artId/:cmtId/:user";
+	        this._artLike = "/api/art/like/:artId/:user";
+	        this._artUnLike = "/api/art/unlike/:artId/:user";
+	        this._artProfile = "/api/articles-user/:username";
+	    }
+	    ArticleService.prototype.getAllArts = function (num) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            num: num
+	        });
+	        return this._http.put(this._requestsUrl.replace(':id', ''), _data, options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    ArticleService.prototype.getAllArtAdmin = function () {
+	        return this._http.get("/api/articles-admin")
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    //search request
+	    ArticleService.prototype.searchArticle = function (search) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _search = JSON.stringify({
+	            text: search
+	        });
+	        return this._http
+	            .post(this._searchArticleUrl, _search, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    ArticleService.prototype.getAllDeArts = function () {
+	        return this._http.get(this._requestsGetDeArtUrl.replace(':id', ''))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    //get "num" article which user's ownknowledgeIds same with tagid of article
+	    ArticleService.prototype.getArticlesByUserTags = function (tags, num) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            userTags: tags,
+	            x: num
+	        });
+	        return this._http.post(this._articleUserUrl, _data, options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    ArticleService.prototype.getArtByKnwId = function (id) {
+	        return this._http.get(this._artKnw.replace(':id', id))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    ArticleService.prototype.getArtsByUsername = function (name) {
+	        return this._http.get(this._artProfile.replace(':username', name))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    //get articles which user's ownknowledgeIds not same with tagid of article
+	    ArticleService.prototype.getArticleExceptUserTags = function (tags, num) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            userTags: tags,
+	            x: num
+	        });
+	        return this._http.put(this._articleUserUrl, _data, options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    ArticleService.prototype.addArticle = function (_title, _content, oldTag, newTag, stt, user) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            art: {
+	                author: user,
+	                title: _title,
+	                content: _content,
+	                tags: oldTag,
+	                status: stt
+	            },
+	            newTag: newTag
+	        });
+	        return this._http
+	            .post(this._requestsUrl.replace(':id', ''), _data, options)
+	            .map(function (r) { return r.json(); }).catch(this.handleError);
+	    };
+	    ArticleService.prototype.addComment = function (artId, user, content) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _comment = JSON.stringify({
+	            artId: artId,
+	            user: user,
+	            content: content
+	        });
+	        return this._http
+	            .post(this._cmtUrl.replace(':artId', '').replace('/:cmtId', ''), _comment, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    ArticleService.prototype.editComment = function (artId, cmtId, content) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _cmt = JSON.stringify({
+	            content: content
+	        });
+	        return this._http
+	            .put(this._cmtUrl.replace(':artId', artId).replace(':cmtId', cmtId), _cmt, options)
+	            .map(function (r) { return r.json(); }).catch(this.handleError);
+	    };
+	    ArticleService.prototype.removeComment = function (artId, cmtId) {
+	        return this._http.delete(this._cmtUrl.replace(':artId', artId).replace(':cmtId', cmtId)).map(function (r) { return r.json(); });
+	    };
+	    //action like comment
+	    ArticleService.prototype.likeComment = function (artId, cmtId, user) {
+	        return this._http.get(this._cmtLike.replace(':artId', artId).replace(':cmtId', cmtId).replace(':user', user))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    ArticleService.prototype.unlikeComment = function (artId, cmtId, user) {
+	        return this._http.get(this._cmtUnLike.replace(':artId', artId).replace(':cmtId', cmtId).replace(':user', user))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    //action like article
+	    ArticleService.prototype.likeArt = function (artId, user) {
+	        return this._http.get(this._artLike.replace(':artId', artId).replace(':user', user))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    ArticleService.prototype.unlikeArt = function (artId, user) {
+	        return this._http.get(this._artUnLike.replace(':artId', artId).replace(':user', user))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    ArticleService.prototype.topArticle = function () {
+	        return this._http
+	            .get(this._requestsUrl.replace(':id', ''))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    ArticleService.prototype.getArtById = function (id) {
+	        return this._http.get(this._requestsUrl.replace(':id', id))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    ArticleService.prototype.activeArt = function (id) {
+	        return this._http.get(this._requestsGetDeArtUrl.replace(':id', id))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError).catch(this.handleError);
+	    };
+	    ArticleService.prototype.deactivateArticle = function (id) {
+	        return this._http
+	            .delete(this._requestsUrl.replace(':id', id))
+	            .map(function (r) { return r.json(); }).catch(this.handleError);
+	    };
+	    //deleteRequestById(id:string):Observable<any> {
+	    //  return this._http
+	    //    .delete(this._requestsUrl.replace(':id', id))
+	    //    .map((r) => r.json());
+	    //}
+	    ArticleService.prototype.updateArtById = function (art, newTag, id) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            art: art,
+	            newTag: newTag
+	        });
+	        return this._http
+	            .put(this._requestsUrl.replace(':id', id), _data, options)
+	            .map(function (r) { return r.json(); }).catch(this.handleError);
+	    };
+	    ArticleService.prototype.handleError = function (error) {
+	        return Observable_1.Observable.throw(error);
+	    };
+	    ArticleService = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+	    ], ArticleService);
+	    return ArticleService;
+	    var _a;
+	}());
+	exports.ArticleService = ArticleService;
+	
+
+/***/ },
 /* 42 */,
 /* 43 */,
 /* 44 */,
-/* 45 */,
+/* 45 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 5/19/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var http_1 = __webpack_require__(35);
+	var Observable_1 = __webpack_require__(2);
+	var AuthService = (function () {
+	    function AuthService(_http) {
+	        this._http = _http;
+	        this._regUrl = '/api/user/';
+	        this._loginUrl = '/api/login';
+	        this._logOutUrl = '/api/logout';
+	        this._checkLoginUrl = '/api/checkLogin';
+	    }
+	    AuthService.prototype.login = function (user) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _user = JSON.stringify({
+	            username: user.username,
+	            password: user.password
+	        });
+	        return this._http.post(this._loginUrl, _user, options)
+	            .map(function (res) { return res.json(); });
+	    };
+	    AuthService.prototype.register = function (user) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _user = JSON.stringify({
+	            username: user.username,
+	            password: user.password,
+	            email: user.email
+	        });
+	        return this._http.post(this._regUrl, _user, options)
+	            .map(function (res) { return res.json(); })
+	            .catch(this.handleError);
+	    };
+	    AuthService.prototype.isLoggedIn = function () {
+	        return this._http.get(this._checkLoginUrl)
+	            .map(function (res) { return res.json(); })
+	            .catch(this.handleError);
+	    };
+	    AuthService.prototype.logout = function () {
+	        return this._http.get(this._logOutUrl)
+	            .map(function (res) { return res.json(); })
+	            .catch(this.handleError);
+	    };
+	    AuthService.prototype.logoutClient = function () {
+	        localStorage.removeItem('username');
+	        localStorage.removeItem('userrole');
+	        localStorage.removeItem('linkImg');
+	    };
+	    AuthService.prototype.handleError = function (error) {
+	        return Observable_1.Observable.throw(error.json());
+	    };
+	    AuthService = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+	    ], AuthService);
+	    return AuthService;
+	    var _a;
+	}());
+	exports.AuthService = AuthService;
+	
+
+/***/ },
 /* 46 */,
 /* 47 */,
-/* 48 */
+/* 48 */,
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 8/27/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var users_1 = __webpack_require__(26);
+	var router_1 = __webpack_require__(4);
+	var ratingPoint_1 = __webpack_require__(297);
+	var infoHover = (function () {
+	    function infoHover(router, route, _userService) {
+	        this.router = router;
+	        this.route = route;
+	        this._userService = _userService;
+	    }
+	    infoHover.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._userService.getUserByUserName(this.username).subscribe(function (user) {
+	            _this.user = user;
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], infoHover.prototype, "username", void 0);
+	    infoHover = __decorate([
+	        core_1.Component({
+	            selector: 'hover-info-user',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/info-hover.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES, ratingPoint_1.RatingPoint
+	            ],
+	            providers: [users_1.UserService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object])
+	    ], infoHover);
+	    return infoHover;
+	    var _a, _b, _c;
+	}());
+	exports.infoHover = infoHover;
+	
+
+/***/ },
+/* 54 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -376,17 +1231,25 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(57);
+	var http_1 = __webpack_require__(35);
 	var Observable_1 = __webpack_require__(2);
 	var KnowledgeService = (function () {
 	    function KnowledgeService(_http) {
 	        this._http = _http;
 	        this._knowledgesUrl = '/api/knowledges/:id';
+	        this._knowledgeStatusUrl = '/api/knowledges/knowledgestatus/:id';
+	        this._knowledgesAdmin = '/api/knowledgesAdmin';
 	    }
 	    KnowledgeService.prototype.getAllKnowledges = function () {
 	        return this._http.get(this._knowledgesUrl.replace(':id', ''))
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
+	    };
+	    KnowledgeService.prototype.getAllKnowledgesForAdmin = function () {
+	        return this._http.get(this._knowledgesAdmin.replace(':id', ''))
+	            .toPromise()
+	            .then(function (r) { return r.json().data; })
+	            .then(function (data) { return data; });
 	    };
 	    KnowledgeService.prototype.addKnowledge = function (knowledge) {
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -426,6 +1289,26 @@ webpackJsonp([2],[
 	        var parent = [];
 	        var subCate = [];
 	        for (var i = 0; i < knowledges.length; i++) {
+	            if (!knowledges[i].hasOwnProperty('parent') && knowledges[i].status == true) {
+	                parent.push(knowledges[i]);
+	            }
+	        }
+	        for (var i = 0; i < parent.length; i++) {
+	            for (var j = 0; j < knowledges.length; j++) {
+	                if ((knowledges[j].hasOwnProperty('parent')) && (knowledges[j].parent === parent[i]._id) && (knowledges[j].status == true)) {
+	                    subCate.push(knowledges[j]);
+	                }
+	            }
+	            parent[i]["subCategory"] = subCate;
+	            subCate = [];
+	        }
+	        return parent;
+	    };
+	    //only in admin
+	    KnowledgeService.prototype.getChildFromParentAdmin = function (knowledges) {
+	        var parent = [];
+	        var subCate = [];
+	        for (var i = 0; i < knowledges.length; i++) {
 	            if (!knowledges[i].hasOwnProperty('parent')) {
 	                parent.push(knowledges[i]);
 	            }
@@ -442,6 +1325,11 @@ webpackJsonp([2],[
 	        knowledges = parent;
 	        return parent;
 	    };
+	    KnowledgeService.prototype.changeKnowledgeStatus = function (id) {
+	        return this._http
+	            .get(this._knowledgeStatusUrl.replace(':id', id))
+	            .map(function (r) { return r.json(); });
+	    };
 	    KnowledgeService.prototype.handleError = function (error) {
 	        console.error(error);
 	        return Observable_1.Observable.throw(error.json().error || 'Server error');
@@ -457,115 +1345,11 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 49 */,
-/* 50 */,
-/* 51 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	/**
-	 * Created by GiangDH on 5/19/16.
-	 */
-	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(57);
-	var Observable_1 = __webpack_require__(2);
-	var AuthService = (function () {
-	    function AuthService(_http) {
-	        this._http = _http;
-	        this._regUrl = '/api/user/';
-	        this._loginUrl = '/api/login';
-	        this._logOutUrl = '/api/logout';
-	        this._checkLoginUrl = '/api/checkLogin/';
-	    }
-	    AuthService.prototype.login = function (user) {
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _user = JSON.stringify({
-	            username: user.username,
-	            password: user.password
-	        });
-	        var usertoken = user.username;
-	        return this._http.post(this._loginUrl, _user, options)
-	            .map(function (res) { return res.json(); });
-	    };
-	    AuthService.prototype.register = function (user) {
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _user = JSON.stringify({
-	            username: user.username,
-	            password: user.password,
-	            email: user.email
-	        });
-	        return this._http.post(this._regUrl, _user, options)
-	            .map(function (res) { return res.json(); })
-	            .catch(this.handleError);
-	    };
-	    AuthService.prototype.logout = function () {
-	        return this._http.get(this._logOutUrl)
-	            .map(function (res) { return res.json(); })
-	            .catch(this.handleError);
-	    };
-	    AuthService.prototype.logoutClient = function () {
-	        localStorage.removeItem('username');
-	        localStorage.removeItem('userrole');
-	    };
-	    AuthService.prototype.isLoggedIn = function () {
-	        return this._http.get(this._checkLoginUrl).map(function (res) { return res.json(); }).catch(this.handleError);
-	    };
-	    AuthService.prototype.dashboardFilter = function () {
-	        var roleToken = localStorage.getItem('userrole');
-	        if (!roleToken) {
-	            return false;
-	        }
-	        else if (roleToken !== 'admin') {
-	            return false;
-	        }
-	        return true;
-	    };
-	    AuthService.prototype.handleError = function (error) {
-	        return Observable_1.Observable.throw(error.json());
-	    };
-	    AuthService = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-	    ], AuthService);
-	    return AuthService;
-	    var _a;
-	}());
-	exports.AuthService = AuthService;
-	
-
-/***/ },
-/* 52 */,
-/* 53 */,
-/* 54 */,
 /* 55 */,
 /* 56 */,
-/* 57 */,
-/* 58 */,
-/* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */
+/* 57 */
 /***/ function(module, exports, __webpack_require__) {
 
-	/**
-	 * Created by GiangDH on 5/8/16.
-	 */
 	"use strict";
 	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
 	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -577,200 +1361,68 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(57);
-	var Observable_1 = __webpack_require__(2);
-	var UserService = (function () {
-	    function UserService(_http) {
+	var http_1 = __webpack_require__(35);
+	var NotificationService = (function () {
+	    function NotificationService(_http) {
 	        this._http = _http;
-	        this._usersUrl = '/api/user/:id';
-	        this._profilePictureUrl = '/api/user-picture';
-	        this._friendUrl = '/api/friendship/:id';
-	        this._getFriendUrl = '/api/getFriendship';
-	        this._getRequestByUserUrl = '/api/requests-user/:user';
-	        this._isUserExistUrl = '/api/is-user-exist/:username';
-	        this._friendshipStatusUrl = '/api/friendship-status/:user1/:user2';
+	        this._getNotificationUrl = '/api/getNotification/:id';
+	        this._notificationUrl = '/api/notification';
+	        this._statusNotificationUrl = '/api/change-status-notification/:user';
 	    }
-	    UserService.prototype.getAllUsers = function () {
-	        return this._http.get(this._usersUrl.replace(':id', ''))
-	            .map(function (res) { return res.json(); })
-	            .catch(this.handleError);
-	    };
-	    UserService.prototype.getUserById = function (id) {
-	        return this._http.get(this._usersUrl.replace(':id', id))
-	            .map(function (r) { return r.json(); })
-	            .catch(this.handleError);
-	    };
-	    //get user informations by username
-	    UserService.prototype.getUserByUserName = function (user) {
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _search = JSON.stringify({
-	            username: user
-	        });
-	        return this._http.put(this._usersUrl.replace(':id', ''), _search, options)
-	            .map(function (r) { return r.json(); })
-	            .catch(this.handleError);
-	    };
-	    UserService.prototype.addUser = function (user) {
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json', 'Connection': 'keep-alive' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var formatDate = function (date) {
-	            if (date) {
-	                var newDate, day, month, year;
-	                year = date.substr(6, 4);
-	                day = date.substr(3, 2);
-	                month = date.substr(0, 2);
-	                return newDate = year + '-' + month + '-' + day;
-	            }
-	        };
-	        var _user = JSON.stringify({
-	            firstName: user.firstName,
-	            lastName: user.lastName,
-	            displayName: user.displayName,
-	            birthday: user.birthday,
-	            username: user.username,
-	            password: user.password,
-	            email: user.email,
-	            role: user.role,
-	            ownKnowledgeId: user.ownKnowledgeId,
-	            interestedKnowledgeId: user.interestedKnowledgeId,
-	            onlineTime: user.onlineTime
-	        });
-	        return this._http
-	            .post(this._usersUrl.replace(':id', ''), _user, options)
-	            .map(function (r) { return r.json(); });
-	    };
-	    UserService.prototype.updateUser = function (user) {
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _user = JSON.stringify({
-	            _id: user._id,
-	            firstName: user.firstName,
-	            lastName: user.lastName,
-	            displayName: user.displayName,
-	            username: user.username,
-	            password: user.password,
-	            email: user.email,
-	            role: user.role,
-	            linkImg: user.linkImg
-	        });
-	        return this._http
-	            .put(this._usersUrl.replace(':id', user._id), _user, options)
-	            .map(function (r) { return r.json(); });
-	    };
-	    UserService.prototype.updateAvartaLink = function (user, link) {
-	        var header = new http_1.Headers;
+	    NotificationService.prototype.getNotificationByUser = function (username, num) {
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
 	        var _info = JSON.stringify({
-	            username: user,
-	            linkImg: link
+	            user: username,
+	            num: num
 	        });
-	        console.log(_info);
-	        return this._http
-	            .post(this._profilePictureUrl, _info, options);
-	    };
-	    //add friend service
-	    UserService.prototype.addFriend = function (requestUser, acceptUser) {
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _friendship = JSON.stringify({
-	            user1: requestUser,
-	            user2: acceptUser
-	        });
-	        return this._http
-	            .post(this._friendUrl.replace(':id', ''), _friendship, options)
+	        return this._http.post(this._getNotificationUrl.replace(':id', ''), _info, options)
 	            .map(function (r) { return r.json(); });
 	    };
-	    //select friend of logined user
-	    UserService.prototype.getFriendList = function (currentUser) {
+	    NotificationService.prototype.alertNotification = function (title, user, link) {
+	        var socket = io('https://localhost:80');
+	        socket.emit('send notification', {
+	            title: title,
+	            link: link,
+	            user: user
+	        });
+	    };
+	    NotificationService.prototype.createNotification = function (title, user, link) {
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _friendship = JSON.stringify({
-	            user: currentUser
+	        var _info = JSON.stringify({
+	            title: title,
+	            user: user,
+	            link: link
 	        });
-	        return this._http
-	            .post(this._getFriendUrl, _friendship, options)
+	        return this._http.post(this._notificationUrl, _info, options)
 	            .map(function (r) { return r.json(); });
 	    };
-	    //get request of an user
-	    UserService.prototype.getRequestByUser = function (user) {
-	        return this._http
-	            .get(this._getRequestByUserUrl.replace(':user', user))
-	            .map(function (r) { return r.json(); })
-	            .catch(this.handleError);
-	    };
-	    //delete friend request
-	    UserService.prototype.deleteFriendRequest = function (user1, user2) {
+	    NotificationService.prototype.createNotificationAdmin = function (title, link) {
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _friendship = JSON.stringify({
-	            requestUser: user1,
-	            acceptUser: user2
+	        var _info = JSON.stringify({
+	            title: title,
+	            link: link
 	        });
-	        return this._http
-	            .put(this._friendUrl.replace(':id', ''), _friendship, options);
+	        return this._http.put(this._notificationUrl, _info, options)
+	            .map(function (r) { return r.json(); });
 	    };
-	    //if user is exist, return 1, else return 0
-	    UserService.prototype.checkUserExist = function (username) {
-	        return this._http
-	            .get(this._isUserExistUrl.replace(':username', username));
+	    NotificationService.prototype.changeStatusNotification = function (user) {
+	        return this._http.get(this._statusNotificationUrl.replace(':user', user));
 	    };
-	    UserService.prototype.acceptFriendRequest = function (user1, user2) {
-	        console.log(user1 + ' ' + user2);
-	        return this._http
-	            .get(this._friendshipStatusUrl.replace(':user1', user1).replace(':user2', user2));
-	    };
-	    UserService.prototype.makeFileRequest = function (url, params, files) {
-	        return new Promise(function (resolve, reject) {
-	            var formData = new FormData();
-	            var xhr = new XMLHttpRequest();
-	            for (var i = 0; i < files.length; i++) {
-	                formData.append("uploads[]", files[i], files[i].name);
-	            }
-	            xhr.onreadystatechange = function () {
-	                if (xhr.readyState == 4) {
-	                    if (xhr.status == 200) {
-	                        resolve(JSON.parse(xhr.response));
-	                    }
-	                    else {
-	                        reject(xhr.response);
-	                    }
-	                }
-	            };
-	            xhr.open("POST", url, true);
-	            xhr.send(formData);
-	        });
-	    };
-	    UserService.prototype.handleError = function (error) {
-	        return Observable_1.Observable.throw(error);
-	    };
-	    UserService = __decorate([
+	    NotificationService = __decorate([
 	        core_1.Injectable(), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-	    ], UserService);
-	    return UserService;
+	    ], NotificationService);
+	    return NotificationService;
 	    var _a;
 	}());
-	exports.UserService = UserService;
+	exports.NotificationService = NotificationService;
 	
 
 /***/ },
-/* 68 */,
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */
+/* 58 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -784,34 +1436,82 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(57);
+	var http_1 = __webpack_require__(35);
 	var Observable_1 = __webpack_require__(2);
 	var RequestService = (function () {
 	    function RequestService(_http) {
 	        this._http = _http;
 	        this._requestsUrl = '/api/requests/:id';
+	        this._requestUserUrl = '/api/requests-user';
+	        this._requestsAdminUrl = '/api/requests-admin/:id';
 	        this._getKnowledgeByParentUrl = '/api/knowledges/parent/:id';
 	        this._searchRequetsUrl = '/api/requests-search/:id';
 	        this._statusSubcriberUrl = '/api/requests-subcriber/:id';
 	        this._requestStatusUrl = '/api/requests-status/:id';
+	        this._kspaceUrl = '/api/kspace-request/:rid';
 	    }
-	    RequestService.prototype.getAllRequests = function () {
-	        return this._http.get(this._requestsUrl.replace(':id', ''))
-	            .map(function (r) { return r.json(); })
-	            .catch(this.handleError);
-	    };
-	    RequestService.prototype.addRequest = function (request) {
+	    RequestService.prototype.getAllRequests = function (num) {
 	        var header = new http_1.Headers;
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _request = JSON.stringify({
-	            title: request.title,
-	            description: request.description,
-	            knowledgeId: request.knowledgeId,
-	            user: request.user
+	        var _data = JSON.stringify({
+	            num: num
+	        });
+	        return this._http.put(this._requestUserUrl.replace(':id', ''), _data, options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    RequestService.prototype.getKspaceByRId = function (id) {
+	        return this._http.get(this._kspaceUrl.replace(':rid', id))
+	            .map(function (kspace) { return kspace.json(); });
+	    };
+	    //get all request which user's ownknowledgeIds same with tagid of request
+	    RequestService.prototype.getRequestByUserTags = function (tags, num) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            userTags: tags,
+	            x: num
+	        });
+	        return this._http.put(this._requestsUrl.replace(':id', ''), _data, options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    //get all request which user's ownknowledgeIds not same with tagid of request
+	    RequestService.prototype.getRequestExceptUserTags = function (tags, num) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            userTags: tags,
+	            x: num
+	        });
+	        return this._http.post(this._requestUserUrl, _data, options)
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    RequestService.prototype.getAllRequestAdmin = function () {
+	        return this._http.get(this._requestsAdminUrl.replace(':id', ''))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    RequestService.prototype.addRequest = function (request, content, oldTag, newTag) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            request: {
+	                title: request.title,
+	                description: content,
+	                knowledgeId: request.knowledgeId,
+	                user: request.user,
+	                tags: oldTag
+	            },
+	            newTag: newTag
 	        });
 	        return this._http
-	            .post(this._requestsUrl.replace(':id', ''), _request, options)
+	            .post(this._requestsUrl.replace(':id', ''), _data, options)
 	            .map(function (r) { return r.json(); });
 	    };
 	    RequestService.prototype.getRequestById = function (id) {
@@ -830,19 +1530,25 @@ webpackJsonp([2],[
 	            .delete(this._requestsUrl.replace(':id', id))
 	            .map(function (r) { return r.json(); });
 	    };
-	    RequestService.prototype.updateRequest = function (request) {
+	    RequestService.prototype.updateRequest = function (request, oldTag, newTag) {
 	        var header = new http_1.Headers;
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _request = JSON.stringify({
-	            _id: '',
-	            title: request.title,
-	            description: request.description,
-	            knowledgeId: request.knowledgeId
+	        var _data = JSON.stringify({
+	            rq: {
+	                _id: '',
+	                title: request.title,
+	                description: request.description,
+	                knowledgeId: request.knowledgeId,
+	                status: request.status,
+	                tags: oldTag,
+	                subscribers: request.subscribers
+	            },
+	            newTag: newTag
 	        });
-	        console.log(_request);
+	        console.log(_data);
 	        return this._http
-	            .put(this._requestsUrl.replace(':id', request._id), _request, options)
+	            .put(this._requestsUrl.replace(':id', request._id), _data, options)
 	            .map(function (r) { return r.json(); });
 	    };
 	    RequestService.prototype.getRequestByKnowledgeId = function (id) {
@@ -856,7 +1562,7 @@ webpackJsonp([2],[
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
 	    };
-	    //add a subcriber to templates subcribers
+	    //add a subcriber to templates subscribers
 	    RequestService.prototype.updateSubcriber = function (id, subcriber) {
 	        var header = new http_1.Headers;
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
@@ -898,6 +1604,270 @@ webpackJsonp([2],[
 	
 
 /***/ },
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var http_1 = __webpack_require__(35);
+	var Observable_1 = __webpack_require__(2);
+	var KSpaceService = (function () {
+	    function KSpaceService(_http) {
+	        this._http = _http;
+	        this._kspaceUrl = '/api/kspace/:id';
+	        this._kspace_profile = '/api/kspace-profile/:name';
+	    }
+	    KSpaceService.prototype.getKspaceProfile = function (name) {
+	        return this._http.get(this._kspace_profile.replace(':name', name))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    KSpaceService.prototype.getAllKSpace = function () {
+	        return this._http.get(this._kspaceUrl.replace(':id', ''))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    KSpaceService.prototype.getKSpaceById = function (id) {
+	        return this._http.get(this._kspaceUrl.replace(':id', id))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    KSpaceService.prototype.finish = function (id) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        return this._http
+	            .put(this._kspaceUrl.replace(':id', id), options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    KSpaceService.prototype.addKSpace = function (kspace) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _kspace = JSON.stringify({
+	            lecturer: kspace.lecturer,
+	            learners: kspace.learners,
+	            requestId: kspace.requestId,
+	            requestTitle: kspace.requestTitle,
+	            offerId: kspace.offerId,
+	            tags: kspace.tags
+	        });
+	        return this._http
+	            .post(this._kspaceUrl.replace(':id', ''), _kspace, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    KSpaceService.prototype.createReview = function (data) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var api = '/api/kspace/:id/review';
+	        return this._http.post(api.replace(':id', data.id), data, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    KSpaceService.prototype.createPublicKspace = function (guest) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var api = '/api/public-kspace';
+	        return this._http.post(api, { name: guest }, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    KSpaceService.prototype.joinPublicKspace = function (guest, room) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var api = '/api/public-kspace/:id';
+	        return this._http.put(api.replace(':id', room), { name: guest }, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    KSpaceService.prototype.checkPublicKspace = function (id) {
+	        var api = '/api/public-kspace/:id';
+	        return this._http.get(api.replace(':id', id))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    KSpaceService.prototype.handleError = function (error) {
+	        console.error(error);
+	        return Observable_1.Observable.throw(error || 'server error');
+	    };
+	    KSpaceService = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+	    ], KSpaceService);
+	    return KSpaceService;
+	    var _a;
+	}());
+	exports.KSpaceService = KSpaceService;
+	
+
+/***/ },
+/* 66 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 7/19/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var http_1 = __webpack_require__(35);
+	var TagService = (function () {
+	    function TagService(_http) {
+	        this._http = _http;
+	        this._tagUrl = '/api/tags/:id';
+	        this._activeTag = '/api/tags/active/:id';
+	        this._reqUrl = '/api/tag/req/:id';
+	        this._deactiveTag = '/api/tag/deactive/:id';
+	        this._tagAdminUrl = '/api/tags-admin';
+	    }
+	    TagService.prototype.getAllTag = function () {
+	        return this._http.get(this._tagUrl.replace(':id', ''))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    TagService.prototype.getAllTagAdmin = function () {
+	        return this._http.get(this._tagAdminUrl.replace(':id', ''))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    TagService.prototype.getAllDeactiveTag = function () {
+	        return this._http.get(this._deactiveTag.replace(':id', ''))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    TagService.prototype.getArtByTag = function (id) {
+	        return this._http.get(this._tagUrl.replace(':id', id))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    TagService.prototype.getReqByTag = function (id) {
+	        return this._http.get(this._reqUrl.replace(':id', id))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    TagService.prototype.getTagsByIds = function (ids) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            ids: ids
+	        });
+	        return this._http
+	            .post('/api/tags/TagNames', _data, options)
+	            .map(function (r) { return r.json(); }).catch(this.handleError);
+	    };
+	    TagService.prototype.activeTag = function (id) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        return this._http.get(this._activeTag.replace(':id', id))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    TagService.prototype.deactivateTag = function (id) {
+	        return this._http
+	            .delete(this._tagUrl.replace(':id', id))
+	            .map(function (r) { return r.json(); }).catch(this.handleError);
+	    };
+	    TagService = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+	    ], TagService);
+	    return TagService;
+	    var _a;
+	}());
+	exports.TagService = TagService;
+	
+
+/***/ },
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 8/15/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var tag_1 = __webpack_require__(66);
+	var listTagComponent = (function () {
+	    function listTagComponent(router, route, _tagService) {
+	        this.router = router;
+	        this.route = route;
+	        this._tagService = _tagService;
+	    }
+	    listTagComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._tagService.getTagsByIds(this.listTagId).subscribe(function (tags) {
+	            _this.tags = tags;
+	        });
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], listTagComponent.prototype, "listTagId", void 0);
+	    listTagComponent = __decorate([
+	        core_1.Component({
+	            selector: 'tags',
+	            templateUrl: 'client/dev/app/components/front-end/tag/templates/tag.html',
+	            styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ],
+	            providers: [tag_1.TagService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _c) || Object])
+	    ], listTagComponent);
+	    return listTagComponent;
+	    var _a, _b, _c;
+	}());
+	exports.listTagComponent = listTagComponent;
+	
+
+/***/ },
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
 /* 83 */,
 /* 84 */,
 /* 85 */,
@@ -943,22 +1913,56 @@ webpackJsonp([2],[
 /* 125 */,
 /* 126 */,
 /* 127 */,
-/* 128 */,
-/* 129 */,
-/* 130 */,
-/* 131 */,
-/* 132 */,
-/* 133 */,
-/* 134 */,
-/* 135 */,
-/* 136 */,
-/* 137 */,
-/* 138 */,
-/* 139 */,
-/* 140 */,
-/* 141 */,
-/* 142 */,
-/* 143 */
+/* 128 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 5/18/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var article_1 = __webpack_require__(41);
+	var topArticlesComponent = (function () {
+	    function topArticlesComponent(_articleService, router) {
+	        this._articleService = _articleService;
+	        this.router = router;
+	        this.articles = [];
+	    }
+	    topArticlesComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._articleService.topArticle().subscribe(function (articles) {
+	            _this.articles = articles;
+	        });
+	    };
+	    topArticlesComponent = __decorate([
+	        core_1.Component({
+	            selector: 'top-articles',
+	            templateUrl: 'client/dev/app/components/front-end/newsfeed/templates/topArticles.html',
+	            styleUrls: ['client/dev/app/components/front-end/newsfeed/styles/newsfeed.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
+	    ], topArticlesComponent);
+	    return topArticlesComponent;
+	    var _a, _b;
+	}());
+	exports.topArticlesComponent = topArticlesComponent;
+	
+
+/***/ },
+/* 129 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -972,7 +1976,92 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
+	var http_1 = __webpack_require__(35);
+	var Observable_1 = __webpack_require__(2);
+	var ChatService = (function () {
+	    function ChatService(_http) {
+	        this._http = _http;
+	        this._chatRoomUrl = '/api/chat-rooms/:user';
+	    }
+	    ChatService.prototype.getAllChatRoomOfUser = function (username) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        return this._http
+	            .get(this._chatRoomUrl.replace(':user', username), options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    ChatService.prototype.createChatRoomAdmin = function (user1, user2) {
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            user1: user1,
+	            user2: user2
+	        });
+	        return this._http
+	            .post(this._chatRoomUrl.replace(':user', ''), _data, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    ChatService.prototype.handleError = function (error) {
+	        return Observable_1.Observable.throw(error.json().error || 'Server error');
+	    };
+	    ChatService = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+	    ], ChatService);
+	    return ChatService;
+	    var _a;
+	}());
+	exports.ChatService = ChatService;
+	
+
+/***/ },
+/* 130 */,
+/* 131 */,
+/* 132 */,
+/* 133 */
+/***/ function(module, exports, __webpack_require__) {
+
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	__export(__webpack_require__(1065));
+
+
+/***/ },
+/* 134 */,
+/* 135 */,
+/* 136 */,
+/* 137 */,
+/* 138 */,
+/* 139 */,
+/* 140 */,
+/* 141 */,
+/* 142 */,
+/* 143 */,
+/* 144 */,
+/* 145 */,
+/* 146 */,
+/* 147 */,
+/* 148 */,
+/* 149 */,
+/* 150 */,
+/* 151 */,
+/* 152 */,
+/* 153 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var domhandler_1 = __webpack_require__(12);
 	var Button = (function () {
 	    function Button(el, domHandler) {
 	        this.el = el;
@@ -1119,7 +2208,536 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 144 */
+/* 154 */,
+/* 155 */,
+/* 156 */,
+/* 157 */,
+/* 158 */,
+/* 159 */,
+/* 160 */,
+/* 161 */,
+/* 162 */,
+/* 163 */,
+/* 164 */,
+/* 165 */,
+/* 166 */,
+/* 167 */,
+/* 168 */,
+/* 169 */,
+/* 170 */,
+/* 171 */,
+/* 172 */,
+/* 173 */,
+/* 174 */,
+/* 175 */,
+/* 176 */,
+/* 177 */,
+/* 178 */,
+/* 179 */,
+/* 180 */,
+/* 181 */,
+/* 182 */,
+/* 183 */,
+/* 184 */,
+/* 185 */,
+/* 186 */,
+/* 187 */,
+/* 188 */,
+/* 189 */,
+/* 190 */,
+/* 191 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var __param = (this && this.__param) || function (paramIndex, decorator) {
+	    return function (target, key) { decorator(target, key, paramIndex); }
+	};
+	var core_1 = __webpack_require__(1);
+	var requests_1 = __webpack_require__(58);
+	var knowledge_1 = __webpack_require__(54);
+	var tag_1 = __webpack_require__(66);
+	var primeng_1 = __webpack_require__(31);
+	var private_chat_1 = __webpack_require__(11);
+	var router_1 = __webpack_require__(4);
+	var common_1 = __webpack_require__(6);
+	var CKEditor = (function () {
+	    function CKEditor(_elm, _requestService, router, route) {
+	        var _this = this;
+	        this._requestService = _requestService;
+	        this.router = router;
+	        this.route = route;
+	        CKEDITOR.replace(_elm.nativeElement);
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	        });
+	    }
+	    CKEditor.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._requestService.getRequestById(this.id).subscribe(function (request) {
+	            _this.req = request;
+	            CKEDITOR.instances.editor1.setData(_this.req.description + '');
+	        });
+	    };
+	    CKEditor = __decorate([
+	        core_1.Component({
+	            selector: 'ck-editor',
+	            template: "",
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
+	    ], CKEditor);
+	    return CKEditor;
+	    var _a, _b, _c, _d;
+	}());
+	var UpdateRequestComponent = (function () {
+	    function UpdateRequestComponent(fb, _requestService, router, route, _tagService, _knowledgeService) {
+	        var _this = this;
+	        this._requestService = _requestService;
+	        this.router = router;
+	        this.route = route;
+	        this._tagService = _tagService;
+	        this._knowledgeService = _knowledgeService;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	        });
+	        this.updateRequestFormCli = fb.group({
+	            "_id": [""],
+	            "title": [""],
+	            "description": [""],
+	            "knowledgeId": [""],
+	            "status": [""]
+	        });
+	    }
+	    UpdateRequestComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        //get all back.knowledge
+	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            _this.CreateUploadImageCkeditor();
+	            _this.CreateYoutubeBtnCkeditor();
+	            _this.addCommandBtnCk();
+	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+	            _this._requestService.getRequestById(_this.id).subscribe(function (request) {
+	                _this._knowledgeService.findKnowledgeById(request.knowledgeId).subscribe(function (knowledge) {
+	                    _this.kname = knowledge.name;
+	                    _this.knowledgeId = knowledge._id;
+	                });
+	                var ids = [];
+	                ids = request.tags;
+	                _this._tagService.getTagsByIds(ids).subscribe(function (tags) {
+	                    _this.request = request;
+	                    _this.title = request.title;
+	                    _this.description = request.description;
+	                    _this._id = request._id;
+	                    _this.status = request.status;
+	                    var nameArr = [];
+	                    for (var _i = 0, tags_1 = tags; _i < tags_1.length; _i++) {
+	                        var e = tags_1[_i];
+	                        nameArr.push(e.name);
+	                    }
+	                    _this.tags = nameArr;
+	                    _this.loadAllTags();
+	                    $('.collapsible').collapsible({});
+	                });
+	            }, function (error) {
+	                console.log(error.text());
+	            });
+	        });
+	    };
+	    UpdateRequestComponent.prototype.openModalImg = function () {
+	        $('#ModalUploadImgCkeditor').openModal();
+	    };
+	    UpdateRequestComponent.prototype.openModalYoutube = function () {
+	        $('#ModalYTCkeditor').openModal();
+	    };
+	    UpdateRequestComponent.prototype.insertLinkToBox = function (link) {
+	        CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
+	    };
+	    UpdateRequestComponent.prototype.insertYoutubeToBox = function (link) {
+	        //https://www.youtube.com/watch?v=mraul5-1TBE
+	        var i = link.indexOf("=");
+	        link = link.substring(i + 1, link.length);
+	        var s = '<p><iframe frameborder="0" height="315" scrolling="no" src="https://www.youtube.com/embed/' + link + '" width="500"></iframe></p>';
+	        CKEDITOR.instances.editor1.insertHtml(s);
+	    };
+	    UpdateRequestComponent.prototype.addCommandBtnCk = function () {
+	        CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
+	        CKEDITOR.instances.editor1.addCommand('youtube', { exec: this.openModalYoutube });
+	    };
+	    UpdateRequestComponent.prototype.CreateUploadImageCkeditor = function () {
+	        CKEDITOR.instances.editor1.ui.addButton('uploadImage', {
+	            label: 'Upload Image',
+	            command: 'uploadImage',
+	            icon: '/client/dev/asserts/images/icon-img-ck.png'
+	        });
+	    };
+	    UpdateRequestComponent.prototype.CreateYoutubeBtnCkeditor = function () {
+	        CKEDITOR.instances.editor1.ui.addButton('youtube', {
+	            label: 'Add youtube',
+	            command: 'youtube',
+	            icon: '/client/dev/asserts/images/icon-youtube.png'
+	        });
+	    };
+	    UpdateRequestComponent.prototype.filterONTag = function () {
+	        var oldTag = [];
+	        if (this.tags.length > 0) {
+	            for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	                var e = _a[_i];
+	                for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                    var e1 = _c[_b];
+	                    if (e.name == e1) {
+	                        oldTag.push(e._id);
+	                        var index = this.tags.indexOf(e1);
+	                        if (index > -1) {
+	                            this.tags.splice(index, 1);
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	        return [oldTag, this.tags];
+	    };
+	    UpdateRequestComponent.prototype.filterKnw = function (event) {
+	        var query = event.query;
+	        this.filteredKnw = [];
+	        for (var i = 0; i < this.tagsEx.length; i++) {
+	            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
+	                this.filteredKnw.push(this.tagsEx[i].name);
+	            }
+	            if (this.filteredKnw.indexOf(query.trim()) < 0) {
+	                this.filteredKnw.unshift(query.trim());
+	            }
+	        }
+	    };
+	    //load all knowledge
+	    UpdateRequestComponent.prototype.loadAllTags = function () {
+	        var _this = this;
+	        this._tagService.getAllTag().subscribe(function (tags) {
+	            _this.tagsEx = tags;
+	        });
+	    };
+	    // ckeditor
+	    UpdateRequestComponent.prototype.makeFileRequest = function (url, params, files) {
+	        return new Promise(function (resolve, reject) {
+	            var formData = new FormData();
+	            var xhr = new XMLHttpRequest();
+	            for (var i = 0; i < files.length; i++) {
+	                formData.append("uploads[]", files[i], files[i].name);
+	            }
+	            xhr.onreadystatechange = function () {
+	                if (xhr.readyState == 4) {
+	                    if (xhr.status == 200) {
+	                        resolve(JSON.parse(xhr.response));
+	                    }
+	                    else {
+	                        reject(xhr.response);
+	                    }
+	                }
+	            };
+	            xhr.open("POST", url, true);
+	            xhr.send(formData);
+	        });
+	    };
+	    // uploading image
+	    UpdateRequestComponent.prototype.uploadImageCk = function () {
+	        if (this.filesToUpload) {
+	            this.makeFileRequest("/api/media", [], this.filesToUpload).then(function (result) {
+	                var link = '/uploads/' + result[0].filename;
+	                CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" style="height:536px; width:858px" /></p>');
+	            }, function (error) {
+	                console.error(error);
+	            });
+	        }
+	    };
+	    //action button upload
+	    UpdateRequestComponent.prototype.fileChangeEvent = function (fileInput) {
+	        this.filesToUpload = fileInput.target.files;
+	    };
+	    UpdateRequestComponent.prototype.updateRequest = function (request) {
+	        var _this = this;
+	        var tags = [];
+	        tags = this.filterONTag();
+	        request.description = CKEDITOR.instances.editor1.getData();
+	        this._requestService.updateRequest(request, tags[0], tags[1]).subscribe(function (request) {
+	            _this.router.navigateByUrl('/requests/' + request._id + '/info');
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	    };
+	    UpdateRequestComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-update-cli',
+	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-update.html',
+	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, primeng_1.AutoComplete, CKEditor, private_chat_1.PrivateChatComponent],
+	            providers: [tag_1.TagService]
+	        }),
+	        __param(0, core_1.Inject(common_1.FormBuilder)),
+	        __param(1, core_1.Inject(requests_1.RequestService)),
+	        __param(5, core_1.Inject(knowledge_1.KnowledgeService)), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object, (typeof (_e = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _e) || Object, (typeof (_f = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _f) || Object])
+	    ], UpdateRequestComponent);
+	    return UpdateRequestComponent;
+	    var _a, _b, _c, _d, _e, _f;
+	}());
+	exports.UpdateRequestComponent = UpdateRequestComponent;
+	
+
+/***/ },
+/* 192 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 8/10/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var http_1 = __webpack_require__(35);
+	var PagerService = (function () {
+	    function PagerService(_http) {
+	        this._http = _http;
+	        this._url = '/api/page/col/:start/:stt';
+	        this._urlTot = '/api/page/col/:stt';
+	    }
+	    PagerService.prototype.getAPage = function (col, start, stt) {
+	        return this._http.get(this._url.replace(':start', start).replace(':stt', stt).replace('col', col))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    PagerService.prototype.getTotalNum = function (col, stt) {
+	        return this._http.get(this._urlTot.replace(':stt', stt).replace('col', col))
+	            .map(function (r) { return r.json(); })
+	            .catch(this.handleError);
+	    };
+	    PagerService = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+	    ], PagerService);
+	    return PagerService;
+	    var _a;
+	}());
+	exports.PagerService = PagerService;
+	
+
+/***/ },
+/* 193 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var http_1 = __webpack_require__(35);
+	var Observable_1 = __webpack_require__(2);
+	var ReportService = (function () {
+	    function ReportService(_http) {
+	        this._http = _http;
+	        this._Url = '/api/reports/:id';
+	        this._StatusUrl = '/api/reports-status/:status';
+	    }
+	    ReportService.prototype.addReport = function (report) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _report = JSON.stringify({
+	            title: report.title,
+	            content: report.content,
+	            user: report.user,
+	            link: report.link,
+	            reportedUser: report.reportedUser
+	        });
+	        return this._http
+	            .post(this._Url.replace(':id', ''), _report, options)
+	            .map(function (r) { return r.json(); });
+	    };
+	    ReportService.prototype.getAllReports = function (status) {
+	        return this._http
+	            .get(this._StatusUrl.replace(':status', status))
+	            .map(function (r) { return r.json(); });
+	    };
+	    ReportService.prototype.deactivateReport = function (id) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _report = JSON.stringify({
+	            status: 'deactive'
+	        });
+	        return this._http
+	            .put(this._Url.replace(':id', id), _report, options);
+	    };
+	    ReportService.prototype.changeStatusHandling = function (id) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _report = JSON.stringify({
+	            status: 'handling'
+	        });
+	        return this._http
+	            .put(this._Url.replace(':id', id), _report, options);
+	    };
+	    ReportService.prototype.handleError = function (error) {
+	        console.error(error);
+	        return Observable_1.Observable.throw(error.json().error || 'Server error');
+	    };
+	    ReportService = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
+	    ], ReportService);
+	    return ReportService;
+	    var _a;
+	}());
+	exports.ReportService = ReportService;
+	
+
+/***/ },
+/* 194 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	var Subject_1 = __webpack_require__(20);
+	/**
+	 * @class AsyncSubject<T>
+	 */
+	var AsyncSubject = (function (_super) {
+	    __extends(AsyncSubject, _super);
+	    function AsyncSubject() {
+	        _super.apply(this, arguments);
+	        this.value = null;
+	        this.hasNext = false;
+	    }
+	    AsyncSubject.prototype._subscribe = function (subscriber) {
+	        if (this.hasCompleted && this.hasNext) {
+	            subscriber.next(this.value);
+	        }
+	        return _super.prototype._subscribe.call(this, subscriber);
+	    };
+	    AsyncSubject.prototype._next = function (value) {
+	        this.value = value;
+	        this.hasNext = true;
+	    };
+	    AsyncSubject.prototype._complete = function () {
+	        var index = -1;
+	        var observers = this.observers;
+	        var len = observers.length;
+	        // optimization to block our SubjectSubscriptions from
+	        // splicing themselves out of the observers list one by one.
+	        this.isUnsubscribed = true;
+	        if (this.hasNext) {
+	            while (++index < len) {
+	                var o = observers[index];
+	                o.next(this.value);
+	                o.complete();
+	            }
+	        }
+	        else {
+	            while (++index < len) {
+	                observers[index].complete();
+	            }
+	        }
+	        this.isUnsubscribed = false;
+	        this.unsubscribe();
+	    };
+	    return AsyncSubject;
+	}(Subject_1.Subject));
+	exports.AsyncSubject = AsyncSubject;
+	//# sourceMappingURL=AsyncSubject.js.map
+
+/***/ },
+/* 195 */,
+/* 196 */,
+/* 197 */,
+/* 198 */,
+/* 199 */,
+/* 200 */,
+/* 201 */,
+/* 202 */,
+/* 203 */
+/***/ function(module, exports) {
+
+	"use strict";
+	var __extends = (this && this.__extends) || function (d, b) {
+	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+	    function __() { this.constructor = d; }
+	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
+	};
+	/**
+	 * An error thrown when an Observable or a sequence was queried but has no
+	 * elements.
+	 *
+	 * @see {@link first}
+	 * @see {@link last}
+	 * @see {@link single}
+	 *
+	 * @class EmptyError
+	 */
+	var EmptyError = (function (_super) {
+	    __extends(EmptyError, _super);
+	    function EmptyError() {
+	        _super.call(this, 'no elements in sequence');
+	        this.name = 'EmptyError';
+	    }
+	    return EmptyError;
+	}(Error));
+	exports.EmptyError = EmptyError;
+	//# sourceMappingURL=EmptyError.js.map
+
+/***/ },
+/* 204 */
+/***/ function(module, exports) {
+
+	"use strict";
+	function isDate(value) {
+	    return value instanceof Date && !isNaN(+value);
+	}
+	exports.isDate = isDate;
+	//# sourceMappingURL=isDate.js.map
+
+/***/ },
+/* 205 */,
+/* 206 */,
+/* 207 */,
+/* 208 */,
+/* 209 */,
+/* 210 */,
+/* 211 */,
+/* 212 */,
+/* 213 */,
+/* 214 */,
+/* 215 */,
+/* 216 */,
+/* 217 */,
+/* 218 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1197,443 +2815,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 145 */,
-/* 146 */,
-/* 147 */,
-/* 148 */,
-/* 149 */,
-/* 150 */,
-/* 151 */,
-/* 152 */,
-/* 153 */,
-/* 154 */,
-/* 155 */,
-/* 156 */,
-/* 157 */,
-/* 158 */,
-/* 159 */,
-/* 160 */,
-/* 161 */,
-/* 162 */,
-/* 163 */,
-/* 164 */,
-/* 165 */,
-/* 166 */,
-/* 167 */,
-/* 168 */,
-/* 169 */,
-/* 170 */,
-/* 171 */,
-/* 172 */,
-/* 173 */,
-/* 174 */,
-/* 175 */,
-/* 176 */,
-/* 177 */,
-/* 178 */,
-/* 179 */,
-/* 180 */,
-/* 181 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var __param = (this && this.__param) || function (paramIndex, decorator) {
-	    return function (target, key) { decorator(target, key, paramIndex); }
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(19);
-	var router_1 = __webpack_require__(7);
-	//services
-	var badword_1 = __webpack_require__(182);
-	var UpdateBadwordComponent = (function () {
-	    function UpdateBadwordComponent(fb, _badwordService, router, route) {
-	        var _this = this;
-	        this._badwordService = _badwordService;
-	        this.router = router;
-	        this.route = route;
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.id = params['id'];
-	        });
-	        this.updateBadwordForm = fb.group({
-	            "word": [""],
-	            "_id": [""],
-	        });
-	    }
-	    UpdateBadwordComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this._badwordService.findBadwordById(this.id).subscribe(function (badword) {
-	            _this.badword = badword;
-	            _this.word = badword.word;
-	            _this._id = badword._id;
-	        }, function (error) {
-	            console.log(error.text());
-	        });
-	    };
-	    UpdateBadwordComponent.prototype.updateBadword = function (badword) {
-	        this._badwordService.updateBadword(badword).subscribe(function (badword) {
-	            console.log('update successed');
-	        }, function (error) {
-	            console.log(error.text());
-	        });
-	        window.location.href = 'admin/badwords';
-	    };
-	    UpdateBadwordComponent = __decorate([
-	        core_1.Component({
-	            selector: 'badword-update',
-	            templateUrl: 'client/dev/app/components/back-end/badword/templates/badword-update.html',
-	            styleUrls: ['client/dev/app/components/back-end/badword/styles/badword.css'],
-	            directives: [
-	                common_1.FORM_DIRECTIVES,
-	                router_1.ROUTER_DIRECTIVES
-	            ],
-	            providers: [badword_1.BadwordService]
-	        }),
-	        __param(0, core_1.Inject(common_1.FormBuilder)),
-	        __param(1, core_1.Inject(badword_1.BadwordService)), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof badword_1.BadwordService !== 'undefined' && badword_1.BadwordService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
-	    ], UpdateBadwordComponent);
-	    return UpdateBadwordComponent;
-	    var _a, _b, _c, _d;
-	}());
-	exports.UpdateBadwordComponent = UpdateBadwordComponent;
-	
-
-/***/ },
-/* 182 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(57);
-	var Observable_1 = __webpack_require__(2);
-	var BadwordService = (function () {
-	    function BadwordService(_http) {
-	        this._http = _http;
-	        this._badwordsUrl = '/api/badwords/:id';
-	    }
-	    BadwordService.prototype.getAllBadwords = function () {
-	        return this._http.get(this._badwordsUrl.replace(':id', ''))
-	            .map(function (r) { return r.json(); })
-	            .do(function (data) { return console.log("All: " + JSON.stringify(data)); })
-	            .catch(this.handleError);
-	    };
-	    BadwordService.prototype.addBadword = function (badword) {
-	        var header = new http_1.Headers;
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _badword = JSON.stringify({
-	            word: badword.word,
-	        });
-	        console.log(_badword);
-	        console.log(header);
-	        return this._http
-	            .post(this._badwordsUrl.replace(':id', ''), _badword, options)
-	            .map(function (r) { return r.json(); });
-	    };
-	    BadwordService.prototype.deleteBadword = function (id) {
-	        return this._http
-	            .delete(this._badwordsUrl.replace(':id', id));
-	    };
-	    BadwordService.prototype.findBadwordById = function (id) {
-	        return this._http
-	            .get(this._badwordsUrl.replace(':id', id))
-	            .map(function (r) { return r.json(); });
-	    };
-	    BadwordService.prototype.updateBadword = function (badword) {
-	        console.log(badword);
-	        var header = new http_1.Headers;
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _badword = JSON.stringify({
-	            word: badword.word,
-	        });
-	        return this._http
-	            .put(this._badwordsUrl.replace(':id', badword._id), _badword, options)
-	            .map(function (r) { return r.json(); });
-	    };
-	    BadwordService.prototype.handleError = function (error) {
-	        console.error(error);
-	        return Observable_1.Observable.throw(error.json().error || 'Server error');
-	    };
-	    BadwordService = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-	    ], BadwordService);
-	    return BadwordService;
-	    var _a;
-	}());
-	exports.BadwordService = BadwordService;
-	
-
-/***/ },
-/* 183 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(57);
-	var Observable_1 = __webpack_require__(2);
-	var KSpaceService = (function () {
-	    function KSpaceService(_http) {
-	        this._http = _http;
-	        this._kspaceUrl = '/api/kspace/:id';
-	    }
-	    KSpaceService.prototype.getAllKSpace = function () {
-	        return this._http.get(this._kspaceUrl.replace(':id', ''))
-	            .map(function (r) { return r.json(); })
-	            .catch(this.handleError);
-	    };
-	    KSpaceService.prototype.getKSpaceById = function (id) {
-	        return this._http.get(this._kspaceUrl.replace(':id', id))
-	            .map(function (r) { return r.json(); })
-	            .catch(this.handleError);
-	    };
-	    KSpaceService.prototype.addKSpace = function (learner, lecturer, requestId, requestTitle, offerId) {
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _kspace = JSON.stringify({
-	            lecturer: lecturer,
-	            learner: learner,
-	            requestId: requestId,
-	            requestTitle: requestTitle,
-	            offerId: offerId,
-	        });
-	        return this._http
-	            .post(this._kspaceUrl.replace(':id', ''), _kspace, options)
-	            .map(function (r) { return r.json(); });
-	    };
-	    KSpaceService.prototype.handleError = function (error) {
-	        console.error(error);
-	        return Observable_1.Observable.throw(error || 'server error');
-	    };
-	    KSpaceService = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-	    ], KSpaceService);
-	    return KSpaceService;
-	    var _a;
-	}());
-	exports.KSpaceService = KSpaceService;
-	
-
-/***/ },
-/* 184 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(57);
-	var Observable_1 = __webpack_require__(2);
-	var NotificationService = (function () {
-	    function NotificationService(_http) {
-	        this._http = _http;
-	        this._getNotificationUrl = '/api/getNotification/:id';
-	        this._notificationUrl = '/api/notification';
-	        this._statusNotificationUrl = '/api/change-status-notification/:user';
-	    }
-	    NotificationService.prototype.getNotificationByUser = function (username) {
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _info = JSON.stringify({
-	            user: username
-	        });
-	        return this._http.post(this._getNotificationUrl.replace(':id', ''), _info, options)
-	            .map(function (r) { return r.json(); })
-	            .catch(this.handleError);
-	    };
-	    NotificationService.prototype.createNotification = function (title, body, user, link) {
-	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
-	        var options = new http_1.RequestOptions({ headers: headers });
-	        var _info = JSON.stringify({
-	            title: title,
-	            user: user,
-	            body: body,
-	            link: link
-	        });
-	        return this._http.post(this._notificationUrl, _info, options)
-	            .map(function (r) { return r.json(); })
-	            .catch(this.handleError);
-	    };
-	    NotificationService.prototype.changeStatusNotification = function (user) {
-	        return this._http.get(this._statusNotificationUrl.replace(':user', user))
-	            .map(function (r) { return r.json(); })
-	            .catch(this.handleError);
-	    };
-	    NotificationService.prototype.handleError = function (error) {
-	        console.log(error);
-	        return Observable_1.Observable.throw(error || 'server error');
-	    };
-	    NotificationService = __decorate([
-	        core_1.Injectable(), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof http_1.Http !== 'undefined' && http_1.Http) === 'function' && _a) || Object])
-	    ], NotificationService);
-	    return NotificationService;
-	    var _a;
-	}());
-	exports.NotificationService = NotificationService;
-	
-
-/***/ },
-/* 185 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	var Subject_1 = __webpack_require__(18);
-	/**
-	 * @class AsyncSubject<T>
-	 */
-	var AsyncSubject = (function (_super) {
-	    __extends(AsyncSubject, _super);
-	    function AsyncSubject() {
-	        _super.apply(this, arguments);
-	        this.value = null;
-	        this.hasNext = false;
-	    }
-	    AsyncSubject.prototype._subscribe = function (subscriber) {
-	        if (this.hasCompleted && this.hasNext) {
-	            subscriber.next(this.value);
-	        }
-	        return _super.prototype._subscribe.call(this, subscriber);
-	    };
-	    AsyncSubject.prototype._next = function (value) {
-	        this.value = value;
-	        this.hasNext = true;
-	    };
-	    AsyncSubject.prototype._complete = function () {
-	        var index = -1;
-	        var observers = this.observers;
-	        var len = observers.length;
-	        // optimization to block our SubjectSubscriptions from
-	        // splicing themselves out of the observers list one by one.
-	        this.isUnsubscribed = true;
-	        if (this.hasNext) {
-	            while (++index < len) {
-	                var o = observers[index];
-	                o.next(this.value);
-	                o.complete();
-	            }
-	        }
-	        else {
-	            while (++index < len) {
-	                observers[index].complete();
-	            }
-	        }
-	        this.isUnsubscribed = false;
-	        this.unsubscribe();
-	    };
-	    return AsyncSubject;
-	}(Subject_1.Subject));
-	exports.AsyncSubject = AsyncSubject;
-	//# sourceMappingURL=AsyncSubject.js.map
-
-/***/ },
-/* 186 */,
-/* 187 */,
-/* 188 */,
-/* 189 */,
-/* 190 */,
-/* 191 */,
-/* 192 */,
-/* 193 */,
-/* 194 */
-/***/ function(module, exports) {
-
-	"use strict";
-	var __extends = (this && this.__extends) || function (d, b) {
-	    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-	    function __() { this.constructor = d; }
-	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
-	};
-	/**
-	 * An error thrown when an Observable or a sequence was queried but has no
-	 * elements.
-	 *
-	 * @see {@link first}
-	 * @see {@link last}
-	 * @see {@link single}
-	 *
-	 * @class EmptyError
-	 */
-	var EmptyError = (function (_super) {
-	    __extends(EmptyError, _super);
-	    function EmptyError() {
-	        _super.call(this, 'no elements in sequence');
-	        this.name = 'EmptyError';
-	    }
-	    return EmptyError;
-	}(Error));
-	exports.EmptyError = EmptyError;
-	//# sourceMappingURL=EmptyError.js.map
-
-/***/ },
-/* 195 */
-/***/ function(module, exports) {
-
-	"use strict";
-	function isDate(value) {
-	    return value instanceof Date && !isNaN(+value);
-	}
-	exports.isDate = isDate;
-	//# sourceMappingURL=isDate.js.map
-
-/***/ },
-/* 196 */,
-/* 197 */,
-/* 198 */,
-/* 199 */,
-/* 200 */,
-/* 201 */,
-/* 202 */,
-/* 203 */,
-/* 204 */,
-/* 205 */,
-/* 206 */,
-/* 207 */,
-/* 208 */,
-/* 209 */
+/* 219 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1696,7 +2878,6 @@ webpackJsonp([2],[
 	        if (p >= 0 && p < pc) {
 	            this.first = this.rows * p;
 	            var state = {
-	                page: p,
 	                first: this.first,
 	                rows: this.rows,
 	                pageCount: pc
@@ -1769,16 +2950,6 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 210 */,
-/* 211 */,
-/* 212 */,
-/* 213 */,
-/* 214 */,
-/* 215 */,
-/* 216 */,
-/* 217 */,
-/* 218 */,
-/* 219 */,
 /* 220 */,
 /* 221 */,
 /* 222 */,
@@ -1839,7 +3010,17 @@ webpackJsonp([2],[
 /* 277 */,
 /* 278 */,
 /* 279 */,
-/* 280 */
+/* 280 */,
+/* 281 */,
+/* 282 */,
+/* 283 */,
+/* 284 */,
+/* 285 */,
+/* 286 */,
+/* 287 */,
+/* 288 */,
+/* 289 */,
+/* 290 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1856,9 +3037,10 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var knowledge_1 = __webpack_require__(48);
-	var router_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(19);
+	var knowledge_1 = __webpack_require__(54);
+	var router_1 = __webpack_require__(4);
+	var common_1 = __webpack_require__(6);
+	var private_chat_1 = __webpack_require__(11);
 	var UpdateKnowledgeComponent = (function () {
 	    function UpdateKnowledgeComponent(fb, _knowledgeService, router, route) {
 	        var _this = this;
@@ -1893,14 +3075,13 @@ webpackJsonp([2],[
 	        }, function (error) {
 	            console.log(error.text());
 	        });
-	        window.location.href = 'admin/knowledges';
+	        this.router.navigateByUrl('admin/knowledges');
 	    };
 	    UpdateKnowledgeComponent = __decorate([
 	        core_1.Component({
 	            selector: 'knowledge-update',
 	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-update.html',
-	            styleUrls: ['client/dev/app/components/back-end/knowledge/styles/knowledge.css'],
-	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
+	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
 	            providers: [knowledge_1.KnowledgeService]
 	        }),
 	        __param(0, core_1.Inject(common_1.FormBuilder)),
@@ -1914,7 +3095,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 281 */
+/* 291 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -1931,72 +3112,205 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var requests_1 = __webpack_require__(82);
-	var knowledge_1 = __webpack_require__(48);
-	var router_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(19);
-	var UpdateRequestComponent = (function () {
-	    function UpdateRequestComponent(fb, _requestService, router, route, _knowledgeService) {
-	        var _this = this;
+	var common_1 = __webpack_require__(6);
+	var router_1 = __webpack_require__(4);
+	var knowledge_1 = __webpack_require__(54);
+	var requests_1 = __webpack_require__(58);
+	var auth_1 = __webpack_require__(45);
+	var tag_1 = __webpack_require__(66);
+	var private_chat_1 = __webpack_require__(11);
+	var primeng_1 = __webpack_require__(31);
+	var CKEditor = (function () {
+	    function CKEditor(_elm) {
+	        CKEDITOR.replace(_elm.nativeElement);
+	    }
+	    CKEditor = __decorate([
+	        core_1.Component({
+	            selector: 'ck-editor',
+	            template: ""
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
+	    ], CKEditor);
+	    return CKEditor;
+	    var _a;
+	}());
+	var CreateRequestComponent = (function () {
+	    function CreateRequestComponent(_tagService, fb, _requestService, _knowledgeService, _authService, router) {
+	        this._tagService = _tagService;
 	        this._requestService = _requestService;
-	        this.router = router;
-	        this.route = route;
 	        this._knowledgeService = _knowledgeService;
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.id = params['id'];
-	        });
-	        this.updateRequestFormCli = fb.group({
-	            "_id": [""],
+	        this._authService = _authService;
+	        this.router = router;
+	        this.check = true;
+	        this.tags = [];
+	        this.user = localStorage.getItem('username');
+	        this.roleToken = localStorage.getItem('userrole');
+	        this.requestForm = fb.group({
+	            "knowledgeId": [""],
 	            "title": [""],
 	            "description": [""],
-	            "knowledgeId": [""]
+	            "user": [""]
 	        });
 	    }
-	    UpdateRequestComponent.prototype.ngOnInit = function () {
+	    CreateRequestComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        //get all back.knowledge
+	        this.CreateUploadImageCkeditor();
+	        this.CreateYoutubeBtnCkeditor();
+	        this.addCommandBtnCk();
 	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            _this.loadAllTags();
 	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
 	        });
-	        this._requestService.getRequestById(this.id).subscribe(function (request) {
-	            _this.request = request;
-	            _this.title = request.title;
-	            _this.description = request.description;
-	            _this._id = request._id;
-	        }, function (error) {
-	            console.log(error.text());
+	        $('.modal-trigger').leanModal();
+	        $('select').material_select();
+	        $('.collapsible').collapsible();
+	    };
+	    CreateRequestComponent.prototype.filterONTag = function () {
+	        var oldTag = [];
+	        if (this.tags.length > 0) {
+	            for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	                var e = _a[_i];
+	                for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                    var e1 = _c[_b];
+	                    //catch old tags
+	                    if (e.name == e1) {
+	                        oldTag.push(e._id);
+	                        //find out old tags in data tags user
+	                        var index = this.tags.indexOf(e1);
+	                        if (index > -1) {
+	                            //remove old tags to catch new tags
+	                            this.tags.splice(index, 1);
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	        return [oldTag, this.tags];
+	    };
+	    CreateRequestComponent.prototype.filterKnw = function (event) {
+	        var query = event.query;
+	        this.filteredKnw = [];
+	        for (var i = 0; i < this.tagsEx.length; i++) {
+	            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
+	                this.filteredKnw.push(this.tagsEx[i].name);
+	            }
+	            if (this.filteredKnw.indexOf(query.trim()) < 0) {
+	                this.filteredKnw.unshift(query.trim());
+	            }
+	        }
+	    };
+	    CreateRequestComponent.prototype.loadAllTags = function () {
+	        var _this = this;
+	        this._tagService.getAllTag().subscribe(function (tags) {
+	            _this.tagsEx = tags;
+	            console.log(_this.tagsEx);
 	        });
 	    };
-	    UpdateRequestComponent.prototype.updateRequest = function (request) {
-	        this._requestService.updateRequest(request).subscribe(function (request) {
-	            console.log('update successed');
-	        }, function (error) {
-	            console.log(error.text());
-	        });
-	        this.router.navigateByUrl('admin/requests');
+	    CreateRequestComponent.prototype.addRequest = function (request) {
+	        var _this = this;
+	        var tags = [];
+	        tags = this.filterONTag();
+	        this.contentCk = CKEDITOR.instances.editor1.getData();
+	        if (this.check == true) {
+	            this._requestService.addRequest(request, this.contentCk, tags[0], tags[1]).subscribe(function (request) {
+	                _this.check = false;
+	                _this.router.navigateByUrl('/requests/' + request._id + '/info');
+	            }, function (error) {
+	                console.log(error.text());
+	            });
+	        }
 	    };
-	    UpdateRequestComponent = __decorate([
+	    // ckeditor
+	    CreateRequestComponent.prototype.insertLinkToBox = function (link) {
+	        CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
+	    };
+	    CreateRequestComponent.prototype.insertYoutubeToBox = function (link) {
+	        //https://www.youtube.com/watch?v=mraul5-1TBE
+	        var i = link.indexOf("=");
+	        link = link.substring(i + 1, link.length);
+	        var s = '<p><iframe frameborder="0" height="315" scrolling="no" src="https://www.youtube.com/embed/' + link + '" width="500"></iframe></p>';
+	        CKEDITOR.instances.editor1.insertHtml(s);
+	    };
+	    CreateRequestComponent.prototype.addCommandBtnCk = function () {
+	        CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
+	        CKEDITOR.instances.editor1.addCommand('youtube', { exec: this.openModalYoutube });
+	    };
+	    CreateRequestComponent.prototype.openModalImg = function () {
+	        $("#bdOpenModal").trigger("click");
+	    };
+	    CreateRequestComponent.prototype.openModalYoutube = function () {
+	        $("#youtubeOpenModal").trigger("click");
+	    };
+	    CreateRequestComponent.prototype.CreateUploadImageCkeditor = function () {
+	        CKEDITOR.instances.editor1.ui.addButton('uploadImage', {
+	            label: 'Upload Image',
+	            command: 'uploadImage',
+	            icon: '/client/dev/asserts/images/icon-img-ck.png'
+	        });
+	    };
+	    CreateRequestComponent.prototype.CreateYoutubeBtnCkeditor = function () {
+	        CKEDITOR.instances.editor1.ui.addButton('youtube', {
+	            label: 'Add youtube',
+	            command: 'youtube',
+	            icon: '/client/dev/asserts/images/icon-youtube.png'
+	        });
+	    };
+	    CreateRequestComponent.prototype.makeFileRequest = function (url, params, files) {
+	        return new Promise(function (resolve, reject) {
+	            var formData = new FormData();
+	            var xhr = new XMLHttpRequest();
+	            for (var i = 0; i < files.length; i++) {
+	                formData.append("uploads[]", files[i], files[i].name);
+	            }
+	            xhr.onreadystatechange = function () {
+	                if (xhr.readyState == 4) {
+	                    if (xhr.status == 200) {
+	                        resolve(JSON.parse(xhr.response));
+	                    }
+	                    else {
+	                        reject(xhr.response);
+	                    }
+	                }
+	            };
+	            xhr.open("POST", url, true);
+	            xhr.send(formData);
+	        });
+	    };
+	    // uploading image
+	    CreateRequestComponent.prototype.uploadImageCk = function () {
+	        if (this.filesToUpload) {
+	            this.makeFileRequest("/api/media", [], this.filesToUpload).then(function (result) {
+	                var link = '/uploads/' + result[0].filename;
+	                CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" style="height:536px; width:858px" /></p>');
+	            }, function (error) {
+	                console.error(error);
+	            });
+	        }
+	    };
+	    //action button upload
+	    CreateRequestComponent.prototype.fileChangeEvent = function (fileInput) {
+	        this.filesToUpload = fileInput.target.files;
+	    };
+	    CreateRequestComponent = __decorate([
 	        core_1.Component({
-	            selector: 'request-update-cli',
-	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-update.html',
-	            styleUrls: ['client/dev/asserts/css/backend-styles.css'],
-	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
+	            selector: 'request-create',
+	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-create.html',
+	            styleUrls: ['client/dev/app/components/bac  k-end/request/templates/request.css'],
+	            directives: [common_1.FORM_DIRECTIVES, primeng_1.AutoComplete, CKEditor, private_chat_1.PrivateChatComponent],
+	            providers: [tag_1.TagService]
 	        }),
-	        __param(0, core_1.Inject(common_1.FormBuilder)),
-	        __param(1, core_1.Inject(requests_1.RequestService)),
-	        __param(4, core_1.Inject(knowledge_1.KnowledgeService)), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object, (typeof (_e = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _e) || Object])
-	    ], UpdateRequestComponent);
-	    return UpdateRequestComponent;
-	    var _a, _b, _c, _d, _e;
+	        __param(1, core_1.Inject(common_1.FormBuilder)),
+	        __param(2, core_1.Inject(requests_1.RequestService)), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _a) || Object, (typeof (_b = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _b) || Object, (typeof (_c = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _f) || Object])
+	    ], CreateRequestComponent);
+	    return CreateRequestComponent;
+	    var _a, _b, _c, _d, _e, _f;
 	}());
-	exports.UpdateRequestComponent = UpdateRequestComponent;
+	exports.CreateRequestComponent = CreateRequestComponent;
 	
 
 /***/ },
-/* 282 */
+/* 292 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2010,96 +3324,311 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var requests_1 = __webpack_require__(82);
-	var RequestCategoryComponent = (function () {
-	    function RequestCategoryComponent(_requestService, router, route) {
+	var StringFilterPipe = (function () {
+	    function StringFilterPipe() {
+	    }
+	    StringFilterPipe.prototype.transform = function (value, args) {
+	        if (!args) {
+	            return value;
+	        }
+	        else if (args) {
+	            return value.filter(function (item) {
+	                for (var key in item) {
+	                    if ((typeof item[key] === 'string' || item[key] instanceof String) &&
+	                        (item[key].trim().toLocaleLowerCase().indexOf(args.toLocaleLowerCase()) > -1) && (key === "title")) {
+	                        return true;
+	                    }
+	                }
+	            });
+	        }
+	    };
+	    StringFilterPipe = __decorate([
+	        core_1.Pipe({
+	            name: 'stringFilter'
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], StringFilterPipe);
+	    return StringFilterPipe;
+	}());
+	exports.StringFilterPipe = StringFilterPipe;
+	
+
+/***/ },
+/* 293 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/25/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var kspace_1 = __webpack_require__(65);
+	var router_1 = __webpack_require__(4);
+	var CreatePublicKspace = (function () {
+	    function CreatePublicKspace(_kspaceService, router) {
+	        this._kspaceService = _kspaceService;
+	        this.router = router;
+	    }
+	    CreatePublicKspace.prototype.createRoom = function (guest) {
 	        var _this = this;
+	        if (guest) {
+	            this._kspaceService.createPublicKspace(guest)
+	                .subscribe(function (res) {
+	                if (res.success) {
+	                    localStorage.setItem('guest', guest);
+	                    var url = '/public-kspace/' + res.id + '/room';
+	                    _this.router.navigateByUrl(url);
+	                }
+	            });
+	        }
+	        else {
+	            this.errorMessage = "Vui lòng nhập tên hiển thị của bạn trong kspace";
+	        }
+	    };
+	    CreatePublicKspace = __decorate([
+	        core_1.Component({
+	            selector: 'public-kspace',
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/public-kspace.html',
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
+	    ], CreatePublicKspace);
+	    return CreatePublicKspace;
+	    var _a, _b;
+	}());
+	exports.CreatePublicKspace = CreatePublicKspace;
+	
+
+/***/ },
+/* 294 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var common_1 = __webpack_require__(6);
+	var report_1 = __webpack_require__(193);
+	var notification_1 = __webpack_require__(57);
+	var users_1 = __webpack_require__(26);
+	var private_chat_1 = __webpack_require__(11);
+	var ReportComponent = (function () {
+	    function ReportComponent(fb, _reportService, _noti, _userService) {
+	        this._reportService = _reportService;
+	        this._noti = _noti;
+	        this._userService = _userService;
+	        this.user = localStorage.getItem('username');
+	        this.link = window.location.pathname;
+	        this.reportForm = fb.group({
+	            "title": [""],
+	            "content": [""],
+	            "user": [""],
+	            "reportedUser": [""],
+	            "link": [""]
+	        });
+	    }
+	    ReportComponent.prototype.ngOnInit = function () {
+	    };
+	    ReportComponent.prototype.close = function () {
+	        $("#myModal").closeModal();
+	    };
+	    ReportComponent.prototype.addReport = function (report) {
+	        var _this = this;
+	        this._reportService.addReport(report).subscribe(function (report) {
+	            //call function send notification for admin realtime
+	            //user === null means sending notification for every user roles admin
+	            var title = "Nhận được một báo cáo vi phạm";
+	            var link = report.link;
+	            _this._userService.getAllUsers().subscribe(function (users) {
+	                for (var i = 0; i < users.length; i++) {
+	                    if (users[i].role === 'admin') {
+	                        console.log(users[i]);
+	                        _this._noti.alertNotification(title, users[i].username, link);
+	                    }
+	                }
+	                _this._noti.createNotificationAdmin(title, link).subscribe(function (r) {
+	                    //$('#mess').html('<div class="alert alert-success"> <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a> <strong>Báo cáo thành công !</strong> </div>');
+	                    $('#btnCl').trigger("click");
+	                });
+	            });
+	        }, function (error) {
+	            console.log(error);
+	        });
+	    };
+	    __decorate([
+	        core_1.Input('reportedUser'), 
+	        __metadata('design:type', String)
+	    ], ReportComponent.prototype, "reportedUser", void 0);
+	    ReportComponent = __decorate([
+	        core_1.Component({
+	            selector: 'report',
+	            templateUrl: 'client/dev/app/components/front-end/report/templates/report.html',
+	            styleUrls: [],
+	            directives: [
+	                common_1.FORM_DIRECTIVES, private_chat_1.PrivateChatComponent
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof report_1.ReportService !== 'undefined' && report_1.ReportService) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object])
+	    ], ReportComponent);
+	    return ReportComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.ReportComponent = ReportComponent;
+	
+
+/***/ },
+/* 295 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var requests_1 = __webpack_require__(58);
+	var article_1 = __webpack_require__(41);
+	var ng2_pagination_1 = __webpack_require__(133);
+	var private_chat_1 = __webpack_require__(11);
+	var info_hover_1 = __webpack_require__(53);
+	var topArticle_1 = __webpack_require__(128);
+	var tag_1 = __webpack_require__(75);
+	var RequestCategoryComponent = (function () {
+	    function RequestCategoryComponent(_requestService, _articleService, router, route) {
 	        this._requestService = _requestService;
+	        this._articleService = _articleService;
 	        this.router = router;
 	        this.route = route;
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
-	        this.route
+	        this.requests = [];
+	        this.knowledges = [];
+	        this.arts = [];
+	        this.maxSizeReq = 7;
+	        this.directionLinksReq = true;
+	        this.autoHideReq = false;
+	        this.configReq = {
+	            id: 'req',
+	            itemsPerPage: 10,
+	            currentPage: 1
+	        };
+	        this.maxSizeArt = 7;
+	        this.directionLinksArt = true;
+	        this.autoHideArt = false;
+	        this.configArt = {
+	            id: 'art',
+	            itemsPerPage: 10,
+	            currentPage: 1
+	        };
+	    }
+	    RequestCategoryComponent.prototype.onPageChangeReq = function (number) {
+	        this.configReq.currentPage = number;
+	    };
+	    RequestCategoryComponent.prototype.onPageChangeArt = function (number) {
+	        this.configArt.currentPage = number;
+	    };
+	    RequestCategoryComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.sub = this.route
 	            .params
 	            .subscribe(function (params) {
 	            var type = params['type'];
-	            _this.typee = type;
 	            var id = params['id'];
-	            _this.identify = id;
+	            _this._articleService.getArtByKnwId(id).subscribe(function (arts) {
+	                _this.arts = arts;
+	            });
+	            //get templates from children category
+	            if (type === "subcategory") {
+	                _this._requestService.getRequestByKnowledgeId(id).subscribe(function (requests) {
+	                    if (requests.length == 0) {
+	                        _this.isExistRecord = true;
+	                    }
+	                    else {
+	                        _this.isExistRecord = false;
+	                    }
+	                    for (var i = 0; i < requests.length; i++) {
+	                        requests[i].createdAt = new Date(requests[i].createdAt);
+	                        requests[i].modifiedDate = new Date(requests[i].modifiedDate);
+	                    }
+	                    _this.requests = requests;
+	                });
+	            }
+	            //get templates from parent category
+	            if (type === "category") {
+	                _this._requestService.getKnowledgeByParent(id).subscribe(function (knowledges) {
+	                    var a = [];
+	                    _this.knowledges = knowledges;
+	                    for (var i = 0; i < _this.knowledges.length; i++) {
+	                        _this._requestService.getRequestByKnowledgeId(_this.knowledges[i]._id).subscribe(function (requests) {
+	                            //for each child knowledge get requests
+	                            for (var j = 0; j < requests.length; j++) {
+	                                a.push(requests[j]);
+	                            }
+	                            for (var i = 0; i < a.length; i++) {
+	                                a[i].createdAt = new Date(requests[i].createdAt);
+	                                a[i].modifiedDate = new Date(requests[i].modifiedDate);
+	                                if (requests[i].status === 'pending') {
+	                                    requests[i].status = 'Đang chờ';
+	                                }
+	                            }
+	                            if (a.length == 0) {
+	                                _this.isExistRecord = true;
+	                            }
+	                            else {
+	                                _this.isExistRecord = false;
+	                            }
+	                            _this.requests = a;
+	                        });
+	                    }
+	                }, function (Error) {
+	                    console.log(Error);
+	                });
+	            }
 	        });
-	        //get templates from children category
-	        if (this.typee === "subcategory") {
-	            this._requestService.getRequestByKnowledgeId(this.identify).subscribe(function (requests) {
-	                //format date
-	                var formatDate = function (date) {
-	                    if (date) {
-	                        var newDate, day, month, year;
-	                        year = date.substr(0, 4);
-	                        month = date.substr(5, 2);
-	                        day = date.substr(8, 2);
-	                        return newDate = day + '/' + month + '/' + year;
-	                    }
-	                };
-	                for (var i = 0; i < requests.length; i++) {
-	                    requests[i].createdAt = formatDate(requests[i].createdAt);
-	                    requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
-	                }
-	                _this.requests = requests;
-	            });
-	        }
-	        //get templates from parent category
-	        if (this.typee === "category") {
-	            this._requestService.getKnowledgeByParent(this.identify).subscribe(function (knowledges) {
-	                var formatDate = function (date) {
-	                    if (date) {
-	                        var newDate, day, month, year;
-	                        year = date.substr(0, 4);
-	                        month = date.substr(5, 2);
-	                        day = date.substr(8, 2);
-	                        return newDate = day + '/' + month + '/' + year;
-	                    }
-	                };
-	                var a = [];
-	                _this.knowledges = knowledges;
-	                for (var i = 0; i < _this.knowledges.length; i++) {
-	                    _this._requestService.getRequestByKnowledgeId(_this.knowledges[i]._id).subscribe(function (requests) {
-	                        //for each child knowledge get requests
-	                        for (var j = 0; j < requests.length; j++) {
-	                            a.push(requests[j]);
-	                        }
-	                        for (var i = 0; i < a.length; i++) {
-	                            a[i].createdAt = formatDate(requests[i].createdAt);
-	                            a[i].modifiedDate = formatDate(requests[i].modifiedDate);
-	                        }
-	                        _this.requests = a;
-	                    });
-	                }
-	            }, function (Error) {
-	                console.log(Error);
-	            });
-	        }
-	    }
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], RequestCategoryComponent.prototype, "search", void 0);
+	        $('ul.tabs').tabs();
+	    };
+	    RequestCategoryComponent.prototype.ngOnDestroy = function () {
+	        this.sub.unsubscribe();
+	    };
 	    RequestCategoryComponent = __decorate([
 	        core_1.Component({
-	            selector: 'request-search-cli',
-	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-search.html',
+	            selector: 'request-category-cli',
+	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-category.html',
 	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
-	            directives: [router_1.ROUTER_DIRECTIVES]
+	            directives: [router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, tag_1.listTagComponent, private_chat_1.PrivateChatComponent, info_hover_1.infoHover, topArticle_1.topArticlesComponent],
+	            providers: [article_1.ArticleService, ng2_pagination_1.PaginationService],
+	            pipes: [ng2_pagination_1.PaginatePipe]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
 	    ], RequestCategoryComponent);
 	    return RequestCategoryComponent;
-	    var _a, _b, _c;
+	    var _a, _b, _c, _d;
 	}());
 	exports.RequestCategoryComponent = RequestCategoryComponent;
 	
 
 /***/ },
-/* 283 */
+/* 296 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2114,66 +3643,68 @@ webpackJsonp([2],[
 	};
 	//cores
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(4);
 	//services
-	var users_1 = __webpack_require__(67);
-	var notification_1 = __webpack_require__(184);
+	var users_1 = __webpack_require__(26);
+	var notification_1 = __webpack_require__(57);
+	var report_1 = __webpack_require__(294);
+	var ratingPoint_1 = __webpack_require__(297);
 	var UserProfileBarComponent = (function () {
 	    function UserProfileBarComponent(router, route, _userService, _noti) {
-	        var _this = this;
 	        this.router = router;
 	        this.route = route;
 	        this._userService = _userService;
 	        this._noti = _noti;
-	        this.notification = {
-	            show: false,
-	            title: 'Demo notification!',
-	            body: 'ng2-notifications',
-	            icon: 'https://goo.gl/3eqeiE',
-	            action: function () {
-	                window.open('https://github.com/alexcastillo/ng2-notifications');
-	            }
-	        };
-	        this.formatDate = function (date) {
-	            if (date) {
-	                var newDate, day, month, year;
-	                year = date.substr(0, 4);
-	                month = date.substr(5, 2);
-	                day = date.substr(8, 2);
-	                return newDate = day + '/' + month + '/' + year;
-	            }
-	        };
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.name = params['name'];
-	        });
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
 	    UserProfileBarComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        this.linkImg = '';
-	        this._userService.getUserByUserName(this.name).subscribe(function (user) {
-	            _this.userProfile = user;
-	            _this.linkImg = user.linkImg;
-	        }, function (error) {
-	            console.log(error);
+	        $('#loading').show();
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	            _this.linkImg = '';
+	            _this._userService.getUserByUserName(_this.name).subscribe(function (user) {
+	                var localeDate = new Date(user.createdAt);
+	                _this.userProfile = user;
+	                _this.userProfile.createdAt = localeDate.toLocaleDateString();
+	                _this.linkImg = user.linkImg;
+	                console.log(_this.userProfile);
+	                $('#loading').hide();
+	            }, function (error) {
+	                console.log(error);
+	            });
+	            //check if current user is staying in his/her profile page
+	            if (_this.name === _this.userToken) {
+	                _this.checkUser = true;
+	            }
+	            _this.getFriendList();
 	        });
-	        //check if current user is staying in his/her profile page
-	        if (this.name === this.userToken) {
-	            this.checkUser = true;
-	        }
-	        this.getFriendList();
+	        $('ul.tabs').tabs();
+	        $('.tooltipped').tooltip({ delay: 5 });
+	    };
+	    UserProfileBarComponent.prototype.openReport = function () {
+	        $('#myModal').openModal();
+	    };
+	    UserProfileBarComponent.prototype.ngOnDestroy = function () {
+	        $(".material-tooltip").remove();
+	    };
+	    UserProfileBarComponent.prototype.openChooseFile = function () {
+	        $('#chFileImg').trigger("click");
 	    };
 	    UserProfileBarComponent.prototype.fileChangeEvent = function (fileInput) {
 	        var _this = this;
 	        this.filesToUpload = fileInput.target.files;
 	        if (this.filesToUpload) {
+	            $('#loading').show();
 	            this._userService.makeFileRequest("/api/media", [], this.filesToUpload).then(function (r) {
 	                _this.linkImg = '/uploads/' + r[0].filename;
-	                _this._userService.updateAvartaLink(_this.userToken, _this.linkImg).subscribe(function (r) {
-	                    console.log("update link profile picture successful");
+	                _this.userProfile.linkImg = _this.linkImg;
+	                _this.userProfile.username = localStorage.getItem('username');
+	                _this._userService.updateUser(_this.userProfile, []).subscribe(function (r) {
+	                    $('#loading').hide();
 	                });
 	            }, function (error) {
 	                console.error(error);
@@ -2190,24 +3721,18 @@ webpackJsonp([2],[
 	            });
 	            //create a notification to user who get accepted a friend request
 	            var title = 'Lời mời kết bạn từ ' + this.userToken;
-	            var body = 'Bạn đã nhận được lời mời kết bạn của ' + this.userToken;
 	            var link = '/user/' + this.name + '/friends';
-	            alert("đã gửi lời mời kết bạn thành công");
-	            var socket = io('https://localhost:3333');
-	            socket.emit('send notification', {
-	                title: title,
-	                body: body,
-	                link: link,
-	                user: this.name
+	            //call function using socket io to send notification
+	            this._noti.alertNotification(title, this.name, link);
+	            //save notification to database
+	            this._noti.createNotification(title, this.name, link).subscribe(function (notification) {
 	            });
-	            this._noti.createNotification(title, body, this.name, link).subscribe(function (notification) {
-	                console.log(notification);
-	            });
+	            this.isFriend = true;
 	        }
 	        else {
-	            alert("Bạn đã gửi kết bạn rồi!");
 	        }
-	        this.getFriendList();
+	        this.checkSentRequestUser = true;
+	        this.isFriend = false;
 	    };
 	    UserProfileBarComponent.prototype.deleteFriend = function () {
 	        var r = confirm("Bạn có muốn hủy kết bạn");
@@ -2221,9 +3746,12 @@ webpackJsonp([2],[
 	                .deleteFriendRequest(this.name, this.userToken)
 	                .subscribe(function () {
 	            });
+	            this._userService
+	                .deactivateChatRoom(this.name, this.userToken)
+	                .subscribe(function () {
+	            });
 	            this.getFriendList();
 	            this.isFriend = false;
-	            alert("bạn đã hủy gửi lời  mời kết bạn");
 	        }
 	    };
 	    //get friend list: pending and accepted
@@ -2263,10 +3791,12 @@ webpackJsonp([2],[
 	    UserProfileBarComponent = __decorate([
 	        core_1.Component({
 	            selector: 'user-profile-bar',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/user-profile-bar.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile-bar.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES
+	                router_1.ROUTER_DIRECTIVES,
+	                report_1.ReportComponent,
+	                ratingPoint_1.RatingPoint
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
@@ -2278,7 +3808,44 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 284 */
+/* 297 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/24/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var RatingPoint = (function () {
+	    function RatingPoint() {
+	    }
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Number)
+	    ], RatingPoint.prototype, "rate", void 0);
+	    RatingPoint = __decorate([
+	        core_1.Component({
+	            selector: "rating-point",
+	            template: "\n      <div *ngIf=\"!rate\">\n        <div  class=\"ui massive heart rating\">\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n        </div>\n      </div>\n      <div *ngIf=\"rate && rate <= 1\">\n        <div  class=\"ui massive heart rating\">\n          <i class=\"icon active\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n          <i class=\"icon\"></i>\n        </div>\n      </div>\n      <div *ngIf=\"rate > 1 && rate <= 2\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rate > 2 && rate <= 3\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rate > 3 && rate <= 4\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon\"></i>\n          </div>\n      </div>\n      <div *ngIf=\"rate > 4 && rate <= 5\">\n          <div  class=\"ui massive heart rating\">\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n            <i class=\"icon active\"></i>\n          </div>\n      </div>\n  "
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], RatingPoint);
+	    return RatingPoint;
+	}());
+	exports.RatingPoint = RatingPoint;
+	
+
+/***/ },
+/* 298 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2292,31 +3859,47 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(57);
+	var http_1 = __webpack_require__(35);
 	var Observable_1 = __webpack_require__(2);
 	var OfferService = (function () {
 	    function OfferService(_http) {
 	        this._http = _http;
 	        this._Url = '/api/offers/:id';
+	        this._OfferUrl = '/api/offers/:id/:num';
 	    }
+	    OfferService.prototype.updateOffer = function (id, newstatus) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _offer = JSON.stringify({
+	            status: newstatus
+	        });
+	        return this._http
+	            .put(this._Url.replace(':id', id), _offer, options)
+	            .map(function (r) { return r.json(); });
+	    };
 	    OfferService.prototype.addOffer = function (offer) {
 	        var header = new http_1.Headers;
 	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
 	        var options = new http_1.RequestOptions({ headers: headers });
 	        var _offer = JSON.stringify({
-	            price: offer.price,
 	            requestId: offer.requestId,
-	            numberOfLecture: offer.numOfLecture,
 	            message: offer.message,
 	            user: offer.user
 	        });
-	        //console.log(_offer);
 	        return this._http
 	            .post(this._Url.replace(':id', ''), _offer, options)
 	            .map(function (r) { return r.json(); });
 	    };
-	    OfferService.prototype.getOfferByRequestId = function (id) {
-	        return this._http.post(this._Url.replace(':id', id), '')
+	    OfferService.prototype.getOfferByRequestId = function (id, num) {
+	        var header = new http_1.Headers;
+	        var headers = new http_1.Headers({ 'Content-Type': 'application/json' });
+	        var options = new http_1.RequestOptions({ headers: headers });
+	        var _data = JSON.stringify({
+	            id: id,
+	            num: num
+	        });
+	        return this._http.put(this._Url.replace(':id', ''), _data, options)
 	            .map(function (r) { return r.json(); })
 	            .catch(this.handleError);
 	    };
@@ -2335,9 +3918,10 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 285 */,
-/* 286 */,
-/* 287 */
+/* 299 */,
+/* 300 */,
+/* 301 */,
+/* 302 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2346,11 +3930,11 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var ArrayObservable_1 = __webpack_require__(83);
-	var isArray_1 = __webpack_require__(86);
-	var isScheduler_1 = __webpack_require__(99);
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var ArrayObservable_1 = __webpack_require__(90);
+	var isArray_1 = __webpack_require__(93);
+	var isScheduler_1 = __webpack_require__(106);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Combines multiple Observables to create an Observable whose values are
 	 * calculated from the latest values of each of its input Observables.
@@ -2527,13 +4111,13 @@ webpackJsonp([2],[
 	//# sourceMappingURL=combineLatest.js.map
 
 /***/ },
-/* 288 */
+/* 303 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var isScheduler_1 = __webpack_require__(99);
-	var ArrayObservable_1 = __webpack_require__(83);
-	var mergeAll_1 = __webpack_require__(190);
+	var isScheduler_1 = __webpack_require__(106);
+	var ArrayObservable_1 = __webpack_require__(90);
+	var mergeAll_1 = __webpack_require__(199);
 	/**
 	 * Creates an output Observable which sequentially emits all values from every
 	 * given input Observable after the current Observable.
@@ -2640,8 +4224,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=concat.js.map
 
 /***/ },
-/* 289 */,
-/* 290 */
+/* 304 */,
+/* 305 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -2650,12 +4234,12 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var ArrayObservable_1 = __webpack_require__(83);
-	var isArray_1 = __webpack_require__(86);
-	var Subscriber_1 = __webpack_require__(6);
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
-	var iterator_1 = __webpack_require__(136);
+	var ArrayObservable_1 = __webpack_require__(90);
+	var isArray_1 = __webpack_require__(93);
+	var Subscriber_1 = __webpack_require__(8);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
+	var iterator_1 = __webpack_require__(146);
 	/**
 	 * @param observables
 	 * @return {Observable<R>}
@@ -2900,14 +4484,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=zip.js.map
 
 /***/ },
-/* 291 */,
-/* 292 */,
-/* 293 */,
-/* 294 */
+/* 306 */,
+/* 307 */,
+/* 308 */,
+/* 309 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var isArray_1 = __webpack_require__(86);
+	var isArray_1 = __webpack_require__(93);
 	function isNumeric(val) {
 	    // parseFloat NaNs numeric-cast false positives (null|true|false|"")
 	    // ...but misinterprets leading-number strings, particularly hex literals ("0x...")
@@ -2920,28 +4504,28 @@ webpackJsonp([2],[
 	//# sourceMappingURL=isNumeric.js.map
 
 /***/ },
-/* 295 */,
-/* 296 */,
-/* 297 */,
-/* 298 */,
-/* 299 */,
-/* 300 */,
-/* 301 */,
-/* 302 */,
-/* 303 */,
-/* 304 */,
-/* 305 */,
-/* 306 */,
-/* 307 */,
-/* 308 */,
-/* 309 */,
 /* 310 */,
 /* 311 */,
 /* 312 */,
 /* 313 */,
 /* 314 */,
 /* 315 */,
-/* 316 */
+/* 316 */,
+/* 317 */,
+/* 318 */,
+/* 319 */,
+/* 320 */,
+/* 321 */,
+/* 322 */,
+/* 323 */,
+/* 324 */,
+/* 325 */,
+/* 326 */,
+/* 327 */,
+/* 328 */,
+/* 329 */,
+/* 330 */,
+/* 331 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3054,7 +4638,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 317 */
+/* 332 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3145,21 +4729,6 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 318 */,
-/* 319 */,
-/* 320 */,
-/* 321 */,
-/* 322 */,
-/* 323 */,
-/* 324 */,
-/* 325 */,
-/* 326 */,
-/* 327 */,
-/* 328 */,
-/* 329 */,
-/* 330 */,
-/* 331 */,
-/* 332 */,
 /* 333 */,
 /* 334 */,
 /* 335 */,
@@ -3240,7 +4809,22 @@ webpackJsonp([2],[
 /* 410 */,
 /* 411 */,
 /* 412 */,
-/* 413 */
+/* 413 */,
+/* 414 */,
+/* 415 */,
+/* 416 */,
+/* 417 */,
+/* 418 */,
+/* 419 */,
+/* 420 */,
+/* 421 */,
+/* 422 */,
+/* 423 */,
+/* 424 */,
+/* 425 */,
+/* 426 */,
+/* 427 */,
+/* 428 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3253,40 +4837,149 @@ webpackJsonp([2],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	/**
+	 * Created by GiangDH on 6/4/16.
+	 */
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var nav_bar_1 = __webpack_require__(417);
-	var side_bar_1 = __webpack_require__(418);
-	var badwords_list_1 = __webpack_require__(618);
-	var badword_create_1 = __webpack_require__(617);
-	var badword_update_1 = __webpack_require__(181);
-	var badword_1 = __webpack_require__(182);
-	var BadwordComponent = (function () {
-	    function BadwordComponent() {
+	__webpack_require__(457); // Load all features
+	var router_1 = __webpack_require__(4);
+	// Layout component
+	var side_bar_1 = __webpack_require__(668);
+	// Functions
+	var knowledge_update_1 = __webpack_require__(290);
+	var knowledges_list_1 = __webpack_require__(430);
+	var requests_list_1 = __webpack_require__(432);
+	var request_update_1 = __webpack_require__(191);
+	var user_list_1 = __webpack_require__(434);
+	var reports_list_1 = __webpack_require__(431);
+	var tag_list_control_1 = __webpack_require__(433);
+	var article_list_clt_1 = __webpack_require__(429);
+	var private_chat_1 = __webpack_require__(11);
+	var AdminComponent = (function () {
+	    function AdminComponent() {
 	    }
-	    BadwordComponent = __decorate([
+	    AdminComponent = __decorate([
 	        core_1.Component({
-	            selector: 'badword-mgn',
-	            templateUrl: 'client/dev/app/components/back-end/badword/templates/badword.html',
+	            selector: 'kshare',
+	            template: "\n      <sidebar></sidebar>\n    <main>\n    <router-outlet></router-outlet>\n    </main>\n  <private-chat></private-chat>\n  ",
+	            styleUrls: ['client/dev/asserts/css/admin.css'],
 	            directives: [
-	                badwords_list_1.BadwordListComponent,
-	                badword_update_1.UpdateBadwordComponent,
-	                badword_create_1.CreateBadwordComponent,
-	                nav_bar_1.NavbarComponent,
+	                router_1.ROUTER_DIRECTIVES,
 	                side_bar_1.SidebarComponent,
-	                router_1.ROUTER_DIRECTIVES
+	                private_chat_1.PrivateChatComponent
 	            ],
-	            providers: [badword_1.BadwordService],
+	            precompile: [
+	                user_list_1.UserListComponent,
+	                requests_list_1.RequestListComponent,
+	                knowledges_list_1.KnowledgeListComponent,
+	                knowledge_update_1.UpdateKnowledgeComponent,
+	                request_update_1.UpdateRequestComponent,
+	                reports_list_1.ReportListComponent,
+	                tag_list_control_1.TagListCtlComponent,
+	                article_list_clt_1.ArtListCtlComponent
+	            ]
 	        }), 
 	        __metadata('design:paramtypes', [])
-	    ], BadwordComponent);
-	    return BadwordComponent;
+	    ], AdminComponent);
+	    return AdminComponent;
 	}());
-	exports.BadwordComponent = BadwordComponent;
+	exports.AdminComponent = AdminComponent;
 	
 
 /***/ },
-/* 414 */
+/* 429 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 8/8/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var common_1 = __webpack_require__(6);
+	var article_1 = __webpack_require__(41);
+	var pager_1 = __webpack_require__(192);
+	var primeng_1 = __webpack_require__(31);
+	var primeng_2 = __webpack_require__(31);
+	var private_chat_1 = __webpack_require__(11);
+	var ArtListCtlComponent = (function () {
+	    function ArtListCtlComponent(_articleService, _pagerService, router) {
+	        this._articleService = _articleService;
+	        this._pagerService = _pagerService;
+	        this.router = router;
+	        this.artsAt = [];
+	        this.artsDa = [];
+	        this.artsPr = [];
+	    }
+	    ArtListCtlComponent.prototype.ngOnInit = function () {
+	        this.getAllArt();
+	        $('ul.tabs').tabs();
+	    };
+	    ArtListCtlComponent.prototype.getAllArt = function () {
+	        var _this = this;
+	        this.artsAt = [];
+	        this.artsDa = [];
+	        this.artsPr = [];
+	        this._articleService.getAllArtAdmin().subscribe(function (arts) {
+	            for (var _i = 0, arts_1 = arts; _i < arts_1.length; _i++) {
+	                var e = arts_1[_i];
+	                if (e.status == "public") {
+	                    _this.artsAt.push(e);
+	                }
+	                else if (e.status == "deactivate") {
+	                    _this.artsDa.push(e);
+	                }
+	                else if (e.status == "private") {
+	                    _this.artsPr.push(e);
+	                }
+	            }
+	        });
+	    };
+	    ArtListCtlComponent.prototype.openArticle = function (articleId) {
+	        var specs = 'width=1200,height=1200';
+	        var url = '/article/' + articleId;
+	        window.open(url, '', specs);
+	    };
+	    ArtListCtlComponent.prototype.activeArt = function (id) {
+	        var _this = this;
+	        this._articleService.activeArt(id).subscribe(function (art) {
+	            _this.getAllArt();
+	            Materialize.toast('Đã mở lại , bài viết chuyển sang trạng thái riêng tư', 4000);
+	        });
+	    };
+	    ArtListCtlComponent.prototype.deActiveArt = function (id) {
+	        var _this = this;
+	        this._articleService.deactivateArticle(id).subscribe(function (art) {
+	            _this.getAllArt();
+	            Materialize.toast('Đã đóng bài viết', 4000);
+	        });
+	    };
+	    ArtListCtlComponent = __decorate([
+	        core_1.Component({
+	            selector: 'art-list-clt',
+	            templateUrl: 'client/dev/app/components/back-end/article/templates/article-list.html',
+	            directives: [router_1.ROUTER_DIRECTIVES, primeng_1.Paginator, common_1.FORM_DIRECTIVES, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.Footer, private_chat_1.PrivateChatComponent],
+	            providers: [article_1.ArticleService, pager_1.PagerService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof pager_1.PagerService !== 'undefined' && pager_1.PagerService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
+	    ], ArtListCtlComponent);
+	    return ArtListCtlComponent;
+	    var _a, _b, _c;
+	}());
+	exports.ArtListCtlComponent = ArtListCtlComponent;
+	
+
+/***/ },
+/* 430 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3300,54 +4993,424 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var knowledge_1 = __webpack_require__(48);
-	var knowledge_update_1 = __webpack_require__(280);
-	var sub_knowledge_create_1 = __webpack_require__(620);
-	var knowledge_create_1 = __webpack_require__(619);
+	var router_1 = __webpack_require__(4);
+	var common_1 = __webpack_require__(6);
+	var ng2_charts_1 = __webpack_require__(545);
+	var primeng_1 = __webpack_require__(31);
+	var knowledge_1 = __webpack_require__(690);
+	var knowledge_2 = __webpack_require__(54);
+	var requests_1 = __webpack_require__(58);
+	var knowledge_update_1 = __webpack_require__(290);
+	var sub_knowledge_create_1 = __webpack_require__(666);
+	var ng2_pagination_1 = __webpack_require__(133);
+	var filter_1 = __webpack_require__(292);
+	var primeng_2 = __webpack_require__(31);
+	var primeng_3 = __webpack_require__(31);
+	var private_chat_1 = __webpack_require__(11);
 	var KnowledgeListComponent = (function () {
-	    function KnowledgeListComponent(_knowledgeService) {
+	    function KnowledgeListComponent(fb, _elRef, _knowledgeService, _requestService) {
+	        this._elRef = _elRef;
 	        this._knowledgeService = _knowledgeService;
+	        this._requestService = _requestService;
 	        this.pageTitle = 'Knowledge List';
+	        this.displayDialog = false;
+	        this.knowledgeForm = fb.group({
+	            "name": [""],
+	            "description": [""],
+	        });
+	        this.subCategoryForm = fb.group({
+	            "name": [""],
+	            "description": [""],
+	            "parent": [""]
+	        });
 	    }
 	    KnowledgeListComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
-	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+	        this.getAllKnowledgesForAdmin();
+	        $(document).ready(function () {
+	            $('.collapsible').collapsible();
 	        });
 	    };
+	    KnowledgeListComponent.prototype.openModal = function (id) {
+	        console.log(id);
+	        $("#" + id).openModal();
+	    };
+	    KnowledgeListComponent.prototype.action = function (data) {
+	        this.knowledges = data;
+	    };
 	    KnowledgeListComponent.prototype.deleteKnowledge = function (id) {
+	        var _this = this;
 	        this._knowledgeService
 	            .deleteKnowledge(id)
 	            .subscribe(function () {
-	            window.location.reload();
+	            _this.knowledges.forEach(function (t, i) {
+	                if (t._id === id)
+	                    return _this.knowledges.splice(i, 1);
+	            });
 	        });
 	    };
+	    KnowledgeListComponent.prototype.addKnowledge = function (knowledge) {
+	        var _this = this;
+	        if (this.knowledgeForm.controls["name"].value.trim() == 0) {
+	            Materialize.toast('Tri thức không được để trống', 3000);
+	        }
+	        this._knowledgeService
+	            .addKnowledge(knowledge)
+	            .subscribe(function (m) {
+	            _this.getAllKnowledgesForAdmin();
+	            _this.knowledgeForm.controls["name"].updateValue("");
+	            _this.knowledgeForm.controls["description"].updateValue("");
+	        });
+	    };
+	    KnowledgeListComponent.prototype.changeKnowledgeStatus = function (id) {
+	        var _this = this;
+	        this._knowledgeService
+	            .changeKnowledgeStatus(id)
+	            .subscribe(function (response) {
+	            _this.getAllKnowledgesForAdmin();
+	        });
+	    };
+	    KnowledgeListComponent.prototype.getAll = function () {
+	        var _this = this;
+	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            _this.knowledges = _this._knowledgeService.getChildFromParentAdmin(knowledges);
+	            for (var i = 0; i < _this.knowledges.length; i++) {
+	                _this.knowledges[i]["num"] = i + 1;
+	            }
+	        });
+	    };
+	    KnowledgeListComponent.prototype.getAllKnowledgesForAdmin = function () {
+	        var _this = this;
+	        this._knowledgeService
+	            .getAllKnowledgesForAdmin()
+	            .then(function (knowledge) {
+	            _this.knowledgeAdmin = knowledge;
+	            for (var i = 0; i < _this.knowledgeAdmin.length; i++) {
+	                _this.knowledgeAdmin[i].data["num"] = i + 1;
+	                if (_this.knowledgeAdmin[i].data.status == false) {
+	                    for (var j = 0; j < _this.knowledgeAdmin[i].children.length; j++) {
+	                        _this.knowledgeAdmin[i].children[j].data["visible"] = false;
+	                    }
+	                }
+	            }
+	        });
+	    };
+	    KnowledgeListComponent.prototype.onChange = function () {
+	        this.getAllKnowledgesForAdmin();
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', (typeof (_a = typeof knowledge_1.Knowledge !== 'undefined' && knowledge_1.Knowledge) === 'function' && _a) || Object)
+	    ], KnowledgeListComponent.prototype, "knowledge", void 0);
 	    KnowledgeListComponent = __decorate([
 	        core_1.Component({
 	            selector: 'knowledge-list',
 	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-list.html',
-	            styleUrls: [
-	                'client/dev/app/components/back-end/knowledge/styles/knowledge.css',
-	                'client/dev/asserts/css/backend-styles.css'
-	            ],
 	            directives: [
-	                knowledge_update_1.UpdateKnowledgeComponent,
+	                knowledge_update_1.UpdateKnowledgeComponent, ng2_charts_1.CHART_DIRECTIVES,
 	                sub_knowledge_create_1.CreateSubCategoryComponent,
-	                knowledge_create_1.CreateKnowledgeComponent,
-	                router_1.ROUTER_DIRECTIVES
-	            ]
+	                router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, primeng_2.TreeTable, primeng_3.Dialog, private_chat_1.PrivateChatComponent],
+	            providers: [knowledge_2.KnowledgeService, ng2_pagination_1.PaginationService],
+	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _a) || Object])
+	        __metadata('design:paramtypes', [(typeof (_b = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _b) || Object, (typeof (_c = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_2.KnowledgeService !== 'undefined' && knowledge_2.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _e) || Object])
 	    ], KnowledgeListComponent);
 	    return KnowledgeListComponent;
-	    var _a;
+	    var _a, _b, _c, _d, _e;
 	}());
 	exports.KnowledgeListComponent = KnowledgeListComponent;
 	
 
 /***/ },
-/* 415 */
+/* 431 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var common_1 = __webpack_require__(6);
+	var report_1 = __webpack_require__(193);
+	var chat_1 = __webpack_require__(129);
+	var primeng_1 = __webpack_require__(31);
+	var message_1 = __webpack_require__(667);
+	var private_chat_1 = __webpack_require__(11);
+	var ReportListComponent = (function () {
+	    function ReportListComponent(fb, _reportService, _chatService, router) {
+	        this._reportService = _reportService;
+	        this._chatService = _chatService;
+	        this.router = router;
+	        this.pageTitle = 'Report List';
+	        this.pendingReports = [];
+	        this.handlingReports = [];
+	        this.filter = '';
+	        this.roleToken = localStorage.getItem('role');
+	        this.userToken = localStorage.getItem('username');
+	    }
+	    ReportListComponent.prototype.ngOnInit = function () {
+	        this.getAllPending();
+	        this.getAllHandling();
+	        $('ul.tabs').tabs();
+	    };
+	    ReportListComponent.prototype.getAllPending = function () {
+	        var _this = this;
+	        this._reportService
+	            .getAllReports('pending')
+	            .subscribe(function (reports) {
+	            _this.pendingReports = reports;
+	        });
+	    };
+	    ReportListComponent.prototype.getAllHandling = function () {
+	        var _this = this;
+	        this._reportService
+	            .getAllReports('handling')
+	            .subscribe(function (reports) {
+	            _this.handlingReports = reports;
+	        });
+	    };
+	    ReportListComponent.prototype.deactivateReport = function (id) {
+	        var _this = this;
+	        var r = confirm("Bạn có muốn xóa?");
+	        if (r == true) {
+	            this._reportService.deactivateReport(id).subscribe(function (r) {
+	                console.log('deactivate successfully');
+	                _this.getAllPending();
+	                _this.getAllHandling();
+	            });
+	        }
+	    };
+	    ReportListComponent.prototype.changeStatusHandling = function (id) {
+	        var _this = this;
+	        var r = confirm("Bạn có muốn thay đổi trạng thái?");
+	        if (r == true) {
+	            this._reportService.changeStatusHandling(id).subscribe(function (r) {
+	                console.log('change status successfully');
+	                _this.getAllPending();
+	                _this.getAllHandling();
+	            });
+	        }
+	    };
+	    ReportListComponent.prototype.createChatRoom = function (reportedUser) {
+	        if (reportedUser !== this.userToken) {
+	            this._chatService.createChatRoomAdmin(this.userToken, reportedUser)
+	                .subscribe(function (chatRoom) {
+	                alert('Phòng trò chuyện đã được tạo');
+	                console.log(reportedUser);
+	                console.log('create chatRoom successfully');
+	            });
+	        }
+	        this.user = reportedUser;
+	        $('#messageModal').openModal();
+	    };
+	    ReportListComponent = __decorate([
+	        core_1.Component({
+	            selector: 'reports-list',
+	            templateUrl: 'client/dev/app/components/back-end/report/templates/reports-list.html',
+	            directives: [message_1.MessageComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, private_chat_1.PrivateChatComponent],
+	            providers: [report_1.ReportService, chat_1.ChatService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof report_1.ReportService !== 'undefined' && report_1.ReportService) === 'function' && _b) || Object, (typeof (_c = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
+	    ], ReportListComponent);
+	    return ReportListComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.ReportListComponent = ReportListComponent;
+	
+
+/***/ },
+/* 432 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var common_1 = __webpack_require__(6);
+	var knowledge_1 = __webpack_require__(54);
+	var requests_1 = __webpack_require__(58);
+	var auth_1 = __webpack_require__(45);
+	var pager_1 = __webpack_require__(192);
+	var request_update_1 = __webpack_require__(191);
+	var primeng_1 = __webpack_require__(31);
+	var primeng_2 = __webpack_require__(31);
+	var private_chat_1 = __webpack_require__(11);
+	var RequestListComponent = (function () {
+	    function RequestListComponent(_requestService, _knowledgeService, _pagerService, _authService) {
+	        var _this = this;
+	        this._requestService = _requestService;
+	        this._knowledgeService = _knowledgeService;
+	        this._pagerService = _pagerService;
+	        this._authService = _authService;
+	        this.pageTitle = 'Request List';
+	        this.filter = '';
+	        this.user = localStorage.getItem('username');
+	        this.roleToken = localStorage.getItem('userrole');
+	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
+	        });
+	    }
+	    RequestListComponent.prototype.ngOnInit = function () {
+	        this.getAllRequest();
+	        $('ul.tabs').tabs();
+	    };
+	    RequestListComponent.prototype.getAllRequest = function () {
+	        var _this = this;
+	        this.activeRequests = [];
+	        this.deactiveRequests = [];
+	        this.acceptepRequests = [];
+	        this._requestService.getAllRequestAdmin().subscribe(function (reqs) {
+	            for (var _i = 0, reqs_1 = reqs; _i < reqs_1.length; _i++) {
+	                var e = reqs_1[_i];
+	                if (e.status == "pending") {
+	                    e.status = "Đang chờ";
+	                    _this.activeRequests.push(e);
+	                }
+	                else if (e.status == "deactive") {
+	                    e.status = "Đã đóng";
+	                    _this.deactiveRequests.push(e);
+	                }
+	                else if (e.status == "accepted") {
+	                    e.status = "Được chấp nhận";
+	                    _this.acceptepRequests.push(e);
+	                }
+	            }
+	        });
+	    };
+	    RequestListComponent.prototype.deactivateRequest = function (id) {
+	        var _this = this;
+	        this._requestService
+	            .changeStatusRequest(id)
+	            .subscribe(function (r) {
+	            console.log("deactivate sucess");
+	            _this.getAllRequest();
+	        });
+	    };
+	    RequestListComponent.prototype.activateRequest = function (request) {
+	        var _this = this;
+	        request.status = 'pending';
+	        this._requestService
+	            .updateRequest(request, request.tags, [])
+	            .subscribe(function (r) {
+	            _this.getAllRequest();
+	        });
+	    };
+	    RequestListComponent = __decorate([
+	        core_1.Component({
+	            selector: 'request-list',
+	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
+	            directives: [private_chat_1.PrivateChatComponent, request_update_1.UpdateRequestComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer],
+	            providers: [requests_1.RequestService, pager_1.PagerService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object, (typeof (_c = typeof pager_1.PagerService !== 'undefined' && pager_1.PagerService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
+	    ], RequestListComponent);
+	    return RequestListComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.RequestListComponent = RequestListComponent;
+	
+
+/***/ },
+/* 433 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 8/8/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var common_1 = __webpack_require__(6);
+	var tag_1 = __webpack_require__(66);
+	var ng2_pagination_1 = __webpack_require__(133);
+	var pager_1 = __webpack_require__(192);
+	var filter_1 = __webpack_require__(292);
+	var primeng_1 = __webpack_require__(31);
+	var primeng_2 = __webpack_require__(31);
+	var private_chat_1 = __webpack_require__(11);
+	var TagListCtlComponent = (function () {
+	    function TagListCtlComponent(_tagService, router, _pagerService) {
+	        this._tagService = _tagService;
+	        this.router = router;
+	        this._pagerService = _pagerService;
+	        this.tagsAt = [];
+	        this.tagsDa = [];
+	    }
+	    TagListCtlComponent.prototype.ngOnInit = function () {
+	        this.getAllTag();
+	        $('ul.tabs').tabs();
+	    };
+	    TagListCtlComponent.prototype.getAllTag = function () {
+	        var _this = this;
+	        this.tagsAt = [];
+	        this.tagsDa = [];
+	        this._tagService.getAllTagAdmin().subscribe(function (tags) {
+	            for (var _i = 0, tags_1 = tags; _i < tags_1.length; _i++) {
+	                var e = tags_1[_i];
+	                if (e.status == true) {
+	                    _this.tagsAt.push(e);
+	                }
+	                else {
+	                    _this.tagsDa.push(e);
+	                }
+	            }
+	        });
+	    };
+	    TagListCtlComponent.prototype.deactiveTag = function (id) {
+	        var _this = this;
+	        this._tagService.deactivateTag(id).subscribe(function (mess) {
+	            _this.getAllTag();
+	            Materialize.toast('Đã đóng tag ', 4000);
+	        });
+	    };
+	    TagListCtlComponent.prototype.activeTag = function (id) {
+	        var _this = this;
+	        this._tagService.activeTag(id).subscribe(function (tag) {
+	            _this.getAllTag();
+	            Materialize.toast('Đã mở lại tag', 4000);
+	        });
+	    };
+	    TagListCtlComponent = __decorate([
+	        core_1.Component({
+	            selector: 'tag-list-clt',
+	            templateUrl: 'client/dev/app/components/back-end/tag/templates/tag.html',
+	            directives: [private_chat_1.PrivateChatComponent, router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, primeng_1.Paginator, primeng_2.DataTable, primeng_2.Column, primeng_2.Header, primeng_2.MultiSelect, primeng_2.Footer, primeng_2.InputText],
+	            providers: [tag_1.TagService, ng2_pagination_1.PaginationService, pager_1.PagerService],
+	            pipes: [ng2_pagination_1.PaginatePipe, filter_1.StringFilterPipe]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof pager_1.PagerService !== 'undefined' && pager_1.PagerService) === 'function' && _c) || Object])
+	    ], TagListCtlComponent);
+	    return TagListCtlComponent;
+	    var _a, _b, _c;
+	}());
+	exports.TagListCtlComponent = TagListCtlComponent;
+	
+
+/***/ },
+/* 434 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3364,268 +5427,38 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(19);
-	var knowledge_1 = __webpack_require__(48);
-	var requests_1 = __webpack_require__(82);
-	var auth_1 = __webpack_require__(51);
-	var CreateRequestComponent = (function () {
-	    function CreateRequestComponent(fb, _requestService, _knowledgeService, _authService) {
-	        this._requestService = _requestService;
-	        this._knowledgeService = _knowledgeService;
-	        this._authService = _authService;
-	        this.user = localStorage.getItem('username');
-	        this.roleToken = localStorage.getItem('userrole');
-	        this.requestForm = fb.group({
-	            "knowledgeId": [""],
-	            "title": [""],
-	            "description": [""],
-	            "user": [""]
-	        });
-	    }
-	    CreateRequestComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
-	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
-	        });
-	    };
-	    CreateRequestComponent.prototype.addRequest = function (request) {
-	        console.log(request);
-	        this._requestService.addRequest(request).subscribe(function (request) {
-	            console.log('success');
-	        }, function (error) {
-	            console.log(error.text());
-	        });
-	        console.log(request);
-	        window.location.reload();
-	    };
-	    CreateRequestComponent = __decorate([
-	        core_1.Component({
-	            selector: 'request-create',
-	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-create.html',
-	            styleUrls: ['client/dev/app/components/back-end/request/templates/request.css'],
-	            directives: [common_1.FORM_DIRECTIVES]
-	        }),
-	        __param(0, core_1.Inject(common_1.FormBuilder)),
-	        __param(1, core_1.Inject(requests_1.RequestService)), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
-	    ], CreateRequestComponent);
-	    return CreateRequestComponent;
-	    var _a, _b, _c, _d;
-	}());
-	exports.CreateRequestComponent = CreateRequestComponent;
-	
-
-/***/ },
-/* 416 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var requests_1 = __webpack_require__(82);
-	var auth_1 = __webpack_require__(51);
-	var request_create_1 = __webpack_require__(415);
-	var offer_create_1 = __webpack_require__(424);
-	var request_update_1 = __webpack_require__(281);
-	var RequestListComponent = (function () {
-	    function RequestListComponent(_requestService, _auth, router) {
-	        this._requestService = _requestService;
-	        this._auth = _auth;
-	        this.router = router;
-	        this.pageTitle = 'Request List';
-	    }
-	    RequestListComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        this._requestService.getAllRequests().subscribe(function (requests) {
-	            var formatDate = function (date) {
-	                if (date) {
-	                    var newDate, day, month, year;
-	                    year = date.substr(0, 4);
-	                    month = date.substr(5, 2);
-	                    day = date.substr(8, 2);
-	                    return newDate = day + '/' + month + '/' + year;
-	                }
-	            };
-	            for (var i = 0; i < requests.length; i++) {
-	                requests[i].createdAt = formatDate(requests[i].createdAt);
-	                requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
-	            }
-	            _this.requests = requests;
-	        });
-	    };
-	    RequestListComponent.prototype.deleteRequest = function (request) {
-	        var _this = this;
-	        this._requestService
-	            .deleteRequest(request)
-	            .subscribe(function () {
-	            console.log("delete successful");
-	        });
-	        //refresh page
-	        this._requestService.getAllRequests().subscribe(function (requests) {
-	            var formatDate = function (date) {
-	                if (date) {
-	                    var newDate, day, month, year;
-	                    year = date.substr(0, 4);
-	                    month = date.substr(5, 2);
-	                    day = date.substr(8, 2);
-	                    return newDate = day + '/' + month + '/' + year;
-	                }
-	            };
-	            for (var i = 0; i < requests.length; i++) {
-	                requests[i].createdAt = formatDate(requests[i].createdAt);
-	                requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
-	            }
-	            _this.requests = requests;
-	        });
-	    };
-	    RequestListComponent = __decorate([
-	        core_1.Component({
-	            selector: 'request-list',
-	            templateUrl: 'client/dev/app/components/back-end/request/templates/request-list.html',
-	            styleUrls: [
-	                'client/dev/asserts/css/backend-styles.css',
-	                'client/dev/app/components/back-end/request/templates/request.css'
-	            ],
-	            directives: [
-	                offer_create_1.CreateOfferComponent,
-	                request_update_1.UpdateRequestComponent,
-	                request_create_1.CreateRequestComponent,
-	                offer_create_1.CreateOfferComponent,
-	                router_1.ROUTER_DIRECTIVES
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
-	    ], RequestListComponent);
-	    return RequestListComponent;
-	    var _a, _b, _c;
-	}());
-	exports.RequestListComponent = RequestListComponent;
-	
-
-/***/ },
-/* 417 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var auth_1 = __webpack_require__(51);
-	var router_1 = __webpack_require__(7);
-	var NavbarComponent = (function () {
-	    function NavbarComponent(_auth, router) {
-	        this._auth = _auth;
-	        this.router = router;
-	    }
-	    NavbarComponent.prototype.logout = function () {
-	        this._auth.logout();
-	        this._auth.logoutClient();
-	        this.router.navigateByUrl('/kshare');
-	    };
-	    NavbarComponent = __decorate([
-	        core_1.Component({
-	            selector: 'nav-bar',
-	            templateUrl: 'client/dev/app/components/back-end/shared/templates/nav-bar.html',
-	            styleUrls: ['client/dev/asserts/css/backend-styles.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object])
-	    ], NavbarComponent);
-	    return NavbarComponent;
-	    var _a, _b;
-	}());
-	exports.NavbarComponent = NavbarComponent;
-	
-
-/***/ },
-/* 418 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var core_2 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var SidebarComponent = (function () {
-	    function SidebarComponent() {
-	    }
-	    __decorate([
-	        core_2.Input(), 
-	        __metadata('design:type', String)
-	    ], SidebarComponent.prototype, "pageTitle", void 0);
-	    SidebarComponent = __decorate([
-	        core_1.Component({
-	            selector: 'sidebar',
-	            templateUrl: 'client/dev/app/components/back-end/shared/templates/side-bar.html',
-	            styleUrls: ['client/dev/asserts/css/backend-styles.css'],
-	            directives: [router_1.ROUTER_DIRECTIVES]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], SidebarComponent);
-	    return SidebarComponent;
-	}());
-	exports.SidebarComponent = SidebarComponent;
-	
-
-/***/ },
-/* 419 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var primeng_1 = __webpack_require__(501);
-	var users_1 = __webpack_require__(67);
-	var auth_1 = __webpack_require__(51);
-	var user_create_1 = __webpack_require__(621);
+	var router_1 = __webpack_require__(4);
+	var common_1 = __webpack_require__(6);
+	var pager_1 = __webpack_require__(192);
+	var users_1 = __webpack_require__(26);
+	var auth_1 = __webpack_require__(45);
+	var primeng_1 = __webpack_require__(31);
+	var primeng_2 = __webpack_require__(31);
+	var private_chat_1 = __webpack_require__(11);
 	var UserListComponent = (function () {
-	    function UserListComponent(_userService, _auth, router) {
+	    function UserListComponent(fb, _userService, _auth, router) {
 	        this._userService = _userService;
 	        this._auth = _auth;
 	        this.router = router;
-	        this.pageTitle = 'user';
+	        this.pageTitle = 'users';
+	        this.users = [];
+	        this.filter = '';
 	        this.numOfUser = 0;
+	        this.createHid = true;
+	        this.userrole = localStorage.getItem('userrole');
+	        this.userrole === 'admin' ? this.createHid = false : this.createHid = true;
+	        this.userForm = fb.group({
+	            username: ["", common_1.Validators.required],
+	            password: ["", common_1.Validators.required],
+	            email: ["", common_1.Validators.required],
+	            role: ["", common_1.Validators.required]
+	        });
 	    }
 	    UserListComponent.prototype.ngOnInit = function () {
 	        var _this = this;
 	        this._userService
 	            .getAllUsers()
-	            .then(function (users) {
+	            .subscribe(function (users) {
 	            for (var i = 0; i < users.length; i++) {
 	                if (users[i].birthday) {
 	                    users[i].birthday = new Date(users[i].birthday);
@@ -3634,45 +5467,120 @@ webpackJsonp([2],[
 	                if (users[i].updatedAt) {
 	                    users[i].updatedAt = new Date(users[i].updatedAt);
 	                }
+	                users[i]["num"] = i + 1;
+	                if (_this.userrole !== 'admin' && users[i].role !== 'admin') {
+	                    _this.users.push(users[i]);
+	                }
+	                else {
+	                    _this.users.push(users[i]);
+	                }
 	            }
-	            _this.users = users;
 	            _this.numOfUser = i;
 	        }, function (error) {
 	            _this.errorMessage = error.message;
-	            console.log(error);
+	        });
+	        $(document).ready(function () {
+	            $('select').material_select();
+	            $('.modal-trigger').leanModal();
+	            $('.collapsible').collapsible();
+	        });
+	    };
+	    UserListComponent.prototype.addUser = function (user) {
+	        var _this = this;
+	        this.errorMessage = '';
+	        user.role = $('#role').val();
+	        var validateUsername = function (username) {
+	            var pattern = new RegExp('^[a-zA-Z0-9_.-]{8,30}$');
+	            return pattern.test(username);
+	        };
+	        var validatePass = function (password) {
+	            var pattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
+	            return pattern.test(password);
+	        };
+	        if (!validateUsername(user.username)) {
+	            this.errorMessage = 'Vui lòng nhập tên đăng nhập trong khoảng từ 8-30 kí tự, không dấu và không' +
+	                ' chứa kí' +
+	                ' tự' +
+	                ' đặc' +
+	                ' biệt! ';
+	        }
+	        else if (!validatePass(user.password)) {
+	            this.errorMessage = 'Mât khẩu phải có ít nhất 8 kí tự, bao gồm 1 kí tự viết hoa, 1 kí tự viết thường, 1 kí' +
+	                ' tự đặc biệt và 1 số';
+	        }
+	        else {
+	            this._userService
+	                .addUser(user)
+	                .subscribe(function (response) {
+	                if (response.role !== 'admin') {
+	                    _this.users.push(response);
+	                }
+	            }, function (error) {
+	                if (error.errors) {
+	                    var errors = error.errors;
+	                    if (errors.username) {
+	                        _this.errorMessage = errors.username.message;
+	                    }
+	                    else if (errors.password) {
+	                        _this.errorMessage = errors.password.message;
+	                    }
+	                    else if (errors.email) {
+	                        _this.errorMessage = errors.email.message;
+	                    }
+	                }
+	                if (error.errmsg) {
+	                    if (error.errmsg.includes('username')) {
+	                        _this.errorMessage = 'tên đăng nhập đã tồn tại';
+	                    }
+	                    else if (error.errmsg.includes('email')) {
+	                        _this.errorMessage = 'email đã tồn tại!';
+	                    }
+	                }
+	            });
+	        }
+	    };
+	    UserListComponent.prototype.banUser = function (user) {
+	        if (user.role === 'admin') {
+	            this.errMsg = 'Bạn không thể ban một admin';
+	        }
+	        this._userService.banUser(user._id).subscribe(function (response) {
+	            Materialize.toast('Khoá người dùng này trong vòng 1 ngày!', 6000);
+	            $("#" + user._id).hide();
+	            user.banStatus.status = true;
+	        }, function (error) { });
+	    };
+	    UserListComponent.prototype.deactivateUser = function (user) {
+	        if (user.role === 'admin') {
+	            this.errMsg = 'Bạn không thể khoá tài khoản của admin';
+	        }
+	        user.status = 'deactive';
+	        this._userService.updateUser(user, []).subscribe(function (user) {
+	        });
+	    };
+	    UserListComponent.prototype.activateUser = function (user) {
+	        user.status = 'active';
+	        user.banStatus.status = false;
+	        this._userService.updateUser(user, []).subscribe(function (user) {
 	        });
 	    };
 	    UserListComponent = __decorate([
 	        core_1.Component({
 	            selector: 'user-list',
 	            templateUrl: 'client/dev/app/components/back-end/users/templates/user-list.html',
-	            styleUrls: [
-	                'client/dev/asserts/css/backend-styles.css',
-	                'client/dev/app/components/back-end/users/styles/user.css'
-	            ],
-	            directives: [
-	                user_create_1.CreateUserComponent,
-	                primeng_1.DataTable,
-	                primeng_1.Column,
-	                primeng_1.Header,
-	                primeng_1.Footer,
-	                primeng_1.MultiSelect,
-	                router_1.ROUTER_DIRECTIVES
-	            ],
-	            providers: [
-	                user_create_1.CreateUserComponent
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
+	            directives: [router_1.ROUTER_DIRECTIVES, primeng_2.Paginator, common_1.FORM_DIRECTIVES, primeng_1.DataTable, primeng_1.Column, primeng_1.Header, primeng_1.Footer, private_chat_1.PrivateChatComponent],
+	            providers: [users_1.UserService, pager_1.PagerService],
+	        }),
+	        __param(0, core_1.Inject(common_1.FormBuilder)), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
 	    ], UserListComponent);
 	    return UserListComponent;
-	    var _a, _b, _c;
+	    var _a, _b, _c, _d;
 	}());
 	exports.UserListComponent = UserListComponent;
 	
 
 /***/ },
-/* 420 */
+/* 435 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3686,33 +5594,1047 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	/**
-	 * Created by GiangDH on 5/18/16.
+	 * Created by Duc Duong on 7/12/2016.
 	 */
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var HomeComponent = (function () {
-	    function HomeComponent() {
-	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
+	var router_1 = __webpack_require__(4);
+	var article_1 = __webpack_require__(41);
+	var tag_1 = __webpack_require__(66);
+	var primeng_1 = __webpack_require__(31);
+	var private_chat_1 = __webpack_require__(11);
+	var CKEditor = (function () {
+	    function CKEditor(_elm) {
+	        CKEDITOR.replace(_elm.nativeElement);
 	    }
-	    HomeComponent.prototype.ngOinit = function () {
-	    };
-	    HomeComponent = __decorate([
+	    CKEditor = __decorate([
 	        core_1.Component({
-	            selector: 'home',
-	            templateUrl: 'client/dev/app/components/front-end/home/templates/home.html',
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES
-	            ]
+	            selector: 'ck-editor',
+	            template: ""
 	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], HomeComponent);
-	    return HomeComponent;
+	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object])
+	    ], CKEditor);
+	    return CKEditor;
+	    var _a;
 	}());
-	exports.HomeComponent = HomeComponent;
+	var CreateArticleComponent = (function () {
+	    function CreateArticleComponent(_articleService, _tagService, router, route) {
+	        this._articleService = _articleService;
+	        this._tagService = _tagService;
+	        this.router = router;
+	        this.route = route;
+	        this.contentCk = "";
+	        this.titelArticle = "";
+	        this.tags = [];
+	        this.tagsEx = [];
+	        this.filesToUpload = [];
+	        this.roleToken = localStorage.getItem('role');
+	        this.userToken = localStorage.getItem('username');
+	    }
+	    CreateArticleComponent.prototype.ngOnInit = function () {
+	        if (this.userToken == null) {
+	            this.router.navigateByUrl('/');
+	        }
+	        this.CreateUploadImageCkeditor();
+	        this.CreateYoutubeBtnCkeditor();
+	        this.addCommandBtnCk();
+	        this.loadAllTags();
+	    };
+	    CreateArticleComponent.prototype.ngOnDestroy = function () {
+	        CKEDITOR.instances.editor1.destroy();
+	    };
+	    CreateArticleComponent.prototype.filterONTag = function () {
+	        var oldTag = [];
+	        if (this.tags.length > 0) {
+	            for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	                var e = _a[_i];
+	                for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                    var e1 = _c[_b];
+	                    //catch old tags
+	                    if (e.name == e1) {
+	                        oldTag.push(e._id);
+	                        //find out old tags in data tags user
+	                        var index = this.tags.indexOf(e1);
+	                        if (index > -1) {
+	                            //remove old tags to catch new tags
+	                            this.tags.splice(index, 1);
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	        return [oldTag, this.tags];
+	    };
+	    CreateArticleComponent.prototype.filterKnw = function (event) {
+	        var query = event.query;
+	        this.filteredKnw = [];
+	        for (var i = 0; i < this.tagsEx.length; i++) {
+	            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
+	                this.filteredKnw.push(this.tagsEx[i].name);
+	            }
+	            if (this.filteredKnw.indexOf(query.trim()) < 0) {
+	                this.filteredKnw.unshift(query.trim());
+	            }
+	        }
+	    };
+	    //load all knowledge
+	    CreateArticleComponent.prototype.loadAllTags = function () {
+	        var _this = this;
+	        this._tagService.getAllTag().subscribe(function (tags) {
+	            _this.tagsEx = tags;
+	            $('#preLoad').hide();
+	        });
+	    };
+	    // ckeditor
+	    CreateArticleComponent.prototype.insertLinkToBox = function (link) {
+	        CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
+	    };
+	    CreateArticleComponent.prototype.insertYoutubeToBox = function (link) {
+	        //https://www.youtube.com/watch?v=mraul5-1TBE
+	        var i = link.indexOf("=");
+	        link = link.substring(i + 1, link.length);
+	        var s = '<p><iframe frameborder="0" height="315" scrolling="no" src="https://www.youtube.com/embed/' + link + '" width="500"></iframe></p>';
+	        CKEDITOR.instances.editor1.insertHtml(s);
+	    };
+	    CreateArticleComponent.prototype.addCommandBtnCk = function () {
+	        CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
+	        CKEDITOR.instances.editor1.addCommand('youtube', { exec: this.openModalYoutube });
+	    };
+	    CreateArticleComponent.prototype.openModalImg = function () {
+	        $('#ModalUploadImgCkeditor').openModal();
+	    };
+	    CreateArticleComponent.prototype.openModalYoutube = function () {
+	        $('#ModalYTCkeditor').openModal();
+	    };
+	    CreateArticleComponent.prototype.CreateUploadImageCkeditor = function () {
+	        CKEDITOR.instances.editor1.ui.addButton('uploadImage', {
+	            label: 'Upload Image',
+	            command: 'uploadImage',
+	            icon: '/client/dev/asserts/images/icon-img-ck.png'
+	        });
+	    };
+	    CreateArticleComponent.prototype.CreateYoutubeBtnCkeditor = function () {
+	        CKEDITOR.instances.editor1.ui.addButton('youtube', {
+	            label: 'Add youtube',
+	            command: 'youtube',
+	            icon: '/client/dev/asserts/images/icon-youtube.png'
+	        });
+	    };
+	    CreateArticleComponent.prototype.makeFileRequest = function (url, params, files) {
+	        return new Promise(function (resolve, reject) {
+	            var formData = new FormData();
+	            var xhr = new XMLHttpRequest();
+	            for (var i = 0; i < files.length; i++) {
+	                formData.append("uploads[]", files[i], files[i].name);
+	            }
+	            xhr.onreadystatechange = function () {
+	                if (xhr.readyState == 4) {
+	                    if (xhr.status == 200) {
+	                        resolve(JSON.parse(xhr.response));
+	                    }
+	                    else {
+	                        reject(xhr.response);
+	                    }
+	                }
+	            };
+	            xhr.open("POST", url, true);
+	            xhr.send(formData);
+	        });
+	    };
+	    // uploading image
+	    CreateArticleComponent.prototype.uploadImageCk = function () {
+	        if (this.filesToUpload) {
+	            this.makeFileRequest("/api/media", [], this.filesToUpload).then(function (result) {
+	                var link = '/uploads/' + result[0].filename;
+	                CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" style="height:536px; width:858px" /></p>');
+	            }, function (error) {
+	                console.error(error);
+	            });
+	        }
+	    };
+	    //action button upload
+	    CreateArticleComponent.prototype.fileChangeEvent = function (fileInput) {
+	        this.filesToUpload = fileInput.target.files;
+	    };
+	    //finish control Ckeditor
+	    CreateArticleComponent.prototype.postArticle = function (stt) {
+	        var _this = this;
+	        this.contentCk = CKEDITOR.instances.editor1.getData();
+	        var tags = [];
+	        tags = this.filterONTag();
+	        if (this.titelArticle.length < 5 || this.titelArticle.length > 220) {
+	            Materialize.toast('Tiêu đề quá ngắn hoặc quá dài', 4000);
+	        }
+	        else if (this.contentCk.length < 50) {
+	            Materialize.toast('Nội dung bài viết phải trên 50 ký tự', 4000);
+	        }
+	        else {
+	            $('#preLoad').show();
+	            this._articleService.addArticle(this.titelArticle, this.contentCk, tags[0], tags[1], stt, this.userToken).subscribe(function (articleId) {
+	                _this.router.navigateByUrl('/article/' + articleId);
+	            }, function (error) {
+	                $('#preLoad').hide();
+	                if (error._body.includes('arrDe')) {
+	                    var arrayTags = error._body.replace("arrDe", "").replace(":", "").replace("}", "").replace("{", "").replace("]", "").replace("[", "").replace('"', '').replace('""', '').split(',');
+	                    var s = "";
+	                    for (var _i = 0, arrayTags_1 = arrayTags; _i < arrayTags_1.length; _i++) {
+	                        var e = arrayTags_1[_i];
+	                        s += e;
+	                    }
+	                    Materialize.toast('Từ khoá ' + s + ' đã bị đóng', 10000);
+	                }
+	            });
+	        }
+	    };
+	    CreateArticleComponent = __decorate([
+	        core_1.Component({
+	            selector: 'create-article',
+	            templateUrl: 'client/dev/app/components/front-end/article/templates/create-article.html',
+	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
+	            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
+	            providers: [article_1.ArticleService, tag_1.TagService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
+	    ], CreateArticleComponent);
+	    return CreateArticleComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.CreateArticleComponent = CreateArticleComponent;
 	
 
 /***/ },
-/* 421 */
+/* 436 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 7/24/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var common_1 = __webpack_require__(6);
+	var private_chat_1 = __webpack_require__(11);
+	var article_1 = __webpack_require__(41);
+	var notification_1 = __webpack_require__(57);
+	var report_1 = __webpack_require__(294);
+	var comment_1 = __webpack_require__(669);
+	var tag_1 = __webpack_require__(75);
+	var info_hover_1 = __webpack_require__(53);
+	var topArticle_1 = __webpack_require__(128);
+	var detailArticleComponent = (function () {
+	    function detailArticleComponent(fb, router, route, _articleService, _noti) {
+	        var _this = this;
+	        this.router = router;
+	        this.route = route;
+	        this._articleService = _articleService;
+	        this._noti = _noti;
+	        this.canSee = true;
+	        this.isDeAc = false;
+	        this.textCmt = "";
+	        this.cmts = [];
+	        this.isBindData = false;
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	        });
+	        this.roleToken = localStorage.getItem('userrole');
+	        this.userToken = localStorage.getItem('username');
+	        this.cmtEditForm = fb.group({
+	            "cntCmt": [""],
+	            "cmtId": [""]
+	        });
+	    }
+	    detailArticleComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._articleService.getArtById(this.id).subscribe(function (art) {
+	            if ((art.author == _this.userToken && art.status == 'private')
+	                || (_this.roleToken == 'admin' || _this.roleToken == 'mod')
+	                || ((_this.roleToken != 'admin' || _this.roleToken != 'mod') && art.status == 'public')) {
+	                //check user liked
+	                var i = art.userLiked.indexOf(_this.userToken);
+	                if (i >= 0) {
+	                    _this.liked = true;
+	                }
+	                else {
+	                    _this.liked = false;
+	                }
+	                _this.article = art;
+	                _this.tags = art.tagsFD;
+	                _this.article.createdAt = new Date(_this.article.createdAt);
+	                if (art.status == "deactivate") {
+	                    _this.isDeAc = true;
+	                }
+	                for (var _i = 0, _a = _this.article.comments; _i < _a.length; _i++) {
+	                    var e = _a[_i];
+	                    _this.cmts.push({
+	                        cmt: e,
+	                        isEdit: true
+	                    });
+	                }
+	            }
+	            else {
+	                _this.canSee = false;
+	            }
+	        }, function (error) {
+	            if (error.status == 400) {
+	                window.location.href = "/error";
+	            }
+	        });
+	        $('.modal-trigger').leanModal();
+	    };
+	    detailArticleComponent.prototype.openCloseArt = function () {
+	        $('#mdCfClose').openModal();
+	    };
+	    detailArticleComponent.prototype.openRp = function () {
+	        $('#myModal').openModal();
+	    };
+	    detailArticleComponent.prototype.deactivateArticle = function (id) {
+	        var _this = this;
+	        if (id) {
+	            this._articleService.deactivateArticle(id).subscribe(function (mes) {
+	                var title = 'Một bài viết của bạn đã bị đóng';
+	                var link = '/article/' + _this.article._id;
+	                //call function using socket io to send notification
+	                _this._noti.alertNotification(title, _this.article.author, link);
+	                //save notification to database
+	                _this._noti.createNotification(title, _this.article.author, link).subscribe(function (notification) {
+	                    console.log('create a notification to ' + _this.article.author);
+	                });
+	                Materialize.toast('Đã đóng bài viết!', 4000);
+	                _this.isDeAc = true;
+	                $('#clsArtBtn').hide();
+	            });
+	        }
+	    };
+	    detailArticleComponent.prototype.ngAfterViewChecked = function () {
+	        var _this = this;
+	        if (this.article != undefined) {
+	            if (this.isBindData == false) {
+	                $('#bdArticle').html(function () {
+	                    _this.isBindData = true;
+	                    return _this.article.content;
+	                });
+	                $('#bdArticle img').css('max-width', '100%');
+	                $('#bdArticle iframe').css('max-width', '100%');
+	            }
+	        }
+	    };
+	    detailArticleComponent.prototype.editArt = function (id) {
+	        this.router.navigateByUrl('/article/edit/' + this.id);
+	    };
+	    detailArticleComponent.prototype.postCmt = function () {
+	        var _this = this;
+	        if (this.textCmt.length != 0) {
+	            this._articleService.addComment(this.id, this.userToken, this.textCmt).subscribe(function (cmts) {
+	                _this.textCmt = "";
+	                _this.article.comments = cmts;
+	            });
+	        }
+	    };
+	    detailArticleComponent.prototype.actionComment = function (data) {
+	        var _this = this;
+	        switch (data[1]) {
+	            case 'delete':
+	                this._articleService.removeComment(this.id, data[0]).subscribe(function (cmts) {
+	                    _this.article.comments = cmts;
+	                    Materialize.toast('Đã xoá bình luận!', 4000);
+	                });
+	                break;
+	            case 'edit':
+	                this._articleService.editComment(this.id, data[0], data[2]).subscribe(function (cmts) {
+	                    _this.article.comments = cmts;
+	                });
+	                break;
+	            case 'like':
+	                this._articleService.likeComment(this.id, data[0], this.userToken).subscribe(function (cmts) {
+	                    _this.article.comments = cmts;
+	                });
+	                break;
+	            case 'unlike':
+	                this._articleService.unlikeComment(this.id, data[0], this.userToken).subscribe(function (cmts) {
+	                    _this.article.comments = cmts;
+	                });
+	                break;
+	            default:
+	                console.log("action is empty");
+	        }
+	    };
+	    detailArticleComponent.prototype.unlikeArt = function () {
+	        var _this = this;
+	        this._articleService.unlikeArt(this.id, this.userToken).subscribe(function (like) {
+	            _this.article.like = like;
+	            _this.liked = false;
+	        });
+	    };
+	    detailArticleComponent.prototype.likeArt = function () {
+	        var _this = this;
+	        this._articleService.likeArt(this.id, this.userToken).subscribe(function (like) {
+	            _this.article.like = like;
+	            _this.liked = true;
+	        });
+	    };
+	    detailArticleComponent = __decorate([
+	        core_1.Component({
+	            selector: 'detail-article',
+	            templateUrl: 'client/dev/app/components/front-end/article/templates/detail-article.html',
+	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES, report_1.ReportComponent, common_1.FORM_DIRECTIVES,
+	                comment_1.commentComponent, tag_1.listTagComponent, private_chat_1.PrivateChatComponent, info_hover_1.infoHover, topArticle_1.topArticlesComponent
+	            ],
+	            providers: [article_1.ArticleService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object, (typeof (_d = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _d) || Object, (typeof (_e = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _e) || Object])
+	    ], detailArticleComponent);
+	    return detailArticleComponent;
+	    var _a, _b, _c, _d, _e;
+	}());
+	exports.detailArticleComponent = detailArticleComponent;
+	
+
+/***/ },
+/* 437 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Duc Duong on 7/25/2016.
+	 */
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var article_1 = __webpack_require__(41);
+	var private_chat_1 = __webpack_require__(11);
+	var tag_1 = __webpack_require__(75);
+	var info_hover_1 = __webpack_require__(53);
+	var topArticle_1 = __webpack_require__(128);
+	var listArticleComponent = (function () {
+	    function listArticleComponent(router, route, _artService) {
+	        this.router = router;
+	        this.route = route;
+	        this._artService = _artService;
+	        this.listArt = [];
+	        this.num = 5;
+	        this.articles = [];
+	        this.height = 400;
+	        this.isExist = true;
+	        this.roleToken = localStorage.getItem('role');
+	        this.userToken = localStorage.getItem('username');
+	    }
+	    listArticleComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.getAllArticles();
+	        $(window).on("scroll", function () {
+	            var scrollHeight = $(document).height();
+	            var scrollPosition = $(window).height() + $(window).scrollTop();
+	            if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+	                setTimeout(function () {
+	                    _this.seeMore();
+	                }, 1000);
+	                _this.height += 30;
+	            }
+	        });
+	    };
+	    listArticleComponent.prototype.seeMore = function () {
+	        this.num = this.num + 5;
+	        this.getAllArticles();
+	    };
+	    listArticleComponent.prototype.getAllArticles = function () {
+	        var _this = this;
+	        this.text = "";
+	        this._artService.getAllArts(this.num).subscribe(function (arts) {
+	            if (arts.length == 0) {
+	            }
+	            else {
+	                for (var i = 0; i < arts.length; i++) {
+	                    _this.listArt.push(arts[i]);
+	                }
+	            }
+	        });
+	    };
+	    listArticleComponent.prototype.backToAll = function () {
+	        this.isExist = true;
+	        this.num = 5;
+	        this.getAllArticles();
+	    };
+	    listArticleComponent.prototype.searchArticle = function () {
+	        var _this = this;
+	        this.num = 5;
+	        this.listArt = [];
+	        if (!this.text) {
+	            this.getAllArticles();
+	            this.isExist = true;
+	        }
+	        else {
+	            this._artService.searchArticle(this.text).subscribe(function (arts) {
+	                console.log(arts.length);
+	                for (var i = 0; i < arts.length; i++) {
+	                    _this.listArt.push(arts[i]);
+	                }
+	                if (arts.length <= 0) {
+	                    _this.isExist = false;
+	                }
+	                else {
+	                    _this.isExist = true;
+	                }
+	            });
+	        }
+	    };
+	    listArticleComponent = __decorate([
+	        core_1.Component({
+	            selector: 'list-article',
+	            templateUrl: 'client/dev/app/components/front-end/article/templates/list-article.html',
+	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES,
+	                private_chat_1.PrivateChatComponent,
+	                tag_1.listTagComponent,
+	                info_hover_1.infoHover,
+	                topArticle_1.topArticlesComponent
+	            ],
+	            providers: [article_1.ArticleService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object])
+	    ], listArticleComponent);
+	    return listArticleComponent;
+	    var _a, _b, _c;
+	}());
+	exports.listArticleComponent = listArticleComponent;
+	
+
+/***/ },
+/* 438 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var ChalkBoardComponent = (function () {
+	    function ChalkBoardComponent() {
+	        this.initToken = true;
+	        this.username = localStorage.getItem('username');
+	        this.guest = localStorage.getItem('guest');
+	        this.colors = [
+	            { label: 'đen', value: '#000000' },
+	            { label: 'đỏ', value: '#DE3535' },
+	            { label: 'lục', value: '#03a9f4' },
+	            { label: 'lam', value: '#4caf50' },
+	            { label: 'vàng ', value: '#ffeb3b' },
+	            { label: 'cam', value: '#ff5722' }
+	        ];
+	        this.brushSizes = [
+	            { label: '1', value: '1' },
+	            { label: '2', value: '3' },
+	            { label: '3', value: '5' },
+	            { label: '4', value: '10' },
+	            { label: '5', value: '20' },
+	            { label: '6', value: '30' },
+	            { label: '7', value: '50' }
+	        ];
+	        // Socket Config
+	        this.socket = io('https://localhost:80');
+	    }
+	    //gọi modal
+	    ChalkBoardComponent.prototype.openModal = function () {
+	        $('#modal1').openModal({
+	            complete: function () {
+	            }
+	        });
+	        $('.lean-overlay').remove();
+	    };
+	    ChalkBoardComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        var drawing = false;
+	        var path;
+	        var streamPath;
+	        var strokeColor = 'black';
+	        var strokeWidth = 1;
+	        var room = this.id;
+	        var socket = this.socket;
+	        function isLecturer(username, lecturer) {
+	            if (username === lecturer) {
+	                return true;
+	            }
+	            else {
+	                return false;
+	            }
+	        }
+	        if (this.lecturer) {
+	            this.isGuest = false;
+	        }
+	        else if (!this.lecturer && this.guest) {
+	            this.isGuest = true;
+	        }
+	        this.isLect = isLecturer(this.username, this.lecturer);
+	        var isLect = this.isLect;
+	        var isGuest = this.isGuest;
+	        if (!this.isLect) {
+	            $('#draw-option').hide();
+	        }
+	        if (!this.lecturer) {
+	            $('#new-page').hide();
+	        }
+	        // Prepare data for identify the subscriber is lecturer or not
+	        var data = {
+	            room: room,
+	            lecturer: this.lecturer,
+	            isLecturer: this.isLect
+	        };
+	        socket.emit('subscribe', data);
+	        socket.on('userSubscribed', function (dataReturn) {
+	            // If user subscribe is not the lecturer => lecturer must share board to the new subscriber
+	            if (!dataReturn.isLecturer) {
+	                //check if logged in user is lecturer
+	                if (isLecturer(localStorage.getItem('username'), data.lecturer)) {
+	                    var json = paper.exportJSON(paper.project.activeLayer);
+	                    var board = {
+	                        json: json,
+	                        room: data.room,
+	                        lecturer: data.lecturer
+	                    };
+	                    socket.emit('shareBoard', board);
+	                }
+	            }
+	        });
+	        // if logged in user is not lecturer => import board
+	        socket.on('shareBoard', function (board) {
+	            if (!isLecturer(localStorage.getItem('username'), data.lecturer)) {
+	                paper.importJSON(board.json);
+	            }
+	        });
+	        // if lecturer create new board => learners import board
+	        socket.on('newBoard', function (data) {
+	            paper.project.clear();
+	            var newLayer = new paper.Layer();
+	            newLayer.activate();
+	            if (isLecturer(localStorage.getItem('username'), data.lecturer)) {
+	                var board = {
+	                    boardNumber: data.boardNumber,
+	                    json: data.json
+	                };
+	                _this.boards.push(board);
+	            }
+	        });
+	        // if lecturer change board => learners change board
+	        socket.on('changeBoard', function (board) {
+	            if (!isLecturer(localStorage.getItem('username'), board.lecturer)) {
+	                paper.project.clear();
+	                paper.importJSON(board.json);
+	            }
+	        });
+	        /*
+	        * Init new chalk board
+	        * */
+	        var chalkboard = document.getElementById('chalkboard');
+	        paper.setup(chalkboard);
+	        //initiate setting
+	        var drawToolShow = false;
+	        $('#draw-tools').hide();
+	        //show draw-tools
+	        $('#draw-option').click(function () {
+	            if (!drawToolShow) {
+	                $('#draw-tools').show();
+	                drawToolShow = true;
+	            }
+	            else {
+	                $('#draw-tools').hide();
+	                drawToolShow = false;
+	            }
+	        });
+	        $('#color-picker').change(function () {
+	            if ($('#color-picker').val() !== 'black') {
+	                $('#color-picker').css('color', 'black');
+	            }
+	            if ($('#color-picker').val()) {
+	                $('#color-picker').css('background-color', $('#color-picker').val());
+	                strokeColor = $('#color-picker').val();
+	            }
+	        });
+	        $('#brush-size').change(function () {
+	            if ($('#brush-size').val()) {
+	                strokeWidth = $('#brush-size').val();
+	            }
+	        });
+	        $('#eraser').click(function () {
+	            strokeColor = '#ffffff';
+	        });
+	        //Catch event when mouse down, create new path, emit start point
+	        $('#chalkboard').mousedown(function (event) {
+	            if (isLect || isGuest) {
+	                drawing = true;
+	                path = new paper.Path();
+	                path.strokeColor = strokeColor;
+	                path.strokeWidth = strokeWidth;
+	                var x = event.pageX - 0.22 * $(window).width();
+	                var y = event.pageY - 105;
+	                path.add(new paper.Point(x, y));
+	                emitStartPoint(x, y, strokeColor, strokeWidth);
+	            }
+	        });
+	        //Catch event when mouse move and drawing token is true
+	        //Then call function draw (x,y) Emit the points of the path to server
+	        $('#chalkboard').mousemove(function (event) {
+	            if (drawing && (isLect || isGuest)) {
+	                var x = event.pageX - 0.22 * $(window).width();
+	                var y = event.pageY - 105;
+	                draw(x, y);
+	                emitPathPoint(x, y);
+	            }
+	        });
+	        /**
+	         * When mouse up, set drawing is false, finish the path
+	         */
+	        $('#chalkboard').mouseup(function (event) {
+	            drawing = false;
+	        });
+	        /**
+	         * function draw(x, y)
+	         * Add point(x,y) to the path
+	         */
+	        function draw(x, y) {
+	            path.add(new paper.Point(x, y));
+	            path.smooth();
+	            paper.view.draw();
+	        }
+	        /**
+	         * function streamStartPath(x,y)
+	         * When receive the start point from server, create the stream path
+	         */
+	        function streamStartPath(x, y, color, width) {
+	            streamPath = new paper.Path();
+	            streamPath.strokeColor = color;
+	            streamPath.strokeWidth = width;
+	            streamPath.add(new paper.Point(x, y));
+	            streamPath.smooth();
+	        }
+	        /**
+	         * function streamDraw(x,y)
+	         * Add point(x,y) to the stream path
+	         */
+	        function streamDraw(x, y) {
+	            streamPath.add(new paper.Point(x, y));
+	            paper.view.draw();
+	        }
+	        /**
+	         * function emitStartPoint(x,y)
+	         * Send the start point (x,y) to the server
+	         */
+	        function emitStartPoint(x, y, color, width) {
+	            var data = {
+	                x: x,
+	                y: y,
+	                color: color,
+	                width: width,
+	                room: room
+	            };
+	            socket.emit('startPoint', data);
+	        }
+	        /**
+	         * function emitPathPoint(x,y)
+	         * Send the path's point (x,y) to the server
+	         */
+	        function emitPathPoint(x, y) {
+	            var data = {
+	                x: x,
+	                y: y,
+	                room: room
+	            };
+	            socket.emit('pathpoint', data);
+	        }
+	        //When socket receive startPoint, call function streamStartPath(x,y)
+	        socket.on('startPoint', function (data) {
+	            streamStartPath(data.x, data.y, data.color, data.width);
+	        });
+	        //When socket receive pathpoint, call function streamDraw(x,y)
+	        socket.on('pathpoint', function (data) {
+	            streamDraw(data.x, data.y);
+	        });
+	    };
+	    /*
+	     * Lecturer create new page
+	     * */
+	    ChalkBoardComponent.prototype.newPage = function (name, des) {
+	        if (this.isLect) {
+	            var json = paper.exportJSON(paper.project.activeLayer);
+	            var socket = this.socket;
+	            var chalkboard = document.getElementById("chalkboard");
+	            var dataURL = chalkboard.toDataURL();
+	            paper.project.clear();
+	            var newLayer = new paper.Layer();
+	            newLayer.activate();
+	            //config data to save to server
+	            var data = {
+	                room: this.id,
+	                lecturer: this.lecturer,
+	                name: name,
+	                des: des,
+	                json: json,
+	                dataURL: dataURL
+	            };
+	            var board = {
+	                name: data.name,
+	                json: data.json
+	            };
+	            this.boards.push(board);
+	            socket.emit('newBoard', data);
+	        }
+	    };
+	    ChalkBoardComponent.prototype.changeBoard = function (json, name) {
+	        var socket = this.socket;
+	        if (this.isLect) {
+	            if (this.initToken == true) {
+	                this.currentPage = paper.exportJSON(paper.project.activeLayer);
+	            }
+	            if (name) {
+	                paper.project.clear();
+	                paper.importJSON(json);
+	                this.initToken = false;
+	            }
+	            else {
+	                paper.project.clear();
+	                paper.importJSON(json);
+	                this.initToken = true;
+	            }
+	            var data = {
+	                room: this.id,
+	                json: json,
+	                lecturer: this.lecturer
+	            };
+	            socket.emit('changeBoard', data);
+	        }
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], ChalkBoardComponent.prototype, "id", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], ChalkBoardComponent.prototype, "boards", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], ChalkBoardComponent.prototype, "lecturer", void 0);
+	    ChalkBoardComponent = __decorate([
+	        core_1.Component({
+	            selector: 'chalkboard',
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/chalkboard.html',
+	            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], ChalkBoardComponent);
+	    return ChalkBoardComponent;
+	}());
+	exports.ChalkBoardComponent = ChalkBoardComponent;
+	
+
+/***/ },
+/* 439 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/25/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var kspace_1 = __webpack_require__(65);
+	var router_1 = __webpack_require__(4);
+	var JoinPublicKspace = (function () {
+	    function JoinPublicKspace(_kspaceService, router, _route) {
+	        var _this = this;
+	        this._kspaceService = _kspaceService;
+	        this.router = router;
+	        this._route = _route;
+	        this.sub = this._route.params.subscribe(function (params) {
+	            _this.room = params['id'];
+	        });
+	    }
+	    JoinPublicKspace.prototype.joinRoom = function (guest) {
+	        var _this = this;
+	        if (guest) {
+	            this._kspaceService.joinPublicKspace(guest, this.room)
+	                .subscribe(function (res) {
+	                if (res.success) {
+	                    localStorage.setItem('guest', guest);
+	                    var url = '/public-kspace/' + _this.room + '/room';
+	                    _this.router.navigateByUrl(url);
+	                }
+	            });
+	        }
+	        else {
+	            this.errorMessage = "Vui lòng nhập tên hiển thị của bạn trong kspace";
+	        }
+	    };
+	    JoinPublicKspace.prototype.ngOnDestroy = function () {
+	        this.sub.unsubscribe();
+	    };
+	    JoinPublicKspace = __decorate([
+	        core_1.Component({
+	            selector: 'public-kspace',
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/join-room.html',
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object])
+	    ], JoinPublicKspace);
+	    return JoinPublicKspace;
+	    var _a, _b, _c;
+	}());
+	exports.JoinPublicKspace = JoinPublicKspace;
+	
+
+/***/ },
+/* 440 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/28/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var ChatComponent = (function () {
+	    function ChatComponent() {
+	        this.messages = [];
+	        this.username = localStorage.getItem('username');
+	        this.guest = localStorage.getItem('guest');
+	    }
+	    ChatComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.socket = io('https://localhost:80');
+	        this.socket.emit('subscribe', { room: this.room });
+	        this.socket.on("chat_message", function (dataReturn) {
+	            var isSender = false;
+	            if (dataReturn.user == _this.username || dataReturn.user == _this.guest) {
+	                isSender = true;
+	            }
+	            var msgObject = {
+	                user: dataReturn.user,
+	                msg: dataReturn.msg,
+	                url: dataReturn.url,
+	                sender: isSender
+	            };
+	            _this.messages.push(msgObject);
+	        });
+	        if (this.lecturer) {
+	            var isSender = false;
+	            for (var _i = 0, _a = this.chatlogs; _i < _a.length; _i++) {
+	                var log = _a[_i];
+	                if (log.createdUser == this.username) {
+	                    isSender = true;
+	                }
+	                else {
+	                    isSender = false;
+	                }
+	                var msgObject = {
+	                    user: log.createdUser,
+	                    msg: log.message,
+	                    sender: isSender,
+	                    url: log.dataURL
+	                };
+	                this.messages.push(msgObject);
+	            }
+	        }
+	    };
+	    ChatComponent.prototype.send = function (message, img) {
+	        if (message) {
+	            if (img && this.lecturer) {
+	                var chalkboard = document.getElementById("chalkboard");
+	                var dataURL = chalkboard.toDataURL();
+	                var data = {
+	                    id: this.room,
+	                    createdUser: this.username,
+	                    message: message,
+	                    dataURL: dataURL
+	                };
+	                this.socket.emit("chat_message", data);
+	                this.mess = "";
+	            }
+	            else {
+	                var data = {
+	                    id: this.room,
+	                    createdUser: this.username,
+	                    message: message
+	                };
+	                if (this.guest) {
+	                    data = {
+	                        id: this.room,
+	                        guest: this.guest,
+	                        message: message
+	                    };
+	                }
+	                this.socket.emit("chat_message", data);
+	                this.mess = "";
+	            }
+	        }
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], ChatComponent.prototype, "chatlogs", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], ChatComponent.prototype, "room", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], ChatComponent.prototype, "lecturer", void 0);
+	    ChatComponent = __decorate([
+	        core_1.Component({
+	            selector: 'kspace-chat',
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/kspace-chat.html',
+	            styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css']
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], ChatComponent);
+	    return ChatComponent;
+	}());
+	exports.ChatComponent = ChatComponent;
+	
+
+/***/ },
+/* 441 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3729,41 +6651,182 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 7/9/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(4);
+	var kspace_1 = __webpack_require__(65);
+	var article_1 = __webpack_require__(41);
+	var private_chat_1 = __webpack_require__(11);
+	var ratingPoint_1 = __webpack_require__(297);
+	var ng_semantic_1 = __webpack_require__(519);
+	var info_hover_1 = __webpack_require__(53);
 	var KSpaceInfoComponent = (function () {
-	    function KSpaceInfoComponent(router, route) {
+	    function KSpaceInfoComponent(router, route, _kspaceService, _articleService) {
 	        var _this = this;
 	        this.router = router;
 	        this.route = route;
-	        this.accessRoomBtn = 'Access Room';
+	        this._kspaceService = _kspaceService;
+	        this._articleService = _articleService;
+	        this.isFinish = false;
+	        this.images = [];
+	        this.boards = [];
+	        this.isCreatingArt = false;
 	        this.route.params.subscribe(function (params) {
 	            _this.kspaceId = params['id'];
+	            _this.lecturer = params['lecturer'];
 	        });
 	    }
 	    KSpaceInfoComponent.prototype.ngOnInit = function () {
+	        $('#createReview').trigger('autoresize');
+	        this.loadAllData();
+	        $('#preLoad').hide();
+	    };
+	    KSpaceInfoComponent.prototype.loadAllData = function () {
+	        var _this = this;
+	        this._kspaceService
+	            .getKSpaceById(this.kspaceId)
+	            .subscribe(function (kspace) {
+	            _this.kspace = kspace;
+	            _this.title = kspace.requestTitle;
+	            _this.reviews = kspace.reviews;
+	            _this.rateAve = parseInt(kspace.rateAve);
+	            for (var _i = 0, _a = kspace.chatlog; _i < _a.length; _i++) {
+	                var log = _a[_i];
+	                if (log.dataURL) {
+	                    var data = {
+	                        id: log._id,
+	                        des: log.message,
+	                        url: log.dataURL
+	                    };
+	                    _this.images.push(data);
+	                }
+	            }
+	            for (var _b = 0, _c = kspace.boards; _b < _c.length; _b++) {
+	                var board = _c[_b];
+	                if (board._id) {
+	                    var data = {
+	                        id: board._id,
+	                        name: board.name,
+	                        des: board.description,
+	                        url: board.dataURL
+	                    };
+	                    _this.boards.push(data);
+	                }
+	            }
+	            if (kspace.finishedAt) {
+	                _this.isFinish = true;
+	                _this.finishDate = kspace.finishedAt;
+	            }
+	        });
+	    };
+	    KSpaceInfoComponent.prototype.onSubmit = function (value) {
+	        var _this = this;
+	        if (!this.ratePoint) {
+	            this.errorMessage = 'Vui lòng chấm điểm cho bài giảng';
+	        }
+	        else {
+	            var data = {
+	                id: this.kspaceId,
+	                createdUser: localStorage.getItem('username'),
+	                content: value.content,
+	                rate: this.ratePoint
+	            };
+	            this._kspaceService.createReview(data).subscribe(function (reviews) {
+	                _this.reviews = reviews;
+	            }, function (error) {
+	                if (error._body) {
+	                    console.log(error);
+	                    error = JSON.parse(error._body);
+	                    if (error.message) {
+	                        _this.errorMessage = error.message;
+	                    }
+	                }
+	            });
+	        }
+	    };
+	    KSpaceInfoComponent.prototype.onReceiveRating = function (event) {
+	        this.errorMessage = '';
+	        this.ratePoint = event;
 	    };
 	    KSpaceInfoComponent.prototype.accessRoom = function () {
-	        var specs = 'resizable=yes, fullscreen=yes';
+	        var specs = 'width=1024, resizable=no';
 	        var name = '_blank';
-	        var url = '/room/' + this.kspaceId;
+	        var url = '/room/' + this.kspaceId + '/' + this.lecturer;
 	        window.open(url, name, specs);
-	        //this.router.navigateByUrl('/kspace/room/'+this.kspaceId);
+	    };
+	    KSpaceInfoComponent.prototype.finishKp = function () {
+	        var _this = this;
+	        this._kspaceService.finish(this.kspaceId).subscribe(function (kspace) {
+	            _this.isFinish = true;
+	            _this.finishDate = kspace.finishedAt;
+	        });
+	    };
+	    KSpaceInfoComponent.prototype.openSelectElement = function () {
+	        this.isCreatingArt = true;
+	    };
+	    KSpaceInfoComponent.prototype.createArt = function () {
+	        var _this = this;
+	        if (this.images.length == 0 && this.boards.length == 0) {
+	            Materialize.toast('Không có dữ liệu để tạo', 4000);
+	        }
+	        else {
+	            $('#preLoad').show();
+	            var contentArt = '';
+	            for (var i = 0; i < this.images.length; i++) {
+	                contentArt += "<h5>ảnh " + this.images[i].des + "</h5><br>";
+	                contentArt += '<img class="responsive-img" src="' + this.images[i].url + '" style="background-color: black; border-radius: 10px;"><br>';
+	            }
+	            for (var i = 0; i < this.boards.length; i++) {
+	                contentArt += "<p><h5>bảng " + this.boards[i].name + "</h5></p>";
+	                contentArt += "<p><h6>bảng " + this.boards[i].des + "</h6></p>";
+	                contentArt += '<img class="responsive-img" src="' + this.boards[i].url + '" style="background-color: whitesmoke; border-radius: 10px;" ><br>';
+	            }
+	            var dateKs = new Date(this.kspace.createdAt);
+	            dateKs = dateKs.toLocaleDateString();
+	            var title = this.kspace.requestTitle + " " + dateKs;
+	            this._articleService.addArticle(title, contentArt, this.kspace.tags, [], "private", this.lecturer).subscribe(function (artId) {
+	                _this.router.navigateByUrl('/article/edit/' + artId);
+	            });
+	        }
+	    };
+	    KSpaceInfoComponent.prototype.deleteElement = function (id) {
+	        for (var i = 0; i < this.images.length; i++) {
+	            if (this.images[i].id == id) {
+	                this.images.splice(i, 1);
+	                break;
+	            }
+	        }
+	        for (var i = 0; i < this.boards.length; i++) {
+	            if (this.boards[i].id == id) {
+	                this.boards.splice(i, 1);
+	                break;
+	            }
+	        }
+	    };
+	    KSpaceInfoComponent.prototype.cancleCreateArt = function () {
+	        this.isCreatingArt = false;
+	        this.images = [];
+	        this.boards = [];
+	        this.loadAllData();
 	    };
 	    KSpaceInfoComponent = __decorate([
 	        core_1.Component({
-	            template: "\n      <div class=\"container mg-top-50\">\n      <button (click)=\"accessRoom()\">{{accessRoomBtn}}</button>\n      </div>\n    ",
-	            directives: [router_1.ROUTER_DIRECTIVES]
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/kspace-info.html',
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent, ng_semantic_1.SEMANTIC_COMPONENTS,
+	                ng_semantic_1.SEMANTIC_DIRECTIVES, ratingPoint_1.RatingPoint, info_hover_1.infoHover
+	            ],
+	            providers: [article_1.ArticleService],
+	            styles: ["\n      button#submitReview {\n          margin-top: 50px;\n      }\n    "]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _c) || Object, (typeof (_d = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _d) || Object])
 	    ], KSpaceInfoComponent);
 	    return KSpaceInfoComponent;
-	    var _a, _b;
+	    var _a, _b, _c, _d;
 	}());
 	exports.KSpaceInfoComponent = KSpaceInfoComponent;
 	
 
 /***/ },
-/* 422 */
+/* 442 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3780,8 +6843,9 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 7/9/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(183);
-	var router_1 = __webpack_require__(7);
+	var kspace_1 = __webpack_require__(65);
+	var router_1 = __webpack_require__(4);
+	var private_chat_1 = __webpack_require__(11);
 	var KSpaceListComponent = (function () {
 	    function KSpaceListComponent(_kspaceService, router) {
 	        this._kspaceService = _kspaceService;
@@ -3789,13 +6853,12 @@ webpackJsonp([2],[
 	    }
 	    KSpaceListComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        console.log('dmc');
 	        this._kspaceService
 	            .getAllKSpace()
 	            .subscribe(function (kspaces) {
-	            console.log(kspaces);
 	            for (var i = 0; i < kspaces.length; i++) {
 	                kspaces[i].createdAt = new Date(kspaces[i].createdAt);
+	                kspaces[i].link = '/kspace/info/' + kspaces[i]._id + '/' + kspaces[i].lecturer;
 	            }
 	            _this.kspaces = kspaces;
 	        }, function (error) {
@@ -3805,9 +6868,10 @@ webpackJsonp([2],[
 	    };
 	    KSpaceListComponent = __decorate([
 	        core_1.Component({
-	            template: "\n    <div class=\"container mg-top-50\">\n          <!-- list all-->\n          <div class=\"search-container\">\n             <form role=\"search\">\n                     <div class=\"search-component\">\n                        <input #text type=\"text\" class=\"form-control search-input\" placeholder=\"Nh\u1EADp n\u1ED9i dung t\u00ECm ki\u1EBFm\">\n                        <button (click)=\"search(text.value)\" type=\"submit\"\n                        class=\"search-button fa fa-search fa-2x\"\n                        aria-hidden=\"true\"></button>\n                     </div>\n              </form>\n           </div><!-- /.search-component -->\n          <div *ngIf=\"kspaces\" id=\"kspace-list-component\" class=\"col-md-12\">\n            <div class=\"panel panel-default card-rq\" *ngFor=\"let kspace of kspaces\">\n              <div class=\"panel-body\">\n                <a [routerLink]=\"['/kspace/info/',kspace._id]\" >\n                  <p class=\"lead\">{{kspace.requestTitle}}</p>\n                </a>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Ng\u01B0\u1EDDi y\u00EAu c\u1EA7u : {{kspace.learner}}\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Ng\u01B0\u1EDDi d\u1EA1y : {{kspace.lecturer}}\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Tr\u1EA1ng th\u00E1i : ddddddd\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu\">\n                  Ng\u00E0y t\u1EA1o : {{kspace.createdAt | date:\"dd/MM/yyyy\"}}\n                </div>\n            </div>\n          </div>\n    </div><!-- /.container -->\n    ",
+	            template: "\n    <div class=\"container mg-top-50\">\n          <!-- list all-->\n          <div class=\"search-container\">\n             <form role=\"search\">\n                     <div class=\"search-component\">\n                        <input #text type=\"text\" class=\"form-control search-input\" placeholder=\"Nh\u1EADp n\u1ED9i dung t\u00ECm ki\u1EBFm\">\n                        <button (click)=\"search(text.value)\" type=\"submit\"\n                        class=\"search-button fa fa-search fa-2x\"\n                        aria-hidden=\"true\"></button>\n                     </div>\n              </form>\n           </div><!-- /.search-component -->\n          <div *ngIf=\"kspaces\" id=\"kspace-list-component\" class=\"col-md-12\">\n            <div class=\"panel panel-default card-rq\" *ngFor=\"let kspace of kspaces\">\n              <div class=\"panel-body\">\n                <a [routerLink]=\"[kspace.link]\" >\n                  <p class=\"lead\">{{kspace.requestTitle}}</p>\n                </a>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Ng\u01B0\u1EDDi y\u00EAu c\u1EA7u : {{kspace.learner}}\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Ng\u01B0\u1EDDi d\u1EA1y : {{kspace.lecturer}}\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 fixEfMenu\">\n                  Tr\u1EA1ng th\u00E1i : ddddddd\n                </div>\n                <div class=\"col-xs-12 col-sm-6 col-md-6 col-lg-6 text-left fixEfMenu\">\n                  Ng\u00E0y t\u1EA1o : {{kspace.createdAt | date:\"dd/MM/yyyy\"}}\n                </div>\n            </div>\n          </div>\n    </div><!-- /.container -->\n    <private-chat></private-chat>\n    ",
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES
+	                router_1.ROUTER_DIRECTIVES,
+	                private_chat_1.PrivateChatComponent
 	            ],
 	            styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace-list.css']
 	        }), 
@@ -3820,7 +6884,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 423 */
+/* 443 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3834,123 +6898,49 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var kspace_1 = __webpack_require__(183);
-	var rtc_services_1 = __webpack_require__(623);
-	var router_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(19);
-	//import { ChatComponent } from './chat';
-	var chalkboard_1 = __webpack_require__(622);
+	var kspace_1 = __webpack_require__(65);
+	var router_1 = __webpack_require__(4);
+	var webrtc_component_1 = __webpack_require__(445);
+	var kspace_chat_1 = __webpack_require__(440);
+	var chalkboard_1 = __webpack_require__(438);
 	var KSpaceComponent = (function () {
-	    function KSpaceComponent(router, route, _kspaceService, rtcService) {
+	    function KSpaceComponent(router, route, _kspaceService) {
 	        var _this = this;
 	        this.router = router;
 	        this.route = route;
 	        this._kspaceService = _kspaceService;
-	        this.rtcService = rtcService;
-	        this.messages = [];
-	        this.route
-	            .params
-	            .subscribe(function (params) {
+	        this.route.params.subscribe(function (params) {
 	            _this.id = params['id'];
+	            _this.lecturer = params['lecturer'];
 	        });
 	        this.username = localStorage.getItem('username');
 	    }
-	    KSpaceComponent.prototype.chatting = function (mess) {
-	        var username = this.username;
-	        var messages = this.messages;
-	        messages.push(username + ': ' + mess);
-	        this.messages = messages;
-	    };
 	    /*
-	    * Init when the component is initiated
-	    *
-	    * */
+	     * Init when the component is initiated
+	     * */
 	    KSpaceComponent.prototype.ngOnInit = function () {
-	        // DOM elements
 	        var _this = this;
-	        var shareScreenBtn = $('#sharescreen-btn');
-	        var chalkBoardBtn = $('#chalkboard-btn');
-	        var videoCallBtn = $('#videocall-btn');
-	        var localVideo = $('#localVideo');
-	        var remoteVideos = $('#remoteVideos');
-	        var kspacePanel = $('#kspace-panel');
-	        var chatBox = $('#chat-box-panel');
-	        var drawTools = $('#draw-tools-panel');
-	        // initiate setting
-	        var chatToolShow = false;
-	        $('#chat-panel').hide();
-	        //show chat-panel
-	        $('#chat').click(function () {
-	            if (!chatToolShow) {
-	                $('#chat-panel').show();
-	                $('#kspace-panel').css('right', '18%');
-	                $('#draw-option').css('margin-left', '96.8%');
-	                chatToolShow = true;
-	            }
-	            else {
-	                $('#chat-panel').hide();
-	                $('#kspace-panel').css('right', '6%');
-	                $('#draw-option').css('margin-left', '97.15%');
-	                chatToolShow = false;
-	            }
-	        });
 	        this._kspaceService
 	            .getKSpaceById(this.id)
 	            .subscribe(function (kspace) {
-	            var room = kspace._id;
+	            _this.boards = kspace.boards;
+	            _this.chatlogs = kspace.chatlog;
+	            _this.room = kspace._id;
 	            var username = _this.username;
-	            var rtc = _this.rtcService;
-	            var socket = io('http://localhost:3333');
-	            socket.emit('subscribe', room);
-	            // $('#chat-form').submit(function () {
-	            //   var message = $('#chat-input').val()
-	            //   if(message && username){
-	            //     var messages = showMessage(username, message);
-	            //     this.messages = messages;
-	            //   }
-	            // })
+	            _this.learners = kspace.learners;
 	            var isKspaceUser = function () {
-	                if (username === kspace.lecturer || username === kspace.learner) {
+	                for (var _i = 0, _a = kspace.learners; _i < _a.length; _i++) {
+	                    var learner = _a[_i];
+	                    if (username === learner) {
+	                        return true;
+	                    }
+	                }
+	                if (username === kspace.lecturer) {
 	                    return true;
 	                }
 	                return false;
 	            };
-	            if (isKspaceUser) {
-	                // initiate webrtc
-	                if (username === kspace.lecturer) {
-	                    var webrtc = new SimpleWebRTC({
-	                        localVideoEl: 'localVideo',
-	                        remoteVideosEl: '',
-	                        autoRequestMedia: true,
-	                        nick: username,
-	                        localVideo: {
-	                            autoplay: true,
-	                            mirror: true,
-	                            muted: true // mute local video stream to prevent echo
-	                        },
-	                        log: true,
-	                        debug: false
-	                    });
-	                }
-	                else if (username === kspace.learner) {
-	                    var webrtc = new SimpleWebRTC({
-	                        remoteVideosEl: '',
-	                        nick: username,
-	                        media: { video: false, audio: true }
-	                    });
-	                }
-	                console.log(webrtc);
-	                rtc.rtcSetting(webrtc, room, kspace.lecturer);
-	                var peers = webrtc.getPeers();
-	                var sharescreenToken = false;
-	                shareScreenBtn.click(function () {
-	                    sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);
-	                });
-	                chalkBoardBtn.click(function () {
-	                    kspacePanel.find('video').remove();
-	                });
-	            }
-	            else {
+	            if (!isKspaceUser()) {
 	                _this.router.navigateByUrl('/');
 	            }
 	        }, function (error) {
@@ -3964,23 +6954,21 @@ webpackJsonp([2],[
 	            styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
-	                common_1.FORM_DIRECTIVES,
-	                chalkboard_1.ChalkBoardComponent
-	            ],
-	            providers: [
-	                rtc_services_1.WebRCTService
+	                chalkboard_1.ChalkBoardComponent,
+	                kspace_chat_1.ChatComponent,
+	                webrtc_component_1.RTCComponent
 	            ]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _c) || Object, (typeof (_d = typeof rtc_services_1.WebRCTService !== 'undefined' && rtc_services_1.WebRCTService) === 'function' && _d) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _c) || Object])
 	    ], KSpaceComponent);
 	    return KSpaceComponent;
-	    var _a, _b, _c, _d;
+	    var _a, _b, _c;
 	}());
 	exports.KSpaceComponent = KSpaceComponent;
 	
 
 /***/ },
-/* 424 */
+/* 444 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -3993,55 +6981,206 @@ webpackJsonp([2],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var __param = (this && this.__param) || function (paramIndex, decorator) {
-	    return function (target, key) { decorator(target, key, paramIndex); }
-	};
+	/**
+	 * Created by GiangDH on 8/25/16.
+	 */
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(19);
-	var request_offer_1 = __webpack_require__(284);
-	var auth_1 = __webpack_require__(51);
-	var CreateOfferComponent = (function () {
-	    function CreateOfferComponent(fb, _offerService, _authService) {
-	        this._offerService = _offerService;
-	        this._authService = _authService;
-	        this.user = localStorage.getItem('username');
-	        this.offerForm = fb.group({
-	            "price": [""],
-	            "numberOfLecture": [""],
-	            "requestId": [""],
-	            "message": [""],
-	            "user": [""]
-	        });
+	var kspace_1 = __webpack_require__(65);
+	var router_1 = __webpack_require__(4);
+	var kspace_chat_1 = __webpack_require__(440);
+	var webrtc_component_1 = __webpack_require__(445);
+	var chalkboard_1 = __webpack_require__(438);
+	var PublicKspaceComponent = (function () {
+	    function PublicKspaceComponent(_kspaceService, router, _route) {
+	        this._kspaceService = _kspaceService;
+	        this.router = router;
+	        this._route = _route;
+	        this.isUser = false;
+	        this.guest = localStorage.getItem('guest');
 	    }
-	    CreateOfferComponent.prototype.addOffer = function (offer) {
-	        this._offerService.addOffer(offer).subscribe(function (offer) {
-	            console.log('success');
-	        }, function (error) {
-	            console.log(error.text());
+	    PublicKspaceComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.sub = this._route.params.subscribe(function (params) {
+	            _this.room = params['id'];
+	            _this._kspaceService.checkPublicKspace(_this.room)
+	                .subscribe(function (res) {
+	                if (res.users) {
+	                    for (var _i = 0, _a = res.users; _i < _a.length; _i++) {
+	                        var user = _a[_i];
+	                        if (user === _this.guest) {
+	                            _this.welcomeMsg = 'Chào mừng bạn đến với Kspace, chúc bạn có những trải nghiệm tuyệt vời';
+	                            _this.isUser = true;
+	                        }
+	                    }
+	                }
+	                if (_this.isUser === false) {
+	                    _this.router.navigateByUrl('/public-kspace/' + _this.room + '/join');
+	                }
+	            }, function (err) {
+	                _this.router.navigate(['/error']);
+	            });
 	        });
-	        window.location.reload();
 	    };
-	    __decorate([
-	        core_1.Input('rid'), 
-	        __metadata('design:type', String)
-	    ], CreateOfferComponent.prototype, "rid", void 0);
-	    CreateOfferComponent = __decorate([
+	    PublicKspaceComponent.prototype.ngOnDestroy = function () {
+	        this.sub.unsubscribe();
+	    };
+	    PublicKspaceComponent = __decorate([
 	        core_1.Component({
-	            selector: 'offer-create',
-	            templateUrl: 'client/dev/app/components/front-end/offer/templates/offer-create.html',
-	            directives: [common_1.FORM_DIRECTIVES]
-	        }),
-	        __param(0, core_1.Inject(common_1.FormBuilder)), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object])
-	    ], CreateOfferComponent);
-	    return CreateOfferComponent;
+	            selector: 'public-room',
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/public-room.html',
+	            styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
+	            directives: [
+	                chalkboard_1.ChalkBoardComponent,
+	                kspace_chat_1.ChatComponent,
+	                webrtc_component_1.RTCComponent
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object])
+	    ], PublicKspaceComponent);
+	    return PublicKspaceComponent;
 	    var _a, _b, _c;
 	}());
-	exports.CreateOfferComponent = CreateOfferComponent;
+	exports.PublicKspaceComponent = PublicKspaceComponent;
 	
 
 /***/ },
-/* 425 */
+/* 445 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/28/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var rtc_services_1 = __webpack_require__(673);
+	var RTCComponent = (function () {
+	    function RTCComponent(rtcService) {
+	        this.rtcService = rtcService;
+	        this.hiddenShareScreen = true;
+	        this.isLearner = false;
+	        this.username = localStorage.getItem('username');
+	        this.guest = localStorage.getItem('guest');
+	        this.avarta = localStorage.getItem('avarta');
+	    }
+	    RTCComponent.prototype.ngOnInit = function () {
+	        //private kspace
+	        if (this.lecturer && this.learners) {
+	            if (this.lecturer === this.username) {
+	                this.hiddenShareScreen = false;
+	            }
+	            for (var _i = 0, _a = this.learners; _i < _a.length; _i++) {
+	                var learner = _a[_i];
+	                if (this.username === learner) {
+	                    this.isLearner = true;
+	                }
+	            }
+	            // DOM elements
+	            var shareScreenBtn = $('#sharescreen-btn');
+	            // initiate webrtc
+	            if (this.username === this.lecturer) {
+	                var webrtc = new SimpleWebRTC({
+	                    localVideoEl: 'localVideo',
+	                    remoteVideosEl: '',
+	                    autoRequestMedia: true,
+	                    nick: this.username,
+	                    localVideo: {
+	                        autoplay: true,
+	                        mirror: true,
+	                        muted: true // mute local video stream to prevent echo
+	                    },
+	                    media: {
+	                        video: true,
+	                        audio: true
+	                    },
+	                    log: true,
+	                    debug: false
+	                });
+	            }
+	            else {
+	                var webrtc = new SimpleWebRTC({
+	                    localVideoEl: 'localVideo',
+	                    remoteVideosEl: '',
+	                    autoRequestMedia: true,
+	                    nick: this.username,
+	                    localVideo: {
+	                        autoplay: true,
+	                        mirror: true,
+	                        muted: true // mute local video stream to prevent echo
+	                    },
+	                    media: {
+	                        video: false,
+	                        audio: false
+	                    },
+	                    log: true,
+	                    debug: false
+	                });
+	            }
+	            var rtc = this.rtcService;
+	            rtc.rtcSetting(webrtc, this.room, this.lecturer);
+	            var sharescreenToken = false;
+	            shareScreenBtn.click(function () {
+	                sharescreenToken = rtc.shareScreen(webrtc, sharescreenToken);
+	            });
+	        }
+	        else {
+	            // initiate webrtc
+	            var webrtc = new SimpleWebRTC({
+	                localVideoEl: 'localVideo',
+	                remoteVideosEl: '',
+	                autoRequestMedia: true,
+	                nick: this.username,
+	                localVideo: {
+	                    autoplay: true,
+	                    mirror: true,
+	                    muted: true // mute local video stream to prevent echo
+	                },
+	                log: true,
+	                debug: false
+	            });
+	            var rtc = this.rtcService;
+	            rtc.rtcSetting(webrtc, this.room, this.lecturer);
+	        }
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], RTCComponent.prototype, "lecturer", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], RTCComponent.prototype, "learners", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], RTCComponent.prototype, "room", void 0);
+	    RTCComponent = __decorate([
+	        core_1.Component({
+	            selector: 'kspace-webrtc',
+	            templateUrl: 'client/dev/app/components/front-end/kspace/templates/webrtc.html',
+	            styleUrls: ['client/dev/app/components/front-end/kspace/styles/kspace.css'],
+	            providers: [
+	                rtc_services_1.WebRCTService
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof rtc_services_1.WebRCTService !== 'undefined' && rtc_services_1.WebRCTService) === 'function' && _a) || Object])
+	    ], RTCComponent);
+	    return RTCComponent;
+	    var _a;
+	}());
+	exports.RTCComponent = RTCComponent;
+	
+
+/***/ },
+/* 446 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4055,14 +7194,20 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var requests_1 = __webpack_require__(82);
-	var request_offer_1 = __webpack_require__(284);
-	var knowledge_1 = __webpack_require__(48);
-	var kspace_1 = __webpack_require__(183);
-	var offer_create_1 = __webpack_require__(424);
+	var router_1 = __webpack_require__(4);
+	var requests_1 = __webpack_require__(58);
+	var request_offer_1 = __webpack_require__(298);
+	var knowledge_1 = __webpack_require__(54);
+	var kspace_1 = __webpack_require__(65);
+	var notification_1 = __webpack_require__(57);
+	var offer_create_1 = __webpack_require__(675);
+	var report_1 = __webpack_require__(294);
+	var tag_1 = __webpack_require__(75);
+	var private_chat_1 = __webpack_require__(11);
+	var info_hover_1 = __webpack_require__(53);
+	var topArticle_1 = __webpack_require__(128);
 	var RequestDetailClientComponent = (function () {
-	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route) {
+	    function RequestDetailClientComponent(_requestService, _offerService, router, _knowledgeService, _kspaceService, route, _noti) {
 	        var _this = this;
 	        this._requestService = _requestService;
 	        this._offerService = _offerService;
@@ -4070,41 +7215,69 @@ webpackJsonp([2],[
 	        this._knowledgeService = _knowledgeService;
 	        this._kspaceService = _kspaceService;
 	        this.route = route;
-	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
+	        this._noti = _noti;
+	        this.num = 5;
+	        this.height = 400;
+	        //check if request is accepted
+	        this.checkIsAcceped = false;
+	        this.offers = [];
+	        this.kspace = {};
+	        this.isSubscriberd = false;
+	        this.isBindData = false;
+	        this.roleToken = localStorage.getItem('userrole');
+	        this.userToken = localStorage.getItem('username');
 	        this.route
 	            .params
 	            .subscribe(function (params) {
 	            _this.id = params['id'];
 	        });
-	        this.roleToken = localStorage.getItem('role');
-	        this.userToken = localStorage.getItem('username');
 	    }
 	    RequestDetailClientComponent.prototype.ngOnInit = function () {
+	        this.getRequestById();
+	        $('.modal-trigger').leanModal();
+	    };
+	    RequestDetailClientComponent.prototype.openOffer = function () {
+	        $('#modalOfferRequest').openModal();
+	    };
+	    RequestDetailClientComponent.prototype.openReport = function () {
+	        $('#myModal').openModal();
+	    };
+	    RequestDetailClientComponent.prototype.getRequestById = function () {
 	        var _this = this;
 	        //get templates when load the page
 	        this._requestService.getRequestById(this.id)
 	            .subscribe(function (request) {
-	            var formatDate = function (date) {
-	                if (date) {
-	                    var newDate, day, month, year;
-	                    year = date.substr(0, 4);
-	                    month = date.substr(5, 2);
-	                    day = date.substr(8, 2);
-	                    return newDate = day + '/' + month + '/' + year;
+	            //translate status
+	            if (request.status === 'accepted') {
+	                _this._requestService.getKspaceByRId(request._id).subscribe(function (k) {
+	                    _this.link = "/kspace/info/" + k._id + '/' + _this.userToken;
+	                    _this.ks = k;
+	                });
+	                if (_this.userToken === request.user || request.subscribers.indexOf(_this.userToken) > 0 || _this.userToken !== null || _this.userToken === _this.ks.lecturer) {
 	                }
-	            };
-	            request.createdAt = formatDate(request.createdAt);
+	                else {
+	                    _this.router.navigateByUrl('/');
+	                }
+	                request.status = 'Đã được chấp nhận';
+	                _this.checkIsAcceped = true;
+	            }
+	            else if (request.status === 'deactive' || request.status === undefined) {
+	                request.status = 'Đã kết thúc';
+	                _this.checkDeactive = true;
+	            }
+	            else if (request.status === 'pending' || request.status === 'active') {
+	                request.status = 'Đang chờ';
+	            }
 	            request.userlink = '/user/' + request.user;
 	            _this._id = request._id;
 	            _this.updateLink = '/requests/' + request._id + '/update';
 	            _this.knowledgeId = request.knowledgeId;
-	            _this.subscribers = request.subcribers;
-	            if (request.status === "deactive") {
-	                _this.checkDeactive = true;
-	            }
+	            _this.subscribers = request.subscribers;
+	            //check if user is created user
 	            if (request.user === _this.userToken) {
 	                _this.checkCreatedUser = true;
 	            }
+	            //check if user already subcribed
 	            for (var i = 0; i < _this.subscribers.length; i++) {
 	                if (_this.userToken === _this.subscribers[i]) {
 	                    _this.checkSubcribedUser = true;
@@ -4112,30 +7285,62 @@ webpackJsonp([2],[
 	                }
 	            }
 	            _this.request = request;
+	            _this.getOfferByRequestId();
 	            //get back.knowledge name by knowledgeId
 	            _this._knowledgeService.findKnowledgeById(_this.knowledgeId)
 	                .subscribe(function (knowledge) {
 	                _this.knowledge = knowledge;
 	                //this.knowledgeName = this.knowledge.name;
-	            }, function (error) {
-	                console.log(error);
 	            });
 	        }, function (error) { return console.log(error); });
-	        //get front.offer of the templates when load the page
-	        this._offerService.getOfferByRequestId(this.id).subscribe(function (offers) {
-	            var formatDate = function (date) {
-	                if (date) {
-	                    var newDate, day, month, year;
-	                    year = date.substr(0, 4);
-	                    month = date.substr(5, 2);
-	                    day = date.substr(8, 2);
-	                    return newDate = day + '/' + month + '/' + year;
-	                }
-	            };
-	            for (var i = 0; i < offers.length; i++) {
-	                offers[i].createdAt = formatDate(offers[i].createdAt);
+	    };
+	    RequestDetailClientComponent.prototype.seeMore = function () {
+	        this.num = this.num + 5;
+	        this.getOfferByRequestId();
+	    };
+	    RequestDetailClientComponent.prototype.openModal = function () {
+	        $('#modalOfferRequest').openModal();
+	    };
+	    RequestDetailClientComponent.prototype.ngAfterViewChecked = function () {
+	        var _this = this;
+	        if (this.request != undefined) {
+	            if (this.isBindData == false) {
+	                $('#bodyReq').html(function () {
+	                    _this.isBindData = true;
+	                    return _this.request.description;
+	                });
+	                $('#bodyReq img').css('max-width', '100%');
+	                $('#bodyReq iframe').css('max-width', '100%');
 	            }
-	            _this.offers = offers;
+	        }
+	    };
+	    RequestDetailClientComponent.prototype.action = function (data) {
+	        if (data === 'new-offer') {
+	            this.num = 5;
+	            this.offers = [];
+	            this.getOfferByRequestId();
+	        }
+	    };
+	    RequestDetailClientComponent.prototype.getOfferByRequestId = function () {
+	        var _this = this;
+	        //get front.offer of the templates when load the page
+	        this._offerService.getOfferByRequestId(this._id, this.num).subscribe(function (offers) {
+	            console.log(offers);
+	            if (offers) {
+	                for (var i = 0; i < offers.length; i++) {
+	                    if (offers[i].status === 'pending') {
+	                        offers[i].status = 'Đang chờ';
+	                    }
+	                    else if (offers[i].status === 'accepted') {
+	                        console.log(offers[i]);
+	                        offers[i].status = 'Được chấp nhận';
+	                    }
+	                    _this.offers.push(offers[i]);
+	                }
+	            }
+	            else {
+	                Materialize.toast('Không có đề nghị nào!', 4000);
+	            }
 	        }, function (error) {
 	            console.log(error);
 	        });
@@ -4148,39 +7353,92 @@ webpackJsonp([2],[
 	                .changeStatusRequest(this.id)
 	                .subscribe(function (r) {
 	                console.log("deactivate sucess");
-	                _this.router.navigateByUrl('/kshare/requests/');
+	                _this.router.navigateByUrl('/requests');
 	            });
 	        }
 	    };
-	    RequestDetailClientComponent.prototype.addKshare = function (learner, lecturer, requestId, offerId) {
+	    RequestDetailClientComponent.prototype.addKshare = function (lecturer, offerId) {
+	        var _this = this;
+	        this.kspace = {};
+	        this.kspace.learners = [];
+	        this.kspace.learners.push(this.request.user);
+	        this.kspace.lecturer = lecturer;
+	        this.kspace.requestId = this._id;
+	        this.kspace.requestTitle = this.request.title;
+	        this.kspace.offerId = offerId;
+	        this.kspace.tags = this.request.tags;
+	        for (var i = 0; i < this.request.subscribers.length; i++) {
+	            this.kspace.learners.push(this.request.subscribers[i]);
+	        }
+	        console.log(this.kspace);
 	        this._kspaceService
-	            .addKSpace(learner, lecturer, requestId, offerId)
+	            .addKSpace(this.kspace)
 	            .subscribe(function (r) {
-	            //this._chatService.addChatRoom(r._id)
-	            //  .subscribe((c) => {
-	            //    this.rid = c._id;
-	            //    console.log("add chat room successfull");
-	            //    this.router.navigateByUrl('/kshare/front.kspace/' + r._id + '/' + this.rid);
-	            //  });
+	            console.log(r);
+	            console.log('create kspace successfull');
+	            //update offer status
+	            _this._offerService.updateOffer(offerId, 'accepted')
+	                .subscribe(function (c) {
+	                console.log('change status offer successfull');
+	            });
+	            _this.request.status = 'accepted';
+	            //update request status
+	            _this._requestService.updateRequest(_this.request, _this.request.tags, [])
+	                .subscribe(function (c) {
+	                console.log('change status request successfull');
+	            });
+	            _this.checkIsAcceped = true;
+	            var title = 'Yêu cầu của bạn đã được chấp nhận';
+	            var user = lecturer;
+	            var link = '/kspace/info/' + r._id + '/' + lecturer;
+	            _this._noti.createNotification(title, user, link).subscribe(function (noti) {
+	            });
+	            _this._noti.alertNotification(title, user, link);
+	            _this.router.navigate(['/kspace/info/' + r._id + '/' + lecturer]);
 	        });
 	    };
 	    RequestDetailClientComponent.prototype.addSubcriber = function (id) {
 	        var _this = this;
-	        if (this.checkSubcribedUser == true) {
-	            alert('Bạn đã theo dõi vài viết này');
+	        if (this.checkSubcribedUser == true && this.isSubscriberd === true) {
+	            Materialize.toast('Bạn đã theo dõi bài viết này', 4000);
 	        }
 	        else {
 	            this._requestService
 	                .updateSubcriber(id, this.userToken)
 	                .subscribe(function (r) {
-	                console.log(r);
 	                console.log("add subcriber successfull");
 	                _this.checkSubcribedUser = true;
-	            });
-	            this._requestService.getRequestById(this.id).subscribe(function (request) {
-	                _this.subscribers = request.subcribers;
+	                _this._requestService.getRequestById(_this.id).subscribe(function (request) {
+	                    _this.subscribers = request.subscribers;
+	                    _this.isSubscriberd = true;
+	                });
 	            });
 	        }
+	    };
+	    RequestDetailClientComponent.prototype.removeSubscriber = function () {
+	        var _this = this;
+	        console.log(this.request.subscribers);
+	        var index = this.request.subscribers.indexOf(this.userToken);
+	        if (index > -1) {
+	            this.request.subscribers.splice(index, 1);
+	        }
+	        console.log(this.request.subscribers);
+	        this._requestService.updateRequest(this.request, this.request.tags, []).subscribe(function (request) {
+	            //reload request
+	            _this._requestService.getRequestById(_this.id).subscribe(function (request) {
+	                console.log(request);
+	                _this.subscribers = request.subscribers;
+	                _this.checkSubcribedUser = false;
+	            });
+	        });
+	    };
+	    RequestDetailClientComponent.prototype.removeOffer = function (id) {
+	        var _this = this;
+	        this._offerService.updateOffer(id, 'deactive').subscribe(function (offer) {
+	            console.log(offer);
+	            _this.offers = [];
+	            _this.getOfferByRequestId();
+	        });
 	    };
 	    RequestDetailClientComponent = __decorate([
 	        core_1.Component({
@@ -4189,19 +7447,24 @@ webpackJsonp([2],[
 	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
-	                offer_create_1.CreateOfferComponent
+	                offer_create_1.CreateOfferComponent,
+	                report_1.ReportComponent,
+	                private_chat_1.PrivateChatComponent,
+	                tag_1.listTagComponent,
+	                info_hover_1.infoHover,
+	                topArticle_1.topArticlesComponent
 	            ]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object, (typeof (_g = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _g) || Object])
 	    ], RequestDetailClientComponent);
 	    return RequestDetailClientComponent;
-	    var _a, _b, _c, _d, _e, _f;
+	    var _a, _b, _c, _d, _e, _f, _g;
 	}());
 	exports.RequestDetailClientComponent = RequestDetailClientComponent;
 	
 
 /***/ },
-/* 426 */
+/* 447 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4215,60 +7478,129 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var requests_1 = __webpack_require__(82);
-	var friend_list_1 = __webpack_require__(625);
-	var request_create_1 = __webpack_require__(415);
-	var request_search_1 = __webpack_require__(282);
-	var auth_1 = __webpack_require__(51);
-	var router_2 = __webpack_require__(7);
-	var ng2_pagination_1 = __webpack_require__(1009);
+	var private_chat_1 = __webpack_require__(11);
+	var router_1 = __webpack_require__(4);
+	var requests_1 = __webpack_require__(58);
+	var tag_1 = __webpack_require__(66);
+	var friend_list_1 = __webpack_require__(677);
+	var request_create_1 = __webpack_require__(291);
+	var request_category_1 = __webpack_require__(295);
+	var auth_1 = __webpack_require__(45);
+	var router_2 = __webpack_require__(4);
+	var tag_2 = __webpack_require__(75);
+	var info_hover_1 = __webpack_require__(53);
+	var topArticle_1 = __webpack_require__(128);
 	var RequestListClientComponent = (function () {
-	    function RequestListClientComponent(_requestService, _auth, router) {
+	    function RequestListClientComponent(_requestService, _tagService, _auth, router, route) {
 	        this._requestService = _requestService;
+	        this._tagService = _tagService;
 	        this._auth = _auth;
 	        this.router = router;
+	        this.route = route;
 	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
-	        this.configRq = {
-	            id: 'rq',
-	            itemsPerPage: 10,
-	            currentPage: 1
-	        };
-	        this.configRs = {
-	            id: 'rs',
-	            itemsPerPage: 10,
-	            currentPage: 1
-	        };
+	        this.isExistRecord = false;
+	        this.arrIds = [];
+	        this._data = [];
+	        this.num = 5;
+	        this.height = 400;
+	        this.requests = [];
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
 	    RequestListClientComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        this.hide = false;
-	        this._requestService.getAllRequests().subscribe(function (requests) {
-	            var formatDate = function (date) {
-	                if (date) {
-	                    var newDate, day, month, year;
-	                    year = date.substr(0, 4);
-	                    month = date.substr(5, 2);
-	                    day = date.substr(8, 2);
-	                    return newDate = day + '/' + month + '/' + year;
-	                }
-	            };
-	            for (var i = 0; i < requests.length; i++) {
-	                requests[i].createdAt = formatDate(requests[i].createdAt);
-	                requests[i].modifiedDate = formatDate(requests[i].modifiedDate);
-	                requests[i].link = requests[i]._id + '/info';
+	        this.sub = this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.getAllRequests();
+	        });
+	        $(window).on("scroll", function () {
+	            var scrollHeight = $(document).height();
+	            var scrollPosition = $(window).height() + $(window).scrollTop();
+	            if ((scrollHeight - scrollPosition) / scrollHeight === 0) {
+	                setTimeout(function () {
+	                    _this.seeMore();
+	                }, 1000);
+	                _this.height += 30;
 	            }
-	            _this.requests = requests;
 	        });
 	    };
-	    RequestListClientComponent.prototype.search = function (search) {
+	    RequestListClientComponent.prototype.seeMore = function () {
+	        this.num = this.num + 5;
+	        this.getAllRequests();
+	    };
+	    RequestListClientComponent.prototype.backToAll = function () {
+	        this.isExistRecord = false;
+	        this.num = 5;
+	        this.getAllRequests();
+	    };
+	    RequestListClientComponent.prototype.getAllRequests = function () {
 	        var _this = this;
-	        this._requestService.searchRequest(search).subscribe(function (requests) {
-	            _this.searchs = requests;
-	            _this.hide = true;
+	        this.text = "";
+	        this._requestService.getAllRequests(this.num).subscribe(function (requests) {
+	            _this.requests = requests;
+	            for (var i = 0; i < requests.length; i++) {
+	                _this._data.push({
+	                    req: requests[i],
+	                    sum: ''
+	                });
+	                requests[i].link = requests[i]._id + '/info';
+	                if (requests[i].status === 'pending') {
+	                    requests[i].status = 'Đang chờ';
+	                }
+	                //get summary
+	                var html = requests[i].description;
+	                var div = document.createElement("div");
+	                div.innerHTML = html;
+	                var text = div.textContent || div.innerText || "";
+	                _this._data[i].sum = text.substr(0, 100) + " ......";
+	            }
 	        });
+	    };
+	    RequestListClientComponent.prototype.search = function () {
+	        var _this = this;
+	        this._data = [];
+	        this.num = 5;
+	        if (this.text === '') {
+	            this.isExistRecord = false;
+	            this.getAllRequests();
+	        }
+	        else {
+	            this._requestService.searchRequest(this.text).subscribe(function (requests) {
+	                for (var i = 0; i < requests.length; i++) {
+	                    _this._data.push({
+	                        req: requests[i],
+	                        tags: []
+	                    });
+	                    requests[i].createdAt = new Date(requests[i].createdAt);
+	                    if (requests[i].status === 'pending') {
+	                        requests[i].status = 'Đang chờ';
+	                    }
+	                    for (var _i = 0, tags_1 = tags; _i < tags_1.length; _i++) {
+	                        var t = tags_1[_i];
+	                        if (requests[i].tags.indexOf(t._id) > -1) {
+	                            _this._data[i].tags.push(t);
+	                        }
+	                    }
+	                    //get summary
+	                    var html = requests[i].description;
+	                    var div = document.createElement("div");
+	                    div.innerHTML = html;
+	                    var text = div.textContent || div.innerText || "";
+	                    _this._data[i].sum = text.substr(0, 100) + " ......";
+	                }
+	                if (requests.length === 0) {
+	                    _this.isExistRecord = true;
+	                }
+	                else {
+	                    _this.isExistRecord = false;
+	                }
+	                _this.requests = requests;
+	            });
+	        }
+	    };
+	    RequestListClientComponent.prototype.ngOnDestroy = function () {
+	        this.sub.unsubscribe();
 	    };
 	    RequestListClientComponent = __decorate([
 	        core_1.Component({
@@ -4276,25 +7608,120 @@ webpackJsonp([2],[
 	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-list.html',
 	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
 	            directives: [
-	                ng2_pagination_1.PaginationControlsCmp,
 	                router_1.ROUTER_DIRECTIVES,
 	                friend_list_1.FriendListComponent,
 	                request_create_1.CreateRequestComponent,
-	                request_search_1.RequestCategoryComponent
+	                request_category_1.RequestCategoryComponent,
+	                tag_2.listTagComponent,
+	                private_chat_1.PrivateChatComponent,
+	                info_hover_1.infoHover,
+	                topArticle_1.topArticlesComponent
 	            ],
-	            providers: [ng2_pagination_1.PaginationService],
-	            pipes: [ng2_pagination_1.PaginatePipe]
+	            providers: [tag_1.TagService]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object, (typeof (_c = typeof router_2.Router !== 'undefined' && router_2.Router) === 'function' && _c) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _c) || Object, (typeof (_d = typeof router_2.Router !== 'undefined' && router_2.Router) === 'function' && _d) || Object, (typeof (_e = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _e) || Object])
 	    ], RequestListClientComponent);
 	    return RequestListClientComponent;
-	    var _a, _b, _c;
+	    var _a, _b, _c, _d, _e;
 	}());
 	exports.RequestListClientComponent = RequestListClientComponent;
 	
 
 /***/ },
-/* 427 */
+/* 448 */
+/***/ function(module, exports, __webpack_require__) {
+
+	/**
+	 * Created by Duc Duong on 7/25/2016.
+	 */
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var tag_1 = __webpack_require__(66);
+	var tag_2 = __webpack_require__(75);
+	var info_hover_1 = __webpack_require__(53);
+	var ng2_pagination_1 = __webpack_require__(133);
+	var private_chat_1 = __webpack_require__(11);
+	var displayArtByTagComponent = (function () {
+	    function displayArtByTagComponent(router, route, _tagService) {
+	        this.router = router;
+	        this.route = route;
+	        this._tagService = _tagService;
+	        this.listReq = [];
+	        this.listArt = [];
+	        this.maxSize = 7;
+	        this.directionLinks = true;
+	        this.autoHide = false;
+	        this.config = {
+	            id: 'req',
+	            itemsPerPage: 10,
+	            currentPage: 1
+	        };
+	        this.maxSizeArt = 7;
+	        this.directionLinksArt = true;
+	        this.autoHideArt = false;
+	        this.configArt = {
+	            id: 'art',
+	            itemsPerPage: 10,
+	            currentPage: 1
+	        };
+	    }
+	    displayArtByTagComponent.prototype.onPageChange = function (number) {
+	        this.config.currentPage = number;
+	    };
+	    displayArtByTagComponent.prototype.onPageChangeArt = function (number) {
+	        this.configArt.currentPage = number;
+	    };
+	    displayArtByTagComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.sub = this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	            _this._tagService.getArtByTag(_this.id).subscribe(function (arts) {
+	                _this.listArt = arts;
+	                _this._tagService.getReqByTag(_this.id).subscribe(function (reqs) {
+	                    _this.listReq = reqs;
+	                });
+	            }, function (error) {
+	                window.location.href = "/error";
+	            });
+	        });
+	        $('ul.tabs').tabs();
+	    };
+	    displayArtByTagComponent.prototype.ngOnDestroy = function () {
+	        this.sub.unsubscribe();
+	    };
+	    displayArtByTagComponent = __decorate([
+	        core_1.Component({
+	            selector: 'list-article-by-tag',
+	            templateUrl: 'client/dev/app/components/front-end/tag/templates/display-article-by-tag.html',
+	            styleUrls: ['client/dev/app/components/front-end/tag/styles/tag.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES, tag_2.listTagComponent, ng2_pagination_1.PaginationControlsCmp, private_chat_1.PrivateChatComponent, info_hover_1.infoHover
+	            ],
+	            providers: [tag_1.TagService, ng2_pagination_1.PaginationService],
+	            pipes: [ng2_pagination_1.PaginatePipe]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _c) || Object])
+	    ], displayArtByTagComponent);
+	    return displayArtByTagComponent;
+	    var _a, _b, _c;
+	}());
+	exports.displayArtByTagComponent = displayArtByTagComponent;
+	
+
+/***/ },
+/* 449 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4307,76 +7734,51 @@ webpackJsonp([2],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var __param = (this && this.__param) || function (paramIndex, decorator) {
-	    return function (target, key) { decorator(target, key, paramIndex); }
-	};
+	/**
+	 * Created by Duc Duong on 8/19/2016.
+	 */
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var common_1 = __webpack_require__(19);
-	var requests_1 = __webpack_require__(82);
-	var knowledge_1 = __webpack_require__(48);
-	var RequestUpdateClientComponent = (function () {
-	    function RequestUpdateClientComponent(fb, _requestService, router, route, _knowledgeService) {
-	        var _this = this;
-	        this._requestService = _requestService;
+	var router_1 = __webpack_require__(4);
+	var users_1 = __webpack_require__(26);
+	var ng2_pagination_1 = __webpack_require__(133);
+	var private_chat_1 = __webpack_require__(11);
+	var userSearchRsComponent = (function () {
+	    function userSearchRsComponent(_userService, router, route) {
+	        this._userService = _userService;
 	        this.router = router;
 	        this.route = route;
-	        this._knowledgeService = _knowledgeService;
+	        this.users = [];
+	    }
+	    userSearchRsComponent.prototype.ngOnInit = function () {
+	        var _this = this;
 	        this.route
 	            .params
 	            .subscribe(function (params) {
-	            _this.id = params['id'];
-	        });
-	        this.updateRequestFormCli = fb.group({
-	            "_id": [""],
-	            "title": [""],
-	            "description": [""],
-	            "knowledgeId": [""]
-	        });
-	    }
-	    RequestUpdateClientComponent.prototype.ngOnInit = function () {
-	        var _this = this;
-	        //get all back.knowledge
-	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
-	            _this.knowledges = _this._knowledgeService.getChildFromParent(knowledges);
-	        });
-	        this._requestService.getRequestById(this.id).subscribe(function (request) {
-	            _this.request = request;
-	            _this.title = request.title;
-	            _this._id = request._id;
-	            _this.description = request.description;
-	        }, function (error) {
-	            console.log(error.text());
+	            _this.name = params['name'];
+	            _this._userService.searchUserByUsername(_this.name).subscribe(function (users) {
+	                _this.users = users;
+	            });
 	        });
 	    };
-	    RequestUpdateClientComponent.prototype.updateRequest = function (request) {
-	        this._requestService.updateRequest(request).subscribe(function (request) {
-	            console.log('update successed');
-	        }, function (error) {
-	            console.log(error.text());
-	        });
-	        //window.location.href = '/kshare/requests/'+this.id;
-	    };
-	    RequestUpdateClientComponent = __decorate([
+	    userSearchRsComponent = __decorate([
 	        core_1.Component({
-	            selector: 'request-update-cli',
-	            templateUrl: 'client/dev/app/components/front-end/request/templates/request-update.html',
-	            styleUrls: ['client/dev/app/components/front-end/request/styles/request.css'],
-	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
-	        }),
-	        __param(0, core_1.Inject(common_1.FormBuilder)),
-	        __param(1, core_1.Inject(requests_1.RequestService)),
-	        __param(4, core_1.Inject(knowledge_1.KnowledgeService)), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object, (typeof (_e = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _e) || Object])
-	    ], RequestUpdateClientComponent);
-	    return RequestUpdateClientComponent;
-	    var _a, _b, _c, _d, _e;
+	            selector: 'rs-user-search',
+	            templateUrl: 'client/dev/app/components/front-end/user/search/templates/search-rs.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/search/styles/search-rs.css'],
+	            directives: [router_1.ROUTER_DIRECTIVES, ng2_pagination_1.PaginationControlsCmp, private_chat_1.PrivateChatComponent],
+	            providers: [users_1.UserService, ng2_pagination_1.PaginationService],
+	            pipes: [ng2_pagination_1.PaginatePipe]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object])
+	    ], userSearchRsComponent);
+	    return userSearchRsComponent;
+	    var _a, _b, _c;
 	}());
-	exports.RequestUpdateClientComponent = RequestUpdateClientComponent;
+	exports.userSearchRsComponent = userSearchRsComponent;
 	
 
 /***/ },
-/* 428 */
+/* 450 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4391,13 +7793,14 @@ webpackJsonp([2],[
 	};
 	//cores
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(4);
 	//components
-	var request_friend_record_1 = __webpack_require__(631);
-	var friend_record_1 = __webpack_require__(630);
-	var user_profile_bar_1 = __webpack_require__(283);
+	var request_friend_record_1 = __webpack_require__(687);
+	var friend_record_1 = __webpack_require__(685);
+	var user_profile_bar_1 = __webpack_require__(296);
+	var private_chat_1 = __webpack_require__(11);
 	//services
-	var users_1 = __webpack_require__(67);
+	var users_1 = __webpack_require__(26);
 	var FriendListComponent = (function () {
 	    function FriendListComponent(router, route, _userService) {
 	        var _this = this;
@@ -4417,7 +7820,6 @@ webpackJsonp([2],[
 	        this.acceptedRequest = [];
 	        this.friendNames = [];
 	        this.getFriendList();
-	        //this.getFriendName();
 	    };
 	    //get friend list: pending and accepted
 	    FriendListComponent.prototype.getFriendList = function () {
@@ -4439,7 +7841,6 @@ webpackJsonp([2],[
 	                }
 	            }
 	            _this.getFriendName();
-	            console.log(_this.acceptedRequest);
 	        });
 	    };
 	    FriendListComponent.prototype.getFriendName = function () {
@@ -4451,17 +7852,31 @@ webpackJsonp([2],[
 	                this.friendNames.push(this.acceptedRequest[i].user1);
 	            }
 	        }
+	        console.log(this.friendNames);
+	        for (var _i = 0, _a = this.pendingRequests; _i < _a.length; _i++) {
+	            var a = _a[_i];
+	            console.log(a.user1);
+	        }
+	    };
+	    FriendListComponent.prototype.action = function (data) {
+	        if (data === "accept") {
+	            this.pendingRequests = [];
+	            this.acceptedRequest = [];
+	            this.friendNames = [];
+	            this.getFriendList();
+	        }
 	    };
 	    FriendListComponent = __decorate([
 	        core_1.Component({
 	            selector: 'request-record',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/friend-list.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/friend-list.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                request_friend_record_1.RequestFriendRecordComponent,
 	                friend_record_1.FriendRecordComponent,
-	                user_profile_bar_1.UserProfileBarComponent
+	                user_profile_bar_1.UserProfileBarComponent,
+	                private_chat_1.PrivateChatComponent
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object])
@@ -4473,7 +7888,140 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 429 */
+/* 451 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var common_1 = __webpack_require__(6);
+	var users_1 = __webpack_require__(26);
+	var tag_1 = __webpack_require__(66);
+	var private_chat_1 = __webpack_require__(11);
+	var primeng_1 = __webpack_require__(31);
+	var UpdateUserComponent = (function () {
+	    function UpdateUserComponent(fb, router, _userService, route, _tagService) {
+	        var _this = this;
+	        this.fb = fb;
+	        this.router = router;
+	        this._userService = _userService;
+	        this.route = route;
+	        this._tagService = _tagService;
+	        this.user = [];
+	        this.userId = '';
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.username = params['name'];
+	        });
+	        this.updateUserForm = fb.group({
+	            fullName: [""],
+	            birthday: [""],
+	            phone: [""]
+	        });
+	    }
+	    UpdateUserComponent.prototype.ngOnInit = function () {
+	        this.loadAllTags();
+	        this.getUserByUsername();
+	    };
+	    UpdateUserComponent.prototype.getUserByUsername = function () {
+	        var _this = this;
+	        this._userService.getUserByUserName(this.username).subscribe(function (user) {
+	            _this.userinfo = user;
+	            console.log(_this.userinfo);
+	        });
+	    };
+	    //tags control
+	    UpdateUserComponent.prototype.filterONTag = function () {
+	        var oldTag = [];
+	        for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	            var e = _a[_i];
+	            for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                var e1 = _c[_b];
+	                //catch old tags
+	                if (e.name == e1) {
+	                    oldTag.push(e._id);
+	                    //find out old tags in data tags user
+	                    var index = this.tags.indexOf(e1);
+	                    if (index > -1) {
+	                        //remove old tags to catch new tags
+	                        this.tags.splice(index, 1);
+	                    }
+	                }
+	            }
+	        }
+	        return [oldTag, this.tags];
+	    };
+	    UpdateUserComponent.prototype.filterKnw = function (event) {
+	        var query = event.query;
+	        this.filteredKnw = [];
+	        for (var i = 0; i < this.tagsEx.length; i++) {
+	            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
+	                this.filteredKnw.push(this.tagsEx[i].name);
+	            }
+	            if (i == this.tagsEx.length - 1) {
+	                this.filteredKnw.unshift(query.trim());
+	            }
+	        }
+	        if (this.filteredKnw.length == 0) {
+	            this.filteredKnw.push(query.trim());
+	        }
+	    };
+	    UpdateUserComponent.prototype.loadAllTags = function () {
+	        var _this = this;
+	        this._tagService.getAllTag().subscribe(function (tags) {
+	            _this.tagsEx = tags;
+	        });
+	    };
+	    //end control tags
+	    UpdateUserComponent.prototype.update = function (user) {
+	        var _this = this;
+	        var tags;
+	        tags = this.filterONTag(); //0 -> oldTags , 1 -> newTags
+	        user = {
+	            _id: this.userinfo._id,
+	            fullName: user.fullName,
+	            displayName: user.displayName,
+	            birthday: user.birthday,
+	            ownKnowledgeIds: tags[0],
+	            phone: user.phone
+	        };
+	        this._userService.updateUser(user, tags[1]).subscribe(function (res) {
+	            _this.router.navigateByUrl('/');
+	            location.reload();
+	        }, function (err) {
+	            console.log(err);
+	        });
+	    };
+	    UpdateUserComponent.prototype.returnHome = function () {
+	        this.router.navigateByUrl('/');
+	    };
+	    UpdateUserComponent = __decorate([
+	        core_1.Component({
+	            templateUrl: "client/dev/app/components/front-end/user/user-profile/templates/user-info-update.html",
+	            styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
+	            directives: [primeng_1.AutoComplete, private_chat_1.PrivateChatComponent],
+	            providers: [tag_1.TagService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object, (typeof (_e = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _e) || Object])
+	    ], UpdateUserComponent);
+	    return UpdateUserComponent;
+	    var _a, _b, _c, _d, _e;
+	}());
+	exports.UpdateUserComponent = UpdateUserComponent;
+	
+
+/***/ },
+/* 452 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4488,68 +8036,138 @@ webpackJsonp([2],[
 	};
 	//cores
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(4);
 	//Component
-	var request_record_1 = __webpack_require__(632);
-	var user_profile_bar_1 = __webpack_require__(283);
+	var request_record_1 = __webpack_require__(688);
+	var kspace_list_1 = __webpack_require__(686);
+	var article_list_1 = __webpack_require__(684);
+	var user_profile_bar_1 = __webpack_require__(296);
+	var private_chat_1 = __webpack_require__(11);
 	//services
-	var users_1 = __webpack_require__(67);
-	var knowledge_1 = __webpack_require__(48);
+	var users_1 = __webpack_require__(26);
+	var knowledge_1 = __webpack_require__(54);
+	var kspace_1 = __webpack_require__(65);
+	var article_1 = __webpack_require__(41);
+	var ng2_pagination_1 = __webpack_require__(133);
 	var UserProfileComponent = (function () {
-	    function UserProfileComponent(router, route, _userService, _knowledgeService) {
-	        var _this = this;
+	    function UserProfileComponent(router, route, _userService, _kSpaceService, _articleService, _knowledgeService) {
 	        this.router = router;
 	        this.route = route;
 	        this._userService = _userService;
+	        this._kSpaceService = _kSpaceService;
+	        this._articleService = _articleService;
 	        this._knowledgeService = _knowledgeService;
-	        this.notification = {
-	            show: false,
-	            title: 'Demo notification!',
-	            body: 'ng2-notifications',
-	            icon: 'https://goo.gl/3eqeiE',
-	            action: function () {
-	                window.open('https://github.com/alexcastillo/ng2-notifications');
-	            }
+	        this.isExist = true;
+	        this.requests = [];
+	        this.num = 5;
+	        this.height = 400;
+	        this.kspaceList = [];
+	        this.articleList = [];
+	        this.maxSizeReq = 7;
+	        this.directionLinksReq = true;
+	        this.autoHideReq = false;
+	        this.configReq = {
+	            id: 'req',
+	            itemsPerPage: 10,
+	            currentPage: 1
 	        };
-	        this.formatDate = function (date) {
-	            if (date) {
-	                var newDate, day, month, year;
-	                year = date.substr(0, 4);
-	                month = date.substr(5, 2);
-	                day = date.substr(8, 2);
-	                return newDate = day + '/' + month + '/' + year;
-	            }
+	        this.maxSizeArt = 7;
+	        this.directionLinksArt = true;
+	        this.autoHideArt = false;
+	        this.configArt = {
+	            id: 'Art',
+	            itemsPerPage: 10,
+	            currentPage: 1
 	        };
-	        this.route
-	            .params
-	            .subscribe(function (params) {
-	            _this.name = params['name'];
-	        });
+	        this.maxSizeKp = 7;
+	        this.directionLinksKp = true;
+	        this.autoHideKp = false;
+	        this.configKp = {
+	            id: 'Kp',
+	            itemsPerPage: 10,
+	            currentPage: 1
+	        };
 	        this.roleToken = localStorage.getItem('role');
 	        this.userToken = localStorage.getItem('username');
 	    }
 	    UserProfileComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        this._userService.getUserByUserName(this.name).subscribe(function (user) {
-	            _this.userProfile = user;
-	        }, function (error) {
-	            console.log(error);
+	        this.sub = this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.name = params['name'];
+	            _this._userService.checkUserExist(_this.name).subscribe(function (isExist) {
+	                if (isExist._body === '0') {
+	                    _this.isExist = false;
+	                    _this.router.navigateByUrl('/error');
+	                }
+	                else {
+	                    _this.isExist = true;
+	                }
+	                if (_this.isExist = true) {
+	                    _this.getRequestByUser();
+	                    _this._articleService.getArtsByUsername(_this.name).subscribe(function (arts) {
+	                        //filter article
+	                        if (_this.userToken) {
+	                            _this.articleList = arts;
+	                        }
+	                        else {
+	                            _this.articleList = _this.filterArticle(arts);
+	                        }
+	                        _this._kSpaceService.getKspaceProfile(_this.name).subscribe(function (kspaces) {
+	                            _this.kspaceList = kspaces;
+	                            _this._userService.getUserByUserName(_this.name).subscribe(function (user) {
+	                                _this.userProfile = user;
+	                            }, function (error) {
+	                                console.log(error);
+	                            });
+	                        });
+	                    });
+	                }
+	            }, function (error) {
+	                console.log(error);
+	            });
 	        });
-	        this.checkUserExist();
-	        if (this.isExist = true) {
-	            this.getRequestByUser();
+	        $('ul.tabs').tabs();
+	    };
+	    UserProfileComponent.prototype.onPageChangeReq = function (number) {
+	        this.configReq.currentPage = number;
+	    };
+	    UserProfileComponent.prototype.onPageChangeArt = function (number) {
+	        this.configArt.currentPage = number;
+	    };
+	    UserProfileComponent.prototype.onPageChangeKp = function (number) {
+	        this.configKp.currentPage = number;
+	    };
+	    UserProfileComponent.prototype.filterArticle = function (listArt) {
+	        for (var i = listArt.length - 1; i >= 0; i--) {
+	            if (listArt[i].status === 'private') {
+	                listArt.splice(i, 1);
+	            }
 	        }
+	        return listArt;
+	    };
+	    UserProfileComponent.prototype.getKspaceProfile = function () {
+	        var _this = this;
+	        this._kSpaceService.getKspaceProfile(this.name).subscribe(function (kspaces) {
+	            _this.kspaceList = kspaces;
+	        });
+	    };
+	    UserProfileComponent.prototype.seeMore = function () {
+	        this.num = this.num + 5;
+	        this.getRequestByUser();
+	    };
+	    UserProfileComponent.prototype.ngOnDestroy = function () {
+	        this.sub.unsubscribe();
 	    };
 	    UserProfileComponent.prototype.getRequestByUser = function () {
 	        var _this = this;
 	        this._userService
-	            .getRequestByUser(this.name)
+	            .getRequestByUser(this.name, this.num)
 	            .subscribe(function (requests) {
 	            for (var i = 0; i < requests.length; i++) {
-	                requests[i].createdAt = _this.formatDate(requests[i].createdAt);
-	                requests[i].modifiedDate = _this.formatDate(requests[i].modifiedDate);
+	                _this.requests.push(requests[i]);
 	            }
-	            _this.requests = requests;
 	        });
 	    };
 	    UserProfileComponent.prototype.getKnowledgeNameOfRequest = function (knowledgeId) {
@@ -4577,24 +8195,30 @@ webpackJsonp([2],[
 	    UserProfileComponent = __decorate([
 	        core_1.Component({
 	            selector: 'user-profile',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/user-profile.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/user-profile.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                request_record_1.RequestRecordComponent,
-	                user_profile_bar_1.UserProfileBarComponent
-	            ]
+	                user_profile_bar_1.UserProfileBarComponent,
+	                private_chat_1.PrivateChatComponent,
+	                kspace_list_1.KspaceListComponent,
+	                article_list_1.ArticleListComponent,
+	                ng2_pagination_1.PaginationControlsCmp
+	            ],
+	            providers: [ng2_pagination_1.PaginationService],
+	            pipes: [ng2_pagination_1.PaginatePipe]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _d) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _d) || Object, (typeof (_e = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _e) || Object, (typeof (_f = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _f) || Object])
 	    ], UserProfileComponent);
 	    return UserProfileComponent;
-	    var _a, _b, _c, _d;
+	    var _a, _b, _c, _d, _e, _f;
 	}());
 	exports.UserProfileComponent = UserProfileComponent;
 	
 
 /***/ },
-/* 430 */
+/* 453 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4611,29 +8235,36 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 6/4/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(4);
 	/**
 	 * Shared components
 	 */
-	var header_1 = __webpack_require__(626);
-	var side_bar_1 = __webpack_require__(629);
-	var footer_1 = __webpack_require__(624);
-	var login_1 = __webpack_require__(627);
-	var register_1 = __webpack_require__(628);
-	var user_profile_1 = __webpack_require__(429);
+	var side_bar_1 = __webpack_require__(678);
+	var footer_1 = __webpack_require__(676);
+	var user_profile_1 = __webpack_require__(452);
+	var header_1 = __webpack_require__(454);
+	//import { FriendListComponent } from "./front-end/shared/friend-list";
 	/**
 	 * Page components
 	 */
-	var home_1 = __webpack_require__(420);
-	var request_list_1 = __webpack_require__(426);
-	var request_detail_1 = __webpack_require__(425);
-	var request_update_1 = __webpack_require__(427);
-	var request_search_1 = __webpack_require__(282);
-	var kspace_1 = __webpack_require__(423);
-	var kspace_list_1 = __webpack_require__(422);
-	var kspace_info_1 = __webpack_require__(421);
-	var friend_list_1 = __webpack_require__(428);
-	var user_profile_bar_1 = __webpack_require__(283);
+	var home_1 = __webpack_require__(671);
+	var request_list_1 = __webpack_require__(447);
+	var request_detail_1 = __webpack_require__(446);
+	var request_category_1 = __webpack_require__(295);
+	var kspace_1 = __webpack_require__(443);
+	var kspace_list_1 = __webpack_require__(442);
+	var kspace_info_1 = __webpack_require__(441);
+	var friend_list_1 = __webpack_require__(450);
+	var info_hover_1 = __webpack_require__(53);
+	var rs_search_user_1 = __webpack_require__(449);
+	var user_profile_bar_1 = __webpack_require__(296);
+	var user_info_update_1 = __webpack_require__(451);
+	var create_article_1 = __webpack_require__(435);
+	var detail_article_1 = __webpack_require__(436);
+	var list_article_1 = __webpack_require__(437);
+	var displayArtByTag_1 = __webpack_require__(448);
+	var request_create_1 = __webpack_require__(291);
+	var create_kspace_1 = __webpack_require__(293);
 	/**
 	 * Page components
 	 */
@@ -4643,27 +8274,33 @@ webpackJsonp([2],[
 	    KshareComponent = __decorate([
 	        core_1.Component({
 	            selector: 'kshare-app',
-	            template: "\n    <header></header>\n    <sidebar></sidebar>\n    <router-outlet></router-outlet>\n    <login></login>\n    <register></register>\n    <footer></footer>\n  ",
+	            template: "\n    <sidebar></sidebar>\n    <main>\n        <router-outlet></router-outlet>\n    </main>\n  ",
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
 	                header_1.HeaderComponent,
 	                side_bar_1.SideBarComponent,
 	                footer_1.FooterComponent,
-	                login_1.LoginComponent,
-	                register_1.RegisterComponent
 	            ],
 	            precompile: [
 	                home_1.HomeComponent,
 	                request_list_1.RequestListClientComponent,
 	                request_detail_1.RequestDetailClientComponent,
-	                request_update_1.RequestUpdateClientComponent,
-	                request_search_1.RequestCategoryComponent,
+	                request_category_1.RequestCategoryComponent,
 	                kspace_1.KSpaceComponent,
 	                kspace_list_1.KSpaceListComponent,
 	                kspace_info_1.KSpaceInfoComponent,
 	                user_profile_1.UserProfileComponent,
 	                friend_list_1.FriendListComponent,
-	                user_profile_bar_1.UserProfileBarComponent
+	                user_profile_bar_1.UserProfileBarComponent,
+	                create_article_1.CreateArticleComponent,
+	                detail_article_1.detailArticleComponent,
+	                list_article_1.listArticleComponent,
+	                displayArtByTag_1.displayArtByTagComponent,
+	                request_create_1.CreateRequestComponent,
+	                rs_search_user_1.userSearchRsComponent,
+	                user_info_update_1.UpdateUserComponent,
+	                create_kspace_1.CreatePublicKspace,
+	                info_hover_1.infoHover
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -4674,7 +8311,264 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 431 */
+/* 454 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 5/18/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var auth_1 = __webpack_require__(45);
+	var notification_1 = __webpack_require__(57);
+	var users_1 = __webpack_require__(26);
+	var chat_1 = __webpack_require__(129);
+	var private_chat_1 = __webpack_require__(11);
+	var HeaderComponent = (function () {
+	    function HeaderComponent(_auth, router, _noti, _userService, _chatService) {
+	        this._auth = _auth;
+	        this.router = router;
+	        this._noti = _noti;
+	        this._userService = _userService;
+	        this._chatService = _chatService;
+	        this.count = 2;
+	        this.num = 10;
+	        this.isNewMessage = false;
+	        this.isFrontend = false;
+	        this.isRoom = false;
+	        this.userToken = localStorage.getItem('username');
+	        this.roleToken = localStorage.getItem('userrole');
+	    }
+	    HeaderComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this.isFrontend = (window.location.pathname + "").substring(0, 6) != "/admin";
+	        this.isRoom = (window.location.pathname + "").substring(0, 5) == "/room";
+	        this.sub = this._auth.isLoggedIn().subscribe(function (res) {
+	            if (res.login) {
+	                _this.loginToken = true;
+	                _this.getNotificationByUser();
+	            }
+	            else {
+	                _this._auth.logoutClient();
+	                _this.loginToken = false;
+	            }
+	        }, function (error) {
+	            console.log('Server error');
+	        });
+	        this.link = '';
+	        this.socket = io('https://localhost:80');
+	        this.socket.on('receive notification', function (data) {
+	            if (localStorage.getItem('username') === data.data.user) {
+	                _this.getNotificationByUser();
+	            }
+	        });
+	        this.socket.on('new-message-notification', function (data) {
+	            if (data.receiver === _this.userToken) {
+	                _this.isNewMessage = true;
+	            }
+	        });
+	        this._chatService.getAllChatRoomOfUser(this.userToken).subscribe(function (chatRooms) {
+	            for (var j = 0; j < chatRooms.length; j++) {
+	                for (var i = 0; i < 2; i++) {
+	                    if (chatRooms[j].users[i].user === _this.userToken && chatRooms[j].users[i].newMessages > 0) {
+	                        _this.isNewMessage = true;
+	                    }
+	                }
+	            }
+	        });
+	        $('.dropdown-button').dropdown();
+	    };
+	    HeaderComponent.prototype.openChat = function () {
+	        $('#chatBoxK').openModal();
+	        var numItems = $('.text-message').length;
+	        $("#cntAllText").animate({ scrollTop: 200 * numItems });
+	        this.isNewMessage = false;
+	    };
+	    HeaderComponent.prototype.open = function () {
+	        $('.button-collapse').sideNav();
+	    };
+	    HeaderComponent.prototype.openKnw = function () {
+	        $('.btnOpenNavF').sideNav();
+	    };
+	    HeaderComponent.prototype.searchFriend = function (nameSearch) {
+	        this.router.navigateByUrl('/user/search/' + nameSearch);
+	    };
+	    HeaderComponent.prototype.logout = function () {
+	        var _this = this;
+	        this._auth.logout()
+	            .subscribe(function (res) {
+	            if (res.success == true) {
+	                _this._auth.logoutClient();
+	                window.location.reload();
+	            }
+	        });
+	    };
+	    HeaderComponent.prototype.getNotificationByUser = function () {
+	        var _this = this;
+	        this.countUnReadNoti = 0;
+	        this._noti.getNotificationByUser(this.userToken, this.num).subscribe(function (notifications) {
+	            _this.notifications = notifications;
+	            for (var i = 0; i < notifications.length; i++) {
+	                if (notifications[i].status === "Chưa đọc") {
+	                    _this.countUnReadNoti++;
+	                }
+	            }
+	        });
+	    };
+	    HeaderComponent.prototype.changeStatusNotification = function () {
+	        if (this.countUnReadNoti > 0) {
+	            this.countUnReadNoti = 0;
+	            this._noti.changeStatusNotification(this.userToken).subscribe(function (notifications) {
+	                console.log('change status notification successful');
+	            });
+	        }
+	    };
+	    HeaderComponent.prototype.action = function (data) {
+	        if (this.userToken === data[0]) {
+	            this.isNewMessage = data[1];
+	        }
+	    };
+	    HeaderComponent.prototype.seeMore = function () {
+	        this.num = this.num + 10;
+	        this.getNotificationByUser();
+	    };
+	    HeaderComponent = __decorate([
+	        core_1.Component({
+	            selector: 'header',
+	            templateUrl: 'client/dev/app/components/shared/templates/header.html',
+	            styleUrls: ['client/dev/app/components/shared/styles/header.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _e) || Object])
+	    ], HeaderComponent);
+	    return HeaderComponent;
+	    var _a, _b, _c, _d, _e;
+	}());
+	exports.HeaderComponent = HeaderComponent;
+	
+
+/***/ },
+/* 455 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 7/30/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var auth_1 = __webpack_require__(45);
+	var common_1 = __webpack_require__(6);
+	var AdminAuthGuard = (function () {
+	    function AdminAuthGuard(router, auth) {
+	        this.router = router;
+	        this.auth = auth;
+	    }
+	    AdminAuthGuard.prototype.canActivate = function (route, state) {
+	        if (localStorage.getItem('redirectUrl')) {
+	            localStorage.removeItem('redirectUrl');
+	        }
+	        if (localStorage.getItem('userrole')) {
+	            if (state.url.includes('admin') && (localStorage.getItem('userrole') === 'admin' || localStorage.getItem('userrole') === 'mod')) {
+	                return true;
+	            }
+	            else {
+	                this.router.navigate(['/']);
+	            }
+	        }
+	        else {
+	            localStorage.setItem('redirectUrl', state.url);
+	            this.router.navigate(['/login']);
+	        }
+	        return false;
+	    };
+	    AdminAuthGuard = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object])
+	    ], AdminAuthGuard);
+	    return AdminAuthGuard;
+	    var _a, _b;
+	}());
+	exports.AdminAuthGuard = AdminAuthGuard;
+	var isLogin = (function () {
+	    function isLogin(router, auth) {
+	        this.router = router;
+	        this.auth = auth;
+	    }
+	    isLogin.prototype.canActivate = function (route, state) {
+	        if (localStorage.getItem('redirectUrl')) {
+	            localStorage.removeItem('redirectUrl');
+	        }
+	        if (localStorage.getItem('username')) {
+	            return true;
+	        }
+	        localStorage.setItem('redirectUrl', state.url);
+	        this.router.navigate(['/login']);
+	        return false;
+	    };
+	    isLogin = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object])
+	    ], isLogin);
+	    return isLogin;
+	    var _a, _b;
+	}());
+	exports.isLogin = isLogin;
+	var Guest = (function () {
+	    function Guest(router, auth, _location) {
+	        this.router = router;
+	        this.auth = auth;
+	        this._location = _location;
+	    }
+	    Guest.prototype.canActivate = function (route, state) {
+	        if (!localStorage.getItem('username')) {
+	            return true;
+	        }
+	        this._location.back();
+	        return false;
+	    };
+	    Guest = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object, (typeof (_c = typeof common_1.Location !== 'undefined' && common_1.Location) === 'function' && _c) || Object])
+	    ], Guest);
+	    return Guest;
+	    var _a, _b, _c;
+	}());
+	exports.Guest = Guest;
+	var isKspaceUser = (function () {
+	    function isKspaceUser() {
+	    }
+	    isKspaceUser = __decorate([
+	        core_1.Injectable(), 
+	        __metadata('design:paramtypes', [])
+	    ], isKspaceUser);
+	    return isKspaceUser;
+	}());
+	exports.isKspaceUser = isKspaceUser;
+	
+
+/***/ },
+/* 456 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4683,9 +8577,9 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(18);
-	var queue_1 = __webpack_require__(455);
-	var observeOn_1 = __webpack_require__(289);
+	var Subject_1 = __webpack_require__(20);
+	var queue_1 = __webpack_require__(479);
+	var observeOn_1 = __webpack_require__(304);
 	/**
 	 * @class ReplaySubject<T>
 	 */
@@ -4758,7 +8652,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=ReplaySubject.js.map
 
 /***/ },
-/* 432 */
+/* 457 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4766,110 +8660,40 @@ webpackJsonp([2],[
 	// Subject imported before Observable to bypass circular dependency issue since
 	// Subject extends Observable and Observable references Subject in it's
 	// definition
-	var Subject_1 = __webpack_require__(18);
+	var Subject_1 = __webpack_require__(20);
 	exports.Subject = Subject_1.Subject;
 	/* tslint:enable:no-unused-variable */
 	var Observable_1 = __webpack_require__(2);
 	exports.Observable = Observable_1.Observable;
 	// statics
 	/* tslint:disable:no-use-before-declare */
-	__webpack_require__(640);
-	__webpack_require__(641);
-	__webpack_require__(642);
-	__webpack_require__(643);
-	__webpack_require__(644);
-	__webpack_require__(645);
-	__webpack_require__(433);
-	__webpack_require__(434);
-	__webpack_require__(646);
-	__webpack_require__(647);
-	__webpack_require__(435);
-	__webpack_require__(648);
-	__webpack_require__(649);
-	__webpack_require__(652);
-	__webpack_require__(650);
-	__webpack_require__(651);
-	__webpack_require__(653);
-	__webpack_require__(654);
-	__webpack_require__(655);
-	__webpack_require__(656);
-	//operators
-	__webpack_require__(659);
-	__webpack_require__(660);
-	__webpack_require__(661);
-	__webpack_require__(662);
-	__webpack_require__(663);
-	__webpack_require__(664);
-	__webpack_require__(665);
-	__webpack_require__(666);
-	__webpack_require__(667);
-	__webpack_require__(668);
-	__webpack_require__(669);
-	__webpack_require__(670);
-	__webpack_require__(671);
-	__webpack_require__(672);
-	__webpack_require__(677);
-	__webpack_require__(673);
-	__webpack_require__(436);
-	__webpack_require__(674);
-	__webpack_require__(675);
-	__webpack_require__(676);
-	__webpack_require__(678);
-	__webpack_require__(679);
-	__webpack_require__(680);
-	__webpack_require__(681);
-	__webpack_require__(682);
-	__webpack_require__(683);
-	__webpack_require__(684);
-	__webpack_require__(685);
-	__webpack_require__(657);
-	__webpack_require__(658);
-	__webpack_require__(686);
-	__webpack_require__(687);
-	__webpack_require__(437);
-	__webpack_require__(188);
-	__webpack_require__(688);
-	__webpack_require__(689);
-	__webpack_require__(690);
-	__webpack_require__(438);
-	__webpack_require__(285);
-	__webpack_require__(691);
-	__webpack_require__(692);
-	__webpack_require__(439);
-	__webpack_require__(693);
-	__webpack_require__(694);
-	__webpack_require__(440);
-	__webpack_require__(695);
-	__webpack_require__(697);
-	__webpack_require__(696);
 	__webpack_require__(698);
-	__webpack_require__(441);
 	__webpack_require__(699);
 	__webpack_require__(700);
 	__webpack_require__(701);
 	__webpack_require__(702);
 	__webpack_require__(703);
+	__webpack_require__(458);
+	__webpack_require__(459);
 	__webpack_require__(704);
 	__webpack_require__(705);
+	__webpack_require__(460);
 	__webpack_require__(706);
 	__webpack_require__(707);
+	__webpack_require__(710);
 	__webpack_require__(708);
 	__webpack_require__(709);
-	__webpack_require__(710);
 	__webpack_require__(711);
 	__webpack_require__(712);
 	__webpack_require__(713);
 	__webpack_require__(714);
-	__webpack_require__(442);
-	__webpack_require__(715);
-	__webpack_require__(716);
+	//operators
 	__webpack_require__(717);
 	__webpack_require__(718);
 	__webpack_require__(719);
 	__webpack_require__(720);
 	__webpack_require__(721);
 	__webpack_require__(722);
-	__webpack_require__(443);
 	__webpack_require__(723);
 	__webpack_require__(724);
 	__webpack_require__(725);
@@ -4878,37 +8702,107 @@ webpackJsonp([2],[
 	__webpack_require__(728);
 	__webpack_require__(729);
 	__webpack_require__(730);
+	__webpack_require__(735);
+	__webpack_require__(731);
+	__webpack_require__(299);
+	__webpack_require__(732);
+	__webpack_require__(733);
+	__webpack_require__(734);
+	__webpack_require__(737);
+	__webpack_require__(738);
+	__webpack_require__(739);
+	__webpack_require__(740);
+	__webpack_require__(741);
+	__webpack_require__(742);
+	__webpack_require__(743);
+	__webpack_require__(744);
+	__webpack_require__(715);
+	__webpack_require__(716);
+	__webpack_require__(745);
+	__webpack_require__(746);
+	__webpack_require__(461);
+	__webpack_require__(197);
+	__webpack_require__(747);
+	__webpack_require__(748);
+	__webpack_require__(749);
+	__webpack_require__(462);
+	__webpack_require__(300);
+	__webpack_require__(750);
+	__webpack_require__(751);
+	__webpack_require__(463);
+	__webpack_require__(752);
+	__webpack_require__(753);
+	__webpack_require__(464);
+	__webpack_require__(754);
+	__webpack_require__(756);
+	__webpack_require__(755);
+	__webpack_require__(757);
+	__webpack_require__(465);
+	__webpack_require__(758);
+	__webpack_require__(759);
+	__webpack_require__(760);
+	__webpack_require__(761);
+	__webpack_require__(762);
+	__webpack_require__(763);
+	__webpack_require__(764);
+	__webpack_require__(765);
+	__webpack_require__(766);
+	__webpack_require__(767);
+	__webpack_require__(768);
+	__webpack_require__(769);
+	__webpack_require__(770);
+	__webpack_require__(771);
+	__webpack_require__(772);
+	__webpack_require__(773);
+	__webpack_require__(466);
+	__webpack_require__(774);
+	__webpack_require__(775);
+	__webpack_require__(776);
+	__webpack_require__(777);
+	__webpack_require__(778);
+	__webpack_require__(779);
+	__webpack_require__(780);
+	__webpack_require__(781);
+	__webpack_require__(467);
+	__webpack_require__(782);
+	__webpack_require__(783);
+	__webpack_require__(784);
+	__webpack_require__(785);
+	__webpack_require__(786);
+	__webpack_require__(787);
+	__webpack_require__(788);
+	__webpack_require__(789);
 	/* tslint:disable:no-unused-variable */
-	var Operator_1 = __webpack_require__(638);
+	var Operator_1 = __webpack_require__(696);
 	exports.Operator = Operator_1.Operator;
-	var Subscription_1 = __webpack_require__(41);
+	var Subscription_1 = __webpack_require__(46);
 	exports.Subscription = Subscription_1.Subscription;
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	exports.Subscriber = Subscriber_1.Subscriber;
-	var AsyncSubject_1 = __webpack_require__(185);
+	var AsyncSubject_1 = __webpack_require__(194);
 	exports.AsyncSubject = AsyncSubject_1.AsyncSubject;
-	var ReplaySubject_1 = __webpack_require__(431);
+	var ReplaySubject_1 = __webpack_require__(456);
 	exports.ReplaySubject = ReplaySubject_1.ReplaySubject;
-	var BehaviorSubject_1 = __webpack_require__(186);
+	var BehaviorSubject_1 = __webpack_require__(195);
 	exports.BehaviorSubject = BehaviorSubject_1.BehaviorSubject;
-	var ConnectableObservable_1 = __webpack_require__(444);
+	var ConnectableObservable_1 = __webpack_require__(468);
 	exports.ConnectableObservable = ConnectableObservable_1.ConnectableObservable;
-	var Notification_1 = __webpack_require__(187);
+	var Notification_1 = __webpack_require__(196);
 	exports.Notification = Notification_1.Notification;
-	var EmptyError_1 = __webpack_require__(194);
+	var EmptyError_1 = __webpack_require__(203);
 	exports.EmptyError = EmptyError_1.EmptyError;
-	var ArgumentOutOfRangeError_1 = __webpack_require__(292);
+	var ArgumentOutOfRangeError_1 = __webpack_require__(307);
 	exports.ArgumentOutOfRangeError = ArgumentOutOfRangeError_1.ArgumentOutOfRangeError;
-	var ObjectUnsubscribedError_1 = __webpack_require__(293);
+	var ObjectUnsubscribedError_1 = __webpack_require__(308);
 	exports.ObjectUnsubscribedError = ObjectUnsubscribedError_1.ObjectUnsubscribedError;
-	var UnsubscriptionError_1 = __webpack_require__(456);
+	var UnsubscriptionError_1 = __webpack_require__(480);
 	exports.UnsubscriptionError = UnsubscriptionError_1.UnsubscriptionError;
-	var asap_1 = __webpack_require__(454);
-	var async_1 = __webpack_require__(42);
-	var queue_1 = __webpack_require__(455);
-	var rxSubscriber_1 = __webpack_require__(193);
-	var observable_1 = __webpack_require__(192);
-	var iterator_1 = __webpack_require__(136);
+	var asap_1 = __webpack_require__(478);
+	var async_1 = __webpack_require__(47);
+	var queue_1 = __webpack_require__(479);
+	var rxSubscriber_1 = __webpack_require__(202);
+	var observable_1 = __webpack_require__(201);
+	var iterator_1 = __webpack_require__(146);
 	/* tslint:enable:no-unused-variable */
 	/**
 	 * @typedef {Object} Rx.Scheduler
@@ -4949,21 +8843,20 @@ webpackJsonp([2],[
 	//# sourceMappingURL=Rx.js.map
 
 /***/ },
-/* 433 */,
-/* 434 */,
-/* 435 */,
-/* 436 */,
-/* 437 */,
-/* 438 */,
-/* 439 */,
-/* 440 */,
-/* 441 */,
-/* 442 */,
-/* 443 */,
-/* 444 */,
-/* 445 */,
-/* 446 */,
-/* 447 */
+/* 458 */,
+/* 459 */,
+/* 460 */,
+/* 461 */,
+/* 462 */,
+/* 463 */,
+/* 464 */,
+/* 465 */,
+/* 466 */,
+/* 467 */,
+/* 468 */,
+/* 469 */,
+/* 470 */,
+/* 471 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -4972,7 +8865,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * Filter items emitted by the source Observable by only emitting those that
 	 * satisfy a specified predicate.
@@ -5061,14 +8954,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=filter.js.map
 
 /***/ },
-/* 448 */,
-/* 449 */
+/* 472 */,
+/* 473 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ArrayObservable_1 = __webpack_require__(83);
-	var mergeAll_1 = __webpack_require__(190);
-	var isScheduler_1 = __webpack_require__(99);
+	var ArrayObservable_1 = __webpack_require__(90);
+	var mergeAll_1 = __webpack_require__(199);
+	var isScheduler_1 = __webpack_require__(106);
 	/**
 	 * Creates an output Observable which concurrently emits all values from every
 	 * given input Observable.
@@ -5197,8 +9090,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=merge.js.map
 
 /***/ },
-/* 450 */,
-/* 451 */
+/* 474 */,
+/* 475 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5207,8 +9100,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Projects each source value to the same Observable which is merged multiple
 	 * times in the output Observable.
@@ -5357,12 +9250,12 @@ webpackJsonp([2],[
 	//# sourceMappingURL=mergeMapTo.js.map
 
 /***/ },
-/* 452 */
+/* 476 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ReplaySubject_1 = __webpack_require__(431);
-	var multicast_1 = __webpack_require__(121);
+	var ReplaySubject_1 = __webpack_require__(456);
+	var multicast_1 = __webpack_require__(130);
 	/**
 	 * @param bufferSize
 	 * @param windowTime
@@ -5380,7 +9273,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=publishReplay.js.map
 
 /***/ },
-/* 453 */
+/* 477 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5389,10 +9282,10 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var isArray_1 = __webpack_require__(86);
-	var ArrayObservable_1 = __webpack_require__(83);
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var isArray_1 = __webpack_require__(93);
+	var ArrayObservable_1 = __webpack_require__(90);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Returns an Observable that mirrors the first source Observable to emit an item
 	 * from the combination of this Observable and supplied Observables
@@ -5494,28 +9387,28 @@ webpackJsonp([2],[
 	//# sourceMappingURL=race.js.map
 
 /***/ },
-/* 454 */
+/* 478 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var AsapScheduler_1 = __webpack_require__(832);
+	var AsapScheduler_1 = __webpack_require__(892);
 	exports.asap = new AsapScheduler_1.AsapScheduler();
 	//# sourceMappingURL=asap.js.map
 
 /***/ },
-/* 455 */
+/* 479 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var QueueScheduler_1 = __webpack_require__(291);
+	var QueueScheduler_1 = __webpack_require__(306);
 	exports.queue = new QueueScheduler_1.QueueScheduler();
 	//# sourceMappingURL=queue.js.map
 
 /***/ },
-/* 456 */,
-/* 457 */,
-/* 458 */,
-/* 459 */
+/* 480 */,
+/* 481 */,
+/* 482 */,
+/* 483 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -5525,30 +9418,6 @@ webpackJsonp([2],[
 	//# sourceMappingURL=noop.js.map
 
 /***/ },
-/* 460 */,
-/* 461 */,
-/* 462 */,
-/* 463 */,
-/* 464 */,
-/* 465 */,
-/* 466 */,
-/* 467 */,
-/* 468 */,
-/* 469 */,
-/* 470 */,
-/* 471 */,
-/* 472 */,
-/* 473 */,
-/* 474 */,
-/* 475 */,
-/* 476 */,
-/* 477 */,
-/* 478 */,
-/* 479 */,
-/* 480 */,
-/* 481 */,
-/* 482 */,
-/* 483 */,
 /* 484 */,
 /* 485 */,
 /* 486 */,
@@ -5560,7 +9429,339 @@ webpackJsonp([2],[
 /* 492 */,
 /* 493 */,
 /* 494 */,
-/* 495 */
+/* 495 */,
+/* 496 */,
+/* 497 */,
+/* 498 */,
+/* 499 */,
+/* 500 */,
+/* 501 */,
+/* 502 */,
+/* 503 */,
+/* 504 */,
+/* 505 */,
+/* 506 */,
+/* 507 */,
+/* 508 */,
+/* 509 */,
+/* 510 */,
+/* 511 */,
+/* 512 */,
+/* 513 */,
+/* 514 */,
+/* 515 */,
+/* 516 */,
+/* 517 */,
+/* 518 */,
+/* 519 */,
+/* 520 */,
+/* 521 */,
+/* 522 */,
+/* 523 */,
+/* 524 */,
+/* 525 */,
+/* 526 */,
+/* 527 */,
+/* 528 */,
+/* 529 */,
+/* 530 */,
+/* 531 */,
+/* 532 */,
+/* 533 */,
+/* 534 */,
+/* 535 */,
+/* 536 */,
+/* 537 */,
+/* 538 */,
+/* 539 */,
+/* 540 */,
+/* 541 */,
+/* 542 */,
+/* 543 */,
+/* 544 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var common_1 = __webpack_require__(6);
+	var BaseChartComponent = (function () {
+	    function BaseChartComponent(element) {
+	        this.labels = [];
+	        this.options = { responsive: true };
+	        this.chartClick = new core_1.EventEmitter();
+	        this.chartHover = new core_1.EventEmitter();
+	        this.initFlag = false;
+	        this.element = element;
+	    }
+	    BaseChartComponent.prototype.ngOnInit = function () {
+	        this.ctx = this.element.nativeElement.children[0].getContext('2d');
+	        this.cvs = this.element.nativeElement.children[0];
+	        this.parent = this.element.nativeElement;
+	        this.initFlag = true;
+	        if (this.data || this.datasets) {
+	            this.refresh();
+	        }
+	    };
+	    BaseChartComponent.prototype.ngOnChanges = function () {
+	        if (this.initFlag) {
+	            this.refresh();
+	        }
+	    };
+	    BaseChartComponent.prototype.ngOnDestroy = function () {
+	        if (this.chart) {
+	            this.chart.destroy();
+	            this.chart = void 0;
+	        }
+	    };
+	    BaseChartComponent.prototype.getChartBuilder = function (ctx /*, data:Array<any>, options:any*/) {
+	        var _this = this;
+	        var datasets = void 0;
+	        // in case if datasets is not provided, but data is present
+	        if (!this.datasets || !this.datasets.length && (this.data && this.data.length)) {
+	            if (Array.isArray(this.data[0])) {
+	                datasets = this.data.map(function (data, index) {
+	                    return { data: data, label: _this.labels[index] || "Label " + index };
+	                });
+	            }
+	            else {
+	                datasets = [{ data: this.data, label: "Label 0" }];
+	            }
+	        }
+	        if (this.datasets && this.datasets.length ||
+	            (datasets && datasets.length)) {
+	            datasets = (this.datasets || datasets)
+	                .map(function (elm, index) {
+	                var newElm = Object.assign({}, elm);
+	                if (_this.colors && _this.colors.length) {
+	                    Object.assign(newElm, _this.colors[index]);
+	                }
+	                else {
+	                    Object.assign(newElm, getColors(_this.chartType, index, newElm.data.length));
+	                }
+	                return newElm;
+	            });
+	        }
+	        if (!datasets) {
+	            throw new Error("ng-charts configuration error, \n      data or datasets field are required to render char " + this.chartType);
+	        }
+	        var options = Object.assign({}, this.options);
+	        // hock for onHover and onClick events
+	        options.hover = options.hover || {};
+	        if (!options.hover.onHover) {
+	            options.hover.onHover = function (active) {
+	                if (active && !active.length) {
+	                    return;
+	                }
+	                _this.chartHover.emit({ active: active });
+	            };
+	        }
+	        if (!options.onClick) {
+	            options.onClick = function (event, active) {
+	                _this.chartClick.emit({ event: event, active: active });
+	            };
+	        }
+	        var opts = {
+	            type: this.chartType,
+	            data: {
+	                labels: this.labels,
+	                datasets: datasets
+	            },
+	            options: options
+	        };
+	        if (typeof Chart === 'undefined') {
+	            throw new Error('ng2-charts configuration issue: Embedding Chart.js lib is mandatory');
+	        }
+	        return new Chart(ctx, opts);
+	    };
+	    BaseChartComponent.prototype.refresh = function () {
+	        var _this = this;
+	        if (this.options && this.options.responsive && this.parent.clientHeight === 0) {
+	            return setTimeout(function () { return _this.refresh(); }, 50);
+	        }
+	        // todo: remove this line, it is producing flickering
+	        this.ngOnDestroy();
+	        this.chart = this.getChartBuilder(this.ctx /*, data, this.options*/);
+	    };
+	    BaseChartComponent.defaultColors = [
+	        [255, 99, 132],
+	        [54, 162, 235],
+	        [255, 206, 86],
+	        [231, 233, 237],
+	        [75, 192, 192],
+	        [151, 187, 205],
+	        [220, 220, 220],
+	        [247, 70, 74],
+	        [70, 191, 189],
+	        [253, 180, 92],
+	        [148, 159, 177],
+	        [77, 83, 96]
+	    ];
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], BaseChartComponent.prototype, "data", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Array)
+	    ], BaseChartComponent.prototype, "datasets", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Array)
+	    ], BaseChartComponent.prototype, "labels", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], BaseChartComponent.prototype, "options", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', String)
+	    ], BaseChartComponent.prototype, "chartType", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Array)
+	    ], BaseChartComponent.prototype, "colors", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Boolean)
+	    ], BaseChartComponent.prototype, "legend", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', core_1.EventEmitter)
+	    ], BaseChartComponent.prototype, "chartClick", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', core_1.EventEmitter)
+	    ], BaseChartComponent.prototype, "chartHover", void 0);
+	    BaseChartComponent = __decorate([
+	        core_1.Component({
+	            selector: 'base-chart',
+	            template: "<canvas style=\"width: 100%; height: 100%;\"></canvas>",
+	            directives: [common_1.CORE_DIRECTIVES, common_1.FORM_DIRECTIVES, common_1.NgClass]
+	        }), 
+	        __metadata('design:paramtypes', [core_1.ElementRef])
+	    ], BaseChartComponent);
+	    return BaseChartComponent;
+	}());
+	exports.BaseChartComponent = BaseChartComponent;
+	function rgba(colour, alpha) {
+	    return 'rgba(' + colour.concat(alpha).join(',') + ')';
+	}
+	function getRandomInt(min, max) {
+	    return Math.floor(Math.random() * (max - min + 1)) + min;
+	}
+	function formatLineColor(colors) {
+	    return {
+	        backgroundColor: rgba(colors, 0.4),
+	        borderColor: rgba(colors, 1),
+	        pointBackgroundColor: rgba(colors, 1),
+	        pointBorderColor: '#fff',
+	        pointHoverBackgroundColor: '#fff',
+	        pointHoverBorderColor: rgba(colors, 0.8)
+	    };
+	}
+	function formatBarColor(colors) {
+	    return {
+	        backgroundColor: rgba(colors, 0.6),
+	        borderColor: rgba(colors, 1),
+	        hoverBackgroundColor: rgba(colors, 0.8),
+	        hoverBorderColor: rgba(colors, 1)
+	    };
+	}
+	function formatPieColors(colors) {
+	    return {
+	        backgroundColor: colors.map(function (color) { return rgba(color, 0.6); }),
+	        borderColor: colors.map(function () { return '#fff'; }),
+	        pointBackgroundColor: colors.map(function (color) { return rgba(color, 1); }),
+	        pointBorderColor: colors.map(function () { return '#fff'; }),
+	        pointHoverBackgroundColor: colors.map(function (color) { return rgba(color, 1); }),
+	        pointHoverBorderColor: colors.map(function (color) { return rgba(color, 1); })
+	    };
+	}
+	function formatPolarAreaColors(colors) {
+	    return {
+	        backgroundColor: colors.map(function (color) { return rgba(color, 0.6); }),
+	        borderColor: colors.map(function (color) { return rgba(color, 1); }),
+	        hoverBackgroundColor: colors.map(function (color) { return rgba(color, 0.8); }),
+	        hoverBorderColor: colors.map(function (color) { return rgba(color, 1); })
+	    };
+	}
+	function getRandomColor() {
+	    return [getRandomInt(0, 255), getRandomInt(0, 255), getRandomInt(0, 255)];
+	}
+	/**
+	 * Generate colors for line|bar charts
+	 * @param index
+	 * @returns {number[]|Color}
+	 */
+	function generateColor(index) {
+	    return BaseChartComponent.defaultColors[index] || getRandomColor();
+	}
+	/**
+	 * Generate colors for pie|doughnut charts
+	 * @param count
+	 * @returns {Colors}
+	 */
+	function generateColors(count) {
+	    var colorsArr = new Array(count);
+	    for (var i = 0; i < count; i++) {
+	        colorsArr[i] = BaseChartComponent.defaultColors[i] || getRandomColor();
+	    }
+	    return colorsArr;
+	}
+	/**
+	 * Generate colors by chart type
+	 * @param chartType
+	 * @param index
+	 * @param count
+	 * @returns {Color}
+	 */
+	function getColors(chartType, index, count) {
+	    if (chartType === 'pie' || chartType === 'doughnut') {
+	        return formatPieColors(generateColors(count));
+	    }
+	    if (chartType === 'polarArea') {
+	        return formatPolarAreaColors(generateColors(count));
+	    }
+	    if (chartType === 'line' || chartType === 'radar') {
+	        return formatLineColor(generateColor(index));
+	    }
+	    if (chartType === 'bar') {
+	        return formatBarColor(generateColor(index));
+	    }
+	    return generateColor(index);
+	}
+	exports.CHART_DIRECTIVES = [BaseChartComponent];
+
+
+/***/ },
+/* 545 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	function __export(m) {
+	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
+	}
+	var charts_1 = __webpack_require__(544);
+	__export(__webpack_require__(544));
+	Object.defineProperty(exports, "__esModule", { value: true });
+	exports.default = {
+	    directives: [
+	        charts_1.CHART_DIRECTIVES
+	    ]
+	};
+
+
+/***/ },
+/* 546 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5617,7 +9818,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 496 */
+/* 547 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5667,7 +9868,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 497 */
+/* 548 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5718,7 +9919,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 498 */
+/* 549 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5780,7 +9981,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 499 */
+/* 550 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5794,7 +9995,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var uitreenode_1 = __webpack_require__(1066);
+	var uitreenode_1 = __webpack_require__(1124);
 	var Tree = (function () {
 	    function Tree() {
 	        this.selectionChange = new core_1.EventEmitter();
@@ -5918,7 +10119,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 500 */
+/* 551 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -5932,10 +10133,10 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var uitreerow_1 = __webpack_require__(1067);
-	var column_1 = __webpack_require__(317);
-	var common_1 = __webpack_require__(32);
-	var common_2 = __webpack_require__(32);
+	var uitreerow_1 = __webpack_require__(1125);
+	var column_1 = __webpack_require__(332);
+	var common_1 = __webpack_require__(39);
+	var common_2 = __webpack_require__(39);
 	var TreeTable = (function () {
 	    function TreeTable() {
 	        this.selectionChange = new core_1.EventEmitter();
@@ -6078,132 +10279,6 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 501 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	__export(__webpack_require__(32));
-	__export(__webpack_require__(495));
-	__export(__webpack_require__(1010));
-	__export(__webpack_require__(1011));
-	__export(__webpack_require__(1012));
-	__export(__webpack_require__(143));
-	__export(__webpack_require__(1013));
-	__export(__webpack_require__(1014));
-	__export(__webpack_require__(1017));
-	__export(__webpack_require__(1018));
-	__export(__webpack_require__(1015));
-	__export(__webpack_require__(1016));
-	__export(__webpack_require__(317));
-	__export(__webpack_require__(32));
-	__export(__webpack_require__(32));
-	__export(__webpack_require__(1019));
-	__export(__webpack_require__(1020));
-	__export(__webpack_require__(1021));
-	__export(__webpack_require__(1022));
-	__export(__webpack_require__(1024));
-	__export(__webpack_require__(1025));
-	__export(__webpack_require__(1026));
-	__export(__webpack_require__(1027));
-	__export(__webpack_require__(1028));
-	__export(__webpack_require__(1029));
-	__export(__webpack_require__(1030));
-	__export(__webpack_require__(1031));
-	__export(__webpack_require__(1032));
-	__export(__webpack_require__(1033));
-	__export(__webpack_require__(1034));
-	__export(__webpack_require__(144));
-	__export(__webpack_require__(1035));
-	__export(__webpack_require__(1036));
-	__export(__webpack_require__(1037));
-	__export(__webpack_require__(1038));
-	__export(__webpack_require__(1039));
-	__export(__webpack_require__(1040));
-	__export(__webpack_require__(1041));
-	__export(__webpack_require__(1042));
-	__export(__webpack_require__(1043));
-	__export(__webpack_require__(1044));
-	__export(__webpack_require__(209));
-	__export(__webpack_require__(1045));
-	__export(__webpack_require__(1046));
-	__export(__webpack_require__(1047));
-	__export(__webpack_require__(1048));
-	__export(__webpack_require__(1049));
-	__export(__webpack_require__(1050));
-	__export(__webpack_require__(1051));
-	__export(__webpack_require__(1052));
-	__export(__webpack_require__(1053));
-	__export(__webpack_require__(1054));
-	__export(__webpack_require__(1055));
-	__export(__webpack_require__(1056));
-	__export(__webpack_require__(1057));
-	__export(__webpack_require__(497));
-	__export(__webpack_require__(1059));
-	__export(__webpack_require__(498));
-	__export(__webpack_require__(1058));
-	__export(__webpack_require__(1060));
-	__export(__webpack_require__(1061));
-	__export(__webpack_require__(1062));
-	__export(__webpack_require__(1063));
-	__export(__webpack_require__(1064));
-	__export(__webpack_require__(499));
-	__export(__webpack_require__(500));
-	
-
-/***/ },
-/* 502 */,
-/* 503 */,
-/* 504 */,
-/* 505 */,
-/* 506 */,
-/* 507 */,
-/* 508 */,
-/* 509 */,
-/* 510 */,
-/* 511 */,
-/* 512 */,
-/* 513 */,
-/* 514 */,
-/* 515 */,
-/* 516 */,
-/* 517 */,
-/* 518 */,
-/* 519 */,
-/* 520 */,
-/* 521 */,
-/* 522 */,
-/* 523 */,
-/* 524 */,
-/* 525 */,
-/* 526 */,
-/* 527 */,
-/* 528 */,
-/* 529 */,
-/* 530 */,
-/* 531 */,
-/* 532 */,
-/* 533 */,
-/* 534 */,
-/* 535 */,
-/* 536 */,
-/* 537 */,
-/* 538 */,
-/* 539 */,
-/* 540 */,
-/* 541 */,
-/* 542 */,
-/* 543 */,
-/* 544 */,
-/* 545 */,
-/* 546 */,
-/* 547 */,
-/* 548 */,
-/* 549 */,
-/* 550 */,
-/* 551 */,
 /* 552 */,
 /* 553 */,
 /* 554 */,
@@ -6266,7 +10341,57 @@ webpackJsonp([2],[
 /* 611 */,
 /* 612 */,
 /* 613 */,
-/* 614 */
+/* 614 */,
+/* 615 */,
+/* 616 */,
+/* 617 */,
+/* 618 */,
+/* 619 */,
+/* 620 */,
+/* 621 */,
+/* 622 */,
+/* 623 */,
+/* 624 */,
+/* 625 */,
+/* 626 */,
+/* 627 */,
+/* 628 */,
+/* 629 */,
+/* 630 */,
+/* 631 */,
+/* 632 */,
+/* 633 */,
+/* 634 */,
+/* 635 */,
+/* 636 */,
+/* 637 */,
+/* 638 */,
+/* 639 */,
+/* 640 */,
+/* 641 */,
+/* 642 */,
+/* 643 */,
+/* 644 */,
+/* 645 */,
+/* 646 */,
+/* 647 */,
+/* 648 */,
+/* 649 */,
+/* 650 */,
+/* 651 */,
+/* 652 */,
+/* 653 */,
+/* 654 */,
+/* 655 */,
+/* 656 */,
+/* 657 */,
+/* 658 */,
+/* 659 */,
+/* 660 */,
+/* 661 */,
+/* 662 */,
+/* 663 */,
+/* 664 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6283,22 +10408,28 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 5/8/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var http_1 = __webpack_require__(57);
-	__webpack_require__(432); // Load all features
-	var router_1 = __webpack_require__(7);
-	var kshare_component_1 = __webpack_require__(430);
-	//import { UserComponent } from "./user.component";
+	var http_1 = __webpack_require__(35);
+	__webpack_require__(457); // Load all features
+	var router_1 = __webpack_require__(4);
+	/**
+	 * Page components
+	 * */
+	var admin_component_1 = __webpack_require__(428);
+	var kshare_component_1 = __webpack_require__(453);
+	var header_1 = __webpack_require__(454);
 	/**
 	 * services
 	 **/
-	var knowledge_1 = __webpack_require__(48);
-	var request_offer_1 = __webpack_require__(284);
-	var requests_1 = __webpack_require__(82);
-	var users_1 = __webpack_require__(67);
-	var auth_1 = __webpack_require__(51);
-	var kspace_1 = __webpack_require__(183);
-	var socket_io_services_1 = __webpack_require__(635);
-	var notification_1 = __webpack_require__(184);
+	var knowledge_1 = __webpack_require__(54);
+	var request_offer_1 = __webpack_require__(298);
+	var requests_1 = __webpack_require__(58);
+	var users_1 = __webpack_require__(26);
+	var auth_1 = __webpack_require__(45);
+	var kspace_1 = __webpack_require__(65);
+	var notification_1 = __webpack_require__(57);
+	var report_1 = __webpack_require__(193);
+	var article_1 = __webpack_require__(41);
+	var chat_1 = __webpack_require__(129);
 	var AppComponent = (function () {
 	    function AppComponent() {
 	        this.pageTitle = 'Knowledge Sharing Network';
@@ -6306,11 +10437,12 @@ webpackJsonp([2],[
 	    AppComponent = __decorate([
 	        core_1.Component({
 	            selector: 'kshare-app',
-	            template: '<router-outlet></router-outlet>',
+	            template: "\n  <header></header>\n  <router-outlet></router-outlet>\n  ",
 	            directives: [
-	                router_1.ROUTER_DIRECTIVES
+	                router_1.ROUTER_DIRECTIVES,
+	                header_1.HeaderComponent
 	            ],
-	            precompile: [kshare_component_1.KshareComponent],
+	            precompile: [kshare_component_1.KshareComponent, admin_component_1.AdminComponent],
 	            providers: [
 	                auth_1.AuthService,
 	                users_1.UserService,
@@ -6319,8 +10451,10 @@ webpackJsonp([2],[
 	                request_offer_1.OfferService,
 	                knowledge_1.KnowledgeService,
 	                kspace_1.KSpaceService,
-	                socket_io_services_1.SocketIOService,
-	                notification_1.NotificationService
+	                notification_1.NotificationService,
+	                report_1.ReportService,
+	                article_1.ArticleService,
+	                chat_1.ChatService
 	            ]
 	        }), 
 	        __metadata('design:paramtypes', [])
@@ -6331,84 +10465,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 615 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	/**
-	 * Created by GiangDH on 7/9/16.
-	 */
-	var router_1 = __webpack_require__(7);
-	var kshare_routes_1 = __webpack_require__(634);
-	var admin_routes_1 = __webpack_require__(633);
-	exports.routes = kshare_routes_1.KShareRoutes.concat(admin_routes_1.AdminRoutes);
-	exports.APP_ROUTER_PROVIDERS = [
-	    router_1.provideRouter(exports.routes)
-	];
-	
-
-/***/ },
-/* 616 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	/**
-	 * Created by GiangDH on 6/4/16.
-	 */
-	var core_1 = __webpack_require__(1);
-	__webpack_require__(432); // Load all features
-	var router_1 = __webpack_require__(7);
-	// Layout component
-	var nav_bar_1 = __webpack_require__(417);
-	var side_bar_1 = __webpack_require__(418);
-	// Functions
-	var knowledge_update_1 = __webpack_require__(280);
-	var knowledges_list_1 = __webpack_require__(414);
-	var requests_list_1 = __webpack_require__(416);
-	var request_update_1 = __webpack_require__(281);
-	var badword_update_1 = __webpack_require__(181);
-	var badword_1 = __webpack_require__(413);
-	var user_list_1 = __webpack_require__(419);
-	var AdminComponent = (function () {
-	    function AdminComponent() {
-	    }
-	    AdminComponent = __decorate([
-	        core_1.Component({
-	            selector: 'kshare',
-	            template: "\n  <nav-bar></nav-bar>\n  <sidebar></sidebar>\n  <router-outlet></router-outlet>\n  ",
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES,
-	                nav_bar_1.NavbarComponent,
-	                side_bar_1.SidebarComponent
-	            ],
-	            precompile: [
-	                user_list_1.UserListComponent,
-	                requests_list_1.RequestListComponent,
-	                knowledges_list_1.KnowledgeListComponent,
-	                badword_1.BadwordComponent,
-	                badword_update_1.UpdateBadwordComponent,
-	                knowledge_update_1.UpdateKnowledgeComponent,
-	                request_update_1.UpdateRequestComponent,
-	            ]
-	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], AdminComponent);
-	    return AdminComponent;
-	}());
-	exports.AdminComponent = AdminComponent;
-	
-
-/***/ },
-/* 617 */
+/* 665 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6422,158 +10479,105 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(19);
-	var badword_1 = __webpack_require__(182);
-	var CreateBadwordComponent = (function () {
-	    function CreateBadwordComponent(fb, _badwordService) {
-	        this._badwordService = _badwordService;
-	        this.badwords = [];
-	        this.badwordForm = fb.group({
-	            "word": [""],
-	        });
-	    }
-	    CreateBadwordComponent.prototype.addBadword = function (word) {
-	        var _this = this;
-	        this._badwordService
-	            .addBadword(word)
-	            .subscribe(function (m) {
-	            _this.badwords.push(m);
-	            window.location.reload();
-	        });
-	    };
-	    CreateBadwordComponent = __decorate([
-	        core_1.Component({
-	            selector: 'badword-create',
-	            templateUrl: 'client/dev/app/components/back-end/badword/templates/badword-create.html',
-	            styleUrls: ['client/dev/app/components/back-end/badword/styles/badword.css'],
-	            directives: [common_1.FORM_DIRECTIVES]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof badword_1.BadwordService !== 'undefined' && badword_1.BadwordService) === 'function' && _b) || Object])
-	    ], CreateBadwordComponent);
-	    return CreateBadwordComponent;
-	    var _a, _b;
-	}());
-	exports.CreateBadwordComponent = CreateBadwordComponent;
-	
-
-/***/ },
-/* 618 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var badword_1 = __webpack_require__(182);
-	var badword_update_1 = __webpack_require__(181);
-	var BadwordListComponent = (function () {
-	    function BadwordListComponent(badwordService) {
-	        this.badwordService = badwordService;
-	        this.pageTitle = 'Badword List';
-	    }
-	    BadwordListComponent.prototype.ngOnInit = function () {
-	        this.getAll();
-	    };
-	    BadwordListComponent.prototype.getAll = function () {
-	        var _this = this;
-	        this.badwordService
-	            .getAllBadwords()
-	            .subscribe(function (badwords) {
-	            _this.badwords = badwords;
-	        });
-	    };
-	    BadwordListComponent.prototype.deleteBadword = function (id) {
-	        var _this = this;
-	        this.badwordService
-	            .deleteBadword(id)
-	            .subscribe(function () {
-	            _this.badwords.forEach(function (t, i) {
-	                if (t._id === id)
-	                    return _this.badwords.splice(i, 1);
-	            });
-	        });
-	    };
-	    BadwordListComponent.prototype.findBadwordById = function (id) {
-	        this.badwordService
-	            .findBadwordById(id)
-	            .subscribe(function (badwords) {
-	            return badwords;
-	        });
-	    };
-	    BadwordListComponent = __decorate([
-	        core_1.Component({
-	            selector: 'badword-list',
-	            templateUrl: 'client/dev/app/components/back-end/badword/templates/badword-list.html',
-	            styleUrls: ['client/dev/app/components/back-end/badword/styles/badword.css'],
-	            directives: [badword_update_1.UpdateBadwordComponent]
-	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof badword_1.BadwordService !== 'undefined' && badword_1.BadwordService) === 'function' && _a) || Object])
-	    ], BadwordListComponent);
-	    return BadwordListComponent;
-	    var _a;
-	}());
-	exports.BadwordListComponent = BadwordListComponent;
-	
-
-/***/ },
-/* 619 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(19);
-	var knowledge_1 = __webpack_require__(48);
-	var CreateKnowledgeComponent = (function () {
-	    function CreateKnowledgeComponent(fb, _knowledgeService) {
+	var ng2_charts_1 = __webpack_require__(545);
+	var knowledge_1 = __webpack_require__(54);
+	var requests_1 = __webpack_require__(58);
+	var users_1 = __webpack_require__(26);
+	var kspace_1 = __webpack_require__(65);
+	var article_1 = __webpack_require__(41);
+	var DashboardComponent = (function () {
+	    function DashboardComponent(_knowledgeService, _articleService, _requestService, _userService, _kspaceService) {
 	        this._knowledgeService = _knowledgeService;
-	        this.knowledges = [];
-	        this.knowledgeForm = fb.group({
-	            "name": [""],
-	            "description": [""],
-	        });
+	        this._articleService = _articleService;
+	        this._requestService = _requestService;
+	        this._userService = _userService;
+	        this._kspaceService = _kspaceService;
+	        this.visible = false;
+	        this.numOfActiveRequest = 0;
+	        this.numOfFinishedRequest = 0;
+	        this.numOfActiveKspace = 0;
+	        this.numOfFinishedKspace = 0;
 	    }
-	    CreateKnowledgeComponent.prototype.addKnowledge = function (word) {
+	    DashboardComponent.prototype.ngOnInit = function () {
+	        this.getAllUsers();
+	        this.getAllRequests();
+	        this.getAllKSpaces();
+	        this.getAllArticles();
+	    };
+	    DashboardComponent.prototype.getAllUsers = function () {
 	        var _this = this;
-	        this._knowledgeService
-	            .addKnowledge(word)
-	            .subscribe(function (m) {
-	            _this.knowledges.push(m);
-	            window.location.reload();
+	        this._userService.getAllUsers().subscribe(function (users) {
+	            _this.users = users;
 	        });
 	    };
-	    CreateKnowledgeComponent = __decorate([
+	    DashboardComponent.prototype.getAllArticles = function () {
+	        var _this = this;
+	        this._articleService.getAllArtAdmin().subscribe(function (articles) {
+	            _this.articles = articles;
+	        });
+	    };
+	    DashboardComponent.prototype.getAllRequests = function () {
+	        var _this = this;
+	        this._requestService.getAllRequestAdmin().subscribe(function (requests) {
+	            _this.requests = requests;
+	            for (var i = 0; i < _this.requests.length; i++) {
+	                if (_this.requests[i].status == "pending")
+	                    _this.numOfActiveRequest++;
+	                if (_this.requests[i].status == "accepted")
+	                    _this.numOfFinishedRequest++;
+	            }
+	        });
+	    };
+	    DashboardComponent.prototype.getAllKSpaces = function () {
+	        var _this = this;
+	        this._kspaceService.getAllKSpace().subscribe(function (kspaces) {
+	            _this.kspaces = kspaces;
+	            console.log(_this.kspaces);
+	            for (var i = 0; i < _this.kspaces.length; i++) {
+	                if (!_this.kspaces[i].hasOwnProperty("finishedAt")) {
+	                    _this.numOfActiveKspace++;
+	                }
+	                if (_this.kspaces[i].hasOwnProperty("finishedAt")) {
+	                    _this.numOfFinishedKspace++;
+	                }
+	            }
+	        });
+	    };
+	    DashboardComponent.prototype.draw = function () {
+	        this.polarAreaChartLabels = ['Số người sử dụng', 'Số yêu cầu đã tạo', 'Số KSpace đã tạo', 'Số bài viết'];
+	        this.polarAreaChartData = [this.users.length, this.requests.length, this.kspaces.length, this.articles.length];
+	        this.polarAreaLegend = true;
+	        this.polarAreaChartType = 'polarArea';
+	        if (this.visible == false)
+	            this.visible = true;
+	        else
+	            this.visible = false;
+	    };
+	    // events
+	    DashboardComponent.prototype.chartClicked = function (e) {
+	        console.log(e);
+	    };
+	    DashboardComponent.prototype.chartHovered = function (e) {
+	        console.log(e);
+	    };
+	    DashboardComponent = __decorate([
 	        core_1.Component({
-	            selector: 'knowledge-create',
-	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-create.html',
-	            styleUrls: ['client/dev/app/components/back-end/knowledge/styles/knowledge.css'],
-	            directives: [common_1.FORM_DIRECTIVES]
+	            selector: 'dashboard',
+	            templateUrl: 'client/dev/app/components/back-end/dashboard/templates/dashboard.html',
+	            styleUrls: ['client/dev/app/components/back-end/dashboard/styles/dashboard.css'],
+	            directives: [ng2_charts_1.CHART_DIRECTIVES],
+	            providers: [knowledge_1.KnowledgeService, requests_1.RequestService, users_1.UserService, kspace_1.KSpaceService]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object])
-	    ], CreateKnowledgeComponent);
-	    return CreateKnowledgeComponent;
-	    var _a, _b;
+	        __metadata('design:paramtypes', [(typeof (_a = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _a) || Object, (typeof (_b = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _b) || Object, (typeof (_c = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof kspace_1.KSpaceService !== 'undefined' && kspace_1.KSpaceService) === 'function' && _e) || Object])
+	    ], DashboardComponent);
+	    return DashboardComponent;
+	    var _a, _b, _c, _d, _e;
 	}());
-	exports.CreateKnowledgeComponent = CreateKnowledgeComponent;
+	exports.DashboardComponent = DashboardComponent;
 	
 
 /***/ },
-/* 620 */
+/* 666 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6587,11 +10591,14 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(19);
-	var knowledge_1 = __webpack_require__(48);
+	var common_1 = __webpack_require__(6);
+	var knowledge_1 = __webpack_require__(54);
+	var primeng_1 = __webpack_require__(31);
+	var private_chat_1 = __webpack_require__(11);
 	var CreateSubCategoryComponent = (function () {
 	    function CreateSubCategoryComponent(fb, _knowledgeService) {
 	        this._knowledgeService = _knowledgeService;
+	        this.knowledge = new core_1.EventEmitter();
 	        this.subCategoryForm = fb.group({
 	            "name": [""],
 	            "description": [""],
@@ -6601,33 +10608,46 @@ webpackJsonp([2],[
 	    CreateSubCategoryComponent.prototype.ngOnInit = function () {
 	    };
 	    CreateSubCategoryComponent.prototype.addKnowledge = function (knowledge) {
+	        var _this = this;
 	        this._knowledgeService.addKnowledge(knowledge).subscribe(function (knowledge) {
-	            console.log('success');
-	        }, function (error) {
-	            console.log(error.text());
+	            _this.subCategoryForm.controls["name"].updateValue("");
+	            _this.subCategoryForm.controls["description"].updateValue("");
+	            for (var i = 0; i < _this.knowledges.length; i++) {
+	                if (knowledge.parent == _this.knowledges[i].data._id) {
+	                    _this.knowledges[i].children.push(knowledge);
+	                }
+	            }
+	            _this.knowledge.emit(knowledge);
 	        });
-	        window.location.reload();
 	    };
 	    __decorate([
 	        core_1.Input('kId'), 
 	        __metadata('design:type', String)
 	    ], CreateSubCategoryComponent.prototype, "kId", void 0);
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Array)
+	    ], CreateSubCategoryComponent.prototype, "knowledges", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', (typeof (_a = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _a) || Object)
+	    ], CreateSubCategoryComponent.prototype, "knowledge", void 0);
 	    CreateSubCategoryComponent = __decorate([
 	        core_1.Component({
 	            selector: 'sub-create',
 	            templateUrl: 'client/dev/app/components/back-end/knowledge/templates/sub-knowledge-create.html',
-	            directives: [common_1.FORM_DIRECTIVES]
+	            directives: [common_1.FORM_DIRECTIVES, primeng_1.Dialog, private_chat_1.PrivateChatComponent]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _b) || Object])
+	        __metadata('design:paramtypes', [(typeof (_b = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _b) || Object, (typeof (_c = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _c) || Object])
 	    ], CreateSubCategoryComponent);
 	    return CreateSubCategoryComponent;
-	    var _a, _b;
+	    var _a, _b, _c;
 	}());
 	exports.CreateSubCategoryComponent = CreateSubCategoryComponent;
 	
 
 /***/ },
-/* 621 */
+/* 667 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6640,68 +10660,66 @@ webpackJsonp([2],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var __param = (this && this.__param) || function (paramIndex, decorator) {
-	    return function (target, key) { decorator(target, key, paramIndex); }
-	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(19);
-	var router_1 = __webpack_require__(7);
-	// UI
-	var primeng_1 = __webpack_require__(501);
-	var users_1 = __webpack_require__(67);
-	var CreateUserComponent = (function () {
-	    function CreateUserComponent(fb, _userService, router) {
-	        this._userService = _userService;
+	var router_1 = __webpack_require__(4);
+	var common_1 = __webpack_require__(6);
+	var report_1 = __webpack_require__(193);
+	var chat_1 = __webpack_require__(129);
+	var notification_1 = __webpack_require__(57);
+	var filter_1 = __webpack_require__(292);
+	var MessageComponent = (function () {
+	    function MessageComponent(fb, _reportService, router, _chatService, _noti) {
+	        this._reportService = _reportService;
 	        this.router = router;
-	        this.display = false;
-	        this.pageHeader = "Create User";
-	        this.users = [];
-	        this.userForm = fb.group({
-	            firstName: [""],
-	            lastName: [""],
-	            displayName: [""],
-	            birthday: [""],
-	            username: ["", common_1.Validators.required],
-	            password: ["", common_1.Validators.required],
-	            email: ["", common_1.Validators.required],
-	            role: ["", common_1.Validators.required],
-	            ownKnowledgeId: [""],
-	            interestedKnowledgeId: [""],
-	            onlineTime: [""]
-	        });
+	        this._chatService = _chatService;
+	        this._noti = _noti;
+	        this.pageTitle = 'Report List';
+	        this.filter = '';
+	        this.roleToken = localStorage.getItem('role');
+	        this.userToken = localStorage.getItem('username');
+	        this.socket = io('https://localhost:80');
 	    }
-	    CreateUserComponent.prototype.addUser = function (user) {
-	        this._userService
-	            .addUser(user)
-	            .subscribe(function (response) {
-	            window.location.reload();
-	        }, function (error) {
-	            console.log(error.text());
-	        });
+	    MessageComponent.prototype.ngOnInit = function () {
+	        console.log(this.receiver);
 	    };
-	    CreateUserComponent = __decorate([
+	    MessageComponent.prototype.closeModal = function () {
+	        $('#messageModal').closeModal();
+	    };
+	    MessageComponent.prototype.sendMessage = function () {
+	        console.log(this.receiver);
+	        var data = {
+	            sender: this.userToken,
+	            message: this.mess,
+	            receiver: this.receiver
+	        };
+	        this._noti.alertNotification('Bạn có tin nhắn mới', this.receiver, '');
+	        this.socket.emit('private-message', data);
+	        this.socket.emit('reset-new-message', data);
+	        this.mess = "";
+	        $('#messageModal').closeModal();
+	    };
+	    __decorate([
+	        core_1.Input('receiver'), 
+	        __metadata('design:type', String)
+	    ], MessageComponent.prototype, "receiver", void 0);
+	    MessageComponent = __decorate([
 	        core_1.Component({
-	            selector: 'user-create',
-	            templateUrl: 'client/dev/app/components/back-end/users/templates/user-create.html',
-	            styleUrls: ['client/dev/asserts/css/backend-styles.css'],
-	            directives: [
-	                common_1.FORM_DIRECTIVES,
-	                primeng_1.Dialog,
-	                primeng_1.Calendar
-	            ],
-	        }),
-	        __param(0, core_1.Inject(common_1.FormBuilder)),
-	        __param(1, core_1.Inject(users_1.UserService)), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
-	    ], CreateUserComponent);
-	    return CreateUserComponent;
-	    var _a, _b, _c;
+	            selector: 'message',
+	            templateUrl: 'client/dev/app/components/back-end/report/templates/message.html',
+	            directives: [router_1.ROUTER_DIRECTIVES, common_1.FORM_DIRECTIVES],
+	            providers: [report_1.ReportService],
+	            pipes: [filter_1.StringFilterPipe]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof report_1.ReportService !== 'undefined' && report_1.ReportService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _d) || Object, (typeof (_e = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _e) || Object])
+	    ], MessageComponent);
+	    return MessageComponent;
+	    var _a, _b, _c, _d, _e;
 	}());
-	exports.CreateUserComponent = CreateUserComponent;
+	exports.MessageComponent = MessageComponent;
 	
 
 /***/ },
-/* 622 */
+/* 668 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6715,192 +10733,470 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var brushColor = $('#color-picker').val();
-	var ChalkBoardComponent = (function () {
-	    function ChalkBoardComponent() {
-	        this.colors = [
-	            { label: '#ffffff', value: '#ffffff' },
-	            { label: '#de3535', value: '#DE3535' },
-	            { label: '#03a9f4', value: '#03a9f4' }
-	        ];
-	        this.brushSizes = [
-	            { label: '1', value: '1' },
-	            { label: '2', value: '3' },
-	            { label: '3', value: '5' },
-	            { label: '4', value: '10' },
-	            { label: '5', value: '20' },
-	            { label: '6', value: '30' },
-	            { label: '7', value: '50' }
-	        ];
+	var core_2 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var SidebarComponent = (function () {
+	    function SidebarComponent() {
 	    }
-	    ChalkBoardComponent.prototype.ngOnInit = function () {
-	        var sessionId;
-	        var drawing = false;
-	        var mode = 'draw';
-	        var path;
-	        var streamPath;
-	        var strokeColor = 'white';
-	        var strokeWidth = 1;
-	        var colorStore;
-	        var room = this.id;
-	        var socket = io('http://localhost:3333');
-	        socket.emit('subscribe', room);
-	        var chalkboard = document.getElementById('chalkboard');
-	        // Initiate the paper at canvas id="chalkboard"
-	        paper.setup(chalkboard);
-	        //initiate setting
-	        var drawToolShow = false;
-	        $('#draw-tools').hide();
-	        //show draw-tools
-	        $('#draw-option').click(function () {
-	            if (!drawToolShow) {
-	                $('#draw-tools').show();
-	                drawToolShow = true;
-	            }
-	            else {
-	                $('#draw-tools').hide();
-	                drawToolShow = false;
-	            }
-	        });
-	        $('#color-picker').change(function () {
-	            if ($('#color-picker').val() !== 'white') {
-	                $('#color-picker').css('color', 'white');
-	            }
-	            if ($('#color-picker').val()) {
-	                $('#color-picker').css('background-color', $('#color-picker').val());
-	                strokeColor = $('#color-picker').val();
-	            }
-	        });
-	        $('#brush-size').change(function () {
-	            if ($('#brush-size').val()) {
-	                strokeWidth = $('#brush-size').val();
-	            }
-	        });
-	        $('#eraser').click(function () {
-	            strokeColor = '#000000';
-	        });
-	        /**
-	         * Catch event when mouse down, create new path, emit start point
-	         */
-	        $('#chalkboard').mousedown(function (event) {
-	            drawing = true;
-	            path = new paper.Path();
-	            path.strokeColor = strokeColor;
-	            path.strokeWidth = strokeWidth;
-	            var x = event.pageX - 0.1879935275 * $(window).width();
-	            var y = event.pageY - 0.036667 * $(window).height();
-	            path.add(new paper.Point(x, y));
-	            emitStartPoint(x, y, strokeColor, strokeWidth);
-	        });
-	        /**
-	         * Catch event when mouse move and drawing token is true
-	         * Then call function draw (x,y) Emit the points of the path to server
-	         */
-	        $('#chalkboard').mousemove(function (event) {
-	            if (drawing) {
-	                var x = event.pageX - 0.1879935275 * $(window).width();
-	                var y = event.pageY - 0.036667 * $(window).height();
-	                draw(x, y);
-	                emitPathPoint(x, y);
-	            }
-	        });
-	        /**
-	         * When mouse up, set drawing is false, finish the path
-	         */
-	        $('#chalkboard').mouseup(function (event) {
-	            drawing = false;
-	        });
-	        /**
-	         * function draw(x, y)
-	         * Add point(x,y) to the path
-	         */
-	        function draw(x, y) {
-	            path.add(new paper.Point(x, y));
-	            path.smooth();
-	            paper.view.draw();
+	    __decorate([
+	        core_2.Input(), 
+	        __metadata('design:type', String)
+	    ], SidebarComponent.prototype, "pageTitle", void 0);
+	    SidebarComponent = __decorate([
+	        core_1.Component({
+	            selector: 'sidebar',
+	            templateUrl: 'client/dev/app/components/back-end/shared/templates/side-bar.html',
+	            styleUrls: ['client/dev/asserts/css/admin.css'],
+	            directives: [router_1.ROUTER_DIRECTIVES]
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], SidebarComponent);
+	    return SidebarComponent;
+	}());
+	exports.SidebarComponent = SidebarComponent;
+	
+
+/***/ },
+/* 669 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 8/15/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var article_1 = __webpack_require__(41);
+	var info_hover_1 = __webpack_require__(53);
+	var commentComponent = (function () {
+	    function commentComponent(router, route, _artService) {
+	        this.router = router;
+	        this.route = route;
+	        this._artService = _artService;
+	        this.sendDataToP = new core_1.EventEmitter();
+	        this.textEdit = "";
+	        this.isEditing = false;
+	        this.liked = false;
+	        this.roleToken = localStorage.getItem('userrole');
+	        this.userToken = localStorage.getItem('username');
+	    }
+	    commentComponent.prototype.ngOnInit = function () {
+	        this.textEdit = this.comment.content;
+	        var i = this.comment.userLiked.indexOf(this.userToken);
+	        console.log(this.roleToken);
+	        console.log(this.userToken);
+	        if (i >= 0) {
+	            this.liked = true;
 	        }
-	        /**
-	         * function streamStartPath(x,y)
-	         * When receive the start point from server, create the stream path
-	         */
-	        function streamStartPath(x, y, color, width) {
-	            streamPath = new paper.Path();
-	            streamPath.strokeColor = color;
-	            streamPath.strokeWidth = width;
-	            streamPath.add(new paper.Point(x, y));
-	            streamPath.smooth();
+	    };
+	    commentComponent.prototype.deleteCmt = function (idCmt) {
+	        this.sendDataToP.emit([this.comment._id, "delete"]);
+	    };
+	    commentComponent.prototype.editCmt = function () {
+	        if (this.textEdit.length != 0) {
+	            this.sendDataToP.emit([this.comment._id, "edit", this.textEdit]);
+	            this.isEditing = false;
 	        }
-	        /**
-	         * function streamDraw(x,y)
-	         * Add point(x,y) to the stream path
-	         */
-	        function streamDraw(x, y) {
-	            streamPath.add(new paper.Point(x, y));
-	            paper.view.draw();
-	        }
-	        /**
-	         * function emitStartPoint(x,y)
-	         * Send the start point (x,y) to the server
-	         */
-	        function emitStartPoint(x, y, color, width) {
-	            var data = {
-	                x: x,
-	                y: y,
-	                color: color,
-	                width: width,
-	                room: room
-	            };
-	            socket.emit('startPoint', data);
-	        }
-	        /**
-	        * function emitPathPoint(x,y)
-	        * Send the path's point (x,y) to the server
-	        */
-	        function emitPathPoint(x, y) {
-	            var data = {
-	                x: x,
-	                y: y,
-	                room: room
-	            };
-	            socket.emit('pathpoint', data);
-	        }
-	        /**
-	         * When socket receive startPoint, call function streamStartPath(x,y)
-	         */
-	        socket.on('startPoint', function (data) {
-	            streamStartPath(data.x, data.y, data.color, data.width);
-	        });
-	        /**
-	         * When socket receive pathpoint, call function streamDraw(x,y)
-	         */
-	        socket.on('pathpoint', function (data) {
-	            streamDraw(data.x, data.y);
-	        });
+	    };
+	    commentComponent.prototype.likeCmt = function () {
+	        this.sendDataToP.emit([this.comment._id, "like"]);
+	        this.liked = true;
+	    };
+	    commentComponent.prototype.unlikeCmt = function () {
+	        this.sendDataToP.emit([this.comment._id, "unlike"]);
+	        this.liked = false;
+	    };
+	    commentComponent.prototype.openEditCmt = function () {
+	        this.isEditing = true;
 	    };
 	    __decorate([
 	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], commentComponent.prototype, "comment", void 0);
+	    __decorate([
+	        core_1.Input(), 
 	        __metadata('design:type', String)
-	    ], ChalkBoardComponent.prototype, "id", void 0);
-	    ChalkBoardComponent = __decorate([
+	    ], commentComponent.prototype, "author", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', (typeof (_a = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _a) || Object)
+	    ], commentComponent.prototype, "sendDataToP", void 0);
+	    commentComponent = __decorate([
 	        core_1.Component({
-	            selector: 'chalkboard',
-	            template: "\n        <button id=\"draw-option\"><i class=\"fa fa-bars fa-2x\" aria-hidden=\"true\"></i></button>\n        <canvas id=\"chalkboard\" resize=true keepalive=true></canvas>\n        <div id=\"draw-tools\">\n            <select id=\"color-picker\" class=\"tool-btn\">\n                <option *ngFor=\"let color of colors\" value=\"{{color.value}}\">{{color.label}}</option>\n            </select>\n            <hr>\n            <select id=\"brush-size\" class=\"tool-btn\">\n                <option *ngFor=\"let size of brushSizes\" value=\"{{size.value}}\">{{size.label}}</option>\n            </select>\n            <hr>\n            <p id=\"eraser\">\n                <i class=\"fa fa-eraser fa-2x\" aria-hidden=\"true\"></i>\n            </p>\n        </div>\n    ",
-	            styleUrls: ["client/dev/app/components/front-end/kspace/styles/chalkboard.css"]
+	            selector: 'comment',
+	            templateUrl: 'client/dev/app/components/front-end/article/templates/comment.html',
+	            styleUrls: ['client/dev/app/components/front-end/article/styles/comment.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES, info_hover_1.infoHover
+	            ],
+	            providers: [article_1.ArticleService]
 	        }), 
-	        __metadata('design:paramtypes', [])
-	    ], ChalkBoardComponent);
-	    return ChalkBoardComponent;
+	        __metadata('design:paramtypes', [(typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object, (typeof (_d = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _d) || Object])
+	    ], commentComponent);
+	    return commentComponent;
+	    var _a, _b, _c, _d;
 	}());
-	exports.ChalkBoardComponent = ChalkBoardComponent;
+	exports.commentComponent = commentComponent;
 	
 
 /***/ },
-/* 623 */
+/* 670 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 7/26/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var article_1 = __webpack_require__(41);
+	var tag_1 = __webpack_require__(66);
+	var primeng_1 = __webpack_require__(31);
+	var private_chat_1 = __webpack_require__(11);
+	var CKEditor = (function () {
+	    function CKEditor(_elm, _articleService, router, route) {
+	        var _this = this;
+	        this._articleService = _articleService;
+	        this.router = router;
+	        this.route = route;
+	        CKEDITOR.replace(_elm.nativeElement);
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	        });
+	    }
+	    CKEditor.prototype.ngOnInit = function () {
+	        this.getDataArt();
+	    };
+	    CKEditor.prototype.getDataArt = function () {
+	        var _this = this;
+	        this._articleService.getArtById(this.id).subscribe(function (art) {
+	            _this.art = art;
+	            CKEDITOR.instances.editor1.setData(_this.art.content + '');
+	        });
+	    };
+	    CKEditor = __decorate([
+	        core_1.Component({
+	            selector: 'ck-editor',
+	            template: ""
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof core_1.ElementRef !== 'undefined' && core_1.ElementRef) === 'function' && _a) || Object, (typeof (_b = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
+	    ], CKEditor);
+	    return CKEditor;
+	    var _a, _b, _c, _d;
+	}());
+	var EditArticleComponent = (function () {
+	    function EditArticleComponent(_articleService, _tagService, router, route) {
+	        var _this = this;
+	        this._articleService = _articleService;
+	        this._tagService = _tagService;
+	        this.router = router;
+	        this.route = route;
+	        this.isEdited = true;
+	        this.stt = "public";
+	        this.filesToUpload = [];
+	        this.tags = [];
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.id = params['id'];
+	        });
+	        this.roleToken = localStorage.getItem('userrole');
+	        this.userToken = localStorage.getItem('username');
+	    }
+	    EditArticleComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._articleService.getArtById(this.id).subscribe(function (art) {
+	            if (art.author != _this.userToken && (_this.roleToken != "admin" || _this.roleToken != 'mod')) {
+	                _this.isEdited = false;
+	            }
+	            else {
+	                _this.art = art;
+	                _this.stt = art.status;
+	                _this.titelArticle = art.title;
+	                for (var _i = 0, _a = _this.art.tagsFD; _i < _a.length; _i++) {
+	                    var e = _a[_i];
+	                    _this.tags.push(e.name);
+	                }
+	                _this.CreateUploadImageCkeditor();
+	                _this.CreateYoutubeBtnCkeditor();
+	                _this.addCommandBtnCk();
+	                _this.loadAllTags();
+	                $('#preLoad').hide();
+	                $('.collapsible').collapsible({});
+	            }
+	        }, function (error) {
+	            if (error.status == 400) {
+	                window.location.href = "/error";
+	            }
+	        });
+	    };
+	    EditArticleComponent.prototype.ngAfterViewChecked = function () {
+	    };
+	    EditArticleComponent.prototype.filterONTag = function () {
+	        var oldTag = [];
+	        if (this.tags.length > 0) {
+	            for (var _i = 0, _a = this.tagsEx; _i < _a.length; _i++) {
+	                var e = _a[_i];
+	                for (var _b = 0, _c = this.tags; _b < _c.length; _b++) {
+	                    var e1 = _c[_b];
+	                    if (e.name == e1) {
+	                        oldTag.push(e._id);
+	                        var index = this.tags.indexOf(e1);
+	                        if (index > -1) {
+	                            this.tags.splice(index, 1);
+	                        }
+	                    }
+	                }
+	            }
+	        }
+	        return [oldTag, this.tags];
+	    };
+	    EditArticleComponent.prototype.filterKnw = function (event) {
+	        var query = event.query;
+	        this.filteredKnw = [];
+	        for (var i = 0; i < this.tagsEx.length; i++) {
+	            if (this.tagsEx[i].name.toLowerCase().includes(query.toLowerCase())) {
+	                this.filteredKnw.push(this.tagsEx[i].name);
+	            }
+	            if (this.filteredKnw.indexOf(query.trim()) < 0) {
+	                this.filteredKnw.unshift(query.trim());
+	            }
+	        }
+	    };
+	    //load all knowledge
+	    EditArticleComponent.prototype.loadAllTags = function () {
+	        var _this = this;
+	        this._tagService.getAllTag().subscribe(function (tags) {
+	            _this.tagsEx = tags;
+	            console.log(_this.tagsEx);
+	        });
+	    };
+	    // ckeditor
+	    EditArticleComponent.prototype.insertLinkToBox = function (link) {
+	        CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" height="536" width="858" /></p>');
+	    };
+	    EditArticleComponent.prototype.insertYoutubeToBox = function (link) {
+	        //https://www.youtube.com/watch?v=mraul5-1TBE
+	        var i = link.indexOf("=");
+	        link = link.substring(i + 1, link.length);
+	        var s = '<p><iframe frameborder="0" height="315" scrolling="no" src="https://www.youtube.com/embed/' + link + '" width="500"></iframe></p>';
+	        CKEDITOR.instances.editor1.insertHtml(s);
+	    };
+	    EditArticleComponent.prototype.addCommandBtnCk = function () {
+	        CKEDITOR.instances.editor1.addCommand('uploadImage', { exec: this.openModalImg });
+	        CKEDITOR.instances.editor1.addCommand('youtube', { exec: this.openModalYoutube });
+	    };
+	    EditArticleComponent.prototype.CreateUploadImageCkeditor = function () {
+	        CKEDITOR.instances.editor1.ui.addButton('uploadImage', {
+	            label: 'Upload Image',
+	            command: 'uploadImage',
+	            icon: '/client/dev/asserts/images/icon-img-ck.png'
+	        });
+	    };
+	    EditArticleComponent.prototype.CreateYoutubeBtnCkeditor = function () {
+	        CKEDITOR.instances.editor1.ui.addButton('youtube', {
+	            label: 'Add youtube',
+	            command: 'youtube',
+	            icon: '/client/dev/asserts/images/icon-youtube.png'
+	        });
+	    };
+	    EditArticleComponent.prototype.makeFileRequest = function (url, params, files) {
+	        return new Promise(function (resolve, reject) {
+	            var formData = new FormData();
+	            var xhr = new XMLHttpRequest();
+	            for (var i = 0; i < files.length; i++) {
+	                formData.append("uploads[]", files[i], files[i].name);
+	            }
+	            xhr.onreadystatechange = function () {
+	                if (xhr.readyState == 4) {
+	                    if (xhr.status == 200) {
+	                        resolve(JSON.parse(xhr.response));
+	                    }
+	                    else {
+	                        reject(xhr.response);
+	                    }
+	                }
+	            };
+	            xhr.open("POST", url, true);
+	            xhr.send(formData);
+	        });
+	    };
+	    // uploading image
+	    EditArticleComponent.prototype.uploadImageCk = function () {
+	        if (this.filesToUpload) {
+	            this.makeFileRequest("/api/media", [], this.filesToUpload).then(function (result) {
+	                var link = '/uploads/' + result[0].filename;
+	                CKEDITOR.instances.editor1.insertHtml('<p><img alt="" src="' + link + '" style="height:536px; width:858px" /></p>');
+	            }, function (error) {
+	                console.error(error);
+	            });
+	        }
+	    };
+	    //action button upload
+	    EditArticleComponent.prototype.fileChangeEvent = function (fileInput) {
+	        this.filesToUpload = fileInput.target.files;
+	    };
+	    EditArticleComponent.prototype.openModalImg = function () {
+	        $('#ModalUploadImgCkeditor').openModal();
+	    };
+	    EditArticleComponent.prototype.openModalYoutube = function () {
+	        $('#ModalYTCkeditor').openModal();
+	    };
+	    EditArticleComponent.prototype.editArticle = function () {
+	        var _this = this;
+	        this.art.content = CKEDITOR.instances.editor1.getData();
+	        var tags = [];
+	        tags = this.filterONTag();
+	        this.art.tags = tags[0];
+	        this.art.title = this.titelArticle;
+	        this.art.status = this.stt;
+	        if (this.titelArticle.length < 5 || this.titelArticle.length > 220) {
+	            Materialize.toast('Tiêu đề quá ngắn hoặc quá dài', 4000);
+	        }
+	        else if (this.art.content.length < 50) {
+	            Materialize.toast('Nội dung phải trên 50 ký tự', 4000);
+	        }
+	        else {
+	            $('#preLoad').show();
+	            this._articleService.updateArtById(this.art, tags[1], this.art._id).subscribe(function (article) {
+	                Materialize.toast('Đã sửa xong', 4000);
+	                _this.router.navigateByUrl('/article/' + article._id);
+	            }, function (error) {
+	                $('#preLoad').hide();
+	                if (error._body.includes('arrDe')) {
+	                    var arrayTags = error._body.replace("arrDe", "").replace(":", "").replace("}", "").replace("{", "").replace("]", "").replace("[", "").replace('"', '').replace('""', '').split(',');
+	                    var s = "";
+	                    for (var _i = 0, arrayTags_1 = arrayTags; _i < arrayTags_1.length; _i++) {
+	                        var e = arrayTags_1[_i];
+	                        s += e;
+	                    }
+	                    Materialize.toast('Từ khoá ' + s + ' đã bị đóng', 10000);
+	                }
+	            });
+	        }
+	    };
+	    EditArticleComponent = __decorate([
+	        core_1.Component({
+	            selector: 'create-article',
+	            templateUrl: 'client/dev/app/components/front-end/article/templates/edit-article.html',
+	            styleUrls: ['client/dev/app/components/front-end/article/styles/article.css'],
+	            directives: [CKEditor, primeng_1.AutoComplete, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
+	            providers: [article_1.ArticleService, tag_1.TagService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _a) || Object, (typeof (_b = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
+	    ], EditArticleComponent);
+	    return EditArticleComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.EditArticleComponent = EditArticleComponent;
+	
+
+/***/ },
+/* 671 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 5/18/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var private_chat_1 = __webpack_require__(11);
+	var HomeComponent = (function () {
+	    function HomeComponent() {
+	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
+	    }
+	    HomeComponent.prototype.ngOinit = function () {
+	    };
+	    HomeComponent = __decorate([
+	        core_1.Component({
+	            selector: 'home',
+	            templateUrl: 'client/dev/app/components/front-end/home/templates/home.html',
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES,
+	                private_chat_1.PrivateChatComponent
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], HomeComponent);
+	    return HomeComponent;
+	}());
+	exports.HomeComponent = HomeComponent;
+	
+
+/***/ },
+/* 672 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var create_kspace_1 = __webpack_require__(293);
+	var join_room_1 = __webpack_require__(439);
+	var public_room_1 = __webpack_require__(444);
+	var PublicKspace = (function () {
+	    function PublicKspace() {
+	    }
+	    PublicKspace = __decorate([
+	        core_1.Component({
+	            selector: 'public-kspace',
+	            template: '<router-outlet></router-outlet>',
+	            precompile: [
+	                create_kspace_1.CreatePublicKspace,
+	                join_room_1.JoinPublicKspace,
+	                public_room_1.PublicKspaceComponent
+	            ],
+	            directives: [router_1.ROUTER_DIRECTIVES]
+	        }), 
+	        __metadata('design:paramtypes', [])
+	    ], PublicKspace);
+	    return PublicKspace;
+	}());
+	exports.PublicKspace = PublicKspace;
+	
+
+/***/ },
+/* 673 */
 /***/ function(module, exports) {
 
-	/**
-	 * Created by GiangDH on 7/12/16.
-	 */
 	"use strict";
 	var WebRCTService = (function () {
 	    function WebRCTService() {
@@ -6908,42 +11204,54 @@ webpackJsonp([2],[
 	    WebRCTService.prototype.rtcSetting = function (webrtc, room, lecturer) {
 	        // If there is a peer join room, add Remote Video
 	        webrtc.on('videoAdded', function (video, peer) {
-	            // if(lecturer === peer.nick){
-	            console.log('video added', peer);
-	            var remotes = document.getElementById('remoteVideos');
-	            if (remotes) {
-	                var container = document.createElement('div');
-	                container.className = 'videoContainer';
-	                container.id = 'container_' + webrtc.getDomId(peer);
-	                container.appendChild(video);
-	                // suppress contextmenu
-	                video.oncontextmenu = function () { return false; };
-	                remotes.appendChild(container);
-	                var kspacePanel = $('#kspace-panel');
-	                var v = webrtc.getDomId(peer);
-	                var vid = document.getElementById(v);
-	                vid.setAttribute("control", "");
-	                $('#' + v).click(function () {
-	                    var chalkboard = document.getElementById('chalkboard');
-	                    var ctx = chalkboard.getContext('2d');
-	                    ctx.drawImage(vid, 5, 5, chalkboard.clientWidth, chalkboard.clientHeight);
-	                });
+	            if (lecturer === peer.nick) {
+	                var remotes = document.getElementById('remoteVideos');
+	                var kspace = document.getElementById('kspace');
+	                var peerId = webrtc.getDomId(peer);
+	                if (peerId.indexOf('video') !== -1) {
+	                    var container = document.createElement('div');
+	                    container.className = 'videoContainer';
+	                    container.id = 'container_' + peerId;
+	                    container.appendChild(video);
+	                    // suppress contextmenu
+	                    video.oncontextmenu = function () {
+	                        return false;
+	                    };
+	                    remotes.appendChild(container);
+	                }
+	                else if (peerId.indexOf('screen') !== -1) {
+	                    $('#kspace-container').hide();
+	                    var container = document.createElement('div');
+	                    container.className = 'videoContainer';
+	                    container.id = 'container_' + peerId;
+	                    container.appendChild(video);
+	                    container.style.width = kspace.clientWidth + 'px';
+	                    container.style.height = kspace.clientHeight + 'px';
+	                    // suppress contextmenu
+	                    video.oncontextmenu = function () {
+	                        return false;
+	                    };
+	                    kspace.appendChild(container);
+	                }
 	            }
-	            // }
 	        });
 	        // a peer video was removed
 	        webrtc.on('videoRemoved', function (video, peer) {
-	            console.log('video removed ', peer);
 	            $('#kspace-panel').find('video').remove();
 	            var remotes = document.getElementById('remoteVideos');
+	            var kspace = document.getElementById('kspace');
 	            var el = document.getElementById(peer ? 'container_' + webrtc.getDomId(peer) : 'localScreenContainer');
-	            if (remotes && el) {
+	            var peerId = webrtc.getDomId(peer);
+	            if ((peerId.indexOf('video') !== -1) && remotes.childNodes.length > 0) {
 	                remotes.removeChild(el);
+	            }
+	            else if ((peerId.indexOf('screen') !== -1) && kspace.childNodes.length > 0) {
+	                kspace.removeChild(el);
+	                $('#kspace-container').show();
 	            }
 	        });
 	        webrtc.on('readyToCall', function () {
 	            if (room) {
-	                console.log("Join " + room + " success!");
 	                webrtc.joinRoom(room);
 	            }
 	        });
@@ -6965,7 +11273,268 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 624 */
+/* 674 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 5/18/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var requests_1 = __webpack_require__(58);
+	var users_1 = __webpack_require__(26);
+	var article_1 = __webpack_require__(41);
+	var private_chat_1 = __webpack_require__(11);
+	var tag_1 = __webpack_require__(75);
+	var topArticle_1 = __webpack_require__(128);
+	var info_hover_1 = __webpack_require__(53);
+	var NewsFeedComponent = (function () {
+	    function NewsFeedComponent(_userService, _requestService, _articleService, router) {
+	        this._userService = _userService;
+	        this._requestService = _requestService;
+	        this._articleService = _articleService;
+	        this.router = router;
+	        this.pageTitle = 'Welcome to Knowledge Sharing Network';
+	        this.height = 400;
+	        this.roleToken = localStorage.getItem('role');
+	        this.userToken = localStorage.getItem('username');
+	    }
+	    NewsFeedComponent.prototype.ngOnInit = function () {
+	        this.countA1 = 5;
+	        this.countR1 = 5;
+	        this.countA2 = 5;
+	        this.countR2 = 5;
+	        this.records = [];
+	        if (this.userToken === null) {
+	            this.getArts();
+	        }
+	        else {
+	            this.getRequests();
+	            this.getArticles();
+	        }
+	        $('.carousel.carousel-slider').carousel({ full_width: true });
+	    };
+	    NewsFeedComponent.prototype.seeMore = function () {
+	        this.countR1 = this.countR1 + 5;
+	        this.countA1 = this.countA1 + 5;
+	        if (this.userToken === null) {
+	            this.getArts();
+	        }
+	        else {
+	            this.getRequests();
+	            this.getArticles();
+	        }
+	    };
+	    NewsFeedComponent.prototype.getArts = function () {
+	        var _this = this;
+	        this._articleService.getAllArts(this.countA1).subscribe(function (arts) {
+	            console.log(arts);
+	            for (var _i = 0, arts_1 = arts; _i < arts_1.length; _i++) {
+	                var a = arts_1[_i];
+	                _this.records.push(a);
+	            }
+	            _this.getReqs();
+	        });
+	    };
+	    NewsFeedComponent.prototype.getReqs = function () {
+	        var _this = this;
+	        this._requestService.getAllRequests(this.countR1).subscribe(function (reqs) {
+	            for (var _i = 0, reqs_1 = reqs; _i < reqs_1.length; _i++) {
+	                var r = reqs_1[_i];
+	                _this.records.push(r);
+	            }
+	        });
+	    };
+	    NewsFeedComponent.prototype.getRequests = function () {
+	        var _this = this;
+	        this._userService.getUserByUserName(this.userToken).subscribe(function (user) {
+	            //get onwknowledgeId of user
+	            _this._requestService.getRequestByUserTags(user.ownKnowledgeIds, _this.countR1).subscribe(function (requests) {
+	                //if there is no request which has tagid same as onwknowledgeId
+	                if (requests.length === 0 || user.ownKnowledgeIds.length === 0) {
+	                    _this._requestService.getRequestExceptUserTags(user.ownKnowledgeIds, _this.countR2).subscribe(function (requests) {
+	                        if (requests.length <= 0) {
+	                        }
+	                        else {
+	                            for (var i = 0; i < requests.length; i++) {
+	                                //get summary
+	                                var html = requests[i].description;
+	                                var div = document.createElement("div");
+	                                div.innerHTML = html;
+	                                var text = div.textContent || div.innerText || "";
+	                                requests[i].description = text;
+	                                // push each records to records array
+	                                _this.records.push(requests[i]);
+	                            }
+	                            _this.countR2 = _this.countR2 + 5;
+	                        }
+	                    });
+	                }
+	                else {
+	                    for (var i = 0; i < requests.length; i++) {
+	                        //get summary
+	                        var html = requests[i].description;
+	                        var div = document.createElement("div");
+	                        div.innerHTML = html;
+	                        var text = div.textContent || div.innerText || "";
+	                        requests[i].description = text;
+	                        // push each records to records array
+	                        _this.records.push(requests[i]);
+	                    }
+	                }
+	            });
+	        });
+	    };
+	    NewsFeedComponent.prototype.getArticles = function () {
+	        var _this = this;
+	        this._userService.getUserByUserName(this.userToken).subscribe(function (user) {
+	            //get onwknowledgeId of user
+	            _this._articleService.getArticlesByUserTags(user.ownKnowledgeIds, _this.countA1).subscribe(function (articles) {
+	                //if there is no articles which has tagid same as onwknowledgeId
+	                if (articles.length === 0 || user.ownKnowledgeIds.length === 0) {
+	                    _this._articleService.getArticleExceptUserTags(user.ownKnowledgeIds, _this.countA2).subscribe(function (articles) {
+	                        if (articles.length <= 0) {
+	                        }
+	                        else {
+	                            for (var i = 0; i < articles.length; i++) {
+	                                //get summary
+	                                var html = articles[i].content;
+	                                var div = document.createElement("div");
+	                                div.innerHTML = html;
+	                                var text = div.textContent || div.innerText || "";
+	                                articles[i].content = text;
+	                                // push each records to records array
+	                                _this.records.push(articles[i]);
+	                            }
+	                            _this.countA2 = _this.countA2 + 5;
+	                        }
+	                    });
+	                }
+	                else {
+	                    for (var i = 0; i < articles.length; i++) {
+	                        //get summary
+	                        var html = articles[i].content;
+	                        var div = document.createElement("div");
+	                        div.innerHTML = html;
+	                        var text = div.textContent || div.innerText || "";
+	                        articles[i].content = text;
+	                        // push each records to records array
+	                        _this.records.push(articles[i]);
+	                    }
+	                }
+	            });
+	        });
+	    };
+	    NewsFeedComponent = __decorate([
+	        core_1.Component({
+	            selector: 'news-feed',
+	            templateUrl: 'client/dev/app/components/front-end/newsfeed/templates/newsfeed.html',
+	            styleUrls: ['client/dev/app/components/front-end/newsfeed/styles/newsfeed.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES,
+	                private_chat_1.PrivateChatComponent,
+	                tag_1.listTagComponent,
+	                topArticle_1.topArticlesComponent,
+	                info_hover_1.infoHover
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object, (typeof (_b = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _b) || Object, (typeof (_c = typeof article_1.ArticleService !== 'undefined' && article_1.ArticleService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _d) || Object])
+	    ], NewsFeedComponent);
+	    return NewsFeedComponent;
+	    var _a, _b, _c, _d;
+	}());
+	exports.NewsFeedComponent = NewsFeedComponent;
+	
+
+/***/ },
+/* 675 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	var core_1 = __webpack_require__(1);
+	var common_1 = __webpack_require__(6);
+	var request_offer_1 = __webpack_require__(298);
+	var auth_1 = __webpack_require__(45);
+	var requests_1 = __webpack_require__(58);
+	var notification_1 = __webpack_require__(57);
+	var private_chat_1 = __webpack_require__(11);
+	var CreateOfferComponent = (function () {
+	    function CreateOfferComponent(fb, _offerService, _authService, _noti, _requestService) {
+	        this._offerService = _offerService;
+	        this._authService = _authService;
+	        this._noti = _noti;
+	        this._requestService = _requestService;
+	        this.sendDataToP = new core_1.EventEmitter();
+	        this.user = localStorage.getItem('username');
+	        this.offerForm = fb.group({
+	            "requestId": [""],
+	            "message": [""],
+	            "user": [""]
+	        });
+	    }
+	    CreateOfferComponent.prototype.addOffer = function (offer) {
+	        var _this = this;
+	        this._offerService.addOffer(offer).subscribe(function (offer) {
+	            console.log('success');
+	            _this._requestService.getRequestById(offer.requestId).subscribe(function (request) {
+	                //call function using socket io to send notification realtime
+	                var title = _this.user + ' đã gửi một offer';
+	                var link = '/requests/' + request._id + '/info';
+	                _this._noti.alertNotification(title, request.user, link);
+	                //save notification to database
+	                _this._noti.createNotification(title, request.user, link).subscribe(function (notification) {
+	                    console.log(notification);
+	                    _this.sendDataToP.emit('new-offer');
+	                    $('#modalOfferRequest').closeModal();
+	                });
+	            });
+	        }, function (error) {
+	            console.log(error.text());
+	        });
+	    };
+	    __decorate([
+	        core_1.Input('rid'), 
+	        __metadata('design:type', String)
+	    ], CreateOfferComponent.prototype, "rid", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', (typeof (_a = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _a) || Object)
+	    ], CreateOfferComponent.prototype, "sendDataToP", void 0);
+	    CreateOfferComponent = __decorate([
+	        core_1.Component({
+	            selector: 'offer-create',
+	            templateUrl: 'client/dev/app/components/front-end/offer/templates/offer-create.html',
+	            directives: [common_1.FORM_DIRECTIVES, private_chat_1.PrivateChatComponent]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_b = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _b) || Object, (typeof (_c = typeof request_offer_1.OfferService !== 'undefined' && request_offer_1.OfferService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object, (typeof (_e = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _e) || Object, (typeof (_f = typeof requests_1.RequestService !== 'undefined' && requests_1.RequestService) === 'function' && _f) || Object])
+	    ], CreateOfferComponent);
+	    return CreateOfferComponent;
+	    var _a, _b, _c, _d, _e, _f;
+	}());
+	exports.CreateOfferComponent = CreateOfferComponent;
+	
+
+/***/ },
+/* 676 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -6999,7 +11568,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 625 */
+/* 677 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7013,25 +11582,68 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
+	var users_1 = __webpack_require__(26);
 	var FriendListComponent = (function () {
-	    function FriendListComponent() {
+	    function FriendListComponent(_userService) {
+	        this._userService = _userService;
 	    }
+	    FriendListComponent.prototype.ngOnInit = function () {
+	        //ẩn hiện danh sách chat
+	        $('.chat_head').click(function () {
+	            $('.chat_body').slideToggle('slow');
+	        });
+	        $('.msg_head').click(function () {
+	            $('.msg_wrap').slideToggle('slow');
+	        });
+	        //đóng phần đang chat
+	        $('.close').click(function () {
+	            $('.msg_box').hide();
+	        });
+	        //hiện phần chat
+	        $('.user').click(function () {
+	            $('.msg_wrap').show();
+	            $('.msg_box').show();
+	        });
+	        //nhấn nút enter
+	        $('textarea').keypress(function (e) {
+	            if (e.keyCode == 13) {
+	                e.preventDefault();
+	                var msg = $(this).val();
+	                $(this).val('');
+	                if (msg != '')
+	                    $('<div class="msg_b">' + msg + '</div>').insertBefore('.msg_push');
+	                $('.msg_body').scrollTop($('.msg_body')[0].scrollHeight);
+	            }
+	        });
+	        //
+	        //this._userService.getFriendList()
+	        //  .subscribe(
+	        //    (friends) => {
+	        //
+	        //    },
+	        //    (error) => {
+	        //
+	        //    }
+	        //  );
+	        //
+	    };
 	    FriendListComponent = __decorate([
 	        core_1.Component({
 	            selector: 'friend-list',
-	            templateUrl: 'client/dev/app/components/front-end/asserts/templates/friend-list.html',
-	            styleUrls: ['client/dev/app/components/front-end/asserts/styles/friend-list.html'],
+	            templateUrl: 'client/dev/app/components/front-end/shared/templates/friend-list.html',
+	            styleUrls: ['client/dev/app/components/front-end/shared/styles/friend-list.css'],
 	            directives: []
 	        }), 
-	        __metadata('design:paramtypes', [])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object])
 	    ], FriendListComponent);
 	    return FriendListComponent;
+	    var _a;
 	}());
 	exports.FriendListComponent = FriendListComponent;
 	
 
 /***/ },
-/* 626 */
+/* 678 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7044,101 +11656,65 @@ webpackJsonp([2],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	/**
-	 * Created by GiangDH on 5/18/16.
-	 */
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var auth_1 = __webpack_require__(51);
-	var notification_1 = __webpack_require__(184);
-	// import * as io from 'socket.io';
-	var HeaderComponent = (function () {
-	    function HeaderComponent(_auth, router, _noti) {
-	        this._auth = _auth;
+	var router_1 = __webpack_require__(4);
+	var knowledge_1 = __webpack_require__(54);
+	var router_2 = __webpack_require__(4);
+	var SideBarComponent = (function () {
+	    function SideBarComponent(_knowledgeService, router, route) {
+	        this._knowledgeService = _knowledgeService;
 	        this.router = router;
-	        this._noti = _noti;
-	        this.notiTitle = 'Nhận được lời mời kết bạn';
-	        this.loginToken = false;
-	        this.userToken = localStorage.getItem('username');
-	        this.roleToken = localStorage.getItem('userrole');
+	        this.route = route;
 	    }
-	    HeaderComponent.prototype.ngOnInit = function () {
-	        // function getNotificationByUser(user: string) {
-	        //   //this.countUnReadNoti = 0;
-	        //   this._noti.getNotificationByUser(user).subscribe(
-	        //     (notifications) => {
-	        //       this.notifications = notifications.reverse();
-	        //       // for (var i = 0; i < notifications.length; i++) {
-	        //       //   if (notifications[i].status === "Chưa đọc") {
-	        //       //     this.countUnReadNoti++;
-	        //       //   }
-	        //       // }
-	        //     });
-	        // }
-	        this.socket = io('https://localhost:3333');
-	        this.socket.on('receive notification', function (data) {
-	            if (localStorage.getItem('username') === data.data.user) {
-	                console.log(data.data);
-	                // getNotificationByUser(localStorage.getItem('username'));
-	                //show noti 
-	                this.notiTitle = 'Bạn đã nhận được lời mời kết bạn';
-	                var x = document.getElementById("snackbar");
-	                x.className = "show";
-	                setTimeout(function () { x.className = x.className.replace("show", ""); }, 10000);
-	            }
-	        });
-	        if (this.userToken) {
-	            this.loginToken = true;
-	        }
-	        this.getNotificationByUser();
-	    };
-	    HeaderComponent.prototype.logout = function () {
-	        this._auth.logout();
-	        this._auth.logoutClient();
-	        window.location.reload();
-	    };
-	    HeaderComponent.prototype.showNotification = function (title) {
-	        this.notiTitle = title;
-	        var x = document.getElementById("snackbar");
-	        x.className = "show";
-	        setTimeout(function () { x.className = x.className.replace("show", ""); }, 10000);
-	    };
-	    HeaderComponent.prototype.getNotificationByUser = function () {
+	    SideBarComponent.prototype.ngOnInit = function () {
 	        var _this = this;
-	        this.countUnReadNoti = 0;
-	        this._noti.getNotificationByUser(this.userToken).subscribe(function (notifications) {
-	            _this.notifications = notifications;
-	            _this.notifications.reverse();
-	            for (var i = 0; i < notifications.length; i++) {
-	                if (notifications[i].status === "Chưa đọc") {
-	                    _this.countUnReadNoti++;
+	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
+	            var parent = [];
+	            var subCate = [];
+	            for (var i = 0; i < knowledges.length; i++) {
+	                if (!knowledges[i].hasOwnProperty('parent') && knowledges[i].status == true) {
+	                    parent.push(knowledges[i]);
 	                }
 	            }
+	            for (var i = 0; i < parent.length; i++) {
+	                for (var j = 0; j < knowledges.length; j++) {
+	                    if ((knowledges[j].hasOwnProperty('parent')) && (knowledges[j].parent === parent[i]._id) && (knowledges[j].status == true)) {
+	                        subCate.push(knowledges[j]);
+	                    }
+	                }
+	                parent[i]["subCategory"] = subCate;
+	                subCate = [];
+	            }
+	            knowledges = parent;
+	            _this.knowledges = parent;
+	        });
+	        $('.collapsible').collapsible({
+	            accordion: true // A setting that changes the collapsible behavior to expandable instead of the default accordion style
 	        });
 	    };
-	    HeaderComponent.prototype.changeStatusNotification = function () {
-	        this._noti.changeStatusNotification(this.userToken).subscribe(function (notifications) {
-	            console.log('change status notification successful');
-	        });
+	    SideBarComponent.prototype.closeNav = function () {
+	        $('.btnOpenNavF').sideNav({ closeOnClick: "true" });
 	    };
-	    HeaderComponent = __decorate([
+	    SideBarComponent.prototype.backHome = function () {
+	        this.router.navigateByUrl('/');
+	    };
+	    SideBarComponent = __decorate([
 	        core_1.Component({
-	            selector: 'header',
-	            templateUrl: 'client/dev/app/components/front-end/shared/templates/header.html',
-	            styleUrls: ['client/dev/app/components/front-end/shared/styles/header.css'],
-	            directives: [
-	                router_1.ROUTER_DIRECTIVES]
+	            selector: 'sidebar',
+	            templateUrl: 'client/dev/app/components/front-end/shared/templates/side-bar.html',
+	            styleUrls: ['client/dev/app/components/front-end/shared/styles/side-bar.css'],
+	            directives: [router_1.ROUTER_DIRECTIVES]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object])
-	    ], HeaderComponent);
-	    return HeaderComponent;
+	        __metadata('design:paramtypes', [(typeof (_a = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_2.ActivatedRoute !== 'undefined' && router_2.ActivatedRoute) === 'function' && _c) || Object])
+	    ], SideBarComponent);
+	    return SideBarComponent;
 	    var _a, _b, _c;
 	}());
-	exports.HeaderComponent = HeaderComponent;
+	exports.SideBarComponent = SideBarComponent;
 	
 
 /***/ },
-/* 627 */
+/* 679 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7158,14 +11734,18 @@ webpackJsonp([2],[
 	 * Created by GiangDH on 5/18/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(19);
-	var router_1 = __webpack_require__(7);
-	var auth_1 = __webpack_require__(51);
+	var common_1 = __webpack_require__(6);
+	var router_1 = __webpack_require__(4);
+	var common_2 = __webpack_require__(6);
+	var auth_1 = __webpack_require__(45);
 	var LoginComponent = (function () {
-	    function LoginComponent(fb, _authService, router) {
+	    function LoginComponent(fb, _authService, _location) {
 	        this._authService = _authService;
-	        this.router = router;
+	        this._location = _location;
 	        this.user = [];
+	        this.errorMessage = '';
+	        this.userValid = "";
+	        this.passValid = "";
 	        this.loginForm = fb.group({
 	            username: ["", common_1.Validators.required],
 	            password: ["", common_1.Validators.required]
@@ -7176,42 +11756,49 @@ webpackJsonp([2],[
 	        this._authService
 	            .login(user)
 	            .subscribe(function (res) {
-	            if (res.invalidUsername) {
-	                _this.userValid = '*' + res.invalidUsername;
-	                _this.passValid = null;
+	            console.log(res);
+	            localStorage.removeItem('guest');
+	            localStorage.setItem('username', res.username);
+	            localStorage.setItem('avarta', res.linkImg);
+	            if (res.role) {
+	                localStorage.setItem('userrole', res.role);
 	            }
-	            else if (res.invalidPassword) {
-	                _this.passValid = '*' + res.invalidPassword;
-	                _this.userValid = null;
+	            if (localStorage.getItem('redirectUrl')) {
+	                var redirectUrl = localStorage.getItem('redirectUrl');
+	                localStorage.removeItem('redirectUrl');
+	                window.location.href = redirectUrl;
 	            }
 	            else {
-	                localStorage.setItem('username', res.username);
-	                if (res.role == 'admin') {
-	                    localStorage.setItem('userrole', res.role);
-	                }
-	                else {
-	                    localStorage.setItem('userrole', 'normal');
-	                }
-	                window.location.reload();
+	                window.location.href = '/';
 	            }
 	        }, function (error) {
-	            console.log(error);
+	            if (error._body) {
+	                error = JSON.parse(error._body);
+	                if (error.invalidUsername) {
+	                    _this.errorMessage = '*' + error.invalidUsername;
+	                }
+	                else if (error.invalidPassword) {
+	                    _this.errorMessage = '*' + error.invalidPassword;
+	                }
+	                else if (error.message) {
+	                    _this.errorMessage = '*' + error.message;
+	                }
+	            }
 	        });
 	    };
 	    LoginComponent = __decorate([
 	        core_1.Component({
 	            selector: 'login',
-	            templateUrl: 'client/dev/app/components/front-end/shared/templates/login.html',
-	            styleUrls: ['client/dev/app/components/front-end/shared/styles/login.css'],
+	            templateUrl: 'client/dev/app/components/front-end/user/login/templates/login.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/login/styles/login.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES,
-	                common_1.CORE_DIRECTIVES,
 	                common_1.FORM_DIRECTIVES
 	            ]
 	        }),
 	        __param(0, core_1.Inject(common_1.FormBuilder)),
 	        __param(1, core_1.Inject(auth_1.AuthService)), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object, (typeof (_c = typeof common_2.Location !== 'undefined' && common_2.Location) === 'function' && _c) || Object])
 	    ], LoginComponent);
 	    return LoginComponent;
 	    var _a, _b, _c;
@@ -7220,7 +11807,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 628 */
+/* 680 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7233,55 +11820,213 @@ webpackJsonp([2],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
-	var __param = (this && this.__param) || function (paramIndex, decorator) {
-	    return function (target, key) { decorator(target, key, paramIndex); }
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var common_1 = __webpack_require__(6);
+	var users_1 = __webpack_require__(26);
+	var tag_1 = __webpack_require__(66);
+	var primeng_1 = __webpack_require__(31);
+	var private_chat_1 = __webpack_require__(11);
+	var RegisterInfoComponent = (function () {
+	    function RegisterInfoComponent(fb, router, _userService, route, _tagService) {
+	        var _this = this;
+	        this.fb = fb;
+	        this.router = router;
+	        this._userService = _userService;
+	        this.route = route;
+	        this._tagService = _tagService;
+	        this.user = [];
+	        this.userId = '';
+	        this.errorMessage = '';
+	        this.route
+	            .params
+	            .subscribe(function (params) {
+	            _this.userId = params['id'];
+	        });
+	        this.updateUserForm = fb.group({
+	            fullName: [""],
+	            birthday: [""],
+	            phone: [""]
+	        });
+	    }
+	    RegisterInfoComponent.prototype.ngOnInit = function () {
+	        $('.datepicker').pickadate({
+	            monthsFull: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+	            monthsShort: ['Tháng 1', 'Tháng 2', 'Tháng 3', 'Tháng 4', 'Tháng 5', 'Tháng 6', 'Tháng 7', 'Tháng 8', 'Tháng 9', 'Tháng 10', 'Tháng 11', 'Tháng 12'],
+	            weekdaysFull: ['Chủ nhật ', 'Thứ 2', 'Thứ 3', 'Thứ 4', 'Thứ 5', 'Thứ 6', 'Thứ 7'],
+	            // Buttons
+	            today: '',
+	            clear: 'Xoá',
+	            close: 'Đóng',
+	            selectMonths: true,
+	            selectYears: 15,
+	            format: 'dd-mm-yyyy',
+	            min: new Date(1950, 1, 1),
+	            max: new Date(2010, 12, 31),
+	            selectYears: 60
+	        });
+	    };
+	    //end control tags
+	    RegisterInfoComponent.prototype.update = function (user) {
+	        var _this = this;
+	        var birthday = $(".datepicker").val();
+	        var pattern = new RegExp("^[0-9]{1,13}$");
+	        if (!pattern.test(user.phone)) {
+	            this.errorMessage = "Số điện thoại chỉ bao gồm số và không nhiều hơn 13 kí tự";
+	        }
+	        else {
+	            user = {
+	                _id: this.userId,
+	                fullName: user.fullName,
+	                phone: user.phone,
+	                birthday: birthday
+	            };
+	            this._userService.updateUser(user, []).subscribe(function (res) {
+	                _this.router.navigateByUrl('/');
+	            }, function (err) {
+	                console.log(err);
+	            });
+	        }
+	    };
+	    RegisterInfoComponent.prototype.returnHome = function () {
+	        this.router.navigateByUrl('/');
+	    };
+	    RegisterInfoComponent = __decorate([
+	        core_1.Component({
+	            templateUrl: "client/dev/app/components/front-end/user/register/templates/info.html",
+	            styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
+	            directives: [primeng_1.AutoComplete, private_chat_1.PrivateChatComponent],
+	            providers: [tag_1.TagService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object, (typeof (_e = typeof tag_1.TagService !== 'undefined' && tag_1.TagService) === 'function' && _e) || Object])
+	    ], RegisterInfoComponent);
+	    return RegisterInfoComponent;
+	    var _a, _b, _c, _d, _e;
+	}());
+	exports.RegisterInfoComponent = RegisterInfoComponent;
+	
+
+/***/ },
+/* 681 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	/**
 	 * Created by GiangDH on 5/19/16.
 	 */
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(19);
-	var router_1 = __webpack_require__(7);
-	var auth_1 = __webpack_require__(51);
+	var common_1 = __webpack_require__(6);
+	var router_1 = __webpack_require__(4);
+	var auth_1 = __webpack_require__(45);
+	var common_2 = __webpack_require__(6);
 	var RegisterComponent = (function () {
-	    function RegisterComponent(fb, _authService, router) {
+	    function RegisterComponent(fb, _authService, router, _location) {
+	        this.fb = fb;
 	        this._authService = _authService;
 	        this.router = router;
-	        this.user = [];
-	        this.regForm = fb.group({
-	            username: ["", common_1.Validators.required],
+	        this._location = _location;
+	        this.errorMessage = '';
+	    }
+	    RegisterComponent.prototype.ngOnInit = function () {
+	        this.regForm = this.fb.group({
+	            username: ["", common_1.Validators.pattern('^[a-zA-Z0-9_.-]{8,30}$')],
 	            password: ["", common_1.Validators.pattern('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$')],
+	            copass: [""],
 	            email: ["", common_1.Validators.pattern('^(([a-zA-Z]|[0-9])|([-]|[_]|[.]))+[@](([a-zA-Z0-9])|([-])){2,63}[.](([a-zA-Z0-9]){2,63})+$')]
 	        });
-	    }
+	    };
 	    RegisterComponent.prototype.register = function (user) {
-	        this._authService
-	            .register(user)
-	            .subscribe(function (response) {
-	            window.location.reload();
-	        }, function (error) {
-	            console.log(error);
-	        });
+	        var _this = this;
+	        this.errorMessage = '';
+	        var validateUsername = function (username) {
+	            var pattern = new RegExp('^[a-zA-Z0-9_.-]{8,30}$');
+	            return pattern.test(username);
+	        };
+	        var validatePass = function (password) {
+	            var pattern = new RegExp('^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$');
+	            return pattern.test(password);
+	        };
+	        if (!validateUsername(user.username)) {
+	            this.errorMessage = 'Vui lòng nhập tên đăng nhập trong khoảng từ 8-30 kí tự, không dấu và không' +
+	                ' chứa kí' +
+	                ' tự' +
+	                ' đặc' +
+	                ' biệt! ';
+	        }
+	        else if (!validatePass(user.password)) {
+	            this.errorMessage = 'Mât khẩu phải có ít nhất 8 kí tự, bao gồm 1 kí tự viết hoa, 1 kí tự viết thường, 1 kí' +
+	                ' tự đặc biệt và 1 số';
+	        }
+	        else if (user.password !== user.copass) {
+	            this.errorMessage = 'Sai mật khẩu xác nhận! ';
+	        }
+	        else {
+	            this._authService
+	                .register(user)
+	                .subscribe(function (response) {
+	                user = {
+	                    username: user.username,
+	                    password: user.password
+	                };
+	                _this._authService
+	                    .login(user)
+	                    .subscribe(function (res) {
+	                    localStorage.setItem('username', res.username);
+	                    localStorage.setItem('userrole', 'normal');
+	                    window.location.href = '/reg/info/' + response._id;
+	                }, function (error) {
+	                    console.log(error);
+	                });
+	            }, function (error) {
+	                if (error.errors) {
+	                    var errors = error.errors;
+	                    if (errors.username) {
+	                        _this.errorMessage = errors.username.message;
+	                    }
+	                    else if (errors.password) {
+	                        _this.errorMessage = errors.password.message;
+	                    }
+	                    else if (errors.email) {
+	                        _this.errorMessage = errors.email.message;
+	                    }
+	                }
+	                if (error.errmsg) {
+	                    if (error.errmsg.includes('username')) {
+	                        _this.errorMessage = 'tên đăng nhập đã tồn tại';
+	                    }
+	                    else if (error.errmsg.includes('email')) {
+	                        _this.errorMessage = 'email đã tồn tại!';
+	                    }
+	                }
+	            });
+	        }
 	    };
 	    RegisterComponent = __decorate([
 	        core_1.Component({
 	            selector: 'register',
-	            templateUrl: 'client/dev/app/components/front-end/shared/templates/register.html',
-	            styleUrls: ['client/dev/app/components/front-end/shared/styles/login.css'],
-	            directives: [common_1.FORM_DIRECTIVES]
-	        }),
-	        __param(0, core_1.Inject(common_1.FormBuilder)),
-	        __param(1, core_1.Inject(auth_1.AuthService)), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object])
+	            templateUrl: 'client/dev/app/components/front-end/user/register/templates/register.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/register/styles/login.css'],
+	            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof common_2.Location !== 'undefined' && common_2.Location) === 'function' && _d) || Object])
 	    ], RegisterComponent);
 	    return RegisterComponent;
-	    var _a, _b, _c;
+	    var _a, _b, _c, _d;
 	}());
 	exports.RegisterComponent = RegisterComponent;
 	
 
 /***/ },
-/* 629 */
+/* 682 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7294,52 +12039,202 @@ webpackJsonp([2],[
 	var __metadata = (this && this.__metadata) || function (k, v) {
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
+	/**
+	 * Created by GiangDH on 8/8/16.
+	 */
+	/**
+	 * Created by GiangDH on 5/19/16.
+	 */
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
-	var knowledge_1 = __webpack_require__(48);
-	var SideBarComponent = (function () {
-	    function SideBarComponent(_knowledgeService) {
-	        this._knowledgeService = _knowledgeService;
-	    }
-	    SideBarComponent.prototype.ngOnInit = function () {
+	var common_1 = __webpack_require__(6);
+	var router_1 = __webpack_require__(4);
+	var users_1 = __webpack_require__(26);
+	var NewPasswordComponent = (function () {
+	    function NewPasswordComponent(fb, _userService, router, route) {
 	        var _this = this;
-	        this._knowledgeService.getAllKnowledges().subscribe(function (knowledges) {
-	            var parent = [];
-	            var subCate = [];
-	            for (var i = 0; i < knowledges.length; i++) {
-	                if (!knowledges[i].hasOwnProperty('parent')) {
-	                    parent.push(knowledges[i]);
+	        this.fb = fb;
+	        this._userService = _userService;
+	        this.router = router;
+	        this.route = route;
+	        this.route.params.subscribe(function (params) {
+	            _this.resetPasswordToken = params['token'];
+	        });
+	        this.resetPassForm = fb.group({
+	            password: [""],
+	            copass: [""],
+	        });
+	    }
+	    NewPasswordComponent.prototype.ngOnInit = function () {
+	        var _this = this;
+	        this._userService.getUserByToken(this.resetPasswordToken)
+	            .subscribe(function (res) {
+	            if (res.sendTokenDate) {
+	                var currentDate = new Date();
+	                var tokenDate = new Date(res.sendTokenDate);
+	                var difftime = currentDate.getTime() - tokenDate.getTime();
+	                if (difftime > 0) {
+	                    _this.expired = false;
+	                }
+	                else {
+	                    _this.expired = true;
+	                    _this.errorMessage = 'Rất tiếc đã quá thời hạn để đổi mật khẩu!';
 	                }
 	            }
-	            for (var i = 0; i < parent.length; i++) {
-	                for (var j = 0; j < knowledges.length; j++) {
-	                    if ((knowledges[j].hasOwnProperty('parent')) && (knowledges[j].parent === parent[i]._id)) {
-	                        subCate.push(knowledges[j]);
-	                    }
-	                }
-	                parent[i]["subCategory"] = subCate;
-	                subCate = [];
-	            }
-	            _this.knowledges = parent;
+	        }, function (err) {
+	            _this.errorMessage = 'Xin lỗi vì làm phiền, server có lỗi';
 	        });
 	    };
-	    SideBarComponent = __decorate([
+	    NewPasswordComponent.prototype.updatePassword = function (data) {
+	        var _this = this;
+	        var patt = new RegExp("^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$");
+	        var passValid = patt.test(data.password);
+	        if (!passValid) {
+	            this.errorMessage = 'Mật khẩu cần nhiều hơn 8 kí tự bao gồm chữ hoa, chữ thường và kí tự đặc biệt';
+	        }
+	        else if (data.password !== data.copass) {
+	            this.errorMessage = 'Mật khẩu và mật khẩu xác nhận không trùng khớp ';
+	        }
+	        else {
+	            this._userService.updateNewPassword(data.password, this.resetPasswordToken)
+	                .subscribe(function (res) {
+	                var c = confirm('Mật khẩu đã được thay đổi, chuyển đến trang đăng nhập');
+	                if (c) {
+	                    _this.router.navigate(['/login']);
+	                }
+	            }, function (error) {
+	                _this.errorMessage = 'Xin lỗi vì làm phiền, server có lỗi';
+	            });
+	        }
+	    };
+	    NewPasswordComponent = __decorate([
 	        core_1.Component({
-	            selector: 'sidebar',
-	            templateUrl: 'client/dev/app/components/front-end/shared/templates/side-bar.html',
-	            styleUrls: ['client/dev/app/components/front-end/shared/styles/side-bar.css'],
-	            directives: [router_1.ROUTER_DIRECTIVES]
+	            template: "\n      <div class=\"container mg-top-50\">\n        <div class=\"row\">\n          <div class=\"col-md-3\"></div>\n          <!-- /.col-md-3 -->\n          <div class=\"col-md-6\">\n            <div *ngIf=\"errorMessage\" class=\"errmess\">{{errorMessage}}\n              <a *ngIf=\"expired\" [routerLink]=\"['/reset-password']\"> click v\u00E0o \u0111\u00E2y \u0111\u1EC3 g\u1EEDi l\u1EA1i email </a>\n            </div>\n\n            <div *ngIf=\"!expired\" class=\"loginPanel\">\n              <div class=\"box-header\">\n                <h2> Thi\u1EBFt l\u1EADp m\u1EADt kh\u1EA9u m\u1EDBi </h2>\n              </div>\n              <form [ngFormModel]=\"resetPassForm\" (ngSubmit)=\"updatePassword(resetPassForm.value)\">\n                 <div class=\"form-group\">\n                    <input class=\"form-control\"\n                          type=\"password\"\n                          required maxlength=\"30\"\n                          placeholder=\"M\u1EADt Kh\u1EA9u\"\n                          name=\"password\"\n                          [ngFormControl]=\"resetPassForm.controls['password']\"\n                    >\n                  </div>\n                  <div class=\"form-group\">\n                    <input #copass class=\"form-control\"\n                          type=\"password\"\n                          required maxlength=\"30\"\n                          placeholder=\"X\u00E1c nh\u1EADn m\u1EADt kh\u1EA9u\"\n                          name=\"copass\"\n                          [ngFormControl]=\"resetPassForm.controls['copass']\"\n                    >\n                  </div>\n                <div class=\"row\">\n                    <button class=\"form-control btn btn-success\" type=\"submit\">C\u1EADp nh\u1EADt m\u1EADt kh\u1EA9u</button>\n                </div>\n                <!-- /.row -->\n\n             </form>\n            </div>\n              <!-- /.loginPanel -->\n            </div>\n          <!-- /.col-md-6 -->\n          <div class=\"col-md-3\"></div>\n          <!-- /.col-md-3 -->\n        </div>\n        <!-- /.row -->\n      </div>",
+	            styleUrls: ['client/dev/app/components/front-end/user/login/styles/login.css'],
+	            directives: [
+	                common_1.FORM_DIRECTIVES,
+	                router_1.ROUTER_DIRECTIVES
+	            ]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof knowledge_1.KnowledgeService !== 'undefined' && knowledge_1.KnowledgeService) === 'function' && _a) || Object])
-	    ], SideBarComponent);
-	    return SideBarComponent;
-	    var _a;
+	        __metadata('design:paramtypes', [(typeof (_a = typeof common_1.FormBuilder !== 'undefined' && common_1.FormBuilder) === 'function' && _a) || Object, (typeof (_b = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _b) || Object, (typeof (_c = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _c) || Object, (typeof (_d = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _d) || Object])
+	    ], NewPasswordComponent);
+	    return NewPasswordComponent;
+	    var _a, _b, _c, _d;
 	}());
-	exports.SideBarComponent = SideBarComponent;
+	exports.NewPasswordComponent = NewPasswordComponent;
 	
 
 /***/ },
-/* 630 */
+/* 683 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by GiangDH on 8/8/16.
+	 */
+	var core_1 = __webpack_require__(1);
+	var common_1 = __webpack_require__(6);
+	var router_1 = __webpack_require__(4);
+	var users_1 = __webpack_require__(26);
+	var ResetPasswordComponent = (function () {
+	    function ResetPasswordComponent(_userService) {
+	        this._userService = _userService;
+	        this.step = 1;
+	    }
+	    ResetPasswordComponent.prototype.sendEmail = function (email) {
+	        var _this = this;
+	        this.email = email;
+	        this._userService.sendEmailResetPassword(email)
+	            .subscribe(function (res) {
+	            if (res.status === 'success') {
+	                _this.step = 2;
+	            }
+	        }, function (error) {
+	            _this.errorMessage = "Có lỗi xảy ra vui lòng kiểm tra lại email";
+	        });
+	    };
+	    ResetPasswordComponent = __decorate([
+	        core_1.Component({
+	            templateUrl: 'client/dev/app/components/front-end/user/reset-password/templates/reset-password.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/login/styles/login.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES,
+	                common_1.FORM_DIRECTIVES
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _a) || Object])
+	    ], ResetPasswordComponent);
+	    return ResetPasswordComponent;
+	    var _a;
+	}());
+	exports.ResetPasswordComponent = ResetPasswordComponent;
+	
+
+/***/ },
+/* 684 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 8/19/2016.
+	 */
+	/**
+	 * Created by Duc Duong on 8/19/2016.
+	 */
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var article_1 = __webpack_require__(41);
+	var tag_1 = __webpack_require__(75);
+	var info_hover_1 = __webpack_require__(53);
+	var ArticleListComponent = (function () {
+	    function ArticleListComponent(router, route) {
+	        this.router = router;
+	        this.route = route;
+	    }
+	    ArticleListComponent.prototype.ngOnInit = function () {
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], ArticleListComponent.prototype, "article", void 0);
+	    ArticleListComponent = __decorate([
+	        core_1.Component({
+	            selector: 'article-list',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/list-article.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES, tag_1.listTagComponent, info_hover_1.infoHover
+	            ],
+	            providers: [article_1.ArticleService]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object])
+	    ], ArticleListComponent);
+	    return ArticleListComponent;
+	    var _a, _b;
+	}());
+	exports.ArticleListComponent = ArticleListComponent;
+	
+
+/***/ },
+/* 685 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7354,10 +12249,10 @@ webpackJsonp([2],[
 	};
 	//cores
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(4);
 	//services
-	var users_1 = __webpack_require__(67);
-	var auth_1 = __webpack_require__(51);
+	var users_1 = __webpack_require__(26);
+	var auth_1 = __webpack_require__(45);
 	var FriendRecordComponent = (function () {
 	    function FriendRecordComponent(router, route, _userService, _auth) {
 	        var _this = this;
@@ -7365,6 +12260,8 @@ webpackJsonp([2],[
 	        this.route = route;
 	        this._userService = _userService;
 	        this._auth = _auth;
+	        this.sendDataToP = new core_1.EventEmitter();
+	        this.socket = io('https://localhost:80');
 	        this.userToken = localStorage.getItem('username');
 	        this.isFriend = true;
 	        this.route
@@ -7382,6 +12279,7 @@ webpackJsonp([2],[
 	            _this.displayname = userinfo.displayName;
 	            _this.email = userinfo.email;
 	            _this.level = userinfo.level;
+	            _this.link = userinfo.linkImg;
 	        }, function (error) {
 	            console.log(error);
 	        });
@@ -7400,32 +12298,90 @@ webpackJsonp([2],[
 	                .subscribe(function () {
 	                _this.isFriend = false;
 	            });
-	            alert("bạn đã hủy gửi lời  mời kết bạn");
+	            this._userService
+	                .deactivateChatRoom(this.friendName, this.userToken)
+	                .subscribe(function () {
+	            });
+	            this.sendDataToP.emit("accept");
 	        }
 	    };
 	    __decorate([
 	        core_1.Input('friendName'), 
 	        __metadata('design:type', String)
 	    ], FriendRecordComponent.prototype, "friendName", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', (typeof (_a = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _a) || Object)
+	    ], FriendRecordComponent.prototype, "sendDataToP", void 0);
 	    FriendRecordComponent = __decorate([
 	        core_1.Component({
 	            selector: 'friend-record',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/friend-record.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/friend-record.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES
 	            ]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _d) || Object])
+	        __metadata('design:paramtypes', [(typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _e) || Object])
 	    ], FriendRecordComponent);
 	    return FriendRecordComponent;
-	    var _a, _b, _c, _d;
+	    var _a, _b, _c, _d, _e;
 	}());
 	exports.FriendRecordComponent = FriendRecordComponent;
 	
 
 /***/ },
-/* 631 */
+/* 686 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 8/19/2016.
+	 */
+	//cores
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var tag_1 = __webpack_require__(75);
+	var info_hover_1 = __webpack_require__(53);
+	var KspaceListComponent = (function () {
+	    function KspaceListComponent(router, route) {
+	        this.router = router;
+	        this.route = route;
+	    }
+	    KspaceListComponent.prototype.ngOnInit = function () {
+	    };
+	    __decorate([
+	        core_1.Input(), 
+	        __metadata('design:type', Object)
+	    ], KspaceListComponent.prototype, "kspace", void 0);
+	    KspaceListComponent = __decorate([
+	        core_1.Component({
+	            selector: 'kspace-list',
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/list-kspace.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES, tag_1.listTagComponent, info_hover_1.infoHover
+	            ]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object])
+	    ], KspaceListComponent);
+	    return KspaceListComponent;
+	    var _a, _b;
+	}());
+	exports.KspaceListComponent = KspaceListComponent;
+	
+
+/***/ },
+/* 687 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7440,10 +12396,10 @@ webpackJsonp([2],[
 	};
 	//cores
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(4);
 	//services
-	var users_1 = __webpack_require__(67);
-	var notification_1 = __webpack_require__(184);
+	var users_1 = __webpack_require__(26);
+	var notification_1 = __webpack_require__(57);
 	var RequestFriendRecordComponent = (function () {
 	    function RequestFriendRecordComponent(router, route, _userService, _noti) {
 	        var _this = this;
@@ -7451,6 +12407,8 @@ webpackJsonp([2],[
 	        this.route = route;
 	        this._userService = _userService;
 	        this._noti = _noti;
+	        this.sendDataToP = new core_1.EventEmitter();
+	        this.socket = io('https://localhost:80');
 	        this.route
 	            .params
 	            .subscribe(function (params) {
@@ -7464,16 +12422,19 @@ webpackJsonp([2],[
 	    };
 	    RequestFriendRecordComponent.prototype.acceptRequest = function () {
 	        var _this = this;
-	        console.log(this.requestUser + ' ' + this.name);
 	        this._userService.acceptFriendRequest(this.requestUser, this.name).subscribe(function () {
 	            console.log("accepted successful");
-	            alert("Bạn đã là bạn bè với " + _this.requestUser);
 	            _this.isAdded = true;
 	            var title = _this.name + ' chấp nhận kết bạn';
-	            var body = 'Bạn và ' + _this.name + ' đã là bạn bè!';
 	            var link = '/user/' + _this.name;
-	            _this._noti.createNotification(title, body, _this.requestUser, link).subscribe(function (notification) {
-	                console.log('create a notification to ' + _this.name);
+	            //call function using socket io to send notification
+	            _this._noti.alertNotification(title, _this.requestUser, link);
+	            //save notification to database
+	            _this._noti.createNotification(title, _this.requestUser, link).subscribe(function (notification) {
+	                _this.sendDataToP.emit("accept");
+	                // var data = [this.requestUser, this.name];
+	                // this.socket.emit('chatroom-friend', data);
+	                _this.router.navigateByUrl('/user/' + _this.requestUser);
 	            });
 	        });
 	    };
@@ -7483,20 +12444,22 @@ webpackJsonp([2],[
 	            _this.displayname = userinfo.displayName;
 	            _this.email = userinfo.email;
 	            _this.level = userinfo.level;
+	            _this.linkImg = userinfo.linkImg;
 	        }, function (error) {
 	            console.log(error);
 	        });
 	    };
 	    RequestFriendRecordComponent.prototype.deleteFriend = function () {
+	        var _this = this;
 	        var r = confirm("Bạn có muốn hủy kết bạn");
 	        if (r == true) {
 	            this._userService
 	                .deleteFriendRequest(this.requestUser, this.name)
 	                .subscribe(function () {
 	                console.log('delete successfull');
+	                _this.sendDataToP.emit("accept");
+	                _this.isFriend = false;
 	            });
-	            this.isFriend = false;
-	            alert("bạn đã hủy gửi lời  mời kết bạn");
 	        }
 	    };
 	    __decorate([
@@ -7507,25 +12470,29 @@ webpackJsonp([2],[
 	        core_1.Input('name'), 
 	        __metadata('design:type', String)
 	    ], RequestFriendRecordComponent.prototype, "name", void 0);
+	    __decorate([
+	        core_1.Output(), 
+	        __metadata('design:type', (typeof (_a = typeof core_1.EventEmitter !== 'undefined' && core_1.EventEmitter) === 'function' && _a) || Object)
+	    ], RequestFriendRecordComponent.prototype, "sendDataToP", void 0);
 	    RequestFriendRecordComponent = __decorate([
 	        core_1.Component({
 	            selector: 'request-friend-record',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/request-friend-record.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/request-friend-record.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES
 	            ]
 	        }), 
-	        __metadata('design:paramtypes', [(typeof (_a = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _a) || Object, (typeof (_b = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _b) || Object, (typeof (_c = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _c) || Object, (typeof (_d = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _d) || Object])
+	        __metadata('design:paramtypes', [(typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _e) || Object])
 	    ], RequestFriendRecordComponent);
 	    return RequestFriendRecordComponent;
-	    var _a, _b, _c, _d;
+	    var _a, _b, _c, _d, _e;
 	}());
 	exports.RequestFriendRecordComponent = RequestFriendRecordComponent;
 	
 
 /***/ },
-/* 632 */
+/* 688 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -7540,30 +12507,27 @@ webpackJsonp([2],[
 	};
 	//cores
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(4);
 	//services
-	var users_1 = __webpack_require__(67);
-	var knowledge_1 = __webpack_require__(48);
+	var users_1 = __webpack_require__(26);
+	var knowledge_1 = __webpack_require__(54);
 	var RequestRecordComponent = (function () {
 	    function RequestRecordComponent(router, route, _userService, _knowledgeService) {
 	        this.router = router;
 	        this.route = route;
 	        this._userService = _userService;
 	        this._knowledgeService = _knowledgeService;
-	        this.formatDate = function (date) {
-	            if (date) {
-	                var newDate, day, month, year;
-	                year = date.substr(0, 4);
-	                month = date.substr(5, 2);
-	                day = date.substr(8, 2);
-	                return newDate = day + '/' + month + '/' + year;
-	            }
-	        };
 	    }
 	    RequestRecordComponent.prototype.ngOnInit = function () {
 	        //this.createdAt = this.formatDate(createdAt);
 	        this.id = this.knowledgeId;
 	        this.getKnowledgeNameOfRequest();
+	        if (this.status === 'pending' || this.status === 'active' || this.status === 'Đang chờ') {
+	            this.status = 'Đang chờ';
+	        }
+	        else if (this.status = 'accepted') {
+	            this.status = 'Đã được chấp nhận';
+	        }
 	    };
 	    RequestRecordComponent.prototype.getKnowledgeNameOfRequest = function () {
 	        var _this = this;
@@ -7601,8 +12565,8 @@ webpackJsonp([2],[
 	    RequestRecordComponent = __decorate([
 	        core_1.Component({
 	            selector: 'request-record',
-	            templateUrl: 'client/dev/app/components/front-end/user-profile/templates/request-record.html',
-	            styleUrls: ['client/dev/app/components/front-end/user-profile/styles/user-profile.css'],
+	            templateUrl: 'client/dev/app/components/front-end/user/user-profile/templates/request-record.html',
+	            styleUrls: ['client/dev/app/components/front-end/user/user-profile/styles/user-profile.css'],
 	            directives: [
 	                router_1.ROUTER_DIRECTIVES
 	            ]
@@ -7616,22 +12580,82 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 633 */
+/* 689 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var admin_component_1 = __webpack_require__(616);
-	var knowledge_update_1 = __webpack_require__(280);
-	var knowledges_list_1 = __webpack_require__(414);
-	var requests_list_1 = __webpack_require__(416);
-	var request_update_1 = __webpack_require__(281);
-	var badword_update_1 = __webpack_require__(181);
-	var badword_1 = __webpack_require__(413);
-	var user_list_1 = __webpack_require__(419);
+	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+	    return c > 3 && r && Object.defineProperty(target, key, r), r;
+	};
+	var __metadata = (this && this.__metadata) || function (k, v) {
+	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+	};
+	/**
+	 * Created by Duc Duong on 8/19/2016.
+	 */
+	var core_1 = __webpack_require__(1);
+	var router_1 = __webpack_require__(4);
+	var auth_1 = __webpack_require__(45);
+	var notification_1 = __webpack_require__(57);
+	var users_1 = __webpack_require__(26);
+	var chat_1 = __webpack_require__(129);
+	var private_chat_1 = __webpack_require__(11);
+	var errorPageComponent = (function () {
+	    function errorPageComponent(_auth, router, _noti, _userService, _chatService, routerCh) {
+	        this._auth = _auth;
+	        this.router = router;
+	        this._noti = _noti;
+	        this._userService = _userService;
+	        this._chatService = _chatService;
+	        this.routerCh = routerCh;
+	    }
+	    errorPageComponent = __decorate([
+	        core_1.Component({
+	            selector: 'error',
+	            templateUrl: 'client/dev/app/components/shared/templates/404.html',
+	            styleUrls: ['client/dev/app/components/shared/styles/404.css'],
+	            directives: [
+	                router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent]
+	        }), 
+	        __metadata('design:paramtypes', [(typeof (_a = typeof auth_1.AuthService !== 'undefined' && auth_1.AuthService) === 'function' && _a) || Object, (typeof (_b = typeof router_1.Router !== 'undefined' && router_1.Router) === 'function' && _b) || Object, (typeof (_c = typeof notification_1.NotificationService !== 'undefined' && notification_1.NotificationService) === 'function' && _c) || Object, (typeof (_d = typeof users_1.UserService !== 'undefined' && users_1.UserService) === 'function' && _d) || Object, (typeof (_e = typeof chat_1.ChatService !== 'undefined' && chat_1.ChatService) === 'function' && _e) || Object, (typeof (_f = typeof router_1.ActivatedRoute !== 'undefined' && router_1.ActivatedRoute) === 'function' && _f) || Object])
+	    ], errorPageComponent);
+	    return errorPageComponent;
+	    var _a, _b, _c, _d, _e, _f;
+	}());
+	exports.errorPageComponent = errorPageComponent;
+	
+
+/***/ },
+/* 690 */
+/***/ function(module, exports) {
+
+	"use strict";
+
+
+/***/ },
+/* 691 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var admin_component_1 = __webpack_require__(428);
+	var knowledge_update_1 = __webpack_require__(290);
+	var knowledges_list_1 = __webpack_require__(430);
+	var requests_list_1 = __webpack_require__(432);
+	var request_update_1 = __webpack_require__(191);
+	var user_list_1 = __webpack_require__(434);
+	var reports_list_1 = __webpack_require__(431);
+	var dashboard_1 = __webpack_require__(665);
+	var tag_list_control_1 = __webpack_require__(433);
+	var article_list_clt_1 = __webpack_require__(429);
+	var auth_1 = __webpack_require__(455);
 	exports.AdminRoutes = [
 	    {
 	        path: 'admin',
 	        component: admin_component_1.AdminComponent,
+	        canActivate: [auth_1.AdminAuthGuard],
 	        children: [
 	            {
 	                path: 'users',
@@ -7639,6 +12663,23 @@ webpackJsonp([2],[
 	                    {
 	                        path: '',
 	                        component: user_list_1.UserListComponent
+	                    }
+	                ]
+	            },
+	            {
+	                path: 'tags',
+	                component: tag_list_control_1.TagListCtlComponent
+	            },
+	            {
+	                path: 'articles',
+	                component: article_list_clt_1.ArtListCtlComponent
+	            },
+	            {
+	                path: 'reports',
+	                children: [
+	                    {
+	                        path: '',
+	                        component: reports_list_1.ReportListComponent
 	                    }
 	                ]
 	            },
@@ -7669,21 +12710,17 @@ webpackJsonp([2],[
 	                ]
 	            },
 	            {
-	                path: 'badwords',
+	                path: 'dashboard',
 	                children: [
 	                    {
 	                        path: '',
-	                        component: badword_1.BadwordComponent
-	                    },
-	                    {
-	                        path: ':id',
-	                        component: badword_update_1.UpdateBadwordComponent
+	                        component: dashboard_1.DashboardComponent
 	                    }
 	                ]
 	            },
 	            {
 	                path: '',
-	                redirectTo: 'users'
+	                redirectTo: 'dashboard'
 	            }
 	        ]
 	    }
@@ -7691,28 +12728,104 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 634 */
+/* 692 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	/**
+	 * Created by GiangDH on 7/9/16.
+	 */
+	var router_1 = __webpack_require__(4);
+	var kshare_routes_ts_1 = __webpack_require__(693);
+	var admin_routes_ts_1 = __webpack_require__(691);
+	exports.routes = kshare_routes_ts_1.KShareRoutes.concat(admin_routes_ts_1.AdminRoutes);
+	exports.APP_ROUTER_PROVIDERS = [
+	    router_1.provideRouter(exports.routes),
+	    kshare_routes_ts_1.authProviders
+	];
+	
+
+/***/ },
+/* 693 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	//Root Component
-	var kshare_component_1 = __webpack_require__(430);
+	var kshare_component_1 = __webpack_require__(453);
 	//Function Components
-	var home_1 = __webpack_require__(420);
-	var request_list_1 = __webpack_require__(426);
-	var request_detail_1 = __webpack_require__(425);
-	var request_update_1 = __webpack_require__(427);
-	var request_search_1 = __webpack_require__(282);
-	var kspace_1 = __webpack_require__(423);
-	var kspace_list_1 = __webpack_require__(422);
-	var kspace_info_1 = __webpack_require__(421);
-	var friend_list_1 = __webpack_require__(428);
-	var user_profile_1 = __webpack_require__(429);
+	var newsfeed_1 = __webpack_require__(674);
+	var request_list_1 = __webpack_require__(447);
+	var request_detail_1 = __webpack_require__(446);
+	var request_update_1 = __webpack_require__(191);
+	var request_category_1 = __webpack_require__(295);
+	var request_create_1 = __webpack_require__(291);
+	var kspace_1 = __webpack_require__(443);
+	var kspace_list_1 = __webpack_require__(442);
+	var kspace_info_1 = __webpack_require__(441);
+	var friend_list_1 = __webpack_require__(450);
+	var user_profile_1 = __webpack_require__(452);
+	var rs_search_user_1 = __webpack_require__(449);
+	var register_1 = __webpack_require__(681);
+	var info_1 = __webpack_require__(680);
+	var user_info_update_1 = __webpack_require__(451);
+	var login_1 = __webpack_require__(679);
+	var reset_pass_1 = __webpack_require__(683);
+	var new_pass_1 = __webpack_require__(682);
+	var create_article_1 = __webpack_require__(435);
+	var detail_article_1 = __webpack_require__(436);
+	var list_article_1 = __webpack_require__(437);
+	var edit_article_1 = __webpack_require__(670);
+	var displayArtByTag_1 = __webpack_require__(448);
+	var _404_1 = __webpack_require__(689);
+	var auth_1 = __webpack_require__(455);
+	var auth_2 = __webpack_require__(45);
+	var public_kspace_1 = __webpack_require__(672);
+	var public_room_1 = __webpack_require__(444);
+	var create_kspace_1 = __webpack_require__(293);
+	var join_room_1 = __webpack_require__(439);
 	exports.KShareRoutes = [
 	    {
 	        path: '',
 	        component: kshare_component_1.KshareComponent,
 	        children: [
+	            {
+	                path: 'newsfeed',
+	                component: newsfeed_1.NewsFeedComponent
+	            },
+	            {
+	                path: 'reg',
+	                children: [
+	                    {
+	                        path: '',
+	                        component: register_1.RegisterComponent,
+	                        canActivate: [auth_1.Guest],
+	                    },
+	                    {
+	                        path: 'info/:id',
+	                        component: info_1.RegisterInfoComponent,
+	                        canActivate: [auth_1.isLogin],
+	                    }
+	                ]
+	            },
+	            {
+	                path: 'login',
+	                canActivate: [auth_1.Guest],
+	                component: login_1.LoginComponent
+	            },
+	            {
+	                path: 'reset-password',
+	                canActivate: [auth_1.Guest],
+	                children: [
+	                    {
+	                        path: '',
+	                        component: reset_pass_1.ResetPasswordComponent
+	                    },
+	                    {
+	                        path: ':token',
+	                        component: new_pass_1.NewPasswordComponent
+	                    }
+	                ]
+	            },
 	            {
 	                path: 'user',
 	                children: [
@@ -7726,8 +12839,56 @@ webpackJsonp([2],[
 	                            {
 	                                path: '',
 	                                component: user_profile_1.UserProfileComponent
+	                            },
+	                            {
+	                                path: 'info',
+	                                component: user_info_update_1.UpdateUserComponent
 	                            }
 	                        ]
+	                    },
+	                    {
+	                        path: 'search/:name',
+	                        component: rs_search_user_1.userSearchRsComponent
+	                    }
+	                ]
+	            },
+	            {
+	                path: 'article',
+	                children: [
+	                    {
+	                        path: 'create',
+	                        component: create_article_1.CreateArticleComponent,
+	                        canActivate: [auth_1.isLogin]
+	                    },
+	                    {
+	                        path: '',
+	                        component: list_article_1.listArticleComponent
+	                    },
+	                    {
+	                        path: 'edit/:id',
+	                        component: edit_article_1.EditArticleComponent,
+	                        canActivate: [auth_1.isLogin]
+	                    },
+	                    {
+	                        path: ':id',
+	                        component: detail_article_1.detailArticleComponent
+	                    },
+	                    {
+	                        path: '**',
+	                        redirectTo: '/error'
+	                    }
+	                ]
+	            },
+	            {
+	                path: 'tag',
+	                children: [
+	                    {
+	                        path: ':id',
+	                        component: displayArtByTag_1.displayArtByTagComponent
+	                    },
+	                    {
+	                        path: '**',
+	                        redirectTo: '/error'
 	                    }
 	                ]
 	            },
@@ -7736,20 +12897,35 @@ webpackJsonp([2],[
 	                children: [
 	                    {
 	                        path: 'info',
-	                        children: [{
-	                                path: ':id',
+	                        children: [
+	                            {
+	                                path: ':id/:lecturer',
 	                                component: kspace_info_1.KSpaceInfoComponent
-	                            }]
+	                            },
+	                            {
+	                                path: '**',
+	                                redirectTo: '/error'
+	                            }
+	                        ]
 	                    },
 	                    {
 	                        path: '',
 	                        component: kspace_list_1.KSpaceListComponent
+	                    },
+	                    {
+	                        path: '**',
+	                        redirectTo: '/error'
 	                    }
 	                ]
 	            },
 	            {
 	                path: 'requests',
 	                children: [
+	                    {
+	                        path: 'create',
+	                        component: request_create_1.CreateRequestComponent,
+	                        canActivate: [auth_1.isLogin]
+	                    },
 	                    {
 	                        path: ':id',
 	                        children: [
@@ -7759,82 +12935,89 @@ webpackJsonp([2],[
 	                            },
 	                            {
 	                                path: 'update',
-	                                component: request_update_1.RequestUpdateClientComponent
+	                                component: request_update_1.UpdateRequestComponent,
+	                                canActivate: [auth_1.isLogin]
+	                            },
+	                            {
+	                                path: '**',
+	                                redirectTo: '/error'
 	                            }
 	                        ]
 	                    },
 	                    {
-	                        path: ':type/:id',
-	                        pathMatch: 'full',
-	                        component: request_search_1.RequestCategoryComponent
-	                    },
-	                    {
 	                        path: '',
 	                        component: request_list_1.RequestListClientComponent
+	                    },
+	                    {
+	                        path: '**',
+	                        redirectTo: '/error'
+	                    }
+	                ]
+	            },
+	            {
+	                path: 'mix',
+	                children: [
+	                    {
+	                        path: ':type/:id',
+	                        component: request_category_1.RequestCategoryComponent
 	                    }
 	                ]
 	            },
 	            {
 	                path: '',
-	                component: home_1.HomeComponent
+	                component: newsfeed_1.NewsFeedComponent
 	            }
 	        ],
 	    },
 	    {
-	        path: 'room',
-	        children: [{
-	                path: ':id',
-	                component: kspace_1.KSpaceComponent
-	            }]
+	        path: 'error',
+	        component: _404_1.errorPageComponent
 	    },
-	];
-	
-
-/***/ },
-/* 635 */
-/***/ function(module, exports) {
-
-	"use strict";
-	var socket;
-	var SocketIOService = (function () {
-	    function SocketIOService() {
+	    {
+	        path: 'room',
+	        canActivate: [auth_1.isLogin],
+	        children: [
+	            {
+	                path: ':id/:lecturer',
+	                component: kspace_1.KSpaceComponent
+	            },
+	            {
+	                path: '**',
+	                redirectTo: '/error'
+	            }
+	        ]
+	    },
+	    {
+	        path: 'public-kspace',
+	        canActivate: [auth_1.Guest],
+	        component: public_kspace_1.PublicKspace,
+	        children: [
+	            {
+	                path: 'create',
+	                component: create_kspace_1.CreatePublicKspace
+	            },
+	            {
+	                path: ':id/room',
+	                component: public_room_1.PublicKspaceComponent
+	            },
+	            {
+	                path: ':id/join',
+	                component: join_room_1.JoinPublicKspace
+	            }
+	        ]
 	    }
-	    SocketIOService.prototype.ioInit = function () {
-	        socket = io('http://localhost:3333');
-	        return socket;
-	    };
-	    SocketIOService.prototype.ioSubscribeRoom = function (room) {
-	        socket.emit('subscribe', room);
-	    };
-	    SocketIOService.prototype.emitStartPoint = function (x, y, color, width) {
-	        var data = {
-	            x: x,
-	            y: y,
-	            color: color,
-	            width: width
-	        };
-	        socket.emit('startPoint', data);
-	    };
-	    SocketIOService.prototype.emitPathPoint = function (x, y) {
-	        var data = {
-	            x: x,
-	            y: y
-	        };
-	        socket.emit('pathpoint', data);
-	    };
-	    return SocketIOService;
-	}());
-	exports.SocketIOService = SocketIOService;
+	];
+	exports.authProviders = [auth_1.AdminAuthGuard, auth_1.isLogin, auth_1.Guest, auth_2.AuthService];
 	
 
 /***/ },
-/* 636 */,
-/* 637 */,
-/* 638 */
+/* 694 */,
+/* 695 */,
+/* 696 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	var Operator = (function () {
 	    function Operator() {
 	    }
@@ -7847,597 +13030,15 @@ webpackJsonp([2],[
 	//# sourceMappingURL=Operator.js.map
 
 /***/ },
-/* 639 */,
-/* 640 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var bindCallback_1 = __webpack_require__(746);
-	Observable_1.Observable.bindCallback = bindCallback_1.bindCallback;
-	//# sourceMappingURL=bindCallback.js.map
-
-/***/ },
-/* 641 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var bindNodeCallback_1 = __webpack_require__(747);
-	Observable_1.Observable.bindNodeCallback = bindNodeCallback_1.bindNodeCallback;
-	//# sourceMappingURL=bindNodeCallback.js.map
-
-/***/ },
-/* 642 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var combineLatest_1 = __webpack_require__(287);
-	Observable_1.Observable.combineLatest = combineLatest_1.combineLatestStatic;
-	//# sourceMappingURL=combineLatest.js.map
-
-/***/ },
-/* 643 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var concat_1 = __webpack_require__(748);
-	Observable_1.Observable.concat = concat_1.concat;
-	//# sourceMappingURL=concat.js.map
-
-/***/ },
-/* 644 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var defer_1 = __webpack_require__(749);
-	Observable_1.Observable.defer = defer_1.defer;
-	//# sourceMappingURL=defer.js.map
-
-/***/ },
-/* 645 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var empty_1 = __webpack_require__(750);
-	Observable_1.Observable.empty = empty_1.empty;
-	//# sourceMappingURL=empty.js.map
-
-/***/ },
-/* 646 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var fromEvent_1 = __webpack_require__(752);
-	Observable_1.Observable.fromEvent = fromEvent_1.fromEvent;
-	//# sourceMappingURL=fromEvent.js.map
-
-/***/ },
-/* 647 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var fromEventPattern_1 = __webpack_require__(753);
-	Observable_1.Observable.fromEventPattern = fromEventPattern_1.fromEventPattern;
-	//# sourceMappingURL=fromEventPattern.js.map
-
-/***/ },
-/* 648 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var interval_1 = __webpack_require__(754);
-	Observable_1.Observable.interval = interval_1.interval;
-	//# sourceMappingURL=interval.js.map
-
-/***/ },
-/* 649 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var merge_1 = __webpack_require__(755);
-	Observable_1.Observable.merge = merge_1.merge;
-	//# sourceMappingURL=merge.js.map
-
-/***/ },
-/* 650 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var never_1 = __webpack_require__(756);
-	Observable_1.Observable.never = never_1.never;
-	//# sourceMappingURL=never.js.map
-
-/***/ },
-/* 651 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var of_1 = __webpack_require__(189);
-	Observable_1.Observable.of = of_1.of;
-	//# sourceMappingURL=of.js.map
-
-/***/ },
-/* 652 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var race_1 = __webpack_require__(453);
-	Observable_1.Observable.race = race_1.raceStatic;
-	//# sourceMappingURL=race.js.map
-
-/***/ },
-/* 653 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var range_1 = __webpack_require__(757);
-	Observable_1.Observable.range = range_1.range;
-	//# sourceMappingURL=range.js.map
-
-/***/ },
-/* 654 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var throw_1 = __webpack_require__(758);
-	Observable_1.Observable.throw = throw_1._throw;
-	//# sourceMappingURL=throw.js.map
-
-/***/ },
-/* 655 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var timer_1 = __webpack_require__(759);
-	Observable_1.Observable.timer = timer_1.timer;
-	//# sourceMappingURL=timer.js.map
-
-/***/ },
-/* 656 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var zip_1 = __webpack_require__(760);
-	Observable_1.Observable.zip = zip_1.zip;
-	//# sourceMappingURL=zip.js.map
-
-/***/ },
-/* 657 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var audit_1 = __webpack_require__(761);
-	Observable_1.Observable.prototype.audit = audit_1.audit;
-	//# sourceMappingURL=audit.js.map
-
-/***/ },
-/* 658 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var auditTime_1 = __webpack_require__(762);
-	Observable_1.Observable.prototype.auditTime = auditTime_1.auditTime;
-	//# sourceMappingURL=auditTime.js.map
-
-/***/ },
-/* 659 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var buffer_1 = __webpack_require__(763);
-	Observable_1.Observable.prototype.buffer = buffer_1.buffer;
-	//# sourceMappingURL=buffer.js.map
-
-/***/ },
-/* 660 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var bufferCount_1 = __webpack_require__(764);
-	Observable_1.Observable.prototype.bufferCount = bufferCount_1.bufferCount;
-	//# sourceMappingURL=bufferCount.js.map
-
-/***/ },
-/* 661 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var bufferTime_1 = __webpack_require__(765);
-	Observable_1.Observable.prototype.bufferTime = bufferTime_1.bufferTime;
-	//# sourceMappingURL=bufferTime.js.map
-
-/***/ },
-/* 662 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var bufferToggle_1 = __webpack_require__(766);
-	Observable_1.Observable.prototype.bufferToggle = bufferToggle_1.bufferToggle;
-	//# sourceMappingURL=bufferToggle.js.map
-
-/***/ },
-/* 663 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var bufferWhen_1 = __webpack_require__(767);
-	Observable_1.Observable.prototype.bufferWhen = bufferWhen_1.bufferWhen;
-	//# sourceMappingURL=bufferWhen.js.map
-
-/***/ },
-/* 664 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var cache_1 = __webpack_require__(768);
-	Observable_1.Observable.prototype.cache = cache_1.cache;
-	//# sourceMappingURL=cache.js.map
-
-/***/ },
-/* 665 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var catch_1 = __webpack_require__(769);
-	Observable_1.Observable.prototype.catch = catch_1._catch;
-	//# sourceMappingURL=catch.js.map
-
-/***/ },
-/* 666 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var combineAll_1 = __webpack_require__(770);
-	Observable_1.Observable.prototype.combineAll = combineAll_1.combineAll;
-	//# sourceMappingURL=combineAll.js.map
-
-/***/ },
-/* 667 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var combineLatest_1 = __webpack_require__(287);
-	Observable_1.Observable.prototype.combineLatest = combineLatest_1.combineLatest;
-	//# sourceMappingURL=combineLatest.js.map
-
-/***/ },
-/* 668 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var concat_1 = __webpack_require__(288);
-	Observable_1.Observable.prototype.concat = concat_1.concat;
-	//# sourceMappingURL=concat.js.map
-
-/***/ },
-/* 669 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var concatAll_1 = __webpack_require__(771);
-	Observable_1.Observable.prototype.concatAll = concatAll_1.concatAll;
-	//# sourceMappingURL=concatAll.js.map
-
-/***/ },
-/* 670 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var concatMap_1 = __webpack_require__(772);
-	Observable_1.Observable.prototype.concatMap = concatMap_1.concatMap;
-	//# sourceMappingURL=concatMap.js.map
-
-/***/ },
-/* 671 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var concatMapTo_1 = __webpack_require__(773);
-	Observable_1.Observable.prototype.concatMapTo = concatMapTo_1.concatMapTo;
-	//# sourceMappingURL=concatMapTo.js.map
-
-/***/ },
-/* 672 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var count_1 = __webpack_require__(774);
-	Observable_1.Observable.prototype.count = count_1.count;
-	//# sourceMappingURL=count.js.map
-
-/***/ },
-/* 673 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var debounce_1 = __webpack_require__(775);
-	Observable_1.Observable.prototype.debounce = debounce_1.debounce;
-	//# sourceMappingURL=debounce.js.map
-
-/***/ },
-/* 674 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var defaultIfEmpty_1 = __webpack_require__(777);
-	Observable_1.Observable.prototype.defaultIfEmpty = defaultIfEmpty_1.defaultIfEmpty;
-	//# sourceMappingURL=defaultIfEmpty.js.map
-
-/***/ },
-/* 675 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var delay_1 = __webpack_require__(778);
-	Observable_1.Observable.prototype.delay = delay_1.delay;
-	//# sourceMappingURL=delay.js.map
-
-/***/ },
-/* 676 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var delayWhen_1 = __webpack_require__(779);
-	Observable_1.Observable.prototype.delayWhen = delayWhen_1.delayWhen;
-	//# sourceMappingURL=delayWhen.js.map
-
-/***/ },
-/* 677 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var dematerialize_1 = __webpack_require__(780);
-	Observable_1.Observable.prototype.dematerialize = dematerialize_1.dematerialize;
-	//# sourceMappingURL=dematerialize.js.map
-
-/***/ },
-/* 678 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var distinctUntilChanged_1 = __webpack_require__(781);
-	Observable_1.Observable.prototype.distinctUntilChanged = distinctUntilChanged_1.distinctUntilChanged;
-	//# sourceMappingURL=distinctUntilChanged.js.map
-
-/***/ },
-/* 679 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var do_1 = __webpack_require__(782);
-	Observable_1.Observable.prototype.do = do_1._do;
-	//# sourceMappingURL=do.js.map
-
-/***/ },
-/* 680 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var expand_1 = __webpack_require__(784);
-	Observable_1.Observable.prototype.expand = expand_1.expand;
-	//# sourceMappingURL=expand.js.map
-
-/***/ },
-/* 681 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var filter_1 = __webpack_require__(447);
-	Observable_1.Observable.prototype.filter = filter_1.filter;
-	//# sourceMappingURL=filter.js.map
-
-/***/ },
-/* 682 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var finally_1 = __webpack_require__(785);
-	Observable_1.Observable.prototype.finally = finally_1._finally;
-	//# sourceMappingURL=finally.js.map
-
-/***/ },
-/* 683 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var first_1 = __webpack_require__(786);
-	Observable_1.Observable.prototype.first = first_1.first;
-	//# sourceMappingURL=first.js.map
-
-/***/ },
-/* 684 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var groupBy_1 = __webpack_require__(787);
-	Observable_1.Observable.prototype.groupBy = groupBy_1.groupBy;
-	//# sourceMappingURL=groupBy.js.map
-
-/***/ },
-/* 685 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var ignoreElements_1 = __webpack_require__(788);
-	Observable_1.Observable.prototype.ignoreElements = ignoreElements_1.ignoreElements;
-	//# sourceMappingURL=ignoreElements.js.map
-
-/***/ },
-/* 686 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var last_1 = __webpack_require__(789);
-	Observable_1.Observable.prototype.last = last_1.last;
-	//# sourceMappingURL=last.js.map
-
-/***/ },
-/* 687 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var let_1 = __webpack_require__(790);
-	Observable_1.Observable.prototype.let = let_1.letProto;
-	Observable_1.Observable.prototype.letBind = let_1.letProto;
-	//# sourceMappingURL=let.js.map
-
-/***/ },
-/* 688 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var mapTo_1 = __webpack_require__(791);
-	Observable_1.Observable.prototype.mapTo = mapTo_1.mapTo;
-	//# sourceMappingURL=mapTo.js.map
-
-/***/ },
-/* 689 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var materialize_1 = __webpack_require__(792);
-	Observable_1.Observable.prototype.materialize = materialize_1.materialize;
-	//# sourceMappingURL=materialize.js.map
-
-/***/ },
-/* 690 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var merge_1 = __webpack_require__(449);
-	Observable_1.Observable.prototype.merge = merge_1.merge;
-	//# sourceMappingURL=merge.js.map
-
-/***/ },
-/* 691 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var mergeMapTo_1 = __webpack_require__(451);
-	Observable_1.Observable.prototype.flatMapTo = mergeMapTo_1.mergeMapTo;
-	Observable_1.Observable.prototype.mergeMapTo = mergeMapTo_1.mergeMapTo;
-	//# sourceMappingURL=mergeMapTo.js.map
-
-/***/ },
-/* 692 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var multicast_1 = __webpack_require__(121);
-	Observable_1.Observable.prototype.multicast = multicast_1.multicast;
-	//# sourceMappingURL=multicast.js.map
-
-/***/ },
-/* 693 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var partition_1 = __webpack_require__(793);
-	Observable_1.Observable.prototype.partition = partition_1.partition;
-	//# sourceMappingURL=partition.js.map
-
-/***/ },
-/* 694 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var pluck_1 = __webpack_require__(794);
-	Observable_1.Observable.prototype.pluck = pluck_1.pluck;
-	//# sourceMappingURL=pluck.js.map
-
-/***/ },
-/* 695 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var publishBehavior_1 = __webpack_require__(796);
-	Observable_1.Observable.prototype.publishBehavior = publishBehavior_1.publishBehavior;
-	//# sourceMappingURL=publishBehavior.js.map
-
-/***/ },
-/* 696 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var publishLast_1 = __webpack_require__(797);
-	Observable_1.Observable.prototype.publishLast = publishLast_1.publishLast;
-	//# sourceMappingURL=publishLast.js.map
-
-/***/ },
-/* 697 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var Observable_1 = __webpack_require__(2);
-	var publishReplay_1 = __webpack_require__(452);
-	Observable_1.Observable.prototype.publishReplay = publishReplay_1.publishReplay;
-	//# sourceMappingURL=publishReplay.js.map
-
-/***/ },
+/* 697 */,
 /* 698 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var race_1 = __webpack_require__(453);
-	Observable_1.Observable.prototype.race = race_1.race;
-	//# sourceMappingURL=race.js.map
+	var bindCallback_1 = __webpack_require__(805);
+	Observable_1.Observable.bindCallback = bindCallback_1.bindCallback;
+	//# sourceMappingURL=bindCallback.js.map
 
 /***/ },
 /* 699 */
@@ -8445,9 +13046,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var repeat_1 = __webpack_require__(799);
-	Observable_1.Observable.prototype.repeat = repeat_1.repeat;
-	//# sourceMappingURL=repeat.js.map
+	var bindNodeCallback_1 = __webpack_require__(806);
+	Observable_1.Observable.bindNodeCallback = bindNodeCallback_1.bindNodeCallback;
+	//# sourceMappingURL=bindNodeCallback.js.map
 
 /***/ },
 /* 700 */
@@ -8455,9 +13056,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var retry_1 = __webpack_require__(800);
-	Observable_1.Observable.prototype.retry = retry_1.retry;
-	//# sourceMappingURL=retry.js.map
+	var combineLatest_1 = __webpack_require__(302);
+	Observable_1.Observable.combineLatest = combineLatest_1.combineLatestStatic;
+	//# sourceMappingURL=combineLatest.js.map
 
 /***/ },
 /* 701 */
@@ -8465,9 +13066,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var retryWhen_1 = __webpack_require__(801);
-	Observable_1.Observable.prototype.retryWhen = retryWhen_1.retryWhen;
-	//# sourceMappingURL=retryWhen.js.map
+	var concat_1 = __webpack_require__(807);
+	Observable_1.Observable.concat = concat_1.concat;
+	//# sourceMappingURL=concat.js.map
 
 /***/ },
 /* 702 */
@@ -8475,9 +13076,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var sample_1 = __webpack_require__(802);
-	Observable_1.Observable.prototype.sample = sample_1.sample;
-	//# sourceMappingURL=sample.js.map
+	var defer_1 = __webpack_require__(808);
+	Observable_1.Observable.defer = defer_1.defer;
+	//# sourceMappingURL=defer.js.map
 
 /***/ },
 /* 703 */
@@ -8485,9 +13086,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var sampleTime_1 = __webpack_require__(803);
-	Observable_1.Observable.prototype.sampleTime = sampleTime_1.sampleTime;
-	//# sourceMappingURL=sampleTime.js.map
+	var empty_1 = __webpack_require__(809);
+	Observable_1.Observable.empty = empty_1.empty;
+	//# sourceMappingURL=empty.js.map
 
 /***/ },
 /* 704 */
@@ -8495,9 +13096,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var scan_1 = __webpack_require__(804);
-	Observable_1.Observable.prototype.scan = scan_1.scan;
-	//# sourceMappingURL=scan.js.map
+	var fromEvent_1 = __webpack_require__(811);
+	Observable_1.Observable.fromEvent = fromEvent_1.fromEvent;
+	//# sourceMappingURL=fromEvent.js.map
 
 /***/ },
 /* 705 */
@@ -8505,9 +13106,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var share_1 = __webpack_require__(805);
-	Observable_1.Observable.prototype.share = share_1.share;
-	//# sourceMappingURL=share.js.map
+	var fromEventPattern_1 = __webpack_require__(812);
+	Observable_1.Observable.fromEventPattern = fromEventPattern_1.fromEventPattern;
+	//# sourceMappingURL=fromEventPattern.js.map
 
 /***/ },
 /* 706 */
@@ -8515,9 +13116,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var single_1 = __webpack_require__(806);
-	Observable_1.Observable.prototype.single = single_1.single;
-	//# sourceMappingURL=single.js.map
+	var interval_1 = __webpack_require__(813);
+	Observable_1.Observable.interval = interval_1.interval;
+	//# sourceMappingURL=interval.js.map
 
 /***/ },
 /* 707 */
@@ -8525,9 +13126,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var skip_1 = __webpack_require__(807);
-	Observable_1.Observable.prototype.skip = skip_1.skip;
-	//# sourceMappingURL=skip.js.map
+	var merge_1 = __webpack_require__(814);
+	Observable_1.Observable.merge = merge_1.merge;
+	//# sourceMappingURL=merge.js.map
 
 /***/ },
 /* 708 */
@@ -8535,9 +13136,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var skipUntil_1 = __webpack_require__(808);
-	Observable_1.Observable.prototype.skipUntil = skipUntil_1.skipUntil;
-	//# sourceMappingURL=skipUntil.js.map
+	var never_1 = __webpack_require__(815);
+	Observable_1.Observable.never = never_1.never;
+	//# sourceMappingURL=never.js.map
 
 /***/ },
 /* 709 */
@@ -8545,9 +13146,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var skipWhile_1 = __webpack_require__(809);
-	Observable_1.Observable.prototype.skipWhile = skipWhile_1.skipWhile;
-	//# sourceMappingURL=skipWhile.js.map
+	var of_1 = __webpack_require__(198);
+	Observable_1.Observable.of = of_1.of;
+	//# sourceMappingURL=of.js.map
 
 /***/ },
 /* 710 */
@@ -8555,9 +13156,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var startWith_1 = __webpack_require__(810);
-	Observable_1.Observable.prototype.startWith = startWith_1.startWith;
-	//# sourceMappingURL=startWith.js.map
+	var race_1 = __webpack_require__(477);
+	Observable_1.Observable.race = race_1.raceStatic;
+	//# sourceMappingURL=race.js.map
 
 /***/ },
 /* 711 */
@@ -8565,9 +13166,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var subscribeOn_1 = __webpack_require__(811);
-	Observable_1.Observable.prototype.subscribeOn = subscribeOn_1.subscribeOn;
-	//# sourceMappingURL=subscribeOn.js.map
+	var range_1 = __webpack_require__(816);
+	Observable_1.Observable.range = range_1.range;
+	//# sourceMappingURL=range.js.map
 
 /***/ },
 /* 712 */
@@ -8575,9 +13176,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var switch_1 = __webpack_require__(812);
-	Observable_1.Observable.prototype.switch = switch_1._switch;
-	//# sourceMappingURL=switch.js.map
+	var throw_1 = __webpack_require__(817);
+	Observable_1.Observable.throw = throw_1._throw;
+	//# sourceMappingURL=throw.js.map
 
 /***/ },
 /* 713 */
@@ -8585,9 +13186,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var switchMap_1 = __webpack_require__(813);
-	Observable_1.Observable.prototype.switchMap = switchMap_1.switchMap;
-	//# sourceMappingURL=switchMap.js.map
+	var timer_1 = __webpack_require__(818);
+	Observable_1.Observable.timer = timer_1.timer;
+	//# sourceMappingURL=timer.js.map
 
 /***/ },
 /* 714 */
@@ -8595,9 +13196,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var switchMapTo_1 = __webpack_require__(814);
-	Observable_1.Observable.prototype.switchMapTo = switchMapTo_1.switchMapTo;
-	//# sourceMappingURL=switchMapTo.js.map
+	var zip_1 = __webpack_require__(819);
+	Observable_1.Observable.zip = zip_1.zip;
+	//# sourceMappingURL=zip.js.map
 
 /***/ },
 /* 715 */
@@ -8605,9 +13206,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var takeLast_1 = __webpack_require__(816);
-	Observable_1.Observable.prototype.takeLast = takeLast_1.takeLast;
-	//# sourceMappingURL=takeLast.js.map
+	var audit_1 = __webpack_require__(820);
+	Observable_1.Observable.prototype.audit = audit_1.audit;
+	//# sourceMappingURL=audit.js.map
 
 /***/ },
 /* 716 */
@@ -8615,9 +13216,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var takeUntil_1 = __webpack_require__(817);
-	Observable_1.Observable.prototype.takeUntil = takeUntil_1.takeUntil;
-	//# sourceMappingURL=takeUntil.js.map
+	var auditTime_1 = __webpack_require__(821);
+	Observable_1.Observable.prototype.auditTime = auditTime_1.auditTime;
+	//# sourceMappingURL=auditTime.js.map
 
 /***/ },
 /* 717 */
@@ -8625,9 +13226,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var takeWhile_1 = __webpack_require__(818);
-	Observable_1.Observable.prototype.takeWhile = takeWhile_1.takeWhile;
-	//# sourceMappingURL=takeWhile.js.map
+	var buffer_1 = __webpack_require__(822);
+	Observable_1.Observable.prototype.buffer = buffer_1.buffer;
+	//# sourceMappingURL=buffer.js.map
 
 /***/ },
 /* 718 */
@@ -8635,9 +13236,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var throttle_1 = __webpack_require__(819);
-	Observable_1.Observable.prototype.throttle = throttle_1.throttle;
-	//# sourceMappingURL=throttle.js.map
+	var bufferCount_1 = __webpack_require__(823);
+	Observable_1.Observable.prototype.bufferCount = bufferCount_1.bufferCount;
+	//# sourceMappingURL=bufferCount.js.map
 
 /***/ },
 /* 719 */
@@ -8645,9 +13246,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var throttleTime_1 = __webpack_require__(820);
-	Observable_1.Observable.prototype.throttleTime = throttleTime_1.throttleTime;
-	//# sourceMappingURL=throttleTime.js.map
+	var bufferTime_1 = __webpack_require__(824);
+	Observable_1.Observable.prototype.bufferTime = bufferTime_1.bufferTime;
+	//# sourceMappingURL=bufferTime.js.map
 
 /***/ },
 /* 720 */
@@ -8655,9 +13256,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var timeout_1 = __webpack_require__(821);
-	Observable_1.Observable.prototype.timeout = timeout_1.timeout;
-	//# sourceMappingURL=timeout.js.map
+	var bufferToggle_1 = __webpack_require__(825);
+	Observable_1.Observable.prototype.bufferToggle = bufferToggle_1.bufferToggle;
+	//# sourceMappingURL=bufferToggle.js.map
 
 /***/ },
 /* 721 */
@@ -8665,9 +13266,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var timeoutWith_1 = __webpack_require__(822);
-	Observable_1.Observable.prototype.timeoutWith = timeoutWith_1.timeoutWith;
-	//# sourceMappingURL=timeoutWith.js.map
+	var bufferWhen_1 = __webpack_require__(826);
+	Observable_1.Observable.prototype.bufferWhen = bufferWhen_1.bufferWhen;
+	//# sourceMappingURL=bufferWhen.js.map
 
 /***/ },
 /* 722 */
@@ -8675,9 +13276,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var toArray_1 = __webpack_require__(823);
-	Observable_1.Observable.prototype.toArray = toArray_1.toArray;
-	//# sourceMappingURL=toArray.js.map
+	var cache_1 = __webpack_require__(827);
+	Observable_1.Observable.prototype.cache = cache_1.cache;
+	//# sourceMappingURL=cache.js.map
 
 /***/ },
 /* 723 */
@@ -8685,9 +13286,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var window_1 = __webpack_require__(824);
-	Observable_1.Observable.prototype.window = window_1.window;
-	//# sourceMappingURL=window.js.map
+	var catch_1 = __webpack_require__(828);
+	Observable_1.Observable.prototype.catch = catch_1._catch;
+	//# sourceMappingURL=catch.js.map
 
 /***/ },
 /* 724 */
@@ -8695,9 +13296,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var windowCount_1 = __webpack_require__(825);
-	Observable_1.Observable.prototype.windowCount = windowCount_1.windowCount;
-	//# sourceMappingURL=windowCount.js.map
+	var combineAll_1 = __webpack_require__(829);
+	Observable_1.Observable.prototype.combineAll = combineAll_1.combineAll;
+	//# sourceMappingURL=combineAll.js.map
 
 /***/ },
 /* 725 */
@@ -8705,9 +13306,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var windowTime_1 = __webpack_require__(826);
-	Observable_1.Observable.prototype.windowTime = windowTime_1.windowTime;
-	//# sourceMappingURL=windowTime.js.map
+	var combineLatest_1 = __webpack_require__(302);
+	Observable_1.Observable.prototype.combineLatest = combineLatest_1.combineLatest;
+	//# sourceMappingURL=combineLatest.js.map
 
 /***/ },
 /* 726 */
@@ -8715,9 +13316,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var windowToggle_1 = __webpack_require__(827);
-	Observable_1.Observable.prototype.windowToggle = windowToggle_1.windowToggle;
-	//# sourceMappingURL=windowToggle.js.map
+	var concat_1 = __webpack_require__(303);
+	Observable_1.Observable.prototype.concat = concat_1.concat;
+	//# sourceMappingURL=concat.js.map
 
 /***/ },
 /* 727 */
@@ -8725,9 +13326,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var windowWhen_1 = __webpack_require__(828);
-	Observable_1.Observable.prototype.windowWhen = windowWhen_1.windowWhen;
-	//# sourceMappingURL=windowWhen.js.map
+	var concatAll_1 = __webpack_require__(830);
+	Observable_1.Observable.prototype.concatAll = concatAll_1.concatAll;
+	//# sourceMappingURL=concatAll.js.map
 
 /***/ },
 /* 728 */
@@ -8735,9 +13336,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var withLatestFrom_1 = __webpack_require__(829);
-	Observable_1.Observable.prototype.withLatestFrom = withLatestFrom_1.withLatestFrom;
-	//# sourceMappingURL=withLatestFrom.js.map
+	var concatMap_1 = __webpack_require__(831);
+	Observable_1.Observable.prototype.concatMap = concatMap_1.concatMap;
+	//# sourceMappingURL=concatMap.js.map
 
 /***/ },
 /* 729 */
@@ -8745,9 +13346,9 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var zip_1 = __webpack_require__(290);
-	Observable_1.Observable.prototype.zip = zip_1.zipProto;
-	//# sourceMappingURL=zip.js.map
+	var concatMapTo_1 = __webpack_require__(832);
+	Observable_1.Observable.prototype.concatMapTo = concatMapTo_1.concatMapTo;
+	//# sourceMappingURL=concatMapTo.js.map
 
 /***/ },
 /* 730 */
@@ -8755,13 +13356,596 @@ webpackJsonp([2],[
 
 	"use strict";
 	var Observable_1 = __webpack_require__(2);
-	var zipAll_1 = __webpack_require__(830);
+	var count_1 = __webpack_require__(833);
+	Observable_1.Observable.prototype.count = count_1.count;
+	//# sourceMappingURL=count.js.map
+
+/***/ },
+/* 731 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var debounce_1 = __webpack_require__(834);
+	Observable_1.Observable.prototype.debounce = debounce_1.debounce;
+	//# sourceMappingURL=debounce.js.map
+
+/***/ },
+/* 732 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var defaultIfEmpty_1 = __webpack_require__(836);
+	Observable_1.Observable.prototype.defaultIfEmpty = defaultIfEmpty_1.defaultIfEmpty;
+	//# sourceMappingURL=defaultIfEmpty.js.map
+
+/***/ },
+/* 733 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var delay_1 = __webpack_require__(837);
+	Observable_1.Observable.prototype.delay = delay_1.delay;
+	//# sourceMappingURL=delay.js.map
+
+/***/ },
+/* 734 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var delayWhen_1 = __webpack_require__(838);
+	Observable_1.Observable.prototype.delayWhen = delayWhen_1.delayWhen;
+	//# sourceMappingURL=delayWhen.js.map
+
+/***/ },
+/* 735 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var dematerialize_1 = __webpack_require__(839);
+	Observable_1.Observable.prototype.dematerialize = dematerialize_1.dematerialize;
+	//# sourceMappingURL=dematerialize.js.map
+
+/***/ },
+/* 736 */,
+/* 737 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var distinctUntilChanged_1 = __webpack_require__(841);
+	Observable_1.Observable.prototype.distinctUntilChanged = distinctUntilChanged_1.distinctUntilChanged;
+	//# sourceMappingURL=distinctUntilChanged.js.map
+
+/***/ },
+/* 738 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var do_1 = __webpack_require__(842);
+	Observable_1.Observable.prototype.do = do_1._do;
+	//# sourceMappingURL=do.js.map
+
+/***/ },
+/* 739 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var expand_1 = __webpack_require__(844);
+	Observable_1.Observable.prototype.expand = expand_1.expand;
+	//# sourceMappingURL=expand.js.map
+
+/***/ },
+/* 740 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var filter_1 = __webpack_require__(471);
+	Observable_1.Observable.prototype.filter = filter_1.filter;
+	//# sourceMappingURL=filter.js.map
+
+/***/ },
+/* 741 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var finally_1 = __webpack_require__(845);
+	Observable_1.Observable.prototype.finally = finally_1._finally;
+	//# sourceMappingURL=finally.js.map
+
+/***/ },
+/* 742 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var first_1 = __webpack_require__(846);
+	Observable_1.Observable.prototype.first = first_1.first;
+	//# sourceMappingURL=first.js.map
+
+/***/ },
+/* 743 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var groupBy_1 = __webpack_require__(847);
+	Observable_1.Observable.prototype.groupBy = groupBy_1.groupBy;
+	//# sourceMappingURL=groupBy.js.map
+
+/***/ },
+/* 744 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var ignoreElements_1 = __webpack_require__(848);
+	Observable_1.Observable.prototype.ignoreElements = ignoreElements_1.ignoreElements;
+	//# sourceMappingURL=ignoreElements.js.map
+
+/***/ },
+/* 745 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var last_1 = __webpack_require__(849);
+	Observable_1.Observable.prototype.last = last_1.last;
+	//# sourceMappingURL=last.js.map
+
+/***/ },
+/* 746 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var let_1 = __webpack_require__(850);
+	Observable_1.Observable.prototype.let = let_1.letProto;
+	Observable_1.Observable.prototype.letBind = let_1.letProto;
+	//# sourceMappingURL=let.js.map
+
+/***/ },
+/* 747 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var mapTo_1 = __webpack_require__(851);
+	Observable_1.Observable.prototype.mapTo = mapTo_1.mapTo;
+	//# sourceMappingURL=mapTo.js.map
+
+/***/ },
+/* 748 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var materialize_1 = __webpack_require__(852);
+	Observable_1.Observable.prototype.materialize = materialize_1.materialize;
+	//# sourceMappingURL=materialize.js.map
+
+/***/ },
+/* 749 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var merge_1 = __webpack_require__(473);
+	Observable_1.Observable.prototype.merge = merge_1.merge;
+	//# sourceMappingURL=merge.js.map
+
+/***/ },
+/* 750 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var mergeMapTo_1 = __webpack_require__(475);
+	Observable_1.Observable.prototype.flatMapTo = mergeMapTo_1.mergeMapTo;
+	Observable_1.Observable.prototype.mergeMapTo = mergeMapTo_1.mergeMapTo;
+	//# sourceMappingURL=mergeMapTo.js.map
+
+/***/ },
+/* 751 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var multicast_1 = __webpack_require__(130);
+	Observable_1.Observable.prototype.multicast = multicast_1.multicast;
+	//# sourceMappingURL=multicast.js.map
+
+/***/ },
+/* 752 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var partition_1 = __webpack_require__(853);
+	Observable_1.Observable.prototype.partition = partition_1.partition;
+	//# sourceMappingURL=partition.js.map
+
+/***/ },
+/* 753 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var pluck_1 = __webpack_require__(854);
+	Observable_1.Observable.prototype.pluck = pluck_1.pluck;
+	//# sourceMappingURL=pluck.js.map
+
+/***/ },
+/* 754 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var publishBehavior_1 = __webpack_require__(856);
+	Observable_1.Observable.prototype.publishBehavior = publishBehavior_1.publishBehavior;
+	//# sourceMappingURL=publishBehavior.js.map
+
+/***/ },
+/* 755 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var publishLast_1 = __webpack_require__(857);
+	Observable_1.Observable.prototype.publishLast = publishLast_1.publishLast;
+	//# sourceMappingURL=publishLast.js.map
+
+/***/ },
+/* 756 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var publishReplay_1 = __webpack_require__(476);
+	Observable_1.Observable.prototype.publishReplay = publishReplay_1.publishReplay;
+	//# sourceMappingURL=publishReplay.js.map
+
+/***/ },
+/* 757 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var race_1 = __webpack_require__(477);
+	Observable_1.Observable.prototype.race = race_1.race;
+	//# sourceMappingURL=race.js.map
+
+/***/ },
+/* 758 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var repeat_1 = __webpack_require__(859);
+	Observable_1.Observable.prototype.repeat = repeat_1.repeat;
+	//# sourceMappingURL=repeat.js.map
+
+/***/ },
+/* 759 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var retry_1 = __webpack_require__(860);
+	Observable_1.Observable.prototype.retry = retry_1.retry;
+	//# sourceMappingURL=retry.js.map
+
+/***/ },
+/* 760 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var retryWhen_1 = __webpack_require__(861);
+	Observable_1.Observable.prototype.retryWhen = retryWhen_1.retryWhen;
+	//# sourceMappingURL=retryWhen.js.map
+
+/***/ },
+/* 761 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var sample_1 = __webpack_require__(862);
+	Observable_1.Observable.prototype.sample = sample_1.sample;
+	//# sourceMappingURL=sample.js.map
+
+/***/ },
+/* 762 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var sampleTime_1 = __webpack_require__(863);
+	Observable_1.Observable.prototype.sampleTime = sampleTime_1.sampleTime;
+	//# sourceMappingURL=sampleTime.js.map
+
+/***/ },
+/* 763 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var scan_1 = __webpack_require__(864);
+	Observable_1.Observable.prototype.scan = scan_1.scan;
+	//# sourceMappingURL=scan.js.map
+
+/***/ },
+/* 764 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var share_1 = __webpack_require__(865);
+	Observable_1.Observable.prototype.share = share_1.share;
+	//# sourceMappingURL=share.js.map
+
+/***/ },
+/* 765 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var single_1 = __webpack_require__(866);
+	Observable_1.Observable.prototype.single = single_1.single;
+	//# sourceMappingURL=single.js.map
+
+/***/ },
+/* 766 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var skip_1 = __webpack_require__(867);
+	Observable_1.Observable.prototype.skip = skip_1.skip;
+	//# sourceMappingURL=skip.js.map
+
+/***/ },
+/* 767 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var skipUntil_1 = __webpack_require__(868);
+	Observable_1.Observable.prototype.skipUntil = skipUntil_1.skipUntil;
+	//# sourceMappingURL=skipUntil.js.map
+
+/***/ },
+/* 768 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var skipWhile_1 = __webpack_require__(869);
+	Observable_1.Observable.prototype.skipWhile = skipWhile_1.skipWhile;
+	//# sourceMappingURL=skipWhile.js.map
+
+/***/ },
+/* 769 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var startWith_1 = __webpack_require__(870);
+	Observable_1.Observable.prototype.startWith = startWith_1.startWith;
+	//# sourceMappingURL=startWith.js.map
+
+/***/ },
+/* 770 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var subscribeOn_1 = __webpack_require__(871);
+	Observable_1.Observable.prototype.subscribeOn = subscribeOn_1.subscribeOn;
+	//# sourceMappingURL=subscribeOn.js.map
+
+/***/ },
+/* 771 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var switch_1 = __webpack_require__(872);
+	Observable_1.Observable.prototype.switch = switch_1._switch;
+	//# sourceMappingURL=switch.js.map
+
+/***/ },
+/* 772 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var switchMap_1 = __webpack_require__(873);
+	Observable_1.Observable.prototype.switchMap = switchMap_1.switchMap;
+	//# sourceMappingURL=switchMap.js.map
+
+/***/ },
+/* 773 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var switchMapTo_1 = __webpack_require__(874);
+	Observable_1.Observable.prototype.switchMapTo = switchMapTo_1.switchMapTo;
+	//# sourceMappingURL=switchMapTo.js.map
+
+/***/ },
+/* 774 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var takeLast_1 = __webpack_require__(876);
+	Observable_1.Observable.prototype.takeLast = takeLast_1.takeLast;
+	//# sourceMappingURL=takeLast.js.map
+
+/***/ },
+/* 775 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var takeUntil_1 = __webpack_require__(877);
+	Observable_1.Observable.prototype.takeUntil = takeUntil_1.takeUntil;
+	//# sourceMappingURL=takeUntil.js.map
+
+/***/ },
+/* 776 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var takeWhile_1 = __webpack_require__(878);
+	Observable_1.Observable.prototype.takeWhile = takeWhile_1.takeWhile;
+	//# sourceMappingURL=takeWhile.js.map
+
+/***/ },
+/* 777 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var throttle_1 = __webpack_require__(879);
+	Observable_1.Observable.prototype.throttle = throttle_1.throttle;
+	//# sourceMappingURL=throttle.js.map
+
+/***/ },
+/* 778 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var throttleTime_1 = __webpack_require__(880);
+	Observable_1.Observable.prototype.throttleTime = throttleTime_1.throttleTime;
+	//# sourceMappingURL=throttleTime.js.map
+
+/***/ },
+/* 779 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var timeout_1 = __webpack_require__(881);
+	Observable_1.Observable.prototype.timeout = timeout_1.timeout;
+	//# sourceMappingURL=timeout.js.map
+
+/***/ },
+/* 780 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var timeoutWith_1 = __webpack_require__(882);
+	Observable_1.Observable.prototype.timeoutWith = timeoutWith_1.timeoutWith;
+	//# sourceMappingURL=timeoutWith.js.map
+
+/***/ },
+/* 781 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var toArray_1 = __webpack_require__(883);
+	Observable_1.Observable.prototype.toArray = toArray_1.toArray;
+	//# sourceMappingURL=toArray.js.map
+
+/***/ },
+/* 782 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var window_1 = __webpack_require__(884);
+	Observable_1.Observable.prototype.window = window_1.window;
+	//# sourceMappingURL=window.js.map
+
+/***/ },
+/* 783 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var windowCount_1 = __webpack_require__(885);
+	Observable_1.Observable.prototype.windowCount = windowCount_1.windowCount;
+	//# sourceMappingURL=windowCount.js.map
+
+/***/ },
+/* 784 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var windowTime_1 = __webpack_require__(886);
+	Observable_1.Observable.prototype.windowTime = windowTime_1.windowTime;
+	//# sourceMappingURL=windowTime.js.map
+
+/***/ },
+/* 785 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var windowToggle_1 = __webpack_require__(887);
+	Observable_1.Observable.prototype.windowToggle = windowToggle_1.windowToggle;
+	//# sourceMappingURL=windowToggle.js.map
+
+/***/ },
+/* 786 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var windowWhen_1 = __webpack_require__(888);
+	Observable_1.Observable.prototype.windowWhen = windowWhen_1.windowWhen;
+	//# sourceMappingURL=windowWhen.js.map
+
+/***/ },
+/* 787 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var withLatestFrom_1 = __webpack_require__(889);
+	Observable_1.Observable.prototype.withLatestFrom = withLatestFrom_1.withLatestFrom;
+	//# sourceMappingURL=withLatestFrom.js.map
+
+/***/ },
+/* 788 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var zip_1 = __webpack_require__(305);
+	Observable_1.Observable.prototype.zip = zip_1.zipProto;
+	//# sourceMappingURL=zip.js.map
+
+/***/ },
+/* 789 */
+/***/ function(module, exports, __webpack_require__) {
+
+	"use strict";
+	var Observable_1 = __webpack_require__(2);
+	var zipAll_1 = __webpack_require__(890);
 	Observable_1.Observable.prototype.zipAll = zipAll_1.zipAll;
 	//# sourceMappingURL=zipAll.js.map
 
 /***/ },
-/* 731 */,
-/* 732 */
+/* 790 */,
+/* 791 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8771,9 +13955,9 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(38);
-	var AsyncSubject_1 = __webpack_require__(185);
+	var tryCatch_1 = __webpack_require__(48);
+	var errorObject_1 = __webpack_require__(42);
+	var AsyncSubject_1 = __webpack_require__(194);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -8908,7 +14092,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=BoundCallbackObservable.js.map
 
 /***/ },
-/* 733 */
+/* 792 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -8918,9 +14102,9 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(38);
-	var AsyncSubject_1 = __webpack_require__(185);
+	var tryCatch_1 = __webpack_require__(48);
+	var errorObject_1 = __webpack_require__(42);
+	var AsyncSubject_1 = __webpack_require__(194);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -9059,7 +14243,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=BoundNodeCallbackObservable.js.map
 
 /***/ },
-/* 734 */
+/* 793 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9069,8 +14253,8 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var subscribeToResult_1 = __webpack_require__(13);
-	var OuterSubscriber_1 = __webpack_require__(12);
+	var subscribeToResult_1 = __webpack_require__(15);
+	var OuterSubscriber_1 = __webpack_require__(14);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -9157,7 +14341,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=DeferObservable.js.map
 
 /***/ },
-/* 735 */
+/* 794 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9244,8 +14428,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=ErrorObservable.js.map
 
 /***/ },
-/* 736 */,
-/* 737 */
+/* 795 */,
+/* 796 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9255,9 +14439,9 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(38);
-	var Subscription_1 = __webpack_require__(41);
+	var tryCatch_1 = __webpack_require__(48);
+	var errorObject_1 = __webpack_require__(42);
+	var Subscription_1 = __webpack_require__(46);
 	function isNodeStyleEventEmmitter(sourceObj) {
 	    return !!sourceObj && typeof sourceObj.addListener === 'function' && typeof sourceObj.removeListener === 'function';
 	}
@@ -9344,7 +14528,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=FromEventObservable.js.map
 
 /***/ },
-/* 738 */
+/* 797 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9354,9 +14538,9 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var Subscription_1 = __webpack_require__(41);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(38);
+	var Subscription_1 = __webpack_require__(46);
+	var tryCatch_1 = __webpack_require__(48);
+	var errorObject_1 = __webpack_require__(42);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -9410,8 +14594,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=FromEventPatternObservable.js.map
 
 /***/ },
-/* 739 */,
-/* 740 */
+/* 798 */,
+/* 799 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9420,9 +14604,9 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var isNumeric_1 = __webpack_require__(294);
+	var isNumeric_1 = __webpack_require__(309);
 	var Observable_1 = __webpack_require__(2);
-	var async_1 = __webpack_require__(42);
+	var async_1 = __webpack_require__(47);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -9504,8 +14688,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=IntervalObservable.js.map
 
 /***/ },
-/* 741 */,
-/* 742 */
+/* 800 */,
+/* 801 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9515,7 +14699,7 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var noop_1 = __webpack_require__(459);
+	var noop_1 = __webpack_require__(483);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -9569,7 +14753,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=NeverObservable.js.map
 
 /***/ },
-/* 743 */
+/* 802 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9670,7 +14854,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=RangeObservable.js.map
 
 /***/ },
-/* 744 */
+/* 803 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9680,8 +14864,8 @@ webpackJsonp([2],[
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
 	var Observable_1 = __webpack_require__(2);
-	var asap_1 = __webpack_require__(454);
-	var isNumeric_1 = __webpack_require__(294);
+	var asap_1 = __webpack_require__(478);
+	var isNumeric_1 = __webpack_require__(309);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -9726,7 +14910,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=SubscribeOnObservable.js.map
 
 /***/ },
-/* 745 */
+/* 804 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9735,11 +14919,11 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var isNumeric_1 = __webpack_require__(294);
+	var isNumeric_1 = __webpack_require__(309);
 	var Observable_1 = __webpack_require__(2);
-	var async_1 = __webpack_require__(42);
-	var isScheduler_1 = __webpack_require__(99);
-	var isDate_1 = __webpack_require__(195);
+	var async_1 = __webpack_require__(47);
+	var isScheduler_1 = __webpack_require__(106);
+	var isDate_1 = __webpack_require__(204);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @extends {Ignored}
@@ -9838,134 +15022,134 @@ webpackJsonp([2],[
 	//# sourceMappingURL=TimerObservable.js.map
 
 /***/ },
-/* 746 */
+/* 805 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var BoundCallbackObservable_1 = __webpack_require__(732);
+	var BoundCallbackObservable_1 = __webpack_require__(791);
 	exports.bindCallback = BoundCallbackObservable_1.BoundCallbackObservable.create;
 	//# sourceMappingURL=bindCallback.js.map
 
 /***/ },
-/* 747 */
+/* 806 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var BoundNodeCallbackObservable_1 = __webpack_require__(733);
+	var BoundNodeCallbackObservable_1 = __webpack_require__(792);
 	exports.bindNodeCallback = BoundNodeCallbackObservable_1.BoundNodeCallbackObservable.create;
 	//# sourceMappingURL=bindNodeCallback.js.map
 
 /***/ },
-/* 748 */
+/* 807 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var concat_1 = __webpack_require__(288);
+	var concat_1 = __webpack_require__(303);
 	exports.concat = concat_1.concatStatic;
 	//# sourceMappingURL=concat.js.map
 
 /***/ },
-/* 749 */
+/* 808 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var DeferObservable_1 = __webpack_require__(734);
+	var DeferObservable_1 = __webpack_require__(793);
 	exports.defer = DeferObservable_1.DeferObservable.create;
 	//# sourceMappingURL=defer.js.map
 
 /***/ },
-/* 750 */
+/* 809 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var EmptyObservable_1 = __webpack_require__(84);
+	var EmptyObservable_1 = __webpack_require__(91);
 	exports.empty = EmptyObservable_1.EmptyObservable.create;
 	//# sourceMappingURL=empty.js.map
 
 /***/ },
-/* 751 */,
-/* 752 */
+/* 810 */,
+/* 811 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var FromEventObservable_1 = __webpack_require__(737);
+	var FromEventObservable_1 = __webpack_require__(796);
 	exports.fromEvent = FromEventObservable_1.FromEventObservable.create;
 	//# sourceMappingURL=fromEvent.js.map
 
 /***/ },
-/* 753 */
+/* 812 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var FromEventPatternObservable_1 = __webpack_require__(738);
+	var FromEventPatternObservable_1 = __webpack_require__(797);
 	exports.fromEventPattern = FromEventPatternObservable_1.FromEventPatternObservable.create;
 	//# sourceMappingURL=fromEventPattern.js.map
 
 /***/ },
-/* 754 */
+/* 813 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var IntervalObservable_1 = __webpack_require__(740);
+	var IntervalObservable_1 = __webpack_require__(799);
 	exports.interval = IntervalObservable_1.IntervalObservable.create;
 	//# sourceMappingURL=interval.js.map
 
 /***/ },
-/* 755 */
+/* 814 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var merge_1 = __webpack_require__(449);
+	var merge_1 = __webpack_require__(473);
 	exports.merge = merge_1.mergeStatic;
 	//# sourceMappingURL=merge.js.map
 
 /***/ },
-/* 756 */
+/* 815 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var NeverObservable_1 = __webpack_require__(742);
+	var NeverObservable_1 = __webpack_require__(801);
 	exports.never = NeverObservable_1.NeverObservable.create;
 	//# sourceMappingURL=never.js.map
 
 /***/ },
-/* 757 */
+/* 816 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var RangeObservable_1 = __webpack_require__(743);
+	var RangeObservable_1 = __webpack_require__(802);
 	exports.range = RangeObservable_1.RangeObservable.create;
 	//# sourceMappingURL=range.js.map
 
 /***/ },
-/* 758 */
+/* 817 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ErrorObservable_1 = __webpack_require__(735);
+	var ErrorObservable_1 = __webpack_require__(794);
 	exports._throw = ErrorObservable_1.ErrorObservable.create;
 	//# sourceMappingURL=throw.js.map
 
 /***/ },
-/* 759 */
+/* 818 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var TimerObservable_1 = __webpack_require__(745);
+	var TimerObservable_1 = __webpack_require__(804);
 	exports.timer = TimerObservable_1.TimerObservable.create;
 	//# sourceMappingURL=timer.js.map
 
 /***/ },
-/* 760 */
+/* 819 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var zip_1 = __webpack_require__(290);
+	var zip_1 = __webpack_require__(305);
 	exports.zip = zip_1.zipStatic;
 	//# sourceMappingURL=zip.js.map
 
 /***/ },
-/* 761 */
+/* 820 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -9974,10 +15158,10 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(38);
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var tryCatch_1 = __webpack_require__(48);
+	var errorObject_1 = __webpack_require__(42);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * @param durationSelector
 	 * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
@@ -10046,7 +15230,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=audit.js.map
 
 /***/ },
-/* 762 */
+/* 821 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10055,8 +15239,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var async_1 = __webpack_require__(42);
-	var Subscriber_1 = __webpack_require__(6);
+	var async_1 = __webpack_require__(47);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * @param delay
 	 * @param scheduler
@@ -10120,7 +15304,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=auditTime.js.map
 
 /***/ },
-/* 763 */
+/* 822 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10129,8 +15313,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Buffers the source Observable values until `closingNotifier` emits.
 	 *
@@ -10201,7 +15385,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=buffer.js.map
 
 /***/ },
-/* 764 */
+/* 823 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10210,7 +15394,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * Buffers the source Observable values until the size hits the maximum
 	 * `bufferSize` given.
@@ -10319,7 +15503,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=bufferCount.js.map
 
 /***/ },
-/* 765 */
+/* 824 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10328,8 +15512,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var async_1 = __webpack_require__(42);
+	var Subscriber_1 = __webpack_require__(8);
+	var async_1 = __webpack_require__(47);
 	/**
 	 * Buffers the source Observable values for a specific time period.
 	 *
@@ -10472,7 +15656,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=bufferTime.js.map
 
 /***/ },
-/* 766 */
+/* 825 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10481,9 +15665,9 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscription_1 = __webpack_require__(41);
-	var subscribeToResult_1 = __webpack_require__(13);
-	var OuterSubscriber_1 = __webpack_require__(12);
+	var Subscription_1 = __webpack_require__(46);
+	var subscribeToResult_1 = __webpack_require__(15);
+	var OuterSubscriber_1 = __webpack_require__(14);
 	/**
 	 * Buffers the source Observable values starting from an emission from
 	 * `openings` and ending when the output of `closingSelector` emits.
@@ -10629,7 +15813,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=bufferToggle.js.map
 
 /***/ },
-/* 767 */
+/* 826 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10638,11 +15822,11 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscription_1 = __webpack_require__(41);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(38);
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var Subscription_1 = __webpack_require__(46);
+	var tryCatch_1 = __webpack_require__(48);
+	var errorObject_1 = __webpack_require__(42);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Buffers the source Observable values, using a factory function of closing
 	 * Observables to determine when to close, emit, and reset the buffer.
@@ -10756,11 +15940,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=bufferWhen.js.map
 
 /***/ },
-/* 768 */
+/* 827 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var publishReplay_1 = __webpack_require__(452);
+	var publishReplay_1 = __webpack_require__(476);
 	/**
 	 * @param bufferSize
 	 * @param windowTime
@@ -10778,7 +15962,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=cache.js.map
 
 /***/ },
-/* 769 */
+/* 828 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -10787,7 +15971,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * Catches errors on the observable to be handled by returning a new observable or throwing an error.
 	 * @param {function} selector a function that takes as arguments `err`, which is the error, and `caught`, which
@@ -10850,11 +16034,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=catch.js.map
 
 /***/ },
-/* 770 */
+/* 829 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var combineLatest_1 = __webpack_require__(287);
+	var combineLatest_1 = __webpack_require__(302);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable by waiting
 	 * for the outer Observable to complete, then applying {@link combineLatest}.
@@ -10902,11 +16086,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=combineAll.js.map
 
 /***/ },
-/* 771 */
+/* 830 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeAll_1 = __webpack_require__(190);
+	var mergeAll_1 = __webpack_require__(199);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable by
 	 * concatenating the inner Observables in order.
@@ -10956,11 +16140,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=concatAll.js.map
 
 /***/ },
-/* 772 */
+/* 831 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeMap_1 = __webpack_require__(450);
+	var mergeMap_1 = __webpack_require__(474);
 	/**
 	 * Projects each source value to an Observable which is merged in the output
 	 * Observable, in a serialized fashion waiting for each one to complete before
@@ -11024,11 +16208,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=concatMap.js.map
 
 /***/ },
-/* 773 */
+/* 832 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var mergeMapTo_1 = __webpack_require__(451);
+	var mergeMapTo_1 = __webpack_require__(475);
 	/**
 	 * Projects each source value to the same Observable which is merged multiple
 	 * times in a serialized fashion on the output Observable.
@@ -11086,7 +16270,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=concatMapTo.js.map
 
 /***/ },
-/* 774 */
+/* 833 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11095,7 +16279,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * Counts the number of emissions on the source and emits that number when the
 	 * source completes.
@@ -11199,7 +16383,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=count.js.map
 
 /***/ },
-/* 775 */
+/* 834 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11208,8 +16392,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Returns the source Observable delayed by the computed debounce duration,
 	 * with the duration lengthened if a new source item arrives before the delay
@@ -11301,8 +16485,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=debounce.js.map
 
 /***/ },
-/* 776 */,
-/* 777 */
+/* 835 */,
+/* 836 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11311,7 +16495,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * Returns an Observable that emits the elements of the source or a specified default value if empty.
 	 * @param {any} defaultValue the default value used if source is empty; defaults to null.
@@ -11360,7 +16544,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=defaultIfEmpty.js.map
 
 /***/ },
-/* 778 */
+/* 837 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11369,10 +16553,10 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var async_1 = __webpack_require__(42);
-	var isDate_1 = __webpack_require__(195);
-	var Subscriber_1 = __webpack_require__(6);
-	var Notification_1 = __webpack_require__(187);
+	var async_1 = __webpack_require__(47);
+	var isDate_1 = __webpack_require__(204);
+	var Subscriber_1 = __webpack_require__(8);
+	var Notification_1 = __webpack_require__(196);
 	/**
 	 * Delays the emission of items from the source Observable by a given timeout or
 	 * until a given Date.
@@ -11500,7 +16684,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=delay.js.map
 
 /***/ },
-/* 779 */
+/* 838 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11509,10 +16693,10 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	var Observable_1 = __webpack_require__(2);
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Returns an Observable that delays the emission of items from the source Observable
 	 * by a subscription delay and a delay selector function for each element.
@@ -11659,7 +16843,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=delayWhen.js.map
 
 /***/ },
-/* 780 */
+/* 839 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11668,7 +16852,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * Returns an Observable that transforms Notification objects into the items or notifications they represent.
 	 *
@@ -11708,7 +16892,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=dematerialize.js.map
 
 /***/ },
-/* 781 */
+/* 840 */,
+/* 841 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11717,9 +16902,9 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(38);
+	var Subscriber_1 = __webpack_require__(8);
+	var tryCatch_1 = __webpack_require__(48);
+	var errorObject_1 = __webpack_require__(42);
 	/**
 	 * Returns an Observable that emits all items emitted by the source Observable that are distinct by comparison from the previous item.
 	 * If a comparator function is provided, then it will be called for each item to test for whether or not that value should be emitted.
@@ -11790,7 +16975,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=distinctUntilChanged.js.map
 
 /***/ },
-/* 782 */
+/* 842 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11799,7 +16984,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * Perform a side effect for every emission on the source Observable, but return
 	 * an Observable that is identical to the source.
@@ -11907,8 +17092,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=do.js.map
 
 /***/ },
-/* 783 */,
-/* 784 */
+/* 843 */,
+/* 844 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -11917,10 +17102,10 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(38);
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var tryCatch_1 = __webpack_require__(48);
+	var errorObject_1 = __webpack_require__(42);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Returns an Observable where for each item in the source Observable, the supplied function is applied to each item,
 	 * resulting in a new value to then be applied again with the function.
@@ -12028,7 +17213,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=expand.js.map
 
 /***/ },
-/* 785 */
+/* 845 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12037,8 +17222,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var Subscription_1 = __webpack_require__(41);
+	var Subscriber_1 = __webpack_require__(8);
+	var Subscription_1 = __webpack_require__(46);
 	/**
 	 * Returns an Observable that mirrors the source Observable, but will call a specified function when
 	 * the source terminates on complete or error.
@@ -12076,7 +17261,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=finally.js.map
 
 /***/ },
-/* 786 */
+/* 846 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12085,8 +17270,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var EmptyError_1 = __webpack_require__(194);
+	var Subscriber_1 = __webpack_require__(8);
+	var EmptyError_1 = __webpack_require__(203);
 	/**
 	 * Emits only the first value (or the first value that meets some condition)
 	 * emitted by the source Observable.
@@ -12229,7 +17414,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=first.js.map
 
 /***/ },
-/* 787 */
+/* 847 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12238,12 +17423,12 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var Subscription_1 = __webpack_require__(41);
+	var Subscriber_1 = __webpack_require__(8);
+	var Subscription_1 = __webpack_require__(46);
 	var Observable_1 = __webpack_require__(2);
-	var Subject_1 = __webpack_require__(18);
-	var Map_1 = __webpack_require__(837);
-	var FastMap_1 = __webpack_require__(835);
+	var Subject_1 = __webpack_require__(20);
+	var Map_1 = __webpack_require__(897);
+	var FastMap_1 = __webpack_require__(895);
 	/**
 	 * Groups the items emitted by an Observable according to a specified criterion,
 	 * and emits these grouped items as `GroupedObservables`, one
@@ -12484,7 +17669,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=groupBy.js.map
 
 /***/ },
-/* 788 */
+/* 848 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12493,8 +17678,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var noop_1 = __webpack_require__(459);
+	var Subscriber_1 = __webpack_require__(8);
+	var noop_1 = __webpack_require__(483);
 	/**
 	 * Ignores all items emitted by the source Observable and only passes calls of `complete` or `error`.
 	 *
@@ -12536,7 +17721,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=ignoreElements.js.map
 
 /***/ },
-/* 789 */
+/* 849 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12545,8 +17730,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var EmptyError_1 = __webpack_require__(194);
+	var Subscriber_1 = __webpack_require__(8);
+	var EmptyError_1 = __webpack_require__(203);
 	/**
 	 * Returns an Observable that emits only the last item emitted by the source Observable.
 	 * It optionally takes a predicate function as a parameter, in which case, rather than emitting
@@ -12659,7 +17844,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=last.js.map
 
 /***/ },
-/* 790 */
+/* 850 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -12676,7 +17861,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=let.js.map
 
 /***/ },
-/* 791 */
+/* 851 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12685,7 +17870,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * Emits the given constant value on the output Observable every time the source
 	 * Observable emits a value.
@@ -12744,7 +17929,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=mapTo.js.map
 
 /***/ },
-/* 792 */
+/* 852 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12753,8 +17938,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var Notification_1 = __webpack_require__(187);
+	var Subscriber_1 = __webpack_require__(8);
+	var Notification_1 = __webpack_require__(196);
 	/**
 	 * Returns an Observable that represents all of the emissions and notifications
 	 * from the source Observable into emissions marked with their original types
@@ -12810,12 +17995,12 @@ webpackJsonp([2],[
 	//# sourceMappingURL=materialize.js.map
 
 /***/ },
-/* 793 */
+/* 853 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var not_1 = __webpack_require__(839);
-	var filter_1 = __webpack_require__(447);
+	var not_1 = __webpack_require__(899);
+	var filter_1 = __webpack_require__(471);
 	/**
 	 * @param predicate
 	 * @param thisArg
@@ -12833,11 +18018,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=partition.js.map
 
 /***/ },
-/* 794 */
+/* 854 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var map_1 = __webpack_require__(448);
+	var map_1 = __webpack_require__(472);
 	/**
 	 * Maps each source value (an object) to its specified nested property.
 	 *
@@ -12896,13 +18081,13 @@ webpackJsonp([2],[
 	//# sourceMappingURL=pluck.js.map
 
 /***/ },
-/* 795 */,
-/* 796 */
+/* 855 */,
+/* 856 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var BehaviorSubject_1 = __webpack_require__(186);
-	var multicast_1 = __webpack_require__(121);
+	var BehaviorSubject_1 = __webpack_require__(195);
+	var multicast_1 = __webpack_require__(130);
 	/**
 	 * @param value
 	 * @return {ConnectableObservable<T>}
@@ -12916,12 +18101,12 @@ webpackJsonp([2],[
 	//# sourceMappingURL=publishBehavior.js.map
 
 /***/ },
-/* 797 */
+/* 857 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var AsyncSubject_1 = __webpack_require__(185);
-	var multicast_1 = __webpack_require__(121);
+	var AsyncSubject_1 = __webpack_require__(194);
+	var multicast_1 = __webpack_require__(130);
 	/**
 	 * @return {ConnectableObservable<T>}
 	 * @method publishLast
@@ -12934,8 +18119,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=publishLast.js.map
 
 /***/ },
-/* 798 */,
-/* 799 */
+/* 858 */,
+/* 859 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -12944,8 +18129,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var EmptyObservable_1 = __webpack_require__(84);
+	var Subscriber_1 = __webpack_require__(8);
+	var EmptyObservable_1 = __webpack_require__(91);
 	/**
 	 * Returns an Observable that repeats the stream of items emitted by the source Observable at most count times,
 	 * on a particular Scheduler.
@@ -13015,7 +18200,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=repeat.js.map
 
 /***/ },
-/* 800 */
+/* 860 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13024,7 +18209,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * Returns an Observable that mirrors the source Observable, resubscribing to it if it calls `error` and the
 	 * predicate returns true for that specific exception and retry count.
@@ -13089,7 +18274,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=retry.js.map
 
 /***/ },
-/* 801 */
+/* 861 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13098,11 +18283,11 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(18);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(38);
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var Subject_1 = __webpack_require__(20);
+	var tryCatch_1 = __webpack_require__(48);
+	var errorObject_1 = __webpack_require__(42);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Returns an Observable that emits the same values as the source observable with the exception of an `error`.
 	 * An `error` will cause the emission of the Throwable that cause the error to the Observable returned from
@@ -13200,7 +18385,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=retryWhen.js.map
 
 /***/ },
-/* 802 */
+/* 862 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13209,8 +18394,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Returns an Observable that, when the specified sampler Observable emits an item or completes, it then emits the most
 	 * recently emitted item (if any) emitted by the source Observable since the previous emission from the sampler
@@ -13270,7 +18455,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=sample.js.map
 
 /***/ },
-/* 803 */
+/* 863 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13279,8 +18464,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var async_1 = __webpack_require__(42);
+	var Subscriber_1 = __webpack_require__(8);
+	var async_1 = __webpack_require__(47);
 	/**
 	 * @param delay
 	 * @param scheduler
@@ -13337,7 +18522,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=sampleTime.js.map
 
 /***/ },
-/* 804 */
+/* 864 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13346,7 +18531,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * Applies an accumulation function over the source Observable, and returns each
 	 * intermediate result, with an optional seed value.
@@ -13449,12 +18634,12 @@ webpackJsonp([2],[
 	//# sourceMappingURL=scan.js.map
 
 /***/ },
-/* 805 */
+/* 865 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var multicast_1 = __webpack_require__(121);
-	var Subject_1 = __webpack_require__(18);
+	var multicast_1 = __webpack_require__(130);
+	var Subject_1 = __webpack_require__(20);
 	function shareSubjectFactory() {
 	    return new Subject_1.Subject();
 	}
@@ -13478,7 +18663,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=share.js.map
 
 /***/ },
-/* 806 */
+/* 866 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13487,8 +18672,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var EmptyError_1 = __webpack_require__(194);
+	var Subscriber_1 = __webpack_require__(8);
+	var EmptyError_1 = __webpack_require__(203);
 	/**
 	 * Returns an Observable that emits the single item emitted by the source Observable that matches a specified
 	 * predicate, if that Observable emits one such item. If the source Observable emits more than one such item or no
@@ -13578,7 +18763,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=single.js.map
 
 /***/ },
-/* 807 */
+/* 867 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13587,7 +18772,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * Returns an Observable that skips `n` items emitted by an Observable.
 	 *
@@ -13634,7 +18819,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=skip.js.map
 
 /***/ },
-/* 808 */
+/* 868 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13643,8 +18828,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Returns an Observable that skips items emitted by the source Observable until a second Observable emits an item.
 	 *
@@ -13710,7 +18895,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=skipUntil.js.map
 
 /***/ },
-/* 809 */
+/* 869 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13719,7 +18904,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * Returns an Observable that skips all items emitted by the source Observable as long as a specified condition holds
 	 * true, but emits all further source items as soon as the condition becomes false.
@@ -13781,15 +18966,15 @@ webpackJsonp([2],[
 	//# sourceMappingURL=skipWhile.js.map
 
 /***/ },
-/* 810 */
+/* 870 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var ArrayObservable_1 = __webpack_require__(83);
-	var ScalarObservable_1 = __webpack_require__(286);
-	var EmptyObservable_1 = __webpack_require__(84);
-	var concat_1 = __webpack_require__(288);
-	var isScheduler_1 = __webpack_require__(99);
+	var ArrayObservable_1 = __webpack_require__(90);
+	var ScalarObservable_1 = __webpack_require__(301);
+	var EmptyObservable_1 = __webpack_require__(91);
+	var concat_1 = __webpack_require__(303);
+	var isScheduler_1 = __webpack_require__(106);
 	/**
 	 * Returns an Observable that emits the items in a specified Iterable before it begins to emit items emitted by the
 	 * source Observable.
@@ -13829,11 +19014,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=startWith.js.map
 
 /***/ },
-/* 811 */
+/* 871 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var SubscribeOnObservable_1 = __webpack_require__(744);
+	var SubscribeOnObservable_1 = __webpack_require__(803);
 	/**
 	 * Asynchronously subscribes Observers to this Observable on the specified Scheduler.
 	 *
@@ -13853,7 +19038,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=subscribeOn.js.map
 
 /***/ },
-/* 812 */
+/* 872 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13862,8 +19047,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Converts a higher-order Observable into a first-order Observable by
 	 * subscribing to only the most recently emitted of those inner Observables.
@@ -13966,7 +19151,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=switch.js.map
 
 /***/ },
-/* 813 */
+/* 873 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -13975,8 +19160,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Projects each source value to an Observable which is merged in the output
 	 * Observable, emitting values only from the most recently projected Observable.
@@ -14110,7 +19295,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=switchMap.js.map
 
 /***/ },
-/* 814 */
+/* 874 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14119,8 +19304,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Projects each source value to the same Observable which is flattened multiple
 	 * times with {@link switch} in the output Observable.
@@ -14241,8 +19426,8 @@ webpackJsonp([2],[
 	//# sourceMappingURL=switchMapTo.js.map
 
 /***/ },
-/* 815 */,
-/* 816 */
+/* 875 */,
+/* 876 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14251,9 +19436,9 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var ArgumentOutOfRangeError_1 = __webpack_require__(292);
-	var EmptyObservable_1 = __webpack_require__(84);
+	var Subscriber_1 = __webpack_require__(8);
+	var ArgumentOutOfRangeError_1 = __webpack_require__(307);
+	var EmptyObservable_1 = __webpack_require__(91);
 	/**
 	 * @throws {ArgumentOutOfRangeError} When using `takeLast(i)`, it delivers an
 	 * ArgumentOutOrRangeError to the Observer's `error` callback if `i < 0`.
@@ -14326,7 +19511,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=takeLast.js.map
 
 /***/ },
-/* 817 */
+/* 877 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14335,8 +19520,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * @param notifier
 	 * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
@@ -14379,7 +19564,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=takeUntil.js.map
 
 /***/ },
-/* 818 */
+/* 878 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14388,7 +19573,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * @param predicate
 	 * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
@@ -14446,7 +19631,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=takeWhile.js.map
 
 /***/ },
-/* 819 */
+/* 879 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14455,8 +19640,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * @param durationSelector
 	 * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
@@ -14527,7 +19712,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=throttle.js.map
 
 /***/ },
-/* 820 */
+/* 880 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14536,8 +19721,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var async_1 = __webpack_require__(42);
+	var Subscriber_1 = __webpack_require__(8);
+	var async_1 = __webpack_require__(47);
 	/**
 	 * @param delay
 	 * @param scheduler
@@ -14595,7 +19780,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=throttleTime.js.map
 
 /***/ },
-/* 821 */
+/* 881 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14604,9 +19789,9 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var async_1 = __webpack_require__(42);
-	var isDate_1 = __webpack_require__(195);
-	var Subscriber_1 = __webpack_require__(6);
+	var async_1 = __webpack_require__(47);
+	var isDate_1 = __webpack_require__(204);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * @param due
 	 * @param errorToSend
@@ -14702,7 +19887,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=timeout.js.map
 
 /***/ },
-/* 822 */
+/* 882 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14711,10 +19896,10 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var async_1 = __webpack_require__(42);
-	var isDate_1 = __webpack_require__(195);
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var async_1 = __webpack_require__(47);
+	var isDate_1 = __webpack_require__(204);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * @param due
 	 * @param withObservable
@@ -14817,7 +20002,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=timeoutWith.js.map
 
 /***/ },
-/* 823 */
+/* 883 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14826,7 +20011,7 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
+	var Subscriber_1 = __webpack_require__(8);
 	/**
 	 * @return {Observable<any[]>|WebSocketSubject<T>|Observable<T>}
 	 * @method toArray
@@ -14867,7 +20052,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=toArray.js.map
 
 /***/ },
-/* 824 */
+/* 884 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14876,9 +20061,9 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(18);
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var Subject_1 = __webpack_require__(20);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Branch out the source Observable values as a nested Observable whenever
 	 * `windowBoundaries` emits.
@@ -14977,7 +20162,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=window.js.map
 
 /***/ },
-/* 825 */
+/* 885 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -14986,8 +20171,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var Subject_1 = __webpack_require__(18);
+	var Subscriber_1 = __webpack_require__(8);
+	var Subject_1 = __webpack_require__(20);
 	/**
 	 * Branch out the source Observable values as a nested Observable with each
 	 * nested Observable emitting at most `windowSize` values.
@@ -15108,7 +20293,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=windowCount.js.map
 
 /***/ },
-/* 826 */
+/* 886 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15117,9 +20302,9 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subscriber_1 = __webpack_require__(6);
-	var Subject_1 = __webpack_require__(18);
-	var async_1 = __webpack_require__(42);
+	var Subscriber_1 = __webpack_require__(8);
+	var Subject_1 = __webpack_require__(20);
+	var async_1 = __webpack_require__(47);
 	/**
 	 * Branch out the source Observable values as a nested Observable periodically
 	 * in time.
@@ -15283,7 +20468,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=windowTime.js.map
 
 /***/ },
-/* 827 */
+/* 887 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15292,12 +20477,12 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(18);
-	var Subscription_1 = __webpack_require__(41);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(38);
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var Subject_1 = __webpack_require__(20);
+	var Subscription_1 = __webpack_require__(46);
+	var tryCatch_1 = __webpack_require__(48);
+	var errorObject_1 = __webpack_require__(42);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Branch out the source Observable values as a nested Observable starting from
 	 * an emission from `openings` and ending when the output of `closingSelector`
@@ -15468,7 +20653,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=windowToggle.js.map
 
 /***/ },
-/* 828 */
+/* 888 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15477,11 +20662,11 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Subject_1 = __webpack_require__(18);
-	var tryCatch_1 = __webpack_require__(43);
-	var errorObject_1 = __webpack_require__(38);
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var Subject_1 = __webpack_require__(20);
+	var tryCatch_1 = __webpack_require__(48);
+	var errorObject_1 = __webpack_require__(42);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Branch out the source Observable values as a nested Observable using a
 	 * factory function of closing Observables to determine when to start a new
@@ -15601,7 +20786,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=windowWhen.js.map
 
 /***/ },
-/* 829 */
+/* 889 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15610,8 +20795,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var OuterSubscriber_1 = __webpack_require__(12);
-	var subscribeToResult_1 = __webpack_require__(13);
+	var OuterSubscriber_1 = __webpack_require__(14);
+	var subscribeToResult_1 = __webpack_require__(15);
 	/**
 	 * Combines the source Observable with other Observables to create an Observable
 	 * whose values are calculated from the latest values of each, only when the
@@ -15736,11 +20921,11 @@ webpackJsonp([2],[
 	//# sourceMappingURL=withLatestFrom.js.map
 
 /***/ },
-/* 830 */
+/* 890 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var zip_1 = __webpack_require__(290);
+	var zip_1 = __webpack_require__(305);
 	/**
 	 * @param project
 	 * @return {Observable<R>|WebSocketSubject<T>|Observable<T>}
@@ -15754,7 +20939,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=zipAll.js.map
 
 /***/ },
-/* 831 */
+/* 891 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15763,8 +20948,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var Immediate_1 = __webpack_require__(836);
-	var FutureAction_1 = __webpack_require__(191);
+	var Immediate_1 = __webpack_require__(896);
+	var FutureAction_1 = __webpack_require__(200);
 	/**
 	 * We need this JSDoc comment for affecting ESDoc.
 	 * @ignore
@@ -15810,7 +20995,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=AsapAction.js.map
 
 /***/ },
-/* 832 */
+/* 892 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -15819,8 +21004,8 @@ webpackJsonp([2],[
 	    function __() { this.constructor = d; }
 	    d.prototype = b === null ? Object.create(b) : (__.prototype = b.prototype, new __());
 	};
-	var AsapAction_1 = __webpack_require__(831);
-	var QueueScheduler_1 = __webpack_require__(291);
+	var AsapAction_1 = __webpack_require__(891);
+	var QueueScheduler_1 = __webpack_require__(306);
 	var AsapScheduler = (function (_super) {
 	    __extends(AsapScheduler, _super);
 	    function AsapScheduler() {
@@ -15835,9 +21020,9 @@ webpackJsonp([2],[
 	//# sourceMappingURL=AsapScheduler.js.map
 
 /***/ },
-/* 833 */,
-/* 834 */,
-/* 835 */
+/* 893 */,
+/* 894 */,
+/* 895 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -15873,14 +21058,14 @@ webpackJsonp([2],[
 	//# sourceMappingURL=FastMap.js.map
 
 /***/ },
-/* 836 */
+/* 896 */
 /***/ function(module, exports, __webpack_require__) {
 
 	/**
 	Some credit for this helper goes to http://github.com/YuzuJS/setImmediate
 	*/
 	"use strict";
-	var root_1 = __webpack_require__(52);
+	var root_1 = __webpack_require__(59);
 	var ImmediateDefinition = (function () {
 	    function ImmediateDefinition(root) {
 	        this.root = root;
@@ -16087,17 +21272,17 @@ webpackJsonp([2],[
 	//# sourceMappingURL=Immediate.js.map
 
 /***/ },
-/* 837 */
+/* 897 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var root_1 = __webpack_require__(52);
-	var MapPolyfill_1 = __webpack_require__(838);
+	var root_1 = __webpack_require__(59);
+	var MapPolyfill_1 = __webpack_require__(898);
 	exports.Map = root_1.root.Map || (function () { return MapPolyfill_1.MapPolyfill; })();
 	//# sourceMappingURL=Map.js.map
 
 /***/ },
-/* 838 */
+/* 898 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -16149,7 +21334,7 @@ webpackJsonp([2],[
 	//# sourceMappingURL=MapPolyfill.js.map
 
 /***/ },
-/* 839 */
+/* 899 */
 /***/ function(module, exports) {
 
 	"use strict";
@@ -16165,66 +21350,6 @@ webpackJsonp([2],[
 	//# sourceMappingURL=not.js.map
 
 /***/ },
-/* 840 */,
-/* 841 */,
-/* 842 */,
-/* 843 */,
-/* 844 */,
-/* 845 */,
-/* 846 */,
-/* 847 */,
-/* 848 */,
-/* 849 */,
-/* 850 */,
-/* 851 */,
-/* 852 */,
-/* 853 */,
-/* 854 */,
-/* 855 */,
-/* 856 */,
-/* 857 */,
-/* 858 */,
-/* 859 */,
-/* 860 */,
-/* 861 */,
-/* 862 */,
-/* 863 */,
-/* 864 */,
-/* 865 */,
-/* 866 */,
-/* 867 */,
-/* 868 */,
-/* 869 */,
-/* 870 */,
-/* 871 */,
-/* 872 */,
-/* 873 */,
-/* 874 */,
-/* 875 */,
-/* 876 */,
-/* 877 */,
-/* 878 */,
-/* 879 */,
-/* 880 */,
-/* 881 */,
-/* 882 */,
-/* 883 */,
-/* 884 */,
-/* 885 */,
-/* 886 */,
-/* 887 */,
-/* 888 */,
-/* 889 */,
-/* 890 */,
-/* 891 */,
-/* 892 */,
-/* 893 */,
-/* 894 */,
-/* 895 */,
-/* 896 */,
-/* 897 */,
-/* 898 */,
-/* 899 */,
 /* 900 */,
 /* 901 */,
 /* 902 */,
@@ -16330,20 +21455,80 @@ webpackJsonp([2],[
 /* 1002 */,
 /* 1003 */,
 /* 1004 */,
-/* 1005 */
+/* 1005 */,
+/* 1006 */,
+/* 1007 */,
+/* 1008 */,
+/* 1009 */,
+/* 1010 */,
+/* 1011 */,
+/* 1012 */,
+/* 1013 */,
+/* 1014 */,
+/* 1015 */,
+/* 1016 */,
+/* 1017 */,
+/* 1018 */,
+/* 1019 */,
+/* 1020 */,
+/* 1021 */,
+/* 1022 */,
+/* 1023 */,
+/* 1024 */,
+/* 1025 */,
+/* 1026 */,
+/* 1027 */,
+/* 1028 */,
+/* 1029 */,
+/* 1030 */,
+/* 1031 */,
+/* 1032 */,
+/* 1033 */,
+/* 1034 */,
+/* 1035 */,
+/* 1036 */,
+/* 1037 */,
+/* 1038 */,
+/* 1039 */,
+/* 1040 */,
+/* 1041 */,
+/* 1042 */,
+/* 1043 */,
+/* 1044 */,
+/* 1045 */,
+/* 1046 */,
+/* 1047 */,
+/* 1048 */,
+/* 1049 */,
+/* 1050 */,
+/* 1051 */,
+/* 1052 */,
+/* 1053 */,
+/* 1054 */,
+/* 1055 */,
+/* 1056 */,
+/* 1057 */,
+/* 1058 */,
+/* 1059 */,
+/* 1060 */,
+/* 1061 */,
+/* 1062 */,
+/* 1063 */,
+/* 1064 */,
+/* 1065 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
-	var paginate_pipe_1 = __webpack_require__(1006);
+	var paginate_pipe_1 = __webpack_require__(1066);
 	exports.PaginatePipe = paginate_pipe_1.PaginatePipe;
-	var pagination_service_1 = __webpack_require__(316);
+	var pagination_service_1 = __webpack_require__(331);
 	exports.PaginationService = pagination_service_1.PaginationService;
-	var pagination_controls_cmp_1 = __webpack_require__(1007);
+	var pagination_controls_cmp_1 = __webpack_require__(1067);
 	exports.PaginationControlsCmp = pagination_controls_cmp_1.PaginationControlsCmp;
 
 
 /***/ },
-/* 1006 */
+/* 1066 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16357,7 +21542,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var pagination_service_1 = __webpack_require__(316);
+	var pagination_service_1 = __webpack_require__(331);
 	var LARGE_NUMBER = Number.MAX_SAFE_INTEGER;
 	var PaginatePipe = (function () {
 	    function PaginatePipe(service) {
@@ -16455,7 +21640,8 @@ webpackJsonp([2],[
 	        if (!state) {
 	            return false;
 	        }
-	        var isMetaDataIdentical = state.size === collection.length &&
+	        var isMetaDataIdentical = state.collection === collection &&
+	            state.size === collection.length &&
 	            state.start === start &&
 	            state.end === end;
 	        if (!isMetaDataIdentical) {
@@ -16476,7 +21662,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 1007 */
+/* 1067 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16490,13 +21676,12 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var pagination_service_1 = __webpack_require__(316);
-	var template_1 = __webpack_require__(1008);
+	var pagination_service_1 = __webpack_require__(331);
+	var template_1 = __webpack_require__(1068);
 	var PaginationControlsCmp = (function () {
-	    function PaginationControlsCmp(service, changeDetectorRef) {
+	    function PaginationControlsCmp(service) {
 	        var _this = this;
 	        this.service = service;
-	        this.changeDetectorRef = changeDetectorRef;
 	        this.maxSize = 7;
 	        this.pageChange = new core_1.EventEmitter();
 	        this.pages = [];
@@ -16507,7 +21692,6 @@ webpackJsonp([2],[
 	            .subscribe(function (id) {
 	            if (_this.id === id) {
 	                _this.updatePageLinks();
-	                _this.changeDetectorRef.markForCheck();
 	            }
 	        });
 	    }
@@ -16535,16 +21719,14 @@ webpackJsonp([2],[
 	        if (this.id === undefined) {
 	            this.id = this.service.defaultId;
 	        }
-	        this.updatePageLinks();
 	    };
 	    PaginationControlsCmp.prototype.ngOnChanges = function () {
 	        this.updatePageLinks();
 	    };
 	    PaginationControlsCmp.prototype.ngAfterViewInit = function () {
 	        var _this = this;
-	        if (this.template && 0 < this.template.nativeElement.children.length) {
-	            this.hasTemplate = true;
-	            setTimeout(function () { return _this.changeDetectorRef.markForCheck(); });
+	        if ((this.template) && 0 < this.template.nativeElement.children.length) {
+	            setTimeout(function () { return _this.hasTemplate = true; });
 	        }
 	    };
 	    PaginationControlsCmp.prototype.ngOnDestroy = function () {
@@ -16591,11 +21773,6 @@ webpackJsonp([2],[
 	     */
 	    PaginationControlsCmp.prototype.getLastPage = function () {
 	        var inst = this.service.getInstance(this.id);
-	        if (inst.totalItems < 1) {
-	            // when there are 0 or fewer (an error case) items, there are no "pages" as such,
-	            // but it makes sense to consider a single, empty page as the last page.
-	            return 1;
-	        }
 	        return Math.ceil(inst.totalItems / inst.itemsPerPage);
 	    };
 	    /**
@@ -16713,10 +21890,9 @@ webpackJsonp([2],[
 	        core_1.Component({
 	            selector: 'pagination-controls',
 	            template: template_1.DEFAULT_TEMPLATE,
-	            styles: [template_1.DEFAULT_STYLES],
-	            changeDetection: core_1.ChangeDetectionStrategy.OnPush
+	            styles: [template_1.DEFAULT_STYLES]
 	        }), 
-	        __metadata('design:paramtypes', [pagination_service_1.PaginationService, core_1.ChangeDetectorRef])
+	        __metadata('design:paramtypes', [pagination_service_1.PaginationService])
 	    ], PaginationControlsCmp);
 	    return PaginationControlsCmp;
 	}());
@@ -16724,7 +21900,7 @@ webpackJsonp([2],[
 
 
 /***/ },
-/* 1008 */
+/* 1068 */
 /***/ function(module, exports) {
 
 	/**
@@ -16732,22 +21908,12 @@ webpackJsonp([2],[
 	 * from Zurb Foundation 6: http://foundation.zurb.com/sites/docs/pagination.html
 	 */
 	"use strict";
-	exports.DEFAULT_TEMPLATE = "\n    <div #template>\n        <ng-content></ng-content>\n    </div>\n    <ul class=\"ng2-pagination\" \n        role=\"navigation\" \n        aria-label=\"Pagination\" \n        *ngIf=\"!hasTemplate && !(autoHide && pages.length <= 1)\">\n\n        <li class=\"pagination-previous\" [class.disabled]=\"isFirstPage()\" *ngIf=\"directionLinks\"> \n            <a *ngIf=\"1 < getCurrent()\" (click)=\"previous()\" aria-label=\"Next page\">\n                Previous <span class=\"show-for-sr\">page</span>\n            </a>\n            <span *ngIf=\"isFirstPage()\">Previous <span class=\"show-for-sr\">page</span></span>\n        </li>\n\n        <li [class.current]=\"getCurrent() === page.value\" *ngFor=\"let page of pages\">\n            <a (click)=\"setCurrent(page.value)\" *ngIf=\"getCurrent() !== page.value\">\n                <span class=\"show-for-sr\">Page</span>\n                <span>{{ page.label }}</span>\n            </a>\n            <div *ngIf=\"getCurrent() === page.value\">\n                <span class=\"show-for-sr\">You're on page</span>\n                <span>{{ page.label }}</span> \n            </div>\n        </li>\n\n        <li class=\"pagination-next\" [class.disabled]=\"isLastPage()\" *ngIf=\"directionLinks\">\n            <a *ngIf=\"!isLastPage()\" (click)=\"next()\" aria-label=\"Next page\">\n                Next <span class=\"show-for-sr\">page</span>\n            </a>\n            <span *ngIf=\"isLastPage()\">Next <span class=\"show-for-sr\">page</span></span>\n        </li>\n\n    </ul>\n    ";
+	exports.DEFAULT_TEMPLATE = "\n    <div #template>\n        <ng-content></ng-content>\n    </div>\n    <ul class=\"ng2-pagination\" \n        role=\"navigation\" \n        aria-label=\"Pagination\" \n        *ngIf=\"!hasTemplate && !(autoHide && pages.length === 1)\">\n\n        <li class=\"pagination-previous\" [class.disabled]=\"isFirstPage()\" *ngIf=\"directionLinks\"> \n            <a *ngIf=\"1 < getCurrent()\" (click)=\"previous()\" aria-label=\"Next page\">\n                Previous <span class=\"show-for-sr\">page</span>\n            </a>\n            <span *ngIf=\"isFirstPage()\">Previous <span class=\"show-for-sr\">page</span></span>\n        </li>\n\n        <li [class.current]=\"getCurrent() === page.value\" *ngFor=\"let page of pages\">\n            <a (click)=\"setCurrent(page.value)\" *ngIf=\"getCurrent() !== page.value\">\n                <span class=\"show-for-sr\">Page</span>\n                <span>{{ page.label }}</span>\n            </a>\n            <div *ngIf=\"getCurrent() === page.value\">\n                <span class=\"show-for-sr\">You're on page</span>\n                <span>{{ page.label }}</span> \n            </div>\n        </li>\n\n        <li class=\"pagination-next\" [class.disabled]=\"isLastPage()\" *ngIf=\"directionLinks\">\n            <a *ngIf=\"!isLastPage()\" (click)=\"next()\" aria-label=\"Next page\">\n                Next <span class=\"show-for-sr\">page</span>\n            </a>\n            <span *ngIf=\"isLastPage()\">Next <span class=\"show-for-sr\">page</span></span>\n        </li>\n\n    </ul>\n    ";
 	exports.DEFAULT_STYLES = "\n.ng2-pagination {\n  margin-left: 0;\n  margin-bottom: 1rem; }\n  .ng2-pagination::before, .ng2-pagination::after {\n    content: ' ';\n    display: table; }\n  .ng2-pagination::after {\n    clear: both; }\n  .ng2-pagination li {\n    -moz-user-select: none;\n    -webkit-user-select: none;\n    -ms-user-select: none;\n    font-size: 0.875rem;\n    margin-right: 0.0625rem;\n    border-radius: 0; }\n  .ng2-pagination li {\n    display: inline-block; }\n  .ng2-pagination a,\n  .ng2-pagination button {\n    color: #0a0a0a; \n    display: block;\n    padding: 0.1875rem 0.625rem;\n    border-radius: 0; }\n    .ng2-pagination a:hover,\n    .ng2-pagination button:hover {\n      background: #e6e6e6; }\n  .ng2-pagination .current {\n    padding: 0.1875rem 0.625rem;\n    background: #2199e8;\n    color: #fefefe;\n    cursor: default; }\n  .ng2-pagination .disabled {\n    padding: 0.1875rem 0.625rem;\n    color: #cacaca;\n    cursor: default; } \n    .ng2-pagination .disabled:hover {\n      background: transparent; }\n  .ng2-pagination .ellipsis::after {\n    content: '\u2026';\n    padding: 0.1875rem 0.625rem;\n    color: #0a0a0a; }\n\n.ng2-pagination .pagination-previous a::before,\n.ng2-pagination .pagination-previous.disabled::before { \n  content: '\u00AB';\n  display: inline-block;\n  margin-right: 0.5rem; }\n\n.ng2-pagination .pagination-next a::after,\n.ng2-pagination .pagination-next.disabled::after {\n  content: '\u00BB';\n  display: inline-block;\n  margin-left: 0.5rem; }\n\n.ng2-pagination .show-for-sr {\n  position: absolute !important;\n  width: 1px;\n  height: 1px;\n  overflow: hidden;\n  clip: rect(0, 0, 0, 0); }";
 
 
 /***/ },
-/* 1009 */
-/***/ function(module, exports, __webpack_require__) {
-
-	function __export(m) {
-	    for (var p in m) if (!exports.hasOwnProperty(p)) exports[p] = m[p];
-	}
-	__export(__webpack_require__(1005));
-
-
-/***/ },
-/* 1010 */
+/* 1069 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16761,8 +21927,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var accordion_1 = __webpack_require__(495);
-	var common_1 = __webpack_require__(32);
+	var accordion_1 = __webpack_require__(546);
+	var common_1 = __webpack_require__(39);
 	var AccordionTab = (function () {
 	    function AccordionTab(accordion) {
 	        this.accordion = accordion;
@@ -16828,7 +21994,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1011 */
+/* 1070 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -16842,11 +22008,11 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var inputtext_1 = __webpack_require__(144);
-	var button_1 = __webpack_require__(143);
-	var domhandler_1 = __webpack_require__(10);
-	var forms_1 = __webpack_require__(31);
-	var AUTOCOMPLETE_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	var inputtext_1 = __webpack_require__(218);
+	var button_1 = __webpack_require__(153);
+	var domhandler_1 = __webpack_require__(12);
+	var common_1 = __webpack_require__(6);
+	var AUTOCOMPLETE_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return AutoComplete; }),
 	    multi: true
 	});
@@ -17225,7 +22391,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1012 */
+/* 1071 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17239,7 +22405,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(4);
 	var Breadcrumb = (function () {
 	    function Breadcrumb(router) {
 	        this.router = router;
@@ -17294,7 +22460,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1013 */
+/* 1072 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17308,9 +22474,9 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var button_1 = __webpack_require__(143);
-	var forms_1 = __webpack_require__(31);
-	var CALENDAR_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	var button_1 = __webpack_require__(153);
+	var common_1 = __webpack_require__(6);
+	var CALENDAR_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Calendar; }),
 	    multi: true
 	});
@@ -17617,7 +22783,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1014 */
+/* 1073 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17631,7 +22797,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
+	var domhandler_1 = __webpack_require__(12);
 	var Carousel = (function () {
 	    function Carousel(el, domHandler, differs, renderer) {
 	        this.el = el;
@@ -17893,7 +23059,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1015 */
+/* 1074 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -17992,7 +23158,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1016 */
+/* 1075 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18006,8 +23172,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var forms_1 = __webpack_require__(31);
-	var CHECKBOX_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	var common_1 = __webpack_require__(6);
+	var CHECKBOX_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Checkbox; }),
 	    multi: true
 	});
@@ -18114,7 +23280,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1017 */
+/* 1076 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18147,7 +23313,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1018 */
+/* 1077 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18161,8 +23327,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
-	var router_1 = __webpack_require__(7);
+	var domhandler_1 = __webpack_require__(12);
+	var router_1 = __webpack_require__(4);
 	var ContextMenuSub = (function () {
 	    function ContextMenuSub(domHandler, router) {
 	        this.domHandler = domHandler;
@@ -18306,7 +23472,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1019 */
+/* 1078 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18320,9 +23486,9 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(32);
-	var common_2 = __webpack_require__(32);
-	var paginator_1 = __webpack_require__(209);
+	var common_1 = __webpack_require__(39);
+	var common_2 = __webpack_require__(39);
+	var paginator_1 = __webpack_require__(219);
 	var DataGrid = (function () {
 	    function DataGrid(el, differs) {
 	        this.el = el;
@@ -18463,7 +23629,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1020 */
+/* 1079 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18477,9 +23643,9 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(32);
-	var common_2 = __webpack_require__(32);
-	var paginator_1 = __webpack_require__(209);
+	var common_1 = __webpack_require__(39);
+	var common_2 = __webpack_require__(39);
+	var paginator_1 = __webpack_require__(219);
 	var DataList = (function () {
 	    function DataList(el, differs) {
 	        this.el = el;
@@ -18615,7 +23781,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1021 */
+/* 1080 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18629,9 +23795,9 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(32);
-	var common_2 = __webpack_require__(32);
-	var domhandler_1 = __webpack_require__(10);
+	var common_1 = __webpack_require__(39);
+	var common_2 = __webpack_require__(39);
+	var domhandler_1 = __webpack_require__(12);
 	var DataScroller = (function () {
 	    function DataScroller(el, differs, renderer, domHandler) {
 	        this.el = el;
@@ -18791,7 +23957,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1022 */
+/* 1081 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -18808,14 +23974,14 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var column_1 = __webpack_require__(317);
-	var columntemplateloader_1 = __webpack_require__(496);
-	var rowexpansionloader_1 = __webpack_require__(1023);
-	var common_1 = __webpack_require__(32);
-	var common_2 = __webpack_require__(32);
-	var paginator_1 = __webpack_require__(209);
-	var inputtext_1 = __webpack_require__(144);
-	var domhandler_1 = __webpack_require__(10);
+	var column_1 = __webpack_require__(332);
+	var columntemplateloader_1 = __webpack_require__(547);
+	var rowexpansionloader_1 = __webpack_require__(1082);
+	var common_1 = __webpack_require__(39);
+	var common_2 = __webpack_require__(39);
+	var paginator_1 = __webpack_require__(219);
+	var inputtext_1 = __webpack_require__(218);
+	var domhandler_1 = __webpack_require__(12);
 	var DataTable = (function () {
 	    function DataTable(el, domHandler, differs, cols, renderer, changeDetector) {
 	        var _this = this;
@@ -18931,16 +24097,14 @@ webpackJsonp([2],[
 	            if (this.paginator) {
 	                this.updatePaginator();
 	            }
-	            if (this.stopSortPropagation) {
-	                this.stopSortPropagation = false;
-	            }
-	            else if (!this.lazy && (this.sortField || this.multiSortMeta)) {
+	            if (!this.lazy && !this.stopSortPropagation && (this.sortField || this.multiSortMeta)) {
 	                if (this.sortMode == 'single')
 	                    this.sortSingle();
 	                else if (this.sortMode == 'multiple')
 	                    this.sortMultiple();
 	            }
 	            this.updateDataToRender(this.filteredValue || this.value);
+	            this.stopSortPropagation = false;
 	        }
 	    };
 	    DataTable.prototype.resolveFieldData = function (data, field) {
@@ -19146,7 +24310,8 @@ webpackJsonp([2],[
 	        }
 	        var selectionIndex = this.findIndexInSelection(rowData);
 	        var selected = selectionIndex != -1;
-	        if (selected) {
+	        var metaKey = (event.metaKey || event.ctrlKey);
+	        if (selected && metaKey) {
 	            if (this.isSingleSelectionMode()) {
 	                this.selection = null;
 	                this.selectionChange.emit(null);
@@ -19163,7 +24328,7 @@ webpackJsonp([2],[
 	                this.selectionChange.emit(rowData);
 	            }
 	            else if (this.isMultipleSelectionMode()) {
-	                this.selection = this.selection || [];
+	                this.selection = (!metaKey) ? [] : this.selection || [];
 	                this.selection.push(rowData);
 	                this.selectionChange.emit(this.selection);
 	            }
@@ -19846,7 +25011,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1023 */
+/* 1082 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19890,7 +25055,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1024 */
+/* 1083 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -19904,8 +25069,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
-	var common_1 = __webpack_require__(32);
+	var domhandler_1 = __webpack_require__(12);
 	var Dialog = (function () {
 	    function Dialog(el, domHandler, renderer) {
 	        this.el = el;
@@ -20152,10 +25316,6 @@ webpackJsonp([2],[
 	        __metadata('design:type', Boolean)
 	    ], Dialog.prototype, "responsive", void 0);
 	    __decorate([
-	        core_1.ContentChild(common_1.Header), 
-	        __metadata('design:type', Object)
-	    ], Dialog.prototype, "headerFacet", void 0);
-	    __decorate([
 	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Dialog.prototype, "onBeforeShow", void 0);
@@ -20182,8 +25342,7 @@ webpackJsonp([2],[
 	    Dialog = __decorate([
 	        core_1.Component({
 	            selector: 'p-dialog',
-	            template: "\n        <div [ngClass]=\"{'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl,'ui-dialog-draggable':draggable}\" \n            [style.display]=\"visible ? 'block' : 'none'\" [style.width.px]=\"width\" [style.height.px]=\"height\" (mousedown)=\"moveOnTop()\">\n            <div class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\"\n                (mousedown)=\"initDrag($event)\" (mouseup)=\"endDrag($event)\">\n                <span class=\"ui-dialog-title\" *ngIf=\"header\">{{header}}</span>\n                <span class=\"ui-dialog-title\" *ngIf=\"headerFacet\">\n                    <ng-content select=\"header\"></ng-content>\n                </span>\n                <a [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true,'ui-state-hover':hoverCloseIcon}\" href=\"#\" role=\"button\" *ngIf=\"closable\" \n                    (click)=\"hide($event)\" (mouseenter)=\"hoverCloseIcon=true\" (mouseleave)=\"hoverCloseIcon=false\">\n                    <span class=\"fa fa-fw fa-close\"></span>\n                </a>\n            </div>\n            <div class=\"ui-dialog-content ui-widget-content\" [style.height.px]=\"contentHeight\">\n                <ng-content></ng-content>\n            </div>\n            <ng-content select=\"footer\"></ng-content>\n            <div *ngIf=\"resizable\" class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"\n                (mousedown)=\"initResize($event)\"></div>\n        </div>\n    ",
-	            directives: [common_1.Header],
+	            template: "\n        <div [ngClass]=\"{'ui-dialog ui-widget ui-widget-content ui-corner-all ui-shadow':true,'ui-dialog-rtl':rtl,'ui-dialog-draggable':draggable}\" \n            [style.display]=\"visible ? 'block' : 'none'\" [style.width.px]=\"width\" [style.height.px]=\"height\" (mousedown)=\"moveOnTop()\">\n            <div class=\"ui-dialog-titlebar ui-widget-header ui-helper-clearfix ui-corner-top\"\n                (mousedown)=\"initDrag($event)\" (mouseup)=\"endDrag($event)\">\n                <span class=\"ui-dialog-title\">{{header}}</span>\n                <a [ngClass]=\"{'ui-dialog-titlebar-icon ui-dialog-titlebar-close ui-corner-all':true,'ui-state-hover':hoverCloseIcon}\" href=\"#\" role=\"button\" *ngIf=\"closable\" \n                    (click)=\"hide($event)\" (mouseenter)=\"hoverCloseIcon=true\" (mouseleave)=\"hoverCloseIcon=false\">\n                    <span class=\"fa fa-fw fa-close\"></span>\n                </a>\n            </div>\n            <div class=\"ui-dialog-content ui-widget-content\" [style.height.px]=\"contentHeight\">\n                <ng-content></ng-content>\n            </div>\n            <ng-content select=\"footer\"></ng-content>\n            <div *ngIf=\"resizable\" class=\"ui-resizable-handle ui-resizable-se ui-icon ui-icon-gripsmall-diagonal-se\" style=\"z-index: 90;\"\n                (mousedown)=\"initResize($event)\"></div>\n        </div>\n    ",
 	            providers: [domhandler_1.DomHandler]
 	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef, domhandler_1.DomHandler, core_1.Renderer])
@@ -20194,7 +25353,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1025 */
+/* 1084 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20208,7 +25367,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
+	var domhandler_1 = __webpack_require__(12);
 	var Draggable = (function () {
 	    function Draggable(el, domHandler) {
 	        this.el = el;
@@ -20317,7 +25476,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1026 */
+/* 1085 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20331,7 +25490,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
+	var domhandler_1 = __webpack_require__(12);
 	var Droppable = (function () {
 	    function Droppable(el, domHandler) {
 	        this.el = el;
@@ -20436,7 +25595,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1027 */
+/* 1086 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20450,9 +25609,9 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
-	var forms_1 = __webpack_require__(31);
-	var DROPDOWN_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	var domhandler_1 = __webpack_require__(12);
+	var common_1 = __webpack_require__(6);
+	var DROPDOWN_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Dropdown; }),
 	    multi: true
 	});
@@ -20567,13 +25726,12 @@ webpackJsonp([2],[
 	            input.focus();
 	            if (this.panelVisible)
 	                this.hide();
-	            else {
+	            else
 	                this.show(this.panel, this.container);
-	            }
 	        }
 	    };
 	    Dropdown.prototype.show = function (panel, container) {
-	        if (this.options && this.options.length) {
+	        if (this.optionsToDisplay && this.optionsToDisplay.length) {
 	            this.panelVisible = true;
 	            panel.style.zIndex = ++domhandler_1.DomHandler.zindex;
 	            this.domHandler.relativePosition(panel, container);
@@ -20782,7 +25940,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1028 */
+/* 1087 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -20796,10 +25954,10 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var common_1 = __webpack_require__(32);
-	var domhandler_1 = __webpack_require__(10);
-	var forms_1 = __webpack_require__(31);
-	var EDITOR_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	var common_1 = __webpack_require__(39);
+	var domhandler_1 = __webpack_require__(12);
+	var common_2 = __webpack_require__(6);
+	var EDITOR_VALUE_ACCESSOR = new core_1.Provider(common_2.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Editor; }),
 	    multi: true
 	});
@@ -20808,7 +25966,6 @@ webpackJsonp([2],[
 	        this.el = el;
 	        this.domHandler = domHandler;
 	        this.onTextChange = new core_1.EventEmitter();
-	        this.onSelectionChange = new core_1.EventEmitter();
 	        this.onModelChange = function () { };
 	        this.onModelTouched = function () { };
 	    }
@@ -20842,13 +25999,6 @@ webpackJsonp([2],[
 	            });
 	            _this.onModelChange(html);
 	        });
-	        this.quill.on('selection-change', function (range, oldRange, source) {
-	            _this.onSelectionChange.emit({
-	                range: range,
-	                oldRange: oldRange,
-	                source: source
-	            });
-	        });
 	    };
 	    Editor.prototype.writeValue = function (value) {
 	        this.value = value;
@@ -20874,10 +26024,6 @@ webpackJsonp([2],[
 	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Editor.prototype, "onTextChange", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Editor.prototype, "onSelectionChange", void 0);
 	    __decorate([
 	        core_1.ContentChild(common_1.Header), 
 	        __metadata('design:type', Object)
@@ -20913,7 +26059,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1029 */
+/* 1088 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21000,7 +26146,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1030 */
+/* 1089 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21014,7 +26160,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
+	var domhandler_1 = __webpack_require__(12);
 	var Galleria = (function () {
 	    function Galleria(el, domHandler, differs) {
 	        this.el = el;
@@ -21209,7 +26355,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1031 */
+/* 1090 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21370,7 +26516,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1032 */
+/* 1091 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21384,7 +26530,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
+	var domhandler_1 = __webpack_require__(12);
 	var Growl = (function () {
 	    function Growl(el, domHandler, differs) {
 	        this.el = el;
@@ -21479,7 +26625,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1033 */
+/* 1092 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21493,168 +26639,9 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var inputtext_1 = __webpack_require__(144);
-	var forms_1 = __webpack_require__(31);
-	var INPUTMASK_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
-	    useExisting: core_1.forwardRef(function () { return InputMask; }),
-	    multi: true
-	});
-	var InputMask = (function () {
-	    function InputMask(el) {
-	        this.el = el;
-	        this.clearMaskOnLostFocus = true;
-	        this.clearIncomplete = true;
-	        this.onComplete = new core_1.EventEmitter();
-	        this.onInComplete = new core_1.EventEmitter();
-	        this.onModelChange = function () { };
-	        this.onModelTouched = function () { };
-	    }
-	    InputMask.prototype.ngAfterViewInit = function () {
-	        var _this = this;
-	        var cfg = {
-	            mask: this.mask,
-	            alias: this.alias,
-	            placeholder: this.slotChar,
-	            clearIncomplete: this.clearIncomplete,
-	            clearMaskOnLostFocus: this.clearMaskOnLostFocus,
-	            onKeyDown: function (event, buffer, caretPos, opts) {
-	                var val = _this.unmask ? jQuery(_this.el.nativeElement.children[0])['inputmask']('unmaskedvalue') : event.target.value;
-	                _this.onModelChange(val);
-	            },
-	            oncomplete: function (event) {
-	                _this.onComplete.emit(event);
-	            },
-	            onincomplete: function (event) {
-	                _this.onInComplete.emit(event);
-	            }
-	        };
-	        if (this.options) {
-	            for (var prop in this.options) {
-	                if (this.options.hasOwnProperty(prop)) {
-	                    cfg[prop] = this.options[prop];
-	                }
-	            }
-	        }
-	        if (this.alias === 'regex')
-	            jQuery(this.el.nativeElement.children[0])['inputmask']('Regex', cfg);
-	        else
-	            jQuery(this.el.nativeElement.children[0])['inputmask'](cfg);
-	    };
-	    InputMask.prototype.writeValue = function (value) {
-	        this.value = value;
-	    };
-	    InputMask.prototype.registerOnChange = function (fn) {
-	        this.onModelChange = fn;
-	    };
-	    InputMask.prototype.registerOnTouched = function (fn) {
-	        this.onModelTouched = fn;
-	    };
-	    InputMask.prototype.onBlur = function () {
-	        this.onModelTouched();
-	    };
-	    InputMask.prototype.ngOnDestroy = function () {
-	        jQuery(this.el.nativeElement.children[0])['inputmask']('remove');
-	    };
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], InputMask.prototype, "mask", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], InputMask.prototype, "style", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], InputMask.prototype, "styleClass", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], InputMask.prototype, "placeholder", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], InputMask.prototype, "slotChar", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], InputMask.prototype, "alias", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Object)
-	    ], InputMask.prototype, "options", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], InputMask.prototype, "unmask", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], InputMask.prototype, "clearMaskOnLostFocus", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], InputMask.prototype, "clearIncomplete", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], InputMask.prototype, "size", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Number)
-	    ], InputMask.prototype, "maxlength", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', String)
-	    ], InputMask.prototype, "tabindex", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], InputMask.prototype, "disabled", void 0);
-	    __decorate([
-	        core_1.Input(), 
-	        __metadata('design:type', Boolean)
-	    ], InputMask.prototype, "readonly", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], InputMask.prototype, "onComplete", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], InputMask.prototype, "onInComplete", void 0);
-	    InputMask = __decorate([
-	        core_1.Component({
-	            selector: 'p-inputMask',
-	            template: "<input pInputText type=\"text\" [value]=\"value||''\" (blur)=\"onBlur($event)\" [ngStyle]=\"style\" [ngClass]=\"styleClass\" [placeholder]=\"placeholder\"\n        [attr.size]=\"size\" [attr.maxlength]=\"maxlength\" [attr.tabindex]=\"tabindex\" [disabled]=\"disabled\" [readonly]=\"readonly\">",
-	            providers: [INPUTMASK_VALUE_ACCESSOR],
-	            directives: [inputtext_1.InputText]
-	        }), 
-	        __metadata('design:paramtypes', [core_1.ElementRef])
-	    ], InputMask);
-	    return InputMask;
-	}());
-	exports.InputMask = InputMask;
-	
-
-/***/ },
-/* 1034 */
-/***/ function(module, exports, __webpack_require__) {
-
-	"use strict";
-	var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-	    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-	    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-	    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-	    return c > 3 && r && Object.defineProperty(target, key, r), r;
-	};
-	var __metadata = (this && this.__metadata) || function (k, v) {
-	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-	};
-	var core_1 = __webpack_require__(1);
-	var forms_1 = __webpack_require__(31);
-	var domhandler_1 = __webpack_require__(10);
-	var INPUTSWITCH_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	var common_1 = __webpack_require__(6);
+	var domhandler_1 = __webpack_require__(12);
+	var INPUTSWITCH_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return InputSwitch; }),
 	    multi: true
 	});
@@ -21792,7 +26779,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1035 */
+/* 1093 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21912,7 +26899,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1036 */
+/* 1094 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -21926,7 +26913,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
+	var domhandler_1 = __webpack_require__(12);
 	var Lightbox = (function () {
 	    function Lightbox(el, domHandler, renderer) {
 	        this.el = el;
@@ -22096,7 +27083,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1037 */
+/* 1095 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22110,9 +27097,9 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
-	var forms_1 = __webpack_require__(31);
-	var LISTBOX_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	var domhandler_1 = __webpack_require__(12);
+	var common_1 = __webpack_require__(6);
+	var LISTBOX_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Listbox; }),
 	    multi: true
 	});
@@ -22316,7 +27303,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1038 */
+/* 1096 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22330,8 +27317,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
-	var router_1 = __webpack_require__(7);
+	var domhandler_1 = __webpack_require__(12);
+	var router_1 = __webpack_require__(4);
 	var MegaMenu = (function () {
 	    function MegaMenu(el, domHandler, renderer, router) {
 	        this.el = el;
@@ -22448,7 +27435,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1039 */
+/* 1097 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22462,8 +27449,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
-	var router_1 = __webpack_require__(7);
+	var domhandler_1 = __webpack_require__(12);
+	var router_1 = __webpack_require__(4);
 	var Menu = (function () {
 	    function Menu(el, domHandler, renderer, router) {
 	        this.el = el;
@@ -22579,7 +27566,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1040 */
+/* 1098 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22593,8 +27580,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
-	var router_1 = __webpack_require__(7);
+	var domhandler_1 = __webpack_require__(12);
+	var router_1 = __webpack_require__(4);
 	var MenubarSub = (function () {
 	    function MenubarSub(domHandler, router) {
 	        this.domHandler = domHandler;
@@ -22714,7 +27701,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1041 */
+/* 1099 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22763,7 +27750,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1042 */
+/* 1100 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -22777,9 +27764,9 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
-	var forms_1 = __webpack_require__(31);
-	var MULTISELECT_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	var domhandler_1 = __webpack_require__(12);
+	var common_1 = __webpack_require__(6);
+	var MULTISELECT_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return MultiSelect; }),
 	    multi: true
 	});
@@ -23040,7 +28027,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1043 */
+/* 1101 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23054,8 +28041,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var button_1 = __webpack_require__(143);
-	var domhandler_1 = __webpack_require__(10);
+	var button_1 = __webpack_require__(153);
+	var domhandler_1 = __webpack_require__(12);
 	var OrderList = (function () {
 	    function OrderList(el, domHandler) {
 	        this.el = el;
@@ -23242,7 +28229,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1044 */
+/* 1102 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23256,7 +28243,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
+	var domhandler_1 = __webpack_require__(12);
 	var OverlayPanel = (function () {
 	    function OverlayPanel(el, domHandler, renderer) {
 	        this.el = el;
@@ -23386,7 +28373,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1045 */
+/* 1103 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23464,7 +28451,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1046 */
+/* 1104 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23478,7 +28465,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var router_1 = __webpack_require__(7);
+	var router_1 = __webpack_require__(4);
 	var PanelMenuSub = (function () {
 	    function PanelMenuSub(router) {
 	        this.router = router;
@@ -23523,7 +28510,7 @@ webpackJsonp([2],[
 	    PanelMenuSub = __decorate([
 	        core_1.Component({
 	            selector: 'p-panelMenuSub',
-	            template: "\n        <ul class=\"ui-menu-list ui-helper-reset\" [style.display]=\"expanded ? 'block' : 'none'\">\n            <li *ngFor=\"let child of item.items\" class=\"ui-menuitem ui-corner-all\" [ngClass]=\"{'ui-menu-parent':child.items}\">\n                <a #link [href]=\"child.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" \n                    [ngClass]=\"{'ui-menuitem-link-hasicon':child.icon&&child.items,'ui-state-hover':(hoveredLink==link)}\" (click)=\"onClick($event,child)\"\n                    (mouseenter)=\"hoveredLink=link\" (mouseleave)=\"hoveredLink=null\">\n                    <span class=\"ui-panelmenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-right':!isActive(child),'fa-caret-down':isActive(child)}\" *ngIf=\"child.items\"></span>\n                    <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"child.icon\" *ngIf=\"child.icon\"></span>\n                    <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                </a>\n                <p-panelMenuSub [item]=\"child\" [expanded]=\"isActive(child)\" *ngIf=\"child.items\"></p-panelMenuSub>\n            </li>\n        </ul>\n    ",
+	            template: "\n        <ul class=\"ui-menu-list ui-helper-reset\" [style.display]=\"expanded ? 'block' : 'none'\">\n            <li *ngFor=\"let child of item.items\" class=\"ui-menuitem ui-corner-all\" [ngClass]=\"{'ui-menu-parent':child.items}\">\n                <a #link [href]=\"item.url||'#'\" class=\"ui-menuitem-link ui-corner-all\" \n                    [ngClass]=\"{'ui-menuitem-link-hasicon':child.icon&&child.items,'ui-state-hover':(hoveredLink==link)}\" (click)=\"onClick($event,child)\"\n                    (mouseenter)=\"hoveredLink=link\" (mouseleave)=\"hoveredLink=null\">\n                    <span class=\"ui-panelmenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-right':!isActive(child),'fa-caret-down':isActive(child)}\" *ngIf=\"child.items\"></span>\n                    <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"child.icon\" *ngIf=\"child.icon\"></span>\n                    <span class=\"ui-menuitem-text\">{{child.label}}</span>\n                </a>\n                <p-panelMenuSub [item]=\"child\" [expanded]=\"isActive(child)\" *ngIf=\"child.items\"></p-panelMenuSub>\n            </li>\n        </ul>\n    ",
 	            directives: [PanelMenuSub]
 	        }), 
 	        __metadata('design:paramtypes', [router_1.Router])
@@ -23581,7 +28568,7 @@ webpackJsonp([2],[
 	    PanelMenu = __decorate([
 	        core_1.Component({
 	            selector: 'p-panelMenu',
-	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"'ui-panelmenu ui-widget'\">\n            <div *ngFor=\"let item of model\" class=\"ui-panelmenu-panel\">\n                <div tabindex=\"0\" [ngClass]=\"{'ui-widget ui-panelmenu-header ui-state-default':true,'ui-corner-all':!isActive(item),\n                    'ui-state-active ui-corner-top':isActive(item),'ui-state-hover':(item == hoveredItem)}\" (click)=\"headerClick($event,item)\">\n                    <span class=\"ui-panelmenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-right':!isActive(item),'fa-caret-down':isActive(item)}\"></span>\n                    <a [href]=\"item.url||'#'\" [ngClass]=\"{'ui-panelmenu-headerlink-hasicon':item.icon}\"\n                        (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\">\n                        <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"item.icon\" *ngIf=\"item.icon\"></span>\n                        <span>{{item.label}}</span>\n                    </a>\n                </div>\n                <div class=\"ui-panelmenu-content ui-widget-content\" [style.display]=\"isActive(item) ? 'block' : 'none'\">\n                    <p-panelMenuSub [item]=\"item\" [expanded]=\"true\"></p-panelMenuSub>\n                </div>\n            </div>\n        </div>\n    ",
+	            template: "\n        <div [class]=\"styleClass\" [ngStyle]=\"style\" [ngClass]=\"'ui-panelmenu ui-widget'\">\n            <div *ngFor=\"let item of model\" class=\"ui-menuitem-panel\">\n                <div tabindex=\"0\" [ngClass]=\"{'ui-widget ui-panelmenu-header ui-state-default':true,'ui-corner-all':!isActive(item),\n                    'ui-state-active ui-corner-top':isActive(item),'ui-state-hover':(item == hoveredItem)}\">\n                    <span class=\"ui-panelmenu-icon fa fa-fw\" [ngClass]=\"{'fa-caret-right':!isActive(item),'fa-caret-down':isActive(item)}\"></span>\n                    <a [href]=\"item.url||'#'\" [ngClass]=\"{'ui-panelmenu-headerlink-hasicon':item.icon}\" (click)=\"headerClick($event,item)\"\n                        (mouseenter)=\"hoveredItem=item\" (mouseleave)=\"hoveredItem=null\">\n                        <span class=\"ui-menuitem-icon fa fa-fw\" [ngClass]=\"item.icon\" *ngIf=\"item.icon\"></span>\n                        <span>{{item.label}}</span>\n                    </a>\n                </div>\n                <div class=\"ui-panelmenu-content ui-widget-content\" [style.display]=\"isActive(item) ? 'block' : 'none'\">\n                    <p-panelMenuSub [item]=\"item\" [expanded]=\"true\"></p-panelMenuSub>\n                </div>\n            </div>\n        </div>\n    ",
 	            directives: [PanelMenuSub]
 	        }), 
 	        __metadata('design:paramtypes', [core_1.ElementRef])
@@ -23592,7 +28579,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1047 */
+/* 1105 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23606,7 +28593,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
+	var domhandler_1 = __webpack_require__(12);
 	var Password = (function () {
 	    function Password(el, domHandler) {
 	        this.el = el;
@@ -23768,7 +28755,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1048 */
+/* 1106 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -23782,8 +28769,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var button_1 = __webpack_require__(143);
-	var domhandler_1 = __webpack_require__(10);
+	var button_1 = __webpack_require__(153);
+	var domhandler_1 = __webpack_require__(12);
 	var PickList = (function () {
 	    function PickList(el, domHandler) {
 	        this.el = el;
@@ -23996,7 +28983,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1049 */
+/* 1107 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24030,7 +29017,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1050 */
+/* 1108 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24044,8 +29031,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var forms_1 = __webpack_require__(31);
-	var RADIO_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	var common_1 = __webpack_require__(6);
+	var RADIO_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return RadioButton; }),
 	    multi: true
 	});
@@ -24108,7 +29095,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1051 */
+/* 1109 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24122,8 +29109,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var forms_1 = __webpack_require__(31);
-	var RATING_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	var common_1 = __webpack_require__(6);
+	var RATING_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Rating; }),
 	    multi: true
 	});
@@ -24208,7 +29195,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1052 */
+/* 1110 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24387,30 +29374,6 @@ webpackJsonp([2],[
 	        jQuery(this.el.nativeElement.children[0]).fullCalendar('destroy');
 	        this.initialized = false;
 	        this.schedule = null;
-	    };
-	    Schedule.prototype.gotoDate = function (date) {
-	        this.schedule.fullCalendar('gotoDate', date);
-	    };
-	    Schedule.prototype.prev = function () {
-	        this.schedule.fullCalendar('prev');
-	    };
-	    Schedule.prototype.next = function () {
-	        this.schedule.fullCalendar('next');
-	    };
-	    Schedule.prototype.prevYear = function () {
-	        this.schedule.fullCalendar('prevYear');
-	    };
-	    Schedule.prototype.nextYear = function () {
-	        this.schedule.fullCalendar('nextYear');
-	    };
-	    Schedule.prototype.today = function () {
-	        this.schedule.fullCalendar('today');
-	    };
-	    Schedule.prototype.incrementDate = function (duration) {
-	        this.schedule.fullCalendar('incrementDate', duration);
-	    };
-	    Schedule.prototype.getDate = function () {
-	        return this.schedule.fullCalendar('getDate');
 	    };
 	    __decorate([
 	        core_1.Input(), 
@@ -24605,7 +29568,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1053 */
+/* 1111 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24619,8 +29582,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var forms_1 = __webpack_require__(31);
-	var SELECTBUTTON_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	var common_1 = __webpack_require__(6);
+	var SELECTBUTTON_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return SelectButton; }),
 	    multi: true
 	});
@@ -24712,7 +29675,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1054 */
+/* 1112 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24729,8 +29692,8 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
-	var router_1 = __webpack_require__(7);
+	var domhandler_1 = __webpack_require__(12);
+	var router_1 = __webpack_require__(4);
 	var SlideMenuSub = (function () {
 	    function SlideMenuSub(slideMenu, router) {
 	        this.slideMenu = slideMenu;
@@ -24916,7 +29879,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1055 */
+/* 1113 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -24930,8 +29893,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var forms_1 = __webpack_require__(31);
-	var SLIDER_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	var common_1 = __webpack_require__(6);
+	var SLIDER_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Slider; }),
 	    multi: true
 	});
@@ -24939,7 +29902,6 @@ webpackJsonp([2],[
 	    function Slider(el) {
 	        this.el = el;
 	        this.onChange = new core_1.EventEmitter();
-	        this.onSlideEnd = new core_1.EventEmitter();
 	        this.onModelChange = function () { };
 	        this.onModelTouched = function () { };
 	        this.initialized = false;
@@ -24965,9 +29927,6 @@ webpackJsonp([2],[
 	                    _this.onModelChange(ui.value);
 	                    _this.onChange.emit({ originalEvent: event, value: ui.value });
 	                }
-	            },
-	            stop: function (event, ui) {
-	                _this.onSlideEnd.emit({ originalEvent: event, value: ui.value });
 	            }
 	        });
 	        this.initialized = true;
@@ -25036,10 +29995,6 @@ webpackJsonp([2],[
 	        core_1.Output(), 
 	        __metadata('design:type', core_1.EventEmitter)
 	    ], Slider.prototype, "onChange", void 0);
-	    __decorate([
-	        core_1.Output(), 
-	        __metadata('design:type', core_1.EventEmitter)
-	    ], Slider.prototype, "onSlideEnd", void 0);
 	    Slider = __decorate([
 	        core_1.Component({
 	            selector: 'p-slider',
@@ -25054,7 +30009,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1056 */
+/* 1114 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25068,10 +30023,10 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var inputtext_1 = __webpack_require__(144);
-	var domhandler_1 = __webpack_require__(10);
-	var forms_1 = __webpack_require__(31);
-	var SPINNER_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	var inputtext_1 = __webpack_require__(218);
+	var domhandler_1 = __webpack_require__(12);
+	var common_1 = __webpack_require__(6);
+	var SPINNER_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return Spinner; }),
 	    multi: true
 	});
@@ -25285,7 +30240,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1057 */
+/* 1115 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25299,9 +30254,9 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var splitbuttonitem_1 = __webpack_require__(497);
-	var domhandler_1 = __webpack_require__(10);
-	var router_1 = __webpack_require__(7);
+	var splitbuttonitem_1 = __webpack_require__(548);
+	var domhandler_1 = __webpack_require__(12);
+	var router_1 = __webpack_require__(4);
 	var SplitButton = (function () {
 	    function SplitButton(el, domHandler, renderer, router) {
 	        this.el = el;
@@ -25391,7 +30346,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1058 */
+/* 1116 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25405,8 +30360,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
-	var router_1 = __webpack_require__(7);
+	var domhandler_1 = __webpack_require__(12);
+	var router_1 = __webpack_require__(4);
 	var TabMenu = (function () {
 	    function TabMenu(router) {
 	        this.router = router;
@@ -25485,7 +30440,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1059 */
+/* 1117 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25502,7 +30457,7 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var tabpanel_1 = __webpack_require__(498);
+	var tabpanel_1 = __webpack_require__(549);
 	var TabView = (function () {
 	    function TabView(el, tabPanels) {
 	        var _this = this;
@@ -25607,7 +30562,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1060 */
+/* 1118 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25621,7 +30576,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
+	var domhandler_1 = __webpack_require__(12);
 	var Terminal = (function () {
 	    function Terminal(el, domHandler) {
 	        this.el = el;
@@ -25702,7 +30657,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1061 */
+/* 1119 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25716,9 +30671,9 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
-	var common_1 = __webpack_require__(19);
-	var router_1 = __webpack_require__(7);
+	var domhandler_1 = __webpack_require__(12);
+	var common_1 = __webpack_require__(6);
+	var router_1 = __webpack_require__(4);
 	var TieredMenuSub = (function () {
 	    function TieredMenuSub(domHandler, router, location) {
 	        this.domHandler = domHandler;
@@ -25865,7 +30820,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1062 */
+/* 1120 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -25879,8 +30834,8 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var forms_1 = __webpack_require__(31);
-	var TOGGLEBUTTON_VALUE_ACCESSOR = new core_1.Provider(forms_1.NG_VALUE_ACCESSOR, {
+	var common_1 = __webpack_require__(6);
+	var TOGGLEBUTTON_VALUE_ACCESSOR = new core_1.Provider(common_1.NG_VALUE_ACCESSOR, {
 	    useExisting: core_1.forwardRef(function () { return ToggleButton; }),
 	    multi: true
 	});
@@ -25963,7 +30918,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1063 */
+/* 1121 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26001,7 +30956,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1064 */
+/* 1122 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26015,7 +30970,7 @@ webpackJsonp([2],[
 	    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 	};
 	var core_1 = __webpack_require__(1);
-	var domhandler_1 = __webpack_require__(10);
+	var domhandler_1 = __webpack_require__(12);
 	var Tooltip = (function () {
 	    function Tooltip(el, domHandler) {
 	        this.el = el;
@@ -26076,8 +31031,7 @@ webpackJsonp([2],[
 	    };
 	    Tooltip.prototype.hide = function () {
 	        this.container.style.display = 'none';
-	        document.body.removeChild(this.container);
-	        this.container = null;
+	        this.destroy();
 	    };
 	    Tooltip.prototype.create = function () {
 	        this.container = document.createElement('div');
@@ -26091,11 +31045,8 @@ webpackJsonp([2],[
 	        this.container.appendChild(tooltipText);
 	        document.body.appendChild(this.container);
 	    };
-	    Tooltip.prototype.ngOnDestroy = function () {
-	        if (this.container && this.container.parentElement) {
-	            document.body.removeChild(this.container);
-	        }
-	        this.container = null;
+	    Tooltip.prototype.destroy = function () {
+	        document.body.removeChild(this.container);
 	    };
 	    __decorate([
 	        core_1.Input('pTooltip'), 
@@ -26147,7 +31098,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1065 */
+/* 1123 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26191,7 +31142,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1066 */
+/* 1124 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26208,8 +31159,8 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var tree_1 = __webpack_require__(499);
-	var treenodetemplateloader_1 = __webpack_require__(1065);
+	var tree_1 = __webpack_require__(550);
+	var treenodetemplateloader_1 = __webpack_require__(1123);
 	var UITreeNode = (function () {
 	    function UITreeNode(tree) {
 	        this.tree = tree;
@@ -26260,7 +31211,7 @@ webpackJsonp([2],[
 	
 
 /***/ },
-/* 1067 */
+/* 1125 */
 /***/ function(module, exports, __webpack_require__) {
 
 	"use strict";
@@ -26277,8 +31228,8 @@ webpackJsonp([2],[
 	    return function (target, key) { decorator(target, key, paramIndex); }
 	};
 	var core_1 = __webpack_require__(1);
-	var treetable_1 = __webpack_require__(500);
-	var columntemplateloader_1 = __webpack_require__(496);
+	var treetable_1 = __webpack_require__(551);
+	var columntemplateloader_1 = __webpack_require__(547);
 	var UITreeRow = (function () {
 	    function UITreeRow(treeTable) {
 	        this.treeTable = treeTable;

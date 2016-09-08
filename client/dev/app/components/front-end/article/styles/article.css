@@ -1,0 +1,31 @@
+.isLinkPn{
+  margin-right: 43em;
+}
+#inputTitle{
+  margin-bottom: 1em;
+}
+.hidden{
+  display: none;
+}
+.editor{
+  margin-bottom: 1em;
+  margin-top: 1em;
+}
+.btn-art{
+  float: right;
+}
+.titleArtDe{
+  font-size: 3rem;
+}
+.byAu{
+  font-style: italic;
+}
+.noti-err{
+  margin-top: 12rem;
+}
+.text-noti-err-edit{
+  font-size: 3rem;
+}
+.deAc{
+  opacity: 0.5;
+}

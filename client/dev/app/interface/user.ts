@@ -3,19 +3,19 @@
  */
 export interface User {
   _id: string;
-  firstName: string;
-  lastName: string;
+  fullName: string;
   displayName: string;
   birthday: Date;
+  phone: string;
   username: string;
   password: string;
   email: string;
   role: string;
-  ownKnowledgeId:[string];
-  interestedKnowledgeId:[string];
+  ownKnowledgeIds:[string];
   onlineTime:[string];
   createdAt: string;
   updatedAt: string;
   level:string;
   linkImg:string;
+  status:string;
 }

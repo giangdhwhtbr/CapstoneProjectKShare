@@ -11,9 +11,28 @@ module.exports = class KSpaceRoutes {
       .get(KSpaceController.getAll)
       .post(KSpaceController.createNew);
 
+      router
+      .route('/api/kspace-request/:rid')
+      .get(KSpaceController.getKSpaceByRId);
+
     router
       .route('/api/kspace/:id')
       .get(KSpaceController.getKSpaceById)
       .put(KSpaceController.finishKSpace);
+
+    router.route('/api/kspace-profile/:name')
+        .get(KSpaceController.getKspaceProfile);
+
+    router
+      .route('/api/kspace/:id/review')
+      .post(KSpaceController.createReview);
+
+    router
+      .route('/api/public-kspace')
+      .post(KSpaceController.createPublicKspace);
+    router
+      .route('/api/public-kspace/:id')
+      .get(KSpaceController.checkExist)
+      .put(KSpaceController.joinPublicKspace);
   }
-}
+};

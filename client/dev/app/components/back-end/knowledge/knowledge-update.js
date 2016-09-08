@@ -1,4 +1,3 @@
-"use strict";
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -15,6 +14,7 @@ var core_1 = require('@angular/core');
 var knowledge_1 = require('../../../services/knowledge');
 var router_1 = require('@angular/router');
 var common_1 = require('@angular/common');
+var private_chat_1 = require('../../shared/private-chat');
 var UpdateKnowledgeComponent = (function () {
     function UpdateKnowledgeComponent(fb, _knowledgeService, router, route) {
         var _this = this;
@@ -49,14 +49,13 @@ var UpdateKnowledgeComponent = (function () {
         }, function (error) {
             console.log(error.text());
         });
-        window.location.href = 'admin/knowledges';
+        this.router.navigateByUrl('admin/knowledges');
     };
     UpdateKnowledgeComponent = __decorate([
         core_1.Component({
             selector: 'knowledge-update',
             templateUrl: 'client/dev/app/components/back-end/knowledge/templates/knowledge-update.html',
-            styleUrls: ['client/dev/app/components/back-end/knowledge/styles/knowledge.css'],
-            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES],
+            directives: [common_1.FORM_DIRECTIVES, router_1.ROUTER_DIRECTIVES, private_chat_1.PrivateChatComponent],
             providers: [knowledge_1.KnowledgeService]
         }),
         __param(0, core_1.Inject(common_1.FormBuilder)),
@@ -64,6 +63,6 @@ var UpdateKnowledgeComponent = (function () {
         __metadata('design:paramtypes', [common_1.FormBuilder, knowledge_1.KnowledgeService, router_1.Router, router_1.ActivatedRoute])
     ], UpdateKnowledgeComponent);
     return UpdateKnowledgeComponent;
-}());
+})();
 exports.UpdateKnowledgeComponent = UpdateKnowledgeComponent;
 //# sourceMappingURL=knowledge-update.js.map

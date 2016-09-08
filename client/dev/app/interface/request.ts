@@ -9,4 +9,6 @@ export interface Request {
   modifiedDate: string;
   knowledgeId: string;
   link: string;
+  tags: any[];
+  subscribers: any[];
 }

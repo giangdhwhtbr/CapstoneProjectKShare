@@ -10,69 +10,86 @@ import { UpdateKnowledgeComponent } from '../components/back-end/knowledge/knowl
 import { KnowledgeListComponent } from '../components/back-end/knowledge/knowledges-list';
 import { RequestListComponent } from "../components/back-end/request/requests-list";
 import { UpdateRequestComponent } from "../components/back-end/request/request-update";
-import { UpdateBadwordComponent } from "../components/back-end/badword/badword-update";
-import { BadwordComponent } from "../components/back-end/badword/badword";
 import { UserListComponent } from "../components/back-end/users/user-list";
+import { ReportListComponent } from "../components/back-end/report/reports-list";
+import { DashboardComponent } from "../components/back-end/dashboard/dashboard";
+import { TagListCtlComponent } from "../components/back-end/tag/tag-list-control";
+import { ArtListCtlComponent } from "../components/back-end/article/article-list-clt";
+
+import { AdminAuthGuard } from './auth';
 
 
-export const AdminRoutes: RouterConfig = [
-  {
-    path: 'admin',
-    component: AdminComponent,
-    children: [
-      {
-        path: 'users',
+export const AdminRoutes:RouterConfig = [
+    {
+        path: 'admin',
+        component: AdminComponent,
+        canActivate: [AdminAuthGuard],
         children: [
-          {
-            path: '',
-            component: UserListComponent
-          }
+            {
+                path: 'users',
+                children: [
+                    {
+                        path: '',
+                        component: UserListComponent
+                    }
+                ]
+            },
+            {
+                path: 'tags',
+                component: TagListCtlComponent
+            },
+            {
+                path: 'articles',
+                component: ArtListCtlComponent
+            },
+            {
+                path: 'reports',
+                children: [
+                    {
+                        path: '',
+                        component: ReportListComponent
+                    }
+                ]
+            },
+            {
+                path: 'knowledges',
+                children: [
+                    {
+                        path: '',
+                        component: KnowledgeListComponent
+                    },
+                    {
+                        path: ':id',
+                        component: UpdateKnowledgeComponent
+                    }
+                ]
+            },
+            {
+                path: 'requests',
+                children: [
+                    {
+                        path: '',
+                        component: RequestListComponent
+                    },
+                    {
+                        path: ':id',
+                        component: UpdateRequestComponent
+                    }
+                ]
+            },
+            {
+                path: 'dashboard',
+                children: [
+                    {
+                        path: '',
+                        component: DashboardComponent
+                    }
+                ]
+            },
+            {
+                path: '',
+                redirectTo: 'dashboard'
+            }
         ]
-      },
-      {
-        path: 'knowledges',
-        children: [
-          {
-            path: '',
-            component: KnowledgeListComponent
-          },
-          {
-            path: ':id',
-            component: UpdateKnowledgeComponent
-          }
-        ]
-      },
-      {
-        path: 'requests',
-        children: [
-          {
-            path: '',
-            component: RequestListComponent
-          },
-          {
-            path: ':id',
-            component: UpdateRequestComponent
-          }
-        ]
-      },
-      {
-        path: 'badwords',
-        children: [
-          {
-            path: '',
-            component: BadwordComponent
-          } ,
-          {
-            path: ':id',
-            component: UpdateBadwordComponent
-          }
-        ]
-      },
-      {
-        path: '',
-        redirectTo:'users'
-      }
-    ]
-  }
+    }
 ];
-

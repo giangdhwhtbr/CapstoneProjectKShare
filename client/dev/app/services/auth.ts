@@ -5,14 +5,16 @@ import { Injectable } from '@angular/core';
 import { User } from '../interface/user';
 import { Response, Http, Headers, RequestOptions } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
-import {Router} from '@angular/router';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class AuthService {
   private _regUrl = '/api/user/';
   private _loginUrl = '/api/login';
   private _logOutUrl = '/api/logout';
-  private _checkLoginUrl = '/api/checkLogin/';
+  private _checkLoginUrl = '/api/checkLogin';
+
+  redirectUrl: string;
   constructor(private _http: Http) {
 
   }
@@ -24,7 +26,6 @@ export class AuthService {
       username: user.username,
       password: user.password
     })
-    var usertoken = user.username;
     return this._http.post(this._loginUrl,_user,options)
       .map(res => res.json());
   }
@@ -42,7 +43,13 @@ export class AuthService {
       .catch(this.handleError);
   }
 
-  logout():Observable<string[]> {
+  isLoggedIn(): Observable<any> {
+    return this._http.get(this._checkLoginUrl)
+      .map((res)=>res.json())
+      .catch(this.handleError);
+  }
+
+  logout():Observable<any> {
     return this._http.get(this._logOutUrl)
       .map((res) => res.json())
       .catch(this.handleError);
@@ -50,21 +57,9 @@ export class AuthService {
   logoutClient() {
     localStorage.removeItem('username');
     localStorage.removeItem('userrole');
-  }
-  isLoggedIn(): Observable<string[]> {
-   return this._http.get(this._checkLoginUrl).map((res)=>res.json()).catch(this.handleError);
+    localStorage.removeItem('linkImg');
   }
 
-  dashboardFilter(){
-    let roleToken = localStorage.getItem('userrole');
-
-    if(!roleToken){
-      return false;
-    }else if(roleToken !== 'admin'){
-      return false
-    }
-    return true;
-  }
 
   private handleError(error: Response) {
     return Observable.throw(error.json());

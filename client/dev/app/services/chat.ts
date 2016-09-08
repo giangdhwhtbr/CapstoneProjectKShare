@@ -8,65 +8,32 @@ import { Observable } from 'rxjs/Observable';
 export class ChatService {
 
     constructor(private _http: Http) { }
-    private _messageUrl = '/api/messages/:id';
-    private _chatRoomUrl = '/api/chat-rooms/:id';
+    private _chatRoomUrl = '/api/chat-rooms/:user';
 
-     //messages: Observable<Message[]>;
-
-    getAllMessagesFromChatRoom(id: string): Observable<any> {
-        return this._http.get(this._messageUrl.replace(':id', id))
-            .map((r) => r.json())
-            .catch(this.handleError);
-    }
-
-    getChatRoomById(id: string): Observable<ChatRoom> {
-        return this._http.get(this._chatRoomUrl.replace(':id', id))
-            .map((r) => r.json())
-            .catch(this.handleError);
-    }
-
-    addMessage(chatRoomId: string, user: string, text: string): Observable<any> {
-        let header = new Headers;
+    getAllChatRoomOfUser(username: string): Observable<any> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        let _message = JSON.stringify({
-            chatRoomId: chatRoomId,
-            user: user,
-            content: text
-        });
-        console.log(_message);
         return this._http
-            .post(this._messageUrl.replace(':id', ''), _message, options)
+            .get(this._chatRoomUrl.replace(':user', username), options)
             .map((r) => r.json());
     }
 
-    addChatRoom(kshare: string): Observable<any> {
-        let header = new Headers;
+    createChatRoomAdmin(user1: string, user2: string): Observable<any> {
         let headers = new Headers({ 'Content-Type': 'application/json' });
         let options = new RequestOptions({ headers: headers });
-        let _message = JSON.stringify({
-            name: "ChatRoom",
-            kSpaceId: kshare
+
+        let _data = JSON.stringify({
+            user1: user1,
+            user2: user2
         });
+
         return this._http
-            .post(this._chatRoomUrl.replace(':id', ''), _message, options)
+            .post(this._chatRoomUrl.replace(':user', ''),_data , options)
             .map((r) => r.json());
     }
 
-    findChatRoomByKSpaceId(id: string): Observable<any> {
-        let header = new Headers;
-        let headers = new Headers({ 'Content-Type': 'application/json' });
-        let options = new RequestOptions({ headers: headers });
-        let _message = JSON.stringify({
-
-        });
-        return this._http
-            .post(this._chatRoomUrl.replace(':id', id), _message, options)
-            .map((r) => r.json());
-    }
 
     private handleError(error: Response) {
-        console.error(error);
         return Observable.throw(error.json().error || 'Server error');
     }
 

@@ -29,7 +29,7 @@ const METADATA = webpackMerge(commonConfig.metadata, {
 
 
 module.exports = webpackMerge(commonConfig, {
- 
+
   /**
    * Switch loaders to debug mode.
    *
@@ -203,7 +203,7 @@ module.exports = webpackMerge(commonConfig, {
    * See: https://github.com/wbuchwalter/tslint-loader
    */
   tslint: {
-    emitErrors: true,
+    emitErrors: false,
     failOnHint: true,
     resourcePath: 'client/dev'
   },

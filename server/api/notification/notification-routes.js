@@ -7,7 +7,8 @@ module.exports = class NotificationRoutes {
       router
         .route('/api/notification')
         .get(NotificationController.getAll)
-        .post(NotificationController.createNotification);
+        .post(NotificationController.createNotification)
+        .put(NotificationController.createNotificationAdmin);
 
       router
         .route('/api/notification/:id')
